@@ -1,0 +1,135 @@
+{
+    "name": "wya-vc",
+    "version": "0.0.1",
+    "description": "wya for vue components",
+    "main": "lib/main.js",
+    "files": [
+        "src/**",
+        "dist/**",
+        "templates/**",
+        "lib/**"
+    ],
+    "scripts": {
+        "start": "npm run dev",
+        "dev": "npm run prompt && npm run all",
+        "serve": "node --max_old_space_size=8192 ./node_modules/webpack-dev-server/bin/webpack-dev-server --config  ./config/webpack.config.dev.js --color --progress --hot",
+        "dist": "npm run remove:dist && node --max_old_space_size=8192 ./node_modules/webpack/bin/webpack --config ./config/webpack.config.dist.js --color --progress",
+        "build": "cross-env UGLIFY_JS=true npm run dist",
+        "build:dev": "cross-env UGLIFY_JS=false npm run dist",
+        "lib": "rm -rf ./lib && cross-env NODE_ENV=production babel src --out-dir lib --copy-files --ignore **.test.js,**.md,examples/**,",
+        "remove:dist": "rm -rf ./dist",
+        "lint": "esw ./config/*.config.* ./src/**/*.{js,vue}",
+        "lint:fix": "npm run lint -- --fix",
+        "lint:watch": "npm run lint -- --fix --watch",
+        "lint:style": "stylelint --fix --syntax scss src/**/*.scss",
+        "mock": "cd ./src/mock && npm run start",
+        "prompt": "node ./config/prompt.config.js",
+        "all": "npm-run-all --parallel --race --continue-on-error lint:watch serve",
+        "lint-staged": "lint-staged",
+        "pre-commit:install": "cp .hooks/* .git/hooks/",
+        "test": "jest --config ./tests/config/jest.config.js"
+    },
+    "author": "wya-team",
+    "license": "MIT",
+    "repository": {
+        "type": "git",
+        "url": "https://github.com/wya-team/wya-vc"
+    },
+    "bugs": {
+        "url": "https://github.com/wya-team/wya-vc/issues"
+    },
+    "dependencies": {
+        "element-resize-event": "^2.0.9",
+        "html2canvas": "^1.0.0-alpha.12",
+        "photoswipe": "^4.1.2"
+    },
+    "devDependencies": {
+        "autoprefixer": "^8.3.0",
+        "babel-cli": "^6.26.0",
+        "babel-core": "^6.26.0",
+        "babel-eslint": "^8.2.3",
+        "babel-jest": "^23.4.2",
+        "babel-loader": "^7.1.4",
+        "babel-plugin-import": "^1.7.0",
+        "babel-plugin-syntax-dynamic-import": "^6.18.0",
+        "babel-plugin-syntax-jsx": "^6.18.0",
+        "babel-plugin-transform-decorators-legacy": "^1.3.4",
+        "babel-plugin-transform-runtime": "^6.23.0",
+        "babel-plugin-transform-vue-jsx": "^3.7.0",
+        "babel-plugin-webpack-loaders": "^0.9.0",
+        "babel-preset-env": "^1.7.0",
+        "babel-preset-stage-0": "^6.24.1",
+        "copy-webpack-plugin": "^4.5.1",
+        "cross-env": "^5.1.4",
+        "css-loader": "^0.28.11",
+        "enzyme": "^3.3.0",
+        "enzyme-to-json": "^3.3.3",
+        "eslint": "^4.19.1",
+        "eslint-config-airbnb-base": "^13.1.0",
+        "eslint-plugin-babel": "^5.0.0",
+        "eslint-plugin-import": "^2.14.0",
+        "eslint-plugin-markdown": "^1.0.0-beta.6",
+        "eslint-plugin-vue": "^4.7.1",
+        "eslint-watch": "^3.1.4",
+        "file-loader": "^1.1.11",
+        "friendly-errors-webpack-plugin": "^1.7.0",
+        "fs-extra": "^5.0.0",
+        "glob": "^7.1.2",
+        "html-loader": "^0.5.5",
+        "html-webpack-plugin": "^3.2.0",
+        "inquirer": "^5.2.0",
+        "jest": "^23.5.0",
+        "less": "^3.0.1",
+        "less-loader": "^4.1.0",
+        "lint-staged": "^7.0.4",
+        "lrz": "^4.9.40",
+        "mockjs": "^1.0.1-beta3",
+        "node-sass": "^4.8.3",
+        "npm-run-all": "^4.1.2",
+        "postcss-flexbugs-fixes": "^3.3.0",
+        "postcss-loader": "^2.1.4",
+        "postcss-smart-import": "^0.7.6",
+        "pre-commit": "^1.2.2",
+        "precss": "^3.1.2",
+        "rimraf": "^2.6.2",
+        "sass-loader": "^7.0.1",
+        "style-loader": "^0.21.0",
+        "stylelint": "^9.2.0",
+        "stylelint-config-standard": "^18.2.0",
+        "stylelint-webpack-plugin": "^0.10.4",
+        "upath": "^1.0.4",
+        "url-loader": "^1.0.1",
+        "vue": "^2.5.17",
+        "vue-jest": "^2.6.0",
+        "vue-loader": "^15.3.0",
+        "vue-style-loader": "^4.1.1",
+        "vue-template-compiler": "^2.5.17",
+        "webpack": "^4.20.1",
+        "webpack-cli": "^3.1.1",
+        "webpack-dev-server": "^3.1.9",
+        "webpack-merge": "^4.1.4",
+        "wya-fetch": "^0.1.15"
+    },
+    "peerDependencies": {
+        "lrz": ">=4.9.40",
+        "vue": ">=2.5.17",
+        "wya-fetch": ">=0.1.10"
+    },
+    "lint-staged": {
+        "{src,config}/**/*.{js,jsx}": [
+            "esw --fix",
+            "git add"
+        ],
+        "*.md": [
+            "esw --ext '.md' --fix",
+            "git add"
+        ],
+        "src/**/*.scss": [
+            "stylelint --fix --syntax scss",
+            "git add"
+        ]
+    },
+    "pre-commit": [
+        "lint-staged"
+    ]
+}
