@@ -1,0 +1,54 @@
+/**
+ * [animateSlide 弹出层]
+ * @param  {[string]} $direction: down          [方向]
+ * @param  {[number]} $length:    50%           [高度或宽度]
+ * @return {[type]}             [description]
+ */
+@mixin animateSlide($direction: down, $length: 50%) {
+	z-index: $popup-zindex;
+	background: $popup-bg-color;
+	@if ($direction == 'down') {
+		width: 100%;
+		height: $length;
+		@include commonAbsolute(null, 0, 0, 0);
+	} @else if ($direction == 'up') {
+		width: 100%;
+		height: $length;
+		@include commonAbsolute(0, 0, null, 0);
+	} @else if ($direction == 'left') {
+		height: 100%;
+		width: $length;
+		@include commonAbsolute(0, null, 0, 0);
+	} @else if ($direction == 'right') {
+		height: 100%;
+		width: $length;
+		@include commonAbsolute(0, 0, 0, null);
+	}
+	animation-name: animate-slide-#{$direction};
+	animation-duration: $popup-duration;
+	animation-timing-function: $popup-timing;
+}
+
+@mixin animateFade($start, $end) {
+	0% {
+		opacity: $start;
+	}
+
+	100% {
+		opacity: $end;
+	}
+}
+
+@mixin animateZoom($start, $end) {
+	0% {
+		opacity: $start;
+		transform-origin: 50% 50%;
+		transform: scale(0, 0);
+	}
+
+	100% {
+		opacity: $end;
+		transform-origin: 50% 50%;
+		transform: scale(1, 1);
+	}
+}

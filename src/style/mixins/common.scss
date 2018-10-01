@@ -1,0 +1,360 @@
+/**
+ * [commonDirectionFill 方向名词补充]
+ * @param  {[string]} $key [l r b t]
+ * @return {[string]}      [left right bottom top]
+ */
+
+@function commonDirectionFill($key) {
+	@if ($key=='l') {
+		@return 'left';
+	}
+	@else if ($key=='r') {
+		@return 'right';
+	}
+	@else if ($key=='t') {
+		@return 'top';
+	}
+	@else if ($key=='b') {
+		@return 'bottom';
+	}
+	@else {
+		@return null;
+	}
+}
+
+/**
+ * [commonScale 缩放比例]
+ * @param  {[number]} $value [值 可带单位]
+ * @return {[number]}        [缩放后的值]
+ */
+
+@function commonScale($value) {
+	@if (unitless($value)) {
+		@return $value / $scale#{$unit};
+	}
+	@else {
+		@return $value / $scale;
+	}
+}
+
+/**
+ * [commonColumnWidth 平均分配百分比]
+ * @param  {[number]} $col   [所占比]
+ * @param  {[number]} $total [总]
+ * @return {[number]}        [所占比/总 * 100%]
+ */
+
+@function commonColumnWidth($col, $total) {
+	@return percentage($col/$total);
+}
+
+/**
+ * [commonSize 宽高 带有缩放功能]
+ * @param  {[number]} $w    [宽度]
+ * @param  {[number]} $h:$w [高度  默认等于宽度]
+ * @return {[type]}       [宽高]
+ */
+
+@mixin commonSize($w, $h:$w) {
+	@if (unitless($w)) {
+		width: $w / $scale#{$unit};
+		height: $h / $scale#{$unit};
+	}
+	@else {
+		width: $w / $scale;
+		height: $h / $scale;
+	}
+}
+
+/**
+ * [commonBorder 1px的兼容问题]
+ * @param  {[string]} $border: ltbr          [border的方向缩写拼接]
+ * @return {[type]}          [1px border]
+ */
+
+@mixin commonBorder($border: ltbr, $color: $border-color, $width: 1, $border-type: solid) {
+	@if ($width==1) {
+		position: relative;
+		border: none;
+		transform: translateZ(0);
+		&:before {
+			content: '';
+			position: absolute;
+			left: 0;
+			top: 0;
+			width: $scale * 100%;
+			height: $scale * 100%;
+			transform-origin: 0 0;
+			transform: scale(1 / $scale);
+			box-sizing: border-box;
+			pointer-events: none;
+			z-index: -1;
+			@each $key in $border {
+				$len: str_length($border);
+				@while $len>0 {
+					@if (commonDirectionFill(str_slice($border, $len, $len))) {
+						border-#{commonDirectionFill(str_slice($border, $len, $len))}: 1px $border-type $color;
+					}
+					$len: $len - 1;
+				}
+			}
+		}
+	}
+	@else {
+		$len: str_length($border);
+		@if ($len >=4) {
+			border: $width / $scale $border-type $color;
+		}
+		@else {
+
+			@each $key in $border {
+
+				@while $len>0 {
+					@if (commonDirectionFill(str_slice($border, $len, $len))) {
+						border-#{commonDirectionFill(str_slice($border, $len, $len))}: $width / $scale $border-type $color;
+					}
+					$len: $len - 1;
+				}
+			}
+		}
+	}
+}
+
+/**
+ * [commonOpacity 透明度的兼容]
+ * @param  {[type]} $opacity [透明度]
+ * @return {[type]}          [兼容透明度属性]
+ */
+
+@mixin commonOpacity($opacity) {
+	opacity: $opacity; // IE8 filter
+	$opacity-ie: ($opacity * 100);
+	filter: "alpha(opacity=#{$opacity-ie})";
+}
+
+/**
+ * [commonPadding padding]
+ * @param  {[number/string]} $t  [string 方向首字母拼接 top的距离]
+ * @param  {[number]} $r: $t            [right的距离]
+ * @param  {[number]} $b: $t            [bottom的距离]
+ * @param  {[number]} $l: $r            [left的距离]
+ * @return {[type]}     [description]
+ */
+
+@mixin commonPadding($t, $r: $t, $b: $t, $l: $r) {
+	@if (type-of($t)=='number') {
+		padding: if(unitless($t), #{$t / $scale}#{$unit}, #{$t / $scale}) if(unitless($r), #{$r / $scale}#{$unit}, #{$r / $scale}) if(unitless($b), #{$b / $scale}#{$unit}, #{$b / $scale}) if(unitless($l), #{$l / $scale}#{$unit}, #{$l / $scale});
+	}
+	@else if (type-of($t)=='string') {
+		$len: str_length($t);
+		@while $len>0 {
+			@if (commonDirectionFill(str_slice($t, $len, $len))) {
+				padding-#{commonDirectionFill(str_slice($t, $len, $len))}: if(unitless($r), #{$r / $scale}#{$unit}, #{$r / $scale});
+			}
+			$len: $len - 1;
+		}
+	}
+}
+
+/**
+ * [commonMargin margin]
+* @param  {[number/string]} $t  [string 方向首字母拼接 top的距离]
+ * @param  {[number]} $r: $t            [right的距离]
+ * @param  {[number]} $b: $t            [bottom的距离]
+ * @param  {[number]} $l: $r            [left的距离]
+ * @return {[type]}     [description]
+ */
+
+@mixin commonMargin($t, $r: $t, $b: $t, $l: $r) {
+	@if (type-of($t)=='number') {
+		margin: if(unitless($t), #{$t / $scale}#{$unit}, #{$t / $scale}) if(unitless($r), #{$r / $scale}#{$unit}, #{$r / $scale}) if(unitless($b), #{$b / $scale}#{$unit}, #{$b / $scale}) if(unitless($l), #{$l / $scale}#{$unit}, #{$l / $scale});
+	}
+	@else if (type-of($t)=='string') {
+		$len: str_length($t);
+		@while $len>0 {
+			@if (commonDirectionFill(str_slice($t, $len, $len))) {
+				margin-#{commonDirectionFill(str_slice($t, $len, $len))}: if(unitless($r), #{$r / $scale}#{$unit}, #{$r / $scale});
+			}
+			$len: $len - 1;
+		}
+	}
+}
+
+/**
+ * [commonAbsolute absolute]
+ * @param  {[list]} $direction-val... [top, right, bottom, left 的值]
+ * @return {[type]}                   [description]
+ */
+
+@mixin commonAbsolute($direction-val...) {
+	position: absolute;
+	$direction: top, right, bottom, left;
+	@for $i from 1 through 4 {
+		@if (type_of(nth($direction-val, $i))=='number') {
+			#{nth($direction, $i)}: nth($direction-val, $i) / $scale;
+		}
+	}
+}
+
+@mixin commonBgLinear($angle: to bottom, $start: #fff, $end: #000) {
+	background: $end;
+	background-image: linear-gradient($angle, $start, $end);
+}
+
+/**
+ * 水平垂直居中
+ */
+
+@mixin commonFlexCc {
+	display: flex;
+	box-sizing: border-box;
+	align-items: center;
+	justify-content: center;
+}
+
+/**
+ * 水平垂直居中
+ */
+
+@mixin commonFlex {
+	display: flex;
+	box-sizing: border-box;
+}
+
+/**
+ * 文字相关
+ */
+
+/**
+ * 一行文字
+ */
+
+@mixin commonEllipsis {
+	width: auto;
+	overflow: hidden;
+	text-overflow: ellipsis;
+	white-space: nowrap;
+}
+
+@mixin commonTextLine($line) {
+	overflow: hidden;
+	text-overflow: ellipsis;
+	display: -webkit-box;
+	-webkit-line-clamp: $line;
+	-webkit-box-orient: vertical;
+}
+
+/**
+ * g-nobreak
+ * 单词不换行
+ */
+
+@mixin commonNoBreak {
+	word-break: break-all;
+	word-wrap: break-word;
+}
+
+/**
+ * [commonClearfix 清除浮动]
+ * @return {[type]} [description]
+ */
+
+@mixin commonClearfix {
+	zoom: 1;
+	&:before,
+	&:after {
+		content: " ";
+		display: table;
+		clear: both;
+		visibility: hidden;
+		font-size: 0;
+		height: 0;
+	}
+}
+
+@mixin commonScroll($size: 4px) {
+	/**
+	 * scrollbar width
+	 */
+	&::-webkit-scrollbar {
+		width: $size; // 很有影响
+	}
+
+	::-webkit-scrollbar:horizontal {
+		height: $size;
+	}
+
+	/**
+	 * scrollbar bg
+	 */
+	&::-webkit-scrollbar-track {
+		-webkit-box-shadow: inset 0 0 10px rgba(0, 0, 0, 0);
+		-webkit-border-radius: 5px;
+		border-radius: 5px;
+		background: rgba(0, 0, 0, 0);
+	}
+
+	/**
+	 * Handle
+	 */
+	&::-webkit-scrollbar-thumb {
+		-webkit-border-radius: 5px;
+		border-radius: 5px;
+		background: rgba(0, 0, 0, 0.2);
+	}
+}
+
+@mixin commonPopup($container-height: 650px, $container-width: 1010px, $content-height: 600px, $white: white) {
+	@include commonScroll();
+	@include commonFlexCc();
+	position: fixed;
+	top: 0;
+	right: 0;
+	left: 0;
+	bottom: 0;
+	z-index: 999;
+	.__mask {
+		position: absolute;
+		z-index: 997;
+		top: 0;
+		left: 0;
+		width: 100%;
+		height: 100%;
+		background-color: rgba(#000, 0.1);
+		opacity: 0;
+		transition: opacity 0.2s;
+	}
+	.__container {
+		height: $container-height;
+		width: $container-width;
+		background: $white;
+		position: absolute;
+		z-index: 998;
+		top: 50%;
+		left: 50%;
+		border-radius: 3px;
+		box-shadow: 0 15px 30px rgba(#000, 0.1);
+		opacity: 0;
+		transform: translate(-50%, -50%);
+		transition: transform 0.2s, opacity 0.2s;
+	}
+	&.__active {
+		.__mask {
+			opacity: 1;
+		}
+		.__container {
+			opacity: 1;
+			transform: translate(-50%, -60%);
+		}
+	}
+	.__header {
+		@include commonFlex();
+		justify-content: space-between;
+		align-items: center;
+		// background: $white;
+		padding: 10px 20px;
+		flex: 1;
+		border-bottom: $border;
+		height: $container-height - $content-height; // margin-bottom: 10px
+	}
+}

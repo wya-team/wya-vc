@@ -1,0 +1,101 @@
+@import "color";
+// 定义默认属性
+// 缩放
+$scale: 1 !default;
+
+// 单位
+$unit: px !default;
+
+// 全局前缀
+$prefix: g !default;
+
+// 栅格布局 12等分
+$total: 12 !default;
+
+// modules
+$module: 'pc';
+
+// 主要颜色
+$main-color-1: $red !default;
+$main-color-2: $blue !default;
+$main-color-3: $yellow !default;
+
+// 背景颜色
+$body-bg-color: #f5f6fa;
+$scrollbar-track-bg-color: rgba(0, 0, 0, 0) !default;
+$scrollbar-thumb-bg-color: rgba(0, 0, 0, 0.2) !default;
+$popup-bg-color: $white !default;
+$modal-bg-color: $white !default;
+$mask-bg-color: rgba(0, 0, 0, 0.4) !default;
+$disable-bg-color: #eee;
+
+// 字体颜色
+$font-color-deep: $black !default;
+$font-color-dark: $gray_1 !default;
+$font-color-mid: $gray_2 !default;
+$font-color-light: $gray_3 !default;
+
+// 边框颜色
+$border-color: #cdcdcd !default;
+
+// 字体尺寸
+$font-size-base: 14px !default;
+$font-size-lg: $font-size-base + 2px !default;
+
+// 行高
+$line-height-base: 16px !default;
+$line-height-limit: 32px !default; //限高
+
+// 默认圆角
+$default-border-radius: 8px;
+
+// 水平间距
+$padding-xs: 5px !default;
+$padding-sm: 10px !default;
+$padding-md: 15px !default;
+$padding-lg: 20px !default;
+$padding-xl: 30px !default;
+// 垂直间距
+$margin-xs: 5px !default;
+$margin-sm: 10px !default;
+$margin-md: 15px !default;
+$margin-lg: 20px !default;
+$margin-xl: 30px !default;
+
+// z-index
+$modal-zindex: 999 !default;
+$popup-zindex: 999 !default;
+$mask-zindex: 99 !default;
+$tooltip-zindex: 1999 !default;
+
+// Animation
+$ease-out: cubic-bezier(0.215, 0.61, 0.355, 1);
+$ease-in: cubic-bezier(0.55, 0.055, 0.675, 0.19);
+$ease-in-out: cubic-bezier(0.645, 0.045, 0.355, 1);
+$ease-out-back: cubic-bezier(0.12, 0.4, 0.29, 1.46);
+$ease-in-back: cubic-bezier(0.71, -0.46, 0.88, 0.6);
+$ease-in-out-back: cubic-bezier(0.71, -0.46, 0.29, 1.46);
+$ease-out-circ: cubic-bezier(0.08, 0.82, 0.17, 1);
+$ease-in-circ: cubic-bezier(0.6, 0.04, 0.98, 0.34);
+$ease-in-out-circ: cubic-bezier(0.78, 0.14, 0.15, 0.86);
+$ease-out-quint: cubic-bezier(0.23, 1, 0.32, 1);
+$ease-in-quint: cubic-bezier(0.755, 0.05, 0.855, 0.06);
+$ease-in-out-quint: cubic-bezier(0.86, 0, 0.07, 1);
+
+// duration
+$mask-duration: 0.5s !default;
+$modal-duration: 0.5s !default;
+$popup-duration: 0.5s !default;
+
+// timing
+$mask-timing: ease !default;
+$modal-timing: ease !default;
+$popup-timing: ease !default;
+
+// box-shadow
+$scrollbar-track-box-shadow: inset 0 0 10px rgba(0, 0, 0, 0) !default;
+$default-border-shadow:0 -1px 9.9px 0.1px rgba(0, 0, 0, 0.05);
+
+// ICONFONT
+$iconfont-css-prefix: "wyaicon";
+$icon-url: "//at.alicdn.com/t/font_781952_r2dn563x2n";

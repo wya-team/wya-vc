@@ -1,8 +1,24 @@
 /**
  * 强化项目的读写能力
  */
+const { resolve } = require('path');
 const { prompt, Separator } = require('inquirer');
 const fs = require('fs-extra');
+
+const directory = resolve(__dirname, '../src/');
+const components = ['all'];
+fs.readdirSync(directory).forEach((file) => {
+
+	const fullpath = resolve(directory, file);
+	// 获取文件信息
+	const stat = fs.statSync(fullpath);
+	if (!['__tpl__', 'style', 'utils', 'vc-instance'].includes(file) 
+		&& stat.isDirectory()
+	) {
+		components.push(file);
+	}
+
+});
 
 const question = [
 	{
@@ -12,15 +28,16 @@ const question = [
 		default: '8082'
 	},
 	{
-		type: 'input',
+		type: 'list',
 		name: 'component',
-		message: 'component:',
-		default: ''
+		message: 'Select component:',
+		choices: components,
+		default: 'all'
 	}
 ];
 prompt(question).then((result = {}) => {
 	let { port, component: str } = result;
-	result.component = str ? str.replace(/([a-z\dA-Z])([A-Z])/g, '$1-$2').toLowerCase() : str;
+	result.component = str != 'all' ? str.replace(/([a-z\dA-Z])([A-Z])/g, '$1-$2').toLowerCase() : '';
 
 	let contents = '';
 	// 对用户输入的信息处理
