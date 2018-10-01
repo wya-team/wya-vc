@@ -27,8 +27,11 @@ export default (options = {}, wrapper) => {
 				const { 
 					getInstance, 
 					onBefore: _onBefore, 
-					cName: _cName, 
-					...rest // 可以传递store, router, ...
+					cName: _cName,
+					store,
+					router,
+					parent = {}, // 依赖注入使用 like store, router, Life cycle，methods, mixins, ....
+					...rest
 				} = opts;
 
 				onBefore = _onBefore || onBefore;
@@ -42,11 +45,12 @@ export default (options = {}, wrapper) => {
 					let vm;
 					vm = new VueComponent({
 						el: container,
+						store, // vuex,
+						router, // vue-router
+						...parent,
 						propsData: {
 							...opts,
 							data: res.data
-						},
-						methods: {
 						}
 					});
 
