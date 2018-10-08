@@ -49,7 +49,7 @@ export default (options = {}, wrapper) => {
 						router, // vue-router
 						...parent,
 						propsData: {
-							...opts,
+							...rest,
 							data: res.data
 						}
 					});
