@@ -1,13 +1,14 @@
-<template>
-	<div @click="handleClick">
-		<slot/>
-	</div>
-</template>
 <script>
+import { Message } from 'iview';
+
 export default {
 	name: "vc-copy",
 	props: {
-		value: String
+		value: String,
+		tag: {
+			type: String,
+			default: 'div'
+		}
 	},
 	data() {
 		return {
@@ -17,24 +18,41 @@ export default {
 		
 	},
 	methods: {
-		handleClick(e) {
-			let { value } = this;
+		async handleClick(e) {
+			try { 
+				// 此处不用this.$emit('xxx')
+				let { value, $listeners: { after, before } } = this;
 
-			// create
-			let input = document.createElement('input');
-			input.value = value;
-			document.body.appendChild(input);
+				before && (value = await before(e, value));
 
-			// copy
-			input.select();
-			document.execCommand("Copy");
+				// create
+				let input = document.createElement('input');
+				input.value = value;
+				document.body.appendChild(input);
 
-			// remove
-			document.body.removeChild(input);
+				// copy
+				input.select();
+				document.execCommand("Copy");
 
-			// end
+				// remove
+				document.body.removeChild(input);
+
+				// end
+				after && after(value);
+				!after && Message.success({
+					content: `复制成功：${value}`
+				});
+			} catch (error) {
+				console.error(`copy fail: ${error}`);
+			}
 		}
+	},
+	render(h) {
+		return h(this.tag, {
+			on: {
+				click: this.handleClick
+			}
+		}, this.$slots.default);
 	}
 };
 </script>
-<style></style>

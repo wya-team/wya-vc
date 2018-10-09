@@ -34,9 +34,18 @@ npm install babel-plugin-import --save-dev
 // 调用, 如下：
 import { Copy } from 'wya-vc';
 ```
+
 ## 组件（暂时不归类）
 ### 实例
-...
+- [`VcInstance: 上下文传递`](https://github.com/wya-team/wya-vc/tree/master/src/vc-instance/)
+### 通用（移动优先）
+- [`Copy: 复制`](https://github.com/wya-team/wya-vc/tree/master/src/copy/)
+- [`Print: 打印`](https://github.com/wya-team/wya-vc/tree/master/src/print/)
+- [`CreatePortal: 创建兄弟节点(方法调用) -> （）=> Promise`](https://github.com/wya-team/wya-vc/tree/master/src/create-portal/)
+
+### Mobile - 移动端
+
+### PC - PC端
 
 <!--  以下内容无视  -->
 [changelog-image]: https://img.shields.io/badge/changelog-md-blue.svg

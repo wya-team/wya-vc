@@ -19,6 +19,15 @@
 				"polyfill": false,
 				"regenerator": true
 			}
+		],
+		[
+			"import",
+			[
+				{
+					"libraryName": "iview",
+					"libraryDirectory": "src/components"
+				}
+			]
 		]
 	]
 }

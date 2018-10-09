@@ -1,6 +1,6 @@
-## [Demo Basic](https://wya-team.github.io/wya-vc/dist/copy/basic.html)
+## [Demo Basic](https://wya-team.github.io/wya-vc/dist/print/basic.html)
 ## 功能
-复制内容
+打印内容
 
 ## API
 
@@ -22,29 +22,37 @@ value | 复制的文本内容 | `any` | -
 ```vue
 <template>
 	<div>
-		<vc-copy :value="msg">点我复制</vc-copy>
+		<vc-print ref="pageTarget">
+			打印的内容
+			打印的内容
+			打印的内容
+			打印的内容
+			打印的内容
+		</vc-print>
+		<div @click="handleClick">点我打印</div>
 	</div>
 </template>
 <script>
-import { Copy } from 'wya-vc';
+import Print from 'wya-vc';
 
 export default {
-	name: "vc-copy-basic",
+	name: "vc-print-basic",
 	components: {
-		'vc-name': Copy
+		'vc-print': Print
 	},
 	data() {
 		return {
-			msg: 'copy'
 		};
 	},
 	computed: {
 		
 	},
 	methods: {
+		handleClick() {
+			console.log(this.$refs.pageTarget.print());
+		}
 	}
 };
 </script>
-
 ```
 

@@ -3,7 +3,6 @@ import VcInstance from '../vc-instance/index';
 import { getUid } from '../utils/utils';
 
 export default (options = {}, wrapper) => {
-
 	let isNeedWaiting = false;
 	let { cName = wrapper.name, onBefore, el, root: _root } = options;
 

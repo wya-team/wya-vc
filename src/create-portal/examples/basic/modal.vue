@@ -4,7 +4,7 @@
 	</span>
 </template>
 <script>
-import CreatePortalFunc from '../../index';
+import CreatePortal from '../../index';
 
 export default {
 	name: "vc-tpl-basic",
@@ -21,5 +21,5 @@ export default {
 	}
 };
 
-export const Modal = CreatePortalFunc({}, module.exports.default);
+export const Modal = CreatePortal({}, module.exports.default);
 </script>

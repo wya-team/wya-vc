@@ -1,4 +1,4 @@
-class RcInstance {
+class VcInstance {
 	constructor() {
 		this.hasInit = false;
 		this.APIS = {};
@@ -15,7 +15,7 @@ class RcInstance {
 				URL_PGALLERY_IMGS_ITEM_RENAME_POST: null,
 				URL_PGALLERY_IMGS_ITEM_MOVE_POST: null,
 			},	
-			UpLoad: {
+			Upload: {
 				IMG_UPLOAD_URL: null,
 				FILE_UPLOAD_URL: null
 			}
@@ -51,4 +51,4 @@ class RcInstance {
 	}
 }
 
-export default new RcInstance();
+export default new VcInstance();
