@@ -1,10 +1,15 @@
 <template>
-	<div @click="handleClick">
-		点我
+	<div>
+		<div @click="handleClickWithBefore">
+			点我(带延迟)
+		</div>
+		<div @click="handleClick">
+			点我(不带延迟)
+		</div>
 	</div>
 </template>
 <script>
-import { Modal } from './basic/modal';
+import { PModal, PModalWithBefore } from './basic/modal';
 
 export default {
 	name: "vc-tpl-basic",
@@ -18,11 +23,20 @@ export default {
 		
 	},
 	methods: {
-		handleClick() {
-			Modal.popup({
+		handleClickWithBefore() {
+			PModalWithBefore.popup({
 
 			}).then((res) => {
+				console.log(res);
+			}).catch((res) => {
+				console.log(res);
+			});
+		},
+		handleClick() {
+			PModal.popup({
 
+			}).then((res) => {
+				console.log(res);
 			}).catch((res) => {
 				console.log(res);
 			});

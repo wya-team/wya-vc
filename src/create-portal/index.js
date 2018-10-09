@@ -4,7 +4,7 @@ import { getUid } from '../utils/utils';
 
 export default (options = {}, wrapper) => {
 	let isNeedWaiting = false;
-	let { cName = wrapper.name, onBefore, el, root: _root } = options;
+	let { cName = wrapper.name, onBefore, el, root: _root, leaveDelay = 300 } = options;
 
 	if (!cName) {
 		console.log('传送门：cName 必传');
@@ -61,12 +61,20 @@ export default (options = {}, wrapper) => {
 					});
 
 					vm.$on('close', (res) => {
-						vm.emit('destory');
+						// 考虑退出动画
+						setTimeout(() => {
+							vm.$emit('destory');
+						}, leaveDelay);
+						
 						reject(res);
 					});
 
 					vm.$on('sure', (res) => {
-						vm.emit('destory');
+						// 考虑退出动画
+						setTimeout(() => {
+							vm.$emit('destory');
+						}, leaveDelay);
+
 						resolve(res);
 					});
 
@@ -78,6 +86,8 @@ export default (options = {}, wrapper) => {
 
 					// 插入	
 					target.appendChild(vm.$el);
+
+					isNeedWaiting = false;
 				};
 
 				if (onBefore) {
@@ -97,7 +107,6 @@ export default (options = {}, wrapper) => {
 					}
 					return;
 				}
-				isNeedWaiting = false;
 				render();
 			});
 		}
