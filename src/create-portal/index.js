@@ -49,7 +49,7 @@ export default (options = {}, wrapper) => {
 						...parent,
 						propsData: {
 							...rest,
-							data: res.data
+							resData: res.data
 						}
 					});
 

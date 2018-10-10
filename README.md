@@ -42,6 +42,7 @@ import { Copy } from 'wya-vc';
 - [`Copy: 复制`](https://github.com/wya-team/wya-vc/tree/master/src/copy/)
 - [`Print: 打印`](https://github.com/wya-team/wya-vc/tree/master/src/print/)
 - [`CreatePortal: 创建兄弟节点(方法调用) -> （）=> Promise`](https://github.com/wya-team/wya-vc/tree/master/src/create-portal/)
+- [`Upload: 上传`](https://github.com/wya-team/wya-vc/tree/master/src/upload/)
 
 ### Mobile - 移动端
 
