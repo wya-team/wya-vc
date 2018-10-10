@@ -2,7 +2,7 @@ const now = +(new Date());
 let index = 0;
 
 export const getUid = () => {
-	return `rc-${now}-${++index}`;
+	return `vc-${now}-${++index}`;
 };
 
 const endsWith = (str, suffix) => {
