@@ -11,8 +11,7 @@
 			@file-error="handleFileError"
 			@file-success="handleFileSuccess"
 			@file-progress="handleFileProgress"
-		>限制大小上传</vc-upload>
-
+		>限制大小上传以及api</vc-upload>
 	</div>
 </template>
 <script>
