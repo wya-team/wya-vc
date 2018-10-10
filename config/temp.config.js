@@ -10,7 +10,11 @@ const APP_ROOT = process.cwd();
 const CopyWebpackPlugin = require('copy-webpack-plugin');
 const HtmlWebpackPlugin = require('html-webpack-plugin');
 
-const { component } = require('./user.config.js') || {};
+let { component } = require('./user.config.js') || {};
+
+if (!ENV_IS_DEV) {
+	component = '';
+}
 
 let entry = {
 };
