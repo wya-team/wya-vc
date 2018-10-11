@@ -1,8 +1,8 @@
 <template>
 	<div class="vcp-imgs-picker">
 		<div 
-			v-for="(item) in imgs" 
-			:key="item" 
+			v-for="(item) in currentValue" 
+			:key="item"
 			class="__item __normal"
 		>
 			<div
@@ -15,7 +15,7 @@
 			</div>
 		</div>
 		<vc-upload 
-			v-if="!disabled && (imgs.length < max || max === 0)"
+			v-if="!disabled && (currentValue.length < max || max === 0)"
 			class="__upload __normal"
 			@file-success="handleFileSuccess"
 			@file-error="handleFileError"
@@ -24,12 +24,18 @@
 </template>
 
 <script>
+import Emitter from 'iview/src/mixins/emitter'; // 表单验证
 import Upload from '../upload/index';
 
 export default {
 	name: "vc-tpl",
 	components: {
 		'vc-upload': Upload
+	},
+	mixins: [Emitter],
+	model: {
+		prop: 'value',
+		event: 'change'
 	},
 	props: {
 		value: {
@@ -61,39 +67,43 @@ export default {
 	},
 	data() {
 		return {
-			imgs: this.value
+			currentValue: this.value
 		};
 	},
-	computed: {
-		
+	watch: {
+		value(val) {
+			this.setCurrentValue(val);
+		}
 	},
 	methods: {
+		setCurrentValue(value) {
+			if (value === this.currentValue) return;
+			
+			this.currentValue = value;
+			this.dispatch('FormItem', 'on-form-change', value);
+		},
 		handleFileSuccess(res) {
-			let { max, imgs, getParse, $listeners: { change } } = this;
-			if (change) {
-				this.emit('change', [...imgs, getParse ? getParse(res) : res.data.url]);
-			} else {
-				this.imgs = [...imgs, getParse ? getParse(res) : res.data.url];
-			}
+			let { max, currentValue, getParse } = this;
+			let value = [...currentValue, getParse ? getParse(res) : res.data.url];
+			this.$emit('change', value);
+			this.setCurrentValue(value);
 		},
 		handleFileError(res) {
 			console.log(res);
 			this.$emit('error', res);
 		},
 		handleDel(item) {
-			let { imgs, max, getParse, $listeners: { change } } = this;
-			if (max !== 0 && value.length > max) {
+			let { currentValue, max, getParse } = this;
+			if (max !== 0 && currentValue.length > max) {
 				this.$emit('error', {
 					status: 0,
 					msg: '超出上传限制'
 				});
 				return;
 			}
-			if (change) {
-				this.emit('change', imgs.filter(_item => _item != item));
-			} else {
-				this.imgs = imgs.filter(_item => _item != item);
-			}
+			let value = currentValue.filter(_item => _item != item);
+			this.$emit('change', value);
+			this.setCurrentValue(value);
 		}
 	}
 };

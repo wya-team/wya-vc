@@ -5,13 +5,16 @@
 		:rules="ruleValidate" 
 	>
 		<i-form-item prop="imgs">
-			<vc-imgs-picker />
+			<vc-imgs-picker v-model="formValidate.imgs" :max="2" />
+		</i-form-item>
+		<i-form-item prop="name">
+			<i-input v-model="formValidate.name" />
 		</i-form-item>
 		<div @click="handleSubmit">提交</div>
 	</i-form >
 </template>
 <script>
-import { Form, FormItem } from 'iview';
+import { Form, FormItem, Input } from 'iview';
 import ImgsPicker from '../imgs-picker';
 import VcInstance from '../../vc-instance/index';
 
@@ -27,20 +30,22 @@ export default {
 	components: {
 		'vc-imgs-picker': ImgsPicker,
 		'i-form': Form,
-		'i-form-item': FormItem
+		'i-form-item': FormItem,
+		'i-input': Input,
 	},
 	data() {
 		return {
 			formValidate: {
-				imgs: []
+				imgs: [],
+				name: ''
 			},
 			ruleValidate: {
-				imgs: {
-					required: true, 
-					type: 'array',
-					message: '请选择图片',
-					trigger: 'change'
-				}
+				imgs: [
+					{ required: true, type: 'array', message: '请选择图片', trigger: 'change' }
+				],
+				name: [
+					{ required: true, message: '请输入客户公司名称' }
+				],
 			}
 		};
 	},
