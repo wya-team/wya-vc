@@ -13,7 +13,7 @@
 <script>
 import { Form, FormItem, Input } from 'iview';
 import ImgsPicker from '../imgs-picker';
-import VcInstance from '../../vc-instance/index';
+import { VcInstance } from '../../vc/index';
 
 VcInstance.init({
 	Upload: {

@@ -1,7 +1,7 @@
 <script>
 import { ajax } from 'wya-fetch';
 import { getUid, attrAccept, initItem } from '../utils/utils';
-import VcInstance from '../vc-instance/index';
+import { VcInstance } from '../vc/index';
 import { Tips } from './tips';
 
 export default {

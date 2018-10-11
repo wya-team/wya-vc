@@ -5,6 +5,7 @@
 		<vc-upload
 			:size="2"
 			:show-tips="true"
+			:multiple="true"
 			@begin="handleBegin"
 			@complete="handleComplete"
 			@file-before="handleFileBefore"
@@ -27,7 +28,7 @@
 <script>
 import { Message } from 'iview';
 import Upload from '../index';
-import VcInstance from '../../vc-instance/index';
+import { VcInstance } from '../../vc/index';
 
 VcInstance.init({
 	Upload: {

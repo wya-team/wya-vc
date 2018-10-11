@@ -1,4 +1,4 @@
-class VcInstance {
+class Vc {
 	constructor() {
 		this.hasInit = false;
 		this.APIS = {};
@@ -35,7 +35,7 @@ class VcInstance {
 		} else {
 			console.error('只能初始化一次');
 		}
-		
+		return this;
 	}
 
 	/**
@@ -53,8 +53,15 @@ class VcInstance {
 		} catch (e) {
 			// 
 		}
-		
+		return this;
 	}
 }
 
-export default new VcInstance();
+export const VcInstance = new Vc();
+
+export default {
+	install(Vue, opts = {}) {
+		Vue.prototype.$vc = VcInstance.init(opts);
+	},
+};
+

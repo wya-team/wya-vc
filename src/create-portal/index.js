@@ -1,5 +1,5 @@
 import Vue from 'vue';
-import VcInstance from '../vc-instance/index';
+import { VcInstance } from '../vc/index';
 import { getUid } from '../utils/utils';
 
 export default (options = {}, wrapper) => {

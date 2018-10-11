@@ -12,7 +12,7 @@ fs.readdirSync(directory).forEach((file) => {
 	const fullpath = resolve(directory, file);
 	// 获取文件信息
 	const stat = fs.statSync(fullpath);
-	if (!['__tpl__', 'style', 'utils', 'vc-instance'].includes(file) 
+	if (!['__tpl__', 'style', 'utils', 'vc'].includes(file) 
 		&& stat.isDirectory()
 	) {
 		components.push(file);
