@@ -2,6 +2,7 @@
 import { ajax } from 'wya-fetch';
 import { getUid, attrAccept, initItem } from '../utils/utils';
 import VcInstance from '../vc-instance/index';
+import { Tips } from './tips';
 
 export default {
 	name: "vc-upload",
@@ -70,6 +71,11 @@ export default {
 		name: {
 			type: String,
 			default: 'Filedata'
+		},
+
+		showTips: {
+			type: Boolean,
+			default: false
 		}
 	},
 	data() {
@@ -87,9 +93,22 @@ export default {
 	},
 	mounted() {
 		this._isMounted = true;
+
+		if (!this.showTips) return;
+		Tips.popup({
+			getInstance: (vm) => {
+				this.tips = vm;
+			}
+		}).then((res) => {
+			console.log(`tips: ${res}`);
+		}).catch((error) => {
+			console.log(`tips: ${error}`);
+		});
+
 	},
 	destroyed() {
 		this._isMounted = false;
+		this.tips && this.tips.$emit('close');
 		this.cancel();
 	},
 	methods: {

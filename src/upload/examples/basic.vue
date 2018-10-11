@@ -1,9 +1,10 @@
 <template>
 	<div>
-		<vc-upload>简单版上传</vc-upload>
+		<vc-upload :show-tips="true">简单版上传</vc-upload>
 		<br>
 		<vc-upload
 			:size="2"
+			:show-tips="true"
 			@begin="handleBegin"
 			@complete="handleComplete"
 			@file-before="handleFileBefore"
@@ -12,6 +13,15 @@
 			@file-success="handleFileSuccess"
 			@file-progress="handleFileProgress"
 		>限制大小上传以及api</vc-upload>
+
+		<div style="display: flex; flex-wrap: wrap">
+			<div 
+				v-for="(item, index) in list"  
+				:key="index"
+				:style="{ backgroundImage: `url(${item})` }"
+				class="image"
+			/>
+		</div>
 	</div>
 </template>
 <script>
@@ -33,6 +43,7 @@ export default {
 	},
 	data() {
 		return {
+			list: []
 		};
 	},
 	computed: {
@@ -72,6 +83,8 @@ export default {
 			Message.success({
 				content: `上传成功`
 			});
+
+			this.list.push(res.data.url);
 		},
 		handleFileProgress(e, file) {
 			console.log(`Progress: 当前：${file.current}, 总数：${file.total}`);
@@ -88,3 +101,12 @@ export default {
 	}
 };
 </script>
+<style lang="scss" scoped>
+	.image {
+		background-size: cover;
+		width: 120px;
+		height: 120px;
+		border-radius: 3px;
+		margin: 3px;
+	}
+</style>

@@ -9,6 +9,12 @@
 - 多图模式，队列上传；
 - show-tips
 
+
+## 关联组件清单
+
+- ImgsPicker （图片上传）
+
+
 ## API
 
 #### 属性
@@ -41,7 +47,6 @@ show-tips | 展示显示进度弹窗 | `bool` | `false`
 `@file-error` | 单个文件上传过程失败回调(res, file.current, file.total等可用参数) | `(res, file) => void` | -
 `@begin` | 一个周期上传前的回调(info: {}) | `(files) => void` | -
 `@complete` | 一个周期上传后的回调(info: {}) | `(info) => void` | -
-
 
 
 ## 基础用法
