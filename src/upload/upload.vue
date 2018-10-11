@@ -96,6 +96,7 @@ export default {
 
 		if (!this.showTips) return;
 		Tips.popup({
+			cName: getUid(),
 			getInstance: (vm) => {
 				this.tips = vm;
 			}

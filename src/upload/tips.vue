@@ -41,6 +41,7 @@ export default {
 	data() {
 		return {
 			visible: false,
+			itemArr: [],
 			itemObj: {},
 			success: 0,
 			error: 0,
@@ -62,6 +63,10 @@ export default {
 	methods: {
 		show({ itemArr, itemObj }) {
 			this.visible = true;
+			this.itemArr = [
+				...this.itemArr, 
+				...itemArr
+			];
 			this.itemObj = {
 				...this.itemObj,
 				...itemObj
@@ -75,6 +80,7 @@ export default {
 				case 'percent':
 					// File对象实例
 					this.itemObj[uid].percent = value;
+					console.log(value);
 					break;
 				case 'success':
 					this.success++;

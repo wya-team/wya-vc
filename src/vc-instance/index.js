@@ -43,7 +43,13 @@ class VcInstance {
 	 */
 	clean() {
 		try {
-			// ..
+			
+			for (let i in this.APIS) {
+				if (this.APIS[i]) {
+					this.APIS[i].$emit('destory');
+					delete this.APIS[i];
+				}
+			}
 		} catch (e) {
 			// 
 		}
