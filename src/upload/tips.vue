@@ -6,7 +6,7 @@
 				<span @click="hide">&#10005;</span>
 			</div>
 			<div v-if="showTips" class="__result" @click="setTipsStatus">
-				<span>上传结束，成功: {{ success }}，失败: {{ error }}，总数: {{ itemArr.length }}</span>
+				<span>上传结束，成功: {{ success }}，失败: {{ error }}，总数: {{ total }}</span>
 				<span class="__icon">&#10005;</span>
 			</div>
 			<div class="__content">
@@ -21,7 +21,7 @@
 						<div>{{ name }}</div>
 						<div>{{ (size / 1024 / 1024).toFixed(2) }} MB</div>
 						<div :class="msg ? `__error` : `__success`">
-							<span v-if="msg">msg</span>
+							<span v-if="msg">{{ msg }}</span>
 							<span v-else-if="!msg && (Number(percent) === 100)">&#10004;</span>
 							<span v-else>上传中</span>
 						</div>
@@ -49,7 +49,9 @@ export default {
 		};
 	},
 	computed: {
-		
+		total() {
+			return itemArr.length;
+		}
 	},
 	created() {
 		this.timer = null;
@@ -61,6 +63,9 @@ export default {
 		this.timer && clearTimeout(this.timer);
 	},
 	methods: {
+		/**
+		 * 外部可调用
+		 */
 		show({ itemArr, itemObj }) {
 			this.visible = true;
 			this.itemArr = [
@@ -72,15 +77,20 @@ export default {
 				...itemObj
 			};
 		},
+		/**
+		 * 外部可调用
+		 */
 		hide() {
 			this.visible = false;
 		},
+		/**
+		 * 外部调用
+		 */
 		setValue(uid, key, value) {
 			switch (key) {
 				case 'percent':
 					// File对象实例
 					this.itemObj[uid].percent = value;
-					console.log(value);
 					break;
 				case 'success':
 					this.success++;
@@ -93,6 +103,9 @@ export default {
 					break;
 			}
 		},
+		/**
+		 * 外部调用
+		 */
 		setTipsStatus(show) {
 			this.showTips = typeof show === 'boolean' ? show : !this.showTips;
 		},
@@ -109,7 +122,6 @@ export const Tips = CreatePortal({}, module.exports.default);
 .vc-upload-tips {
 	width: 600px;
 	position: fixed;
-	z-index: 999;
 	right: 5px;
 	bottom: 5px;
 	font-size: 13px;

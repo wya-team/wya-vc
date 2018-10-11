@@ -173,7 +173,9 @@ export default {
 			});
 
 			// tips
-			this.tips && this.tips.show(initItem(postFiles, 'uid'));
+			this.tips && this.tips.show(
+				initItem(postFiles.map(it => ({ ...it, size: it.size, name: it.name })), 'uid')
+			);
 		},
 		upload(file, fileList, index) {
 

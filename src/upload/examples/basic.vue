@@ -1,6 +1,6 @@
 <template>
 	<div>
-		<vc-upload :show-tips="true">简单版上传</vc-upload>
+		<vc-upload>简单版上传</vc-upload>
 		<br>
 		<vc-upload
 			:size="2"
