@@ -50,7 +50,7 @@ export default {
 	},
 	computed: {
 		total() {
-			return itemArr.length;
+			return this.itemArr.length;
 		}
 	},
 	created() {
