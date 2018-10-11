@@ -9,7 +9,7 @@
 				:style="{backgroundImage: `url(${item})`}"
 				class="__img"
 			>
-				<div className="__mask g-relative">
+				<div class="__mask g-relative">
 					<span @click="handleDel(item)">x</span>
 				</div>
 			</div>
