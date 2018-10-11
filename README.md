@@ -29,6 +29,14 @@ npm install babel-plugin-import --save-dev
 	]
 }
 ```
+- 注册选项
+```js
+import { Vc } from 'wya-vc';
+
+Vue.use(Vc, {
+	// config
+})
+```
 
 ```js
 // 调用, 如下：
@@ -42,6 +50,7 @@ import { Copy } from 'wya-vc';
 - [`Copy: 复制`](https://github.com/wya-team/wya-vc/tree/master/src/copy/)
 - [`Print: 打印`](https://github.com/wya-team/wya-vc/tree/master/src/print/)
 - [`CreatePortal: 创建兄弟节点(方法调用) -> （）=> Promise`](https://github.com/wya-team/wya-vc/tree/master/src/create-portal/)
+- [`Imgs-Picker: 图片上传`](https://github.com/wya-team/wya-vc/tree/master/src/imgs-picker/)
 - [`Upload: 上传`](https://github.com/wya-team/wya-vc/tree/master/src/upload/)
 
 ### Mobile - 移动端
