@@ -33,6 +33,10 @@ export default {
 		'vc-upload': Upload
 	},
 	mixins: [Emitter],
+	model: {
+		prop: 'value',
+		event: 'change'
+	},
 	props: {
 		value: {
 			type: Array,
@@ -82,8 +86,6 @@ export default {
 			let { max, currentValue, getParse } = this;
 			let value = [...currentValue, getParse ? getParse(res) : res.data.url];
 			this.$emit('change', value);
-			// v-model 是value和input的语法糖 此处发送input是为了表单验证
-			this.$emit('input', value);
 			this.setCurrentValue(value);
 		},
 		handleFileError(res) {
@@ -101,7 +103,6 @@ export default {
 			}
 			let value = currentValue.filter(_item => _item != item);
 			this.$emit('change', value);
-			this.$emit('input', value);
 			this.setCurrentValue(value);
 		}
 	}
