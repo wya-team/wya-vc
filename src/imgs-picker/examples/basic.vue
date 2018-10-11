@@ -7,9 +7,6 @@
 		<i-form-item prop="imgs">
 			<vc-imgs-picker v-model="formValidate.imgs" :max="2" />
 		</i-form-item>
-		<i-form-item prop="name">
-			<i-input v-model="formValidate.name" />
-		</i-form-item>
 		<div @click="handleSubmit">提交</div>
 	</i-form >
 </template>
@@ -37,14 +34,10 @@ export default {
 		return {
 			formValidate: {
 				imgs: [],
-				name: ''
 			},
 			ruleValidate: {
 				imgs: [
 					{ required: true, type: 'array', message: '请选择图片', trigger: 'change' }
-				],
-				name: [
-					{ required: true, message: '请输入客户公司名称' }
 				],
 			}
 		};
