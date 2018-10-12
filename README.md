@@ -48,12 +48,14 @@ import { Copy } from 'wya-vc';
 - [`Vc: 上下文传递`](https://github.com/wya-team/wya-vc/tree/master/src/vc/)
 ### 通用（移动优先）
 - [`Copy: 复制`](https://github.com/wya-team/wya-vc/tree/master/src/copy/)
-- [`Print: 打印`](https://github.com/wya-team/wya-vc/tree/master/src/print/)
 - [`CreateCustomer: 创建自定义组件`](https://github.com/wya-team/wya-vc/tree/master/src/create-customer/)
 - [`CreatePortal: 创建兄弟节点(方法调用) -> （）=> Promise`](https://github.com/wya-team/wya-vc/tree/master/src/create-portal/)
+- [`Echarts: 图表组件`](https://github.com/wya-team/wya-vc/tree/master/src/echarts/)
+- [`Imgs-Crop: 图片裁剪`](https://github.com/wya-team/wya-vc/tree/master/src/imgs-crop/)
 - [`Imgs-Picker: 图片上传`](https://github.com/wya-team/wya-vc/tree/master/src/imgs-picker/)
 - [`Imgs-Preview: 图片预览`](https://github.com/wya-team/wya-vc/tree/master/src/imgs-preview/)
 - [`Paging: 分页`](https://github.com/wya-team/wya-vc/tree/master/src/paging/)
+- [`Print: 打印`](https://github.com/wya-team/wya-vc/tree/master/src/print/)
 - [`Upload: 上传`](https://github.com/wya-team/wya-vc/tree/master/src/upload/)
 
 ### Mobile - 移动端

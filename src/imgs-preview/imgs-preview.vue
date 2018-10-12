@@ -8,7 +8,7 @@
 			:key="index"
 			class="__item"
 		>
-			<row 
+			<vc-row 
 				:src="item | getImage"
 				:index="index"
 				:render="renderRow"
@@ -25,7 +25,7 @@
 import Core, { Func } from './core';
 import CreateCustomer from '../create-customer/index';
 
-const Row = CreateCustomer({
+const VcRow = CreateCustomer({
 	src: [Object, String],
 	index: Number
 });
@@ -33,7 +33,7 @@ export default {
 	name: "vc-imgs-preview-row",
 	popup: Func.popup,
 	components: {
-		Row
+		VcRow
 	},
 	filters: {
 		getImage(item) {

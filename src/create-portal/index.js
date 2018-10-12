@@ -30,6 +30,7 @@ export default (options = {}, wrapper) => {
 					store,
 					router,
 					parent = {}, // 依赖注入使用 like store, router, Life cycle，methods, mixins, ....
+					data,
 					...rest
 				} = opts;
 
@@ -49,7 +50,7 @@ export default (options = {}, wrapper) => {
 						...parent,
 						propsData: {
 							...rest,
-							resData: res.data
+							data: res.data || data
 						}
 					});
 

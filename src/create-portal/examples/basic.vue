@@ -25,7 +25,7 @@ export default {
 	methods: {
 		handleClickWithBefore() {
 			PModalWithBefore.popup({
-
+				data: { s: 1 }
 			}).then((res) => {
 				console.log(res);
 			}).catch((res) => {
@@ -34,7 +34,7 @@ export default {
 		},
 		handleClick() {
 			PModal.popup({
-
+				data: { s: 1 }
 			}).then((res) => {
 				console.log(res);
 			}).catch((res) => {

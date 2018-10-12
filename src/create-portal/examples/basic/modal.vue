@@ -1,13 +1,11 @@
 <template>
 	<i-modal
 		v-model="visible"
-		title="Common Modal dialog box title"
+		title="title"
 		@on-ok="handleOk"
 		@on-cancel="handleCancel"
 	>
-		<p>Content of dialog</p>
-		<p>Content of dialog</p>
-		<p>Content of dialog</p>
+		<p> {{ data }} </p>
 	</i-modal>
 </template>
 
@@ -19,6 +17,9 @@ export default {
 	name: "vc-tpl-basic",
 	components: {
 		'i-modal': Modal
+	},
+	props: {
+		data: Object
 	},
 	data() {
 		return {
