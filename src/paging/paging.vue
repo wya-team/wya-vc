@@ -9,7 +9,8 @@
 			<div style="float: right;">
 				<i-page 
 					:total="total" 
-					:current="curPage" 
+					:current="curPage"
+					:page-size="pageSize"
 					@on-change="handleChangePage"
 				/>
 			</div>
@@ -48,6 +49,10 @@ export default {
 			type: Number,
 			default: 1
 		},
+		pageSize: {
+			type: Number,
+			default: 10
+		},
 		// 是否从url中获取page
 		history: {
 			type: Boolean,
@@ -69,7 +74,7 @@ export default {
 		},
 		data(newVal, oldVal) {
 			let oldValData = oldVal[this.curPage] || [];
-			let newValData = newVal[this.curPage];
+			let newValData = newVal[this.curPage] || [];
 			if (oldValData.length > 0 && newValData.length === 0) {
 				this.handleChangePage(this.curPage);
 			}
@@ -78,7 +83,7 @@ export default {
 	methods: {
 		handleChangePage(page) {
 			let { path, query } = getParseUrl();
-			window.history.replaceState(null, null, getConstructUrl({
+			this.history && window.history.replaceState(null, null, getConstructUrl({
 				path,
 				query: {
 					...query,
