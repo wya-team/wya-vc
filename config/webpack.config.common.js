@@ -49,6 +49,7 @@ const webpackConfig = {
 		extensions: ['.js', '.vue', '.json', '.scss', '.css'],
 		alias: {
 			'vue$': 'vue/dist/vue.esm.js',
+			'node_modules': path.resolve(APP_ROOT, 'node_modules')
 		}
 	},
 	entry: Object.assign({}, entry),
