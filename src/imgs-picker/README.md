@@ -25,7 +25,7 @@ error | 上传错误的回调的回调 | `function` | -
 
 ## 基础用法
 
-``` vue
+```html
 <template>
 	<i-form
 		ref="form"

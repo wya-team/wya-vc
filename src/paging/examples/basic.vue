@@ -56,10 +56,12 @@ export default {
 							},
 							on: {
 								click: () => {
-									this.curPage = 3;
+									let { query: { page = 1 } } = getParseUrl();
+
+									this.curPage = page;
 									this.data = {
 										...this.data,
-										'3': []
+										[page]: []
 									};
 								}
 							}
