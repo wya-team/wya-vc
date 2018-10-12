@@ -18,8 +18,8 @@ upload | upload组件的属性 | `object` | {}
 
 属性 | 说明 | 类型 | 默认值
 ---|---|---|---
-change | `value`值改变的回调 | `function` | -
-error | 上传错误的回调的回调 | `function` | -
+@change | `value`值改变的回调 | `function` | -
+@error | 上传错误的回调的回调 | `function` | -
 
 
 

@@ -17,17 +17,17 @@
 			:no-filtered-data-text="noFilteredDataText" 
 			:disabled-hover="disabledHover" 
 			:loading="loading"
-			@on-current-change="$emit('on-current-change', arguments[0], arguments[1])"
-			@on-select="$emit('on-select', arguments[0], arguments[1])"
-			@on-select-cancel="$emit('on-select-cancel', arguments[0])"
-			@on-select-all="$emit('on-select-all', arguments[0])"
-			@on-select-all-cancel="$emit('on-select-all-cancel', arguments[0])"
-			@on-selection-change="$emit('on-selection-change', arguments[0])"
-			@on-sort-change="$emit('on-sort-change', arguments[0])"
-			@on-filter-change="$emit('on-filter-change', arguments[0])"
-			@on-row-click="$emit('on-row-click', arguments[0], arguments[1])"
-			@on-row-dblclick="$emit('on-row-dblclick', arguments[0], arguments[1])"
-			@on-expand="$emit('on-expand', arguments[0], arguments[1])"
+			@on-current-change="$emit('current-change', arguments[0], arguments[1])"
+			@on-select="$emit('select', arguments[0], arguments[1])"
+			@on-select-cancel="$emit('select-cancel', arguments[0])"
+			@on-select-all="$emit('select-all', arguments[0])"
+			@on-select-all-cancel="$emit('select-all-cancel', arguments[0])"
+			@on-selection-change="$emit('selection-change', arguments[0])"
+			@on-sort-change="$emit('sort-change', arguments[0])"
+			@on-filter-change="$emit('filter-change', arguments[0])"
+			@on-row-click="$emit('row-click', arguments[0], arguments[1])"
+			@on-row-dblclick="$emit('row-dblclick', arguments[0], arguments[1])"
+			@on-expand="$emit('expand', arguments[0], arguments[1])"
 		>
 			<slot name="header" />
 			<slot name="footer" />
@@ -53,7 +53,7 @@
 					:prev-text="prevText" 
 					:next-text="nextText" 
 					@on-change="handleChangePage"
-					@on-page-size-change="$emit('on-page-size-change', arguments[0])"
+					@on-page-size-change="$emit('page-size-change', arguments[0])"
 				/>
 			</div>
 		</div>

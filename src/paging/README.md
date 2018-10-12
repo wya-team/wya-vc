@@ -18,7 +18,9 @@ table-size | 表格尺寸(与`table`的size相同)，可选值为 `large`、`sma
 
 属性 | 说明 | 类型 | 默认值
 ---|---|---|---
-page-change | 切换页面时的回调 | `function` | -
+@page-change | 切换页面时的回调 | `function` | -
+
+`iView`中的 `table` 和 `page` 的事件代`on`
 
 
 ## 基础用法
