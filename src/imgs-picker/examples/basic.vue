@@ -5,7 +5,10 @@
 		:rules="ruleValidate" 
 	>
 		<i-form-item prop="imgs">
-			<vc-imgs-picker v-model="formValidate.imgs" :max="2" />
+			<vc-imgs-picker 
+				v-model="formValidate.imgs" 
+				:max="2" 
+			/>
 		</i-form-item>
 		<div @click="handleSubmit">提交</div>
 	</i-form >

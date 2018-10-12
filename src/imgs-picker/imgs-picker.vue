@@ -1,7 +1,7 @@
 <template>
 	<div class="vcp-imgs-picker">
 		<div 
-			v-for="(item) in currentValue" 
+			v-for="(item, index) in currentValue" 
 			:key="item"
 			class="__item __normal"
 		>
@@ -11,6 +11,7 @@
 			>
 				<div class="__mask g-relative">
 					<span @click="handleDel(item)">x</span>
+					<span @click="handlePreview($event, index)">查看</span>
 				</div>
 			</div>
 		</div>
@@ -27,6 +28,7 @@
 <script>
 import Emitter from 'iview/src/mixins/emitter'; // 表单验证
 import Upload from '../upload/index';
+import ImgsPreview from '../imgs-preview/index';
 
 export default {
 	name: "vc-tpl",
@@ -105,6 +107,33 @@ export default {
 			let value = currentValue.filter(_item => _item != item);
 			this.$emit('change', value);
 			this.setCurrentValue(value);
+		},
+		handlePreview(e, idx) {
+			let pos = {};
+			try {
+				const target = e.target; // 先得到pos, 否则getThumbBoundsFn再计划，target已变化
+				const pageYScroll = window.pageYOffset || document.documentElement.scrollTop;
+				const rect = target.getBoundingClientRect();
+
+				pos = { x: rect.left, y: rect.top + pageYScroll, w: rect.width };
+
+			} catch (e) {
+				console.log(e);
+			}
+
+			ImgsPreview.popup({
+				visible: true,
+				dataSource: this.value,
+				opts: {
+					index: idx,
+					history: false,
+					getThumbBoundsFn: (index) => pos
+				}
+			}).then(() => {
+
+			}).catch(() => {
+
+			});
 		}
 	}
 };
