@@ -1,6 +1,6 @@
 <template>
 	<div>
-		<vc-imgs-preview :data-source="dataSource" />
+		<vc-imgs-preview :data-source="dataSource" :render-row="renderRow"/>
 		<span @click="handleClick">自定义预览</span>
 	</div>
 </template>
@@ -61,6 +61,19 @@ export default {
 		
 	},
 	methods: {
+		renderRow(h, params) {
+			const { src, index } = params; 
+			return h('img', {
+				attrs: {
+					src,
+					width: 100,
+					height: 100,
+				},
+				on: {
+					click: (e) => console.log(e)
+				}
+			});
+		},
 		handleClick(e) {
 			let pos = {};
 			try {

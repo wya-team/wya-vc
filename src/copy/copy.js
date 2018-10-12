@@ -1,4 +1,3 @@
-<script>
 import { Message } from 'iview';
 
 export default {
@@ -55,4 +54,3 @@ export default {
 		}, this.$slots.default);
 	}
 };
-</script>

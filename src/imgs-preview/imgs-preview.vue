@@ -8,16 +8,11 @@
 			:key="index"
 			class="__item"
 		>
-			<!-- {renderRow(item, index)} -->
-			<img
-				:src="
-					typeof item === 'object' 
-						? (item.thumbnail || item.msrc || item.src)
-						: item
-				"
-				width="100"
-				height="100"
-			>
+			<row 
+				:src="item | getImage"
+				:index="index"
+				:render="renderRow"
+			/>
 			<div class="__mask">
 				<span
 					@click.stop="handleShow($event, index)"
@@ -28,11 +23,41 @@
 </template>
 <script>
 import Core, { Func } from './core';
-	
+import CreateCustomer from '../create-customer/index';
+
+const Row = CreateCustomer({
+	src: [Object, String],
+	index: Number
+});
 export default {
-	name: "vc-tpl",
+	name: "vc-imgs-preview-row",
 	popup: Func.popup,
-	props: Core.props,
+	components: {
+		Row
+	},
+	filters: {
+		getImage(item) {
+			return typeof item === 'object' 
+				? (item.thumbnail || item.msrc || item.src)
+				: item;
+		}
+	},
+	props: {
+		...Core.props,
+		renderRow: {
+			type: Function,
+			default: (h, params) => {
+				const { src, index } = params; 
+				return h('img', {
+					attrs: {
+						src,
+						width: 100,
+						height: 100,
+					}
+				});
+			}
+		}
+	},
 	data() {
 		return {
 		};

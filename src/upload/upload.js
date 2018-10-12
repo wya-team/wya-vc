@@ -1,4 +1,3 @@
-<script>
 import { ajax } from 'wya-fetch';
 import { getUid, attrAccept, initItem } from '../utils/utils';
 import { VcInstance } from '../vc/index';
@@ -353,5 +352,3 @@ export default {
 		}, [ele, this.$slots.default]);
 	}
 };
-</script>
-<style></style>

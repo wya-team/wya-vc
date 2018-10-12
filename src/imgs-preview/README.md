@@ -19,7 +19,22 @@ id | 外层标识 | `obj` | -
 属性 | 说明 | 类型 | 默认值
 ---|---|---|---
 getInstance | 获取photoSwipe实例 | `() => {}` | -
+renderRow | 自定义组件 | `(h, params) => jsx` | -
 
+#### 自定义组件
+
+```
+renderRow(h, params) {
+	const { src, index } = params; 
+	return h('img', {
+		attrs: {
+			src,
+			width: 100,
+			height: 100,
+		}
+	});
+},
+```
 
 ## 基础用法
 

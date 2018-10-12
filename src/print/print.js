@@ -1,4 +1,3 @@
-<script>
 export default {
 	name: "vc-print",
 	props: {
@@ -43,4 +42,3 @@ export default {
 		}, this.$slots.default);
 	}
 };
-</script>
