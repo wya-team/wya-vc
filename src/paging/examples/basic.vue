@@ -4,7 +4,9 @@
 		:columns="columns" 
 		:total="total"
 		:cur-page="curPage"
-		@load-data="loadData"
+		:history="true"
+		v-bind="page"
+		@page-change="loadData"
 	/>
 </template>
 <script>
@@ -19,6 +21,9 @@ export default {
 	data() {
 		return {
 			data: {},
+			page: {
+				'show-total': false
+			},
 			columns: [
 				{
 					title: 'Name',
