@@ -16,6 +16,7 @@
 		</div>
 		<vc-upload 
 			v-if="!disabled && (currentValue.length < max || max === 0)"
+			v-bind="upload"
 			class="__upload __normal"
 			@file-success="handleFileSuccess"
 			@file-error="handleFileError"
