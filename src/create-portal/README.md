@@ -7,7 +7,10 @@
 
 - Upload/Tips （上传）
 
-## API (`CreatePortal`)
+## API
+
+#### `CreatePortal`
+
 属性 | 说明 | 类型 | 默认值
 ---|---|---|---
 el | 创建的外层元素 | `string` | div
@@ -16,7 +19,8 @@ cName | 组件名称：用于标识卸载 | `string` | -
 onBefore | 初始化组件前操作，可以是ajax | `(opts = {}) => Promise` | -
 
 
-## API (`[Viewer].popup`)
+#### `[Viewer].popup`
+
 属性 | 说明 | 类型 | 默认值
 ---|---|---|---
 parent | 用于传递context| `obj` | -
@@ -65,11 +69,14 @@ export default {
 	},
 	methods: {
 		handleOk() {
-			this.visible = false;
+			/**
+			 * v-model会默认被触发，要由该组件控制，给组件i-modal传值 loading: true
+			 */
+			// this.visible = false;
 			this.$emit('sure');
 		},
 		handleCancel() {
-			this.visible = false;
+			// this.visible = false;
 			this.$emit('close');
 		}
 	}

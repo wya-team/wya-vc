@@ -27,7 +27,7 @@ multiple | 多图上传 | `bool` | false
 disabled | 禁用，增加样式`${prefixCls}-disabled` | `str` | false
 accept | 文件格式 | `str` | -
 type | 文件归类（images / file）,提前定位文件类型（内置图片压缩） | `str` | images
-request | 请求函数 | `() -> Promise` | -
+ajax | 请求函数 | `() -> Promise` | -
 url | ajax:url -> 默认通过`RcInstance.init`注册 | `str` | -
 name | 上传给后端获取的key | `str` | `Filedata`(业务历史原因...)
 size | 限制上传文件大小, 默认不限制（单位：mb） | `float` | `0`

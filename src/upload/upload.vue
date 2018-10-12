@@ -41,7 +41,7 @@ export default {
 		},
 
 		// ajax
-		request: {
+		ajax: {
 			type: Function,
 			default: ajax
 		},
@@ -224,7 +224,7 @@ export default {
 			const { URL_UPLOAD_FILE_POST, URL_UPLOAD_IMG_POST } = VcInstance.config.Upload || {};
 			const defaultUrl = type === 'images' ? URL_UPLOAD_IMG_POST : URL_UPLOAD_FILE_POST;
 			const { uid } = file;
-			const { request, size } = this;
+			const { ajax, size } = this;
 			let localData;
 			if (size && file.size > size * 1024 * 1024) {
 				localData = {
@@ -233,7 +233,7 @@ export default {
 				};
 			}
 			// onFileStart, onFileProgress, onFileSuccess, onFileError, onComplete 
-			this.reqs[uid] = request({
+			this.reqs[uid] = ajax({
 				url: url || defaultUrl,
 				type: "FORM",
 				param: {

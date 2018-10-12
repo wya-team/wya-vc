@@ -4,7 +4,7 @@ import { getUid } from '../utils/utils';
 
 export default (options = {}, wrapper) => {
 	let isNeedWaiting = false;
-	let { cName = wrapper.name, onBefore, el, root: _root, leaveDelay = 300 } = options;
+	let { cName = wrapper.name, onBefore, el, root: _root, leaveDelay = 0.3 } = options;
 
 	if (!cName) {
 		console.log('传送门：cName 必传');
@@ -60,20 +60,20 @@ export default (options = {}, wrapper) => {
 						delete VcInstance.APIS[cName];
 					});
 
-					vm.$on('close', (res) => {
+					vm.$on('close', (res, delay = leaveDelay) => {
 						// 考虑退出动画
 						setTimeout(() => {
 							vm.$emit('destory');
-						}, leaveDelay);
+						}, delay * 1000);
 						
 						reject(res);
 					});
 
-					vm.$on('sure', (res) => {
+					vm.$on('sure', (res, delay = leaveDelay) => {
 						// 考虑退出动画
 						setTimeout(() => {
 							vm.$emit('destory');
-						}, leaveDelay);
+						}, delay * 1000);
 
 						resolve(res);
 					});

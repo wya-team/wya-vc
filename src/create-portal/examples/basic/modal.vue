@@ -33,11 +33,14 @@ export default {
 	},
 	methods: {
 		handleOk() {
-			this.visible = false;
+			/**
+			 * v-model会默认被触发，要由该组件控制，给组件i-modal传值 loading: true
+			 */
+			// this.visible = false;
 			this.$emit('sure');
 		},
 		handleCancel() {
-			this.visible = false;
+			// this.visible = false;
 			this.$emit('close');
 		}
 	}

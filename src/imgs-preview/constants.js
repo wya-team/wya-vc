@@ -1,0 +1,20 @@
+export const photoSwipeEvents = [
+	'beforeChange',
+	'afterChange',
+	'imageLoadComplete',
+	'resize',
+	'beforeResize',
+	'gettingData',
+	'mouseUsed',
+	'initialZoomIn',
+	'initialZoomInEnd',
+	'initialZoomOut',
+	'initialZoomOutEnd',
+	'parseVerticalMargin',
+	'close',
+	'unbindEvents',
+	'destroy',
+	'updateScrollOffset',
+	'preventDragEvent',
+	'shareLinkClick'
+];
