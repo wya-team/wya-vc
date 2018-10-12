@@ -1,4 +1,4 @@
-## [Demo Basic](https://wya-team.github.io/wya-vc/dist/web/paging/basic.html)
+## [Demo Basic](https://wya-team.github.io/wya-vc/dist/paging/basic.html)
 ## 功能
 Paging
 

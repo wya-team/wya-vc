@@ -1,4 +1,4 @@
-## [Demo Basic](https://wya-team.github.io/wya-vc/dist/web/imgs-pciekr/basic.html)
+## [Demo Basic](https://wya-team.github.io/wya-vc/dist/imgs-picker/basic.html)
 ## 功能
 图片上传
 
