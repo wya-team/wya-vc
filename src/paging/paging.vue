@@ -1,7 +1,7 @@
 <template>
 	<div>
 		<i-table 
-			:data="data" 
+			:data="data[curPage]" 
 			:columns="columns" 
 			stripe
 		/>
@@ -22,16 +22,16 @@ import { Table, Page } from 'iview';
 import { getConstructUrl, getParseUrl } from '../utils/utils';
 
 export default {
-	name: "vc-tpl",
+	name: "vc-paging",
 	components: {
 		'i-table': Table,
 		'i-page': Page
 	},
 	props: {
 		data: {
-			type: Array,
+			type: Object,
 			default() {
-				return [];
+				return {};
 			}
 		},
 		columns: {
@@ -63,9 +63,15 @@ export default {
 	},
 	watch: {
 		curPage(newVal, oldVal) {
-			console.log(newVal, oldVal, this.data);
 			if (newVal !== oldVal) {
 				this.handleChangePage(newVal);
+			}
+		},
+		data(newVal, oldVal) {
+			let oldValData = oldVal[this.curPage] || [];
+			let newValData = newVal[this.curPage];
+			if (oldValData.length > 0 && newValData.length === 0) {
+				this.handleChangePage(this.curPage);
 			}
 		}
 	},

@@ -18,7 +18,7 @@ export default {
 	},
 	data() {
 		return {
-			data: [],
+			data: {},
 			columns: [
 				{
 					title: 'Name',
@@ -34,11 +34,31 @@ export default {
 							},
 							on: {
 								click: () => {
-									this.curPage = 3;
-									this.data = [];
+									this.curPage = 1;
+									this.data = {};
 								}
 							}
-						}, 'View');
+						}, '回到首页刷新');
+					}
+				},
+				{
+					title: 'Opt',
+					key: 'opt',
+					render: (h, params) => {
+						return h('div', {
+							style: {
+								marginRight: '5px'
+							},
+							on: {
+								click: () => {
+									this.curPage = 3;
+									this.data = {
+										...this.data,
+										'3': []
+									};
+								}
+							}
+						}, '当前页刷新');
 					}
 				}
 			],
@@ -60,10 +80,13 @@ export default {
 				data.push({
 					name: 'Business' + Math.floor(Math.random() * 100 + 1),
 					status: Math.floor(Math.random() * 3 + 1),
+					opt: Math.floor(Math.random() * 3 + 1),
 				});
 			}
 			this.curPage = page;
-			this.data = data;
+			if (!this.data[page] || this.data[page].length === 0) {
+				this.data[page] = data;
+			}
 		},
 	}
 };
