@@ -2,7 +2,7 @@
 	<div>
 		<i-table
 			ref="vc-table" 
-			:data="data[curPage]" 
+			:data="dataSource[curPage]" 
 			:columns="columns" 
 			:size="tableSize" 
 			:width="width" 
@@ -72,7 +72,7 @@ export default {
 	},
 	props: {
 		// table组件属性
-		data: {
+		dataSource: {
 			type: Object,
 			default() {
 				return {};
@@ -209,7 +209,7 @@ export default {
 				this.handleChangePage(newVal);
 			}
 		},
-		data(newVal, oldVal) {
+		dataSource(newVal, oldVal) {
 			let oldValData = oldVal[this.curPage] || [];
 			let newValData = newVal[this.curPage] || [];
 			if (oldValData.length > 0 && newValData.length === 0) {

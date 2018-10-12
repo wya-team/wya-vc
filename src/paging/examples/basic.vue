@@ -1,6 +1,6 @@
 <template>
 	<vc-paging
-		:data="data"
+		:data-source="data"
 		:columns="columns" 
 		:total="total"
 		:cur-page="curPage"
