@@ -21,7 +21,7 @@
 
 属性 | 说明 | 类型 | 默认值
 ---|---|---|---
-tag | 外层标签`span / div / **` | `str` | span
+tag | 外层标签`span / div / **` | `str obj func` | span
 prefix-cls | 外层标签prefixCls | `str` | c-upload
 multiple | 多图上传 | `bool` | false
 disabled | 禁用，增加样式`${prefixCls}-disabled` | `str` | false

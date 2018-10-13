@@ -8,7 +8,7 @@ export default {
 	props: {
 		// 外层标签
 		tag: {
-			type: String,
+			type: [String, Object, Function],
 			default: 'span'
 		},
 

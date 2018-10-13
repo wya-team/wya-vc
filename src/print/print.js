@@ -3,7 +3,7 @@ export default {
 	props: {
 		value: String,
 		tag: {
-			type: String,
+			type: [String, Object, Function],
 			default: 'div'
 		}
 	},

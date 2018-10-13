@@ -9,7 +9,7 @@ tpl
 属性 | 说明 | 类型 | 默认值
 ---|---|---|---
 wait | 延迟的时间 | number | 250
-tag | 标签名 | `string object func` | `div`
+tag | 外层标签`span / div / **` | `str obj func` | div
 
 
 ## 基础用法
