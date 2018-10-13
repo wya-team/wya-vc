@@ -1,6 +1,6 @@
 {
     "name": "wya-vc",
-    "version": "0.0.8",
+    "version": "0.0.9",
     "description": "wya for vue components",
     "main": "lib/main.js",
     "files": [
@@ -39,7 +39,6 @@
         "url": "https://github.com/wya-team/wya-vc/issues"
     },
     "dependencies": {
-        "element-resize-event": "^2.0.9",
         "html2canvas": "^1.0.0-alpha.12",
         "photoswipe": "^4.1.2",
         "resize-detector": "^0.1.9"
@@ -114,11 +113,9 @@
         "wya-fetch": "^0.1.15"
     },
     "peerDependencies": {
-        "lrz": ">=4.9.40",
         "vue": ">=2.5.17",
         "wya-fetch": ">=0.1.10",
-        "iview": ">=3.1.3",
-        "echarts": ">=4.0.1"
+        "iview": ">=3.1.3"
     },
     "lint-staged": {
         "{src,config}/**/*.{js,jsx,vue}": [
