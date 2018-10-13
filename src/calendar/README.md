@@ -8,7 +8,11 @@ tpl
 
 属性 | 说明 | 类型 | 默认值
 ---|---|---|---
-- | - | `any` | -
+date-render | 参数为一个日期描述对象 | function | undefied
+month-render | 参数为{month,year} |  function | undefied
+week-render | 无参数 |  function | undefied
+lan="en" |语言（'ch'或'en'）|String|'ch'
+
 
 
 #### 事件
