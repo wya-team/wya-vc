@@ -1,21 +1,23 @@
 <template>
-	<div>
+	<div >
 		<div style="display:flex;justify-content:space-around">
-			<button @click="$refs.calendar.prev()">prev</button> <button @click="$refs.calendar.next()">next</button>
+			<button @click="$refs.calendar.prev()">prev</button>
+			<vc-calendar ref="calendar" />
+
+			<button @click="$refs.calendar.next()">next</button>
 		</div>
-		<!-- 可以自定义渲染函数，不传 会使用默认的渲染函数 -->
-		<!-- <vc-calendar ref="calendar" 
-		:date-render="dateRender" 
-		:month-render="monthRender" 
-		:week-render="weekRender"
-		lan="en" 
-		
-		 />
-		
-		 -->
-		<vc-calendar ref="calendar" />
-	
-	
+
+		<div style="display:flex;justify-content:space-around ">
+			<button @click="$refs.calendar2.prev()">上月</button>
+			<!-- 可以自定义渲染函数，不传会使用默认的渲染函数 -->
+			<vc-calendar 
+				ref="calendar2" 
+				:render-date="renderDate" 
+				:render-month="renderMonth" 
+				:render-week="renderWeek" 
+				lan="en" />
+			<button @click="$refs.calendar2.next()">下月</button>
+		</div>
 	</div>
 </template>
 <script>
@@ -31,25 +33,37 @@ export default {
 	},
 	computed: {},
 	methods: {
-		// dateRender(date) {
-		// 	return (
-		// 		<span>
-		// 			{date.day}号
-		// 		</span>
-		// 	);
-		// },
-		// monthRender({ year, month, monthNames }) {
-		// 	return (
-		// 		<div>
-		// 			{year + "--" + monthNames[month].en}
-		// 		</div>
-		// 	);
-		// },
-		// weekRender() {
-		// 	return (
-		// 		<div>7123456</div>
-		// 	);
-		// }
+		renderDate(h, { date, curDateStr }) {
+			return (
+				<span style={ date.date === curDateStr ? "background:gray;" : ""}>
+					{date.day}号
+				</span>
+			);
+		},
+
+		renderMonth(h, { year, month, monthNames }) {
+			return (
+				<div style="display:flex;justify-content:center">
+					{year + "--" + monthNames[month].en}
+				</div>
+			);
+		},
+		
+		renderWeek(h, { weekNames, lan }) {
+			return (
+				<div style="display:flex;justify-content:space-around">
+					{weekNames.map((item, index) => {
+						return (
+							<span key={index}>
+								{item.en}
+							</span>
+						);
+					})}
+				</div>
+			);
+		}
 	}
 };
 </script>
+
+

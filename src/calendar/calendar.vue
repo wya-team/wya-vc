@@ -1,43 +1,142 @@
 <template>
-	<transition :name="slideDirect">
-		<div :key="showMonth" class="vcp-calendar">
-			<!-- transition组件中，当某个元素被卸载而动画还没结束，此时这个元素所绑定的数据变化不会更新到这个元素上 -->
-			<div>
-				<month-header :month="showMonth" :year="showYear" :month-render="monthRender" :lan="lan" />
-				<week-header :week-render="weekRender" :lan="lan" />
+	<div class="vc-calendar" >
+		<transition :name="slideDirect">
+			<div :key="showMonth" class="__calendar-item">
 				<div>
-					<div v-for="i in 6" :key="i" class="g-flex g-pd-tb-15">
-						<span 
-							v-for="(item,index) in dateArr.data.slice((i-1)*7,(i-1)*7+7)" 
-							:class="'g-flex g-flex-cc g-flex-ac _date-item '+'_date-'+item.type" 
-							:key="index">
-							<date-item :date="item" :date-render="dateRender" />
-						</span>
+					<month-header 
+						:render="renderMonth"
+						:month="showMonth" 
+						:year="showYear"
+						:month-names="monthNames" 
+						:lan="lan" />
+					<week-header :render="renderWeek" :week-names="weekNames" :lan="lan" />
+					<div>
+						<div v-for="i in 6" :key="i" class="__date-row">
+							<span 
+								v-for="(item,index) in dateArr.data.slice((i-1)*7,(i-1)*7+7)"
+								:class="'__date-item '+'__date-'+item.type" 
+								:key="index">
+								<date-item :date="item" :cur-date-str="curDateStr" :render="renderDate" />
+							</span>
+						</div>
 					</div>
 				</div>
 			</div>
-		</div>
-	</transition>
+		</transition>
+	</div>
 </template>
 <script>
-import DateItem from "./date-item";
-import MonthHeader from "./month-header";
-import WeeKHeader from './week-header';
+import CreateCustomer from "../create-customer/index";
 
-
+const monthNames = [
+	{ ch: "一月", en: "January" },
+	{ ch: "二月", en: "February" },
+	{ ch: "三月", en: "March" },
+	{ ch: "四月", en: "April" },
+	{ ch: "五月", en: "May" },
+	{ ch: "六月", en: "June" },
+	{ ch: "七月", en: "July" },
+	{ ch: "八月", en: "August" },
+	{ ch: "九月", en: "September" },
+	{ ch: "十月", en: "October" },
+	{ ch: "十一月", en: "November" },
+	{ ch: "十二月", en: "December" }
+];
+const weekNames = [
+	{ ch: "日", en: "Sun" },
+	{ ch: "一", en: "Mon" },
+	{ ch: "二", en: "Tue" },
+	{ ch: "三", en: "Wed" },
+	{ ch: "四", en: "Thu" },
+	{ ch: "五", en: "Fri" },
+	{ ch: "六", en: "Sta" }
+];
+const MonthHeader = CreateCustomer({
+	month: Number,
+	year: Number,
+	renderMonth: Function,
+	monthNames: Array,
+	lan: String
+});
+const WeekHeader = CreateCustomer({
+	renderWeek: Function,
+	weekNames: Array,
+	lan: String
+});
+const DateItem = CreateCustomer({
+	renderDate: Function,
+	date: Object,
+	curDateStr: String
+});
+function formatNum(num) {
+	if (num < 10) {
+		return "0" + num;
+	}
+	return num;
+}
 const curDate = new Date();
+
+// 小于10的数字前面加0
+
+function renderDefaultDate(h, { date, curDateStr }) {
+	return (
+		<span class={date.date === curDateStr ? "__selected" : ""}>
+			{date.day}
+		</span>
+	);
+}
+function renderDefaultMonth(h, { month, year, lan, monthNames }) {
+	return (
+		<div class="__month-header">
+			<div>
+				{monthNames[month][lan]} &nbsp;&nbsp;&nbsp;&nbsp;
+				{year}
+			</div>
+		</div>
+	);
+}
+function renderDefaultWeek(h, { weekNames, lan }) {
+	return (
+		<div class="__week-header">
+			{weekNames.map((item, index) => {
+				return <span key={index}>{item[lan]}</span>;
+			})}
+		</div>
+	);
+}
+
 export default {
 	name: "vc-calendar",
 	components: {
 		"date-item": DateItem,
 		"month-header": MonthHeader,
-		"week-header": WeeKHeader
+		"week-header": WeekHeader
 	},
 	props: {
-		dateRender: Function,
-		monthRender: Function,
-		weekRender: Function,
-		lan: String
+		renderMonth: {
+			type: Function,
+			default: renderDefaultMonth
+		},
+		renderWeek: {
+			type: Function,
+			default: renderDefaultWeek
+		},
+		renderDate: {
+			type: Function,
+			default: renderDefaultDate
+		},
+		lan: {
+			type: String,
+			default: 'ch'
+		},
+		monthNames: {
+			type: Array,
+			default: () => monthNames
+		},
+		weekNames: {
+			type: Array,
+			default: () => weekNames
+		}
 	},
 	data() {
 		return {
@@ -49,14 +148,17 @@ export default {
 		};
 	},
 	computed: {
-
-		
 		dateArr() {
-			console.log(this.getCurrentInfo(this.showYear, this.showMonth + 1));
 			return this.getCurrentInfo(this.showYear, this.showMonth + 1);
 		},
-
-		
+		curDateStr() {
+			 return `${this.curDate.getFullYear()}-${this.formatNum(
+				 this.curDate.getMonth() + 1
+			)}-${this.formatNum(this.curDate.getDate())}`;
+		}
+	},
+	mounted() {
+		console.log(this.monthNames);
 	},
 	methods: {
 		getCurrentInfo(year, month) {
@@ -143,12 +245,7 @@ export default {
 		},
 
 		// 小于10的数字前面加0
-		formatNum(num) {
-			if (num < 10) {
-				return "0" + num;
-			}
-			return num;
-		},
+		formatNum,
 		next() {
 			this.slideDirect = "left";
 			this.toggle = !this.toggle;
@@ -168,26 +265,38 @@ export default {
 			} else {
 				this.showMonth--;
 			}
-		}
-	}
+		},
+
+	},
 };
 </script>
 <style lang="scss" scoped>
-.vcp-calendar {
-  display: inline-block;
+.vc-calendar{
+	width:100%;
+	position:relative;
+	overflow:hidden;
+.__calendar-item {
   width: 100%;
   transition: all 1s;
   position: relative;
-
-  ._date-item {
+	z-index: 0;
+	.__date-row {
+		display: flex;
+		padding-top:15px;
+		padding-bottom: 15px;
+	}
+  .__date-item {
     width: 14.28%;
     font-size: 16px;
-    &._date-prev,
-    &._date-next {
+		display: flex;
+		justify-content: center;
+		align-items: center;
+    &.__date-prev,
+    &.__date-next {
       color: lightgray;
     }
   }
-  ._title {
+  .__week-header {
     display: flex;
     width: 100%;
     align-items: center;
@@ -199,10 +308,31 @@ export default {
       text-align: center;
     }
   }
+	.__selected{
+		width: 40px;
+    height: 40px;
+    border-radius: 20px;
+    background-color: #2f75ef;
+    color: #fff;
+    box-shadow: 1px 2px 10px #2f8aef;
+		display: flex;
+    align-items: center;
+    justify-content: center;
+}
+	.__month-header {
+		display: flex;
+		justify-content: center;
+		align-items: center;
+		line-height: 60px;
+		font-size: 24px;
+		background-color: #f5f6f7;
+		color: #2e3136;
+	}
+}
 }
 .right-leave-active,
 .left-leave-active {
-  position: absolute;
+  position: absolute !important;
 }
 .right-leave-to,
 .left-enter {
@@ -211,32 +341,5 @@ export default {
 .right-enter,
 .left-leave-to {
   transform: translateX(-100%);
-}
-
-// mock sass库 加入sass库后可以删除
-.g-flex {
-  display: flex;
-}
-.g-flex-cc {
-  justify-content: center;
-}
-.g-lh-60 {
-  line-height: 60px;
-}
-.g-fs-24 {
-  font-size: 24px;
-}
-.g-bg-gray-mid {
-  background-color: #f5f6f7;
-}
-.g-c-black-dark {
-  color: #2e3136;
-}
-.g-flex-ac {
-  align-items: center;
-}
-.g-pd-tb-15 {
-  padding-top: 15px;
-  padding-bottom: 15px;
 }
 </style>
