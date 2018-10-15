@@ -8,19 +8,20 @@
 						:month="showMonth"
 						:year="showYear"
 						:month-names="monthNames"
-						:lan="lan"
+						:lang="lang"
 					/>
 					<week-header
 						:render="renderWeek"
 						:week-names="weekNames"
-						:lan="lan"
+						:lang="lang"
 					/>
 					<div>
 						<div v-for="i in 6" :key="i" class="__date-row">
 							<span
-								v-for="(item,index) in dateArr.data.slice((i-1)*7,(i-1)*7+7)"
-								:class="'__date-item '+'__date-'+item.type"
-								:key="index">
+								v-for="(item, index) in dateArr.data.slice((i - 1) * 7, (i - 1) * 7 + 7)"
+								:class="`__date-item __date-${item.type}`"
+								:key="index"
+							>
 								<date-item
 									:date="item"
 									:cur-date-str="curDateStr"
@@ -36,6 +37,7 @@
 </template>
 <script>
 import CreateCustomer from "../create-customer/index";
+import { addPreZero } from "../utils/index";
 
 const monthNames = [
 	{ ch: "一月", en: "January" },
@@ -64,48 +66,43 @@ const MonthHeader = CreateCustomer({
 	month: Number,
 	year: Number,
 	monthNames: Array,
-	lan: String
+	lang: String
 });
 const WeekHeader = CreateCustomer({
 	weekNames: Array,
-	lan: String
+	lang: String
 });
 const DateItem = CreateCustomer({
 	date: Object,
 	curDateStr: String
 });
-function formatNum(num) {
-	if (num < 10) {
-		return "0" + num;
-	}
-	return num;
-}
+
 const curDate = new Date();
 
-// 小于10的数字前面加0
-
-function defaultRenderDate(h, { date, curDateStr }) {
+const defaultRenderDate = (h, { date, curDateStr }) => {
 	return <span class={date.date === curDateStr ? "__selected" : ""}>{date.day}</span>;
-}
-function defaultRenderMonth(h, { month, year, lan, monthNames }) {
+};
+const defaultRenderMonth = (h, { month, year, lang, monthNames }) => {
 	return (
 		<div class="__month-header">
 			<div>
-				{monthNames[month][lan]} &nbsp;&nbsp;&nbsp;&nbsp;
+				{monthNames[month][lang]} &nbsp;&nbsp;&nbsp;&nbsp;
 				{year}
 			</div>
 		</div>
 	);
-}
-function defaultRenderWeek(h, { weekNames, lan }) {
+};
+const defaultRenderWeek = (h, { weekNames, lang }) => {
 	return (
 		<div class="__week-header">
-			{weekNames.map((item, index) => {
-				return <span key={index}>{item[lan]}</span>;
-			})}
+			{
+				weekNames.map((item, index) => {
+					return <span key={index}>{item[lang]}</span>;
+				})
+			}
 		</div>
 	);
-}
+};
 
 export default {
 	name: "vc-calendar",
@@ -127,7 +124,7 @@ export default {
 			type: Function,
 			default: defaultRenderDate
 		},
-		lan: {
+		lang: {
 			type: String,
 			default: "ch"
 		},
@@ -154,7 +151,7 @@ export default {
 			return this.getCurrentInfo(this.showYear, this.showMonth + 1);
 		},
 		curDateStr() {
-			return `${this.curDate.getFullYear()}-${this.formatNum(this.curDate.getMonth() + 1)}-${this.formatNum(
+			return `${this.curDate.getFullYear()}-${addPreZero(this.curDate.getMonth() + 1)}-${addPreZero(
 				this.curDate.getDate()
 			)}`;
 		}
@@ -200,7 +197,7 @@ export default {
 			nextData = this.createDaysArray(nextYear, nextMonth, this.getMonthDays(nextYear, nextMonth), "next");
 
 			// 生成日历数组
-			let firstWeek = this.getWeek(`${year}-${this.formatNum(month)}-1`); // 本月第一天是星期几
+			let firstWeek = this.getWeek(`${year}-${addPreZero(month)}-1`); // 本月第一天是星期几
 			let data = [
 				...prevData.slice(prevData.length - (firstWeek === 0 ? 7 : firstWeek), prevData.length),
 				...curData,
@@ -218,7 +215,7 @@ export default {
 			let array = [];
 			for (let i = 0; i < days; i++) {
 				let item = {};
-				item.date = `${year}-${this.formatNum(month)}-${this.formatNum(i + 1)}`;
+				item.date = `${year}-${addPreZero(month)}-${addPreZero(i + 1)}`;
 				item.day = i + 1;
 				item.type = type;
 				array.push(item);
@@ -246,8 +243,6 @@ export default {
 			return date.getDay();
 		},
 
-		// 小于10的数字前面加0
-		formatNum,
 		next() {
 			this.slideDirect = "left";
 			this.toggle = !this.toggle;
@@ -272,33 +267,32 @@ export default {
 };
 </script>
 <style lang="scss" scoped>
+@import '../style/index.scss';
 .vc-calendar {
 	width: 100%;
 	position: relative;
 	overflow: hidden;
 	.__calendar-item {
 		width: 100%;
-		transition: all 1s;
+		transition: all .3s;
 		position: relative;
 		z-index: 0;
 		.__date-row {
-			display: flex;
+			@include commonFlex();
 			padding-top: 15px;
 			padding-bottom: 15px;
 		}
 		.__date-item {
+			@include commonFlexCc();
 			width: 14.28%;
 			font-size: 16px;
-			display: flex;
-			justify-content: center;
-			align-items: center;
 			&.__date-prev,
 			&.__date-next {
 				color: lightgray;
 			}
 		}
 		.__week-header {
-			display: flex;
+			@include commonFlex();
 			width: 100%;
 			align-items: center;
 			color: gray;
@@ -310,20 +304,16 @@ export default {
 			}
 		}
 		.__selected {
+			@include commonFlexCc();
 			width: 40px;
 			height: 40px;
 			border-radius: 20px;
 			background-color: #2f75ef;
 			color: #fff;
 			box-shadow: 1px 2px 10px #2f8aef;
-			display: flex;
-			align-items: center;
-			justify-content: center;
 		}
 		.__month-header {
-			display: flex;
-			justify-content: center;
-			align-items: center;
+			@include commonFlexCc();
 			line-height: 60px;
 			font-size: 24px;
 			background-color: #f5f6f7;

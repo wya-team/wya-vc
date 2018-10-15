@@ -232,3 +232,13 @@ export const isFileAPISupported = typeof File !== 'undefined';
 export const createMixins = (...mixins) => target => {
 	Object.assign(target.prototype, ...mixins);
 };
+
+/**
+ * 小于10的数字前面加0
+ */
+export const addPreZero = (num) => {
+	if (num < 10) {
+		return "0" + num;
+	}
+	return num;
+};
