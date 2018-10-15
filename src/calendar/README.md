@@ -8,9 +8,9 @@ tpl
 
 属性 | 说明 | 类型 | 默认值
 ---|---|---|---
-date-render | 参数为一个日期描述对象 | function | undefied
-month-render | 参数为{month,year} |  function | undefied
-week-render | 无参数 |  function | undefied
+render-date | 渲染每个日期 | function(h, { date, curDateStr }) | renderDefaultDate
+render-month | 渲染月 |  function(h, { month, year, lan, monthNames }) | renderDefaultMonth
+render-week | 渲染周 |  function(h, { weekNames, lan }) | renderDefaultWeek
 lan="en" |语言（'ch'或'en'）|String|'ch'
 
 
