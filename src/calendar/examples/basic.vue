@@ -2,22 +2,21 @@
 	<div >
 		<div style="display:flex;justify-content:space-around">
 			<button @click="$refs.calendar.prev()">prev</button>
-			<vc-calendar 
-				ref="calendar" 
+			<vc-calendar
+				ref="calendar"
 			/>
-
 			<button @click="$refs.calendar.next()">next</button>
 		</div>
 
 		<div style="display:flex;justify-content:space-around ">
 			<button @click="$refs.calendar2.prev()">上月</button>
 			<!-- 可以自定义渲染函数，不传会使用默认的渲染函数 -->
-			<vc-calendar 
-				ref="calendar2" 
-				:render-date="renderDate" 
-				:render-month="renderMonth" 
-				:render-week="renderWeek" 
-				lan="en" 
+			<vc-calendar
+				ref="calendar2"
+				:render-date="renderDate"
+				:render-month="renderMonth"
+				:render-week="renderWeek"
+				lan="en"
 			/>
 			<button @click="$refs.calendar2.next()">下月</button>
 		</div>

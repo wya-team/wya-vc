@@ -3,28 +3,28 @@
 		<transition :name="slideDirect">
 			<div :key="showMonth" class="__calendar-item">
 				<div>
-					<month-header 
-						:render="renderMonth" 
-						:month="showMonth" 
-						:year="showYear" 
-						:month-names="monthNames" 
-						:lan="lan" 
+					<month-header
+						:render="renderMonth"
+						:month="showMonth"
+						:year="showYear"
+						:month-names="monthNames"
+						:lan="lan"
 					/>
-					<week-header 
-						:render="renderWeek" 
-						:week-names="weekNames" 
-						:lan="lan" 
+					<week-header
+						:render="renderWeek"
+						:week-names="weekNames"
+						:lan="lan"
 					/>
 					<div>
 						<div v-for="i in 6" :key="i" class="__date-row">
-							<span 
-								v-for="(item,index) in dateArr.data.slice((i-1)*7,(i-1)*7+7)" 
-								:class="'__date-item '+'__date-'+item.type" 
+							<span
+								v-for="(item,index) in dateArr.data.slice((i-1)*7,(i-1)*7+7)"
+								:class="'__date-item '+'__date-'+item.type"
 								:key="index">
-								<date-item 
-									:date="item" 
-									:cur-date-str="curDateStr" 
-									:render="renderDate" 
+								<date-item
+									:date="item"
+									:cur-date-str="curDateStr"
+									:render="renderDate"
 								/>
 							</span>
 						</div>
@@ -273,74 +273,74 @@ export default {
 </script>
 <style lang="scss" scoped>
 .vc-calendar {
-  width: 100%;
-  position: relative;
-  overflow: hidden;
-  .__calendar-item {
-    width: 100%;
-    transition: all 1s;
-    position: relative;
-    z-index: 0;
-    .__date-row {
-      display: flex;
-      padding-top: 15px;
-      padding-bottom: 15px;
-    }
-    .__date-item {
-      width: 14.28%;
-      font-size: 16px;
-      display: flex;
-      justify-content: center;
-      align-items: center;
-      &.__date-prev,
-      &.__date-next {
-        color: lightgray;
-      }
-    }
-    .__week-header {
-      display: flex;
-      width: 100%;
-      align-items: center;
-      color: gray;
-      padding: 15px 0;
-      font-size: 16px;
-      > span {
-        width: 14.28%;
-        text-align: center;
-      }
-    }
-    .__selected {
-      width: 40px;
-      height: 40px;
-      border-radius: 20px;
-      background-color: #2f75ef;
-      color: #fff;
-      box-shadow: 1px 2px 10px #2f8aef;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-    }
-    .__month-header {
-      display: flex;
-      justify-content: center;
-      align-items: center;
-      line-height: 60px;
-      font-size: 24px;
-      background-color: #f5f6f7;
-      color: #2e3136;
-    }
-  }
+	width: 100%;
+	position: relative;
+	overflow: hidden;
+	.__calendar-item {
+		width: 100%;
+		transition: all 1s;
+		position: relative;
+		z-index: 0;
+		.__date-row {
+			display: flex;
+			padding-top: 15px;
+			padding-bottom: 15px;
+		}
+		.__date-item {
+			width: 14.28%;
+			font-size: 16px;
+			display: flex;
+			justify-content: center;
+			align-items: center;
+			&.__date-prev,
+			&.__date-next {
+				color: lightgray;
+			}
+		}
+		.__week-header {
+			display: flex;
+			width: 100%;
+			align-items: center;
+			color: gray;
+			padding: 15px 0;
+			font-size: 16px;
+			> span {
+				width: 14.28%;
+				text-align: center;
+			}
+		}
+		.__selected {
+			width: 40px;
+			height: 40px;
+			border-radius: 20px;
+			background-color: #2f75ef;
+			color: #fff;
+			box-shadow: 1px 2px 10px #2f8aef;
+			display: flex;
+			align-items: center;
+			justify-content: center;
+		}
+		.__month-header {
+			display: flex;
+			justify-content: center;
+			align-items: center;
+			line-height: 60px;
+			font-size: 24px;
+			background-color: #f5f6f7;
+			color: #2e3136;
+		}
+	}
 }
 .right-leave-active,
 .left-leave-active {
-  position: absolute !important;
+	position: absolute !important;
 }
 .right-leave-to,
 .left-enter {
-  transform: translateX(100%);
+	transform: translateX(100%);
 }
 .right-enter,
 .left-leave-to {
-  transform: translateX(-100%);
+	transform: translateX(-100%);
 }
 </style>
