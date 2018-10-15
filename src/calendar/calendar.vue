@@ -8,11 +8,13 @@
 						:month="showMonth" 
 						:year="showYear" 
 						:month-names="monthNames" 
-						:lan="lan" />
+						:lan="lan" 
+					/>
 					<week-header 
 						:render="renderWeek" 
 						:week-names="weekNames" 
-						:lan="lan" />
+						:lan="lan" 
+					/>
 					<div>
 						<div v-for="i in 6" :key="i" class="__date-row">
 							<span 
@@ -22,7 +24,8 @@
 								<date-item 
 									:date="item" 
 									:cur-date-str="curDateStr" 
-									:render="renderDate" />
+									:render="renderDate" 
+								/>
 							</span>
 						</div>
 					</div>
@@ -60,17 +63,14 @@ const weekNames = [
 const MonthHeader = CreateCustomer({
 	month: Number,
 	year: Number,
-	renderMonth: Function,
 	monthNames: Array,
 	lan: String
 });
 const WeekHeader = CreateCustomer({
-	renderWeek: Function,
 	weekNames: Array,
 	lan: String
 });
 const DateItem = CreateCustomer({
-	renderDate: Function,
 	date: Object,
 	curDateStr: String
 });
@@ -84,10 +84,10 @@ const curDate = new Date();
 
 // 小于10的数字前面加0
 
-function renderDefaultDate(h, { date, curDateStr }) {
+function defaultRenderDate(h, { date, curDateStr }) {
 	return <span class={date.date === curDateStr ? "__selected" : ""}>{date.day}</span>;
 }
-function renderDefaultMonth(h, { month, year, lan, monthNames }) {
+function defaultRenderMonth(h, { month, year, lan, monthNames }) {
 	return (
 		<div class="__month-header">
 			<div>
@@ -97,7 +97,7 @@ function renderDefaultMonth(h, { month, year, lan, monthNames }) {
 		</div>
 	);
 }
-function renderDefaultWeek(h, { weekNames, lan }) {
+function defaultRenderWeek(h, { weekNames, lan }) {
 	return (
 		<div class="__week-header">
 			{weekNames.map((item, index) => {
@@ -117,15 +117,15 @@ export default {
 	props: {
 		renderMonth: {
 			type: Function,
-			default: renderDefaultMonth
+			default: defaultRenderMonth
 		},
 		renderWeek: {
 			type: Function,
-			default: renderDefaultWeek
+			default: defaultRenderWeek
 		},
 		renderDate: {
 			type: Function,
-			default: renderDefaultDate
+			default: defaultRenderDate
 		},
 		lan: {
 			type: String,

@@ -2,7 +2,9 @@
 	<div >
 		<div style="display:flex;justify-content:space-around">
 			<button @click="$refs.calendar.prev()">prev</button>
-			<vc-calendar ref="calendar" />
+			<vc-calendar 
+				ref="calendar" 
+			/>
 
 			<button @click="$refs.calendar.next()">next</button>
 		</div>
@@ -15,7 +17,8 @@
 				:render-date="renderDate" 
 				:render-month="renderMonth" 
 				:render-week="renderWeek" 
-				lan="en" />
+				lan="en" 
+			/>
 			<button @click="$refs.calendar2.next()">下月</button>
 		</div>
 	</div>
@@ -48,7 +51,7 @@ export default {
 				</div>
 			);
 		},
-		
+
 		renderWeek(h, { weekNames, lan }) {
 			return (
 				<div style="display:flex;justify-content:space-around">
