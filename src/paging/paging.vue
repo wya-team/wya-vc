@@ -1,5 +1,5 @@
 <template>
-	<div>
+	<div v-show="show">
 		<i-table
 			ref="vc-table" 
 			:data="dataSource[curPage]" 
@@ -136,6 +136,10 @@ export default {
 			type: Number,
 			default: 1
 		},
+		resetPage: {
+			type: Number,
+			default: 1
+		},
 		total: {
 			type: Number,
 			default: 0
@@ -194,7 +198,12 @@ export default {
 		history: {
 			type: Boolean,
 			default: false
-		}
+		},
+		show: {
+			type: Boolean,
+			default: true
+		},
+		
 	},
 	data() {
 		return {
@@ -204,18 +213,23 @@ export default {
 		
 	},
 	watch: {
-		curPage(newVal, oldVal) {
-			if (newVal !== oldVal) {
-				this.handleChangePage(newVal);
+		dataSource(newVal, oldVal) {
+			let oldValData = oldVal[this.resetPage] || [];
+			let newValData = newVal[this.resetPage] || [];
+			if (oldValData.length > 0 && newValData.length === 0) {
+				this.handleChangePage(this.resetPage);
 			}
 		},
-		dataSource(newVal, oldVal) {
-			let oldValData = oldVal[this.curPage] || [];
-			let newValData = newVal[this.curPage] || [];
-			if (oldValData.length > 0 && newValData.length === 0) {
-				this.handleChangePage(this.curPage);
+		show(newVal, oldVal) {
+			// Table显示时，去发起请求
+			if (newVal) {
+				this.handleChangePage(1);
 			}
 		}
+	},
+	created() {
+		let { query: { page = 1 } } = getParseUrl();
+		this.show && this.$listeners['page-change'] && this.$listeners['page-change'](page);
 	},
 	methods: {
 		handleChangePage(page) {
