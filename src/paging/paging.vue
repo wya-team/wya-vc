@@ -1,5 +1,5 @@
 <template>
-	<div v-show="show">
+	<div v-if="show">
 		<i-table
 			ref="tableTarget" 
 			:data="data" 
@@ -86,6 +86,7 @@ export default {
 			required: true
 		},
 		reset: Boolean,
+		type: String,
 	},
 	data() {
 		let { query: { page = 1 } } = getParseUrl();
@@ -104,13 +105,12 @@ export default {
 			let page = this.reset === true 
 				? this.currentPage // 当前页刷新
 				: 1; // 首页刷新
-			if (this.total === 0) {
+			if (this.total === 0 && this.show) {
 				this.currentPage = 0;
 				this.handleChangePage(page);
 			}
 		},
 		show(newVal, oldVal) {
-			// Table显示时，去发起请求
 			if (newVal) {
 				this.handleChangePage(this.currentPage);
 			}

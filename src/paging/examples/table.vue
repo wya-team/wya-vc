@@ -1,18 +1,34 @@
 <template>
-	<vc-paging
-		:data-source="listInfo.data"
-		:columns="columns" 
-		:total="listInfo.total"
-		:reset="listInfo.reset"
-		:page-opts="page"
-		:table-opts="table"
-		:history="true"
-		:load-data="loadData"
-		:show="show"
-	/>
+	<div>
+		<div @click="handleSearch">搜索</div>
+		<i-tabs 
+			:value="type" 
+			:animated="false" 
+			@on-click="handleChange"
+		>
+			<i-tab-pane 
+				v-for="(item) in tabs"
+				:key="item.value"
+				:label="item.label" 
+				:name="item.value"
+			>
+				<vc-paging
+					:show="item.value == type" 
+					:type="item.value"
+					:columns="columns" 
+					:data-source="listInfo[item.value].data"
+					:total="listInfo[item.value].total"
+					:reset="listInfo[item.value].reset"
+					:history="true"
+					:load-data="loadData"
+				/>
+			</i-tab-pane>
+		</i-tabs>
+	</div>
 </template>
 <script>
 import { ajax } from 'wya-fetch';
+import { Tabs, TabPane } from 'iview';
 import Paging from '../paging';
 import { getConstructUrl, getParseUrl } from '../../utils/utils';
 
@@ -21,24 +37,36 @@ const initPage = {
 	reset: false,
 	data: {}
 };
+const initialState = {
+	1: { ...initPage },
+	2: { ...initPage },
+	3: { ...initPage }
+};
 
 export default {
 	name: "vc-paging-basic",
 	components: {
-		'vc-paging': Paging
+		'vc-paging': Paging,
+		'i-tabs': Tabs,
+		'i-tab-pane': TabPane
 	},
 	data() {
+		const { query = {} } = getParseUrl();
 		return {
 			show: true,
-			listInfo: {
-				...initPage
-			},
+			type: String(query.type) || '1',
+			listInfo: initialState,
 			page: {
 				'show-total': false
 			},
 			table: {
 
 			},
+			tabs: [
+				{ label: '标签一', value: '1' }, 
+				{ label: '标签二', value: '2' }, 
+				{ label: '标签三', value: '3' }
+			],
 			columns: [
 				{
 					title: 'Name',
@@ -80,8 +108,13 @@ export default {
 	},
 	methods: {
 		loadData(page) {
+			const { type } = this;
 			return ajax({
 				url: 'test.json',
+				param: {
+					page,
+					type
+				},
 				localData: {
 					status: 1,
 					data: {
@@ -92,15 +125,18 @@ export default {
 
 				}
 			}).then((res) => {
-				console.log(`page: ${page}@success`);
+				console.log(`page: ${page}-type: ${type}@success`);
 				const { currentPage, total, list } = res.data;
 				this.listInfo = {
 					...this.listInfo,
-					total,
-					data: {
-						...this.listInfo.data,
-						[currentPage]: list
+					[type]: {
+						total,
+						data: {
+							...this.listInfo[type].data,
+							[currentPage]: list
+						}
 					}
+					
 				};
 			}).catch((e) => {
 				console.log(e);
@@ -111,7 +147,7 @@ export default {
 			for (let i = 0; i < 10; i++) {
 				fakeData.push({
 					id: `${page}_${i}`,
-					name: page + '-Business' + Math.floor(Math.random() * 100 + 1),
+					name: `page: ${page}, type: ${this.type}, sort: ${i}`,
 					status: Math.floor(Math.random() * 3 + 1),
 					opt: Math.floor(Math.random() * 3 + 1)
 				});
@@ -123,16 +159,38 @@ export default {
 		 */
 		handleResetFirst() {
 			this.listInfo = {
-				...initPage
+				...initialState
 			};
 		},
 		/**
 		 * 当前页刷新
 		 */
 		handleResetCur() {
+			const { type } = this;
 			this.listInfo = {
-				...initPage,
-				reset: true,
+				...initialState,
+				[type]: {
+					...initialState[type],
+					reset: true
+				}
+			};
+		},
+		handleChange(type) {
+			this.type = type;
+
+			// let { path, query } = getParseUrl();
+			// console.log(query.page);
+			// window.history.replaceState(null, null, getConstructUrl({
+			// 	path,
+			// 	query: {
+			// 		...query,
+			// 		type
+			// 	}
+			// }));
+		},
+		handleSearch() {
+			this.listInfo = {
+				...initialState
 			};
 		}
 	}
