@@ -27,7 +27,7 @@
 				<i-page
 					ref="pageTarget"  
 					:total="total" 
-					:current="current"
+					:current="currentPage"
 					v-bind="pageOpts"
 					@on-change="handleChangePage"
 					@on-page-size-change="$emit('page-size-change', arguments[0])"
@@ -85,33 +85,35 @@ export default {
 			type: Function,
 			required: true
 		},
-		reset: Number
+		reset: Boolean,
 	},
 	data() {
 		let { query: { page = 1 } } = getParseUrl();
 		return {
 			loading: false,
-			current: page
+			currentPage: Number(page)
 		};
 	},
 	computed: {
 		data() {
-			return this.dataSource[this.current];
+			return this.dataSource[this.currentPage];
 		}
 	},
 	watch: {
 		dataSource(newVal, oldVal) {
-			let arr = this.dataSource[this.reset];
-			if (!arr || arr.length === 0) {
-				this.current = 0;
-				this.handleChangePage(this.reset || 1);
+			let page = this.reset === true 
+				? this.currentPage // 当前页刷新
+				: 1; // 首页刷新
+			if (this.total === 0) {
+				this.currentPage = 0;
+				this.handleChangePage(page);
 			}
 		},
 		show(newVal, oldVal) {
 			// Table显示时，去发起请求
-			// if (newVal) {
-			// 	this.handleChangePage(1);
-			// }
+			if (newVal) {
+				this.handleChangePage(this.currentPage);
+			}
 		}
 	},
 	created() {
@@ -119,8 +121,10 @@ export default {
 		this.show && this.loadDataForPage(page);
 	},
 	methods: {
-		handleChangePage(page = 1) {
+		handleChangePage(page) {
+			page = page || 1;
 			let { path, query } = getParseUrl();
+
 			this.history && window.history.replaceState(null, null, getConstructUrl({
 				path,
 				query: {
@@ -132,8 +136,9 @@ export default {
 		},
 		loadDataForPage(page) {
 			// set-page
-			this.current && (this.current = page);
-
+			if (this.currentPage !== 0) {
+				this.currentPage = page;
+			}
 			let arr = this.dataSource[page];
 			if (!arr || arr.length === 0) {
 				const load = this.loadData(page);
@@ -148,11 +153,13 @@ export default {
 						return Promise.reject(res);
 					}).finally(() => {
 						this.loading = false;
-						!this.current && (this.current = page);
+						if (this.currentPage === 0) {
+							this.currentPage = page;
+						}
 						this.$emit('load-finish');
 					});
 				} else {
-					console.log();
+					console.error('loadData need return a Promise');
 				}
 			}
 		}

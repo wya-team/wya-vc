@@ -3,12 +3,12 @@
 		:data-source="listInfo.data"
 		:columns="columns" 
 		:total="listInfo.total"
-		:current="listInfo.current"
 		:reset="listInfo.reset"
 		:page-opts="page"
 		:table-opts="table"
 		:history="true"
 		:load-data="loadData"
+		:show="show"
 	/>
 </template>
 <script>
@@ -18,7 +18,7 @@ import { getConstructUrl, getParseUrl } from '../../utils/utils';
 
 const initPage = {
 	total: 0,
-	reset: 0,
+	reset: false,
 	data: {}
 };
 
@@ -29,6 +29,7 @@ export default {
 	},
 	data() {
 		return {
+			show: false,
 			listInfo: {
 				...initPage
 			},
@@ -84,20 +85,20 @@ export default {
 				localData: {
 					status: 1,
 					data: {
-						current: page,
+						currentPage: page,
 						total: 100,
 						list: this.getFakeData(page)
 					}
 
 				}
 			}).then((res) => {
-				const { current, total, list } = res.data;
+				const { currentPage, total, list } = res.data;
 				this.listInfo = {
-					reset: current,
+					...this.listInfo,
 					total,
 					data: {
 						...this.listInfo.data,
-						[current]: list
+						[currentPage]: list
 					}
 				};
 			}).catch((e) => {
@@ -130,7 +131,7 @@ export default {
 		handleResetCur() {
 			this.listInfo = {
 				...initPage,
-				reset: this.listInfo.reset,
+				reset: true,
 			};
 		}
 	}
