@@ -1,7 +1,7 @@
 <template>
 	<div v-show="show">
 		<i-table
-			ref="vc-table" 
+			ref="tableTarget" 
 			:data="data" 
 			:loading="loading"
 			:columns="columns"
@@ -25,7 +25,7 @@
 		<div style="margin: 10px; overflow: hidden">
 			<div style="float: right;">
 				<i-page
-					ref="vc-page"  
+					ref="pageTarget"  
 					:total="total" 
 					:current="current"
 					v-bind="pageOpts"
@@ -67,10 +67,6 @@ export default {
 		},
 		// page 组件属性
 		pageOpts: Object,
-		current: {
-			type: Number,
-			default: 1
-		},
 		total: {
 			type: Number,
 			default: 0
@@ -89,10 +85,13 @@ export default {
 			type: Function,
 			required: true
 		},
+		reset: Number
 	},
 	data() {
+		let { query: { page = 1 } } = getParseUrl();
 		return {
-			loading: false
+			loading: false,
+			current: page
 		};
 	},
 	computed: {
@@ -101,14 +100,13 @@ export default {
 		}
 	},
 	watch: {
-		// dataSource(newVal, oldVal) {
-		// 	let oldValData = oldVal[this.resetPage] || [];
-		// 	let newValData = newVal[this.resetPage] || [];
-
-		// 	if (newValData.length === 0) {
-		// 		// this.handleChangePage(this.resetPage);
-		// 	}
-		// },
+		dataSource(newVal, oldVal) {
+			let arr = this.dataSource[this.reset];
+			if (!arr || arr.length === 0) {
+				this.current = 0;
+				this.handleChangePage(this.reset || 1);
+			}
+		},
 		show(newVal, oldVal) {
 			// Table显示时，去发起请求
 			// if (newVal) {
@@ -133,6 +131,9 @@ export default {
 			this.loadDataForPage(page);
 		},
 		loadDataForPage(page) {
+			// set-page
+			this.current && (this.current = page);
+
 			let arr = this.dataSource[page];
 			if (!arr || arr.length === 0) {
 				const load = this.loadData(page);
@@ -147,13 +148,13 @@ export default {
 						return Promise.reject(res);
 					}).finally(() => {
 						this.loading = false;
-
-						console.log(this.current);
+						!this.current && (this.current = page);
 						this.$emit('load-finish');
 					});
+				} else {
+					console.log();
 				}
 			}
-			
 		}
 	}
 };

@@ -4,6 +4,7 @@
 		:columns="columns" 
 		:total="listInfo.total"
 		:current="listInfo.current"
+		:reset="listInfo.reset"
 		:page-opts="page"
 		:table-opts="table"
 		:history="true"
@@ -16,8 +17,8 @@ import Paging from '../paging';
 import { getConstructUrl, getParseUrl } from '../../utils/utils';
 
 const initPage = {
-	current: 0, // 当前页数
 	total: 0,
+	reset: 0,
 	data: {}
 };
 
@@ -92,7 +93,7 @@ export default {
 			}).then((res) => {
 				const { current, total, list } = res.data;
 				this.listInfo = {
-					current,
+					reset: current,
 					total,
 					data: {
 						...this.listInfo.data,
@@ -127,9 +128,9 @@ export default {
 		 * 当前页刷新
 		 */
 		handleResetCur() {
-			let { query: { page = 1 } } = getParseUrl();
 			this.listInfo = {
-				...initPage
+				...initPage,
+				reset: this.listInfo.reset,
 			};
 		}
 	}
