@@ -216,7 +216,8 @@ export default {
 		dataSource(newVal, oldVal) {
 			let oldValData = oldVal[this.resetPage] || [];
 			let newValData = newVal[this.resetPage] || [];
-			if (oldValData.length > 0 && newValData.length === 0) {
+
+			if (newValData.length === 0) {
 				this.handleChangePage(this.resetPage);
 			}
 		},

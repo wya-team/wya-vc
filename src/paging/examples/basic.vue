@@ -4,6 +4,7 @@
 		:columns="columns" 
 		:total="total"
 		:cur-page="curPage"
+		:reset-page="resetPage"
 		:history="true"
 		v-bind="page"
 		@page-change="loadData"
@@ -21,6 +22,9 @@ export default {
 	data() {
 		return {
 			data: {},
+			curPage: 1,
+			resetPage: 1,
+			total: 0,
 			page: {
 				'show-total': false
 			},
@@ -40,6 +44,8 @@ export default {
 							on: {
 								click: () => {
 									this.curPage = 1;
+									this.resetPage = 1;
+									this.total = 0;
 									this.data = {};
 								}
 							}
@@ -58,19 +64,16 @@ export default {
 								click: () => {
 									let { query: { page = 1 } } = getParseUrl();
 
-									this.curPage = page;
-									this.data = {
-										...this.data,
-										[page]: []
-									};
+									this.resetPage = this.curPage;
+									this.curPage = 1;
+									this.total = 0;
+									this.data = {};
 								}
 							}
 						}, '当前页刷新');
 					}
 				}
 			],
-			curPage: 1,
-			total: 100
 		};
 	},
 	computed: {
@@ -91,6 +94,8 @@ export default {
 				});
 			}
 			this.curPage = page;
+			this.resetPage = page;
+			this.total = 100;
 			if (!this.data[page] || this.data[page].length === 0) {
 				this.data[page] = data;
 			}
