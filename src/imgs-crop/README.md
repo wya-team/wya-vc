@@ -19,7 +19,7 @@ cross-origin | CORS - `'', 'anonymous', 'use-credentials'` | `string` | `anonymo
 属性 | 说明 | 类型 | 默认值
 ---|---|---|---
 `@drop-file` | 拖入图片回掉 | - | -
-`@load-failure` | 图片加载失败 | - | -
+`@load-fail` | 图片加载失败 | - | -
 `@load-success` | 图片加载成功 | - | -
 `@image-ready` | 图片加载成功，展示后执行 | - | -
 `@image-change` | 图片信息变化 | - | -

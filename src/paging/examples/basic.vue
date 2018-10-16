@@ -1,18 +1,25 @@
 <template>
 	<vc-paging
-		:data-source="data"
+		:data-source="listInfo.data"
 		:columns="columns" 
-		:total="total"
-		:cur-page="curPage"
-		:reset-page="resetPage"
+		:total="listInfo.total"
+		:current="listInfo.current"
+		:page-opts="page"
+		:table-opts="table"
 		:history="true"
-		v-bind="page"
-		@page-change="loadData"
+		:load-data="loadData"
 	/>
 </template>
 <script>
+import { ajax } from 'wya-fetch';
 import Paging from '../paging';
 import { getConstructUrl, getParseUrl } from '../../utils/utils';
+
+const initPage = {
+	current: 0, // 当前页数
+	total: 0,
+	data: {}
+};
 
 export default {
 	name: "vc-paging-basic",
@@ -21,12 +28,14 @@ export default {
 	},
 	data() {
 		return {
-			data: {},
-			curPage: 1,
-			resetPage: 1,
-			total: 0,
+			listInfo: {
+				...initPage
+			},
 			page: {
 				'show-total': false
+			},
+			table: {
+
 			},
 			columns: [
 				{
@@ -42,12 +51,7 @@ export default {
 								marginRight: '5px'
 							},
 							on: {
-								click: () => {
-									this.curPage = 1;
-									this.resetPage = 1;
-									this.total = 0;
-									this.data = {};
-								}
+								click: this.handleResetFirst
 							}
 						}, '回到首页刷新');
 					}
@@ -61,14 +65,7 @@ export default {
 								marginRight: '5px'
 							},
 							on: {
-								click: () => {
-									let { query: { page = 1 } } = getParseUrl();
-
-									this.resetPage = this.curPage;
-									this.curPage = 1;
-									this.total = 0;
-									this.data = {};
-								}
+								click: this.handleResetCur
 							}
 						}, '当前页刷新');
 					}
@@ -79,27 +76,62 @@ export default {
 	computed: {
 		
 	},
-	created() {
-		let { query: { page = 1 } } = getParseUrl();
-		this.loadData(page);
-	},
 	methods: {
 		loadData(page) {
-			let data = [];
+			return ajax({
+				url: 'test.json',
+				localData: {
+					status: 1,
+					data: {
+						current: page,
+						total: 100,
+						list: this.getFakeData(page)
+					}
+
+				}
+			}).then((res) => {
+				const { current, total, list } = res.data;
+				this.listInfo = {
+					current,
+					total,
+					data: {
+						...this.listInfo.data,
+						[current]: list
+					}
+				};
+			}).catch((e) => {
+				console.log(e);
+			});
+		},
+		getFakeData(page) {
+			let fakeData = [];
 			for (let i = 0; i < 10; i++) {
-				data.push({
-					name: 'Business' + Math.floor(Math.random() * 100 + 1),
+				fakeData.push({
+					id: `${page}_${i}`,
+					name: page + '-Business' + Math.floor(Math.random() * 100 + 1),
 					status: Math.floor(Math.random() * 3 + 1),
-					opt: Math.floor(Math.random() * 3 + 1),
+					opt: Math.floor(Math.random() * 3 + 1)
 				});
 			}
-			this.curPage = page;
-			this.resetPage = page;
-			this.total = 100;
-			if (!this.data[page] || this.data[page].length === 0) {
-				this.data[page] = data;
-			}
+			return fakeData;
 		},
+		/**
+		 * 回到首页刷新
+		 */
+		handleResetFirst() {
+			this.listInfo = {
+				...initPage
+			};
+		},
+		/**
+		 * 当前页刷新
+		 */
+		handleResetCur() {
+			let { query: { page = 1 } } = getParseUrl();
+			this.listInfo = {
+				...initPage
+			};
+		}
 	}
 };
 </script>

@@ -708,7 +708,7 @@ export default {
 		loadImageURL(imageURL) {
 			const imageObj = new Image();
 			imageObj.onload = this.handleImageReady.bind(this, imageObj);
-			imageObj.onerror = this.$listeners['load-failure'];
+			imageObj.onerror = this.$listeners['load-fail'];
 			/**
 			 * 在HTML5中，一些 HTML 元素提供了对 CORS 的支持，
 			 * 例如 <img> 和 <video> 均有一个跨域属性 (crossOrigin property)，

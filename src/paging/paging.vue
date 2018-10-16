@@ -2,21 +2,10 @@
 	<div v-show="show">
 		<i-table
 			ref="vc-table" 
-			:data="dataSource[curPage]" 
-			:columns="columns" 
-			:size="tableSize" 
-			:width="width" 
-			:height="height" 
-			:stripe="stripe" 
-			:border="border" 
-			:show-header="showHeader" 
-			:highlight-row="highlightRow" 
-			:row-class-name="rowClassName" 
-			:context="context" 
-			:no-data-text="noDataText" 
-			:no-filtered-data-text="noFilteredDataText" 
-			:disabled-hover="disabledHover" 
+			:data="data" 
 			:loading="loading"
+			:columns="columns"
+			v-bind="tableOpts"
 			@on-current-change="$emit('current-change', arguments[0], arguments[1])"
 			@on-select="$emit('select', arguments[0], arguments[1])"
 			@on-select-cancel="$emit('select-cancel', arguments[0])"
@@ -38,20 +27,8 @@
 				<i-page
 					ref="vc-page"  
 					:total="total" 
-					:current="curPage"
-					:page-size="pageSize"
-					:page-size-opts="pageSizeOpts" 
-					:placement="placement" 
-					:transfer="transfer" 
-					:size="size" 
-					:simple="simple" 
-					:show-total="showTotal" 
-					:show-elevator="showElevator" 
-					:show-sizer="showSizer" 
-					:class-name="className" 
-					:styles="styles" 
-					:prev-text="prevText" 
-					:next-text="nextText" 
+					:current="current"
+					v-bind="pageOpts"
 					@on-change="handleChangePage"
 					@on-page-size-change="$emit('page-size-change', arguments[0])"
 				/>
@@ -72,6 +49,10 @@ export default {
 	},
 	props: {
 		// table组件属性
+		tableOpts: {
+			type: Object,
+			default: () => ({})
+		},
 		dataSource: {
 			type: Object,
 			default() {
@@ -84,115 +65,15 @@ export default {
 				return [];
 			}
 		},
-		tableSize: {
-			type: String
-		},
-		width: {
-			type: [Number, String]
-		},
-		height: {
-			type: [Number, String]
-		},
-		stripe: {
-			type: Boolean,
-			default: false
-		},
-		border: {
-			type: Boolean,
-			default: false
-		},
-		showHeader: {
-			type: Boolean,
-			default: true
-		},
-		highlightRow: {
-			type: Boolean,
-			default: false
-		},
-		rowClassName: {
-			type: Function,
-			default() {
-				return '';
-			}
-		},
-		context: {
-			type: Object
-		},
-		noDataText: {
-			type: String
-		},
-		noFilteredDataText: {
-			type: String
-		},
-		disabledHover: {
-			type: Boolean
-		},
-		loading: {
-			type: Boolean,
-			default: false
-		},
 		// page 组件属性
-		curPage: {
-			type: Number,
-			default: 1
-		},
-		resetPage: {
+		pageOpts: Object,
+		current: {
 			type: Number,
 			default: 1
 		},
 		total: {
 			type: Number,
 			default: 0
-		},
-		pageSize: {
-			type: Number,
-			default: 10
-		},
-		pageSizeOpts: {
-			type: Array,
-			default() {
-				return [10, 20, 30, 40];
-			}
-		},
-		placement: {
-			type: String,
-			default: 'bottom'
-		},
-		transfer: {
-			type: Boolean,
-		},
-		size: {
-			type: String
-		},
-		simple: {
-			type: Boolean,
-			default: false
-		},
-		showTotal: {
-			type: Boolean,
-			default: false
-		},
-		showElevator: {
-			type: Boolean,
-			default: false
-		},
-		showSizer: {
-			type: Boolean,
-			default: false
-		},
-		className: {
-			type: String
-		},
-		styles: {
-			type: Object
-		},
-		prevText: {
-			type: String,
-			default: ''
-		},
-		nextText: {
-			type: String,
-			default: ''
 		},
 		// 是否从url中获取page
 		history: {
@@ -203,37 +84,44 @@ export default {
 			type: Boolean,
 			default: true
 		},
-		
+		// 数据加载
+		loadData: {
+			type: Function,
+			required: true
+		},
 	},
 	data() {
 		return {
+			loading: false
 		};
 	},
 	computed: {
-		
+		data() {
+			return this.dataSource[this.current];
+		}
 	},
 	watch: {
-		dataSource(newVal, oldVal) {
-			let oldValData = oldVal[this.resetPage] || [];
-			let newValData = newVal[this.resetPage] || [];
+		// dataSource(newVal, oldVal) {
+		// 	let oldValData = oldVal[this.resetPage] || [];
+		// 	let newValData = newVal[this.resetPage] || [];
 
-			if (newValData.length === 0) {
-				this.handleChangePage(this.resetPage);
-			}
-		},
+		// 	if (newValData.length === 0) {
+		// 		// this.handleChangePage(this.resetPage);
+		// 	}
+		// },
 		show(newVal, oldVal) {
 			// Table显示时，去发起请求
-			if (newVal) {
-				this.handleChangePage(1);
-			}
+			// if (newVal) {
+			// 	this.handleChangePage(1);
+			// }
 		}
 	},
 	created() {
 		let { query: { page = 1 } } = getParseUrl();
-		this.show && this.$listeners['page-change'] && this.$listeners['page-change'](page);
+		this.show && this.loadDataForPage(page);
 	},
 	methods: {
-		handleChangePage(page) {
+		handleChangePage(page = 1) {
 			let { path, query } = getParseUrl();
 			this.history && window.history.replaceState(null, null, getConstructUrl({
 				path,
@@ -242,8 +130,31 @@ export default {
 					page
 				}
 			}));
-			this.$emit('page-change', page);
+			this.loadDataForPage(page);
 		},
+		loadDataForPage(page) {
+			let arr = this.dataSource[page];
+			if (!arr || arr.length === 0) {
+				const load = this.loadData(page);
+				if (load && load.then) {
+					this.loading = true;
+					this.$emit('load-pending');
+					load.then((res) => {
+						this.$emit('load-success', res);
+						return res;
+					}).catch((res) => {
+						this.$emit('load-fail', res);
+						return Promise.reject(res);
+					}).finally(() => {
+						this.loading = false;
+
+						console.log(this.current);
+						this.$emit('load-finish');
+					});
+				}
+			}
+			
+		}
 	}
 };
 </script>
