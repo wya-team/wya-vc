@@ -237,8 +237,10 @@ export const createMixins = (...mixins) => target => {
  * 小于10的数字前面加0
  */
 export const addPreZero = (num) => {
-	if (num < 10) {
+	if (num < 10 && num > 0) {
 		return "0" + num;
+	} else if (num <= 0) {
+		return '00';
 	}
 	return num;
 };

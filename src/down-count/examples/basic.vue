@@ -1,25 +1,28 @@
 <template>
 	<div>
 		<vc-down-count 
-			ref="count" 
-			target-time="2018-10-15 10:10:10" 
-			server-time="2018-10-15 10:10:5"
+			:id="1"
+			:target-time="targetTime" 
+			:server-time="serverTime"
+			:t="0.01" 
 			style="color:blue"
-			@tip="handleTip"
+			format="DD:HH:MM:SS:mm"
+			@end="handleEnd"
 		/> 
 		<br>
-		<vc-down-count 
-			ref="count2" 
-			:t="0.01" 
-			:render="renderDownCount"
+		<vc-down-count
+			:id="2"
+			:render="renderRow"
 			target-time="2018-10-15 10:10:10"
 			server-time="2018-10-15 10:10:5"
 			before-text="---beforeText---"
 			after-text="---afterText---"
-			@tip="handleTip"
+			@error="handleError"
 			@change="handleChange"
 			@end="handleEnd"
 		/> 
+		<div @click="handleTarget">点我targetTime: Data.now() + 1</div>
+		<div @click="handleServer">点我serverTime: Data.now() - 1</div>
 	</div>
 </template>
 <script>
@@ -31,33 +34,39 @@ export default {
 		"vc-down-count": DownCount,	
 	},
 	data() {
-		return {};
-	},
-	computed: {},
-	mounted() {
-		// 获取servertime成功够再开始计时
-		// fetch("http://bjtime.cn", { mode: "no-cors" }).then(res => res.json()).then(json => console.log(json));
-		this.$refs.count.startCount();
-		this.$refs.count2.startCount();
+		return {
+			targetTime: (new Date()).toString(),
+			serverTime: (new Date()).toString()
+		};
 	},
 	methods: {
-		handleTip(msg) {
+		handleTarget() {
+			this.targetTime = (new Date((new Date()).getTime() + 1000 * 60 * 60 * 24)).toString();
+		},
+		handleServer() {
+			this.serverTime = (new Date((new Date()).getTime() - 1000 * 60 * 60 * 24)).toString();
+		},
+		handleError(msg) {
 			console.log(msg);
 		},
-		handleChange(a, b) {
-			console.log("changed " + a + "--" + b);
+		handleChange(res) {
+			// console.log('change:', res);
 		},
-		handleEnd() {
-			console.log("end");
+		handleEnd(id) {
+			console.log('end', id);
 		},
-		renderDownCount(h, { days, hours, minutes, seconds, ms, beforeText, afterText, format }) {
+		renderRow(h, params) {
+			const { days, hours, minutes, seconds, ms, beforeText, afterText, format } = params;
 			const num = Number(ms);
 			const r = num % 255;
 			const g = (num + 100) % 255;
 			const b = (num + 200) % 255;
-			return (
-				<span style={`color:rgb(${r},${g},${b})`}>{days}-{hours}-{minutes}-{seconds}-{ms}</span>
-			);
+			return h('span', {
+				style: `color:rgb(${r}, ${g}, ${b})`,
+				domProps: {
+					innerHTML: `${days}-${hours}-${minutes}-${seconds}`
+				}
+			});
 		}
 	}
 };

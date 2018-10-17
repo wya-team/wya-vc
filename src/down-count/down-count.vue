@@ -13,43 +13,45 @@
 	/>
 </template>
 <script>
+import { debounce } from 'lodash';
 import CreateCustomer from "../create-customer/index";
-
+import { addPreZero } from "../utils/utils";
 
 const DownCount = CreateCustomer({
-	days: String,
-	hours: String,
-	minutes: String,
-	seconds: String,
-	ms: String,
+	days: [String, Number],
+	hours: [String, Number],
+	minutes: [String, Number],
+	seconds: [String, Number],
+	ms: [String, Number],
 	format: String,
 	beforeText: String,
 	afterText: String,
 	tag: String
 });
-const defaultRenderDownCount = (h, { days, hours, minutes, seconds, ms, beforeText, afterText, format, tag, }) => {
-	let downCount;
+const defaultRender = (h, params) => {
+	const { days, hours, minutes, seconds, ms, beforeText, afterText, format, tag, } = params;
+	let result;
 	switch (format) {
 		case "DD":
-			downCount = `${beforeText}${days}天${afterText}`;
+			result = `${beforeText}${days}天${afterText}`;
 			break;
 		case "DD:HH":
-			downCount = `${beforeText}${days}天${hours}小时${afterText}`;
+			result = `${beforeText}${days}天${hours}小时${afterText}`;
 			break;
 		case "DD:HH:MM":
-			downCount = `${beforeText}${days}天${hours}小时${minutes}分${afterText}`;
+			result = `${beforeText}${days}天${hours}小时${minutes}分${afterText}`;
 			break;
 		case "DD:HH:MM:SS:mm":
-			downCount = `${beforeText}${days}天${hours}小时${minutes}分${seconds}秒${ms}${afterText}`;
+			result = `${beforeText}${days}天${hours}小时${minutes}分${seconds}秒${ms}${afterText}`;
 			break;
 		default:
-			downCount = `${beforeText}${days}天${hours}小时${minutes}分${seconds}秒${afterText}`;
+			result = `${beforeText}${days}天${hours}小时${minutes}分${seconds}秒${afterText}`;
 			break;
 	}
 	return (
 		h(tag, {
 			domProps: {
-				innerHTML: downCount
+				innerHTML: result
 			}
 			
 		})
@@ -61,6 +63,7 @@ export default {
 		"down-count": DownCount
 	},
 	props: {
+		id: [String, Number],
 		tag: {
 			type: String,
 			default: "span"
@@ -71,7 +74,7 @@ export default {
 		},
 		t: {
 			type: Number,
-			default: 0.01
+			default: 1
 		},
 		beforeText: {
 			type: String,
@@ -89,19 +92,13 @@ export default {
 			type: [String, Number],
 			default: ""
 		},
-
 		render: {
 			type: Function,
-			default: defaultRenderDownCount
+			default: defaultRender
 		}
 	},
 	data() {
-		const curTimeStamp = new Date(this.serverTime).getTime();
-		const targetTimeStamp = new Date(this.targetTime).getTime();
 		return {
-			curTimeStamp,
-			targetTimeStamp,
-			timer: 0,
 			days: "",
 			hours: "",
 			minutes: "",
@@ -110,62 +107,111 @@ export default {
 		};
 	},
 	computed: {
-		difference() {
-			this.$emit("change", this.targetTimeStamp, this.curTimeStamp);
-			const temp = this.targetTimeStamp - this.curTimeStamp;
-			if (temp <= 0) {
-				clearInterval(this.timer);
-				this.$emit("end");
-				return 0;
-			}
-			return temp;
-		},
-		T_() {
-			// 转为毫秒
+		// 周期
+		T() {
 			return this.t * 1000;
+		},
+		// 毫秒被除数
+		msDividend() {
+			return this.t < 0.01 ? 1000 : 100;
+		},
+		// 偏移值
+		serverOffset() {
+			return this.serverTime 
+				? (Date.parse(this.serverTime.replace(/-/g, "/")) - (new Date()).getTime()) 
+				: 0;
+		},
+		// 目标时间
+		targetTimestamp() {
+			if (!this.targetTime && Date.parse(this.targetTime.replace(/-/g, "/"))) {
+				this.$emit("error", {
+					id: this.id,
+					msg: '请设定时间以及格式'
+				});
+				return null;
+			}
+
+			return new Date(this.targetTime.replace(/-/g, "/"));
 		}
 	},
 	watch: {
-		curTimeStamp() {
-			// 计算出相差天数
-			this.days = Math.floor(this.difference / (24 * 3600 * 1000)) + "";
-			// 计算出小时数
-			const leave1 = this.difference % (24 * 3600 * 1000); // 计算天数后剩余的毫秒数
-			this.hours = this.formatNum(Math.floor(leave1 / (3600 * 1000)));
-			// 计算相差分钟数
-			const leave2 = leave1 % (3600 * 1000); // 计算小时数后剩余的毫秒数
-			this.minutes = this.formatNum(Math.floor(leave2 / (60 * 1000)));
-			// 计算相差秒数
-			const leave3 = leave2 % (60 * 1000); // 计算分钟数后剩余的毫秒数
-			this.seconds = this.formatNum(Math.round(leave3 / 1000));
-			this.ms = (leave3 % 1000) + "";// 计算秒数后剩余的毫秒数
-		}
+	},
+	created() {
+		// 定时器
+		this.timer = null;
+
+		// 下面属性改变会更新定时器
+		let watchArr = [
+			'targetTime', 
+			'serverTime'
+		];
+		watchArr.forEach(item => {
+			this.$watch(item, debounce(this.restart, 200), { deep: true });
+		});
+
+	},
+	mounted() {
+		this.start();
+	},
+	destoryed() {
+		this.stop();
 	},
 	methods: {
-		startCount() {
-			if (!this.targetTime) {
-				this.$emit("tip", "请输入目标时间");
-				return;
-			} else if (!this.serverTime) {
-				this.$emit("tip", "请传入服务器时间");
-				return;
-			}
-			if (this.timer === 0) {
-				this.timer = setInterval(() => {
-					this.curTimeStamp += this.T_;
-				}, this.T_);
-			} else {
-				clearInterval(this.timer);
-				this.timer = setInterval(() => {
-					this.curTimeStamp += this.T_;
-				}, this.T_);
+		start() {
+			if (this.targetTimestamp) {
+				this.timer && clearInterval(this.timer);
+				this.timer = setInterval(this.run, this.T);
 			}
 		},
-		formatNum(num) {
-			if (num < 10) {
-				return "0" + num;
+		restart() {
+			this.stop();
+			this.start();
+		},
+		stop() {
+			this.timer && clearInterval(this.timer);
+		},
+		run() {
+			const currentTime = new Date((new Date()).getTime() + this.serverOffset);
+			const timestamp = this.targetTimestamp - currentTime;
+
+			const _second = 1000;
+			const _minute = _second * 60;
+			const _hour = _minute * 60;
+			const _day = _hour * 24;
+
+			this.days = addPreZero(Math.floor(timestamp / _day));
+			this.hours = addPreZero(Math.floor((timestamp % _day) / _hour));
+			this.minutes = addPreZero(Math.floor((timestamp % _hour) / _minute));
+			this.seconds = addPreZero(Math.floor((timestamp % _minute) / _second));
+			this.ms = addPreZero(Math.floor(timestamp % this.msDividend));
+
+			if (timestamp <= 0) {
+				this.stop();
+
+				this.$emit("change", {
+					id: this.id,
+					timestamp: 0,
+					days: '00',
+					hours: '00',
+					minutes: '00',
+					seconds: '00',
+					ms: '00',
+				});
+
+				this.$emit("end", this.id);
+			} else {
+
+				this.$emit("change", {
+					id: this.id,
+					timestamp,
+					days: this.days,
+					hours: this.hours,
+					minutes: this.minutes,
+					seconds: this.seconds,
+					ms: this.ms,
+				});
+
 			}
-			return num;
 		}
 	}
 };
