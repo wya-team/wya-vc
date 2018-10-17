@@ -1,7 +1,7 @@
 <template>
 	<div>
 		<i-input 
-			v-model="keybord" 
+			v-model="keyword" 
 			search 
 			enter-button="搜索" 
 			placeholder="请输入关键字搜索"
@@ -65,7 +65,7 @@ export default {
 		return {
 			show: true,
 			type: String(query.type || 1), // 同tabs下的value
-			keybord: '',
+			keyword: String(query.keyword || ''),
 			listInfo: initialState,
 			page: {
 				'show-total': false
