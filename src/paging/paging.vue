@@ -1,5 +1,5 @@
 <template>
-	<div v-if="show">
+	<div>
 		<i-table
 			ref="tableTarget" 
 			:data="data" 
@@ -159,7 +159,7 @@ export default {
 						this.$emit('load-finish');
 					});
 				} else {
-					console.error('loadData need return a Promise');
+					console.error('[vc-paging]-loadData need return a Promise');
 				}
 			}
 		}

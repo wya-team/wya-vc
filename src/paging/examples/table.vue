@@ -3,7 +3,7 @@
 		<div @click="handleSearch">搜索</div>
 		<i-tabs 
 			:value="type" 
-			:animated="false" 
+			:animated="true" 
 			@on-click="handleChange"
 		>
 			<i-tab-pane 
@@ -13,6 +13,7 @@
 				:name="item.value"
 			>
 				<vc-paging
+					:ref="item.value"
 					:show="item.value == type" 
 					:type="item.value"
 					:columns="columns" 
@@ -177,16 +178,16 @@ export default {
 		},
 		handleChange(type) {
 			this.type = type;
+			let { path, query } = getParseUrl();
 
-			// let { path, query } = getParseUrl();
-			// console.log(query.page);
-			// window.history.replaceState(null, null, getConstructUrl({
-			// 	path,
-			// 	query: {
-			// 		...query,
-			// 		type
-			// 	}
-			// }));
+			window.history.replaceState(null, null, getConstructUrl({
+				path,
+				query: {
+					...query,
+					type,
+					page: this.$refs[type][0].currentPage
+				}
+			}));
 		},
 		handleSearch() {
 			this.listInfo = {
