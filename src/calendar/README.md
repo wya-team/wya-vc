@@ -1,6 +1,6 @@
-## [Demo Basic](https://wya-team.github.io/wya-vc/dist/web/__tpl__/basic.html)
+## [Demo Basic](https://wya-team.github.io/wya-vc/dist/web/calendar/basic.html)
 ## 功能
-tpl
+日历展示
 
 ## API
 
@@ -13,18 +13,26 @@ render-month | 渲染月 |  function(h, { month, year, lan, monthNames }) | rend
 render-week | 渲染周 |  function(h, { weekNames, lan }) | renderDefaultWeek
 lan="en" |语言（'ch'或'en'）|String|'ch'
 
-
-
-#### 事件
-
-属性 | 说明 | 类型 | 默认值
----|---|---|---
-- | - | `any` | -
-
-
-
 ## 基础用法
 
-```jsx
+```vue
+<template>
+	<div >
+		<div @click="$refs.target.prev()">prev</div>
+		<vc-calendar
+			ref="target"
+		/>
+		<div @click="$refs.target.next()">next</div>
+	</div>
+</template>
+<script>
+import { Calendar } from "wya-vc";
 
+export default {
+	name: "vc-tpl-calendar",
+	components: {
+		"vc-calendar": Calendar
+	}
+};
+</script>
 ```

@@ -47,10 +47,12 @@ import { Copy } from 'wya-vc';
 ### 实例
 - [`Vc: 上下文传递`](https://github.com/wya-team/wya-vc/tree/master/src/vc/)
 ### 通用（移动优先）
+- [`Calendar: 日历展示`](https://github.com/wya-team/wya-vc/tree/master/src/calendar/)
 - [`Copy: 复制`](https://github.com/wya-team/wya-vc/tree/master/src/copy/)
 - [`CreateCustomer: 创建自定义组件`](https://github.com/wya-team/wya-vc/tree/master/src/create-customer/)
 - [`CreatePortal: 创建兄弟节点(方法调用) -> （）=> Promise`](https://github.com/wya-team/wya-vc/tree/master/src/create-portal/)
 - [`DebounceClick: 防抖`](https://github.com/wya-team/wya-vc/tree/master/src/debounce-click/)
+- [`DownCount: 倒计时`](https://github.com/wya-team/wya-vc/tree/master/src/down-count/)
 - [`Echarts: 图表组件`](https://github.com/wya-team/wya-vc/tree/master/src/echarts/)
 - [`Imgs-Crop: 图片裁剪`](https://github.com/wya-team/wya-vc/tree/master/src/imgs-crop/)
 - [`Imgs-Picker: 图片上传`](https://github.com/wya-team/wya-vc/tree/master/src/imgs-picker/)
