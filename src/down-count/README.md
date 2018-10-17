@@ -8,9 +8,7 @@ tpl
 
 属性 | 说明 | 类型 | 默认值
 ---|---|---|---
-on-tip | 提示回调 | function | -
-on-change | 变化回调 | function | -
-on-end	| 结束回调 | function |	 -
+
 t | 刷新周期，单位秒 | Number	|0.01		
 render | 自定义渲染 | function |		defaultRenderDownCount
 target-time	| 目标时间 | String / Number |		require
@@ -24,9 +22,12 @@ tag | 标签 | String | 'span'
 #### 事件
 
 属性 | 说明 | 类型 | 默认值
-
+---|---|---|---
+tip | 提示回调 | function | -
+change | 变化回调 | function | -
+end	| 结束回调 | function |	 -
 			
-- | - | `any` | -
+
 
 
 
