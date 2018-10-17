@@ -1,6 +1,13 @@
 <template>
 	<div>
-		<div @click="handleSearch">搜索</div>
+		<i-input 
+			v-model="keybord" 
+			search 
+			enter-button="搜索" 
+			placeholder="请输入关键字搜索"
+			style="margin: 20px; width: 300px"
+			@on-search="handleSearch"
+		/>
 		<i-tabs 
 			:value="type" 
 			:animated="false" 
@@ -29,7 +36,7 @@
 </template>
 <script>
 import { ajax } from 'wya-fetch';
-import { Tabs, TabPane } from 'iview';
+import { Tabs, TabPane, Input } from 'iview';
 import Paging from '../paging';
 import { getConstructUrl, getParseUrl } from '../../utils/utils';
 
@@ -49,7 +56,8 @@ export default {
 	components: {
 		'vc-paging': Paging,
 		'i-tabs': Tabs,
-		'i-tab-pane': TabPane
+		'i-tab-pane': TabPane,
+		'i-input': Input
 	},
 	data() {
 		const { query = {} } = getParseUrl();
@@ -57,6 +65,7 @@ export default {
 		return {
 			show: true,
 			type: String(query.type || 1), // 同tabs下的value
+			keybord: '',
 			listInfo: initialState,
 			page: {
 				'show-total': false
@@ -154,6 +163,19 @@ export default {
 			return fakeData;
 		},
 		/**
+		 * 
+		 */
+		setHistory(values) {
+			let { path, query } = getParseUrl();
+			window.history.replaceState(null, null, getConstructUrl({
+				path,
+				query: {
+					...query,
+					...values
+				}
+			}));
+		},
+		/**
 		 * 回到首页刷新
 		 */
 		handleResetFirst() {
@@ -176,21 +198,20 @@ export default {
 		},
 		handleChange(type) {
 			this.type = type;
-			let { path, query } = getParseUrl();
 
-			window.history.replaceState(null, null, getConstructUrl({
-				path,
-				query: {
-					...query,
-					type,
-					page: this.$refs[type][0].currentPage
-				}
-			}));
+			this.setHistory({
+				type,
+				page: this.$refs[type][0].currentPage
+			});
 		},
-		handleSearch() {
+		handleSearch(keyword) {
 			this.listInfo = {
 				...initialState
 			};
+
+			this.setHistory({
+				keyword
+			});
 		}
 	}
 };

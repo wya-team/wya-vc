@@ -92,7 +92,7 @@ export default {
 		let { query: { page = 1 } } = getParseUrl();
 		return {
 			loading: false,
-			currentPage: Number(page)
+			currentPage: this.show ? Number(page) : 1
 		};
 	},
 	computed: {
