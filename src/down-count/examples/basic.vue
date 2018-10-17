@@ -2,23 +2,23 @@
 	<div>
 		<vc-down-count 
 			ref="count" 
-			:on-tip="onTip" 
-			target-time="2018-10-15 10:10:10"
+			target-time="2018-10-15 10:10:10" 
 			server-time="2018-10-15 10:10:5"
 			style="color:blue"
+			@tip="handleTip"
 		/> 
 		<br>
 		<vc-down-count 
 			ref="count2" 
-			:on-tip="onTip" 
-			:on-change="onChange"
-			:on-end="onEnd"
-			:t="0.01"
+			:t="0.01" 
 			:render="renderDownCount"
 			target-time="2018-10-15 10:10:10"
 			server-time="2018-10-15 10:10:5"
 			before-text="---beforeText---"
 			after-text="---afterText---"
+			@tip="handleTip"
+			@change="handleChange"
+			@end="handleEnd"
 		/> 
 	</div>
 </template>
@@ -41,17 +41,17 @@ export default {
 		this.$refs.count2.startCount();
 	},
 	methods: {
-		onTip(msg) {
+		handleTip(msg) {
 			console.log(msg);
 		},
-		onChange(a, b) {
+		handleChange(a, b) {
 			console.log("changed " + a + "--" + b);
 		},
-		onEnd() {
+		handleEnd() {
 			console.log("end");
 		},
 		renderDownCount(h, { days, hours, minutes, seconds, ms, beforeText, afterText, format }) {
-			let num = Number(ms);
+			const num = Number(ms);
 			const r = num % 255;
 			const g = (num + 100) % 255;
 			const b = (num + 200) % 255;
@@ -62,3 +62,5 @@ export default {
 	}
 };
 </script>
+
+

@@ -15,7 +15,7 @@
 <script>
 import CreateCustomer from "../create-customer/index";
 
-const emptyFunc = function () { };
+
 const DownCount = CreateCustomer({
 	days: String,
 	hours: String,
@@ -27,7 +27,7 @@ const DownCount = CreateCustomer({
 	afterText: String,
 	tag: String
 });
-const defaultRenderDownCount = function (h, { days, hours, minutes, seconds, ms, beforeText, afterText, format, tag, }) {
+const defaultRenderDownCount = (h, { days, hours, minutes, seconds, ms, beforeText, afterText, format, tag, }) => {
 	let downCount;
 	switch (format) {
 		case "DD":
@@ -89,18 +89,7 @@ export default {
 			type: [String, Number],
 			default: ""
 		},
-		onChange: {
-			type: Function,
-			default: emptyFunc
-		},
-		onEnd: {
-			type: Function,
-			default: emptyFunc
-		},
-		onTip: {
-			type: Function,
-			default: emptyFunc
-		},
+
 		render: {
 			type: Function,
 			default: defaultRenderDownCount
@@ -122,11 +111,11 @@ export default {
 	},
 	computed: {
 		difference() {
-			this.onChange(this.targetTimeStamp, this.curTimeStamp);
+			this.$emit("change", this.targetTimeStamp, this.curTimeStamp);
 			const temp = this.targetTimeStamp - this.curTimeStamp;
 			if (temp <= 0) {
 				clearInterval(this.timer);
-				this.onEnd();
+				this.$emit("end");
 				return 0;
 			}
 			return temp;
@@ -155,10 +144,10 @@ export default {
 	methods: {
 		startCount() {
 			if (!this.targetTime) {
-				this.onTip("请输入目标时间");
+				this.$emit("tip", "请输入目标时间");
 				return;
 			} else if (!this.serverTime) {
-				this.onTip("请传入服务器时间");
+				this.$emit("tip", "请传入服务器时间");
 				return;
 			}
 			if (this.timer === 0) {
