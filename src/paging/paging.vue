@@ -108,6 +108,8 @@ export default {
 			if (this.total === 0 && this.show) {
 				this.currentPage = 0;
 				this.handleChangePage(page);
+			} else if (this.total === 0) {
+				this.currentPage = 0;
 			}
 		},
 		show(newVal, oldVal) {
