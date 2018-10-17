@@ -3,7 +3,7 @@
 		<div @click="handleSearch">搜索</div>
 		<i-tabs 
 			:value="type" 
-			:animated="true" 
+			:animated="false" 
 			@on-click="handleChange"
 		>
 			<i-tab-pane 
@@ -53,9 +53,10 @@ export default {
 	},
 	data() {
 		const { query = {} } = getParseUrl();
+
 		return {
 			show: true,
-			type: String(query.type) || '1',
+			type: String(query.type || 1), // 同tabs下的value
 			listInfo: initialState,
 			page: {
 				'show-total': false
@@ -110,37 +111,34 @@ export default {
 	methods: {
 		loadData(page) {
 			const { type } = this;
-			return ajax({
-				url: 'test.json',
-				param: {
-					page,
-					type
-				},
-				localData: {
-					status: 1,
-					data: {
-						currentPage: page,
-						total: 100,
-						list: this.getFakeData(page)
-					}
-
-				}
-			}).then((res) => {
-				console.log(`page: ${page}-type: ${type}@success`);
-				const { currentPage, total, list } = res.data;
-				this.listInfo = {
-					...this.listInfo,
-					[type]: {
-						total,
+			// 真实场景为ajax
+			return new Promise((resolve, reject) => {
+				// 模拟loading
+				setTimeout(() => {
+					console.log(`page: ${page}-type: ${type}@success`);
+					// 模拟后端的数据
+					const res = {
+						status: 1,
 						data: {
-							...this.listInfo[type].data,
-							[currentPage]: list
+							currentPage: page,
+							total: 100,
+							list: this.getFakeData(page)
 						}
-					}
-					
-				};
-			}).catch((e) => {
-				console.log(e);
+					};
+					const { currentPage, total, list } = res.data;
+					this.listInfo = {
+						...this.listInfo,
+						[type]: {
+							total,
+							data: {
+								...this.listInfo[type].data,
+								[currentPage]: list
+							}
+						}
+						
+					};
+					resolve();
+				}, 150);
 			});
 		},
 		getFakeData(page) {

@@ -86,7 +86,7 @@ export default {
 			required: true
 		},
 		reset: Boolean,
-		type: String,
+		type: [Number, String], // 待开发，tabs情况下
 	},
 	data() {
 		let { query: { page = 1 } } = getParseUrl();
