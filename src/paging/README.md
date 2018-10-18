@@ -15,6 +15,7 @@ history | url表示 | `boolean` | false
 reset | 刷新时候使用，当前页刷新（true）,首页刷新（false） | `boolean` | -
 tableOpts | 表格额外参数 | `obj` | -
 pageOpts | 分页额外参数 | `obj` | -
+`current.sync` | 分页参数同步 | `str/num` | -
 
 额外属性同`iView`的 [table](https://www.iviewui.com/components/table) 和 [page](https://www.iviewui.com/components/page)
 

@@ -11,6 +11,7 @@
 		<br>
 		<vc-down-count
 			:render="renderRow"
+			:test.sync="test"
 			target-time="2018-10-15 10:10:10"
 			server-time="2018-10-15 10:10:5"
 			before-text="---beforeText---"
@@ -33,6 +34,7 @@ export default {
 	},
 	data() {
 		return {
+			test: 1,
 			targetTime: (new Date()).toString(),
 			serverTime: (new Date()).toString()
 		};

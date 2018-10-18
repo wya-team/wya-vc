@@ -86,6 +86,7 @@ export default {
 			required: true
 		},
 		reset: Boolean,
+		page: [Number, String],
 		type: [Number, String], // 待开发，tabs情况下
 	},
 	data() {
@@ -101,6 +102,9 @@ export default {
 		}
 	},
 	watch: {
+		/**
+		 * 先有total，才可以设置 currentPage，否则无效
+		 */
 		dataSource(newVal, oldVal) {
 			let page = this.reset === true 
 				? this.currentPage // 当前页刷新
@@ -140,6 +144,7 @@ export default {
 			// set-page
 			if (this.currentPage !== 0) {
 				this.currentPage = page;
+				this.$emit('update:current', this.currentPage);
 			}
 			let arr = this.dataSource[page];
 			if (!arr || arr.length === 0) {
@@ -157,6 +162,7 @@ export default {
 						this.loading = false;
 						if (this.currentPage === 0) {
 							this.currentPage = page;
+							this.$emit('update:current', this.currentPage);
 						}
 						this.$emit('load-finish');
 					});
