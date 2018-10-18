@@ -61,7 +61,7 @@ export default {
 		},
 
 		// 上传类型为图片
-		type: {
+		mode: {
 			type: String,
 			default: 'images'
 		},
@@ -219,9 +219,9 @@ export default {
 			if (!this._isMounted) {
 				return;
 			}
-			const { url, type, name, headers, extra } = this;
+			const { url, mode, name, headers, extra } = this;
 			const { URL_UPLOAD_FILE_POST, URL_UPLOAD_IMG_POST } = VcInstance.config.Upload || {};
-			const defaultUrl = type === 'images' ? URL_UPLOAD_IMG_POST : URL_UPLOAD_FILE_POST;
+			const defaultUrl = mode === 'images' ? URL_UPLOAD_IMG_POST : URL_UPLOAD_FILE_POST;
 			const { uid } = file;
 			const { ajax, size } = this;
 			let localData;
