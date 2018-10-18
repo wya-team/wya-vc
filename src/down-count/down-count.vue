@@ -147,7 +147,7 @@ export default {
 		];
 
 		const restart = debounce(this.restart, 200, { leading: true });
-		
+
 		watchArr.forEach(item => {
 			this.$watch(item, restart, { deep: true });
 		});
