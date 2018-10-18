@@ -86,7 +86,7 @@ export default {
 			required: true
 		},
 		reset: Boolean,
-		page: [Number, String],
+		// current: [Number, String], // .sync可以不声明；需要使用this.current, 必须声明
 		type: [Number, String], // 待开发，tabs情况下
 	},
 	data() {
