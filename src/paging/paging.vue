@@ -142,34 +142,35 @@ export default {
 		},
 		loadDataForPage(page) {
 			// set-page
-			if (this.currentPage !== 0) {
-				this.currentPage = page;
-				this.$emit('update:current', this.currentPage);
-			}
+			this.currentPage !== 0 && this.setCurrentPage(page);
+
+			// 是否已有数据
 			let arr = this.dataSource[page];
-			if (!arr || arr.length === 0) {
-				const load = this.loadData(page);
-				if (load && load.then) {
-					this.loading = true;
-					this.$emit('load-pending');
-					load.then((res) => {
-						this.$emit('load-success', res);
-						return res;
-					}).catch((res) => {
-						this.$emit('load-fail', res);
-						return Promise.reject(res);
-					}).finally(() => {
-						this.loading = false;
-						if (this.currentPage === 0) {
-							this.currentPage = page;
-							this.$emit('update:current', this.currentPage);
-						}
-						this.$emit('load-finish');
-					});
-				} else {
-					console.error('[vc-paging]-loadData need return a Promise');
-				}
+			if (arr && arr.length !== 0) return;
+
+			// 请求
+			const load = this.loadData(page);
+			if (load && load.then) {
+				this.loading = true;
+				this.$emit('load-pending');
+				load.then((res) => {
+					this.$emit('load-success', res);
+					return res;
+				}).catch((res) => {
+					this.$emit('load-fail', res);
+					return Promise.reject(res);
+				}).finally(() => {
+					this.loading = false;
+					this.currentPage === 0 && this.setCurrentPage(page);
+					this.$emit('load-finish');
+				});
+			} else {
+				console.error('[vc-paging]-loadData need return a Promise');
 			}
+		},
+		setCurrentPage(page) {
+			this.currentPage = page;
+			this.$emit('update:current', page);
 		}
 	}
 };
