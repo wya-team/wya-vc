@@ -63,7 +63,6 @@ export default {
 		"down-count": DownCount
 	},
 	props: {
-		id: [String, Number],
 		tag: {
 			type: String,
 			default: "span"
@@ -124,10 +123,7 @@ export default {
 		// 目标时间
 		targetTimestamp() {
 			if (!this.targetTime && Date.parse(this.targetTime.replace(/-/g, "/"))) {
-				this.$emit("error", {
-					id: this.id,
-					msg: '请设定时间以及格式'
-				});
+				this.$emit("error", '请设定时间以及格式');
 				return null;
 			}
 
@@ -192,7 +188,6 @@ export default {
 				this.stop();
 
 				this.$emit("change", {
-					id: this.id,
 					timestamp: 0,
 					days: '00',
 					hours: '00',
@@ -201,11 +196,10 @@ export default {
 					ms: '00',
 				});
 
-				this.$emit("end", this.id);
+				this.$emit("end");
 			} else {
 
 				this.$emit("change", {
-					id: this.id,
 					timestamp,
 					days: this.days,
 					hours: this.hours,

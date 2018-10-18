@@ -8,7 +8,6 @@
 
 属性 | 说明 | 类型 | 默认值
 ---|---|---|---
-id | 唯一标识 | `num`	 | -		
 t | 刷新周期，单位秒 | `num`	| 1		
 render | 自定义渲染 | `func` | -
 target-time	| 目标时间 | `str` / `num` |	-
@@ -23,8 +22,8 @@ tag | 标签 | `str` | 'span'
 
 属性 | 说明 | 类型 | 默认值
 ---|---|---|---
-error | 警告回调 | `func({ id, msg })` | -
-change | 变化回调 | `func({ id,... })` | -
+error | 警告回调 | `func(msg)` | -
+change | 变化回调 | `func({ ... })` | -
 end	| 结束回调 | `func(id)` |	 -
 			
 
@@ -33,13 +32,13 @@ end	| 结束回调 | `func(id)` |	 -
 ```vue
 <template>
 	<vc-down-count 
-		:id="1"
 		:target-time="targetTime" 
 		:server-time="serverTime"
 		:t="0.01" 
 		style="color:blue"
 		format="DD:HH:MM:SS:mm"
-		@end="handleEnd"
+		@change="handleEnd(arguments[0], 1)"
+		@end="handleEnd(1)"
 	/> 
 </template>
 <script>
@@ -60,7 +59,7 @@ export default {
 		handleError(msg) {
 			console.log(msg);
 		},
-		handleChange(res) {
+		handleChange(res, id) {
 			// console.log('change:', res);
 		},
 		handleEnd(id) {

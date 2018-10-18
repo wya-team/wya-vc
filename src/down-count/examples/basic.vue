@@ -1,25 +1,23 @@
 <template>
 	<div>
 		<vc-down-count 
-			:id="1"
 			:target-time="targetTime" 
 			:server-time="serverTime"
 			:t="0.01" 
 			style="color:blue"
 			format="DD:HH:MM:SS:mm"
-			@end="handleEnd"
+			@end="handleEnd(1)"
 		/> 
 		<br>
 		<vc-down-count
-			:id="2"
 			:render="renderRow"
 			target-time="2018-10-15 10:10:10"
 			server-time="2018-10-15 10:10:5"
 			before-text="---beforeText---"
 			after-text="---afterText---"
 			@error="handleError"
-			@change="handleChange"
-			@end="handleEnd"
+			@change="handleChange(arguments[0], 2)"
+			@end="handleEnd(2)"
 		/> 
 		<div @click="handleTarget">点我targetTime: Data.now() + 1</div>
 		<div @click="handleServer">点我serverTime: Data.now() - 1</div>
@@ -49,7 +47,7 @@ export default {
 		handleError(msg) {
 			console.log(msg);
 		},
-		handleChange(res) {
+		handleChange(res, id) {
 			// console.log('change:', res);
 		},
 		handleEnd(id) {
