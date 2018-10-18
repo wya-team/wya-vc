@@ -33,7 +33,7 @@ export default {
 				...initPage
 			},
 			page: {
-				'show-total': false
+				showTotal: true
 			},
 			table: {
 

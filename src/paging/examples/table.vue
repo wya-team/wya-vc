@@ -29,6 +29,7 @@
 					:current.sync="current[item.value]"
 					:history="true"
 					:load-data="loadData"
+					:page-opts="page"
 				/>
 			</i-tab-pane>
 		</i-tabs>
@@ -69,7 +70,7 @@ export default {
 			listInfo: initialState,
 			current: {},
 			page: {
-				'show-total': false
+				showTotal: true
 			},
 			table: {
 

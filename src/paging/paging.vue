@@ -66,7 +66,12 @@ export default {
 			}
 		},
 		// page 组件属性
-		pageOpts: Object,
+		pageOpts: {
+			type: Object,
+			default: () => ({
+				showTotal: true
+			})
+		},
 		total: {
 			type: Number,
 			default: 0
