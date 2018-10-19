@@ -11,24 +11,29 @@
 		mode="piece"
 		class="v-paging-piece"
 	>
+		<!-- 
 		<item 
 			slot-scope="it"
 			v-bind="it"
 			class="_item"
-		/>
+		/> 
+		-->
+		<div slot-scope="it" :key="it.id" class="_item">
+			<div>{{ it.name }}</div>
+			<div @click="handleResetFirst">回到首页刷新</div>
+			<div @click="handleResetCur">当前页刷新</div>
+		</div>
 	</vc-paging>
 </template>
 <script>
 import { ajax } from 'wya-fetch';
 import Paging from '../paging';
-import Item from './piece/item.vue';
 import { initPage } from './utils/utils';
 
 export default {
 	name: "vc-paging-combo",
 	components: {
 		'vc-paging': Paging,
-		'item': Item
 	},
 	data() {
 		return {
@@ -88,6 +93,25 @@ export default {
 			}
 			return fakeData;
 		},
+		/**
+		 * 回到首页刷新
+		 * 请使用vuex的commit，这里只负责实现
+		 */
+		handleResetFirst() {
+			this.listInfo = {
+				...initPage
+			};
+		},
+		/**
+		 * 当前页刷新
+		 * 请使用vuex的commit，这里只负责实现
+		 */
+		handleResetCur() {
+			this.listInfo = {
+				...initPage,
+				reset: true
+			};
+		}
 	}
 };
 </script>
