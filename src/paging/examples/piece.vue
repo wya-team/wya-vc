@@ -15,7 +15,8 @@
 			slot-scope="slotProps" 
 			slot="piece-item" 
 			:kye="slotProps.id" 
-			class="piece-item">
+			class="piece-item"
+		>
 			<div>{{ slotProps.item.name }}</div>
 			<div @click="handleResetFirst">回到首页刷新</div>
 			<div @click="handleResetCur">当前页刷新</div>

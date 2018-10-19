@@ -1,10 +1,10 @@
 <template>
 	<div>
 		<!-- 原生table -->
-		<native-table v-if="mode === 'native'"/>
+		<native v-if="mode === 'native'"/>
 
 		<!-- 没有头部栏的header -->
-		<piece-table 
+		<piece 
 			v-else-if="mode === 'piece'" 
 			:data="data"
 			:class="pieceClass"
@@ -12,7 +12,7 @@
 			<template slot-scope="slotProps">
 				<slot :item="slotProps.item" name="piece-item"/>
 			</template>
-		</piece-table>
+		</piece>
 
 		<i-table
 			v-else
@@ -55,8 +55,8 @@
 
 <script>
 import { Table, Page } from 'iview';
-import PieceTable from './piece-table';
-import NativeTable from './native-table';
+import PieceTable from './piece';
+import NativeTable from './native';
 import { getConstructUrl, getParseUrl } from '../utils/utils';
 
 export default {
@@ -64,8 +64,8 @@ export default {
 	components: {
 		'i-table': Table,
 		'i-page': Page,
-		'piece-table': PieceTable,
-		'native-table': NativeTable
+		'piece': PieceTable,
+		'native': NativeTable
 	},
 	props: {
 		// table组件属性
