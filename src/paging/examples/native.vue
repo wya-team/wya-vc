@@ -9,17 +9,63 @@
 		:history="true"
 		:load-data="loadData"
 		:show="show"
-	/>
+		mode="native"
+		class="vc-table-native"
+	>
+		<vc-fragment slot-scope="it" :key="it.id">
+			<tr>
+				<td colspan="4">
+					{{ it.name }}
+				</td>
+			</tr>
+			<tr>
+				<td>
+					<div class="_table-cell">
+						111
+					</div>
+				</td>
+				<td rowspan="2">
+					<div class="_table-cell">
+						222
+					</div>
+				</td>
+				<td>
+					<div class="_table-cell">
+						333
+					</div>
+				</td>
+				<td rowspan="2">
+					<div class="_table-cell">
+						444
+					</div>
+				</td>
+			</tr>
+			<tr >
+				<td>
+					<div class="_table-cell" @click="handleResetFirst">
+						回到首页刷新
+					</div>
+				</td>
+				<td>
+					<div class="_table-cell" @click="handleResetCur">
+						当前页刷新
+					</div>
+				</td>
+			</tr>
+		</vc-fragment>
+	</vc-paging>
 </template>
 <script>
 import { ajax } from 'wya-fetch';
 import Paging from '../paging';
 import { initPage } from './utils/utils';
+import Fragment from '../../fragment/index';
 
 export default {
 	name: "vc-paging-basic",
 	components: {
-		'vc-paging': Paging
+		'vc-paging': Paging,
+		'vc-fragment': Fragment
 	},
 	data() {
 		return {
@@ -33,40 +79,7 @@ export default {
 			table: {
 
 			},
-			columns: [
-				{
-					title: 'Name',
-					key: 'name'
-				},
-				{
-					title: 'Status',
-					key: 'status',
-					render: (h, params) => {
-						return h('div', {
-							style: {
-								marginRight: '5px'
-							},
-							on: {
-								click: this.handleResetFirst
-							}
-						}, '回到首页刷新');
-					}
-				},
-				{
-					title: 'Opt',
-					key: 'opt',
-					render: (h, params) => {
-						return h('div', {
-							style: {
-								marginRight: '5px'
-							},
-							on: {
-								click: this.handleResetCur
-							}
-						}, '当前页刷新');
-					}
-				}
-			],
+			columns: ['Header - 1', 'Header - 2', 'Header - 3', 'Header - 4']
 		};
 	},
 	computed: {
@@ -132,3 +145,31 @@ export default {
 	}
 };
 </script>
+<style lang="scss">
+.vc-table-native table {
+	width: 100%;
+	thead {
+		th {
+			text-align: left;
+			height: 40px;
+			white-space: nowrap;
+			overflow: hidden;
+			background-color: #f8f8f9;
+
+		}
+	}
+	tbody {
+		background-color: #ffffff;
+		td {
+			text-align: left;
+			height: 40px;
+			white-space: nowrap;
+			overflow: hidden;
+			border: 1px solid #ccc!important
+		}
+		tr {
+			border: 1px solid red!important
+		}
+	}
+}
+</style>

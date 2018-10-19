@@ -1,7 +1,18 @@
 <template>
 	<div class="vc-paging">
 		<!-- 原生table -->
-		<native v-if="mode === 'native'"/>
+		<table v-if="mode === 'native'">
+			<thead>
+				<th v-for="item in columns" :key="item">
+					{{ item }}
+				</th>
+			</thead>
+			<tbody>
+				<template v-for="item in data">
+					<slot v-bind="item" />
+				</template>
+			</tbody>
+		</table>
 
 		<!-- 没有头部栏的header -->
 		<template v-for="item in data" v-else-if="mode === 'piece'">
@@ -32,7 +43,7 @@
 			<slot name="loading" />
 		</i-table>
 
-		<div class="_footer">
+		<div class="__footer">
 			<div>
 				<slot name="extra" />
 			</div>
@@ -59,15 +70,13 @@
 
 <script>
 import { Table, Page } from 'iview';
-import NativeTable from './native';
 import { getConstructUrl, getParseUrl } from '../utils/utils';
 
 export default {
 	name: "vc-paging",
 	components: {
 		'i-table': Table,
-		'i-page': Page,
-		'native': NativeTable
+		'i-page': Page
 	},
 	props: {
 		// table组件属性
@@ -223,7 +232,7 @@ export default {
 </script>
 <style lang="scss" scoped>
 .vc-paging {
-	._footer {
+	.__footer {
 		display: flex; 
 		justify-content: space-between; 
 		align-items: center; 
