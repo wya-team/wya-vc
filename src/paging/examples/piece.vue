@@ -9,34 +9,26 @@
 		:load-data="loadData"
 		:show="show"
 		mode="piece"
-		piece-class="table-container"
+		class="v-paging-piece"
 	>
-		<div
-			slot-scope="slotProps" 
-			slot="piece-item" 
-			:kye="slotProps.id" 
-			class="piece-item"
-		>
-			<div>{{ slotProps.item.name }}</div>
-			<div @click="handleResetFirst">回到首页刷新</div>
-			<div @click="handleResetCur">当前页刷新</div>
-		</div>
+		<item 
+			slot-scope="it"
+			v-bind="it"
+			class="_item"
+		/>
 	</vc-paging>
 </template>
 <script>
 import { ajax } from 'wya-fetch';
 import Paging from '../paging';
-
-const initPage = {
-	total: 0,
-	reset: false,
-	data: {}
-};
+import Item from './piece/item.vue';
+import { initPage } from './utils/utils';
 
 export default {
 	name: "vc-paging-combo",
 	components: {
-		'vc-paging': Paging
+		'vc-paging': Paging,
+		'item': Item
 	},
 	data() {
 		return {
@@ -96,34 +88,17 @@ export default {
 			}
 			return fakeData;
 		},
-		/**
-		 * 回到首页刷新
-		 */
-		handleResetFirst() {
-			this.listInfo = {
-				...initPage
-			};
-		},
-		/**
-		 * 当前页刷新
-		 */
-		handleResetCur() {
-			this.listInfo = {
-				...initPage,
-				reset: true,
-			};
-		}
 	}
 };
 </script>
 
 <style lang="scss">
-.table-container {
+.v-paging-piece {
 	display: flex;
 	flex-wrap: wrap;
 	justify-content: space-between;
 	margin: 0 20px;
-	.piece-item {
+	._item {
 		border: 1px solid #d4d4d4;
 		padding: 20px;
 		margin-bottom: 20px;

@@ -4,15 +4,9 @@
 		<native v-if="mode === 'native'"/>
 
 		<!-- 没有头部栏的header -->
-		<piece 
-			v-else-if="mode === 'piece'" 
-			:data="data"
-			:class="pieceClass"
-		>
-			<template slot-scope="slotProps">
-				<slot :item="slotProps.item" name="piece-item"/>
-			</template>
-		</piece>
+		<template v-for="item in data" v-else-if="mode === 'piece'">
+			<slot v-bind="item"/>
+		</template>
 
 		<i-table
 			v-else
@@ -38,7 +32,7 @@
 			<slot name="loading" />
 		</i-table>
 
-		<div style="margin: 10px; overflow: hidden">
+		<div style="margin: 10px; overflow: hidden; width: 100%">
 			<div style="float: right;">
 				<i-page
 					ref="pageTarget"  
@@ -55,7 +49,6 @@
 
 <script>
 import { Table, Page } from 'iview';
-import PieceTable from './piece';
 import NativeTable from './native';
 import { getConstructUrl, getParseUrl } from '../utils/utils';
 
@@ -64,7 +57,6 @@ export default {
 	components: {
 		'i-table': Table,
 		'i-page': Page,
-		'piece': PieceTable,
 		'native': NativeTable
 	},
 	props: {

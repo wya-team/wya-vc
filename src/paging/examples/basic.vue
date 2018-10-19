@@ -14,12 +14,7 @@
 <script>
 import { ajax } from 'wya-fetch';
 import Paging from '../paging';
-
-const initPage = {
-	total: 0,
-	reset: false,
-	data: {}
-};
+import { initPage } from './utils/utils';
 
 export default {
 	name: "vc-paging-basic",

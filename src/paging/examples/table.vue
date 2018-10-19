@@ -39,13 +39,9 @@
 import { ajax } from 'wya-fetch';
 import { Tabs, TabPane, Input } from 'iview';
 import Paging from '../paging';
+import { initPage } from './utils/utils';
 import { getConstructUrl, getParseUrl } from '../../utils/utils';
 
-const initPage = {
-	total: 0,
-	reset: false,
-	data: {}
-};
 const initialState = {
 	1: { ...initPage },
 	2: { ...initPage },
