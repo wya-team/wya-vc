@@ -1,6 +1,21 @@
 <template>
 	<div>
+		<!-- 原生table -->
+		<native-table v-if="mode === 'native'"/>
+
+		<!-- 没有头部栏的header -->
+		<piece-table 
+			v-else-if="mode === 'piece'" 
+			:data="data"
+			:class="pieceClass"
+		>
+			<template slot-scope="slotProps">
+				<slot :item="slotProps.item" name="piece-item"/>
+			</template>
+		</piece-table>
+
 		<i-table
+			v-else
 			ref="tableTarget" 
 			:data="data" 
 			:loading="loading"
@@ -22,6 +37,7 @@
 			<slot name="footer" />
 			<slot name="loading" />
 		</i-table>
+
 		<div style="margin: 10px; overflow: hidden">
 			<div style="float: right;">
 				<i-page
@@ -39,13 +55,17 @@
 
 <script>
 import { Table, Page } from 'iview';
+import PieceTable from './piece-table';
+import NativeTable from './native-table';
 import { getConstructUrl, getParseUrl } from '../utils/utils';
 
 export default {
 	name: "vc-paging",
 	components: {
 		'i-table': Table,
-		'i-page': Page
+		'i-page': Page,
+		'piece-table': PieceTable,
+		'native-table': NativeTable
 	},
 	props: {
 		// table组件属性
@@ -93,6 +113,16 @@ export default {
 		reset: Boolean,
 		// current: [Number, String], // .sync可以不声明；需要使用this.current, 必须声明
 		type: [Number, String], // 待开发，tabs情况下
+		mode: {
+			type: String,
+			validator(value) {
+				return ['native', 'piece', 'table'].indexOf(value) !== -1;
+			}
+		},
+		pieceClass: {
+			type: String,
+			default: ''
+		}
 	},
 	data() {
 		let { query: { page = 1 } } = getParseUrl();
@@ -180,4 +210,5 @@ export default {
 	}
 };
 </script>
-<style></style>
+<style lang="scss" scoped>
+</style>
