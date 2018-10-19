@@ -1,5 +1,5 @@
 <template>
-	<div>
+	<div class="vc-paging">
 		<!-- 原生table -->
 		<native v-if="mode === 'native'"/>
 
@@ -32,7 +32,7 @@
 			<slot name="loading" />
 		</i-table>
 
-		<div style="display: flex; justify-content: space-between; align-items: center; margin: 10px; width: 100%;">
+		<div class="_footer">
 			<div>
 				<slot name="extra" />
 			</div>
@@ -222,4 +222,13 @@ export default {
 };
 </script>
 <style lang="scss" scoped>
+.vc-paging {
+	._footer {
+		display: flex; 
+		justify-content: space-between; 
+		align-items: center; 
+		margin: 10px; 
+		width: 100%;
+	}
+}
 </style>
