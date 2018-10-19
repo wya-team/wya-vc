@@ -5,7 +5,7 @@
 
 		<!-- 没有头部栏的header -->
 		<template v-for="item in data" v-else-if="mode === 'piece'">
-			<slot v-bind="item"/>
+			<slot v-bind="item" />
 		</template>
 
 		<i-table
@@ -32,9 +32,19 @@
 			<slot name="loading" />
 		</i-table>
 
-		<div style="margin: 10px; overflow: hidden; width: 100%">
-			<div style="float: right;">
+		<div style="display: flex; justify-content: space-between; align-items: center; margin: 10px; width: 100%;">
+			<div>
+				<slot name="extra" />
+			</div>
+			<div>
+				<slot 
+					v-if="$slots.page || $scopedSlots.page"
+					:total="total"
+					:current="currentPage" 
+					name="page"
+				/>
 				<i-page
+					v-else
 					ref="pageTarget"  
 					:total="total" 
 					:current="currentPage"
@@ -195,9 +205,18 @@ export default {
 				console.error('[vc-paging]-loadData need return a Promise');
 			}
 		},
+		/**
+		 * 内部使用
+		 */
 		setCurrentPage(page) {
 			this.currentPage = page;
 			this.$emit('update:current', page);
+		},
+		/**
+		 * 外部调用
+		 */
+		go(page) {
+			this.handleChangePage(page);
 		}
 	}
 };

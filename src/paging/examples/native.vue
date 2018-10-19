@@ -1,35 +1,15 @@
 <template>
 	<vc-paging
 		:data-source="listInfo.data"
-		:total="listInfo.total" 
+		:columns="columns" 
+		:total="listInfo.total"
 		:reset="listInfo.reset"
 		:page-opts="page"
 		:table-opts="table"
 		:history="true"
 		:load-data="loadData"
 		:show="show"
-		mode="piece"
-		class="v-paging-piece"
-	>
-		<!-- 
-		<item 
-			slot-scope="it"
-			v-bind="it"
-			class="_item"
-		/> 
-		-->
-		<div slot-scope="it" :key="it.id" class="_item">
-			<div>{{ it.name }}</div>
-			<div @click="handleResetFirst">回到首页刷新</div>
-			<div @click="handleResetCur">当前页刷新</div>
-		</div>
-		<!-- 
-		<div 
-			slot="page"
-			slot-scope="it"
-		>{{ it.current }}</div>
-		-->
-	</vc-paging>
+	/>
 </template>
 <script>
 import { ajax } from 'wya-fetch';
@@ -37,9 +17,9 @@ import Paging from '../paging';
 import { initPage } from './utils/utils';
 
 export default {
-	name: "vc-paging-combo",
+	name: "vc-paging-basic",
 	components: {
-		'vc-paging': Paging,
+		'vc-paging': Paging
 	},
 	data() {
 		return {
@@ -48,12 +28,45 @@ export default {
 				...initPage
 			},
 			page: {
-				'show-total': false
+				showTotal: true
 			},
 			table: {
-				"disabled-hover": true,
-				"style": "margin: 20px"
+
 			},
+			columns: [
+				{
+					title: 'Name',
+					key: 'name'
+				},
+				{
+					title: 'Status',
+					key: 'status',
+					render: (h, params) => {
+						return h('div', {
+							style: {
+								marginRight: '5px'
+							},
+							on: {
+								click: this.handleResetFirst
+							}
+						}, '回到首页刷新');
+					}
+				},
+				{
+					title: 'Opt',
+					key: 'opt',
+					render: (h, params) => {
+						return h('div', {
+							style: {
+								marginRight: '5px'
+							},
+							on: {
+								click: this.handleResetCur
+							}
+						}, '当前页刷新');
+					}
+				}
+			],
 		};
 	},
 	computed: {
@@ -101,7 +114,6 @@ export default {
 		},
 		/**
 		 * 回到首页刷新
-		 * 请使用vuex的commit，这里只负责实现
 		 */
 		handleResetFirst() {
 			this.listInfo = {
@@ -110,30 +122,13 @@ export default {
 		},
 		/**
 		 * 当前页刷新
-		 * 请使用vuex的commit，这里只负责实现
 		 */
 		handleResetCur() {
 			this.listInfo = {
 				...initPage,
-				reset: true
+				reset: true,
 			};
 		}
 	}
 };
 </script>
-
-<style lang="scss">
-.v-paging-piece {
-	display: flex;
-	flex-wrap: wrap;
-	justify-content: space-between;
-	margin: 0 20px;
-	._item {
-		border: 1px solid #d4d4d4;
-		padding: 20px;
-		margin-bottom: 20px;
-		width: calc(50% - 10px);
-	}
-}
-</style>
-
