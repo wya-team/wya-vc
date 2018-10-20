@@ -1,7 +1,7 @@
 <template>
 	<div class="vc-paging">
 		<!-- 原生table -->
-		<table v-if="mode === 'native'">
+		<table v-if="mode === 'native'" class="_native-table">
 			<thead>
 				<th v-for="item in columns" :key="item">
 					{{ item }}
@@ -232,6 +232,9 @@ export default {
 </script>
 <style lang="scss" scoped>
 .vc-paging {
+	._native-table {
+		border-collapse:collapse;
+	}
 	.__footer {
 		display: flex; 
 		justify-content: space-between; 
