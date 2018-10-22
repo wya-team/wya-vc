@@ -239,7 +239,7 @@ export default {
 		display: flex; 
 		justify-content: space-between; 
 		align-items: center; 
-		margin: 10px 0; 
+		padding: 10px; 
 		width: 100%;
 	}
 }
