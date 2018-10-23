@@ -12,60 +12,20 @@
 		mode="native"
 		class="vc-table-native"
 	>
-		<vc-fragment slot-scope="it" :key="it.id">
-			<tr>
-				<td colspan="4">
-					{{ it.name }}
-				</td>
-			</tr>
-			<tr>
-				<td>
-					<div class="_table-cell">
-						111
-					</div>
-				</td>
-				<td rowspan="2">
-					<div class="_table-cell">
-						222
-					</div>
-				</td>
-				<td>
-					<div class="_table-cell">
-						333
-					</div>
-				</td>
-				<td rowspan="2">
-					<div class="_table-cell">
-						444
-					</div>
-				</td>
-			</tr>
-			<tr >
-				<td>
-					<div class="_table-cell" @click="handleResetFirst">
-						回到首页刷新
-					</div>
-				</td>
-				<td>
-					<div class="_table-cell" @click="handleResetCur">
-						当前页刷新
-					</div>
-				</td>
-			</tr>
-		</vc-fragment>
+		<list slot-scope="it" v-bind="it" />
 	</vc-paging>
 </template>
 <script>
 import { ajax } from 'wya-fetch';
 import Paging from '../paging';
 import { initPage } from './utils/utils';
-import Fragment from '../../fragment/index';
+import List from './native/list';
 
 export default {
 	name: "vc-paging-basic",
 	components: {
 		'vc-paging': Paging,
-		'vc-fragment': Fragment
+		'list': List
 	},
 	data() {
 		return {

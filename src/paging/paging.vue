@@ -7,11 +7,7 @@
 					{{ item }}
 				</th>
 			</thead>
-			<tbody>
-				<template v-for="item in data">
-					<slot v-bind="item" />
-				</template>
-			</tbody>
+			<slot :data="data" />
 		</table>
 
 		<!-- 没有头部栏的header -->
