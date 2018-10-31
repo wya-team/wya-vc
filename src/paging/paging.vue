@@ -140,10 +140,12 @@ export default {
 	data() {
 		let { query: { page = 1, pageSize } } = getParseUrl();
 		let { pageSizeOpts } = this.pageOpts;
+
+		this.defaultPageSize = Number(pageSize || (pageSizeOpts && pageSizeOpts[0]) || 10);
 		return {
 			loading: false,
 			currentPage: this.show ? Number(page) : 1,
-			pageSize: Number(pageSize || (pageSizeOpts && pageSizeOpts[0]) || 10)
+			pageSize: this.defaultPageSize
 		};
 	},
 	computed: {
@@ -165,15 +167,16 @@ export default {
 			} else if (this.total === 0) {
 				this.currentPage = 0;
 			}
-
-			
-			// tabs切换时保持pageSize不变
-			let { query: { pageSize } } = getParseUrl();
-			this.pageSize = pageSize;
-
 		},
 		show(newVal, oldVal) {
 			if (newVal) {
+				// tabs切换时保持pageSize不变
+				let { query: { pageSize } } = getParseUrl();
+				if (this.pageSize != pageSize) {
+					this.pageSize = Number(pageSize || this.defaultPageSize);
+				}
+				
+				// 触发
 				this.handleChange(this.currentPage);
 			}
 		}
