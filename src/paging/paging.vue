@@ -140,11 +140,10 @@ export default {
 	data() {
 		let { query: { page = 1, pageSize } } = getParseUrl();
 		let { pageSizeOpts } = this.pageOpts;
-		let defaultPageSize = (pageSizeOpts && pageSizeOpts[0]) || 10;
 		return {
 			loading: false,
 			currentPage: this.show ? Number(page) : 1,
-			pageSize: this.show ? Number(pageSize || defaultPageSize) : defaultPageSize
+			pageSize: Number(pageSize || (pageSizeOpts && pageSizeOpts[0]) || 10)
 		};
 	},
 	computed: {
@@ -166,6 +165,12 @@ export default {
 			} else if (this.total === 0) {
 				this.currentPage = 0;
 			}
+
+			
+			// tabs切换时保持pageSize不变
+			let { query: { pageSize } } = getParseUrl();
+			this.pageSize = pageSize;
+
 		},
 		show(newVal, oldVal) {
 			if (newVal) {
