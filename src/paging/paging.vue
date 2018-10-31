@@ -55,9 +55,10 @@
 					ref="pageTarget"  
 					:total="total" 
 					:current="currentPage"
+					:page-size="pageSize"
 					v-bind="pageOpts"
-					@on-change="handleChangePage"
-					@on-page-size-change="$emit('page-size-change', arguments[0])"
+					@on-change="handleChange"
+					@on-page-size-change="handleChangePageSize"
 				/>
 			</div>
 		</div>
@@ -96,7 +97,12 @@ export default {
 		pageOpts: {
 			type: Object,
 			default: () => ({
-				showTotal: true
+				showTotal: true,
+				showSizer: true,
+				showElevator: true,
+				// transfer: true,
+				placement: 'top',
+				pageSizeOpts: [10, 20, 30, 50, 100]
 			})
 		},
 		total: {
@@ -132,10 +138,13 @@ export default {
 		}
 	},
 	data() {
-		let { query: { page = 1 } } = getParseUrl();
+		let { query: { page = 1, pageSize } } = getParseUrl();
+		let { pageSizeOpts } = this.pageOpts;
+		let defaultPageSize = (pageSizeOpts && pageSizeOpts[0]) || 10;
 		return {
 			loading: false,
-			currentPage: this.show ? Number(page) : 1
+			currentPage: this.show ? Number(page) : 1,
+			pageSize: this.show ? Number(pageSize || defaultPageSize) : defaultPageSize
 		};
 	},
 	computed: {
@@ -153,36 +162,43 @@ export default {
 				: 1; // 首页刷新
 			if (this.total === 0 && this.show) {
 				this.currentPage = 0;
-				this.handleChangePage(page);
+				this.handleChange(page);
 			} else if (this.total === 0) {
 				this.currentPage = 0;
 			}
 		},
 		show(newVal, oldVal) {
 			if (newVal) {
-				this.handleChangePage(this.currentPage);
+				this.handleChange(this.currentPage);
 			}
 		}
 	},
 	created() {
 		let { query: { page = 1 } } = getParseUrl();
-		this.show && this.loadDataForPage(page);
+		this.show && this._loadData(page);
 	},
 	methods: {
-		handleChangePage(page) {
+		handleChangePageSize(pageSize) {
+			this.$emit('page-size-change', pageSize); // 清理数据
+			this.pageSize = pageSize;
+
+			this.handleChange(1, pageSize);
+		},
+		handleChange(page, pageSize = this.pageSize) {
+			// this.$emit('page-change', page);
 			page = page || 1;
 			let { path, query } = getParseUrl();
-
 			this.history && window.history.replaceState(null, null, getConstructUrl({
 				path,
 				query: {
 					...query,
-					page
+					page,
+					pageSize
 				}
 			}));
-			this.loadDataForPage(page);
+			this._loadData(page, pageSize);
 		},
-		loadDataForPage(page) {
+		_loadData(page, pageSize = this.pageSize) {
 			// set-page
 			this.currentPage !== 0 && this.setCurrentPage(page);
 
@@ -191,7 +207,7 @@ export default {
 			if (arr && arr.length !== 0) return;
 
 			// 请求
-			const load = this.loadData(page);
+			const load = this.loadData(page, this.pageSize);
 			if (load && load.then) {
 				this.loading = true;
 				this.$emit('load-pending');
@@ -221,7 +237,7 @@ export default {
 		 * 外部调用
 		 */
 		go(page) {
-			this.handleChangePage(page);
+			this.handleChange(page);
 		}
 	}
 };

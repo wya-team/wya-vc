@@ -30,6 +30,7 @@
 					:history="true"
 					:load-data="loadData"
 					:page-opts="page"
+					@page-size-change="handleResetFirst"
 				/>
 			</i-tab-pane>
 		</i-tabs>
@@ -65,12 +66,8 @@ export default {
 			keyword: String(query.keyword || ''),
 			listInfo: initialState,
 			current: {},
-			page: {
-				showTotal: true
-			},
-			table: {
-
-			},
+			page: undefined,
+			table: undefined,
 			tabs: [
 				{ label: '标签一', value: '1' }, 
 				{ label: '标签二', value: '2' }, 
@@ -116,7 +113,7 @@ export default {
 		
 	},
 	methods: {
-		loadData(page) {
+		loadData(page, pageSize) {
 			const { type } = this;
 			// 真实场景为ajax
 			return new Promise((resolve, reject) => {
@@ -129,7 +126,7 @@ export default {
 						data: {
 							currentPage: page,
 							total: 100,
-							list: this.getFakeData(page)
+							list: this.getFakeData(page, pageSize)
 						}
 					};
 					const { currentPage, total, list } = res.data;
@@ -148,9 +145,9 @@ export default {
 				}, 150);
 			});
 		},
-		getFakeData(page) {
+		getFakeData(page, pageSize) {
 			let fakeData = [];
-			for (let i = 0; i < 10; i++) {
+			for (let i = 0; i < pageSize; i++) {
 				fakeData.push({
 					id: `${page}_${i}`,
 					name: `page: ${page}, type: ${this.type}, sort: ${i}`,
@@ -196,11 +193,6 @@ export default {
 		},
 		handleChange(type) {
 			this.type = type;
-
-			this.setHistory({
-				type,
-				page: this.current[type]
-			});
 		},
 		handleSearch(keyword) {
 			this.listInfo = {

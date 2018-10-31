@@ -10,6 +10,7 @@
 		:show="show"
 		mode="piece"
 		class="v-paging-piece"
+		@page-size-change="handleResetFirst"
 	>
 		<!-- 
 		<item 
@@ -47,9 +48,7 @@ export default {
 			listInfo: {
 				...initPage
 			},
-			page: {
-				'show-total': false
-			},
+			page: undefined,
 			table: {
 				"disabled-hover": true,
 				"style": "margin: 20px"
@@ -60,7 +59,7 @@ export default {
 		
 	},
 	methods: {
-		loadData(page) {
+		loadData(page, pageSize) {
 			return ajax({
 				url: 'test.json',
 				localData: {
@@ -68,7 +67,7 @@ export default {
 					data: {
 						currentPage: page,
 						total: 100,
-						list: this.getFakeData(page)
+						list: this.getFakeData(page, pageSize)
 					}
 
 				}
@@ -87,9 +86,9 @@ export default {
 				console.log(e);
 			});
 		},
-		getFakeData(page) {
+		getFakeData(page, pageSize) {
 			let fakeData = [];
-			for (let i = 0; i < 10; i++) {
+			for (let i = 0; i < pageSize; i++) {
 				fakeData.push({
 					id: `${page}_${i}`,
 					name: page + '-Business' + Math.floor(Math.random() * 100 + 1),

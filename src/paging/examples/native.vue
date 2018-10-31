@@ -11,6 +11,7 @@
 		:show="show"
 		mode="native"
 		class="vc-table-native"
+		@page-size-change="handleResetFirst"
 	>
 		<list slot-scope="it" v-bind="it" />
 	</vc-paging>
@@ -33,12 +34,8 @@ export default {
 			listInfo: {
 				...initPage
 			},
-			page: {
-				showTotal: true
-			},
-			table: {
-
-			},
+			page: undefined,
+			table: undefined,
 			columns: ['Header - 1', 'Header - 2', 'Header - 3', 'Header - 4']
 		};
 	},
@@ -46,7 +43,7 @@ export default {
 		
 	},
 	methods: {
-		loadData(page) {
+		loadData(page, pageSize) {
 			return ajax({
 				url: 'test.json',
 				localData: {
@@ -54,7 +51,7 @@ export default {
 					data: {
 						currentPage: page,
 						total: 100,
-						list: this.getFakeData(page)
+						list: this.getFakeData(page, pageSize)
 					}
 
 				}
@@ -73,9 +70,9 @@ export default {
 				console.log(e);
 			});
 		},
-		getFakeData(page) {
+		getFakeData(page, pageSize) {
 			let fakeData = [];
-			for (let i = 0; i < 10; i++) {
+			for (let i = 0; i < pageSize; i++) {
 				fakeData.push({
 					id: `${page}_${i}`,
 					name: page + '-Business' + Math.floor(Math.random() * 100 + 1),
