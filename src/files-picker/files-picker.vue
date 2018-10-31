@@ -17,23 +17,25 @@
 			<div 
 				v-for="(item, index) in currentValue" 
 				:key="index"
-				:class="item.retcode == 0 && item.percent == 100 ? '__error' : ''"
+				:class="item.retcode == 0 && item.percent == 100 || item.error_time ? '__error' : ''"
 				class="__item"
 			>
 				<span :title="item.title">{{ item.title }}</span>
-				<div v-if="item.percent != 100" style="flex: 1; display: flex; align-items: center">
-					<div class="__pcontainer">
-						<div :style="{width: item.percent + '%'}" class="__progress" />
-					</div>
-					<span style="margin-left: 10px">{{ item.percent }}%</span>
-				</div>
+				<template v-if="item.error_time || item.retcode == 0">
+					<div>上传失败</div>
+				</template>
 				<template v-else>
-					<div v-if="item.retcode == 0">上传失败</div>
+					<div v-if="item.percent != 100" style="flex: 1; display: flex; align-items: center">
+						<div class="__pcontainer">
+							<div :style="{width: item.percent + '%'}" class="__progress" />
+						</div>
+						<span style="margin-left: 10px">{{ item.percent }}%</span>
+					</div>
 					<div v-else-if="!item.url">文件上传完毕，请等待...</div>
 					<div v-else>上传成功</div>
 				</template>
 				<span 
-					v-if="item.url || (item.retcode == 0 && item.percent == 100)" 
+					v-if="item.url || (item.retcode == 0 && item.percent == 100) || item.error_time" 
 					class="__close" 
 					@click="handleDel(item)"
 				>
@@ -138,6 +140,7 @@ export default {
 			this.setCurrentValue(value);
 		},
 		handleFileError(res, file) {
+			console.log(res, 'error');
 			let { max, currentValue, getParse } = this;
 			// let value = [...currentValue, getParse ? getParse(res) : res.data];
 			let value;
@@ -145,7 +148,8 @@ export default {
 				if (item.uid === file.uid) {
 					return {
 						...item,
-						...res
+						...res,
+						error_time: new Date().getTime()
 					};
 				}
 				return item;
@@ -167,7 +171,7 @@ export default {
 				return;
 			}
 			let value = currentValue.filter(_item => {
-				return _item.uid !== item.uid;
+				return _item.uid !== item.uid || _item.error_time != item.error_time;
 			});
 			this.$emit('change', value);
 			this.setCurrentValue(value);
