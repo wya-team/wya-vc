@@ -166,11 +166,6 @@ export default {
 			} else if (this.total === 0) {
 				this.currentPage = 0;
 			}
-
-			// tabs切换时保持pageSize不变
-			let { query: { pageSize } } = getParseUrl();
-			this.pageSize = pageSize;
-
 		},
 		show(newVal, oldVal) {
 			if (newVal) {
@@ -193,8 +188,6 @@ export default {
 			// this.$emit('page-change', page);
 			page = page || 1;
 			let { path, query } = getParseUrl();
-
-			// history
 			this.history && window.history.replaceState(null, null, getConstructUrl({
 				path,
 				query: {
