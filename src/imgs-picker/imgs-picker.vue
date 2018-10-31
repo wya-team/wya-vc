@@ -18,6 +18,7 @@
 		<vc-upload 
 			v-if="!disabled && (currentValue.length < max || max === 0)"
 			v-bind="upload"
+			:accept="accept"
 			class="__upload __normal"
 			@file-success="handleFileSuccess"
 			@file-error="handleFileError"
@@ -61,6 +62,10 @@ export default {
 				return {};
 			}
 		},
+		accept: {
+			type: String,
+			default: 'image/gif,image/jpeg,image/jpg,image/png' // 不默认为image/*是因为在Webkit浏览器下回响应很慢
+		}
 		// getParse: {
 		// 	type: Function,
 		// 	default() {
