@@ -193,6 +193,10 @@ export default {
 		},
 		handleChange(type) {
 			this.type = type;
+
+			this.setHistory({
+				type
+			});
 		},
 		handleSearch(keyword) {
 			this.listInfo = {
