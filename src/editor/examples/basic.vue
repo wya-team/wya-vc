@@ -9,6 +9,14 @@
 </template>
 <script>
 import Editor from '../editor';
+import { VcInstance } from '../../vc/index';
+
+VcInstance.init({
+	Upload: {
+		URL_UPLOAD_IMG_POST: 'https://wyaoa-new.ruishan666.com/uploadfile/upimg.json?action=uploadimage&encode=utf-8&code=oa',
+		URL_UPLOAD_FILE_POST: 'https://wyaoa-new.ruishan666.com/uploadfile/upimg.json?action=uploadimage&encode=utf-8&code=oa'
+	}
+});
 
 export default {
 	name: "vc-editor-basic",
@@ -18,11 +26,9 @@ export default {
 	data() {
 		return {
 			options: {
-				// modules: {
-				// 	toolbar: [
-				// 		['link', 'image', 'video']
-				// 	],
-				// },
+				modules: {
+					toolbar: '#toolbar',
+				},
 			},
 			disabled: false
 		};

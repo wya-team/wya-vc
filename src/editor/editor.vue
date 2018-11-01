@@ -1,6 +1,20 @@
 <template>
 	<div class="vc-quill-editor">
-		<slot name="toolbar"/>
+		<slot v-if="$slots.toolbar" name="toolbar"/>
+		<template v-else>
+			<toolbar>
+				<button id="img" style="outline: none" >
+					<vc-upload
+						accept="image/gif,image/jpeg,image/jpg,image/png"
+						style="outline: none" 
+						@file-success="handleImgSuccess"
+					>
+						<vc-icon type="image" />
+					</vc-upload>
+				</button>
+				<slot name="extend" />
+			</toolbar>
+		</template>
 		<div ref="editor"/>
 	</div>
 </template>
@@ -10,10 +24,20 @@ import Quill from 'quill';
 import 'quill/dist/quill.core.css';
 import 'quill/dist/quill.snow.css';
 import 'quill/dist/quill.bubble.css';
+import Toolbar from './toolbar';
+import Upload from '../upload/index';
+import Icon from '../icon/index';
+import ImgsPreview from '../imgs-preview/index';
+import { getUid } from '../utils/utils';
 import defaultOptinos from './options';
 
 export default {
 	name: "vc-editor",
+	components: {
+		'toolbar': Toolbar,
+		'vc-upload': Upload,
+		'vc-icon': Icon
+	},
 	props: {
 		value: {
 			type: String,
@@ -57,6 +81,7 @@ export default {
 	},
 	mounted() {
 		this.init();
+		this.initListener();
 	},
 	beforeDestroy() {
 		this.editor = null;
@@ -88,6 +113,70 @@ export default {
 				this.content = html;
 				// this.$emit('input', this.content);
 				this.$emit('change', { html, text, editor });
+			});
+		},
+		initListener() {
+			const ImageBlot = Quill.import('formats/image');
+			const Parchment = Quill.import('parchment');
+			this.editor.root.addEventListener('click', (ev) => {
+				let image = Parchment.find(ev.target);
+				if (image instanceof ImageBlot) {
+					
+					let imgs = this.getImgs();
+					this.handlePreview(ev, 0);
+				}
+			});
+		},
+		getImgs() {
+			let imgs = [];
+			let deltas = this.editor.getContents().ops || [];
+			console.log(deltas);
+
+			for (let i = 0; i < deltas.length; i++) {
+				if (deltas[i].insert.image) {
+					imgs.push({
+						src: deltas[i].insert.image,
+						thumbnail: deltas[i].insert.image + '!4-4',
+						title: 'Image' + (i + 1),
+						w: 1200,
+						h: 900
+					});
+				}
+			}
+			return imgs;
+		},
+		handleImgSuccess(res) {
+			// 获取光标所在位置
+			let length = this.editor.getSelection().index;
+			this.editor.insertEmbed(length, 'image', res.data.url);
+			// 光标向后移动一位
+			this.editor.setSelection(length + 1);
+		},
+		handlePreview(e, idx) {
+			let pos = {};
+			try {
+				const target = e.target; // 先得到pos, 否则getThumbBoundsFn再计划，target已变化
+				const pageYScroll = window.pageYOffset || document.documentElement.scrollTop;
+				const rect = target.getBoundingClientRect();
+
+				pos = { x: rect.left, y: rect.top + pageYScroll, w: rect.width };
+
+			} catch (e) {
+				console.log(e);
+			}
+
+			ImgsPreview.popup({
+				visible: true,
+				dataSource: [e.target.currentSrc],
+				opts: {
+					index: idx,
+					history: false,
+					getThumbBoundsFn: (index) => pos
+				}
+			}).then(() => {
+
+			}).catch(() => {
+
 			});
 		}
 	}
