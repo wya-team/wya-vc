@@ -114,6 +114,10 @@ export default {
 			type: Boolean,
 			default: false
 		},
+		sync: {
+			type: Boolean,
+			default: false
+		},
 		show: {
 			type: Boolean,
 			default: true
@@ -196,14 +200,20 @@ export default {
 			// this.$emit('page-change', page);
 			page = page || 1;
 			let { path, query } = getParseUrl();
-			this.history && window.history.replaceState(null, null, getConstructUrl({
-				path,
-				query: {
-					...query,
-					page,
-					pageSize
-				}
-			}));
+			if (this.history) {
+				let config = getConstructUrl({
+					path,
+					query: {
+						...query,
+						page,
+						pageSize
+					}
+				});
+				// 同步vue-router，this.$route
+				(this.$router && this.sync)
+					? this.$router.replace(config)
+					: window.history.replaceState(null, null, config);
+			}
 			this._loadData(page, pageSize);
 		},
 		_loadData(page, pageSize = this.pageSize) {
