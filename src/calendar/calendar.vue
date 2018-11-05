@@ -37,7 +37,14 @@
 							:class="`__date-item __date-${item.type}`"
 							:key="index"
 						>
+							<template v-if="$slots.default || $scopedSlots.default">
+								<slot
+									:data="item" 
+									:curDate="curDateStr"
+								/>
+							</template>
 							<date-item
+								v-else
 								:date="item"
 								:cur-date-str="curDateStr"
 								:render="renderDate"
@@ -294,12 +301,12 @@ export default {
 		z-index: 0;
 		.__date-row {
 			@include commonFlex();
-			padding-top: 15px;
-			padding-bottom: 15px;
+			// padding-top: 15px;
+			// padding-bottom: 15px;
 		}
 		.__date-item {
 			@include commonFlexCc();
-			width: 14.28%;
+			flex:1 ;
 			font-size: 16px;
 			&.__date-prev,
 			&.__date-next {

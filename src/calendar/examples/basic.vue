@@ -6,24 +6,27 @@
 				ref="calendar"
 			>
 				<div 
-					slot-scope="it"
+					slot-scope="month"
 					slot="month"
 					class="v-month-header"
 				>
-					{{ it.data.month }}{{ it.data.year }}
+					{{ month.data.month }}{{ month.data.year }}
 				</div>
 				<div 
-					slot-scope="it"
+					slot-scope="week"
 					slot="week"
 					class="v-week-header"
 				>
 					<span 
-						v-for="(item, index) in it.data"
+						v-for="(item, index) in week.data"
 						:key="index"
 					>
 						{{ item }}
 					</span>
 				</div>
+				<!-- <div slot-scope="it">
+					{{ it.data.day }}
+				</div> -->
 			</vc-calendar>
 			<div @click="$refs.calendar.next()">next</div>
 		</div>
