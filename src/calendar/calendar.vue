@@ -1,40 +1,55 @@
 <template>
 	<div class="vc-calendar">
+		
+		<template v-if="$slots.month || $scopedSlots.month">
+			<slot
+				:data="{month: monthNames[showMonth][lang], year: showYear}" 
+				name="month" 
+			/>
+		</template>
+		<month-header
+			v-else
+			:render="renderMonth"
+			:month="showMonth"
+			:year="showYear"
+			:month-names="monthNames"
+			:lang="lang"
+		/>
+		
 		<transition :name="slideDirect">
 			<div :key="showMonth" class="__calendar-item">
+				<template v-if="$slots.week || $scopedSlots.week">
+					<slot
+						:data="weekNames.map((item) => item[lang])" 
+						name="week" 
+					/>
+				</template>
+				<week-header
+					v-else
+					:render="renderWeek"
+					:week-names="weekNames"
+					:lang="lang"
+				/>
 				<div>
-					<month-header
-						:render="renderMonth"
-						:month="showMonth"
-						:year="showYear"
-						:month-names="monthNames"
-						:lang="lang"
-					/>
-					<week-header
-						:render="renderWeek"
-						:week-names="weekNames"
-						:lang="lang"
-					/>
-					<div>
-						<div v-for="i in 6" :key="i" class="__date-row">
-							<span
-								v-for="(item, index) in dateArr.data.slice((i - 1) * 7, (i - 1) * 7 + 7)"
-								:class="`__date-item __date-${item.type}`"
-								:key="index"
-							>
-								<date-item
-									:date="item"
-									:cur-date-str="curDateStr"
-									:render="renderDate"
-								/>
-							</span>
-						</div>
+					<div v-for="i in 6" :key="i" class="__date-row">
+						<span
+							v-for="(item, index) in dateArr.data.slice((i - 1) * 7, (i - 1) * 7 + 7)"
+							:class="`__date-item __date-${item.type}`"
+							:key="index"
+						>
+							<date-item
+								:date="item"
+								:cur-date-str="curDateStr"
+								:render="renderDate"
+							/>
+						</span>
 					</div>
 				</div>
 			</div>
 		</transition>
 	</div>
 </template>
+
 <script>
 import CreateCustomer from "../create-customer/index";
 import { addPreZero } from "../utils/index";
@@ -157,7 +172,7 @@ export default {
 		}
 	},
 	mounted() {
-		console.log(this.monthNames);
+		console.log(this.monthNames, this);
 	},
 	methods: {
 		getCurrentInfo(year, month) {
@@ -312,13 +327,14 @@ export default {
 			color: #fff;
 			box-shadow: 1px 2px 10px #2f8aef;
 		}
-		.__month-header {
-			@include commonFlexCc();
-			line-height: 60px;
-			font-size: 24px;
-			background-color: #f5f6f7;
-			color: #2e3136;
-		}
+		
+	}
+	.__month-header {
+		@include commonFlexCc();
+		line-height: 60px;
+		font-size: 24px;
+		background-color: #f5f6f7;
+		color: #2e3136;
 	}
 }
 .right-leave-active,

@@ -4,7 +4,27 @@
 			<div @click="$refs.calendar.prev()">prev</div>
 			<vc-calendar
 				ref="calendar"
-			/>
+			>
+				<div 
+					slot-scope="it"
+					slot="month"
+					class="v-month-header"
+				>
+					{{ it.data.month }}{{ it.data.year }}
+				</div>
+				<div 
+					slot-scope="it"
+					slot="week"
+					class="v-week-header"
+				>
+					<span 
+						v-for="(item, index) in it.data"
+						:key="index"
+					>
+						{{ item }}
+					</span>
+				</div>
+			</vc-calendar>
 			<div @click="$refs.calendar.next()">next</div>
 		</div>
 
@@ -69,5 +89,28 @@ export default {
 	}
 };
 </script>
+
+<style lang="scss" scoped>
+@import '../../style/index.scss';
+.v-month-header {
+	@include commonFlexCc();
+	line-height: 60px;
+	font-size: 24px;
+	background-color: #f5f6f7;
+	color: #2e3136;
+}
+.v-week-header {
+	@include commonFlex();
+	width: 100%;
+	align-items: center;
+	color: gray;
+	padding: 15px 0;
+	font-size: 16px;
+	> span {
+		width: 14.28%;
+		text-align: center;
+	}
+}
+</style>
 
 
