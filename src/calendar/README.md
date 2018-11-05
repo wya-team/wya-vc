@@ -11,7 +11,7 @@
 render-date | 渲染每个日期 | function(h, { date, curDateStr }) | renderDefaultDate
 render-month | 渲染月 |  function(h, { month, year, lan, monthNames }) | renderDefaultMonth
 render-week | 渲染周 |  function(h, { weekNames, lan }) | renderDefaultWeek
-lan="en" |语言（'ch'或'en'）|String|'ch'
+lang="en" |语言（'ch'或'en'）|String|'ch'
 
 ## 基础用法
 
