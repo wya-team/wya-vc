@@ -57,7 +57,7 @@
 <script>
 import CreateCustomer from "../create-customer/index";
 import { addPreZero } from "../utils/index";
-import date2holiday from "../utils/date2holiday";
+import date2holiday from "./date2holiday";
 
 const monthNames = [
 	{ ch: "一月", en: "January" },
