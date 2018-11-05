@@ -38,6 +38,7 @@
 								v-if="$slots.default || $scopedSlots.default"
 								:data="item" 
 								:curDate="curDateStr"
+								:holiday="date2holiday(item.date)"
 							/>
 							<date-item
 								v-else
@@ -56,6 +57,7 @@
 <script>
 import CreateCustomer from "../create-customer/index";
 import { addPreZero } from "../utils/index";
+import date2holiday from "../utils/date2holiday";
 
 const monthNames = [
 	{ ch: "一月", en: "January" },
@@ -259,6 +261,9 @@ export default {
 
 			// return "星期" + "日一二三四五六".charAt(date.getDay());
 			return date.getDay();
+		},
+		date2holiday(dateStr) {
+			return date2holiday(dateStr);
 		},
 
 		next() {
