@@ -1,12 +1,10 @@
 <template>
 	<div class="vc-calendar">
-		
-		<template v-if="$slots.month || $scopedSlots.month">
-			<slot
-				:data="{month: monthNames[showMonth][lang], year: showYear}" 
-				name="month" 
-			/>
-		</template>
+		<slot
+			v-if="$slots.month || $scopedSlots.month"
+			:data="{month: monthNames[showMonth][lang], year: showYear}" 
+			name="month" 
+		/>
 		<month-header
 			v-else
 			:render="renderMonth"
@@ -18,12 +16,11 @@
 		
 		<transition :name="slideDirect">
 			<div :key="showMonth" class="__calendar-item">
-				<template v-if="$slots.week || $scopedSlots.week">
-					<slot
-						:data="weekNames.map((item) => item[lang])" 
-						name="week" 
-					/>
-				</template>
+				<slot
+					v-if="$slots.week || $scopedSlots.week"
+					:data="weekNames.map((item) => item[lang])" 
+					name="week" 
+				/>
 				<week-header
 					v-else
 					:render="renderWeek"
@@ -37,12 +34,11 @@
 							:class="`__date-item __date-${item.type}`"
 							:key="index"
 						>
-							<template v-if="$slots.default || $scopedSlots.default">
-								<slot
-									:data="item" 
-									:curDate="curDateStr"
-								/>
-							</template>
+							<slot
+								v-if="$slots.default || $scopedSlots.default"
+								:data="item" 
+								:curDate="curDateStr"
+							/>
 							<date-item
 								v-else
 								:date="item"
