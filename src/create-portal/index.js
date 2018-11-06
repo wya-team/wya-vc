@@ -4,7 +4,15 @@ import { getUid } from '../utils/utils';
 
 export default (options = {}, wrapper) => {
 	let isNeedWaiting = false;
-	let { cName = wrapper.name, onBefore, el, root: _root, leaveDelay = 0.3 } = options;
+	let {
+		cName = wrapper.name, 
+		onBefore, 
+		el, 
+		root: _root, 
+		leaveDelay = 0.3,
+		keepAlive = false,
+		autoDestory = true
+	} = options;
 
 	if (!cName) {
 		console.log('传送门：cName 必传');
@@ -39,20 +47,46 @@ export default (options = {}, wrapper) => {
 
 				let render = (res = {}) => {
 					// destory
-					VcInstance.APIS[cName] && VcInstance.APIS[cName].$emit('destory');
+					!keepAlive && VcInstance.APIS[cName] && VcInstance.APIS[cName].$emit('destory');
 
-					const VueComponent = Vue.extend(wrapper);
+					let propsData = {
+						...rest,
+						data: res.data || data
+					};
+
+					// vm
 					let vm;
-					vm = new VueComponent({
-						el: container,
-						store, // vuex,
-						router, // vue-router
-						...parent,
-						propsData: {
-							...rest,
-							data: res.data || data
+					if (keepAlive && VcInstance.APIS[cName]) {
+
+						vm = VcInstance.APIS[cName];
+						vm.$off(['destory', 'close', 'sure']);
+
+						for (let key in propsData) {
+							vm[key] = propsData[key];
 						}
-					});
+
+						// update
+						let fn = vm.update || vm.loadData;
+						fn && fn(opts);
+						
+					} else {
+
+						const VueComponent = Vue.extend(wrapper);
+						vm = new VueComponent({
+							el: container,
+							store, // vuex,
+							router, // vue-router
+							propsData,
+							...parent,
+							/**
+							 * 主动销毁
+							 */
+							beforeRouteLeave() {
+								autoDestory && vm.$emit('destory');
+							}
+						});
+					}
+					
 
 					vm.$on('destory', (res) => {
 						vm.$destroy();
@@ -86,7 +120,7 @@ export default (options = {}, wrapper) => {
 					VcInstance.APIS[cName] = vm;
 
 					// 插入	
-					target.appendChild(vm.$el);
+					vm.$el.parentElement === null && target.appendChild(vm.$el);
 
 					isNeedWaiting = false;
 				};
