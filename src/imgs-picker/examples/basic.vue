@@ -4,7 +4,7 @@
 		:model="formValidate" 
 		:rules="ruleValidate" 
 	>
-		<i-form-item prop="imgs">
+		<i-form-item prop="imgs" @on-form-change="handleChange">
 			<vc-imgs-picker 
 				v-model="formValidate.imgs" 
 				:max="2" 
@@ -49,6 +49,9 @@ export default {
 		
 	},
 	methods: {
+		handleChange(value) {
+			console.log(value, 'change');
+		},
 		handleSubmit(name) {
 			this.$refs.form.validate((valid) => {
 				if (valid) {

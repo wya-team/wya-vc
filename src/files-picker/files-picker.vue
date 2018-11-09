@@ -48,7 +48,7 @@
 </template>
 
 <script>
-import Emitter from 'iview/src/mixins/emitter'; // 表单验证
+import emitter from '../extends/mixins/emitter'; // 表单验证
 import Upload from '../upload/index';
 
 export default {
@@ -56,7 +56,7 @@ export default {
 	components: {
 		'vc-upload': Upload
 	},
-	mixins: [Emitter],
+	mixins: [emitter],
 	model: {
 		prop: 'value',
 		event: 'change'
