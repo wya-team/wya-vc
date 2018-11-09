@@ -222,7 +222,7 @@ export default {
 
 			// 是否已有数据
 			let arr = this.dataSource[page];
-			if (arr && arr.length !== 0) return;
+			if (arr && typeof arr.length === 'number') return;
 
 			// 请求
 			const load = this.loadData(page, this.pageSize);
