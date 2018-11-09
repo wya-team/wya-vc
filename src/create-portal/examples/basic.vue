@@ -12,12 +12,16 @@
 		<i-button @click="handleKeepAlive">
 			点我(不带延迟)(keep-alive)
 		</i-button>
+		<i-button @click="handleClean">
+			销毁
+		</i-button>
 	</div>
 </template>
 <script>
 import { Button } from 'iview';
 import { PModal, PModalWithBefore } from './basic/modal';
 import { KeepAlive, KeepAliveWithBefore } from './basic/keep-alive';
+import { VcInstance } from '../../vc/index';
 
 export default {
 	name: "vc-tpl-basic",
@@ -67,6 +71,10 @@ export default {
 			}).catch((res) => {
 				console.log(res, 'close');
 			});
+		},
+		handleClean() {
+			// this.$vc.clean();
+			VcInstance.clean('vc-tpl-basic-keep-alive');
 		}
 	}
 };

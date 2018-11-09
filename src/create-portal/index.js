@@ -44,6 +44,7 @@ export default (options = {}, wrapper) => {
 
 				onBefore = _onBefore || onBefore;
 				cName = _cName || cName;
+				// autoDestory = _autoDestory === false ? false : autoDestory;
 
 				let render = (res = {}) => {
 					// destory
@@ -77,16 +78,12 @@ export default (options = {}, wrapper) => {
 							store, // vuex,
 							router, // vue-router
 							propsData,
-							...parent,
-							/**
-							 * 主动销毁
-							 */
-							beforeRouteLeave() {
-								autoDestory && vm.$emit('destory');
-							}
+							...parent
 						});
 					}
 					
+					// tag
+					vm.__AUTO_DESTORY__ = autoDestory;
 
 					vm.$on('destory', (res) => {
 						vm.$destroy();
