@@ -109,12 +109,14 @@ export default {
 		expandOpts: {
 			type: Object,
 			default: () => ({
+				key: 'id', // 唯一标识
+				indentSize: 20, // 每层缩进的宽度
+				width: 60,
 				index: 0, // todo：在哪个索引下插入
 				all: false, // todo：全部展开
-				key: 'id', // 唯一标识
 				keys: [], // todo：默认展开行
 				render: undefined, // todo：自定义渲染
-				indentSize: 20, // 每层缩进的宽度
+
 			})
 		},
 		total: {
@@ -190,24 +192,33 @@ export default {
 			let isFirstExpand = this.data && this.data.some(item => item.children instanceof Array);
 			// 已经注入的不会再注入
 			if (this.mode === 'table' && isFirstExpand && !result[0].tag) {
+				const { key, render, width } = this.expandOpts;
 				result.unshift({
 					tag: true,
 					title: '　',
 					key: 'name',
-					width: 60, // 待定宽度
+					width, // 待定宽度
 					render: (h, params) => {
-						const { key } = this.expandOpts;
 						const { row: { __level__: level, children }, index } = params;
 						const { data } = this;
 						const isExpand = children && data && data.some(item => children[0] && children[0][key] === item[key]);
-						return h('div', {
-							style: {
-								paddingLeft: `${(level - 1) * 20}px`
-							},
-							on: {
-								click: (e) => this.handleExpand({ e, index, isExpand, level, children })
-							}
-						}, `${children ? !isExpand ? '+' : '-' : ''}`);
+
+						// 点击展开事件
+						const handleClick = (e) => this.handleExpand({ e, index, isExpand, level, children });
+
+						if (render) {
+							return render(h, { ...params, isExpand }, handleClick);
+						} else {
+							return h('div', {
+								style: {
+									paddingLeft: `${(level - 1) * 20}px`
+								},
+								on: {
+									click: handleClick 
+								}
+							}, `${children ? !isExpand ? '+' : '-' : ''}`);
+						}
+						
 					}
 				});
 			}
