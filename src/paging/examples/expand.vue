@@ -1,5 +1,5 @@
 <template>
-	<div style="-webkit-user-select: none">
+	<div>
 		<i-input 
 			v-model="keyword" 
 			search 
@@ -77,21 +77,6 @@ export default {
 				{
 					title: 'Name',
 					key: 'name',
-					render: (h, params) => {
-						const { row: { id, level, name, children }, index } = params;
-
-						const { type } = this;
-						const page = this.current[type];
-						let expand = children && this.listInfo[type].data[page].some(item => item.id === children[0].id);
-						return h('div', {
-							style: {
-								paddingLeft: `${level * 20}px`
-							},
-							on: {
-								click: children ? () => this.handleExpand(index, children, expand, level) : () => {}
-							}
-						}, `${children ? !expand ? '+' : '-' : ''} ${name} index: ${index + 1}`);
-					}
 				},
 				{
 					title: 'Status',
@@ -141,7 +126,7 @@ export default {
 						data: {
 							currentPage: page,
 							total: 100,
-							list: this.getFakeData(page, pageSize, 3)
+							list: this.getFakeData(page, pageSize, 2)
 						}
 					};
 					const { currentPage, total, list } = res.data;
@@ -168,16 +153,14 @@ export default {
 					level++;
 				}
 
-				let length = level == 1 ? pageSize : 2;
 				let fakeData = [];
-				for (let i = 0; i < length; i++) {
+				for (let i = 0; i < pageSize; i++) {
 					fakeData.push({
 						id: Math.random(),
-						// name: `page: ${page}, type: ${this.type}, sort: ${i}, level: ${level}`,
-						name: `level: ${level}`,
+						name: `level: ${level} page: ${page} type: ${this.type}`,
 						status: Math.floor(Math.random() * 3 + 1),
 						opt: Math.floor(Math.random() * 3 + 1),
-						level,
+						// __level__: level,
 						children: fn(level)
 					});
 				}
@@ -233,26 +216,6 @@ export default {
 
 			this.setHistory({
 				keyword
-			});
-		},
-		handleExpand(index, children, expand, level) {
-			const { type } = this;
-			const page = this.current[type];
-			const data = [...this.listInfo[type].data[page]];
-			let count = 0;
-			for (let i = index + 1; i < data.length; i++) {
-				if (level == data[i].level || level > data[i].level) {
-					break;
-				}
-				count++;
-			}
-
-			this.$nextTick(() => {
-				if (expand) {
-					this.listInfo[type].data[page].splice(index + 1, count);
-				} else {
-					this.listInfo[type].data[page].splice(index + 1, 0, ...children);
-				}
 			});
 		}
 	}
