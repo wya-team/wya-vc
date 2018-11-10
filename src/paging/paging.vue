@@ -20,7 +20,7 @@
 			ref="tableTarget" 
 			:data="data" 
 			:loading="loading"
-			:columns="columns"
+			:columns="columnsCombo"
 			v-bind="tableOpts"
 			@on-current-change="$emit('current-change', arguments[0], arguments[1])"
 			@on-select="$emit('select', arguments[0], arguments[1])"
@@ -39,7 +39,7 @@
 			<slot name="loading" />
 		</i-table>
 
-		<div class="__footer">
+		<div v-if="footer" class="__footer">
 			<div>
 				<slot name="extra" />
 			</div>
@@ -105,6 +105,18 @@ export default {
 				pageSizeOpts: [10, 20, 30, 50, 100]
 			})
 		},
+		// expand 不针对iview中columns中的 expand
+		expandOpts: {
+			type: Object,
+			default: () => ({
+				index: 0, // todo：在哪个索引下插入
+				all: false, // todo：全部展开
+				key: 'id', // 唯一标识
+				keys: [], // todo：默认展开行
+				render: undefined, // todo：自定义渲染
+				indentSize: 20, // 每层缩进的宽度
+			})
+		},
 		total: {
 			type: Number,
 			default: 0
@@ -134,12 +146,17 @@ export default {
 			type: String,
 			validator(value) {
 				return ['native', 'piece', 'table'].indexOf(value) !== -1;
-			}
+			},
+			default: 'table'
 		},
 		pieceClass: {
 			type: String,
 			default: ''
-		}
+		},
+		footer: {
+			type: Boolean,
+			default: true
+		} 
 	},
 	data() {
 		let { query: { page = 1, pageSize } } = getParseUrl();
@@ -154,7 +171,47 @@ export default {
 	},
 	computed: {
 		data() {
-			return this.dataSource[this.currentPage];
+			let result = this.dataSource[this.currentPage];
+			if (result && result.__expand__ === undefined && result.some(item => item.children instanceof Array)) {
+				result.__expand__ = true; // 避免被设置后再次递归一次
+				let fn = level => item => {
+					item.__level__ = level; // 不重新返回，直接赋值
+					if (item.children) {
+						item.children.map(fn(level + 1));
+					}
+					return item;
+				};
+				result.map(fn(1));
+			}
+			return result;
+		},
+		columnsCombo() { // 可以考虑换成watch
+			let result = this.columns;
+			let isFirstExpand = this.data && this.data.some(item => item.children instanceof Array);
+			// 已经注入的不会再注入
+			if (this.mode === 'table' && isFirstExpand && !result[0].tag) {
+				result.unshift({
+					tag: true,
+					title: '　',
+					key: 'name',
+					width: 60, // 待定宽度
+					render: (h, params) => {
+						const { key } = this.expandOpts;
+						const { row: { __level__: level, children }, index } = params;
+						const { data } = this;
+						const isExpand = children && data && data.some(item => children[0] && children[0][key] === item[key]);
+						return h('div', {
+							style: {
+								paddingLeft: `${(level - 1) * 20}px`
+							},
+							on: {
+								click: (e) => this.handleExpand({ e, index, isExpand, level, children })
+							}
+						}, `${children ? !isExpand ? '+' : '-' : ''}`);
+					}
+				});
+			}
+			return result;
 		}
 	},
 	watch: {
@@ -256,6 +313,40 @@ export default {
 		 */
 		go(page) {
 			this.handleChange(page);
+		},
+
+		/**
+		 * 补充功能
+		 */
+		handleExpand(opts = {}) {
+			const { e, index, isExpand, level, children } = opts;
+			// 没有扩展功能
+			if (!children || !level) return;
+
+			if (children.length === 0) {
+				this.$emit('expand-async', opts);
+			} else if (children.length > 0) {
+				const { data } = this;
+
+				let count = 0;
+				for (let i = index + 1; i < data.length; i++) {
+					if (level == data[i].__level__ || level > data[i].__level__) {
+						break;
+					}
+					count++;
+				}
+				this.$nextTick(() => {
+					// 存在副作用可以使用 this.data.slice(0)
+					if (isExpand) {
+						this.data.splice(index + 1, count);
+					} else {
+						this.data.splice(index + 1, 0, ...children);
+					}
+				});
+
+				this.$emit('expand', opts);
+			}
+			
 		}
 	}
 };
