@@ -78,21 +78,21 @@ export default {
 					title: 'Name',
 					key: 'name',
 					render: (h, params) => {
-						const { row: { __level__, name, __children__ }, index } = params;
+						const { row: { __level__, __expand__, name }, index } = params;
 
 						const { type } = this;
 						const page = this.current[type];
 						const data = this.listInfo[type].data[page];
-						const isExpand = __children__ && data && data.some(item => item.id === __children__[0].id);
+						const { __children__ } = data[index] || {}; // 不拿row中children; row会被深度拷贝
 
 						return h('div', {
 							style: {
 								paddingLeft: `${__level__ * 20}px`
 							},
 							on: {
-								click: __children__ ? () => this.handleExpand(index, isExpand, __children__, __level__) : () => {}
+								click: __children__ ? () => this.handleExpand(index) : () => {}
 							}
-						}, `${__children__ ? !isExpand ? '+' : '-' : ''} ${name} index: ${index + 1}`);
+						}, `${__children__ ? !__expand__ ? '+' : '-' : ''} ${name} index: ${index + 1}`);
 					}
 				},
 				{
@@ -143,7 +143,7 @@ export default {
 						data: {
 							currentPage: page,
 							total: 100,
-							list: this.getFakeData(page, pageSize, 3)
+							list: this.getFakeData(page, pageSize, 4)
 						}
 					};
 					const { currentPage, total, list } = res.data;
@@ -170,7 +170,7 @@ export default {
 					__level__++;
 				}
 
-				let length = __level__ == 1 ? pageSize : 2;
+				let length = __level__ == 1 ? pageSize : 5;
 				let fakeData = [];
 				for (let i = 0; i < length; i++) {
 					fakeData.push({
@@ -180,6 +180,7 @@ export default {
 						status: Math.floor(Math.random() * 3 + 1),
 						opt: Math.floor(Math.random() * 3 + 1),
 						__level__,
+						__expand__: false,
 						__children__: fn(__level__)
 					});
 				}
@@ -237,23 +238,42 @@ export default {
 				keyword
 			});
 		},
-		handleExpand(index, isExpand, __children__, __level__) {
+		handleExpand(index) {
 			const { type } = this;
 			const page = this.current[type];
 			const data = this.listInfo[type].data[page];
-			let count = 0;
-			for (let i = index + 1; i < data.length; i++) {
-				if (__level__ == data[i].__level__ || __level__ > data[i].__level__) {
-					break;
-				}
-				count++;
-			}
+			const { __children__, __level__, __expand__ } = data[index] || {};
 
+			// 没有扩展功能
+			if (!__children__ || !__level__) return;
 			this.$nextTick(() => {
-				if (isExpand) {
-					this.listInfo[type].data[page].splice(index + 1, count);
+				if (__expand__) {
+					data[index].__expand__ = false;
+
+					// 计算要移除的元素数量
+					let count = 0;
+					for (let i = index + 1; i < data.length; i++) {
+						if (__level__ == data[i].__level__ || __level__ > data[i].__level__) {
+							break;
+						}
+						count++;
+					}
+
+					data.splice(index + 1, count);
 				} else {
-					this.listInfo[type].data[page].splice(index + 1, 0, ...__children__);
+					data[index].__expand__ = true;
+
+					// 展开
+					let fn = (pre, cur) => {
+						pre = [...pre, cur];
+						if (cur.__children__ && cur.__expand__ === true) {
+							pre = [...pre, ...cur.__children__.reduce(fn, [])];
+						}
+						return pre;
+					};
+					let result = __children__.reduce(fn, []);
+
+					data.splice(index + 1, 0, ...result);
 				}
 			});
 		}

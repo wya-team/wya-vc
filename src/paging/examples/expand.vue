@@ -20,6 +20,7 @@
 				:name="item.value"
 			>
 				<vc-paging
+					:key="item.value"
 					:show="item.value == type" 
 					:type="item.value"
 					:columns="columns" 
@@ -79,6 +80,10 @@ export default {
 					key: 'name',
 				},
 				{
+					title: 'Id',
+					key: 'id',
+				},
+				{
 					title: 'Status',
 					key: 'status',
 					render: (h, params) => {
@@ -89,7 +94,7 @@ export default {
 							on: {
 								click: this.handleResetFirst
 							}
-						}, '回到首页刷新');
+						}, `回到首页刷新${this.type}`);
 					}
 				},
 				{
@@ -126,7 +131,7 @@ export default {
 						data: {
 							currentPage: page,
 							total: 100,
-							list: this.getFakeData(page, pageSize, 2)
+							list: this.getFakeData(page, pageSize, 3)
 						}
 					};
 					const { currentPage, total, list } = res.data;
@@ -146,17 +151,19 @@ export default {
 			});
 		},
 		getFakeData(page, pageSize, totalLevel) {
+			let count = 0;
 			let fn = (level, parent) => {
 				if (level > totalLevel) {
 					return;
 				} else {
 					level++;
 				}
-
+				let length = level === 1 ? pageSize : Math.floor(Math.random() * 4 + 1);
 				let fakeData = [];
-				for (let i = 0; i < pageSize; i++) {
+				for (let i = 0; i < length; i++) {
 					fakeData.push({
-						id: Math.random(),
+						// id: Math.random(),
+						id: `${this.type}_${count++}`,
 						name: `level: ${level} page: ${page} type: ${this.type}`,
 						status: Math.floor(Math.random() * 3 + 1),
 						opt: Math.floor(Math.random() * 3 + 1),
