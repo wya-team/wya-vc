@@ -242,6 +242,8 @@ export default {
 		data(newVal, oldVal) {
 			if (newVal.some(item => item.children instanceof Array)) {
 				this.dataCombo = this.getLinearArray(newVal);
+			} else {
+				this.dataCombo = newVal;
 			}
 		}
 	},
