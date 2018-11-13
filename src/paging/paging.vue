@@ -14,11 +14,11 @@
 		<template v-for="item in data" v-else-if="mode === 'piece'">
 			<slot v-bind="item" />
 		</template>
-
+		
 		<i-table
 			v-else
 			ref="tableTarget" 
-			:data="data" 
+			:data="dataCombo" 
 			:loading="loading"
 			:columns="columnsCombo"
 			v-bind="tableOpts"
@@ -38,7 +38,7 @@
 			<slot name="footer" />
 			<slot name="loading" />
 		</i-table>
-
+		
 		<div v-if="footer" class="__footer">
 			<div>
 				<slot name="extra" />
@@ -67,6 +67,7 @@
 
 <script>
 import { Table, Page } from 'iview';
+import { cloneDeep } from 'lodash';
 import { getConstructUrl, getParseUrl } from '../utils/utils';
 
 export default {
@@ -109,14 +110,13 @@ export default {
 		expandOpts: {
 			type: Object,
 			default: () => ({
-				key: 'id', // 唯一标识
-				indentSize: 20, // 每层缩进的宽度
+				all: false,
+				key: 'id', 
+				keys: [], 
+				index: 0, 
 				width: 60,
-				index: 0, // todo：在哪个索引下插入
-				all: false, // todo：全部展开
-				keys: [], // todo：默认展开行
-				render: undefined, // todo：自定义渲染
-
+				indentSize: 20, 
+				render: undefined, 
 			})
 		},
 		total: {
@@ -168,16 +168,23 @@ export default {
 		return {
 			loading: false,
 			currentPage: this.show ? Number(page) : 1,
-			pageSize: this.defaultPageSize
+			pageSize: this.defaultPageSize,
+			// 用于expand
+			dataCombo: []
 		};
 	},
 	computed: {
 		data() {
 			let result = this.dataSource[this.currentPage];
 			if (result && result.__expand__ === undefined && result.some(item => item.children instanceof Array)) {
+
 				result.__expand__ = true; // 避免被设置后再次递归一次
+
+				const { all, key, keys = [] } = this.expandOpts;
+
 				let fn = level => item => {
 					item.__level__ = level; // 不重新返回，直接赋值
+					item.__expand__ = all || (keys.length !== 0 && keys.includes(item[key])); 
 					if (item.children) {
 						item.children.map(fn(level + 1));
 					}
@@ -185,42 +192,17 @@ export default {
 				};
 				result.map(fn(1));
 			}
-			return result;
+			return result || [];
 		},
-		columnsCombo() { // 可以考虑换成watch
+		columnsCombo() {
 			let result = this.columns;
-			let isFirstExpand = this.data && this.data.some(item => item.children instanceof Array);
+			let hasChild = this.data.some(item => item.children instanceof Array);
+			const { index } = this.expandOpts;
 			// 已经注入的不会再注入
-			if (this.mode === 'table' && isFirstExpand && !result[0].tag) {
-				const { key, render, width } = this.expandOpts;
-				result.unshift({
-					tag: true,
-					title: '　',
-					key: 'name',
-					width, // 待定宽度
-					render: (h, params) => {
-						const { row: { __level__: level, children }, index } = params;
-						const { data } = this;
-						const isExpand = children && data && data.some(item => children[0] && children[0][key] === item[key]);
-
-						// 点击展开事件
-						const handleClick = (e) => this.handleExpand({ e, index, isExpand, level, children });
-
-						if (render) {
-							return render(h, { ...params, isExpand }, handleClick);
-						} else {
-							return h('div', {
-								style: {
-									paddingLeft: `${(level - 1) * 20}px`
-								},
-								on: {
-									click: handleClick 
-								}
-							}, `${children ? !isExpand ? '+' : '-' : ''}`);
-						}
-						
-					}
-				});
+			if (this.mode === 'table' && hasChild && !result[index].tag) {
+				// 重新组合，避免tabs下共享实例
+				result = this.columns.slice(0); // 避免副作用
+				result.splice(index, 0, this.getExpandOpts.call(this));
 			}
 			return result;
 		}
@@ -251,11 +233,24 @@ export default {
 				// 触发
 				this.handleChange(this.currentPage);
 			}
+		},
+		/**
+		 * 当前表格的数据计算是否扩展
+		 * dataCombo
+		 * 尽量保证修改副本，不直接修改this.data
+		 */
+		data(newVal, oldVal) {
+			if (newVal.some(item => item.children instanceof Array)) {
+				this.dataCombo = this.getLinearArray(newVal);
+			}
 		}
 	},
 	created() {
 		let { query: { page = 1 } } = getParseUrl();
 		this.show && this._loadData(page);
+
+		// 初始化数据
+		this.dataCombo = this.data;
 	},
 	methods: {
 		handleChangePageSize(pageSize) {
@@ -327,37 +322,89 @@ export default {
 		},
 
 		/**
-		 * 补充功能
+		 * 扩展功能
+		 */
+		getExpandOpts() {
+			const { key, render, width, indentSize } = this.expandOpts;
+			return {
+				tag: true,
+				title: '　',
+				key: 'id',
+				width,
+				align: 'center',
+				render: (h, params) => {
+					const { row: { __level__, __expand__ }, index } = params;
+					const { dataCombo } = this;
+					
+					let { children } = dataCombo[index] || {}; // 不拿row中children; row会被深度拷贝
+					// 点击展开事件
+					const handleClick = (e) => this.handleExpand({ e, index });
+
+					if (render) {
+						return render(h, { ...params, row: dataCombo[index] }, handleClick);
+					} else {
+						return h('div', {
+							style: {
+								marginLeft: `${(__level__ - 1) * indentSize}px`,
+								width: `20px`,
+								boxSizing: `content-box`
+							},
+							on: {
+								click: handleClick 
+							}
+						}, `${children ? !__expand__ ? '+' : '-' : ''}`);
+					}
+					
+				}
+			};
+		},
+		/**
+		 * 扩展功能
+		 * 根据需要获取线性的数组
+		 */
+		getLinearArray(treeArray) {
+			let fn = (pre, cur) => {
+				pre = [...pre, cur];
+				if (cur.children && cur.__expand__ === true) {
+					pre = [...pre, ...cur.children.reduce(fn, [])];
+				}
+				return pre;
+			};
+			return treeArray.reduce(fn, []);
+		},
+		/**
+		 * 扩展功能
 		 */
 		handleExpand(opts = {}) {
-			const { e, index, isExpand, level, children } = opts;
+			const { e, index } = opts;
+			const { children, __level__, __expand__ } = this.dataCombo[index] || {};
 			// 没有扩展功能
-			if (!children || !level) return;
+			if (!children || !__level__) return;
 
 			if (children.length === 0) {
 				this.$emit('expand-async', opts);
 			} else if (children.length > 0) {
-				const { data } = this;
 
-				let count = 0;
-				for (let i = index + 1; i < data.length; i++) {
-					if (level == data[i].__level__ || level > data[i].__level__) {
-						break;
+				const { dataCombo } = this;
+				if (__expand__) {
+					this.dataCombo[index].__expand__ = false;
+
+					// 计算要移除的元素数量
+					let count = 0;
+					for (let i = index + 1; i < dataCombo.length; i++) {
+						if (__level__ == dataCombo[i].__level__ || __level__ > dataCombo[i].__level__) {
+							break;
+						}
+						count++;
 					}
-					count++;
+					this.dataCombo.splice(index + 1, count);
+				} else {
+					this.dataCombo[index].__expand__ = true;
+					this.dataCombo.splice(index + 1, 0, ...this.getLinearArray(children));
 				}
-				this.$nextTick(() => {
-					// 存在副作用可以使用 this.data.slice(0)
-					if (isExpand) {
-						this.data.splice(index + 1, count);
-					} else {
-						this.data.splice(index + 1, 0, ...children);
-					}
-				});
-
 				this.$emit('expand', opts);
+
 			}
-			
 		}
 	}
 };

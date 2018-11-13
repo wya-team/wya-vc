@@ -17,10 +17,22 @@ total | 总数量 | `number` | 0
 reset | 刷新时候使用，当前页刷新（true）,首页刷新（false） | `boolean` | -
 tableOpts | 表格额外参数 | `obj` | -
 pageOpts | 分页额外参数 | `obj` | -
+expandOpts | 展开的属性参数 | `obj` | -
 `current.sync` | 分页参数同步 | `str/num` | -
 
 额外属性同`iView`的 [table](https://www.iviewui.com/components/table) 和 [page](https://www.iviewui.com/components/page)
 
+- `expandOpts`
+
+属性 | 说明 | 类型 | 默认值
+---|---|---|---
+all | 全部展开 | `bool` | false
+index | 插入的索引位置 | `number` | 0
+key | 唯一标识 | `string` | 'id'
+keys | 默认展开的项目 | `array` | []
+width | 宽度 | `number` | 60
+indentSize | 缩进单位 | `number` | 20
+render | 自定义展示 | `func` | `(h, { row, index }, handleClick)`
 
 #### 事件
 
