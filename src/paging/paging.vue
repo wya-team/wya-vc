@@ -109,15 +109,17 @@ export default {
 		// expand 不针对iview中columns中的 expand
 		expandOpts: {
 			type: Object,
-			default: () => ({
-				all: false,
-				key: 'id', 
-				keys: [], 
-				index: 0, 
-				width: 60,
-				indentSize: 20, 
-				render: undefined, 
-			})
+			default: (test) => {
+				return {
+					all: false,
+					key: 'id', 
+					keys: [], 
+					index: 0, 
+					width: 60,
+					indentSize: 20, 
+					render: undefined, 
+				};
+			}
 		},
 		total: {
 			type: Number,
@@ -141,6 +143,7 @@ export default {
 			type: Function,
 			required: true
 		},
+		loadExpandData: Function,
 		reset: Boolean,
 		// current: [Number, String], // .sync可以不声明；需要使用this.current, 必须声明
 		type: [Number, String], // 待开发，tabs情况下
@@ -179,18 +182,7 @@ export default {
 			if (result && result.__expand__ === undefined && result.some(item => item.children instanceof Array)) {
 
 				result.__expand__ = true; // 避免被设置后再次递归一次
-
-				const { all, key, keys = [] } = this.expandOpts;
-
-				let fn = level => item => {
-					item.__level__ = level; // 不重新返回，直接赋值
-					item.__expand__ = all || (keys.length !== 0 && keys.includes(item[key])); 
-					if (item.children) {
-						item.children.map(fn(level + 1));
-					}
-					return item;
-				};
-				result.map(fn(1));
+				result.map(this.setDefaultExpand(1));
 			}
 			return result || [];
 		},
@@ -362,6 +354,22 @@ export default {
 		},
 		/**
 		 * 扩展功能
+		 * 设备默认值
+		 */
+		setDefaultExpand(level) {
+			const { all, key, keys = [] } = this.expandOpts;
+
+			return (item) => {
+				item.__level__ = level; // 不重新返回，直接赋值
+				item.__expand__ = all || (keys.length !== 0 && keys.includes(item[key])); 
+				if (item.children) {
+					item.children.map(this.setDefaultExpand(level + 1));
+				}
+				return item;
+			};
+		},
+		/**
+		 * 扩展功能
 		 * 根据需要获取线性的数组
 		 */
 		getLinearArray(treeArray) {
@@ -383,8 +391,32 @@ export default {
 			// 没有扩展功能
 			if (!children || !__level__) return;
 
-			if (children.length === 0) {
-				this.$emit('expand-async', opts);
+			if (children.length === 0 && this.loadExpandData) {
+				const load = this.loadExpandData(opts);
+
+				if (load && load.then) {
+					this.loading = true;
+					load.then((children) => {
+						if (children instanceof Array) {
+							children.map(this.setDefaultExpand(__level__ + 1));
+
+							// 同步到data中
+							this.dataCombo[index].__expand__ = true;
+							this.dataCombo[index].children = children;
+							this.dataCombo.splice(index + 1, 0, ...this.getLinearArray(children));
+
+							this.emitExpand(opts);
+						}
+						return children;
+					}).catch((res) => {
+						return Promise.reject(res);
+					}).finally(() => {
+						this.loading = false;
+					});
+				} else {
+					console.error('[vc-paging]-loadExpandData need return a Promise');
+				}
+
 			} else if (children.length > 0) {
 
 				const { dataCombo } = this;
@@ -404,9 +436,19 @@ export default {
 					this.dataCombo[index].__expand__ = true;
 					this.dataCombo.splice(index + 1, 0, ...this.getLinearArray(children));
 				}
-				this.$emit('expand', opts);
-
+				this.emitExpand(opts);
 			}
+		},
+		emitExpand(opts = {}) {
+			const { index } = opts; 
+			this.$emit('expand', { 
+				...opts, 
+				row: this.dataCombo[index], 
+				callback: (opts = {}) => {
+					const { selected, all = false } = opts;
+					// 待开发， 重新选择已选中的，设置_checked
+				} 
+			});
 		}
 	}
 };

@@ -38,10 +38,11 @@ render | 自定义展示 | `func` | `(h, { row, index }, handleClick)`
 
 属性 | 说明 | 类型 | 默认值
 ---|---|---|---
-@load-pending | 加载中 | `function` | -
-@load-success | 加载成功 | `function` | -
-@load-error | 加载失败 | `function` | -
-@load-finish | 加载结束（都会触发） | `function` | -
+@load-pending | 加载中 | `func` | -
+@load-success | 加载成功 | `func` | -
+@load-error | 加载失败 | `func` | -
+@load-finish | 加载结束（都会触发） | `func` | -
+@expand | 点击展开(异步则结束后触发) | `func` | -
 
 `iView`中的 `table` 和 `page` 的事件代`on`
 
@@ -50,7 +51,8 @@ render | 自定义展示 | `func` | `(h, { row, index }, handleClick)`
 
 属性 | 说明 | 类型 | 默认值
 ---|---|---|---
-`load-data` | 数据加载请求 | `function` | -
+`load-data` | 数据加载请求 | `func -> Promise` | -
+`load-expand-data` | 展开异步加载 | `func -> Promise'resolve(children)'` | -
 
 `iView`中的 `table` 和 `page` 的事件代`on`
 
