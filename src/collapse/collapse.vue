@@ -1,20 +1,24 @@
 <template>
-	<div class="vc-collapse">
+	<component :is="tag" class="vc-collapse">
 		<slot />
-	</div>
+	</component>
 </template>
 <script>
 
 export default {
 	name: "vc-collapse",
 	props: {
+		tag: {
+			type: String,
+			default: 'div'
+		},
 		accordion: {
 			type: Boolean,
 			default: false
 		},
 		value: {
 			type: [Array, String]
-		},
+		}
 	},
 	data() {
 		return {

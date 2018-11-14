@@ -1,5 +1,5 @@
 <template>
-	<div>
+	<component :is="tag">
 		<div style="position: relative" @click="handleToggle">
 			<slot />
 			<slot :is-expend="isActive" name="icon" />
@@ -16,7 +16,7 @@
 				<slot name="content"/>
 			</div>
 		</transition>
-	</div>
+	</component>
 </template>
 <script>
 import Icon from '../icon/index';
@@ -27,7 +27,11 @@ export default {
 		'vc-icon': Icon
 	},
 	props: {
-		 name: {
+		tag: {
+			type: String,
+			default: 'div'
+		},
+		name: {
 			type: String
 		},
 	},

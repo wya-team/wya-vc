@@ -1,5 +1,5 @@
 <template>
-	<div class="vcp-imgs-picker">
+	<component :is="tag" class="vcp-imgs-picker">
 		<div 
 			v-for="(item, index) in currentValue" 
 			:key="item"
@@ -23,7 +23,7 @@
 			@file-success="handleFileSuccess"
 			@file-error="handleFileError"
 		/>
-	</div>
+	</component>
 </template>
 
 <script>
@@ -42,6 +42,10 @@ export default {
 		event: 'change'
 	},
 	props: {
+		tag: {
+			type: String,
+			default: 'div'
+		},
 		value: {
 			type: Array,
 			default() {

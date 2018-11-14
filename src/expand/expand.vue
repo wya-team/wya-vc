@@ -8,9 +8,9 @@
 		@leave="leave" 
 		@after-leave="afterLeave"
 	>
-		<div v-show="isActive">
+		<component v-show="isActive" :is="tag">
 			<slot />
-		</div>
+		</component>
 	</transition>
 </template>
 
@@ -23,6 +23,10 @@ export default {
 		event: 'change'
 	},
 	props: {
+		tag: {
+			type: String,
+			default: 'div'
+		},
 		show: {
 			type: Boolean,
 			default: false
