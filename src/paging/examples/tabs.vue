@@ -75,6 +75,10 @@ export default {
 			],
 			columns: [
 				{
+					type: 'selection',
+					width: 60
+				},
+				{
 					title: 'Name',
 					key: 'name'
 				},

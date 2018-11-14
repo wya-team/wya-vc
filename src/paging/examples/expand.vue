@@ -30,8 +30,11 @@
 					:current.sync="current[item.value]"
 					:history="true"
 					:load-data="loadData"
+					:load-expand-data="loadExpandData"
 					:page-opts="page"
+					:expand-opts="expand"
 					@page-size-change="handleResetFirst"
+					@selection-change="handleSelect"
 				/>
 			</i-tab-pane>
 		</i-tabs>
@@ -39,7 +42,7 @@
 </template>
 <script>
 import { ajax } from 'wya-fetch';
-import { Tabs, TabPane, Input } from 'iview';
+import { Tabs, TabPane, Input, Message } from 'iview';
 import Paging from '../paging';
 import { initPage } from './utils/utils';
 import { getConstructUrl, getParseUrl } from '../../utils/utils';
@@ -69,12 +72,25 @@ export default {
 			current: {},
 			page: undefined,
 			table: undefined,
+			expand: {
+				all: false,
+				key: 'id', 
+				keys: [], 
+				index: 1, 
+				width: 60,
+				indentSize: 20, 
+				render: undefined, 
+			},
 			tabs: [
 				{ label: '标签一', value: '1' }, 
 				{ label: '标签二', value: '2' }, 
 				{ label: '标签三', value: '3' }
 			],
 			columns: [
+				{
+					type: 'selection',
+					width: 60
+				},
 				{
 					title: 'Name',
 					key: 'name',
@@ -168,7 +184,7 @@ export default {
 						status: Math.floor(Math.random() * 3 + 1),
 						opt: Math.floor(Math.random() * 3 + 1),
 						// __level__: level,
-						children: fn(level)
+						children: Math.floor(Math.random() * 2) ? fn(level) : []
 					});
 				}
 				return fakeData;
@@ -224,6 +240,21 @@ export default {
 			this.setHistory({
 				keyword
 			});
+		},
+		loadExpandData(opts = {}) {
+			return new Promise((resolve, reject) => {
+				const { index } = opts; 
+				const { type, current } = this;
+				const page = current[type];
+
+				let children = this.getFakeData(current[type], 3, 2);
+				setTimeout(() => {
+					resolve(children);
+				}, 2000);
+			});
+		},
+		handleSelect(row) {
+			console.log(row);
 		}
 	}
 };

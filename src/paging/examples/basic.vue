@@ -32,6 +32,10 @@ export default {
 			table: undefined,
 			columns: [
 				{
+					type: 'selection',
+					width: 60
+				},
+				{
 					title: 'Name',
 					key: 'name'
 				},
