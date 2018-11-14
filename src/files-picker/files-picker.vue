@@ -4,14 +4,13 @@
 			v-if="!disabled && (currentValue.length < max || max === 0)"
 			v-bind="upload"
 			mode="files"
-			class="__upload"
 			@file-start="handleFileStart"
 			@file-progress="handleFileProgress"
 			@file-success="handleFileSuccess"
 			@file-error="handleFileError"
 			@complete="handleFileComplete"
 		>
-			上传
+			<slot name="trigger" />
 		</vc-upload>
 		<template v-if="!$scopedSlots.default">
 			<div 
@@ -226,23 +225,6 @@ export default {
 				height: 4px;
 				border-radius: 2px;
 			}
-		}
-	}
-	.__upload {
-		display: flex;
-		justify-content: center;
-		align-items: center;
-		width: 88px;
-		height: 40px;
-		font-size: 14px;
-		border: 1px solid #d4d4d4;
-		border-radius: 6px;
-		background: #ffffff;
-		margin-bottom: 12px;
-		cursor: pointer;
-		&:hover {
-			border: 1px solid #0085ff;
-			color: #0085ff;
 		}
 	}
 }
