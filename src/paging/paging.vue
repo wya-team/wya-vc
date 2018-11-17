@@ -27,7 +27,7 @@
 			@on-select-cancel="$emit('select-cancel', arguments[0])"
 			@on-select-all="$emit('select-all', arguments[0])"
 			@on-select-all-cancel="$emit('select-all-cancel', arguments[0])"
-			@on-selection-change="$emit('selection-change', arguments[0])"
+			@on-selection-change="handleSelectionChange"
 			@on-sort-change="$emit('sort-change', arguments[0])"
 			@on-filter-change="$emit('filter-change', arguments[0])"
 			@on-row-click="$emit('row-click', arguments[0], arguments[1])"
@@ -449,6 +449,12 @@ export default {
 					// 待开发， 重新选择已选中的，设置_checked
 				} 
 			});
+		},
+		/**
+		 * 处理选择记录
+		 */
+		handleSelectionChange(row, index) {
+			this.$emit('selection-change', arguments[0]);
 		}
 	}
 };
