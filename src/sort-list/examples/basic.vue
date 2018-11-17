@@ -1,6 +1,6 @@
 <template>
 	<div>
-		<vc-sort-list v-model="dataSource" :mask="false">
+		<vc-sort-list v-model="dataSource">
 			<div 
 				slot-scope="it" 
 				:style="{ background: `#ff33${it.id}${it.id}` }"

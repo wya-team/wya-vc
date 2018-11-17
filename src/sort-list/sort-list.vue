@@ -5,7 +5,7 @@
 		name="flip-list" 
 	>
 		<component 
-			v-for="(item, index) in list" 
+			v-for="(item, index) in dataSource" 
 			:key="typeof item === 'object' ? item[primaryKey] : item"
 			:is="tag"
 			:draggable="true"
@@ -23,7 +23,7 @@
 				>&#10094;</span>
 				<span @click="handleClick($event, { item, index, type: 'delete'})">&#10006;</span>
 				<span 
-					:style="{visibility: index !== list.length - 1 ? 'unset' : 'hidden'}"
+					:style="{visibility: index !== dataSource.length - 1 ? 'unset' : 'hidden'}"
 					@click="handleClick($event, { item, index, type: 'right' })"
 				>&#10095;</span>
 			</div>
@@ -37,7 +37,7 @@ export default {
 	name: "vc-tpl",
 	mixins: [emitter],
 	model: {
-		prop: 'value',
+		prop: 'dataSource',
 		event: 'change'
 	},
 	props: {
@@ -45,7 +45,7 @@ export default {
 			type: String,
 			default: 'div'
 		},
-		value: {
+		dataSource: {
 			type: Array,
 			default() {
 				return [];
@@ -61,45 +61,32 @@ export default {
 		}
 	},
 	data() {
-		return {
-			list: this.value
-		};
-	},
-	watch: {
-		value(val) {
-			this.setData(val);
-		}
+		return {};
 	},
 	created() {
 		this.eleDrag = null;
 	},
 	methods: {
-		setData(value) {
-			if (value === this.list) return;
-			
-			this.list = value;
-			this.dispatch('FormItem', 'on-form-change', value);
-		},
 		/**
 		 * 获取左移、右移、拖拽、删除后的列表
 		 */
 		getSortList(current) {
-			const { list } = this;
+			const { dataSource } = this;
 			const { item, index, type } = current; // id:移动对象，i：目标位置，type：类型
 			let isObject = typeof item === 'object';
-			const arr = list.filter(it => it != item);
+			const arr = dataSource.filter(it => it != item);
 
 			let targetIndex;
 			switch (type) {
 				case 'left':
-					arr.splice(index - 1, 0, list[index]);
+					arr.splice(index - 1, 0, dataSource[index]);
 					break;
 				case 'right':
-					arr.splice(index + 1, 0, list[index]);
+					arr.splice(index + 1, 0, dataSource[index]);
 					break;
 				case 'drag':
-					targetIndex = this.list.findIndex(it => it === item); // 这个id元素对应的下标
-					arr.splice(index, 0, list[targetIndex]);
+					targetIndex = this.dataSource.findIndex(it => it === item); // 这个id元素对应的下标
+					arr.splice(index, 0, dataSource[targetIndex]);
 					break;
 				default: // 删除
 					break;
@@ -110,8 +97,9 @@ export default {
 		handleClick(e, current) {
 			let newValue = this.getSortList(current);
 
-			this.setData(newValue);
 			this.$emit('change', newValue);
+			// for iview
+			this.dispatch('FormItem', 'on-form-change', newValue);
 		},
 
 		/**
@@ -145,7 +133,8 @@ export default {
 
 			const newValue = this.getSortList({ item, index, type: 'drag' });
 			this.$emit('change', newValue);
-			this.setData(newValue);
+			// for iview
+			this.dispatch('FormItem', 'on-form-change', newValue);
 
 			clearTimeout(this.timer);
 			this.timer = setTimeout(() => {
@@ -185,7 +174,7 @@ export default {
 		cursor: move;
 	}
 	& > div:hover .__mask {
-		transition: opacity 0.5s;
+		transition: opacity .5s;
 		opacity: 1;
 	}
 	.__mask {
@@ -208,7 +197,7 @@ export default {
 	}
 }
 
-// group下其他元素，需要其他元素离开时设置 absolute， __item已添加
+// group下其他元素，位置变换时触发
 // .flip-list-move {
 // 	transition: all .5s;
 // }
@@ -219,8 +208,9 @@ export default {
 	opacity: 0;
 	// transform: translateY(30px);
 }
-// 开始消失
+// 开始消失，在变化过程中，使其宽高变化，其他元素会被添加flip-list-move
 .flip-list-leave-active {
-	position: absolute !important;
+	// position: absolute !important;
+	display: none;
 }
 </style>
