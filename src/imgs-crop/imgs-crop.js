@@ -1,28 +1,10 @@
 import { getCroppedImg, parseDOM, retrieveImageURL, isTouchDevice, isFileAPISupported } from '../utils/utils';
 
-const draggableEvents = {
-	touch: {
-		down: 'touchstart', 	// 按下
-		mouseDown: 'mousedown',
-		drag: 'touchmove',		// 拖拽
-		drop: 'touchend',		// 抬起
-		move: 'touchmove',	
-		mouseMove: 'mousemove',
-		up: 'touchend',
-		mouseUp: 'mouseup'
-	},
-	desktop: {
-		down: 'mousedown', 		// 按下
-		drag: 'dragstart',		// 拖拽
-		drop: 'drop',			// 抬起
-		move: 'mousemove',
-		up: 'mouseup'
-	}
+export const draggableEvents = {
+	start: ['touchstart', 'mousedown'],
+	move: ['touchmove', 'mousemove'],
+	end: ['touchend', 'touchcancel', 'mouseup']
 };
-
-const deviceEvents = isTouchDevice
-	? draggableEvents.touch
-	: draggableEvents.desktop;
 
 
 const pixelRatio = typeof window !== 'undefined' && window.devicePixelRatio
@@ -128,7 +110,7 @@ export default {
 		crossOrigin: {
 			type: String,
 			// ''. 'anonymous', 'use-credentials'
-			default: 'anonymous'
+			default: ''
 		},
 
 		// 是否支持拖拽图片进来编辑
@@ -195,21 +177,21 @@ export default {
 		}
 		this.paint(context);
 		if (!document) return;
-		// 使用原生绑定
-		document.addEventListener(deviceEvents.move, this.handleMouseMove, false);
-		document.addEventListener(deviceEvents.up, this.handleMouseUp, false);
-		if (isTouchDevice) {
+		// 使用原生绑定 不区分移动端还是桌面端
+		draggableEvents.move.forEach(eventName => {
 			document.addEventListener(
-				deviceEvents.mouseMove,
-				this.handleMouseMove,
+				eventName,
+				this.handleMove,
 				false
 			);
+		});
+		draggableEvents.end.forEach(eventName => {
 			document.addEventListener(
-				deviceEvents.mouseUp,
-				this.handleMouseUp,
+				eventName,
+				this.handleEnd,
 				false
 			);
-		}
+		});
 	},
 	updated() {
 		const canvas = this.$refs.target;
@@ -220,24 +202,22 @@ export default {
 	},
 	destroyed() {
 		if (!document) return;
-		document.removeEventListener(
-			deviceEvents.move,
-			this.handleMouseMove,
-			false
-		);
-		document.removeEventListener(deviceEvents.up, this.handleMouseUp, false);
-		if (isTouchDevice) {
+
+		// 不区分移动端还是桌面端
+		draggableEvents.move.forEach(eventName => {
 			document.removeEventListener(
-				deviceEvents.mouseMove,
-				this.handleMouseMove,
+				eventName,
+				this.handleMove,
 				false
 			);
+		});
+		draggableEvents.end.forEach(eventName => {
 			document.removeEventListener(
-				deviceEvents.mouseUp,
-				this.handleMouseUp,
+				eventName,
+				this.handleEnd,
 				false
 			);
-		}
+		});
 	},
 	methods: {
 		/**
@@ -543,8 +523,7 @@ export default {
 		/**
 		 * 按下，只作用于canvas区域
 		 */
-		handleMouseDown(e) {
-			// console.log(this, 1, `handleMouseDown`); 
+		handleStart(e) {
 			e = e || window.event;
 			// 多指触控
 			if (e.touches && e.touches.length > 1) return;
@@ -559,8 +538,7 @@ export default {
 		 * 抬起
 		 * 由 this.drag 判断
 		 */
-		handleMouseUp() {
-			// console.log(this, 1, `handleMouseUp`);
+		handleEnd() {
 			if (this.drag) {
 				this.drag = false;
 				this.$emit('mouse-up');
@@ -570,8 +548,7 @@ export default {
 		/**
 		 * 移动 作用于整个document
 		 */
-		handleMouseMove(e) {
-			// console.log(this, 1, `handleMouseMove`);
+		handleMove(e) {
 			e = e || window.event;
 
 			if (this.drag === false) {
@@ -644,12 +621,9 @@ export default {
 		},
 
 		/**
-		 * 去除作用于canvas本身事件
-		 * touch：onTouchMove -> touchmove
-		 * desktop：onDragOver -> dragStart
+		 * e.preventDefault(); => allowDrop
 		 */
 		handleDragOver(e) {
-			// console.log(this, 1, `handleDragOver`);
 			// 对于touch端它属于touchmove事件
 			e = e || window.event;
 			// 多指触控
@@ -659,16 +633,11 @@ export default {
 
 		/**
 		 * 去除作用于canvas本身事件
-		 * touch：onTouchEnd -> touchend
-		 * desktop：onDrop -> drop
 		 */
-		handleDrop(e = window.event) {
-			// console.log(this, 1, `handleDrop`);
-			// 临时注释
-			// e.stopPropagation();
-			// e.preventDefault();
+		handleDrop(e) {
+			e = e || window.event;
 			// 支持desktop下直接拖入图片
-			if (e.dataTransfer) {
+			if (!this.disableDrop && e.dataTransfer) {
 				e.stopPropagation();
 				e.preventDefault();
 				const { files, items } = e.dataTransfer;
@@ -779,22 +748,27 @@ export default {
 			width: dimensions.canvas.width + `px`,
 			height: dimensions.canvas.height + `px`,
 			// 鼠标样式
-			cursor: this.drag ? '-webkit-grabbing' : '-webkit-grab'
+			cursor: this.drag ? '-webkit-grabbing' : '-webkit-grab',
+
 		};
 
 		const attrs = {
 			// canvas标签的width和height是画布实际宽度和高度
 			width: dimensions.canvas.width * pixelRatio,
 			height: dimensions.canvas.height * pixelRatio,
+			draggable: true
 		};
+
+		// 给元素绑定的事件，start由该元素控制，move/end由document控制，
 		const on = {
-			[deviceEvents.down]: this.handleMouseDown,
-			[deviceEvents.drag]: this.handleDragOver,
+			dragover: this.handleDragOver,
+			drop: this.handleDrop,
 		};
-
-		!this.disableDrop && (on[deviceEvents.drop] = this.handleDrop);
-		isTouchDevice && (on[deviceEvents.mouseDown] = this.handleMouseDown);
-
+		
+		draggableEvents.start.forEach(eventName => {
+			on[eventName] = this.handleStart;
+		});
+			
 		return h('canvas', {
 			ref: 'target',
 			style,
