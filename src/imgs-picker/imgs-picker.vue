@@ -1,7 +1,7 @@
 <template>
 	<component :is="tag" class="vcp-imgs-picker">
 		<div 
-			v-for="(item, index) in currentValue" 
+			v-for="(item, index) in dataSource" 
 			:key="item"
 			class="__item __normal"
 		>
@@ -16,7 +16,7 @@
 			</div>
 		</div>
 		<vc-upload 
-			v-if="!disabled && (currentValue.length < max || max === 0)"
+			v-if="!disabled && (dataSource.length < max || max === 0)"
 			v-bind="upload"
 			:accept="accept"
 			class="__upload __normal"
@@ -38,7 +38,7 @@ export default {
 	},
 	mixins: [emitter],
 	model: {
-		prop: 'value',
+		prop: 'dataSource',
 		event: 'change'
 	},
 	props: {
@@ -46,7 +46,7 @@ export default {
 			type: String,
 			default: 'div'
 		},
-		value: {
+		dataSource: {
 			type: Array,
 			default() {
 				return [];
@@ -70,7 +70,7 @@ export default {
 			type: String,
 			default: 'image/gif,image/jpeg,image/jpg,image/png' // 不默认为image/*是因为在Webkit浏览器下回响应很慢
 		}
-		// getParse: {
+		// format: {
 		// 	type: Function,
 		// 	default() {
 				
@@ -79,43 +79,33 @@ export default {
 	},
 	data() {
 		return {
-			currentValue: this.value
 		};
 	},
-	watch: {
-		value(val) {
-			this.setCurrentValue(val);
-		}
-	},
+
 	methods: {
-		setCurrentValue(value) {
-			if (value === this.currentValue) return;
-			
-			this.currentValue = value;
-			this.dispatch('FormItem', 'on-form-change', value);
-		},
 		handleFileSuccess(res) {
-			let { max, currentValue, getParse } = this;
-			let value = [...currentValue, getParse ? getParse(res) : res.data.url];
-			this.$emit('change', value);
-			this.setCurrentValue(value);
+			let { max, dataSource, format } = this;
+			dataSource = [...dataSource, format ? format(res) : res.data.url];
+			this.$emit('change', dataSource);
+			// for iview
+			this.dispatch('FormItem', 'on-form-change', dataSource);
 		},
 		handleFileError(res) {
-			console.log(res);
 			this.$emit('error', res);
 		},
 		handleDel(item) {
-			let { currentValue, max, getParse } = this;
-			if (max !== 0 && currentValue.length > max) {
+			let { dataSource, max, format } = this;
+			if (max !== 0 && dataSource.length > max) {
 				this.$emit('error', {
 					status: 0,
 					msg: '超出上传限制'
 				});
 				return;
 			}
-			let value = currentValue.filter(_item => _item != item);
-			this.$emit('change', value);
-			this.setCurrentValue(value);
+			dataSource = dataSource.filter(_item => _item != item);
+			this.$emit('change', dataSource);
+			// for iview
+			this.dispatch('FormItem', 'on-form-change', dataSource);
 		},
 		handlePreview(e, idx) {
 			let pos = {};
@@ -132,7 +122,7 @@ export default {
 
 			ImgsPreview.popup({
 				visible: true,
-				dataSource: this.value,
+				dataSource: this.dataSource,
 				opts: {
 					index: idx,
 					history: false,
