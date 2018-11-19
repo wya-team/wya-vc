@@ -112,7 +112,7 @@ export default {
 			// 拖放效果
 			e.dataTransfer.effectAllowed = "move";
 
-			e.target.style.visibility = 'hidden';
+			e.target.style.opacity = 0;
 
 
 			this.eleDrag = e.target;
@@ -153,7 +153,7 @@ export default {
 		handleDragEnd(e) {
 			e.dataTransfer.clearData("text");
 
-			e.target.style.visibility = 'unset';
+			e.target.style.opacity = 1;
 			this.eleDrag = null;
 		}
 	}
