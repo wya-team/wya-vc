@@ -8,7 +8,7 @@
 
 属性 | 说明 | 类型 | 默认值
 ---|---|---|---
-value | 上传的图片 | `array` | []
+dataSource | 上传的图片 | `array` | []
 max | 图片的最大数量 | `number` | 0（不限制）
 disabled | 是否禁止上传 | `boolean` | false
 upload | upload组件的属性 | `object` | {}
@@ -18,7 +18,7 @@ upload | upload组件的属性 | `object` | {}
 
 属性 | 说明 | 类型 | 默认值
 ---|---|---|---
-@change | `value`值改变的回调 | `function` | -
+@change | `dataSource`值改变的回调 | `function` | -
 @error | 上传错误的回调的回调 | `function` | -
 
 
