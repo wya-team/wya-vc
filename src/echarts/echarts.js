@@ -192,11 +192,11 @@ export default {
 			return this.$el.offsetWidth * this.$el.offsetHeight;
 		},
 		init() {
-			if (this.chart) {
+			if (this.chart || !this.echartsInstance) {
 				return;
 			}
 			// this.echartsInstance = await import("echarts");
-			// console.log(this.echartsInstance.init);
+			// console.log(this.echartsInstance);
 			let chart = this.echartsInstance.init(this.$el, this.theme, this.initOptions);
 			if (this.group) {
 				chart.group = this.group;
