@@ -15,7 +15,6 @@ npm install babel-plugin-import --save-dev
 ```
 - 配置`.babelrc`
 ```vim
-// babel6
 {
 	"plugins": [
 		[
@@ -26,21 +25,6 @@ npm install babel-plugin-import --save-dev
 					"libraryDirectory": "lib"
 				}
 			]
-		]
-	]
-}
-
-// babel7
-
-{
-	"plugins": [
-		[
-			"import",
-			{
-				"libraryName": "wya-vc",
-				"libraryDirectory": "lib"
-			},
-			"wya-vc"
 		]
 	]
 }

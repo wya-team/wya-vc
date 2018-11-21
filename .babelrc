@@ -1,27 +1,33 @@
 {
 	"presets": [
-		"@babel/preset-env"
+		"env",
+		"stage-0"
 	],
 	"plugins": [
-		"@babel/plugin-proposal-export-default-from",
-		"@babel/plugin-proposal-function-bind",
-		"@babel/plugin-syntax-dynamic-import",
-		"@babel/plugin-transform-runtime",
-		"@babel/plugin-syntax-jsx",
-		"transform-vue-jsx",
 		[
-			"@babel/plugin-proposal-decorators", 
-			{ 
-				"legacy": true 
+			"syntax-dynamic-import"
+		],
+		[
+			"transform-decorators-legacy"
+		],
+		[
+			"transform-vue-jsx"
+		],
+		[
+			"transform-runtime", 
+			{
+				"polyfill": false,
+				"regenerator": true
 			}
 		],
 		[
 			"import",
-			{
-				"libraryName": "iview",
-				"libraryDirectory": "src/components"
-			},
-			"iview"
+			[
+				{
+					"libraryName": "iview",
+					"libraryDirectory": "src/components"
+				}
+			]
 		]
 	]
 }
