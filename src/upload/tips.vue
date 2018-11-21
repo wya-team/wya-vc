@@ -34,7 +34,7 @@
 <script>
 import CreatePortal from '../create-portal/index';
 
-export default {
+const config = {
 	name: "vc-upload-tips",
 	props: {
 	},
@@ -111,8 +111,9 @@ export default {
 		},
 	}
 };
+export default config;
 
-export const Tips = CreatePortal({}, module.exports.default);
+export const Tips = CreatePortal({}, config);
 </script>
 <style lang="scss" scoped>
 @import '../style/index.scss';

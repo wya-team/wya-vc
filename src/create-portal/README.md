@@ -51,7 +51,7 @@ cName | 自定义cName, 替代先前cName | `string` | -
 import { Modal } from 'iview';
 import CreatePortal from '../../index';
 
-export default {
+const config = {
 	name: "vc-tpl-basic",
 	components: {
 		'i-modal': Modal
@@ -81,15 +81,19 @@ export default {
 		}
 	}
 };
+export default config;
+
 export const PModalWithBefore = CreatePortal({
 	onBefore() {
 		return new Promise((resolve, reject) => {
 			setTimeout(resolve, 1000);
 		});
 	}
-}, module.exports.default);
+}, config);
 
-export const PModal = CreatePortal({}, module.exports.default);
+export const PModal = CreatePortal({}, config);
+
+// babel7 下不能使用module.exports.default
 </script>
 ```
 - 调用

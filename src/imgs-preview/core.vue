@@ -73,7 +73,7 @@ import { photoSwipeEvents } from './constants';
  * visible 父级传递
  * show 当前组件内
  */
-export default {
+const config = {
 	name: "vc-imgs-preview-core",
 	props: {
 		id: String,
@@ -241,8 +241,9 @@ export default {
 		}
 	}
 };
+export default config;
 
-export const Func = CreatePortal({}, module.exports.default);
+export const Func = CreatePortal({}, config);
 
 </script>
 <style lang='scss' scoped>

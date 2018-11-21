@@ -19,7 +19,7 @@
 import { Drawer, Spin } from 'iview';
 import CreatePortal from '../../index';
 
-export default {
+const config = {
 	name: "vc-tpl-basic-keep-alive",
 	components: {
 		'i-drawer': Drawer,
@@ -58,6 +58,9 @@ export default {
 		}
 	}
 };
+
+export default config;
+
 export const KeepAliveWithBefore = CreatePortal({
 	keepAlive: true,
 	onBefore() {
@@ -65,7 +68,7 @@ export const KeepAliveWithBefore = CreatePortal({
 			setTimeout(resolve, 1000);
 		});
 	}
-}, module.exports.default);
+}, config);
 
-export const KeepAlive = CreatePortal({ keepAlive: true }, module.exports.default);
+export const KeepAlive = CreatePortal({ keepAlive: true }, config);
 </script>
