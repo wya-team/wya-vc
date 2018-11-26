@@ -92,23 +92,22 @@ export default (options = {}, wrapper) => {
 						delete VcInstance.APIS[cName];
 					});
 
-					vm.$on('close', (res, delay = leaveDelay) => {
-						// 考虑退出动画
-						setTimeout(() => {
-							vm.$emit('destory');
-						}, delay * 1000);
+					const fn = (callback) => (res, opts = {}) => {
+
+						const { 
+							delay = leaveDelay, 
+							destory = true 
+						} = opts;
 						
-						reject(res);
-					});
-
-					vm.$on('sure', (res, delay = leaveDelay) => {
 						// 考虑退出动画
-						setTimeout(() => {
-							vm.$emit('destory');
-						}, delay * 1000);
+						destory && setTimeout(() => vm.$emit('destory'), delay * 1000);
 
-						resolve(res);
-					});
+						callback(res);
+					};
+
+					vm.$on('close', fn(reject));
+
+					vm.$on('sure', fn(resolve));
 
 					// 回调vm实例
 					getInstance && getInstance(vm);
