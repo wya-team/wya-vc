@@ -17,7 +17,8 @@ class Vc {
 			},	
 			Upload: {
 				IMG_UPLOAD_URL: null,
-				FILE_UPLOAD_URL: null
+				FILE_UPLOAD_URL: null,
+				onPostBefore: null
 			}
 		};
 	}

@@ -1,4 +1,4 @@
-import { ajax } from 'wya-fetch';
+import { ajax } from '../utils/net';
 import { getUid, attrAccept, initItem } from '../utils/utils';
 import { VcInstance } from '../vc/index';
 import { Tips } from './tips';
@@ -69,7 +69,7 @@ export default {
 		// 给后端的字段名，历史原因
 		name: {
 			type: String,
-			default: 'Filedata'
+			default: 'file'
 		},
 
 		showTips: {
@@ -215,13 +215,17 @@ export default {
 			}
 		},
 
-		post(file) {
+		async post(file) {
 			if (!this._isMounted) {
 				return;
 			}
-			const { url, mode, name, headers, extra } = this;
-			const { URL_UPLOAD_FILE_POST, URL_UPLOAD_IMG_POST } = VcInstance.config.Upload || {};
+			const { 
+				"post-before": postBefore 
+			} = this.$listeners;
+			const { url, mode, name, headers, extra = {} } = this;
+			const { URL_UPLOAD_FILE_POST, URL_UPLOAD_IMG_POST, onPostBefore } = VcInstance.config.Upload || {};
 			const defaultUrl = mode === 'images' ? URL_UPLOAD_IMG_POST : URL_UPLOAD_FILE_POST;
+			const onBefore = postBefore || onPostBefore || (() => ({}));
 			const { uid } = file;
 			const { ajax, size } = this;
 			let localData;
@@ -232,13 +236,19 @@ export default {
 				};
 			}
 			// onFileStart, onFileProgress, onFileSuccess, onFileError, onComplete 
+			let response = await onBefore();
+			if (typeof response !== 'object') {
+				console.error('[wya-vc/upload]: onBefore必须返回对象');
+				return;
+			}
+			
 			this.reqs[uid] = ajax({
 				url: url || defaultUrl,
 				type: "FORM",
 				param: {
 					name,
 					file,
-					data: extra
+					data: { ...extra, ...response }
 				},
 				headers,
 				localData,
