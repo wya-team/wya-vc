@@ -1,4 +1,4 @@
-import { ajax } from '../utils/net';
+import { ajax } from './net';
 import { getUid, attrAccept, initItem } from '../utils/utils';
 import { VcInstance } from '../vc/index';
 import { Tips } from './tips';

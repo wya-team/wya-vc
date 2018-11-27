@@ -40,13 +40,14 @@ show-tips | 展示显示进度弹窗 | `bool` | `false`
 
 属性 | 说明 | 类型 | 默认值
 ---|---|---|---
-`@file-before` | 单个文件上传前回调 | `func` | -
+`@file-before` | 单个文件上传前回调(进度) | `func` | -
 `@file-start` | 单个文件上传开始回调 | `func` | -
 `@file-progress` | 单个文件上传过程回调(e.percent, file.current, file.total等可用参数) | `(e, file) => void` | -
 `@file-success` | 单个文件上传过程成功回调(res, file.current, file.total等可用参数) | `(res, file) => void` | -
 `@file-error` | 单个文件上传过程失败回调(res, file.current, file.total等可用参数) | `(res, file) => void` | -
 `@begin` | 一个周期上传前的回调(info: {}) | `(files) => void` | -
 `@complete` | 一个周期上传后的回调(info: {}) | `(info) => void` | -
+`@post-before` | 文件上传前回调（处理异步） | `func` | -
 
 
 ## 基础用法
@@ -56,7 +57,8 @@ show-tips | 展示显示进度弹窗 | `bool` | `false`
 VcInstance.init({
 	Upload: {
 		URL_UPLOAD_IMG_POST: 'https://wyaoa.ruishan666.com/uploadfile/upimg.json?action=uploadimage&encode=utf-8&code=xcx',
-		URL_UPLOAD_FILE_POST: 'https://wyaoa.ruishan666.com/uploadfile/upimg.json?action=uploadimage&encode=utf-8&code=xcx'
+		URL_UPLOAD_FILE_POST: 'https://wyaoa.ruishan666.com/uploadfile/upimg.json?action=uploadimage&encode=utf-8&code=xcx',
+		onPostBefore: () => ({})
 	}
 });
 ```
