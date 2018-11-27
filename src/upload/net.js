@@ -24,8 +24,6 @@ const afterFn = (response, options) => {
 };
 
 const defaultOptions = {
-	onLoading: loadingFn,
-	onLoaded: loadedFn,
 	onAfter: afterFn
 	// requestType: 'form-data:json',
 };
