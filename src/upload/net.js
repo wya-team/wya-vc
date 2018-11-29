@@ -9,8 +9,9 @@
 import { ajaxFn } from 'wya-fetch';
 
 const afterFn = (response, options) => {
-	// TODO 
-	if (response.state === 'SUCCESS') {
+	if (response.status === 1 || response.status === 0) {
+		return response;
+	} else if (response.state === 'SUCCESS') {
 		return {
 			status: 1,
 			data: response
