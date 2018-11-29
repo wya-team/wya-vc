@@ -1,13 +1,24 @@
 <template>
-	<vc-editor 
-		ref="editor"
-		:options="options"
-		:disabled="disabled"
-		value="我是富文本的内容，可以是text，也可以是html"
-		@change="handleChange"
-	/>
+	<i-form
+		ref="form"
+		:model="formValidate" 
+		:rules="ruleValidate" 
+		@submit.native.prevent
+	>
+		<i-form-item prop="value" @on-form-change="handleChange">
+			<vc-editor 
+				ref="editor"
+				v-model="formValidate.value"
+				:options="options"
+				:disabled="disabled"
+				:upload="{name: 'Filedata'}"
+			/>
+		</i-form-item>
+		<i-button @click="handleSubmit">提交</i-button>
+	</i-form >
 </template>
 <script>
+import { Form, FormItem, Input, Button } from 'iview';
 import Editor from '../editor';
 import { VcInstance } from '../../vc/index';
 
@@ -21,7 +32,10 @@ VcInstance.init({
 export default {
 	name: "vc-editor-basic",
 	components: {
-		"vc-editor": Editor
+		"vc-editor": Editor,
+		'i-button': Button,
+		'i-form': Form,
+		'i-form-item': FormItem,
 	},
 	data() {
 		return {
@@ -30,7 +44,15 @@ export default {
 					toolbar: '#toolbar',
 				},
 			},
-			disabled: false
+			disabled: false,
+			formValidate: {
+				value: ''
+			},
+			ruleValidate: {
+				value: [
+					{ required: true, message: '请输入内容' }
+				],
+			}
 		};
 	},
 	computed: {
@@ -42,7 +64,16 @@ export default {
 	methods: {
 		handleChange(arg) {
 			console.log(arg);
-		}
+		},
+		handleSubmit(name) {
+			this.$refs.form.validate((valid) => {
+				if (valid) {
+					this.$Message.success('Success!');
+				} else {
+					this.$Message.error('Fail!');
+				}
+			});
+		},
 	}
 };
 </script>

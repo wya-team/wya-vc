@@ -5,8 +5,9 @@
 			<toolbar>
 				<button id="img" style="outline: none" >
 					<vc-upload
-						accept="image/gif,image/jpeg,image/jpg,image/png"
-						style="outline: none" 
+						v-bind="upload"
+						accept="image/gif,image/jpeg,image/jpg,image/png" 
+						style="outline: none"
 						@file-success="handleImgSuccess"
 					>
 						<vc-icon type="image" />
@@ -24,6 +25,7 @@ import Quill from 'quill';
 import 'quill/dist/quill.core.css';
 import 'quill/dist/quill.snow.css';
 import 'quill/dist/quill.bubble.css';
+import emitter from '../extends/mixins/emitter'; // 表单验证
 import Toolbar from './toolbar';
 import Upload from '../upload/index';
 import Icon from '../icon/index';
@@ -37,6 +39,11 @@ export default {
 		'toolbar': Toolbar,
 		'vc-upload': Upload,
 		'vc-icon': Icon
+	},
+	mixins: [emitter],
+	model: {
+		prop: "value",
+		event: "input"
 	},
 	props: {
 		value: {
@@ -52,7 +59,11 @@ export default {
 		disabled: {
 			type: Boolean,
 			default: false
-		}
+		},
+		upload: {
+			type: Object,
+			default: () => ({})
+		},
 	},
 	data() {
 		return {
@@ -93,7 +104,7 @@ export default {
 			this.editor.enable(!this.disabled);
 
 			if (this.value) {
-				// this.editor.setText('zhellll');
+				this.editor.setText('zhellll');
 				this.editor.clipboard.dangerouslyPasteHTML(this.value);
 			}
 			
@@ -105,14 +116,16 @@ export default {
 				}
 			});
 
+			// 监听文本内容变化
 			this.editor.on('text-change', (delta, oldDelta, source) => {
 				let html = this.$refs.editor.children[0].innerHTML;
 				const editor = this.editor;
 				const text = this.editor.getText();
 				if (html === '<p><br></p>') html = '';
 				this.content = html;
-				// this.$emit('input', this.content);
+				this.$emit('input', this.content);
 				this.$emit('change', { html, text, editor });
+				this.dispatch('FormItem', 'on-form-change', this.content);
 			});
 		},
 		initListener() {
@@ -147,7 +160,13 @@ export default {
 		},
 		handleImgSuccess(res) {
 			// 获取光标所在位置
-			let length = this.editor.getSelection().index;
+			let length;
+			let selection = this.editor.getSelection();
+			if (!selection) {
+				length = this.editor.getLength();
+			} else {
+				length = selection.index;
+			}
 			this.editor.insertEmbed(length, 'image', res.data.url);
 			// 光标向后移动一位
 			this.editor.setSelection(length + 1);
@@ -162,7 +181,7 @@ export default {
 				pos = { x: rect.left, y: rect.top + pageYScroll, w: rect.width };
 
 			} catch (e) {
-				console.log(e);
+				// console.log(e);
 			}
 
 			ImgsPreview.popup({
