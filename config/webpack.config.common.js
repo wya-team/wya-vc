@@ -40,7 +40,8 @@ const postcssLoader = {
 };
 const loaderPath = [
 	path.resolve(APP_ROOT, "node_modules/iview"),
-	path.resolve(APP_ROOT, "src")
+	path.resolve(APP_ROOT, "src"),
+	path.resolve(APP_ROOT, "temp")
 ];
 const webpackConfig = {
 	resolve: {// 重定向路径
