@@ -39,6 +39,7 @@ export default (options = {}, wrapper) => {
 					router,
 					parent = {}, // 依赖注入使用 like store, router, Life cycle，methods, mixins, ....
 					data,
+					components = {}, // 可以动态注入组件
 					...rest
 				} = opts;
 
@@ -72,7 +73,7 @@ export default (options = {}, wrapper) => {
 						
 					} else {
 
-						const VueComponent = Vue.extend(wrapper);
+						const VueComponent = Vue.extend({ ...wrapper, components: { ...wrapper.components, ...components } });
 						vm = new VueComponent({
 							el: container,
 							store, // vuex,
