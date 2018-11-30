@@ -11,7 +11,6 @@
 				v-model="formValidate.value"
 				:options="options"
 				:disabled="disabled"
-				:upload="{name: 'Filedata'}"
 			/>
 		</i-form-item>
 		<i-button @click="handleSubmit">提交</i-button>
@@ -25,7 +24,8 @@ import { VcInstance } from '../../vc/index';
 VcInstance.init({
 	Upload: {
 		URL_UPLOAD_IMG_POST: 'https://wyaoa-new.ruishan666.com/uploadfile/upimg.json?action=uploadimage&encode=utf-8&code=oa',
-		URL_UPLOAD_FILE_POST: 'https://wyaoa-new.ruishan666.com/uploadfile/upimg.json?action=uploadimage&encode=utf-8&code=oa'
+		URL_UPLOAD_FILE_POST: 'https://wyaoa-new.ruishan666.com/uploadfile/upimg.json?action=uploadimage&encode=utf-8&code=oa',
+		FORM_NAME: 'Filedata'
 	}
 });
 

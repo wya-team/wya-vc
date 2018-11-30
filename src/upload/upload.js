@@ -66,10 +66,10 @@ export default {
 			default: 'images'
 		},
 
-		// 给后端的字段名，历史原因
+		// 给后端的字段名，历史原因 (之前默认Filedata)
 		name: {
 			type: String,
-			default: 'file'
+			default: ''
 		},
 
 		showTips: {
@@ -223,7 +223,7 @@ export default {
 				"post-before": postBefore 
 			} = this.$listeners;
 			const { url, mode, name, headers, extra = {} } = this;
-			const { URL_UPLOAD_FILE_POST, URL_UPLOAD_IMG_POST, onPostBefore } = VcInstance.config.Upload || {};
+			const { URL_UPLOAD_FILE_POST, URL_UPLOAD_IMG_POST, FORM_NAME, onPostBefore } = VcInstance.config.Upload || {};
 			const defaultUrl = mode === 'images' ? URL_UPLOAD_IMG_POST : URL_UPLOAD_FILE_POST;
 			const onBefore = postBefore || onPostBefore || (() => ({}));
 			const { uid } = file;
@@ -246,7 +246,7 @@ export default {
 				url: url || defaultUrl,
 				type: "FORM",
 				param: {
-					name,
+					name: name || FORM_NAME || 'file',
 					file,
 					data: { ...extra, ...response }
 				},
