@@ -2,19 +2,10 @@ import Vue from 'vue';
 import { VcInstance } from '../vc/index';
 import { getUid } from '../utils/utils';
 
-export default (options = {}, wrapper) => {
+export default (defaultOptions = {}, wrapper) => {
 	let isNeedWaiting = false;
-	let {
-		cName = wrapper.name, 
-		onBefore, 
-		el, 
-		root: _root, 
-		leaveDelay = 0.3,
-		keepAlive = false,
-		autoDestory = true
-	} = options;
 
-	if (!cName) {
+	if (!defaultOptions.cName && !wrapper.name) {
 		console.log('传送门：cName 必传');
 		return;
 	}
@@ -23,29 +14,33 @@ export default (options = {}, wrapper) => {
 		console.log('传送门：目标组件必传');
 		return;
 	}
+	
 
 	class Statics {
-		static init(opts = {}) {
-			return new Promise((resolve, reject) => {
-				let container = document.createElement(el || 'div');
-				let target = document.querySelector(_root || 'body');
+		static init(userOptions = {}) {
+			let options = { ...defaultOptions, ...userOptions };
 
-				// init opts
+			return new Promise((resolve, reject) => {
+				// init options
 				const { 
+					el, 
+					root: _root, 
+					cName = wrapper.name,
+					leaveDelay = 0.3,
+					keepAlive = false,
+					autoDestory = true,
 					getInstance, 
-					onBefore: _onBefore, 
-					cName: _cName,
+					onBefore, 
 					store,
 					router,
 					parent = {}, // 依赖注入使用 like store, router, Life cycle，methods, mixins, ....
 					data,
 					components = {}, // 可以动态注入组件
 					...rest
-				} = opts;
+				} = options;
 
-				onBefore = _onBefore || onBefore;
-				cName = _cName || cName;
-				// autoDestory = _autoDestory === false ? false : autoDestory;
+				let container = document.createElement(el || 'div');
+				let target = document.querySelector(_root || 'body');
 
 				let render = (res = {}) => {
 					// destory
@@ -69,11 +64,18 @@ export default (options = {}, wrapper) => {
 
 						// update
 						let fn = vm.update || vm.loadData;
-						fn && fn(opts);
+						fn && fn(options);
 						
 					} else {
 
-						const VueComponent = Vue.extend({ ...wrapper, components: { ...wrapper.components, ...components } });
+						const VueComponent = Vue.extend({ 
+							...wrapper, 
+							components: { 
+								...wrapper.components, 
+								...components 
+							} 
+						});
+						
 						vm = new VueComponent({
 							el: container,
 							store, // vuex,
@@ -125,11 +127,11 @@ export default (options = {}, wrapper) => {
 				if (onBefore) {
 					if (isNeedWaiting) {
 						container = null;
-						opts = null;
+						options = null;
 						render = null;
 					} else {
 						isNeedWaiting = true;
-						onBefore({ ...opts })
+						onBefore({ ...options })
 							.then((res = {}) => {
 								render(res);
 							}).catch((res = {}) => {
@@ -145,7 +147,7 @@ export default (options = {}, wrapper) => {
 
 		/**
 		 * 弹出项目，验证数据结构是否合法
-		 * opts {
+		 * userOptions {
 		 * 	store,
 		 * 	router,
 		 * 	getInstance,
@@ -153,11 +155,11 @@ export default (options = {}, wrapper) => {
 		 * 	}
 		 * }
 		 */
-		static popup(opts = {}) {
-			if (typeof opts !== 'object') {
-				opts = {};
+		static popup(userOptions = {}) {
+			if (typeof userOptions !== 'object') {
+				userOptions = {};
 			}
-			return Statics.init(opts);
+			return Statics.init(userOptions);
 		}
 	}
 
