@@ -1,4 +1,4 @@
-import { ajax } from './net';
+import { ajax } from 'wya-fetch';
 import { getUid, attrAccept, initItem } from '../utils/utils';
 import { VcInstance } from '../vc/index';
 import { Tips } from './tips';
@@ -220,12 +220,16 @@ export default {
 				return;
 			}
 			const { 
-				"post-before": postBefore 
+				"post-before": postBefore,
+				"post-after": postAfter,
 			} = this.$listeners;
 			const { url, mode, name, headers, extra = {} } = this;
-			const { URL_UPLOAD_FILE_POST, URL_UPLOAD_IMG_POST, FORM_NAME, onPostBefore } = VcInstance.config.Upload || {};
+			const { URL_UPLOAD_FILE_POST, URL_UPLOAD_IMG_POST, FORM_NAME, onPostBefore, onPostAfter } = VcInstance.config.Upload || {};
 			const defaultUrl = mode === 'images' ? URL_UPLOAD_IMG_POST : URL_UPLOAD_FILE_POST;
+			// 上传前/后的回调
 			const onBefore = postBefore || onPostBefore || (() => ({}));
+			const onAfter = postAfter || onPostAfter;
+
 			const { uid } = file;
 			const { ajax, size } = this;
 			let localData;
@@ -252,6 +256,7 @@ export default {
 				},
 				headers,
 				localData,
+				onAfter,
 				onProgress: e => {
 					this.$emit('file-progress', e, file);
 					this.tips && this.tips.setValue(uid, 'percent', e.percent);

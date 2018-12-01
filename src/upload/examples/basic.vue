@@ -27,13 +27,35 @@
 </template>
 <script>
 import { Message } from 'iview';
+import { ajax } from 'wya-fetch';
 import Upload from '../index';
 import { VcInstance } from '../../vc/index';
 
 VcInstance.init({
 	Upload: {
-		URL_UPLOAD_IMG_POST: 'https://wyaoa-new.ruishan666.com/uploadfile/upimg.json?action=uploadimage&encode=utf-8&code=oa',
-		URL_UPLOAD_FILE_POST: 'https://wyaoa-new.ruishan666.com/uploadfile/upimg.json?action=uploadimage&encode=utf-8&code=oa'
+		URL_UPLOAD_IMG_POST: 'https://wyatest.oss-cn-hangzhou.aliyuncs.com',
+		URL_UPLOAD_FILE_POST: 'https://wyatest.oss-cn-hangzhou.aliyuncs.com',
+		onPostAfter: (response, options) => {
+			console.log(response, options);
+		},
+		onPostBefore: () => {
+			return ajax({
+				url: 'https://oa2.ruishan666.com/_cms/api/image/get-oss-info.json',
+				type: "POST",
+				param: {},
+				headers: {
+					"-token": 'eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJ0aW1lIjoxNTQzNjUwMTQ1LCJzdGFmZl9pZCI6MTJ9.F5TFc9dIFHiGLAZlwy09jk8RcsfMcChzOR0TaYEsO7E',
+				}
+			}).then(res => {
+				return {
+					...res.data,
+					'success_action_status': '200',
+					key: res.data.dir + "${filename}"   // eslint-disable-line
+				};
+			}).catch(error => {
+				return {};
+			});
+		} // 必须返回对象或Promise对象
 	}
 });
 
