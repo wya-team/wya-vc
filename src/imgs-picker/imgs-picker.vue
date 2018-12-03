@@ -16,7 +16,7 @@
 			</div>
 		</div>
 		<vc-upload 
-			v-if="!disabled && (dataSource.length < max || max === 0)"
+			v-show="!disabled && (dataSource.length < max || max === 0)"
 			v-bind="upload"
 			:accept="accept"
 			class="__upload __normal"

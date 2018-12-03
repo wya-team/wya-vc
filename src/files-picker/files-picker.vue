@@ -1,7 +1,7 @@
 <template>
 	<div class="vcp-files-picker">
 		<vc-upload 
-			v-if="!disabled && (currentValue.length < max || max === 0)"
+			v-show="!disabled && (currentValue.length < max || max === 0)"
 			v-bind="upload"
 			mode="files"
 			@file-start="handleFileStart"
