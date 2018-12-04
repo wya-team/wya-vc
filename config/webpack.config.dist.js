@@ -3,7 +3,7 @@ process.env.NODE_ENV = 'production';
 const path = require('path');
 const webpack = require('webpack');
 const webpackMerge = require('webpack-merge');
-
+const CopyWebpackPlugin = require('copy-webpack-plugin');
 const { APP_ROOT, commonConfig, localIp, localPort } = require('./webpack.config.common');
 
 
@@ -18,7 +18,18 @@ let webpackConfig = {
 		 */
 		new webpack.DefinePlugin({
 			__DEV__: JSON.stringify(JSON.parse(process.env.DEBUG || 'false'))
-		})
+		}),
+		new CopyWebpackPlugin([
+			// {
+			// 	from: path.resolve(APP_ROOT, 'templates/'),
+			// 	to: '[name].[ext]',
+			// 	toType: 'template'
+			// }
+			{ 
+				from: path.resolve(APP_ROOT, 'templates/iview.css'), 
+				to: path.resolve(APP_ROOT, 'dist/iview.css'), 
+			}
+		])
 	],
 };
 

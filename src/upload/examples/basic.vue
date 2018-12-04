@@ -44,6 +44,7 @@ VcInstance.init({
 				type: "POST",
 				param: {},
 				headers: {
+					/* eslint-disable max-len */
 					"-token": 'eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJ0aW1lIjoxNTQzNjUwMTQ1LCJzdGFmZl9pZCI6MTJ9.F5TFc9dIFHiGLAZlwy09jk8RcsfMcChzOR0TaYEsO7E',
 				}
 			}).then(res => {

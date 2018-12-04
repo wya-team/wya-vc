@@ -98,7 +98,8 @@ const getHTMLConfig = () => {
 			openPage[chunk] = path.join(fullpath.replace(/temp\//, '/').replace(/\.js/, '.html'));
 			ret.push(
 				new HtmlWebpackPlugin({
-					template: path.resolve(APP_ROOT, 'templates/tpl.html'),
+					cssPath: ENV_IS_DEV ? '/templates/iview.css' : '/wya-vc/dist/iview.css', 
+					template: path.resolve(APP_ROOT, 'templates/tpl.ejs'),
 					chunks: [chunk],
 					inject: 'body',
 					filename
