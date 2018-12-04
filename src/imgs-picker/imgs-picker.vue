@@ -1,17 +1,41 @@
 <template>
 	<component :is="tag" class="vcp-imgs-picker">
 		<div 
-			v-for="(item, index) in dataSource" 
-			:key="item"
+			v-for="(item, index) in data" 
+			:key="typeof item === 'object' ? item.uid : item"
+			:class="item.retcode == 0 && '__error'"
 			class="__item __normal"
 		>
 			<div
+				v-if="typeof item !== 'object'"
 				:style="{backgroundImage: `url(${item})`}"
 				class="__img"
 			>
 				<div class="__mask g-relative">
-					<span @click="handleDel(item)">x</span>
-					<span @click="handlePreview($event, index)">查看</span>
+					<div v-if="!$slots.operate && !$scopedSlots.operate">
+						<vc-icon type="delete" @click="handleDel(item)" />
+						<vc-icon type="divider" />
+						<vc-icon type="preview" @click="handlePreview($event, index)" />
+					</div>
+					<div v-else>
+						<slot v-bind="{url: item, index}" name="operate" />
+					</div>
+				</div>
+			</div>
+			<div v-else class="__img __flex-cc">
+				<div v-if="item.percent && item.percent != 100" class="__pc-bg">
+					<div :style="{width: item.percent + '%'}" class="__progress"/>
+				</div>
+				<p v-else-if="!item.url && item.percent == 100" class="g-pd-10" style="line-height: 1">
+					服务器正在接收...
+				</p>
+				<div v-else-if="item.retcode == 0" class="g-pd-10 __flex-cc">
+					上传失败
+					<div class="__mask g-relative">
+						<div>
+							<vc-icon type="delete" @click="handleDel(item)" />
+						</div>
+					</div>
 				</div>
 			</div>
 		</div>
@@ -20,6 +44,8 @@
 			v-bind="upload"
 			:accept="accept"
 			class="__upload __normal"
+			@file-start="handleFileStart"
+			@file-progress="handleFileProgress"
 			@file-success="handleFileSuccess"
 			@file-error="handleFileError"
 		/>
@@ -30,11 +56,13 @@
 import emitter from '../extends/mixins/emitter'; // 表单验证
 import Upload from '../upload/index';
 import ImgsPreview from '../imgs-preview/index';
+import Icon from '../icon/index';
 
 export default {
 	name: "vc-tpl",
 	components: {
-		'vc-upload': Upload
+		'vc-upload': Upload,
+		'vc-icon': Icon
 	},
 	mixins: [emitter],
 	model: {
@@ -79,33 +107,77 @@ export default {
 	},
 	data() {
 		return {
+			data: this.dataSource,
 		};
 	},
-
+	watch: {
+		dataSource(val) {
+			this.setData(val);
+		}
+	},
 	methods: {
-		handleFileSuccess(res) {
-			let { max, dataSource, format } = this;
-			dataSource = [...dataSource, format ? format(res) : res.data.url];
-			this.$emit('change', dataSource);
-			// for iview
+		setData(dataSource) {
+			if (dataSource === this.data) return;
+			
+			this.data = dataSource;
 			this.dispatch('FormItem', 'on-form-change', dataSource);
 		},
-		handleFileError(res) {
+		handleFileStart(res) {
+			this.data.push(res);
+		},
+		handleFileProgress(e, file) {
+			if (parseInt(e.percent, 10) <= 100) {
+				this.data = this.data.map((item) => {
+					if (file.uid === item.uid) {
+						return {
+							...item,
+							percent: e.percent
+						};
+					}
+					return item;
+				});
+			}
+		},
+		handleFileSuccess(res, file) {
+			let { data, format } = this;
+			let dataSource;
+			dataSource = data.map((item) => {
+				if (item.uid === file.uid) {
+					return format ? format(res) : res.data.url;
+				}
+				return item;
+			});
+			this.$emit('change', dataSource);
+		},
+		handleFileError(res, file) {
+			// 内部保存上传失败的文件，不传递给外层
+			this.data = data.filter((item) => {
+				if (item.uid === file.uid) {
+					return {
+						...item,
+						...res,
+						error_time: new Date().getTime()
+					};
+				}
+				return item;
+			});
 			this.$emit('error', res);
 		},
 		handleDel(item) {
-			let { dataSource, max, format } = this;
-			if (max !== 0 && dataSource.length > max) {
+			let { data, max, format } = this;
+			if (typeof item === 'object') {
+				this.data = data.filter(_item => _item.uid != item.uid);
+				return;
+			}
+			if (max !== 0 && data.length > max) {
 				this.$emit('error', {
 					status: 0,
 					msg: '超出上传限制'
 				});
 				return;
 			}
-			dataSource = dataSource.filter(_item => _item != item);
+			let dataSource = data.filter(_item => _item != item);
 			this.$emit('change', dataSource);
-			// for iview
-			this.dispatch('FormItem', 'on-form-change', dataSource);
 		},
 		handlePreview(e, idx) {
 			let pos = {};
@@ -168,6 +240,30 @@ export default {
 	.__item:hover .__mask {
 		transition: opacity 0.5s;
 		opacity: 1;
+	}
+	.__flex-cc {
+		display: flex;
+		align-items: center;
+		justify-content: center;
+	}
+	.__pc-bg {
+		flex: 1;
+		background-color: #cdcdcd;
+		height: 8px;
+		border-radius: 5px;
+		overflow: hidden;
+		margin: 0 4px;
+		.__progress {
+			display: block;
+			margin: 0;
+			background-color: #2397fa;
+			height: 8px;
+			border-radius: 5px;
+		}
+	}
+	.__error {
+		color: #f42626;
+		border: 1px solid #f42626;
 	}
 	.__mask {
 		opacity: 0;
