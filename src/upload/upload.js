@@ -177,7 +177,6 @@ export default {
 			);
 		},
 		upload(file, fileList, index) {
-
 			// 此处不用this.$emit('xxx')
 			const { 
 				"file-before": fileBefore 
@@ -240,7 +239,7 @@ export default {
 				};
 			}
 			// onFileStart, onFileProgress, onFileSuccess, onFileError, onComplete 
-			let response = await onBefore();
+			let response = await onBefore(file);
 			if (typeof response !== 'object') {
 				console.error('[wya-vc/upload]: onBefore必须返回对象');
 				return;
