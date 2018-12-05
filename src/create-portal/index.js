@@ -31,8 +31,8 @@ export default (defaultOptions = {}, wrapper) => {
 					autoDestory = true,
 					getInstance, 
 					onBefore, 
-					store,
-					router,
+					store = VcInstance.config.store,
+					router = VcInstance.config.router,
 					parent = {}, // 依赖注入使用 like store, router, Life cycle，methods, mixins, ....
 					data,
 					components = {}, // 可以动态注入组件

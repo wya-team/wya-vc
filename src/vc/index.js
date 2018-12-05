@@ -3,6 +3,14 @@ class Vc {
 		this.hasInit = false;
 		this.APIS = {};
 		this.config = {
+			/**
+			 * vuex + vue-router
+			 */
+			store: null,
+			router: null,
+			/**
+			 * components
+			 */
 			PGallery: {
 				URL_PGALLERY_PATHS_LIST_GET: null,
 				URL_PGALLERY_PATHS_ITEM_RENAME_POST: null,
@@ -18,7 +26,8 @@ class Vc {
 			Upload: {
 				IMG_UPLOAD_URL: null,
 				FILE_UPLOAD_URL: null,
-				onPostBefore: null
+				onPostBefore: null,
+				onPostArter: null,
 			}
 		};
 	}
