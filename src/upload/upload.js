@@ -30,6 +30,12 @@ export default {
 			default: false 
 		},
 
+		// 选择文件时最多选择文件数量， 在multiple为true的情况下有效
+		max: {
+			type: Number,
+			default: 1
+		},
+
 		// 上传类型限制
 		accept: String,
 
@@ -157,6 +163,11 @@ export default {
 		uploadFiles(files) {
 			const postFiles = Array.prototype.slice.call(files);
 			const length = postFiles.length;
+			if (this.multiple && length > this.max) {
+				this.$emit('error', { message: `文件数量不能超过${max}个` });
+				return;
+			}
+			
 			// reset
 			this.setDefaultCycle();
 

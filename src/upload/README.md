@@ -47,7 +47,9 @@ show-tips | 展示显示进度弹窗 | `bool` | `false`
 `@file-error` | 单个文件上传过程失败回调(res, file.current, file.total等可用参数) | `(res, file) => void` | -
 `@begin` | 一个周期上传前的回调(info: {}) | `(files) => void` | -
 `@complete` | 一个周期上传后的回调(info: {}) | `(info) => void` | -
+`@error` | 组件内部报错回调 | `(error) => void` | -
 `@post-before` | 文件上传前回调（处理异步） | `func` | -
+`@post-after` | 文件上传后回调 | `func` | -
 
 
 ## 基础用法
