@@ -6,6 +6,7 @@
 			:size="2"
 			:show-tips="true"
 			:multiple="true"
+			@error="handleError"
 			@begin="handleBegin"
 			@complete="handleComplete"
 			@file-before="handleFileBefore"
@@ -74,6 +75,9 @@ export default {
 		
 	},
 	methods: {
+		handleError(error) {
+			console.error(error.message);
+		},
 		/**
 		 * 总线
 		 */
