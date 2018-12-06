@@ -274,7 +274,6 @@ export default {
 			}).then((res) => {
 				delete this.reqs[uid];
 				this.cycle.success++;
-				this.cycle.total++;
 				this.cycle.imgs = [...this.cycle.imgs, res];
 
 				this.$emit('file-success', res, file, { ...this.cycle });
@@ -282,25 +281,18 @@ export default {
 				// tips
 				this.tips && this.tips.setValue(uid, 'success');
 
-				// console.log(`success: ${this.cycle.success}, total: ${this.cycle.total}`);
-				if (this.cycle.total === file.total) {
-
-					this.$emit('complete', { ...this.cycle } || {});
-					this.setDefaultCycle();
-
-					// tips
-					this.tips && this.tips.setTipsStatus(true);
-				}
 			}).catch((res) => {
 				delete this.reqs[uid];
 				this.cycle.error++;
-				this.cycle.total++;
 
 				this.$emit('file-error', res, file, { ...this.cycle });
 
 				// tips
 				this.tips && this.tips.setValue(uid, 'error', res.msg);
 
+			}).finish(() => {
+				this.cycle.total++;
+				
 				// console.log(`error: ${this.cycle.error}, total: ${this.cycle.total}`);
 				if (this.cycle.total === file.total) {
 
