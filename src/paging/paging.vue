@@ -114,6 +114,7 @@ export default {
 					all: false,
 					key: 'id', 
 					keys: [], 
+					title: '　',
 					index: 0, 
 					width: 60,
 					indentSize: 20, 
@@ -170,6 +171,7 @@ export default {
 		this.defaultPageSize = Number(pageSize || (pageSizeOpts && pageSizeOpts[0]) || 10);
 		return {
 			loading: false,
+			loadingExpandIndex: null,
 			currentPage: this.show ? Number(page) : 1,
 			pageSize: this.defaultPageSize,
 			// 用于expand
@@ -237,6 +239,20 @@ export default {
 			} else {
 				this.dataCombo = newVal;
 			}
+		},
+		dataCombo(newVal) {
+			let level = 0;
+			for (let i = 0; i < newVal.length; i++) {
+				if (typeof newVal[i].__level__ === 'undefined') return 0;
+				if (newVal[i].__level__ > level) {
+					level = newVal[i].__level__;
+				}
+			}
+			const { index, width } = this.expandOpts;
+			if (typeof width === 'function') {
+				this.columnsCombo[index].tag && (this.columnsCombo[index].width = width(level));
+				this.columnsCombo[index + 1].tag && (this.columnsCombo[index + 1].width = width(level));
+			}
 		}
 	},
 	created() {
@@ -245,6 +261,8 @@ export default {
 
 		// 初始化数据
 		this.dataCombo = this.data;
+		// 最大级别为 0 
+		this.maxLevel = 0;
 	},
 	methods: {
 		handleChangePageSize(pageSize) {
@@ -319,12 +337,12 @@ export default {
 		 * 扩展功能
 		 */
 		getExpandOpts() {
-			const { key, render, width, indentSize } = this.expandOpts;
+			const { key, title = '　', render, width, indentSize } = this.expandOpts;
 			return {
 				tag: true,
-				title: '　',
-				key: 'id',
-				width,
+				title,
+				key,
+				width: typeof width === 'function' ? width(0) : width,
 				align: 'center',
 				render: (h, params) => {
 					const { row: { __level__, __expand__ }, index } = params;
@@ -334,8 +352,9 @@ export default {
 					// 点击展开事件
 					const handleClick = (e) => this.handleExpand({ e, index });
 
+					let loading = this.loadingExpandIndex === index;
 					if (render) {
-						return render(h, { ...params, row: dataCombo[index] }, handleClick);
+						return render(h, { ...params, row: dataCombo[index], loading }, handleClick);
 					} else {
 						return h('div', {
 							style: {
@@ -346,7 +365,7 @@ export default {
 							on: {
 								click: handleClick 
 							}
-						}, `${children ? !__expand__ ? '+' : '-' : ''}`);
+						}, children ? !__expand__ ? loading ? '...' : '+' : '-' : '');
 					}
 					
 				}
@@ -395,7 +414,7 @@ export default {
 				const load = this.loadExpandData(opts);
 
 				if (load && load.then) {
-					this.loading = true;
+					this.loadingExpandIndex = index;
 					load.then((children) => {
 						if (children instanceof Array) {
 							children.map(this.setDefaultExpand(__level__ + 1));
@@ -411,7 +430,7 @@ export default {
 					}).catch((res) => {
 						return Promise.reject(res);
 					}).finally(() => {
-						this.loading = false;
+						this.loadingExpandIndex = null;
 					});
 				} else {
 					console.error('[vc-paging]-loadExpandData need return a Promise');

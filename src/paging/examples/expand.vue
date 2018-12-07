@@ -77,7 +77,9 @@ export default {
 				key: 'id', 
 				keys: [], 
 				index: 1, 
-				width: 60,
+				width: (level) => {
+					return 200 - 20 * level;
+				},
 				indentSize: 20, 
 				render: undefined, 
 			},
@@ -247,7 +249,7 @@ export default {
 				const { type, current } = this;
 				const page = current[type];
 
-				let children = this.getFakeData(current[type], 3, 2);
+				let children = this.getFakeData(current[type], 3, 5);
 				setTimeout(() => {
 					resolve(children);
 				}, 2000);
