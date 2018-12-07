@@ -14,9 +14,12 @@
 				:render="renderRow"
 			/>
 			<div class="__mask">
-				<span
-					@click.stop="handleShow($event, index)"
-				>➠</span>
+				<div v-if="!$slots.operate && !$scopedSlots.operate">
+					<vc-icon type="preview" @click.stop="handleShow($event, index)" />
+				</div>
+				<div v-else>
+					<slot v-bind="{src: item | getImage, index}" name="operate" />
+				</div>
 			</div>
 		</div>
 	</div>
@@ -24,21 +27,24 @@
 <script>
 import Core, { Func } from './core';
 import CreateCustomer from '../create-customer/index';
+import Icon from '../icon/index';
 
 const VcRow = CreateCustomer({
 	src: [Object, String],
-	index: Number
+	index: Number,
+	
 });
 export default {
 	name: "vc-imgs-preview-row",
 	popup: Func.popup,
 	components: {
-		VcRow
+		VcRow,
+		'vc-icon': Icon
 	},
 	filters: {
 		getImage(item) {
 			return typeof item === 'object' 
-				? (item.thumbnail || item.msrc || item.src)
+				? (item.thumbnail || item.msrc || item.src || item)
 				: item;
 		}
 	},
@@ -47,7 +53,7 @@ export default {
 		renderRow: {
 			type: Function,
 			default: (h, params) => {
-				const { src, index } = params; 
+				const { src, index } = params;
 				return h('img', {
 					attrs: {
 						src,
@@ -122,7 +128,7 @@ export default {
 		left: 0;
 		width: 100%;
 		height: 100%;
-		background: rgba(0, 0, 0, 0.4);
+		background: rgba(0, 0, 0, 0.6);
 		color: #fff;
 		display: flex;
 		justify-content: space-around;
