@@ -13,12 +13,12 @@
 			>
 				<div class="__mask g-relative">
 					<div v-if="!$slots.operate && !$scopedSlots.operate">
-						<vc-icon type="delete" @click="handleDel(item)" />
-						<vc-icon type="divider" />
+						<vc-icon v-if="!disabled" type="delete" @click="handleDel(item)" />
+						<vc-icon v-if="!disabled" type="divider" />
 						<vc-icon type="preview" @click="handlePreview($event, index)" />
 					</div>
 					<div v-else>
-						<slot v-bind="{url: item, index}" name="operate" />
+						<slot v-bind="{src: item, index}" name="operate" />
 					</div>
 				</div>
 			</div>

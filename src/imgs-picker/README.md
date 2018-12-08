@@ -10,7 +10,7 @@
 ---|---|---|---
 dataSource | 上传的图片 | `array` | []
 max | 图片的最大数量 | `number` | 0（不限制）
-disabled | 是否禁止上传 | `boolean` | false
+disabled | 是否禁止上传和删除 | `boolean` | false
 upload | upload组件的属性 | `object` | {}
 
 
@@ -21,6 +21,12 @@ upload | upload组件的属性 | `object` | {}
 @change | `dataSource`值改变的回调 | `function` | -
 @error | 上传错误的回调的回调 | `function` | -
 
+
+#### 插槽
+
+属性 | 说明 | 默认值
+---|---|---
+operate | 蒙层中的操作视图 | `{src, index}`
 
 
 ## 基础用法
