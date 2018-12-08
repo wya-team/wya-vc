@@ -21,6 +21,14 @@ id | 外层标识 | `obj` | -
 getInstance | 获取photoSwipe实例 | `() => {}` | -
 renderRow | 自定义组件 | `(h, params) => jsx` | -
 
+
+#### 插槽
+
+属性 | 说明 | 默认值
+---|---|---
+operate | 蒙层中的操作视图 | `{src, index}`
+
+
 #### 自定义组件
 
 ```
