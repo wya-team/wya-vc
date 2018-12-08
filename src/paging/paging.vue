@@ -18,9 +18,9 @@
 		<i-table
 			v-else
 			ref="tableTarget" 
-			:data="dataCombo" 
+			:data="data" 
 			:loading="loading"
-			:columns="columnsCombo"
+			:columns="columns"
 			v-bind="tableOpts"
 			@on-current-change="$emit('current-change', arguments[0], arguments[1])"
 			@on-select="$emit('select', arguments[0], arguments[1])"
@@ -109,16 +109,11 @@ export default {
 		// expand 不针对iview中columns中的 expand
 		expandOpts: {
 			type: Object,
-			default: (test) => {
+			default: () => {
 				return {
 					all: false,
 					key: 'id', 
-					keys: [], 
-					title: '　',
-					index: 0, 
-					width: 60,
-					indentSize: 20, 
-					render: undefined, 
+					keys: [] 
 				};
 			}
 		},
@@ -171,11 +166,8 @@ export default {
 		this.defaultPageSize = Number(pageSize || (pageSizeOpts && pageSizeOpts[0]) || 10);
 		return {
 			loading: false,
-			loadingExpandIndex: null,
 			currentPage: this.show ? Number(page) : 1,
-			pageSize: this.defaultPageSize,
-			// 用于expand
-			dataCombo: []
+			pageSize: this.defaultPageSize
 		};
 	},
 	computed: {
@@ -185,20 +177,11 @@ export default {
 
 				result.__expand__ = true; // 避免被设置后再次递归一次
 				result.map(this.setDefaultExpand(1));
+
+				const { all } = this.expandOpts;
+				all && this.emitExpand({ type: 'all' });
 			}
 			return result || [];
-		},
-		columnsCombo() {
-			let result = this.columns;
-			let hasChild = this.data.some(item => item.children instanceof Array);
-			const { index } = this.expandOpts;
-			// 已经注入的不会再注入
-			if (this.mode === 'table' && hasChild && !result[index].tag) {
-				// 重新组合，避免tabs下共享实例
-				result = this.columns.slice(0); // 避免副作用
-				result.splice(index, 0, this.getExpandOpts.call(this));
-			}
-			return result;
 		}
 	},
 	watch: {
@@ -227,42 +210,11 @@ export default {
 				// 触发
 				this.handleChange(this.currentPage);
 			}
-		},
-		/**
-		 * 当前表格的数据计算是否扩展
-		 * dataCombo
-		 * 尽量保证修改副本，不直接修改this.data
-		 */
-		data(newVal, oldVal) {
-			if (newVal.some(item => item.children instanceof Array)) {
-				this.dataCombo = this.getLinearArray(newVal);
-			} else {
-				this.dataCombo = newVal;
-			}
-		},
-		dataCombo(newVal) {
-			let level = 0;
-			for (let i = 0; i < newVal.length; i++) {
-				if (typeof newVal[i].__level__ === 'undefined') return 0;
-				if (newVal[i].__level__ > level) {
-					level = newVal[i].__level__;
-				}
-			}
-			const { index, width } = this.expandOpts;
-			if (typeof width === 'function') {
-				this.columnsCombo[index].tag && (this.columnsCombo[index].width = width(level));
-				this.columnsCombo[index + 1].tag && (this.columnsCombo[index + 1].width = width(level));
-			}
 		}
 	},
 	created() {
 		let { query: { page = 1 } } = getParseUrl();
 		this.show && this._loadData(page);
-
-		// 初始化数据
-		this.dataCombo = this.data;
-		// 最大级别为 0 
-		this.maxLevel = 0;
 	},
 	methods: {
 		handleChangePageSize(pageSize) {
@@ -332,45 +284,6 @@ export default {
 		go(page) {
 			this.handleChange(page);
 		},
-
-		/**
-		 * 扩展功能
-		 */
-		getExpandOpts() {
-			const { key, title = '　', render, width, indentSize } = this.expandOpts;
-			return {
-				tag: true,
-				title,
-				key,
-				width: typeof width === 'function' ? width(0) : width,
-				align: 'center',
-				render: (h, params) => {
-					const { row: { __level__, __expand__ }, index } = params;
-					const { dataCombo } = this;
-					
-					let { children } = dataCombo[index] || {}; // 不拿row中children; row会被深度拷贝
-					// 点击展开事件
-					const handleClick = (e) => this.handleExpand({ e, index });
-
-					let loading = this.loadingExpandIndex === index;
-					if (render) {
-						return render(h, { ...params, row: dataCombo[index], loading }, handleClick);
-					} else {
-						return h('div', {
-							style: {
-								marginLeft: `${(__level__ - 1) * indentSize}px`,
-								width: `20px`,
-								boxSizing: `content-box`
-							},
-							on: {
-								click: handleClick 
-							}
-						}, children ? !__expand__ ? loading ? '...' : '+' : '-' : '');
-					}
-					
-				}
-			};
-		},
 		/**
 		 * 扩展功能
 		 * 设备默认值
@@ -404,25 +317,23 @@ export default {
 		/**
 		 * 扩展功能
 		 */
-		handleExpand(opts = {}) {
+		expand(opts = {}) {
 			const { e, index } = opts;
-			const { children, __level__, __expand__ } = this.dataCombo[index] || {};
+			const { children, __level__, __expand__ } = this.data[index] || {};
 			// 没有扩展功能
 			if (!children || !__level__) return;
-
 			if (children.length === 0 && this.loadExpandData) {
 				const load = this.loadExpandData(opts);
 
 				if (load && load.then) {
-					this.loadingExpandIndex = index;
 					load.then((children) => {
 						if (children instanceof Array) {
 							children.map(this.setDefaultExpand(__level__ + 1));
 
 							// 同步到data中
-							this.dataCombo[index].__expand__ = true;
-							this.dataCombo[index].children = children;
-							this.dataCombo.splice(index + 1, 0, ...this.getLinearArray(children));
+							this.data[index].__expand__ = true;
+							this.data[index].children = children;
+							this.data.splice(index + 1, 0, ...this.getLinearArray(children));
 
 							this.emitExpand(opts);
 						}
@@ -430,7 +341,7 @@ export default {
 					}).catch((res) => {
 						return Promise.reject(res);
 					}).finally(() => {
-						this.loadingExpandIndex = null;
+						// 
 					});
 				} else {
 					console.error('[vc-paging]-loadExpandData need return a Promise');
@@ -438,31 +349,42 @@ export default {
 
 			} else if (children.length > 0) {
 
-				const { dataCombo } = this;
+				const { data } = this;
 				if (__expand__) {
-					this.dataCombo[index].__expand__ = false;
+					this.data[index].__expand__ = false;
 
 					// 计算要移除的元素数量
 					let count = 0;
-					for (let i = index + 1; i < dataCombo.length; i++) {
-						if (__level__ == dataCombo[i].__level__ || __level__ > dataCombo[i].__level__) {
+					for (let i = index + 1; i < data.length; i++) {
+						if (__level__ == data[i].__level__ || __level__ > data[i].__level__) {
 							break;
 						}
 						count++;
 					}
-					this.dataCombo.splice(index + 1, count);
+					this.data.splice(index + 1, count);
 				} else {
-					this.dataCombo[index].__expand__ = true;
-					this.dataCombo.splice(index + 1, 0, ...this.getLinearArray(children));
+					this.data[index].__expand__ = true;
+					this.data.splice(index + 1, 0, ...this.getLinearArray(children));
 				}
 				this.emitExpand(opts);
 			}
 		},
 		emitExpand(opts = {}) {
-			const { index } = opts; 
+			const { index, type } = opts; 
+
+			// todo：优化，目前是每次都计算
+			let maxLevel = 0;
+
+			this.data.forEach((item) => {
+				if (maxLevel < item.__level__) {
+					maxLevel = item.__level__;
+				}
+			});
+
 			this.$emit('expand', { 
 				...opts, 
-				row: this.dataCombo[index], 
+				row: type === 'all' ? this.data[index] : this.data, 
+				maxLevel,
 				callback: (opts = {}) => {
 					const { selected, all = false } = opts;
 					// 待开发， 重新选择已选中的，设置_checked

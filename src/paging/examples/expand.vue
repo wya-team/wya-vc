@@ -20,6 +20,7 @@
 				:name="item.value"
 			>
 				<vc-paging
+					:ref="item.value"
 					:key="item.value"
 					:show="item.value == type" 
 					:type="item.value"
@@ -35,6 +36,7 @@
 					:expand-opts="expand"
 					@page-size-change="handleResetFirst"
 					@selection-change="handleSelect"
+					@expand="handleExpand"
 				/>
 			</i-tab-pane>
 		</i-tabs>
@@ -66,6 +68,7 @@ export default {
 
 		return {
 			show: true,
+			loading: null,
 			type: String(query.type || 1), // 同tabs下的value
 			keyword: String(query.keyword || ''),
 			listInfo: initialState,
@@ -92,6 +95,31 @@ export default {
 				{
 					type: 'selection',
 					width: 60
+				},
+				{
+					tag: true,
+					title: '22',
+					width: 60,
+					render: (h, params) => {
+						const { row: { __level__, __expand__, children }, index } = params;
+
+						// 点击展开事件
+						const handleClick = (e) => {
+							this.$refs[this.type][0].expand({ index });
+						};
+
+						return h('div', {
+							style: {
+								marginLeft: `${(__level__ - 1) * 20}px`,
+								width: `20px`,
+								boxSizing: `content-box`
+							},
+							on: {
+								click: handleClick 
+							}
+						}, children ? !__expand__ ? this.loading === index ? '...' : '+' : '-' : '');
+						
+					}
 				},
 				{
 					title: 'Name',
@@ -244,16 +272,21 @@ export default {
 			});
 		},
 		loadExpandData(opts = {}) {
+			const { index } = opts; 
+			this.loading = index;
 			return new Promise((resolve, reject) => {
-				const { index } = opts; 
 				const { type, current } = this;
 				const page = current[type];
 
 				let children = this.getFakeData(current[type], 3, 5);
 				setTimeout(() => {
 					resolve(children);
+					this.loading = null;
 				}, 2000);
 			});
+		},
+		handleExpand({ maxLevel, children, }) {
+			this.columns[1].width = 60 + (maxLevel - 1) * 20;
 		},
 		handleSelect(row) {
 			console.log(row);
