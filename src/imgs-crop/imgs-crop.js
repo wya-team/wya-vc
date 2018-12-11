@@ -157,9 +157,7 @@ export default {
 			'drag',
 			'mx',
 			'my',
-			'image.resource',
-			'image.x',
-			'image.y'
+			'image' // resource, x, y 改变都会触发 { deep: true }
 		];
 
 		watchArr.forEach(item => {
