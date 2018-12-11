@@ -49,6 +49,7 @@ import Paging from '../paging';
 import { initPage } from './utils/utils';
 import { getConstructUrl, getParseUrl } from '../../utils/utils';
 
+let count = 0;
 const initialState = {
 	1: { ...initPage },
 	2: { ...initPage },
@@ -78,13 +79,7 @@ export default {
 			expand: {
 				all: false,
 				key: 'id', 
-				keys: [], 
-				index: 1, 
-				width: (level) => {
-					return 200 - 20 * level;
-				},
-				indentSize: 20, 
-				render: undefined, 
+				keys: []
 			},
 			tabs: [
 				{ label: '标签一', value: '1' }, 
@@ -97,7 +92,6 @@ export default {
 					width: 60
 				},
 				{
-					tag: true,
 					title: '22',
 					width: 60,
 					render: (h, params) => {
@@ -197,7 +191,6 @@ export default {
 			});
 		},
 		getFakeData(page, pageSize, totalLevel) {
-			let count = 0;
 			let fn = (level, parent) => {
 				if (level > totalLevel) {
 					return;
@@ -215,6 +208,7 @@ export default {
 						opt: Math.floor(Math.random() * 3 + 1),
 						// __level__: level,
 						children: Math.floor(Math.random() * 2) ? fn(level) : []
+						// children: fn(level)
 					});
 				}
 				return fakeData;

@@ -68,7 +68,7 @@
 <script>
 import { Table, Page } from 'iview';
 import { cloneDeep } from 'lodash';
-import { getConstructUrl, getParseUrl } from '../utils/utils';
+import { getConstructUrl, getParseUrl, def } from '../utils/utils';
 
 export default {
 	name: "vc-paging",
@@ -173,14 +173,6 @@ export default {
 	computed: {
 		data() {
 			let result = this.dataSource[this.currentPage];
-			if (result && result.__expand__ === undefined && result.some(item => item.children instanceof Array)) {
-
-				result.__expand__ = true; // 避免被设置后再次递归一次
-				result.map(this.setDefaultExpand(1));
-
-				const { all } = this.expandOpts;
-				all && this.emitExpand({ type: 'all' });
-			}
 			return result || [];
 		}
 	},
@@ -197,6 +189,30 @@ export default {
 				this.handleChange(page);
 			} else if (this.total === 0) {
 				this.currentPage = 0;
+			}
+
+			// 初始化结构数据
+			if (this.currentPage !== 0 && this.show && this.total !== 0) {
+				// 
+				let targetArr = newVal[this.currentPage];
+				if (targetArr 
+					&& targetArr.__expand__ === undefined 
+					&& targetArr.some(item => item.children instanceof Array)
+				) {
+					this.injectLAndE(1, targetArr);
+
+					const { all, keys, key } = this.expandOpts; 
+					if (all || keys.length > 0) {
+						let length = 0;
+						targetArr.forEach((item, index) => {
+							let result = this.getLinearArray(targetArr[index + length].children || []);
+							targetArr.splice(index + 1 + length, 0, ...result);
+							length += result.length;
+						});
+						length = 0;
+						this.emitExpand({ type: 'init' });
+					}
+				}
 			}
 		},
 		show(newVal, oldVal) {
@@ -215,6 +231,9 @@ export default {
 	created() {
 		let { query: { page = 1 } } = getParseUrl();
 		this.show && this._loadData(page);
+	},
+	updated() {
+		// console.log(this.data, this.dataSource[this.currentPage]);
 	},
 	methods: {
 		handleChangePageSize(pageSize) {
@@ -286,19 +305,21 @@ export default {
 		},
 		/**
 		 * 扩展功能
-		 * 设备默认值
+		 * 设备默认值, 利用浅复制给对象赋值
 		 */
-		setDefaultExpand(level) {
+		injectLAndE(level, treeArray) {
 			const { all, key, keys = [] } = this.expandOpts;
 
-			return (item) => {
-				item.__level__ = level; // 不重新返回，直接赋值
-				item.__expand__ = all || (keys.length !== 0 && keys.includes(item[key])); 
-				if (item.children) {
-					item.children.map(this.setDefaultExpand(level + 1));
+			let fn = (item) => {
+				item.__level__ = level;
+				if (item.children && item.children.length > 0) {
+					item.__expand__ = all || (keys.length !== 0 && keys.includes(item[key])); 
+					this.injectLAndE(level + 1, item.children);
 				}
 				return item;
 			};
+
+			treeArray.forEach(fn);
 		},
 		/**
 		 * 扩展功能
@@ -312,28 +333,37 @@ export default {
 				}
 				return pre;
 			};
-			return treeArray.reduce(fn, []);
+
+			let result = treeArray.reduce(fn, []);
+
+			return result;
 		},
 		/**
 		 * 扩展功能
 		 */
 		expand(opts = {}) {
-			const { e, index } = opts;
-			const { children, __level__, __expand__ } = this.data[index] || {};
-			// 没有扩展功能
-			if (!children || !__level__) return;
-			if (children.length === 0 && this.loadExpandData) {
-				const load = this.loadExpandData(opts);
+			// 数组/对象引用同步，基本类型sync同步
+			let targetArr = this.dataSource[this.currentPage];
 
-				if (load && load.then) {
+			let { e, index } = opts;
+			const { children, __level__, __expand__ } = targetArr[index] || {};
+
+			// 没有扩展功能
+			if (!children || !__level__ || this.loadingExpand) return;
+
+			if (children.length === 0 && this.loadExpandData) {
+				const load = this.loadExpandData({ ...opts, row: targetArr[index] });
+				
+				if (!this.loadingExpand && load && load.then) {
+					this.loadingExpand = true;
 					load.then((children) => {
 						if (children instanceof Array) {
-							children.map(this.setDefaultExpand(__level__ + 1));
+							this.injectLAndE(__level__ + 1, children);
 
-							// 同步到data中
-							this.data[index].__expand__ = true;
-							this.data[index].children = children;
-							this.data.splice(index + 1, 0, ...this.getLinearArray(children));
+							// 同步到data中	
+							targetArr[index].__expand__ = true;
+							targetArr[index].children = children;
+							targetArr.splice(index + 1, 0, ...this.getLinearArray(children));
 
 							this.emitExpand(opts);
 						}
@@ -341,7 +371,7 @@ export default {
 					}).catch((res) => {
 						return Promise.reject(res);
 					}).finally(() => {
-						// 
+						this.loadingExpand = false;
 					});
 				} else {
 					console.error('[vc-paging]-loadExpandData need return a Promise');
@@ -351,8 +381,7 @@ export default {
 
 				const { data } = this;
 				if (__expand__) {
-					this.data[index].__expand__ = false;
-
+					targetArr[index].__expand__ = false;
 					// 计算要移除的元素数量
 					let count = 0;
 					for (let i = index + 1; i < data.length; i++) {
@@ -361,21 +390,23 @@ export default {
 						}
 						count++;
 					}
-					this.data.splice(index + 1, count);
+					targetArr.splice(index + 1, count);
 				} else {
-					this.data[index].__expand__ = true;
-					this.data.splice(index + 1, 0, ...this.getLinearArray(children));
+					targetArr[index].__expand__ = true;
+					targetArr.splice(index + 1, 0, ...this.getLinearArray(children));
 				}
 				this.emitExpand(opts);
 			}
 		},
 		emitExpand(opts = {}) {
+			let targetArr = this.dataSource[this.currentPage];
+
 			const { index, type } = opts; 
 
 			// todo：优化，目前是每次都计算
 			let maxLevel = 0;
 
-			this.data.forEach((item) => {
+			targetArr.forEach((item) => {
 				if (maxLevel < item.__level__) {
 					maxLevel = item.__level__;
 				}
@@ -383,7 +414,7 @@ export default {
 
 			this.$emit('expand', { 
 				...opts, 
-				row: type === 'all' ? this.data[index] : this.data, 
+				row: type === 'init' ? targetArr : targetArr[index], 
 				maxLevel,
 				callback: (opts = {}) => {
 					const { selected, all = false } = opts;
