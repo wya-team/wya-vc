@@ -1,6 +1,6 @@
 ## 功能
-针对`wya-vc`组件的配置和方法
-
+- 针对`wya-vc`组件的配置和方法
+- 参数配置原则: `userOptions` > `defaultOptions` > `globalOptions`
 ## 方法
 
 方法 | 说明 | 类型 | 默认值
