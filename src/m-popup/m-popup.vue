@@ -1,10 +1,21 @@
 <template>
-	<div :style="{ position: fixed ? 'fixed' : 'absolute' }" class="vcm-popup">
+	<div
+		:style="styleObj"
+		class="vcm-popup"
+	>
 		<transition name="fade">
-			<div v-if="mask && isActive && position !== 'top'" class="__mask" @click="handleClose(maskClosable)" />
+			<div
+				v-if="mask && isActive && position !== 'top'"
+				class="__mask"
+				@click="handleClose(maskClosable)"
+			/>
 		</transition>
 		<transition :name="position">
-			<div v-if="isActive" :class="[{ '__dark': position === 'top' }, position]" class="__fixed">
+			<div
+				v-if="isActive"
+				:class="[{ '__dark': position === 'top' }, position]"
+				class="__fixed"
+			>
 				<slot />
 			</div>
 		</transition>
@@ -44,6 +55,15 @@ export default {
 			isActive: this.show
 		};
 	},
+	computed: {
+		styleObj() {
+			return {
+				position: this.fixed ? 'fixed' : 'absolute',
+				alignItems: this.position == 'bottom' ? 'flex-end' : 'flex-start',
+				zIndex: this.isActive ? 1000 : -1
+			};
+		}
+	},
 	watch: {
 		show(v) {
 			this.isActive = v;
@@ -54,7 +74,6 @@ export default {
 			}
 		}
 	},
-	mounted() {},
 	methods: {
 		hide() {
 			this.isActive = false;
@@ -81,11 +100,11 @@ export default {
 }
 
 .fade-enter-active {
-	transition: opacity .3s ease;
+	transition: opacity 0.3s ease;
 }
 
 .fade-leave-active {
-	transition: opacity .3s;
+	transition: opacity 0.3s;
 }
 
 .fade-enter,
@@ -94,6 +113,13 @@ export default {
 }
 .vcm-popup {
 	width: 100%;
+	display: flex;
+	top: 0;
+	bottom: 0;
+	right: 0;
+	left: 0;
+	align-items: flex-end;
+	justify-content: center;
 	.bottom {
 		right: 0;
 		bottom: 0;
@@ -106,13 +132,14 @@ export default {
 		right: 0;
 		left: 0;
 		padding-top: env(safe-area-inset-bottom);
-
 	}
 
 	.__fixed {
+		position: relative;
+		z-index: 3000;
 		background-color: #fff;
-		position: fixed;
-		transition: transform .2s;
+		transition: transform 0.2s;
+		width: 100%;
 	}
 
 	.__dark {
@@ -132,13 +159,9 @@ export default {
 		right: 0;
 		bottom: 0;
 		left: 0;
-		background-color: rgba(0, 0, 0, .4);
+		background-color: rgba(0, 0, 0, 0.4);
 		height: 100%;
-	}
-
-	.__wrap {
-		position: fixed;
+		z-index: 2999;
 	}
 }
-
 </style>
