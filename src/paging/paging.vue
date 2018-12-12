@@ -204,14 +204,20 @@ export default {
 			} else if (this.total === 0) {
 				this.currentPage = 0;
 			}
-			this.rebuildData = this.makeRebuildData();
+
+			// 页数不为0，赋值新的数据
+			if (this.currentPage != 0) {
+				this.rebuildData = this.makeRebuildData('dataSource');
+			}
+			
 		},
-		currentPage(v) {
+		currentPage(v, old) {
 			// 清空数据
 			if (v === 0) {
 				this.rebuildData = {};
-			} else if (!this.rebuildData[v]) {
-				this.rebuildData = this.makeRebuildData();
+			} else if (old === 0 && !this.rebuildData[v]) {
+				// 老页数为0，代表清理数据了，新数据赋值，主要处理已加载数据后被清理，this.rebuildData需要重写
+				this.rebuildData = this.makeRebuildData('currentPage');
 			}
 
 		},
@@ -226,9 +232,15 @@ export default {
 		let { query: { page = 1 } } = getParseUrl();
 		this.show && this._loadData(page);
 
-		this.rebuildData = this.makeRebuildData('created');
+		// 有数据的情况下，初始化， todo: 是否需要判断其他分页
+		if (this.dataSource[page]) {
+			this.rebuildData = this.makeRebuildData('created');
+		}
 	},
 	methods: {
+		/**
+		 * type: 判断是由谁触发的，用于优化性能
+		 */
 		makeRebuildData(type) {
 			let data = {};
 
