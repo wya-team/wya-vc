@@ -31,9 +31,6 @@ export default {
 		return h(this.tag, {
 			on: {
 				click: this.handleClick(this.$listeners.click)
-			},
-			props: {
-				...this.$props
 			}
 		}, this.$slots.default);
 	}
