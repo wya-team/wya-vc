@@ -290,7 +290,7 @@ export default {
 				// tips
 				this.tips && this.tips.setValue(uid, 'error', res.msg);
 
-			}).finish(() => {
+			}).finally(() => {
 				this.cycle.total++;
 				
 				// console.log(`error: ${this.cycle.error}, total: ${this.cycle.total}`);
