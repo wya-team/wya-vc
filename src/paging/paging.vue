@@ -206,6 +206,15 @@ export default {
 			}
 			this.rebuildData = this.makeRebuildData();
 		},
+		currentPage(v) {
+			// 清空数据
+			if (v === 0) {
+				this.rebuildData = {};
+			} else if (!this.rebuildData[v]) {
+				this.rebuildData = this.makeRebuildData();
+			}
+
+		},
 		rebuildData: {
 			deep: process.env.NODE_ENV !== 'production',
 			handler() {
