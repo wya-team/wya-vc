@@ -1,7 +1,7 @@
 import { debounce } from 'lodash';
 
 export default {
-	name: "vc-copy",
+	name: "vc-debounce-click",
 	props: {
 		wait: {
 			type: Number,
