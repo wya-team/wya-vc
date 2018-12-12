@@ -27,7 +27,7 @@
 			@on-select-cancel="$emit('select-cancel', arguments[0])"
 			@on-select-all="$emit('select-all', arguments[0])"
 			@on-select-all-cancel="$emit('select-all-cancel', arguments[0])"
-			@on-selection-change="handleSelectionChange"
+			@on-selection-change="$emit('selection-change', arguments[0])"
 			@on-sort-change="$emit('sort-change', arguments[0])"
 			@on-filter-change="$emit('filter-change', arguments[0])"
 			@on-row-click="$emit('row-click', arguments[0], arguments[1])"
@@ -67,8 +67,7 @@
 
 <script>
 import { Table, Page } from 'iview';
-import { cloneDeep } from 'lodash';
-import { getConstructUrl, getParseUrl, def } from '../utils/utils';
+import { getConstructUrl, getParseUrl, cloneDeep, cloneDeepEasier } from '../utils/utils';
 
 export default {
 	name: "vc-paging",
@@ -167,56 +166,21 @@ export default {
 		return {
 			loading: false,
 			currentPage: this.show ? Number(page) : 1,
-			pageSize: this.defaultPageSize
+			pageSize: this.defaultPageSize,
+
+			// 内部不直接修改外部的值
+			rebuildData: {}
 		};
 	},
 	computed: {
 		data() {
-			let result = this.dataSource[this.currentPage];
+			let result = this.rebuildData[this.currentPage];
 			return result || [];
 		}
 	},
 	watch: {
-		/**
-		 * 先有total，才可以设置 currentPage，否则无效
-		 */
-		dataSource(newVal, oldVal) {
-			let page = this.reset === true 
-				? this.currentPage // 当前页刷新
-				: 1; // 首页刷新
-			if (this.total === 0 && this.show) {
-				this.currentPage = 0;
-				this.handleChange(page);
-			} else if (this.total === 0) {
-				this.currentPage = 0;
-			}
-
-			// 初始化结构数据
-			if (this.currentPage !== 0 && this.show && this.total !== 0) {
-				// 
-				let targetArr = newVal[this.currentPage];
-				if (targetArr 
-					&& targetArr.__expand__ === undefined 
-					&& targetArr.some(item => item.children instanceof Array)
-				) {
-					this.injectLAndE(1, targetArr);
-
-					const { all, keys, key } = this.expandOpts; 
-					if (all || keys.length > 0) {
-						let length = 0;
-						targetArr.forEach((item, index) => {
-							let result = this.getLinearArray(targetArr[index + length].children || []);
-							targetArr.splice(index + 1 + length, 0, ...result);
-							length += result.length;
-						});
-						length = 0;
-						this.emitExpand({ type: 'init' });
-					}
-				}
-			}
-		},
-		show(newVal, oldVal) {
-			if (newVal) {
+		show(v) {
+			if (v) {
 				// tabs切换时保持pageSize不变
 				let { query: { pageSize } } = getParseUrl();
 				if (this.pageSize != pageSize) {
@@ -226,16 +190,110 @@ export default {
 				// 触发
 				this.handleChange(this.currentPage);
 			}
+		},
+		/**
+		 * 先有total，才可以设置 currentPage，否则无效
+		 */
+		dataSource(v) {
+			let page = this.reset === true 
+				? this.currentPage // 当前页刷新
+				: 1; // 首页刷新
+			if (this.total === 0 && this.show) {
+				this.currentPage = 0;
+				this.handleChange(page);
+			} else if (this.total === 0) {
+				this.currentPage = 0;
+			}
+			this.rebuildData = this.makeRebuildData();
+		},
+		rebuildData: {
+			deep: process.env.NODE_ENV !== 'production',
+			handler() {
+				console.log('[vc-paging] - rebuild');
+			}
 		}
 	},
 	created() {
 		let { query: { page = 1 } } = getParseUrl();
 		this.show && this._loadData(page);
-	},
-	updated() {
-		// console.log(this.data, this.dataSource[this.currentPage]);
+
+		this.rebuildData = this.makeRebuildData('created');
 	},
 	methods: {
+		makeRebuildData(type) {
+			let data = {};
+
+			if (type === 'created') { // 初始化的时候，可能会有默认数据
+				for (let page in this.dataSource) {
+					data[page] = this.makeRebuildDataWithPage(page);
+				}	
+			} else {
+				data = {
+					...this.rebuildData,
+					[this.currentPage]: this.makeRebuildDataWithPage()
+				};
+			}
+			return data;
+		},
+		/**
+		 * 不影响外部的值 
+		 */
+		makeRebuildDataWithPage(page = this.currentPage) {
+			if (!this.dataSource[page]) return;
+
+			let data = cloneDeep(this.dataSource[page]);
+			// 初始化结构数据
+			if (this.show 
+				&& this.total !== 0 
+				&& data 
+				&& data.__expand__ === undefined 
+				&& data.some(item => item.children instanceof Array)
+			) {
+				data = this.makeRebuildDataForExpand(1, data);
+
+				const { all, keys, key } = this.expandOpts; 
+				if (all || keys.length > 0) {
+					data = this.getLinearArray(data);
+					this.emitExpand({ type: 'init', row: data });
+				}
+
+				data.__expand__ = true;
+			}
+			return data;
+		},
+		/**
+		 * 设备默认值, todo: 浅拷贝是否提高性能
+		 */
+		makeRebuildDataForExpand(level, treeArray) {
+			treeArray = cloneDeep(treeArray);
+			const { all, key, keys = [] } = this.expandOpts;
+
+			let fn = (item) => {
+				item.__level__ = level;
+				if (item.children && item.children.length > 0) {
+					item.__expand__ = all || (keys.length !== 0 && keys.includes(item[key])); 
+					item.children = this.makeRebuildDataForExpand(level + 1, item.children);
+				}
+				return item;
+			};
+			return treeArray.map(fn);
+		},
+		/**
+		 * 根据需要获取线性的数组
+		 */
+		getLinearArray(treeArray) {
+			let fn = (pre, cur) => {
+				pre = [...pre, cur];
+				if (cur.children && cur.__expand__ === true) {
+					pre = [...pre, ...cur.children.reduce(fn, [])];
+				}
+				return pre;
+			};
+
+			let result = treeArray.reduce(fn, []);
+
+			return result;
+		},
 		handleChangePageSize(pageSize) {
 			this.$emit('page-size-change', pageSize); // 清理数据
 			this.pageSize = pageSize;
@@ -305,45 +363,10 @@ export default {
 		},
 		/**
 		 * 扩展功能
-		 * 设备默认值, 利用浅复制给对象赋值
-		 */
-		injectLAndE(level, treeArray) {
-			const { all, key, keys = [] } = this.expandOpts;
-
-			let fn = (item) => {
-				item.__level__ = level;
-				if (item.children && item.children.length > 0) {
-					item.__expand__ = all || (keys.length !== 0 && keys.includes(item[key])); 
-					this.injectLAndE(level + 1, item.children);
-				}
-				return item;
-			};
-
-			treeArray.forEach(fn);
-		},
-		/**
-		 * 扩展功能
-		 * 根据需要获取线性的数组
-		 */
-		getLinearArray(treeArray) {
-			let fn = (pre, cur) => {
-				pre = [...pre, cur];
-				if (cur.children && cur.__expand__ === true) {
-					pre = [...pre, ...cur.children.reduce(fn, [])];
-				}
-				return pre;
-			};
-
-			let result = treeArray.reduce(fn, []);
-
-			return result;
-		},
-		/**
-		 * 扩展功能
 		 */
 		expand(opts = {}) {
-			// 数组/对象引用同步，基本类型sync同步
-			let targetArr = this.dataSource[this.currentPage];
+
+			let targetArr = this.rebuildData[this.currentPage];
 
 			let { e, index } = opts;
 			const { children, __level__, __expand__ } = targetArr[index] || {};
@@ -358,7 +381,7 @@ export default {
 					this.loadingExpand = true;
 					load.then((children) => {
 						if (children instanceof Array) {
-							this.injectLAndE(__level__ + 1, children);
+							children = this.makeRebuildDataForExpand(__level__ + 1, children);
 
 							// 同步到data中	
 							targetArr[index].__expand__ = true;
@@ -374,7 +397,7 @@ export default {
 						this.loadingExpand = false;
 					});
 				} else {
-					console.error('[vc-paging]-loadExpandData need return a Promise');
+					console.error('[vc-paging] - loadExpandData need return a Promise');
 				}
 
 			} else if (children.length > 0) {
@@ -399,10 +422,8 @@ export default {
 			}
 		},
 		emitExpand(opts = {}) {
-			let targetArr = this.dataSource[this.currentPage];
-
-			const { index, type } = opts; 
-
+			const { index, type, row } = opts; 
+			const targetArr = this.rebuildData[this.currentPage] || row;
 			// todo：优化，目前是每次都计算
 			let maxLevel = 0;
 
@@ -414,19 +435,13 @@ export default {
 
 			this.$emit('expand', { 
 				...opts, 
-				row: type === 'init' ? targetArr : targetArr[index], 
+				row: cloneDeepEasier(targetArr[index] || []), 
 				maxLevel,
 				callback: (opts = {}) => {
 					const { selected, all = false } = opts;
 					// 待开发， 重新选择已选中的，设置_checked
 				} 
 			});
-		},
-		/**
-		 * 处理选择记录
-		 */
-		handleSelectionChange(row, index) {
-			this.$emit('selection-change', arguments[0]);
 		}
 	}
 };
