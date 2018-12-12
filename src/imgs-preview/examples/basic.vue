@@ -16,36 +16,31 @@ export default {
 		return {
 			dataSource: [
 				{
-					src: 'https://oss.ruishan666.com/image/xcx/180228/803943951788/裤子.png',
-					thumbnail: 'https://oss.ruishan666.com/image/xcx/180228/803943951788/裤子.png!4-4',
+					url: 'https://oss.ruishan666.com/image/xcx/180228/803943951788/裤子.png',
 					title: 'Image 1',
 					w: 1200,
 					h: 900
 				},
 				{
-					src: 'https://oss.ruishan666.com/image/xcx/180313/942990884682/10053600,2880,1800.jpg',
-					thumbnail: 'https://oss.ruishan666.com/image/xcx/180313/942990884682/10053600,2880,1800.jpg!4-4',
+					url: 'https://oss.ruishan666.com/image/xcx/180313/942990884682/10053600,2880,1800.jpg',
 					title: 'Image 2',
 					w: 1200,
 					h: 900
 				},
 				{
-					src: 'https://oss.ruishan666.com/image/xcx/180313/942990767112/10049533,2880,1800.jpg',
-					thumbnail: 'https://oss.ruishan666.com/image/xcx/180313/942990767112/10049533,2880,1800.jpg!4-4',
+					url: 'https://oss.ruishan666.com/image/xcx/180313/942990767112/10049533,2880,1800.jpg',
 					title: 'Image 2',
 					w: 1200,
 					h: 900
 				},
 				{
-					src: 'https://oss.ruishan666.com/image/xcx/180228/803943510611/衣服-01.png',
-					thumbnail: 'https://oss.ruishan666.com/image/xcx/180228/803943510611/衣服-01.png!4-4',
+					url: 'https://oss.ruishan666.com/image/xcx/180228/803943510611/衣服-01.png',
 					title: 'Image 2',
 					w: 1200,
 					h: 900
 				},
 				{
-					src: 'https://oss.ruishan666.com/image/xcx/180313/942996157518/10053669,2880,1800.jpg',
-					thumbnail: 'https://oss.ruishan666.com/image/xcx/180313/942996157518/10053669,2880,1800.jpg!4-4',
+					url: 'https://oss.ruishan666.com/image/xcx/180313/942996157518/10053669,2880,1800.jpg',
 					title: 'Image 2',
 					w: 1200,
 					h: 900
@@ -63,16 +58,17 @@ export default {
 	methods: {
 		renderRow(h, params) {
 			const { src, index } = params; 
-			return h('img', {
-				attrs: {
-					src,
-					width: 100,
-					height: 100,
-				},
-				on: {
-					click: (e) => console.log(e)
-				}
-			});
+			return <img src={src.url} key={src.url} style={{ width: '100px', height: '100px' }} />;
+			// return h('img', {
+			// 	attrs: {
+			// 		src,
+			// 		width: 100,
+			// 		height: 100,
+			// 	},
+			// 	on: {
+			// 		click: (e) => console.log(e)
+			// 	}
+			// });
 		},
 		handleClick(e) {
 			let pos = {};
