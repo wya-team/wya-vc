@@ -275,7 +275,7 @@ export default {
 				const { all, keys, key } = this.expandOpts; 
 				if (all || keys.length > 0) {
 					data = this.getLinearArray(data);
-					this.emitExpand({ type: 'init', row: data });
+					this.emitExpand({ type: 'init', expandData: data });
 				}
 
 				data.__expand__ = true;
@@ -443,8 +443,8 @@ export default {
 			}
 		},
 		emitExpand(opts = {}) {
-			const { index, type, row } = opts; 
-			const targetArr = this.rebuildData[this.currentPage] || row;
+			const { index, type, expandData } = opts; 
+			let targetArr = type === 'init' ? expandData : this.rebuildData[this.currentPage];
 			// todo：优化，目前是每次都计算
 			let maxLevel = 0;
 
