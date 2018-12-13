@@ -93,8 +93,10 @@ export default (defaultOptions = {}, wrapper) => {
 								handleExtra(e) {
 									try {
 										let regex = new RegExp(`(${aliveEles.join('|')})`, 'g');
-										console.log(e.path.some(item => regex.test(item.className)));
-										if (!this.$el.contains(e.target) && !e.path.some(item => regex.test(item.className))) {
+										if (
+											!this.$el.contains(e.target) 
+											&& !e.path.some(item => regex.test(item.className))
+										) {
 											this.$emit('destory');
 										}
 									} catch (e) {
