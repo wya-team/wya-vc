@@ -18,16 +18,17 @@ export default (defaultOptions = {}, wrapper) => {
 
 	class Statics {
 		static init(userOptions = {}) {
-			let options = { ...defaultOptions, ...userOptions };
+			let options = { ...defaultOptions, ...userOptions, ...VcInstance.config.CreatePortal };
 
 			return new Promise((resolve, reject) => {
 				// init options
+				// ['v-transfer-dom']
 				const { 
 					el, 
 					root: _root, 
 					cName = wrapper.name,
 					alive = false, // 再次调用，实例不销毁
-					aliveEles = ['v-transfer-dom'], // 实例以外且该数组内的className, 点击不销毁
+					aliveEles, // 实例以外且该数组内的className, 点击不销毁
 					leaveDelay = 0.3,
 					autoDestory = true,
 					getInstance, 
