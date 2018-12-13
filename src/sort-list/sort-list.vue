@@ -6,7 +6,7 @@
 	>
 		<component 
 			v-for="(item, index) in dataSource" 
-			:key="typeof item === 'object' ? item[primaryKey] : item"
+			:key="typeof item === 'object' ? item[valueKey] : item"
 			:is="tag"
 			:draggable="true"
 			class="__item"
@@ -51,7 +51,7 @@ export default {
 				return [];
 			},
 		},
-		primaryKey: {
+		valueKey: {
 			type: [String, Number],
 			default: 'id'
 		},
