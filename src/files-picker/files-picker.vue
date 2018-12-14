@@ -8,7 +8,7 @@
 			@file-progress="handleFileProgress"
 			@file-success="handleFileSuccess"
 			@file-error="handleFileError"
-			@complete="handleFileComplete"
+			@error="$emit('error', arguments[0])"
 		>
 			<slot name="trigger" />
 		</vc-upload>
