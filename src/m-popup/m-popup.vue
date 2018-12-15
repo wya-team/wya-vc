@@ -77,7 +77,7 @@ export default {
 	methods: {
 		hide() {
 			this.isActive = false;
-			this.$emit('change', this.isActive);
+			this.$emit('close', this.isActive);
 		},
 		handleClose(maskClosable = true) {
 			if (maskClosable) {
