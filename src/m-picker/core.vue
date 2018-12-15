@@ -109,7 +109,7 @@ const config = {
 		handleColChange(v, index) {
 			// index 当前第几列
 			// v 当前选种值
-			this.values[index] = v.national_code;
+			this.values[index] = v.value;
 			if (index < this.cols && this.cascade) {
 				this.values.splice(index + 1, this.cols - index);
 				this.makeRebuildData(index + 1);
@@ -121,12 +121,12 @@ const config = {
 		makeData(data, i) {
 			let tag = 0;
 			if (this.values[i - 1]) {
-				tag = data.findIndex(item => item.national_code == this.values[i - 1]);
+				tag = data.findIndex(item => item.value == this.values[i - 1]);
 			}
 			tag = tag < 0 ? 0 : tag;
 			return {
-				value: i == 0 ? data[tag].national_code : data[tag].child[0].national_code,
-				children: i == 0 ? data : data[tag].child
+				value: i == 0 ? data[tag].value : data[tag].children[0].value,
+				children: i == 0 ? data : data[tag].children
 			};
 		},
 		makeRebuildData(index = 0) {

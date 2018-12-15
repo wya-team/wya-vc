@@ -12,7 +12,7 @@
 				:key="index"
 				:style="itemStyle"
 				class="__item">
-				{{ typeof item === 'object' && item['region_name'] ? item['region_name'] : item }}
+				{{ typeof item === 'object' && item['label'] ? item['label'] : item }}
 			</div>
 		</div>
 	</div>
@@ -68,7 +68,7 @@ export default {
 		colValue: {
 			immediate: true,
 			handler(v) {
-				let index = this.dataSource.findIndex(item => item.national_code === this.colValue);
+				let index = this.dataSource.findIndex(item => item.value === this.colValue);
 				if (index * 34 === this.translateY * -1) return;
 				this.translateY = index * 34 * -1;
 			}
@@ -141,100 +141,99 @@ export default {
 </script>
 
 <style scoped lang='scss'>
-	.vcm-picker-col {
-		display: block;
-		position: relative;
-		height: 238px;
-		overflow: hidden;
+.vcm-picker-col {
+	display: block;
+	position: relative;
+	height: 238px;
+	overflow: hidden;
+	width: 100%;
+
+	.__item {
+		text-align: center;
+		box-sizing: border-box;
+		padding: 9px 15px;
+		height: 42px;
+		line-height: 42px;
+		color: #108ee9;
+		font-size: 17px;
+	}
+
+	.__mask {
+		position: absolute;
+		left: 0;
+		z-index: 3;
+		top: 0;
+		margin: 0 auto;
 		width: 100%;
+		height: 100%;
+		background-image: linear-gradient(180deg,
+			hsla(0, 0%, 100%, 0.95),
+			hsla(0, 0%, 100%, 0.6)),
+			linear-gradient(0deg,
+			hsla(0, 0%, 100%, 0.95),
+			hsla(0, 0%, 100%, 0.6));
+		background-position: top, bottom;
+		background-size: 100% 102px;
+		background-repeat: no-repeat;
+	}
 
-		.__item {
-			text-align: center;
-			box-sizing: border-box;
-			padding: 9px 15px;
-			height: 42px;
-			line-height: 42px;
-			color: #108ee9;
-			font-size: 17px;
-		}
+	.__indicator {
+		position: absolute;
+		top: 102px;
+		left: 0;
+		box-sizing: border-box;
+		// border-top: 1px solid #ddd;
+		// border-bottom: 1px solid #ddd;
+		width: 100%;
+		z-index: 3;
+		height: 34px;
 
-		.__mask {
+		&::before {
+			content: '';
 			position: absolute;
-			left: 0;
-			z-index: 3;
+			background-color: #ddd;
+			display: block;
+			z-index: 1;
 			top: 0;
-			margin: 0 auto;
-			width: 100%;
-			height: 100%;
-			background-image: linear-gradient(180deg,
-				hsla(0, 0%, 100%, 0.95),
-				hsla(0, 0%, 100%, 0.6)),
-				linear-gradient(0deg,
-				hsla(0, 0%, 100%, 0.95),
-				hsla(0, 0%, 100%, 0.6));
-			background-position: top, bottom;
-			background-size: 100% 102px;
-			background-repeat: no-repeat;
-		}
-
-		.__indicator {
-			position: absolute;
-			top: 102px;
+			right: auto;
+			bottom: auto;
 			left: 0;
-			box-sizing: border-box;
-			// border-top: 1px solid #ddd;
-			// border-bottom: 1px solid #ddd;
 			width: 100%;
-			z-index: 3;
-			height: 34px;
-
-			&::before {
-				content: '';
-				position: absolute;
-				background-color: #ddd;
-				display: block;
-				z-index: 1;
-				top: 0;
-				right: auto;
-				bottom: auto;
-				left: 0;
-				width: 100%;
-				height: 1px;
-				transform-origin: 50% 50%;
-				transform: scaleY(0.5);
-			}
-
-			&::after {
-				content: '';
-				position: absolute;
-				background-color: #ddd;
-				display: block;
-				z-index: 1;
-				top: auto;
-				right: auto;
-				bottom: 0;
-				left: 0;
-				width: 100%;
-				height: 1px;
-				transform-origin: 50% 100%;
-				transform: scaleY(0.5);
-			}
+			height: 1px;
+			transform-origin: 50% 50%;
+			transform: scaleY(0.5);
 		}
 
-		.__items {
-			padding: 102px 0;
-			.__item {
-				color: #000;
-				padding: 0;
-				margin: 0 10px;
-				height: 34px !important;
-				line-height: 34px !important;
-				overflow: hidden;
-				overflow: hidden;
-				text-overflow: ellipsis;
-				white-space: nowrap;
-			}
+		&::after {
+			content: '';
+			position: absolute;
+			background-color: #ddd;
+			display: block;
+			z-index: 1;
+			top: auto;
+			right: auto;
+			bottom: 0;
+			left: 0;
+			width: 100%;
+			height: 1px;
+			transform-origin: 50% 100%;
+			transform: scaleY(0.5);
 		}
 	}
 
+	.__items {
+		padding: 102px 0;
+		.__item {
+			color: #000;
+			padding: 0;
+			margin: 0 10px;
+			height: 34px !important;
+			line-height: 34px !important;
+			overflow: hidden;
+			overflow: hidden;
+			text-overflow: ellipsis;
+			white-space: nowrap;
+		}
+	}
+}
 </style>

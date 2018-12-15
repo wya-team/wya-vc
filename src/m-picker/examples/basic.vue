@@ -5,7 +5,7 @@
 			v-model="show"
 			:values.sync="values"
 			:cols="3"
-			:value-key="['region_name','region_name','region_name']"
+			:value-key="['label','label','label']"
 			:item-style="{
 				color:'#ff0000',
 			}"
