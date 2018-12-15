@@ -62,7 +62,7 @@ const config = {
 export default config;
 
 export const KeepAliveWithBefore = CreatePortal({
-	keepAlive: true,
+	alive: true,
 	onBefore() {
 		return new Promise((resolve, reject) => {
 			setTimeout(resolve, 1000);
@@ -70,5 +70,5 @@ export const KeepAliveWithBefore = CreatePortal({
 	}
 }, config);
 
-export const KeepAlive = CreatePortal({ keepAlive: true }, config);
+export const KeepAlive = CreatePortal({ alive: true, aliveEles: ['ivu-btn', 'v-transfer-dom'] }, config);
 </script>

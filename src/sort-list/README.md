@@ -20,7 +20,7 @@ mask      | 容器样式      | `object`  |      |
 ---|---|---|---
 v-model  | 数据源 | `array` | []
 mask  | 是否显示遮罩层 | `bool` | true
-primaryKey  | 数据源唯一key值 | `string,number` | true
+valueKey  | 数据源唯一key值 | `string,number` | true
 
 #### 事件
 

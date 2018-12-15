@@ -1,5 +1,5 @@
 <template>
-	<vc-debounce-click :tag="Button" @click="handleClick">
+	<vc-debounce-click :tag="Button" type="primary" @click="handleClick">
 		点击
 	</vc-debounce-click>
 </template>

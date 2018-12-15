@@ -18,16 +18,18 @@ export default (defaultOptions = {}, wrapper) => {
 
 	class Statics {
 		static init(userOptions = {}) {
-			let options = { ...defaultOptions, ...userOptions };
+			let options = { ...defaultOptions, ...userOptions, ...VcInstance.config.CreatePortal };
 
 			return new Promise((resolve, reject) => {
 				// init options
+				// ['v-transfer-dom']
 				const { 
 					el, 
 					root: _root, 
 					cName = wrapper.name,
+					alive = false, // 再次调用，实例不销毁
+					aliveEles, // 实例以外且该数组内的className, 点击不销毁
 					leaveDelay = 0.3,
-					keepAlive = false,
 					autoDestory = true,
 					getInstance, 
 					onBefore, 
@@ -44,7 +46,7 @@ export default (defaultOptions = {}, wrapper) => {
 
 				let render = (res = {}) => {
 					// destory
-					!keepAlive && VcInstance.APIS[cName] && VcInstance.APIS[cName].$emit('destory');
+					!alive && VcInstance.APIS[cName] && VcInstance.APIS[cName].$emit('destory');
 
 					let propsData = {
 						...rest,
@@ -53,7 +55,7 @@ export default (defaultOptions = {}, wrapper) => {
 
 					// vm
 					let vm;
-					if (keepAlive && VcInstance.APIS[cName]) {
+					if (alive && VcInstance.APIS[cName]) {
 
 						vm = VcInstance.APIS[cName];
 						vm.$off(['destory', 'close', 'sure']);
@@ -81,7 +83,29 @@ export default (defaultOptions = {}, wrapper) => {
 							store, // vuex,
 							router, // vue-router
 							propsData,
-							...parent
+							...parent,
+							mounted() {
+								alive && document.addEventListener('click', this.handleExtra, true);
+							},
+							destroyed() {
+								alive && document.removeEventListener('click', this.handleExtra, true);
+							},
+							methods: {
+								handleExtra(e) {
+									try {
+										let regex = new RegExp(`(${aliveEles.join('|')})`, 'g');
+										if (
+											!this.$el.contains(e.target) 
+											&& !e.path.some(item => regex.test(item.className))
+										) {
+											this.$emit('destory');
+										}
+									} catch (e) {
+										console.log(e);
+									}
+									
+								}
+							}
 						});
 					}
 					

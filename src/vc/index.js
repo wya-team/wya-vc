@@ -28,6 +28,9 @@ class Vc {
 				FILE_UPLOAD_URL: null,
 				onPostBefore: null,
 				onPostArter: null,
+			},
+			CreatePortal: {
+				aliveEles: []
 			}
 		};
 	}

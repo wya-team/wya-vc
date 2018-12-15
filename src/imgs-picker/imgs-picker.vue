@@ -48,6 +48,7 @@
 			@file-progress="handleFileProgress"
 			@file-success="handleFileSuccess"
 			@file-error="handleFileError"
+			@error="$emit('error', arguments[0])"
 		/>
 	</component>
 </template>
