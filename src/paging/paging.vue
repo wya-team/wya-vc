@@ -21,6 +21,7 @@
 			:data="data" 
 			:loading="loading"
 			:columns="columns"
+			:stripe="true"
 			v-bind="tableOpts"
 			@on-current-change="$emit('current-change', arguments[0], arguments[1])"
 			@on-select="$emit('select', arguments[0], arguments[1])"
