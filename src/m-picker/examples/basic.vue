@@ -1,30 +1,7 @@
 <template>
 	<div>
-		<!-- <c-pick
-			:data-source="area"
-			v-model="show"
-			:values.sync="values"
-			:cols="3"
-			:value-key="['label','label','label']"
-			:item-style="{
-				color:'#ff0000',
-			}"
-			@ok="handleConfirm"
-			@cancel="handleCancel"/> -->
-		<!-- <c-pick
-			:data-source="other"
-			v-model="showOther"
-			:values.sync="valuesOther"
-			:cols="1"
-			:cascade="false"
-			value-key="value"
-			@ok="handleConfirm"
-			@cancel="handleCancel"/> -->
-		<!-- <button @click="handleByCompent">组件形式调用选择器</button>
-		<button @click="handleByOther11">组件形式调用选择器q</button> -->
-		<c-pick :data-source="area" :cascade="true" :cols="3" :current-value="['210000','210600','210682']"/>
+		<c-pick :data-source="area" :cascade="true" :cols="3" v-model="v"/>
 		<button @click="handleByOther"/>
-
 	</div>
 </template>
 <script>
@@ -44,7 +21,8 @@ export default {
 			other: [],
 			values: [],
 			valuesOther: [],
-			area: []
+			area: [],
+			v: []
 		};
 	},
 	computed: {

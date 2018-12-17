@@ -1,10 +1,10 @@
 <template>
-	<div class="vcm-picker">
+	<div v-if="show" class="vcm-picker">
 		<vcm-popup v-model="isActive" :fixed="true" @close="handleClose">
 			<div v-if="showToolbar" class="__header">
 				<div v-if="cancelText" class="__item __left" @click="handleClose">{{ cancelText }}</div>
 				<div class="__item __title">{{ title }}</div>
-				<div v-if="ok" class="__item __right" @click="handleOk">{{ ok }}</div>
+				<div v-if="okText" class="__item __right" @click="handleOk">{{ okText }}</div>
 			</div>
 			<div class="__main">
 				<vcm-col
@@ -13,10 +13,10 @@
 					:key="index"
 					:index="index"
 					:data-source="rebuildData[index]"
-					:col-value="values[index]"
+					v-model="values[index]"
 					:cascade="cascade"
 					:item-style="itemStyle"
-					@change="handleColChange" />
+					@change="handleColChange(arguments[0],index)" />
 			</div>
 		</vcm-popup>
 	</div>
@@ -43,6 +43,10 @@ const config = {
 			type: Number,
 			default: 1
 		},
+		show: {
+			type: Boolean,
+			default: true
+		},
 		itemStyle: Object,
 		title: {
 			type: String,
@@ -52,7 +56,7 @@ const config = {
 			type: String,
 			default: '取消'
 		},
-		ok: {
+		okText: {
 			type: String,
 			default: '确定'
 		},
@@ -64,7 +68,7 @@ const config = {
 			type: Boolean,
 			default: false
 		},
-		currentValue: {
+		value: {
 			type: Array,
 		}
 	},
@@ -72,7 +76,6 @@ const config = {
 		return {
 			isActive: true,
 			values: [],
-			cloneData: [],
 			rebuildData: []
 		};
 	},
@@ -81,10 +84,10 @@ const config = {
 		dataSource(v) {
 			this.makeRebuildData();
 		},
-		currentValue: {
+		value: {
 			immediate: true,
 			handler(v) {
-				if (v.length) {
+				if (v && v.length) {
 					this.values = [...v];
 				}
 			}
@@ -97,33 +100,33 @@ const config = {
 	methods: {
 		handleOk() {
 			this.$emit('sure', [...this.values]);
-			this.$emit('change', false);
+			this.$emit('change', [...this.values]);
+			this.$emit('showChange', false);
 		},
 		handleClose(v) {
 			this.values = [];
 			this.rebuildData = [];
 			this.makeRebuildData();
 			this.$emit('close', []);
-			this.$emit('change', false);
+			this.$emit('showChange', false);
 		},
 		handleColChange(v, index) {
 			// index 当前第几列
 			// v 当前选种值
-			this.values[index] = v.value;
+			this.values.splice(index, 1, v.value);
 			if (index < this.cols && this.cascade) {
 				this.values.splice(index + 1, this.cols - index);
 				this.makeRebuildData(index + 1);
 			}
-			// 主要给v-model
 			this.$emit('picker-change', v, index);
-			this.$emit('update:values', [...this.values]);
+			this.$emit('change', [...this.values]);
 		},
 		makeData(data, i) {
 			let tag = 0;
 			if (this.values[i - 1]) {
 				tag = data.findIndex(item => item.value == this.values[i - 1]);
+				tag = tag < 0 ? 0 : tag;
 			}
-			tag = tag < 0 ? 0 : tag;
 			return {
 				value: i == 0 ? data[tag].value : data[tag].children[0].value,
 				children: i == 0 ? data : data[tag].children
@@ -133,7 +136,7 @@ const config = {
 			if (!this.dataSource.length) return;
 			if (this.cascade) {
 				for (let i = index; i < this.cols; i++) {
-					let { value, children } = this.makeData(i == 0 ? this.dataSource : this.rebuildData[i - 1], i);
+					let { value, children } = this.makeData(this.rebuildData[i - 1] || this.dataSource, i);
 					this.rebuildData.splice(i, 1, children);
 					if (!this.values[i]) {
 						this.values.splice(i, 1, value);

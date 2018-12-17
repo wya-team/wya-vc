@@ -20,7 +20,7 @@ export default {
 	},
 	methods: {
 		handleClick() {
-			let { dataSource, cols, cascade, itemStyle, title, cancelText, ok, showToolbar, currentValue } = this;
+			let { dataSource, cols, cascade, itemStyle, title, cancelText, okText, showToolbar, value, show } = this;
 			Picker.popup({
 				dataSource,
 				cols,
@@ -29,8 +29,9 @@ export default {
 				title,
 				cancelText,
 				showToolbar,
-				ok,
-				currentValue
+				show,
+				okText,
+				value
 			}).then(res => {
 				console.log(res);
 			}).catch(err => {

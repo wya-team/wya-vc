@@ -1,14 +1,15 @@
 <template>
 	<div
 		class="vcm-picker-col"
-		@touchstart.stop.prevent="handleTouchStart"
-		@touchmove.stop.prevent="handleTouchMove"
-		@touchend.stop.prevent="handleTouchEnd">
+		@touchstart.stop.prevent="handleStart"
+		@touchmove.stop.prevent="handleMove"
+		@touchend.stop.prevent="handleEnd"
+	>
 		<div class="__mask" />
 		<div class="__indicator" />
-		<div :style="{transform:`translateY(${translateY}px)`,transition: `transform ${duration}ms cubic-bezier(0.19, 1, 0.22, 1)`}" class="__items">
+		<div :style="style" class="__items">
 			<div
-				v-for="(item,index) in dataSource"
+				v-for="(item, index) in dataSource"
 				:key="index"
 				:style="itemStyle"
 				class="__item">
@@ -30,14 +31,8 @@ export default {
 			type: Object,
 			default: () => {}
 		},
-		index: {
-			type: Number
-		},
-		cascade: {
-			type: Boolean
-		},
-		colValue: {
-			type: [String, Object]
+		value: {
+			type: String
 		}
 	},
 	data() {
@@ -52,23 +47,28 @@ export default {
 		maxHeight() {
 			return 34 * this.dataSource.length - 34;
 		},
+		style() {
+			return {
+				transform: `translateY(${this.translateY}px)`,
+				transition: `transform ${this.duration}ms cubic-bezier(0.19, 1, 0.22, 1)` };
+		}
 	},
 	watch: {
 		dataSource(v, old) {
-			if (this.cascade && this.dataSource && this.dataSource.length) {
-				this.selectIndex = 0;
-				this.translateY = 0;
-			} else {
-				if (old && v.length == old.length) return;
-				if (!v[this.translateY / 34 * -1]) {
-					this.translateY = 0;
-				}
-			}
+			// if (this.cascade && this.dataSource && this.dataSource.length) {
+			// 	this.selectIndex = 0;
+			// 	this.translateY = 0;
+			// } else {
+			// 	if (old && v.length == old.length) return;
+			// 	if (!v[this.translateY / 34 * -1]) {
+			// 		this.translateY = 0;
+			// 	}
+			// }
 		},
-		colValue: {
+		value: {
 			immediate: true,
 			handler(v) {
-				let index = this.dataSource.findIndex(item => item.value === this.colValue);
+				let index = this.dataSource.findIndex(item => item.value === this.value);
 				if (index * 34 === this.translateY * -1) return;
 				this.translateY = index * 34 * -1;
 			}
@@ -84,23 +84,34 @@ export default {
 	},
 	beforeDestroy() {},
 	methods: {
-		handleTouchStart(event) {
-			event.preventDefault();
+		handleStart(event) {
 			let finger = event.changedTouches[0];
 			this.startY = finger.pageY;
 			this.duration = 800;
 			this.startTime = new Date();
 		},
-		handleTouchMove(event) {
-			event.preventDefault();
+		handleMove(event) {
 			let finger = event.changedTouches[0];
 			this.lastY = finger.pageY;
 			let duration = new Date() - this.startTime;
 			if (duration > 300 && this.duration > 100) {
 				this.duration -= 100;
 			}
-			this.computedDistance(this.lastY - this.startY);
+			this.translateY = this.computedDistance(this.lastY - this.startY);
 			this.startY = this.lastY;
+		},
+		handleEnd(event) {
+			let momentumRatio = 7;
+			let duration = new Date() - this.startTime;
+			let finger = event.changedTouches[0];
+			this.lastY = finger.pageY;
+			let updateMove = this.computedDistance(this.lastY - this.startY, 'end');
+			this.translateY = updateMove == 0 ? 0 : Math.round(updateMove / 34) * 34;
+			this.startY = this.lastY;
+			if (this.selectIndex !== this.translateY / 34 * -1) {
+				this.selectIndex = this.translateY / 34 * -1;
+				this.handleEmit();
+			}
 		},
 		computedDistance(move, type) {
 			let updateMove = this.translateY * 1 + move;
@@ -110,28 +121,11 @@ export default {
 			if (updateMove < -1 * this.maxHeight) {
 				updateMove = -1 * this.maxHeight;
 			}
-			if (type == 'end') {
-				this.translateY = updateMove == 0 ? 0 : Math.round(updateMove / 34) * 34;
-			} else {
-				this.translateY = updateMove;
-			}
-		},
-		handleTouchEnd(event) {
-			event.preventDefault();
-			let momentumRatio = 7;
-			let duration = new Date() - this.startTime;
-			let finger = event.changedTouches[0];
-			this.lastY = finger.pageY;
-			this.computedDistance(this.lastY - this.startY, 'end');
-			this.startY = this.lastY;
-			if (this.selectIndex !== this.translateY / 34 * -1) {
-				this.selectIndex = this.translateY / 34 * -1;
-				this.handleEmit();
-			}
+			return updateMove;
 		},
 		handleEmit() {
 			if (this.dataSource[this.selectIndex]) {
-				this.$emit('change', this.dataSource[this.selectIndex], this.index);
+				this.$emit('change', this.dataSource[this.selectIndex]);
 			}
 		}
 	},
