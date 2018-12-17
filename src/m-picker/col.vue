@@ -68,9 +68,11 @@ export default {
 		value: {
 			immediate: true,
 			handler(v) {
-				let index = this.dataSource.findIndex(item => item.value === this.value);
-				if (index * 34 === this.translateY * -1) return;
-				this.translateY = index * 34 * -1;
+				this.$nextTick(() => {
+					let index = this.dataSource.findIndex(item => item.value === this.value);
+					if (index * 34 === this.translateY * -1) return;
+					this.translateY = index * 34 * -1;
+				});
 			}
 		}
 	},
