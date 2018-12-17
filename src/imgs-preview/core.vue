@@ -30,6 +30,19 @@
 						title="全屏"
 					/>
 					<button class="pswp__button pswp__button--zoom" title="缩放"/>
+
+					<vc-icon 
+						type="rotate-right" 
+						class="vc-pswp-button" 
+						title="向右旋转90度"
+						@click="handleRotate(90)" 
+					/>
+					<vc-icon 
+						type="rotate-left" 
+						class="vc-pswp-button" 
+						title="向左旋转90度"
+						@click="handleRotate(-90)" 
+					/>
 					
 					<div class="pswp__preloader">
 						<div class="pswp__preloader__icn">
@@ -67,6 +80,7 @@ import "photoswipe/dist/photoswipe.css";
 import "photoswipe/dist/default-skin/default-skin.css";
 
 import CreatePortal from '../create-portal/index';
+import Icon from '../icon/index';
 import { photoSwipeEvents } from './constants';
 
 /**
@@ -75,6 +89,9 @@ import { photoSwipeEvents } from './constants';
  */
 const config = {
 	name: "vc-imgs-preview-core",
+	components: {
+		'vc-icon': Icon
+	},
 	props: {
 		id: String,
 		// 图片源
@@ -247,4 +264,26 @@ export const Func = CreatePortal({}, config);
 
 </script>
 <style lang='scss' scoped>
+.pswp {
+	.vc-pswp-button {
+		width: 44px;
+		height: 44px;
+		position: relative;
+		background: none;
+		cursor: pointer;
+		overflow: visible;
+		-webkit-appearance: none;
+		display: block;
+		border: 0;
+		padding: 0;
+		margin: 0;
+		float: right;
+		opacity: 0.75;
+		transition: opacity 0.2s;
+		box-shadow: none;
+		color: white;
+		line-height: 44px;
+		text-align: center;
+	}
+}
 </style>
