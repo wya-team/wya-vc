@@ -1,49 +1,78 @@
 <template>
-	<div class="container" @click="handleClick">
-		<slot />
-		<!-- 待开发（表单） -->
+	<div class="vcm-picker" @click="handleClick">
+		<slot 
+			v-if="$slots.default || $scopedSlots.default" 
+			:label="label" 
+		/>
+		<!-- 内容待自定义，todo, 默认使用list -->
+		<div v-else>
+			{{ label }}
+		</div>
 	</div>
 </template>
 
 <script>
-import Core, { datePicker } from './core';
+import Core, { Func } from './core';
+import { getSelectedData } from '../utils/index';
+import emitter from '../extends/mixins/emitter'; // 表单验证
 
 export default {
-	name: "vcm-picker",
+	name: "vcm-date-picker",
 	components: {},
+	mixins: [emitter],
+	model: {
+		prop: 'value',
+		event: 'change'
+	},
 	props: {
 		...Core.props,
+		loadData: Function,
+		extra: {
+			type: String,
+			default: '请选择'
+		},
 	},
-	popup: datePicker.popup,
+	popup: Func.popup,
 	data() {
-		return {};
+		return {
+			info: []
+		};
+	},
+	computed: {
+		label() {
+			return this.info.join('') || this.extra;
+		}
+	},
+	mounted() {
+	},
+	destoryed() {
+		this.pickerInstance && this.pickerInstance.$emit('destory');
 	},
 	methods: {
 		handleClick() {
-			let { type, minDate, maxDate, format, value } = this;
-			datePicker.popup({
-				type,
+			let { mode, minDate, maxDate, format, value } = this;
+			Func.popup({
+				mode,
 				minDate,
 				maxDate,
 				format,
-				value
+				value,
+				getInstance: vm => this.pickerInstance = vm
 			}).then(res => {
-				console.log(res);
+				this.info = res.label;
+				this.$emit('change', res.date, res);
+
+				// form表单
+				this.dispatch('FormItem', 'on-form-change', res.date);
 			}).catch(err => {
 				console.log(err);
 			});
 		}
-	},
-	destoryed() {}
+	}
 };
 
 </script>
 
 <style scoped lang='scss'>
-	.container {
-		width: 100px;
-		height: 100px;
-		background: red;
-	}
-
 </style>
+

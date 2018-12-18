@@ -1,39 +1,44 @@
 <template>
-	<c-picker
+	<vcm-picker-core
 		:show-toolbar="true"
-		:data-source="dateSlots"
-		:cols="typeStr.length"
-		v-model="currentValue"
-		@colChange="onChange"
+		:data-source="dataSource"
+		:cols="cols"
+		:value="currentValue"
+		@picker-change="handleChange"
+		@destory="handleDestory"
 		@close="handleClose"
-		@sure="handleSure" />
+		@sure="handleSure"
+	/>
 </template>
 
 <script>
-import CPicker from '../m-picker/core.vue';
+import MPickerCore from '../m-picker/core.vue';
 import CreatePortal from '../create-portal/index';
+import { getSelectedData, value2date, date2value } from '../utils/index';
 
 
 const config = {
-	components: { CPicker },
 	name: "vcm-date-picker-core",
+	components: { 
+		'vcm-picker-core': MPickerCore 
+	},
 	model: {
 		prop: 'value',
 		event: 'change'
 	},
 	props: {
-		type: {
+		mode: {
 			type: String,
-			// 'datetime', 'date', 'time'
-			default: 'datetime'
+			default: 'datetime',
+			validator: (val) => ['datetime', 'date', 'time'].includes(val)
 		},
 		minDate: {
 			type: Date,
-			default: () => new Date(+new Date() - (20 * 365 * 24 * 60 * 60 * 1000))
+			default: () => new Date('1990')
 		},
 		maxDate: {
 			type: Date,
-			default: () => new Date(+new Date() + (10 * 365 * 24 * 60 * 60 * 1000))
+			default: () => new Date('2020')
 		},
 		startHour: {
 			type: Number,
@@ -47,19 +52,21 @@ const config = {
 			type: String,
 			default: 'YYYY-MM-dd HH:mm'
 		},
-		value: null
+		value: {
+			type: Date,
+			default: () => new Date()
+		}
 	},
 	data() {
 		return {
 			show: true,
 			currentValue: [],
-			dateSlots: []
+			dataSource: []
 		};
 	},
-	minxin: [],
 	computed: {
-		typeStr() {
-			switch (this.type) {
+		modeStr() {
+			switch (this.mode) {
 				case 'date':
 					return 'YMD';
 				case 'time':
@@ -68,36 +75,34 @@ const config = {
 					return 'YMDHm';
 			}
 		},
-		computedStartEnd() {
-			if (this.type === 'time') {
-				return {
-					hour: [this.startHour, this.endHour],
-					min: [0, 59]
-				};
+		cols() {
+			return this.modeStr.length;
+		},
+		ranges() {
+			switch (this.mode) {
+				case 'date':
+					return {
+						year: [this.minDate.getFullYear(), this.maxDate.getFullYear()],
+						month: [1, 12],
+						date: [1, this.getMonthEndDay(this.currentValue[0] * 1, this.currentValue[1] * 1)],
+					};
+				case 'time':
+					return {
+						hour: [this.startHour, this.endHour],
+						min: [0, 59]
+					};
+				default:
+					return {
+						year: [this.minDate.getFullYear(), this.maxDate.getFullYear()],
+						month: [1, 12],
+						date: [1, this.getMonthEndDay(this.currentValue[0] * 1, this.currentValue[1] * 1)],
+						hour: [0, 23],
+						min: [0, 59]
+					};
 			}
-			if (this.type === 'date') {
-				return {
-					year: [this.minDate.getFullYear(), this.maxDate.getFullYear()],
-					month: [1, 12],
-					date: [1, this.getMonthEndDay(this.currentValue[0] * 1, this.currentValue[1] * 1)],
-				};
-			}
-			return {
-				year: [this.minDate.getFullYear(), this.maxDate.getFullYear()],
-				month: [1, 12],
-				date: [1, this.getMonthEndDay(this.currentValue[0] * 1, this.currentValue[1] * 1)],
-				hour: [0, 23],
-				min: [0, 59]
-			};
 		}
 	},
 	watch: {
-		computedStartEnd() {
-			this.generateSlots();
-		},
-		currentValue() {
-			this.$emit('change', this.dateVal());
-		},
 		value: {
 			immediate: true,
 			handler(v) {
@@ -105,50 +110,18 @@ const config = {
 					console.error('Invalid Date');
 					return;
 				}
-				if (+new Date(v) !== +this.dateVal() && v) {
-					const arr = {
-						Y: v.getFullYear() + '',
-						M: v.getMonth() * 1 + 1 + '',
-						D: v.getDate() + '',
-						H: v.getHours() + '',
-						m: v.getMinutes() + '',
-					};
-					let typeArr = this.typeStr.split('');
-					typeArr.forEach((item, index) => {
-						this.currentValue.splice(index, 1, arr[item]);
-					});
+				if (+new Date(v) !== +value2date(this.currentValue) && v) {
+					
+					this.currentValue = date2value(v, this.modeStr);
+
 				}
 			}
 		}
 	},
 	mounted() {
-		this.generateSlots();
+		this.dataSource = this.makeData();
 	},
 	methods: {
-		dateVal(formate) {
-			let arr = [];
-			for (let i = 0; i < 5 - this.currentValue.length; i++) {
-				arr.push(false);
-			}
-			arr = [...this.currentValue, ...arr];
-			const INTERVAL_MAP = {
-				Y: arr[0] || new Date().getFullYear(),
-				M: arr[1] || new Date().getMonth() * 1 + 1,
-				D: arr[2] || new Date().getDate(),
-				H: arr[3] || '00',
-				m: arr[4] || '00',
-			};
-			let str = this.format;
-			if (formate) {
-				return str.replace(/YYYY/g, INTERVAL_MAP.Y)
-					.replace(/MM/g, INTERVAL_MAP.M)
-					.replace(/dd/g, INTERVAL_MAP.D)
-					.replace(/HH/g, INTERVAL_MAP.H)
-					.replace(/mm/g, INTERVAL_MAP.m);
-			} else {
-				return new Date(INTERVAL_MAP.Y, INTERVAL_MAP.M * 1 - 1, INTERVAL_MAP.D, INTERVAL_MAP.H, INTERVAL_MAP.m);
-			}
-		},
 		getMonthEndDay(year, month) {
 			if (this.isShortMonth(month)) {
 				return 30;
@@ -164,28 +137,31 @@ const config = {
 		isLeapYear(year) {
 			return (year % 400 === 0) || (year % 100 !== 0 && year % 4 === 0);
 		},
-		generateSlots() {
-			let dateSlots = [];
+		/**
+		 * todo, 存在副作用，使用函数式编程
+		 */
+		makeData() {
+			let result = [];
 			const INTERVAL_MAP = {
-				Y: this.computedStartEnd.year,
-				M: this.computedStartEnd.month,
-				D: this.computedStartEnd.date,
-				H: this.computedStartEnd.hour,
-				m: this.computedStartEnd.min
+				Y: this.ranges.year,
+				M: this.ranges.month,
+				D: this.ranges.date,
+				H: this.ranges.hour,
+				m: this.ranges.min
 			};
-			let typesArr = this.typeStr.split('');
+			let typesArr = this.modeStr.split('');
 			typesArr.forEach(type => {
 				if (INTERVAL_MAP[type]) {
-					this.pushSlots.apply(null, [dateSlots, type].concat(INTERVAL_MAP[type]));
+					this.pushSlots.apply(null, [result, type].concat(INTERVAL_MAP[type]));
 				}
 			});
-			for (let i = 0; i < dateSlots.length; i++) {
-				let eq = dateSlots[i].find(item => item.value === this.currentValue[i]);
+			for (let i = 0; i < result.length; i++) {
+				let eq = result[i].find(item => item.value === this.currentValue[i]);
 				if (!eq) {
-					this.currentValue.splice(i, 1, dateSlots[i][0].value);
+					this.currentValue.splice(i, 1, result[i][0].value);
 				}
 			}
-			this.dateSlots = dateSlots;
+			return result;
 		},
 		fillValues(type, start, end) {
 			const INTERVAL_MAP = {
@@ -208,20 +184,31 @@ const config = {
 		pushSlots(slots, type, start, end) {
 			slots.push(this.fillValues(type, start, end));
 		},
+		handleChange(val, index) {
+			this.currentValue.splice(index, 1, val.value);
+			this.dataSource = this.makeData();
+		},
+		/**
+		 * CreatePortal事件或模拟其事件
+		 */
+		handleDestory() {
+			this.$emit('destory');
+		},
 		handleClose() {
 			this.$emit('close', []);
 		},
-		onChange() {},
 		handleSure() {
-			this.$emit('sure', this.dateVal());
-		},
-		handleCancel() {}
-	},
-	destoryed() {}
+			let selected = {
+				...getSelectedData(this.currentValue, this.dataSource),
+				date: value2date(this.currentValue)
+			};
+			this.$emit('sure', selected);
+		}
+	}
 };
 export default config;
 
-export const datePicker = CreatePortal({}, config);
+export const Func = CreatePortal({}, config);
 
 </script>
 
