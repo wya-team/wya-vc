@@ -5,7 +5,7 @@
 			class="__bg" 
 			@click="handleClose" 
 		/>
-		<transition name="fade" @after-leave="handleRemove">
+		<transition name="am-fade" @after-leave="handleRemove">
 			<div v-show="visible" class="__fixed">{{ message }}</div>
 		</transition>
 	</div>
@@ -82,8 +82,9 @@ export default {
 		text-align: center;
 		transition: opacity .3s cubic-bezier(0.18, 0.89, 0.32, 1.28);
 	}
+	.am-fade-enter, .am-fade-leave-active {
+		opacity: 0;
+	}
 }
-.fade-enter, .fade-leave-active {
-	opacity: 0;
-}
+
 </style>
