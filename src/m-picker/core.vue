@@ -1,22 +1,23 @@
 <template>
-	<div v-if="show" class="vcm-picker">
+	<div v-if="show" class="vcm-picker-core">
 		<vcm-popup v-model="isActive" :fixed="true" @close="handleClose">
 			<div v-if="showToolbar" class="__header">
-				<div v-if="cancelText" class="__item __left" @click="handleClose">{{ cancelText }}</div>
+				<div v-if="cancelText" class="__item __left" @click.stop="handleCancel">{{ cancelText }}</div>
 				<div class="__item __title">{{ title }}</div>
-				<div v-if="okText" class="__item __right" @click="handleOk">{{ okText }}</div>
+				<div v-if="okText" class="__item __right" @click.stop="handleOk">{{ okText }}</div>
 			</div>
 			<div class="__main">
-				<vcm-col
+				<vcm-picker-col
 					v-for="(item,index) in cols"
 					ref="col"
 					:key="index"
 					:index="index"
 					:data-source="rebuildData[index]"
-					v-model="values[index]"
+					:value="values[index]"
 					:cascade="cascade"
 					:item-style="itemStyle"
-					@change="handleColChange(arguments[0],index)" />
+					@change="handleColChange(arguments[0], index)" 
+				/>
 			</div>
 		</vcm-popup>
 	</div>
@@ -26,12 +27,13 @@
 import MPopup from '../m-popup/m-popup.vue';
 import Col from './col';
 import CreatePortal from '../create-portal/index';
+import { getSelectedData } from '../utils/index';
 
 const config = {
 	name: "vcm-picker-core",
 	components: {
 		'vcm-popup': MPopup,
-		'vcm-col': Col
+		'vcm-picker-col': Col
 	},
 	model: {
 		prop: 'value',
@@ -43,7 +45,7 @@ const config = {
 			type: Number,
 			default: 1
 		},
-		show: {
+		show: { // sync
 			type: Boolean,
 			default: true
 		},
@@ -66,7 +68,7 @@ const config = {
 		},
 		cascade: {
 			type: Boolean,
-			default: false
+			default: true
 		},
 		value: {
 			type: Array,
@@ -74,7 +76,7 @@ const config = {
 	},
 	data() {
 		return {
-			isActive: true,
+			isActive: false,
 			values: [],
 			rebuildData: []
 		};
@@ -93,33 +95,55 @@ const config = {
 			}
 		}
 	},
-	mounted() {},
+	mounted() {
+		this.isActive = true;
+	},
 	created() {
 		this.makeRebuildData();
 	},
 	methods: {
-		handleOk() {
-			this.$emit('sure', [...this.values]);
-			this.$emit('change', [...this.values]);
-			this.$emit('showChange', false);
+		handleClose() {
+			// 普通组件
+			this.$emit('update:show', false);
+			this.$emit('show-change', false);
+
+			// CreatePortal事件或模拟其事件
+			this.$emit('destory');
 		},
-		handleClose(v) {
+		handleOk() {
+			let selectedData = getSelectedData(this.values, this.dataSource);
+
+			// CreatePortal事件或模拟其事件
+			this.$emit('sure', selectedData);
+
+			// 普通组件
+			this.$emit('change', [...this.values], selectedData);
+
+			this.isActive = false;
+		},
+		handleCancel(v) {
 			this.values = [];
 			this.rebuildData = [];
 			this.makeRebuildData();
+
+			// CreatePortal事件或模拟其事件
 			this.$emit('close', []);
-			this.$emit('showChange', false);
+
+			this.isActive = false;
 		},
+		/**
+		 * @param  {[Number, String]} v 当前选种值
+		 * @param  {[Number]} index 当前第几列
+		 */
 		handleColChange(v, index) {
-			// index 当前第几列
-			// v 当前选种值
 			this.values.splice(index, 1, v.value);
 			if (index < this.cols && this.cascade) {
 				this.values.splice(index + 1, this.cols - index);
 				this.makeRebuildData(index + 1);
 			}
+
+			// 普通组件
 			this.$emit('picker-change', v, index);
-			this.$emit('change', [...this.values]);
 		},
 		makeData(data, i) {
 			let tag = 0;
@@ -132,9 +156,14 @@ const config = {
 				children: i == 0 ? data : data[tag].children
 			};
 		},
+		/**
+		 * todo, 存在副作用，使用函数式编程
+		 */
 		makeRebuildData(index = 0) {
 			if (!this.dataSource.length) return;
-			if (this.cascade) {
+			if (this.cascade && this.dataSource.some(item => !!item.children)) {
+				
+				// 默认选择
 				for (let i = index; i < this.cols; i++) {
 					let { value, children } = this.makeData(this.rebuildData[i - 1] || this.dataSource, i);
 					this.rebuildData.splice(i, 1, children);
@@ -142,27 +171,32 @@ const config = {
 						this.values.splice(i, 1, value);
 					}
 				}
-			} else {
+			} else if (this.dataSource.length !== 0) {
 				this.rebuildData = this.dataSource;
+
+				// 默认选择
+				for (let i = index; i < this.cols; i++) {
+					if (!this.values[i] && this.rebuildData[i]) {
+						this.values.splice(i, 1, this.rebuildData[i][0].value);
+					}
+				}
 			}
 		}
-	},
-	destoryed() {}
+	}
 };
 
 
 export default config;
-export const Picker = CreatePortal({}, config);
+export const Func = CreatePortal({}, config);
 
 </script>
 
 <style scoped lang='scss'>
-.vcm-picker {
+.vcm-picker-core {
 	.__header {
 		position: relative;
 		display: flex;
 		align-items: center;
-		border-bottom: 1px solid #ddd;
 		background-color: #fff;
 		background-image: linear-gradient(180deg, #e7e7e7, #e7e7e7, transparent, transparent);
 		background-position: bottom;

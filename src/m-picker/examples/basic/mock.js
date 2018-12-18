@@ -1,4 +1,27 @@
-const data = [{
+export const seasons = [
+	[
+		{
+			label: '2013',
+			value: '2013',
+		},
+		{
+			label: '2014',
+			value: '2014',
+		}
+	],
+	[
+		{
+			label: '春',
+			value: '春',
+		},
+		{
+			label: '夏',
+			value: '夏',
+		}
+	]
+];
+
+export const cascadeData = [{
 	"value": "110000",
 	"label": "北京市",
 	"parent_id": "0",
@@ -19954,4 +19977,3 @@ const data = [{
 		}]
 	}]
 }];
-export default data;

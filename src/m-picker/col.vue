@@ -1,13 +1,16 @@
 <template>
 	<div
 		class="vcm-picker-col"
-		@touchstart.stop.prevent="handleStart"
-		@touchmove.stop.prevent="handleMove"
-		@touchend.stop.prevent="handleEnd"
+		@touchstart.stop.prevent="handleStart($event.touches[0].screenY)"
+		@touchmove.stop.prevent="handleMove($event.touches[0].screenY)"
+		@touchend.stop.prevent="handleEnd($event.changedTouches[0].screenY)"
+		@mousedown.stop.prevent="handleStart($event.screenY)"
+		@mousemove.stop.prevent="handleMove($event.screenY)"
+		@mouseup.stop.prevent="handleEnd($event.screenY)"
 	>
 		<div class="__mask" />
-		<div class="__indicator" />
-		<div :style="style" class="__items">
+		<div :style="styleH" class="__indicator" />
+		<div :style="[styleH, transform, transition]" class="__items">
 			<div
 				v-for="(item, index) in dataSource"
 				:key="index"
@@ -20,7 +23,10 @@
 </template>
 
 <script>
+import { cloneDeep } from '../utils/utils';
+
 export default {
+	name: 'vcm-picker-col',
 	components: {},
 	props: {
 		dataSource: {
@@ -32,103 +38,90 @@ export default {
 			default: () => {}
 		},
 		value: {
-			type: String
+			type: [String, Number]
 		}
 	},
 	data() {
 		return {
-			translateY: 0,
-			selectIndex: 0,
-			duration: 800
+			offsetY: 0,
+			itemH: 34,
+			scrollStart: true,
+			scrollEnd: false,
 		};
 	},
 	minxin: [],
 	computed: {
-		maxHeight() {
-			return 34 * this.dataSource.length - 34;
+		maxH() {
+			return this.itemH * this.dataSource.length - this.itemH;
 		},
-		style() {
+		styleH() {
 			return {
-				transform: `translateY(${this.translateY}px)`,
-				transition: `transform ${this.duration}ms cubic-bezier(0.19, 1, 0.22, 1)` };
-		}
-	},
-	watch: {
-		dataSource(v, old) {
-			// if (this.cascade && this.dataSource && this.dataSource.length) {
-			// 	this.selectIndex = 0;
-			// 	this.translateY = 0;
-			// } else {
-			// 	if (old && v.length == old.length) return;
-			// 	if (!v[this.translateY / 34 * -1]) {
-			// 		this.translateY = 0;
-			// 	}
-			// }
+				height: `${this.itemH}px`,
+				lineHeight: `${this.itemH}px`
+			};
 		},
-		value: {
-			immediate: true,
-			handler(v) {
-				this.$nextTick(() => {
-					let index = this.dataSource.findIndex(item => item.value === this.value);
-					if (index * 34 === this.translateY * -1) return;
-					this.translateY = index * 34 * -1;
-				});
-			}
+		transform() {
+			let index = this.dataSource.findIndex(item => item.value === this.value);
+			return {
+				transform: `translate3d(0, ${(index * this.itemH + this.offsetY) * -1}px, 0)`
+			};
+		},
+		// 结束时添加
+		transition() {
+			return {
+				transition: `transform ${this.scrollEnd ? '500' : '0'}ms ease-out`
+			};
 		}
 	},
 	beforeCreate() {
 		this.startY = 0;
 		this.startTime = 0;
-		this.lastY = 0;
-		this.lastTime = 0;
 	},
 	mounted() {
 	},
 	beforeDestroy() {},
 	methods: {
-		handleStart(event) {
-			let finger = event.changedTouches[0];
-			this.startY = finger.pageY;
-			this.duration = 800;
-			this.startTime = new Date();
+		handleStart(y) {
+			this.scrollStart = true;
+			this.scrollEnd = false;
+
+			this.startY = y;
+			this.startTime = Date.now();
 		},
-		handleMove(event) {
-			let finger = event.changedTouches[0];
-			this.lastY = finger.pageY;
-			let duration = new Date() - this.startTime;
-			if (duration > 300 && this.duration > 100) {
-				this.duration -= 100;
-			}
-			this.translateY = this.computedDistance(this.lastY - this.startY);
-			this.startY = this.lastY;
+		handleMove(y) {
+			this.scrollStart && (this.offsetY = this.startY - y);
 		},
-		handleEnd(event) {
-			let momentumRatio = 7;
-			let duration = new Date() - this.startTime;
-			let finger = event.changedTouches[0];
-			this.lastY = finger.pageY;
-			let updateMove = this.computedDistance(this.lastY - this.startY, 'end');
-			this.translateY = updateMove == 0 ? 0 : Math.round(updateMove / 34) * 34;
-			this.startY = this.lastY;
-			if (this.selectIndex !== this.translateY / 34 * -1) {
-				this.selectIndex = this.translateY / 34 * -1;
-				this.handleEmit();
+		handleEnd(y) {
+			let index = this.dataSource.findIndex(item => item.value === this.value);
+
+			// 计算速度
+			let translateY;
+			const dt = Date.now() - this.startTime;
+			if (dt > 500 || dt < 50) {
+				translateY = index * this.itemH + this.offsetY;
+			} else {
+				const dy = this.startY - y;
+				const speed = dy / dt;
+				translateY = index * this.itemH + speed * 500;
 			}
-		},
-		computedDistance(move, type) {
-			let updateMove = this.translateY * 1 + move;
-			if (updateMove > 0) {
-				updateMove = 0;
+
+			let target;
+			// 通知上级改变
+			if (translateY <= 0) {
+				target = this.dataSource[0];
+			} else if (translateY >= this.maxH) {
+				target = this.dataSource[this.dataSource.length - 1];
+			} else {
+				target = this.dataSource[Math.round(translateY / this.itemH)];
 			}
-			if (updateMove < -1 * this.maxHeight) {
-				updateMove = -1 * this.maxHeight;
-			}
-			return updateMove;
-		},
-		handleEmit() {
-			if (this.dataSource[this.selectIndex]) {
-				this.$emit('change', this.dataSource[this.selectIndex]);
-			}
+			this.$emit('change', cloneDeep(target));
+			this.scrollStart = false;
+			this.scrollEnd = true;
+
+			// 初始化
+			this.lastY = 0;
+			this.startY = 0;
+			this.offsetY = 0;
 		}
 	},
 	destoryed() {}
@@ -138,21 +131,10 @@ export default {
 
 <style scoped lang='scss'>
 .vcm-picker-col {
-	display: block;
 	position: relative;
 	height: 238px;
 	overflow: hidden;
 	width: 100%;
-
-	.__item {
-		text-align: center;
-		box-sizing: border-box;
-		padding: 9px 15px;
-		height: 42px;
-		line-height: 42px;
-		color: #108ee9;
-		font-size: 17px;
-	}
 
 	.__mask {
 		position: absolute;
@@ -167,7 +149,8 @@ export default {
 			hsla(0, 0%, 100%, 0.6)),
 			linear-gradient(0deg,
 			hsla(0, 0%, 100%, 0.95),
-			hsla(0, 0%, 100%, 0.6));
+			hsla(0, 0%, 100%, 0.6)
+		);
 		background-position: top, bottom;
 		background-size: 100% 102px;
 		background-repeat: no-repeat;
@@ -178,12 +161,8 @@ export default {
 		top: 102px;
 		left: 0;
 		box-sizing: border-box;
-		// border-top: 1px solid #ddd;
-		// border-bottom: 1px solid #ddd;
 		width: 100%;
 		z-index: 3;
-		height: 34px;
-
 		&::before {
 			content: '';
 			position: absolute;
@@ -223,9 +202,9 @@ export default {
 			color: #000;
 			padding: 0;
 			margin: 0 10px;
-			height: 34px !important;
-			line-height: 34px !important;
-			overflow: hidden;
+			text-align: center;
+			box-sizing: border-box;
+			font-size: 17px;
 			overflow: hidden;
 			text-overflow: ellipsis;
 			white-space: nowrap;
