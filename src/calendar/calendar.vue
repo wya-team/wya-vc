@@ -56,7 +56,7 @@
 
 <script>
 import CreateCustomer from "../create-customer/index";
-import { addPreZero } from "../utils/index";
+import { prefixZero } from "../utils/index";
 import date2holiday from "./date2holiday";
 
 const monthNames = [
@@ -171,7 +171,7 @@ export default {
 			return this.getCurrentInfo(this.showYear, this.showMonth + 1);
 		},
 		curDateStr() {
-			return `${this.curDate.getFullYear()}-${addPreZero(this.curDate.getMonth() + 1)}-${addPreZero(
+			return `${this.curDate.getFullYear()}-${prefixZero(this.curDate.getMonth() + 1)}-${prefixZero(
 				this.curDate.getDate()
 			)}`;
 		}
@@ -217,7 +217,7 @@ export default {
 			nextData = this.createDaysArray(nextYear, nextMonth, this.getMonthDays(nextYear, nextMonth), "next");
 
 			// 生成日历数组
-			let firstWeek = this.getWeek(`${year}-${addPreZero(month)}-1`); // 本月第一天是星期几
+			let firstWeek = this.getWeek(`${year}-${prefixZero(month)}-1`); // 本月第一天是星期几
 			let data = [
 				...prevData.slice(prevData.length - (firstWeek === 0 ? 7 : firstWeek), prevData.length),
 				...curData,
@@ -235,7 +235,7 @@ export default {
 			let array = [];
 			for (let i = 0; i < days; i++) {
 				let item = {};
-				item.date = `${year}-${addPreZero(month)}-${addPreZero(i + 1)}`;
+				item.date = `${year}-${prefixZero(month)}-${prefixZero(i + 1)}`;
 				item.day = i + 1;
 				item.type = type;
 				array.push(item);

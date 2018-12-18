@@ -15,7 +15,7 @@
 <script>
 import { debounce } from 'lodash';
 import CreateCustomer from "../create-customer/index";
-import { addPreZero } from "../utils/utils";
+import { prefixZero } from "../utils/utils";
 
 const DownCount = CreateCustomer({
 	days: [String, Number],
@@ -178,11 +178,11 @@ export default {
 			const _hour = _minute * 60;
 			const _day = _hour * 24;
 
-			this.days = addPreZero(Math.floor(timestamp / _day));
-			this.hours = addPreZero(Math.floor((timestamp % _day) / _hour));
-			this.minutes = addPreZero(Math.floor((timestamp % _hour) / _minute));
-			this.seconds = addPreZero(Math.floor((timestamp % _minute) / _second));
-			this.ms = addPreZero(Math.floor(timestamp % this.msDividend));
+			this.days = prefixZero(Math.floor(timestamp / _day));
+			this.hours = prefixZero(Math.floor((timestamp % _day) / _hour));
+			this.minutes = prefixZero(Math.floor((timestamp % _hour) / _minute));
+			this.seconds = prefixZero(Math.floor((timestamp % _minute) / _second));
+			this.ms = prefixZero(Math.floor(timestamp % this.msDividend));
 
 			if (timestamp <= 0) {
 				this.stop();

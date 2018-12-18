@@ -14,7 +14,7 @@
 <script>
 import MPickerCore from '../m-picker/core.vue';
 import CreatePortal from '../create-portal/index';
-import { getSelectedData, value2date, date2value } from '../utils/index';
+import { getSelectedData, value2date, date2value, prefixZero } from '../utils/index';
 
 
 const config = {
@@ -65,18 +65,23 @@ const config = {
 		};
 	},
 	computed: {
-		modeStr() {
+		modeArr() {
+			let result;
 			switch (this.mode) {
 				case 'date':
-					return 'YMD';
+					result = 'YMD';
+					break;
 				case 'time':
-					return 'Hm';
+					result = 'Hm';
+					break;
 				default:
-					return 'YMDHm';
+					result = 'YMDHm';
+					break;
 			}
+			return result.split('');
 		},
 		cols() {
-			return this.modeStr.length;
+			return this.modeArr.length;
 		},
 		ranges() {
 			switch (this.mode) {
@@ -111,9 +116,7 @@ const config = {
 					return;
 				}
 				if (+new Date(v) !== +value2date(this.currentValue) && v) {
-					
-					this.currentValue = date2value(v, this.modeStr);
-
+					this.currentValue = date2value(v, this.modeArr);
 				}
 			}
 		}
@@ -149,8 +152,7 @@ const config = {
 				H: this.ranges.hour,
 				m: this.ranges.min
 			};
-			let typesArr = this.modeStr.split('');
-			typesArr.forEach(type => {
+			this.modeArr.forEach(type => {
 				if (INTERVAL_MAP[type]) {
 					this.pushSlots.apply(null, [result, type].concat(INTERVAL_MAP[type]));
 				}
@@ -173,7 +175,7 @@ const config = {
 			};
 			let arr = Array.from({ length: end - start + 1 }, (no, x) => {
 				let afterNum = x + start;
-				let finallyStr = afterNum * 1 >= 10 ? afterNum + '' : `0${afterNum}`;
+				let finallyStr = String(prefixZero(afterNum));
 				return {
 					value: finallyStr,
 					label: finallyStr + INTERVAL_MAP[type]

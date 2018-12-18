@@ -236,7 +236,7 @@ export const createMixins = (...mixins) => target => {
 /**
  * 小于10的数字前面加0
  */
-export const addPreZero = (num) => {
+export const prefixZero = (num) => {
 	if (num < 10 && num > 0) {
 		return "0" + num;
 	} else if (num <= 0) {
@@ -321,9 +321,11 @@ export const date2value = (v, format) => {
 		H: v.getHours() + '',
 		m: v.getMinutes() + '',
 	};
-	let typeArr = format.split(''); // 'YMDHm'
+	let typeArr = typeof format === 'string' ? format.split('') : format; // 'YMDHm'
 
-	return typeArr.map(item => target[item]);
+	let result = typeArr.map(item => prefixZero(target[item]));
+
+	return result;
 };
 
 export const value2date = (v) => {
