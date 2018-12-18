@@ -13,7 +13,7 @@ import { Tip } from './tip/tip.vue';
 import MPopup from '../m-popup.vue';
 
 export default {
-	name: "vc-pop-up-basic",
+	name: "vcm-popup-basic",
 	components: {
 		'vcm-popup': MPopup
 	},

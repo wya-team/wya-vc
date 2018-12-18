@@ -254,6 +254,8 @@ export const def = (obj, key, val, enumerable) => {
 	});
 };
 
+export const isObj = target => typeof target === 'object';
+
 /**
  * 判断是否存在
  */
@@ -281,3 +283,67 @@ let baseClone = (target, source) => {
 };
 export const cloneDeep = (source) => baseClone(Array.isArray(source) ? [] : {}, source);
 export const cloneDeepEasier = (source) => JSON.parse(JSON.stringify(source));
+
+/**
+ * 获取源数据
+ * [value, label, children]
+ */
+export const getSelectedData = (value = [], source = [], opts = {}) => {
+	source = cloneDeepEasier(source);
+	let label = [];
+	let data = [];
+	if (source.some(item => !!item.children)) { // 联动
+		value.reduce((data, item) => {
+			let itemData = data.find(it => it.value === item);
+			data.push(itemData);
+			label.push(itemData.label);
+			return itemData.children;
+		}, source);
+	} else if (source.length !== 0) {
+		value.forEach((item, index) => {
+			let itemData = source[index].find(it => it.value === item);
+			data.push(itemData);
+			label.push(itemData.label);
+		});
+	}
+	return cloneDeep({
+		value,
+		label,
+		data
+	});
+};
+
+export const date2value = (v, format) => {
+	let target = {
+		Y: v.getFullYear() + '',
+		M: v.getMonth() * 1 + 1 + '',
+		D: v.getDate() + '',
+		H: v.getHours() + '',
+		m: v.getMinutes() + '',
+	};
+	let typeArr = format.split(''); // 'YMDHm'
+
+	return typeArr.map(item => target[item]);
+};
+
+export const value2date = (v) => {
+	let result = [];
+	for (let i = 0; i < 5 - v.length; i++) {
+		result.push(false);
+	}
+	result = [...v, ...result];
+	const target = {
+		Y: result[0] || new Date().getFullYear(),
+		M: result[1] || new Date().getMonth() * 1 + 1,
+		D: result[2] || new Date().getDate(),
+		H: result[3] || '00',
+		m: result[4] || '00',
+	};
+	return new Date(
+		target.Y, 
+		target.M * 1 - 1, 
+		target.D, 
+		target.H, 
+		target.m
+	);
+};

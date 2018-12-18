@@ -1,17 +1,42 @@
 <template>
-	<vc-popup v-model="show" :position="param.position" @change="handleChange">
-		tip
-	</vc-popup>
+	<vcm-popup v-model="show" :position="param.position" @change="handleChange">
+		tip <br>
+		tip <br>
+		tip <br>
+		tip <br>
+		tip <br>
+		tip <br>
+		tip <br>
+		tip <br>
+		tip <br>
+		tip <br>
+		tip <br>
+		tip <br>
+		tip <br>
+		tip <br>
+		tip <br>
+		tip <br>
+		tip <br>
+		tip <br>
+		tip <br>
+		tip <br>
+		tip <br>
+		tip <br>
+		tip <br>
+		tip <br>
+		tip <br>
+		tip <br>
+	</vcm-popup>
 </template>
 
 <script>
-import Popup from '../../m-popup.vue';
+import MPopup from '../../m-popup.vue';
 import CreatePortal from '../../../create-portal/index';
 
 const config = {
-	name: 'vc-xxx',
+	name: 'vc-popup-basic-tip',
 	components: {
-		'vc-popup': Popup
+		'vcm-popup': MPopup
 	},
 	props: {
 		param: Object
@@ -28,14 +53,12 @@ const config = {
 
 	},
 	created() {
-		console.log(this.param);
 	},
 	mounted() {
 		this.show = true;
 	},
 	methods: {
 		handleChange() {
-			console.log(22);
 			this.$emit('sure');
 		}
 	},
