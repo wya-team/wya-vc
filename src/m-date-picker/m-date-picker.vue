@@ -1,5 +1,5 @@
 <template>
-	<div class="vcm-picker" @click="handleClick">
+	<div class="vcm-date-picker" @click="handleClick">
 		<slot 
 			v-if="$slots.default || $scopedSlots.default" 
 			:label="label" 
