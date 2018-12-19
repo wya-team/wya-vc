@@ -18,7 +18,7 @@ export default (defaultOptions = {}, wrapper) => {
 
 	class Statics {
 		static init(userOptions = {}) {
-			let options = { ...defaultOptions, ...userOptions, ...VcInstance.config.CreatePortal };
+			let options = { ...VcInstance.config.CreatePortal, ...defaultOptions, ...userOptions };
 
 			return new Promise((resolve, reject) => {
 				// init options
