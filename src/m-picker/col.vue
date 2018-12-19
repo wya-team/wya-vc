@@ -45,8 +45,8 @@ export default {
 		return {
 			offsetY: 0,
 			itemH: 34,
-			scrollStart: true,
-			scrollEnd: false,
+			scrollStart: false,
+			scrollEnd: true,
 		};
 	},
 	minxin: [],
