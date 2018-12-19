@@ -349,3 +349,21 @@ export const value2date = (v) => {
 		target.m
 	);
 };
+
+/**
+ * 是否符合条件
+ * @exceptions {
+ *    id,
+ *    tagName,
+ *    className,
+ *    ...HTMLElement
+ * }
+ */
+export const eleInRegExp = (el, exceptions) => {
+	for (let i in exceptions) {
+		if (exceptions[i].test(el[i])) {
+			return true;
+		}
+	}
+	return false;
+};
