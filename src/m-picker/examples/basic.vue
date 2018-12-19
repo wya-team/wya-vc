@@ -26,11 +26,29 @@
 			v-model="valueSeasons"
 			extra="非联动选择"
 		/>
+		<h3 @click="handleClick">点击直接调用</h3>
 
-		<div @click="handleClick">点击直接调用</div>
+		<h2>表单</h2>
+		<i-form
+			ref="form"
+			:show-message="false"
+			:model="formValidate" 
+			:rules="ruleValidate" 
+		>
+			<i-form-item prop="addr" @on-form-change="handleChange">
+				<vcm-picker
+					:data-source="dataSource" 
+					:cascade="true" 
+					:cols="3" 
+					v-model="formValidate.addr"
+				/>
+			</i-form-item>
+			<div @click="handleSubmit">提交表单</div>
+		</i-form >
 	</div>
 </template>
 <script>
+import { Form, FormItem } from 'iview';
 import MToast from '../../m-toast/index';
 import MPicker from '../m-picker.vue';
 import { cloneDeep } from '../../utils/index';
@@ -39,7 +57,9 @@ import { cascadeData, seasons } from './basic/mock';
 export default {
 	name: "vcm-picker-basic",
 	components: {
-		'vcm-picker': MPicker
+		'vcm-picker': MPicker,
+		'i-form': Form,
+		'i-form-item': FormItem
 	},
 	data() {
 		return {
@@ -50,6 +70,20 @@ export default {
 			valueAsync: ["140000", "140100", "140101"],
 			valueSeasons: [],
 			dataSeasons: cloneDeep(seasons),
+
+			formValidate: {
+				addr: [],
+			},
+			ruleValidate: {
+				addr: [
+					{ 
+						required: true, 
+						type: 'array', 
+						message: '请选择地址', 
+						trigger: 'change' 
+					}
+				],
+			}
 		};
 	},
 	computed: {
@@ -77,14 +111,26 @@ export default {
 			}).catch(() => {
 				MToast.info(res);
 			});
-		}
+		},
+		handleChange(...value) {
+			console.log(value);
+		},
+		handleSubmit(name) {
+			this.$refs.form.validate((valid) => {
+				if (valid) {
+					MToast.info('Success!');
+				} else {
+					MToast.info('请先选择地址!');
+				}
+			});
+		},
 	},
 };
 
 </script>
 
 <style>
-.vcm-picker-basic div{
+.vcm-picker-basic .vcm-picker{
 	display: flex;
 	height: 44px;
 	background: white;

@@ -12,14 +12,27 @@
 				{{ it.label }}
 			</h2>
 		</vcm-date-picker>
-		<vcm-date-picker 
-			v-model="value"
-			mode="date"
-		/>
-		<div @click="handleClick">点击直接调用</div>
+		<h3 @click="handleClick">点击直接调用</h3>
+
+		<h2>表单</h2>
+		<i-form
+			ref="form"
+			:show-message="false"
+			:model="formValidate" 
+			:rules="ruleValidate" 
+		>
+			<i-form-item prop="timeV" @on-form-change="handleChange">
+				<vcm-date-picker
+					v-model="formValidate.timeV"
+					mode="datetime"
+				/>
+			</i-form-item>
+			<div @click="handleSubmit">提交表单</div>
+		</i-form >
 	</div>
 </template>
 <script>
+import { Form, FormItem } from 'iview';
 import MToast from '../../m-toast/index';
 import MDatePicker from '../m-date-picker';
 import { cloneDeep } from '../../utils/index';
@@ -27,12 +40,27 @@ import { cloneDeep } from '../../utils/index';
 export default {
 	name: "vcm-date-picker-basic",
 	components: {
-		'vcm-date-picker': MDatePicker
+		'vcm-date-picker': MDatePicker,
+		'i-form': Form,
+		'i-form-item': FormItem
 	},
 	data() {
 		return {
 			show: false,
-			value: new Date()
+			value: new Date(),
+			formValidate: {
+				timeV: undefined,
+			},
+			ruleValidate: {
+				timeV: [
+					{ 
+						required: true, 
+						type: 'object',
+						message: '请选择时间', 
+						trigger: 'change' 
+					}
+				],
+			}
 		};
 	},
 	computed: {
@@ -48,14 +76,26 @@ export default {
 				MToast.info(res.label.join('-'));
 			}).catch(() => {
 			});
-		}
+		},
+		handleChange(...value) {
+			console.log(value);
+		},
+		handleSubmit(name) {
+			this.$refs.form.validate((valid) => {
+				if (valid) {
+					MToast.info('Success!');
+				} else {
+					MToast.info('请先选择时间!');
+				}
+			});
+		},
 	},
 };
 
 </script>
 
 <style>
-.vcm-date-picker-basic div {
+.vcm-date-picker-basic .vcm-date-picker{
 	display: flex;
 	height: 44px;
 	background: white;
