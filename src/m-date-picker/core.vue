@@ -165,7 +165,7 @@ const config = {
 			};
 			this.modeArr.forEach(type => {
 				if (INTERVAL_MAP[type]) {
-					this.pushSlots.apply(null, [result, type].concat(INTERVAL_MAP[type]));
+					this.pushSlots(result, type, ...INTERVAL_MAP[type]);
 				}
 			});
 			for (let i = 0; i < result.length; i++) {
