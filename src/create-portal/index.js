@@ -1,6 +1,6 @@
 import Vue from 'vue';
 import { VcInstance } from '../vc/index';
-import { getUid } from '../utils/utils';
+import { getUid, eleInRegExp } from '../utils/utils';
 
 export default (defaultOptions = {}, wrapper) => {
 	let isNeedWaiting = false;
@@ -19,7 +19,6 @@ export default (defaultOptions = {}, wrapper) => {
 	class Statics {
 		static init(userOptions = {}) {
 			let options = { ...VcInstance.config.CreatePortal, ...defaultOptions, ...userOptions };
-
 			return new Promise((resolve, reject) => {
 				// init options
 				// ['v-transfer-dom']
@@ -28,7 +27,7 @@ export default (defaultOptions = {}, wrapper) => {
 					root: _root, 
 					cName = wrapper.name,
 					alive = false, // 再次调用，实例不销毁
-					aliveEles, // 实例以外且该数组内的className, 点击不销毁
+					aliveRegExp, // 实例以外且该数组内的, 点击不销毁
 					leaveDelay = 0.3,
 					autoDestory = true,
 					getInstance, 
@@ -93,10 +92,9 @@ export default (defaultOptions = {}, wrapper) => {
 							methods: {
 								handleExtra(e) {
 									try {
-										let regex = new RegExp(`(${aliveEles.join('|')})`, 'g');
 										if (
 											!this.$el.contains(e.target) 
-											&& !e.path.some(item => regex.test(item.className))
+											&& !e.path.some(item => eleInRegExp(item, aliveRegExp))
 										) {
 											this.$emit('destory');
 										}

@@ -30,7 +30,9 @@ class Vc {
 				onPostArter: null,
 			},
 			CreatePortal: {
-				aliveEles: []
+				aliveRegExp: {
+					className: /(vc-hack-alive|vc-hack-cp)/
+				}
 			}
 		};
 	}
