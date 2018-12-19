@@ -7,7 +7,6 @@ const Dom = document.body;
 const basicName = "vcm-toast";
 
 const Target = {
-	vm: [],
 	init(message, duration = 3, callback, maskClosable = true, opts = {}) {
 
 		let cName = `${basicName}-${getUid()}`;

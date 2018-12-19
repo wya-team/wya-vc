@@ -19,6 +19,7 @@ import emitter from '../extends/mixins/emitter'; // 表单验证
 
 export default {
 	name: "vcm-picker",
+	popup: Func.popup,
 	components: {},
 	mixins: [emitter],
 	model: {
@@ -33,7 +34,6 @@ export default {
 			default: '请选择'
 		},
 	},
-	popup: Func.popup,
 	data() {
 		return {};
 	},
