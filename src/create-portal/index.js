@@ -28,6 +28,7 @@ export default (defaultOptions = {}, wrapper) => {
 					cName = wrapper.name,
 					alive = false, // 再次调用，实例不销毁
 					aliveRegExp, // 实例以外且该数组内的, 点击不销毁
+					aliveKey = 'visible',
 					leaveDelay = 0.3,
 					autoDestory = true,
 					getInstance, 
@@ -97,11 +98,9 @@ export default (defaultOptions = {}, wrapper) => {
 											!this.$el.contains(e.target) 
 											&& !e.path.some(item => eleInRegExp(item, aliveRegExp))
 										) {
-											if (vm.$children[0] && vm.$children[0].visible) {
-												vm.$children[0].visible = false;
-												setTimeout(() => {
-													this.$emit('destory');
-												}, 300);
+											if (this.$children[0] && this.$children[0][aliveKey]) {
+												this.$children[0][aliveKey] = false;
+												setTimeout(() => this.$emit('destory'), leaveDelay * 1000);
 											} else {
 												this.$emit('destory');
 											}
@@ -126,14 +125,8 @@ export default (defaultOptions = {}, wrapper) => {
 					});
 
 					const fn = (callback) => (res, opts = {}) => {
-
-						const { 
-							delay = leaveDelay, 
-							destory = true 
-						} = opts;
 						
-						// 考虑退出动画
-						destory && setTimeout(() => vm.$emit('destory'), delay * 1000);
+						setTimeout(() => vm.$emit('destory'), leaveDelay * 1000);
 
 						callback(res);
 					};
