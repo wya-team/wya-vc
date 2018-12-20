@@ -1,19 +1,17 @@
 <template>
-	<div
-		:style="styleObj"
-		class="vcm-popup"
-	>
+	<div>
 		<transition name="am-fade">
 			<div
-				v-if="mask && isActive && position !== 'top'"
+				v-show="mask && isActive && position !== 'top'"
 				class="__mask"
 				@click="handleClose(maskClosable)"
 			/>
 		</transition>
 		<transition :name="position" @after-leave="handleRemove">
 			<div
-				v-if="isActive"
+				v-show="isActive"
 				:class="[{ '__dark': position === 'top' }, position]"
+				:style="{position:fixed?'fixed':'absolute'}"
 				class="__wrap"
 			>
 				<slot />
@@ -31,7 +29,7 @@ export default {
 	props: {
 		fixed: {
 			type: Boolean,
-			default: false
+			default: true
 		},
 		show: {
 			type: Boolean,
@@ -53,18 +51,9 @@ export default {
 	data() {
 		return {
 			isActive: this.show,
-			zIndex: -1
 		};
 	},
-	computed: {
-		styleObj() {
-			return {
-				position: this.fixed ? 'fixed' : 'absolute',
-				alignItems: this.position == 'bottom' ? 'flex-end' : 'flex-start',
-				zIndex: this.zIndex
-			};
-		}
-	},
+	computed: {},
 	watch: {
 		show: {
 			immediate: true,
@@ -73,10 +62,6 @@ export default {
 				if (v && this.position == 'top') {
 					this.clearTimer();
 					this.timer = setTimeout(this.handleClose, 3000);
-				}
-
-				if (v) {
-					this.zIndex = 1000;
 				}
 			}
 		}
@@ -111,15 +96,6 @@ export default {
 
 </script>
 <style lang="scss" scoped>
-.vcm-popup {
-	width: 100%;
-	display: flex;
-	top: 0;
-	bottom: 0;
-	right: 0;
-	left: 0;
-	align-items: flex-end;
-	justify-content: center;
 	.bottom {
 		right: 0;
 		bottom: 0;
@@ -135,7 +111,7 @@ export default {
 	}
 
 	.__wrap {
-		position: relative;
+		position: absolute;
 		z-index: 1000;
 		background-color: #fff;
 		transition: transform .2s;
@@ -174,10 +150,9 @@ export default {
 	.bottom-leave-to {
 		transform: translate(0, 100%);
 	}
-	
+
 	// fade存在bug, am-前缀处理，原因未知
 	.am-fade-enter, .am-fade-leave-to {
 		opacity: 0;
 	}
-}
 </style>
