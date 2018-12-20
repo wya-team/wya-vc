@@ -87,6 +87,7 @@ export default (defaultOptions = {}, wrapper) => {
 								alive && document.addEventListener('click', this.handleExtra, true);
 							},
 							destroyed() {
+								
 								alive && document.removeEventListener('click', this.handleExtra, true);
 							},
 							methods: {
@@ -96,7 +97,14 @@ export default (defaultOptions = {}, wrapper) => {
 											!this.$el.contains(e.target) 
 											&& !e.path.some(item => eleInRegExp(item, aliveRegExp))
 										) {
-											this.$emit('destory');
+											if (vm.$children[0] && vm.$children[0].visible) {
+												vm.$children[0].visible = false;
+												setTimeout(() => {
+													this.$emit('destory');
+												}, 300);
+											} else {
+												this.$emit('destory');
+											}
 										}
 									} catch (e) {
 										console.log(e);
