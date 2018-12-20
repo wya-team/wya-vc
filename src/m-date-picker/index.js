@@ -1,1 +1,1 @@
-export { default } from './m-picker';
+export { default } from './m-date-picker';

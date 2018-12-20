@@ -1,12 +1,15 @@
 <template>
 	<div class="vcm-toast">
 		<div 
-			v-show="showClose"
+			v-show="maskClosable"
 			class="__bg" 
 			@click="handleClose" 
 		/>
 		<transition name="am-fade" @after-leave="handleRemove">
-			<div v-show="visible" class="__fixed">{{ message }}</div>
+			<div v-show="visible" class="__fixed">
+				<img v-if="mode === 'loading'" src="./spin.svg" class="loading">
+				<p v-if="message">{{ message }}</p>
+			</div>
 		</transition>
 	</div>
 </template>
@@ -16,10 +19,13 @@ export default {
 	name: 'vc-m-toast',
 	props: {
 		message: String,
-		// onClose: Function,
-		// onCallback: Function,
-		showClose: Boolean,
+		maskClosable: Boolean,
 		duration: Number,
+		mode: {
+			type: String,
+			default: 'info',
+			validator: (val) => ['info', 'loading', 'success', 'warn', 'error'].includes(val)
+		},
 	},
 
 	data() {
@@ -42,7 +48,6 @@ export default {
 	},
 	methods: {
 		handleRemove() {
-			this.$emit('callback');
 			this.$emit('close');
 		},
 		handleClose(e) {
@@ -82,8 +87,18 @@ export default {
 		text-align: center;
 		transition: opacity .3s cubic-bezier(0.18, 0.89, 0.32, 1.28);
 	}
+	.loading {
+		width: 30px;
+		height: 30px;
+		animation: vcm-toast-circle 1s linear infinite;
+	}
 	.am-fade-enter, .am-fade-leave-active {
 		opacity: 0;
+	}
+}
+@keyframes vcm-toast-circle {
+	to {
+		transform: rotate(1turn);
 	}
 }
 

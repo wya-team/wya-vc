@@ -30,7 +30,6 @@ const config = {
 		mode: {
 			type: String,
 			default: 'datetime',
-			validator: (val) => ['datetime', 'date', 'time'].includes(val)
 		},
 		minDate: {
 			type: Date,
@@ -68,14 +67,26 @@ const config = {
 		modeArr() {
 			let result;
 			switch (this.mode) {
+				case 'datetime':
+					result = 'YMDHm';
+					break;
 				case 'date':
 					result = 'YMD';
 					break;
 				case 'time':
 					result = 'Hm';
 					break;
+				case 'yearmonth':
+					result = 'YM';
+					break;
+				case 'year':
+					result = 'Y';
+					break;
+				case 'month':
+					result = 'M';
+					break;
 				default:
-					result = 'YMDHm';
+					result = this.mode;
 					break;
 			}
 			return result.split('');
@@ -154,7 +165,7 @@ const config = {
 			};
 			this.modeArr.forEach(type => {
 				if (INTERVAL_MAP[type]) {
-					this.pushSlots.apply(null, [result, type].concat(INTERVAL_MAP[type]));
+					this.pushSlots(result, type, ...INTERVAL_MAP[type]);
 				}
 			});
 			for (let i = 0; i < result.length; i++) {

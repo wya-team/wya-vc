@@ -123,8 +123,7 @@ export default {
 			this.startY = 0;
 			this.offsetY = 0;
 		}
-	},
-	destoryed() {}
+	}
 };
 
 </script>

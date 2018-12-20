@@ -70,5 +70,10 @@ export const KeepAliveWithBefore = CreatePortal({
 	}
 }, config);
 
-export const KeepAlive = CreatePortal({ alive: true, aliveEles: ['ivu-btn', 'v-transfer-dom'] }, config);
+export const KeepAlive = CreatePortal({ 
+	alive: true, 
+	aliveRegExp: {
+		className: /(ivu-btn|v-transfer-dom)/
+	}
+}, config);
 </script>
