@@ -79,8 +79,9 @@ const Target = {
 	},
 	hide(id) {
 		try {
-			if (id && VcInstance.APIS[id]) {
-				VcInstance.APIS[id];
+			if (id) {
+				let instance = typeof id === 'object' ? id : VcInstance.APIS[id];
+				instance && instance.$emit('destory');
 			} else {
 				Object.keys(VcInstance.APIS).forEach(item => {
 					if (item.includes(basicName)) {
