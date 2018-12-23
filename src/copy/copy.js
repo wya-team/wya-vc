@@ -1,4 +1,5 @@
 import { Message } from 'iview';
+import { copyToClipboard } from './utils';
 
 export default {
 	name: "vc-copy",
@@ -24,25 +25,17 @@ export default {
 
 				before && (value = await before(e, value));
 
-				// create
-				let input = document.createElement('input');
-				input.value = value;
-				document.body.appendChild(input);
+				let success = copyToClipboard(value);
 
-				// copy
-				input.select();
-				document.execCommand("Copy");
-
-				// remove
-				document.body.removeChild(input);
-
-				// end
-				after && after(value);
-				!after && Message.success({
-					content: `复制成功：${value}`
-				});
+				if (success) {
+					after && after(value);
+					!after && Message.success({
+						content: `复制成功：${value}`
+					});
+				}
 			} catch (error) {
 				console.error(`copy fail: ${error}`);
+				this.$emit('error', error);
 			}
 		}
 	},
