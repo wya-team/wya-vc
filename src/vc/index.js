@@ -33,6 +33,9 @@ class Vc {
 				aliveRegExp: {
 					className: /(vc-hack-alive|vc-hack-cp)/
 				}
+			},
+			Paging: {
+				pageOpts: null,
 			}
 		};
 	}

@@ -69,12 +69,13 @@
 <script>
 import { Table, Page } from 'iview';
 import { getConstructUrl, getParseUrl, cloneDeep, cloneDeepEasier } from '../utils/utils';
+import { VcInstance } from '../vc/index';
 
 export default {
 	name: "vc-paging",
 	components: {
 		'i-table': Table,
-		'i-page': Page
+		'i-page': Page,
 	},
 	props: {
 		// table组件属性
@@ -97,11 +98,10 @@ export default {
 		// page 组件属性
 		pageOpts: {
 			type: Object,
-			default: () => ({
+			default: () => (VcInstance.config.Paging.pageOpts || {
 				showTotal: true,
 				showSizer: true,
 				showElevator: true,
-				// transfer: true,
 				placement: 'top',
 				pageSizeOpts: [10, 20, 30, 50, 100]
 			})
@@ -163,7 +163,7 @@ export default {
 		let { query: { page = 1, pageSize } } = getParseUrl();
 		let { pageSizeOpts } = this.pageOpts;
 
-		this.defaultPageSize = Number(pageSize || (pageSizeOpts && pageSizeOpts[0]) || 10);
+		this.defaultPageSize = Number(pageSize || pageSizeOpts.pageSize || (pageSizeOpts && pageSizeOpts[0]) || 10);
 		return {
 			loading: false,
 			currentPage: this.show ? Number(page) : 1,
