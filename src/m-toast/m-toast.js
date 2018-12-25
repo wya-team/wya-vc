@@ -54,6 +54,7 @@ const Target = {
 		return this.init(...params);
 	},
 	loading(...params) {
+		params[3] = false;
 		params[4] = {
 			mode: 'loading'
 		};
