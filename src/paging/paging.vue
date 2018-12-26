@@ -225,7 +225,7 @@ export default {
 		rebuildData: {
 			deep: process.env.NODE_ENV !== 'production',
 			handler() {
-				console.log('[vc-paging] - rebuild');
+				// console.log('[vc-paging] - rebuild');
 			}
 		}
 	},
@@ -376,6 +376,10 @@ export default {
 		setCurrentPage(page) {
 			this.currentPage = page;
 			this.$emit('update:current', page);
+
+
+			// 给外部触发
+			this.$emit('page-change', page);
 		},
 		/**
 		 * 外部调用
@@ -446,7 +450,7 @@ export default {
 		emitExpand(opts = {}) {
 			const { index, type, expandData } = opts; 
 			let targetArr = type === 'init' ? expandData : this.rebuildData[this.currentPage];
-			// todo：优化，目前是每次都计算
+			// todo: 优化，目前是每次都计算
 			let maxLevel = 0;
 
 			targetArr.forEach((item) => {
@@ -461,7 +465,7 @@ export default {
 				maxLevel,
 				callback: (opts = {}) => {
 					const { selected, all = false } = opts;
-					// 待开发， 重新选择已选中的，设置_checked
+					// todo: 重新选择已选中的，设置_checked
 				} 
 			});
 		}
