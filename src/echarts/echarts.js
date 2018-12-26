@@ -9,8 +9,8 @@ export default {
 			type: Object,
 			required: false,
 			default: () => ({
-			  width: '100%',
-			  height: '100%'
+				width: '100%',
+				height: '100%'
 			})
 		},
 		options: Object,
@@ -230,7 +230,7 @@ export default {
 			}
 		}
 	},
-	  
+	
 	render(h) {
 		let { styles } = this;
 		return h('div', {
