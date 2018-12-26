@@ -1,44 +1,6 @@
 import { debounce } from 'lodash';
 import { addListener, removeListener } from 'resize-detector';
-
-const EVENTS = [
-	'legendselectchanged',
-	'legendselected',
-	'legendunselected',
-	'legendunscroll',
-	'datazoom',
-	'datarangeselected',
-	'timelinechanged',
-	'timelineplaychanged',
-	'restore',
-	'dataviewchanged',
-	'magictypechanged',
-	'geoselectchanged',
-	'geoselected',
-	'geounselected',
-	'pieselectchanged',
-	'pieselected',
-	'pieunselected',
-	'mapselectchanged',
-	'mapselected',
-	'mapunselected',
-	'axisareaselected',
-	'focusnodeadjacency',
-	'unfocusnodeadjacency',
-	'brush',
-	'brushselected',
-	'rendered',
-	'finished',
-	'click',
-	'dblclick',
-	'mouseover',
-	'mouseout',
-	'mousemove',
-	'mousedown',
-	'mouseup',
-	'globalout',
-	'contextmenu'
-];
+import { EVENTS } from './constants';
 
 export default {
 	name: "vc-echarts",
@@ -270,10 +232,10 @@ export default {
 	},
 	  
 	render(h) {
-		let _this = this;
+		let { styles } = this;
 		return h('div', {
 			class: 'vc-echarts',
-			style: _this.styles
+			style: styles
 		}, this.$slots.default);
 	},
 };
