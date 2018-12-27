@@ -12,7 +12,8 @@ export default {
 				}
 			}
 			if (parent) {
-				parent.$emit.apply(parent, [eventName, ...params]);
+				/* eslint-disable prefer-spread */
+				parent.$emit.apply(parent, [eventName].concat(params)); // 如果是数组，会被解构处理
 			}
 		},
 		broadcast(componentName, eventName, params) {
@@ -20,10 +21,10 @@ export default {
 				const name = child.$options.name;
 
 				if (name === componentName) {
-					child.$emit.apply(child, [eventName, ...params]);
+					child.$emit.apply(child, [eventName].concat(params));
 				} else {
 					// todo 如果 params 是空数组，接收到的会是 undefined
-					this.broadcast.apply(child, [componentName, eventName].concat(params));
+					this.broadcast.apply(child, [componentName, eventName].concat(params)); // [params]
 				}
 			});
 		}
