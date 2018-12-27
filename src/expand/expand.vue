@@ -15,6 +15,7 @@
 </template>
 
 <script>
+import { VcInstance } from '../vc/index';
 
 export default {
 	name: "vc-expand",
@@ -88,6 +89,8 @@ export default {
 		toggle() {
 			this.isActive = !this.isActive;
 			this.$emit('change', this.isActive);
+
+			VcInstance.emit('vc-expand', this.isActive);
 		}
 	}
 };
