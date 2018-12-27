@@ -1,3 +1,5 @@
+import { EventStore } from 'wya-ps';
+
 class Vc {
 	constructor() {
 		this.hasInit = false;
@@ -8,6 +10,7 @@ class Vc {
 			 */
 			store: null,
 			router: null,
+			eventStore: null,
 			/**
 			 * components
 			 */
@@ -38,6 +41,15 @@ class Vc {
 				pageOpts: null,
 			}
 		};
+
+		this.initEventStore(new EventStore());
+	}
+
+	initEventStore(instance) {
+		this.on = instance.on;
+		this.off = instance.off;
+		this.emit = instance.emit;
+		this.once = instance.once;
 	}
 
 	/**
@@ -49,6 +61,9 @@ class Vc {
 				...this.config,
 				...opts
 			};
+
+			opts.eventStore && this.initEventStore(opts.eventStore);
+
 			this.hasInit = true;
 		} else {
 			console.error('只能初始化一次');
