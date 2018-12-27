@@ -46,10 +46,10 @@ class Vc {
 	}
 
 	initEventStore(instance) {
-		this.on = instance.on;
-		this.off = instance.off;
-		this.emit = instance.emit;
-		this.once = instance.once;
+		this.on = instance.on.bind(instance);
+		this.off = instance.off.bind(instance);
+		this.emit = instance.emit.bind(instance);
+		this.once = instance.once.bind(instance);
 	}
 
 	/**
