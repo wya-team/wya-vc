@@ -90,7 +90,7 @@ export default {
 			this.isActive = !this.isActive;
 			this.$emit('change', this.isActive);
 
-			VcInstance.emit('vc-expand', this.isActive);
+			VcInstance.emit('vc-expand', { show: this.isActive });
 		}
 	}
 };
