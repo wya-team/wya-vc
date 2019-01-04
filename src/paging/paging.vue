@@ -325,8 +325,8 @@ export default {
 		handleChange(page, pageSize = this.pageSize) {
 			// this.$emit('page-change', page);
 			page = page || 1;
-			let { path, query } = getParseUrl();
 			if (this.history) {
+				let { path, query } = getParseUrl();
 				let config = getConstructUrl({
 					path,
 					query: {
