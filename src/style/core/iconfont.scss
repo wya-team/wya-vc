@@ -37,3 +37,8 @@
 .#{$iconfont-css-prefix}-image:before { content: "\e694"; }
 .#{$iconfont-css-prefix}-preview:before { content: "\e60d"; }
 .#{$iconfont-css-prefix}-divider:before { content: "\e7b0"; }
+.#{$iconfont-css-prefix}-success:before { content: "\e619"; }
+.#{$iconfont-css-prefix}-warn:before { content: "\e61a"; }
+.#{$iconfont-css-prefix}-error:before { content: "\e937"; }
+.#{$iconfont-css-prefix}-loading:before { content: "\e79e"; }
+.#{$iconfont-css-prefix}-close:before { content: "\e669"; }
