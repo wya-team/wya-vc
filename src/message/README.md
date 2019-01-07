@@ -28,7 +28,7 @@ onClose | 关闭后的回调 | `Function` | -
 ## 基础用法
 
 ```js
-//传入参数为字符串
+//传入参数为字符串
 Message.success('全局提示分文字');
 //传入参数为数组
 Message.success({
