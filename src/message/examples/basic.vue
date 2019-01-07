@@ -5,6 +5,7 @@
 		<vc-button :wait="0" @click="handleClick('warn')">警告的提示</vc-button>
 		<vc-button :wait="0" @click="handleClick('loading')">加载中提示</vc-button>
 		<vc-button :wait="0" @click="handleClickClose('info')">手动关闭的提示</vc-button>
+		<vc-button :wait="0" @click="handleClickrender">根据render函数渲染</vc-button>
 	</div>
 </template>
 <script>
@@ -26,7 +27,9 @@ export default {
 	methods: {
 		handleClick(type) {
 			if (type === 'success') {
-				Message.success('测试成功的提示');
+				Message.success({
+					content: '成功的提示',
+				});
 			} else if (type === 'error') {
 				Message.error('测试错误的提示');
 			} else if (type === 'warn') {
@@ -36,7 +39,23 @@ export default {
 			}
 		},
 		handleClickClose() {
-			Message.info('可手动关闭');
+			Message.info({
+				content: '可关闭的提示',
+				closable: true,
+				duration: 0,
+			});
+		},
+		handleClickrender() {
+			Message.info({
+				duration: 10,
+				render: h => {
+					return h('span', [
+						'This is created by ',
+						h('a', 'render'),
+						' function'
+					]);
+				}
+			});
 		}
 	}
 };

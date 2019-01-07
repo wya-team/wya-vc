@@ -5,11 +5,16 @@
 			class="__bg"
 		/>
 		<transition name="move-up" @after-leave="handleRemove">
-			<div v-show="visible" :style="{top: topValue + 'px'}" class="_wrapper">
+			<div 
+				v-show="visible" 
+				:style="{top: top + 'px'}" 
+				class="_wrapper"
+			>
 				<div :class="classes">
-					<vc-icon :type="mode" :class="mode === 'loading' ? 'circleAnimatioin' : ''"/>
-					<p v-if="message">{{ message }}</p>
-					<vc-icon v-if="closable" type="close"/>
+					<vc-icon :type="mode" :class="mode === 'loading' ? 'circleAnimatioin' : ''" class="__message-icon"/>
+					<p v-if="message || content">{{ message ? message : content }}</p>
+					<vc-icon v-if="closable" class="__close" type="close" @click="handleClose"/>
+					<vc-render-cell :render="renderFunc"/>
 				</div>
 			</div>
 		</transition>
@@ -18,19 +23,31 @@
 
 <script>
 import Icon from "../icon";
+import RenderCell from "./render";
 
 const baseClass = '_message';
 
 export default {
 	name: 'vc-message',
 	components: {
-		'vc-icon': Icon
+		'vc-icon': Icon,
+		'vc-render-cell': RenderCell
 	},
 	props: {
 		message: String,
-		maskClosable: Boolean,
-		duration: Number,
-		topValue: Number,
+		content: String,
+		maskClosable: {
+			type: Boolean,
+			default: true
+		},
+		duration: {
+			type: Number,
+			default: 1.5
+		},
+		render: {
+			type: Function
+		},
+		top: Number,
 		closable: {
 			type: Boolean,
 			default: false,
@@ -53,6 +70,9 @@ export default {
 				`${baseClass}`,
 				`${baseClass}-${this.mode}`
 			];
+		},
+		renderFunc() {
+			return this.render || function () {};
 		}
 	},
 	mounted() {
@@ -118,14 +138,19 @@ $warning-hover-color: #ebb563;
 			background: #fff;
 			box-shadow: $default-border-shadow;
 			border-radius: 4px;
-			font-size: 0;
-			.wyaicon,p{
+			.__message-icon,p{
 				display: inline-block;
 				vertical-align: middle;
 				font-size: 14px;
 			}
-			.wyaicon{
-				margin-right: 10px;
+			.__message-icon{
+				margin-right: 8px;
+			}
+			.__close{
+				float: right;
+				font-size: 12px;
+				margin-top: 4px;
+				margin-left: 20px;
 			}
 			&-success{
 				.wyaicon{

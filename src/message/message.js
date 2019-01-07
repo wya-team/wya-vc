@@ -7,20 +7,19 @@ const Dom = document.body;
 const basicName = "vc-message";
 
 const Target = {
-	init(message, duration = 1.5, callback, maskClosable = true, opts = {}) {
+	init(message, opts = {}) {
 		let cName = `${basicName}-${getUid()}`;
 		const div = document.createElement('div');
 		const VueComponent = Vue.extend(Message);
 		let vm;
-		let number = Object.keys(VcInstance.APIS).length;
+		let number = Object.keys(VcInstance.APIS).filter(item => item.includes(basicName)).length;
+		console.log(Object.keys(VcInstance.APIS).filter(item => item.includes(basicName)));
 		vm = new VueComponent({
 			el: div,
 			propsData: {
 				...opts,
 				message,
-				duration: duration == 0 ? 1 * 60 * 60 * 24 : duration,
-				maskClosable,
-				topValue: 30 + number * 37,
+				top: 30 + number * 37,
 			},
 			methods: {
 			}
@@ -28,7 +27,7 @@ const Target = {
 
 		vm.$on('close', () => {
 			vm.$emit('destroy');
-			callback && callback();
+			opts.onClose && opts.onClose();
 		});
 		
 		vm.$on('destroy', () => {
@@ -48,35 +47,64 @@ const Target = {
 		return vm;
 	},
 	info(...params) {
-		params[4] = {
-			mode: 'info'
-		};
-		return this.init(...params);
+		let newParams = [];
+		if (typeof params[0] === 'object') {
+			newParams[1] = Object.assign(params[0], params[1]);
+		} else {
+			newParams[0] = params[0];
+			newParams[1] = {
+				mode: 'info'
+			};
+		}
+		return this.init(...newParams);
 	},
 	loading(...params) {
-		params[3] = false;
-		params[4] = {
-			mode: 'loading'
-		};
-		return this.init(...params);
+		let newParams = [];
+		if (typeof params[0] === 'object') {
+			newParams[1] = Object.assign(params[0], params[1]);
+		} else {
+			newParams[0] = params[0];
+			newParams[1] = {
+				mode: 'loading'
+			};
+		}
+		return this.init(...newParams);
 	},
 	success(...params) {
-		params[4] = {
-			mode: 'success'
-		};
-		return this.init(...params);
+		let newParams = [];
+		if (typeof params[0] === 'object') {
+			newParams[1] = Object.assign(params[0], params[1]);
+		} else {
+			newParams[0] = params[0];
+			newParams[1] = {
+				mode: 'success'
+			};
+		}
+		return this.init(...newParams);
 	},
 	warn(...params) {
-		params[4] = {
-			mode: 'warn'
-		};
-		return this.init(...params);
+		let newParams = [];
+		if (typeof params[0] === 'object') {
+			newParams[1] = Object.assign(params[0], params[1]);
+		} else {
+			newParams[0] = params[0];
+			newParams[1] = {
+				mode: 'warn'
+			};
+		}
+		return this.init(...newParams);
 	},
 	error(...params) {
-		params[4] = {
-			mode: 'error'
-		};
-		return this.init(...params);
+		let newParams = [];
+		if (typeof params[0] === 'object') {
+			newParams[1] = Object.assign(params[0], params[1]);
+		} else {
+			newParams[0] = params[0];
+			newParams[1] = {
+				mode: 'error'
+			};
+		}
+		return this.init(...newParams);
 	},
 	hide(id) {
 		try {
