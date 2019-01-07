@@ -4,6 +4,7 @@
 		<br>
 		<vc-upload
 			:size="2"
+			:max="190000"
 			:show-tips="true"
 			:multiple="true"
 			@error="handleError"
@@ -36,10 +37,28 @@ VcInstance.init({
 	Upload: {
 		URL_UPLOAD_IMG_POST: 'https://wyatest.oss-cn-hangzhou.aliyuncs.com',
 		URL_UPLOAD_FILE_POST: 'https://wyatest.oss-cn-hangzhou.aliyuncs.com',
-		onPostAfter: (response, options) => {
-			console.log(response, options);
+		onPostAfter: (response = {}, options = {}, xhr = {}) => { // eslint-disable-line
+			console.log(response, options, xhr);
+			if (xhr.status === 200) {
+				return {
+					status: 1,
+					data: {
+						url: `${options.url}/` + options.param.data.key.replace(/\$\{filename\}/, options.param.file.name),
+						type: '.' + options.param.file.name.split('.').pop(),
+						uid: options.param.file.uid,
+						title: options.param.file.name,
+						size: options.param.file.size
+					}
+				};
+			}
+			return response;
 		},
-		onPostBefore: () => {
+		onPostBefore: (file = {}) => {
+			if (/[@#￥%&+ ]/.test(file.name)) {
+				return new Promise((resolve, reject) => {
+					reject({ msg: '格式错误' }); // eslint-disable-line
+				});
+			}
 			return ajax({
 				url: 'https://oa2.ruishan666.com/_cms/api/image/get-oss-info.json',
 				type: "POST",

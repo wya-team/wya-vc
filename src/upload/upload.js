@@ -249,10 +249,18 @@ export default {
 					msg: `上传失败，大小限制为${size}MB`
 				};
 			}
+			this.$emit('file-start', file);
 			// onFileStart, onFileProgress, onFileSuccess, onFileError, onComplete 
-			let response = await onBefore(file);
-			if (typeof response !== 'object') {
-				console.error('[wya-vc/upload]: onBefore必须返回对象');
+			let response = {};
+			try {
+				response = await onBefore(file);
+				if (typeof response !== 'object') {
+					console.error('[wya-vc/upload]: onBefore必须返回对象');
+					return;
+				}
+			} catch (error) {
+				this.handleReject(error, file);
+				this.handleFinally(file);
 				return;
 			}
 			
@@ -283,27 +291,32 @@ export default {
 
 			}).catch((res) => {
 				delete this.reqs[uid];
-				this.cycle.error++;
-
-				this.$emit('file-error', res, file, { ...this.cycle });
-
-				// tips
-				this.tips && this.tips.setValue(uid, 'error', res.msg);
+				this.handleReject(res, file);
 
 			}).finally(() => {
-				this.cycle.total++;
-				
-				// console.log(`error: ${this.cycle.error}, total: ${this.cycle.total}`);
-				if (this.cycle.total === file.total) {
-
-					this.$emit('complete', { ...this.cycle } || {});
-					this.setDefaultCycle();
-
-					// tips
-					this.tips && this.tips.setTipsStatus(true);
-				}
+				this.handleFinally(file);
 			});
-			this.$emit('file-start', file);
+		},
+		handleReject(res, file) {
+			this.cycle.error++;
+
+			this.$emit('file-error', res, file, { ...this.cycle });
+
+			// tips
+			this.tips && this.tips.setValue(file.uid, 'error', res.msg);
+		},
+		handleFinally(file) {
+			this.cycle.total++;
+				
+			// console.log(`error: ${this.cycle.error}, total: ${this.cycle.total}`);
+			if (this.cycle.total === file.total) {
+
+				this.$emit('complete', { ...this.cycle } || {});
+				this.setDefaultCycle();
+
+				// tips
+				this.tips && this.tips.setTipsStatus(true);
+			}
 		},
 		cancel(file) {
 			const { reqs } = this;
