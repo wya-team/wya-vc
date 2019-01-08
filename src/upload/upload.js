@@ -251,7 +251,6 @@ export default {
 				this.$emit('error', { msg: `上传失败，大小限制为${size}MB` });
 				return;
 			}
-			this.$emit('file-start', file);
 			// onFileStart, onFileProgress, onFileSuccess, onFileError, onComplete 
 			let response = {};
 			try {
@@ -265,6 +264,8 @@ export default {
 				this.handleFinally(file);
 				return;
 			}
+			
+			this.$emit('file-start', file);
 			
 			this.reqs[uid] = ajax({
 				url: url || defaultUrl,

@@ -8,7 +8,7 @@
 		>
 			<div
 				v-if="typeof item !== 'object'"
-				:style="{backgroundImage: `url(${item})`}"
+				:style="{backgroundImage: `url('${item}')`}"
 				class="__img"
 			>
 				<div class="__mask g-relative">
