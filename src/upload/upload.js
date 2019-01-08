@@ -267,7 +267,7 @@ export default {
 			
 			this.$emit('file-start', file);
 			
-			this.reqs[uid] = ajax({
+			ajax({
 				url: url || defaultUrl,
 				type: "FORM",
 				param: {
@@ -281,7 +281,9 @@ export default {
 				onProgress: e => {
 					this.$emit('file-progress', e, file);
 					this.tips && this.tips.setValue(uid, 'percent', e.percent);
-				}
+				},
+				// todo 可优化
+				getInstance: (xhr, cancel) => (this.reqs[uid] = { cancel })
 			}).then((res) => {
 				delete this.reqs[uid];
 				this.cycle.success++;
@@ -330,12 +332,14 @@ export default {
 				}
 				if (this.reqs[uid]) {
 					this.reqs[uid].cancel();
+					this.handleFinally(file);
 					delete this.reqs[uid];
 				}
 			} else {
 				Object.keys(reqs).forEach((uid) => {
 					if (this.reqs[uid]) {
 						this.reqs[uid].cancel();
+						this.handleFinally(file);
 					}
 					delete reqs[uid];
 				});
