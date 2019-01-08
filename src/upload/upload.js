@@ -164,7 +164,7 @@ export default {
 			const postFiles = Array.prototype.slice.call(files);
 			const length = postFiles.length;
 			if (this.multiple && length > this.max) {
-				this.$emit('error', { message: `文件数量不能超过${this.max}个` });
+				this.$emit('error', { msg: `文件数量不能超过${this.max}个` });
 				return;
 			}
 			
