@@ -162,8 +162,12 @@ export default {
 	data() {
 		let { query: { page = 1, pageSize } } = getParseUrl();
 		let { pageSizeOpts } = this.pageOpts;
-
-		this.defaultPageSize = Number(pageSize || pageSizeOpts.pageSize || (pageSizeOpts && pageSizeOpts[0]) || 10);
+		this.defaultPageSize = Number(
+			pageSize 
+			|| VcInstance.config.Paging.pageSize 
+			|| (pageSizeOpts && pageSizeOpts[0]) 
+			|| 10
+		);
 		return {
 			loading: false,
 			currentPage: this.show ? Number(page) : 1,
