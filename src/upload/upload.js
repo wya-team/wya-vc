@@ -244,10 +244,12 @@ export default {
 			const { ajax, size } = this;
 			let localData;
 			if (size && file.size > size * 1024 * 1024) {
-				localData = {
-					status: 0,
-					msg: `上传失败，大小限制为${size}MB`
-				};
+				// localData = {
+				// 	status: 0,
+				// 	msg: `上传失败，大小限制为${size}MB`
+				// };
+				this.$emit('error', { msg: `上传失败，大小限制为${size}MB` });
+				return;
 			}
 			this.$emit('file-start', file);
 			// onFileStart, onFileProgress, onFileSuccess, onFileError, onComplete 
