@@ -1,7 +1,9 @@
 <template>
 	<vc-files-picker 
-		:upload="{multiple: true}"
+		:max="10"
+		:upload="{multiple: true, max: 10}"
 		class="v-files-picker "
+		@error="handleError"
 	>
 		<!-- <template slot-scope="slotProps">
 			<div v-for="(item, index) in slotProps.files" :key="index">
@@ -14,13 +16,15 @@
 	</vc-files-picker>
 </template>
 <script>
+import { Message } from 'iview';
 import FilesPicker from '../files-picker';
 import { VcInstance } from '../../vc/index';
 
 VcInstance.init({
 	Upload: {
 		URL_UPLOAD_IMG_POST: 'https://wyaoa-new.ruishan666.com/uploadfile/upimg.json?action=uploadimage&encode=utf-8&code=oa',
-		URL_UPLOAD_FILE_POST: 'https://wyaoa-new.ruishan666.com/uploadfile/upimg.json?action=uploadfile&encode=utf-8&code=oa'
+		URL_UPLOAD_FILE_POST: 'https://wyaoa-new.ruishan666.com/uploadfile/upimg.json?action=uploadimage&encode=utf-8&code=oa',
+		FORM_NAME: 'Filedata'
 	}
 });
 
@@ -37,6 +41,9 @@ export default {
 		
 	},
 	methods: {
+		handleError(error) {
+			Message.warning(error.message);
+		}
 	}
 };
 </script>

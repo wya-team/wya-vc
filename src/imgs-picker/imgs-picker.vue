@@ -41,7 +41,7 @@
 		</div>
 		<vc-upload 
 			v-show="!disabled && (dataSource.length < max || max === 0)"
-			v-bind="upload"
+			v-bind="uploadOpts"
 			:accept="accept"
 			class="__upload __normal"
 			@file-start="handleFileStart"
@@ -109,6 +109,7 @@ export default {
 	data() {
 		return {
 			data: this.dataSource,
+			uploadOpts: this.upload
 		};
 	},
 	watch: {
@@ -125,6 +126,11 @@ export default {
 		},
 		handleFileStart(res) {
 			this.data.push(res);
+			// 开始上传时，最大值 -1
+			if (this.uploadOpts.multiple) {
+				let max = this.uploadOpts.max - 1;
+				this.uploadOpts.max = max >= 0 ? max : 0;
+			}
 		},
 		handleFileProgress(e, file) {
 			if (parseInt(e.percent, 10) <= 100) {
@@ -170,15 +176,12 @@ export default {
 				this.data = data.filter(_item => _item.uid != item.uid);
 				return;
 			}
-			if (max !== 0 && data.length > max) {
-				this.$emit('error', {
-					status: 0,
-					msg: '超出上传限制'
-				});
-				return;
-			}
 			let dataSource = data.filter(_item => _item != item);
 			this.$emit('change', dataSource);
+			// 删除时，最大值加1
+			if (this.uploadOpts.multiple) {
+				this.uploadOpts.max = this.uploadOpts.max + 1;
+			}
 		},
 		handlePreview(e, idx) {
 			let pos = {};

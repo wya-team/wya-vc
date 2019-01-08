@@ -2,7 +2,7 @@
 	<div class="vcp-files-picker">
 		<vc-upload 
 			v-show="!disabled && (currentValue.length < max || max === 0)"
-			v-bind="upload"
+			v-bind="uploadOpts"
 			mode="files"
 			@file-start="handleFileStart"
 			@file-progress="handleFileProgress"
@@ -86,6 +86,7 @@ export default {
 	data() {
 		return {
 			currentValue: this.value,
+			uploadOpts: this.upload
 		};
 	},
 	computed: {
@@ -104,9 +105,13 @@ export default {
 			this.dispatch('FormItem', 'on-form-change', value);
 		},
 		handleFileStart(res) {
-			console.log('ddd');
 			res.title = res.name;
 			this.currentValue = [...this.currentValue, res];
+			// 开始上传时，最大值 -1
+			if (this.uploadOpts.multiple) {
+				let max = this.uploadOpts.max - 1;
+				this.uploadOpts.max = max >= 0 ? max : 0;
+			}
 		},
 		handleFileProgress(e, file) {
 			if (parseInt(e.percent, 10) <= 100) {
@@ -162,18 +167,15 @@ export default {
 		},
 		handleDel(item) {
 			let { currentValue, max, getParse } = this;
-			if (max !== 0 && currentValue.length > max) {
-				this.$emit('error', {
-					status: 0,
-					msg: '超出上传限制'
-				});
-				return;
-			}
 			let value = currentValue.filter(_item => {
 				return _item.uid !== item.uid || _item.error_time != item.error_time;
 			});
 			this.$emit('change', value);
 			this.setCurrentValue(value);
+			// 删除时，最大值加1
+			if (this.uploadOpts.multiple) {
+				this.uploadOpts.max = this.uploadOpts.max + 1;
+			}
 		}
 	}
 };

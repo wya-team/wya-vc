@@ -7,14 +7,16 @@
 		<i-form-item prop="imgs" @on-form-change="handleChange">
 			<vc-imgs-picker 
 				v-model="formValidate.imgs" 
-				:max="2" 
+				:max="10"
+				:upload="{multiple: true, max: 10}"
+				@error="handleError"
 			/>
 		</i-form-item>
 		<div @click="handleSubmit">提交</div>
 	</i-form >
 </template>
 <script>
-import { Form, FormItem, Input } from 'iview';
+import { Form, FormItem, Input, Message } from 'iview';
 import ImgsPicker from '../imgs-picker';
 import { VcInstance } from '../../vc/index';
 
@@ -56,12 +58,15 @@ export default {
 		handleSubmit(name) {
 			this.$refs.form.validate((valid) => {
 				if (valid) {
-					this.$Message.success('Success!');
+					Message.success('Success!');
 				} else {
-					this.$Message.error('Fail!');
+					Message.error('Fail!');
 				}
 			});
 		},
+		handleError(error) {
+			Message.warning(error.message);
+		}
 	}
 };
 </script>
