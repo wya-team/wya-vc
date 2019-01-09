@@ -12,7 +12,7 @@
 			>
 				<div :class="classes">
 					<vc-icon :type="mode" :class="mode === 'loading' ? 'circleAnimatioin' : ''" class="__message-icon"/>
-					<p v-if="message || content">{{ message ? message : content }}</p>
+					<p v-if="message">{{ message }}</p>
 					<vc-icon v-if="closable" class="__close" type="close" @click="handleClose"/>
 					<vc-render-cell :render="renderFunc"/>
 				</div>

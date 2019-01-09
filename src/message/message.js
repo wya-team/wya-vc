@@ -46,65 +46,37 @@ const Target = {
 
 		return vm;
 	},
-	info(...params) {
-		let newParams = [];
-		if (typeof params[0] === 'object') {
-			newParams[1] = Object.assign(params[0], params[1]);
+	handleParams(params, type) {
+		let mode = {
+			mode: type
+		};
+		if (params[0].length) {
+			if (params[1]) {
+				params[1] = Object.assign(params[1], mode); // 合并数组
+			} else {
+				params[1] = mode;
+			}
 		} else {
-			newParams[0] = params[0];
-			newParams[1] = {
-				mode: 'info'
-			};
+			params[1] = params[0];
+			params[0] = '';
+			params[1].mode = type;
 		}
-		return this.init(...newParams);
+		return this.init(...params);
+	},
+	info(...params) {
+		this.handleParams(params, 'info');
 	},
 	loading(...params) {
-		let newParams = [];
-		if (typeof params[0] === 'object') {
-			newParams[1] = Object.assign(params[0], params[1]);
-		} else {
-			newParams[0] = params[0];
-			newParams[1] = {
-				mode: 'loading'
-			};
-		}
-		return this.init(...newParams);
+		this.handleParams(params, 'loading');
 	},
 	success(...params) {
-		let newParams = [];
-		if (typeof params[0] === 'object') {
-			newParams[1] = Object.assign(params[0], params[1]);
-		} else {
-			newParams[0] = params[0];
-			newParams[1] = {
-				mode: 'success'
-			};
-		}
-		return this.init(...newParams);
+		this.handleParams(params, 'success');
 	},
 	warn(...params) {
-		let newParams = [];
-		if (typeof params[0] === 'object') {
-			newParams[1] = Object.assign(params[0], params[1]);
-		} else {
-			newParams[0] = params[0];
-			newParams[1] = {
-				mode: 'warn'
-			};
-		}
-		return this.init(...newParams);
+		this.handleParams(params, 'warn');
 	},
 	error(...params) {
-		let newParams = [];
-		if (typeof params[0] === 'object') {
-			newParams[1] = Object.assign(params[0], params[1]);
-		} else {
-			newParams[0] = params[0];
-			newParams[1] = {
-				mode: 'error'
-			};
-		}
-		return this.init(...newParams);
+		this.handleParams(params, 'error');
 	},
 	hide(id) {
 		try {

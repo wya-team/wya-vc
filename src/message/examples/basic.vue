@@ -27,9 +27,7 @@ export default {
 	methods: {
 		handleClick(type) {
 			if (type === 'success') {
-				Message.success({
-					content: '成功的提示',
-				});
+				Message.success('成功的提示');
 			} else if (type === 'error') {
 				Message.error('测试错误的提示');
 			} else if (type === 'warn') {
@@ -39,15 +37,13 @@ export default {
 			}
 		},
 		handleClickClose() {
-			Message.info({
-				content: '可关闭的提示',
+			Message.info('可关闭的提示', {
 				closable: true,
 				duration: 0,
 			});
 		},
 		handleClickrender() {
 			Message.info({
-				duration: 10,
 				render: h => {
 					return h('span', [
 						'This is created by ',
