@@ -1,13 +1,13 @@
 import Vue from 'vue';
 import Message from './message.vue';
 import { VcInstance } from '../vc/index';
-import { getUid } from '../utils/index';
+import { getUid, getOption } from '../utils/index';
 
 const Dom = document.body;
 const basicName = "vc-message";
 
 const Target = {
-	init(message, opts = {}) {
+	init(opts = {}) {
 		let cName = `${basicName}-${getUid()}`;
 		const div = document.createElement('div');
 		const VueComponent = Vue.extend(Message);
@@ -18,7 +18,6 @@ const Target = {
 			el: div,
 			propsData: {
 				...opts,
-				message,
 				top: 30 + number * 37,
 			},
 			methods: {
@@ -46,37 +45,30 @@ const Target = {
 
 		return vm;
 	},
-	handleParams(params, type) {
-		let mode = {
-			mode: type
+	getParams(params, type) {
+		let query = {
+			0: 'content',
+			1: 'duration',
+			2: 'onClose',
 		};
-		if (params[0].length) {
-			if (params[1]) {
-				params[1] = Object.assign(params[1], mode); // 合并数组
-			} else {
-				params[1] = mode;
-			}
-		} else {
-			params[1] = params[0];
-			params[0] = '';
-			params[1].mode = type;
-		}
-		return this.init(...params);
+		params = getOption(params, query);
+		params.mode = type;
+		return this.init(params);
 	},
 	info(...params) {
-		this.handleParams(params, 'info');
+		this.getParams(params, 'info');
 	},
 	loading(...params) {
-		this.handleParams(params, 'loading');
+		this.getParams(params, 'loading');
 	},
 	success(...params) {
-		this.handleParams(params, 'success');
+		this.getParams(params, 'success');
 	},
 	warn(...params) {
-		this.handleParams(params, 'warn');
+		this.getParams(params, 'warn');
 	},
 	error(...params) {
-		this.handleParams(params, 'error');
+		this.getParams(params, 'error');
 	},
 	hide(id) {
 		try {

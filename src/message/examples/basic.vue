@@ -27,9 +27,15 @@ export default {
 	methods: {
 		handleClick(type) {
 			if (type === 'success') {
-				Message.success('成功的提示');
+				Message.success('成功的提示', 4, function () {
+					console.log('回调');
+				});
 			} else if (type === 'error') {
-				Message.error('测试错误的提示');
+				Message.error('测试错误的提示', {
+					onClose: () => {
+						console.log('回调2');
+					}
+				});
 			} else if (type === 'warn') {
 				Message.warn('测试警告的提示');
 			} else if (type === 'loading') {
@@ -37,7 +43,7 @@ export default {
 			}
 		},
 		handleClickClose() {
-			Message.info('可关闭的提示', {
+			Message.info('可关闭的提示', 3, {
 				closable: true,
 				duration: 0,
 			});

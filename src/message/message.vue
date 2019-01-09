@@ -12,7 +12,7 @@
 			>
 				<div :class="classes">
 					<vc-icon :type="mode" :class="mode === 'loading' ? 'circleAnimatioin' : ''" class="__message-icon"/>
-					<p v-if="message">{{ message }}</p>
+					<p v-if="content">{{ content }}</p>
 					<vc-icon v-if="closable" class="__close" type="close" @click="handleClose"/>
 					<vc-render-cell :render="renderFunc"/>
 				</div>
@@ -34,7 +34,6 @@ export default {
 		'vc-render-cell': RenderCell
 	},
 	props: {
-		message: String,
 		content: String,
 		maskClosable: {
 			type: Boolean,
@@ -77,6 +76,9 @@ export default {
 	},
 	mounted() {
 		this.visible = true;
+		if (this.mode === 'loading') {
+			this.duration = 0;
+		}
 		if (this.duration !== 0) {
 			this.timer = setTimeout(() => {
 				// 主线程
