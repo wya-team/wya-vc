@@ -94,9 +94,10 @@ export default (defaultOptions = {}, wrapper) => {
 							methods: {
 								handleExtra(e) {
 									try {
+										let path = e.path || (e.composedPath && e.composedPath()) || [];
 										if (
 											!this.$el.contains(e.target) 
-											&& !e.path.some(item => eleInRegExp(item, aliveRegExp))
+											&& !path.some(item => eleInRegExp(item, aliveRegExp))
 										) {
 											if (this.$children[0] && this.$children[0][aliveKey]) {
 												this.$children[0][aliveKey] = false;
