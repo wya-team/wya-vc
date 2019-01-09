@@ -367,3 +367,28 @@ export const eleInRegExp = (el, exceptions) => {
 	}
 	return false;
 };
+
+/**
+ * 合并字符串和对象为一个新的对象
+ * query: 参数为字符串时的规则 如下
+ * {
+ * 	0: 'message',
+ *  1: 'duration'
+ * }
+ */
+export const getOption = (params, query) => {
+	let newParam = {};
+	params.map((item, index) => {
+		if (typeof item === 'object') {
+			newParam = {
+				...newParam,
+				...item
+			};
+		} else {
+			newParam[query[index]] = item;
+		}
+		return true;
+	});
+	params = newParam;
+	return params;
+};
