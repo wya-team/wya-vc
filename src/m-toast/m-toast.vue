@@ -19,8 +19,14 @@ export default {
 	name: 'vc-m-toast',
 	props: {
 		message: String,
-		maskClosable: Boolean,
-		duration: Number,
+		maskClosable: {
+			type: Boolean,
+			default: true
+		},
+		duration: {
+			type: Number,
+			default: 3
+		},
 		mode: {
 			type: String,
 			default: 'info',

@@ -1,13 +1,13 @@
 import Vue from 'vue';
 import MToast from './m-toast.vue';
 import { VcInstance } from '../vc/index';
-import { getUid } from '../utils/index';
+import { getUid, getOption } from '../utils/index';
 
 const Dom = document.body;
 const basicName = "vcm-toast";
 
 const Target = {
-	init(message, duration = 3, callback, maskClosable = true, opts = {}) {
+	init(opts = {}) {
 
 		let cName = `${basicName}-${getUid()}`;
 
@@ -17,10 +17,7 @@ const Target = {
 		vm = new VueComponent({
 			el: div,
 			propsData: {
-				...opts,
-				message,
-				duration: duration == 0 ? 1 * 60 * 60 * 24 : duration,
-				maskClosable
+				...opts
 			},
 			methods: {
 			}
@@ -28,7 +25,7 @@ const Target = {
 
 		vm.$on('close', () => {
 			vm.$emit('destroy');
-			callback && callback();
+			opts.callback && opts.callback();
 		});
 		
 		vm.$on('destroy', () => {
@@ -47,36 +44,32 @@ const Target = {
 
 		return vm;
 	},
-	info(...params) {
-		params[4] = {
-			mode: 'info'
+	getParams(params, type) {
+		let query = {
+			0: 'message',
+			1: 'duration',
+			2: 'callback',
+			3: 'maskClosable'
 		};
-		return this.init(...params);
+		params = getOption(params, query);
+		params.mode = type;
+		return this.init(params);
+	},
+	info(...params) {
+		this.getParams(params, 'info');
 	},
 	loading(...params) {
-		params[3] = false;
-		params[4] = {
-			mode: 'loading'
-		};
-		return this.init(...params);
+		params.maskClosable = false;
+		this.getParams(params, 'loading');
 	},
 	success(...params) {
-		params[4] = {
-			mode: 'success'
-		};
-		return this.init(...params);
+		this.getParams(params, 'success');
 	},
 	warn(...params) {
-		params[4] = {
-			mode: 'warn'
-		};
-		return this.init(...params);
+		this.getParams(params, 'warn');
 	},
 	error(...params) {
-		params[4] = {
-			mode: 'error'
-		};
-		return this.init(...params);
+		this.getParams(params, 'error');
 	},
 	hide(id) {
 		try {
