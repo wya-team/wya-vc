@@ -46,11 +46,7 @@ const Target = {
 		return vm;
 	},
 	getParams(params, type) {
-		let query = {
-			0: 'content',
-			1: 'duration',
-			2: 'onClose',
-		};
+		let query = ['content', 'duratioin', 'onClose'];
 		params = getOption(params, query);
 		params.mode = type;
 		return this.init(params);

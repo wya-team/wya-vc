@@ -371,10 +371,7 @@ export const eleInRegExp = (el, exceptions) => {
 /**
  * 合并字符串和对象为一个新的对象
  * query: 参数为字符串时的规则 如下
- * {
- * 	0: 'message',
- *  1: 'duration'
- * }
+ * ['message','duration']
  */
 export const getOption = (params, query) => {
 	let newParam = {};

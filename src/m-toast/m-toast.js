@@ -45,12 +45,7 @@ const Target = {
 		return vm;
 	},
 	getParams(params, type) {
-		let query = {
-			0: 'message',
-			1: 'duration',
-			2: 'callback',
-			3: 'maskClosable'
-		};
+		let query = ['message', 'duration', 'callback', 'maskClosable'];
 		params = getOption(params, query);
 		params.mode = type;
 		return this.init(params);
