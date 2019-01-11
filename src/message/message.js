@@ -13,12 +13,11 @@ const Target = {
 		const VueComponent = Vue.extend(Message);
 		let vm;
 		let number = Object.keys(VcInstance.APIS).filter(item => item.includes(basicName)).length;
-		console.log(Object.keys(VcInstance.APIS).filter(item => item.includes(basicName)));
 		vm = new VueComponent({
 			el: div,
 			propsData: {
 				...opts,
-				top: 30 + number * 37,
+				top: 30 + number * 40,
 			},
 			methods: {
 			}
@@ -45,26 +44,41 @@ const Target = {
 
 		return vm;
 	},
-	getParams(params, type) {
-		let query = ['content', 'duratioin', 'onClose'];
-		params = getOption(params, query);
-		params.mode = type;
-		return this.init(params);
+	run(params, opts) {
+		let query = ['content', 'duration', 'onClose'];
+		let result = {
+			...opts,
+			...getOption(params, query),
+		};
+		// 执行弹窗
+		this.init(result);
 	},
 	info(...params) {
-		this.getParams(params, 'info');
+		this.run(params, {
+			mode: 'info'
+		});
 	},
 	loading(...params) {
-		this.getParams(params, 'loading');
+		this.run(params, {
+			mode: 'loading',
+			duration: 0,
+			maskClosable: false
+		});
 	},
 	success(...params) {
-		this.getParams(params, 'success');
+		this.run(params, {
+			mode: 'success'
+		});
 	},
 	warn(...params) {
-		this.getParams(params, 'warn');
+		this.run(params, {
+			mode: 'warn'
+		});
 	},
 	error(...params) {
-		this.getParams(params, 'error');
+		this.run(params, {
+			mode: 'error'
+		});
 	},
 	hide(id) {
 		try {
@@ -81,7 +95,6 @@ const Target = {
 		} catch (e) {
 			console.log('vc-message', e);
 		}
-		
 	}
 };
 

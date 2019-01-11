@@ -27,7 +27,7 @@ export default {
 	methods: {
 		handleClick(type) {
 			if (type === 'success') {
-				Message.success('成功的提示', 4, function () {
+				Message.success('成功的提示', 220, function () {
 					console.log('回调');
 				});
 			} else if (type === 'error') {
@@ -39,7 +39,7 @@ export default {
 			} else if (type === 'warn') {
 				Message.warn('测试警告的提示');
 			} else if (type === 'loading') {
-				Message.loading('正在加载中');
+				Message.loading('正在加载中', 1);
 			}
 		},
 		handleClickClose() {
@@ -50,7 +50,7 @@ export default {
 		},
 		handleClickrender() {
 			Message.info({
-				render: h => {
+				content: h => {
 					return h('span', [
 						'This is created by ',
 						h('a', 'render'),
