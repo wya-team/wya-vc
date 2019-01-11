@@ -27,7 +27,7 @@ export default (defaultOptions = {}, wrapper) => {
 					root: _root, 
 					cName = wrapper.name,
 					alive = false, // 再次调用，实例不销毁
-					aliveRegExp, // 实例以外且该数组内的, 点击不销毁
+					aliveRegExp = { className: /(vc-hack-alive|vc-hack-cp)/ }, // 实例以外且该数组内的, 点击不销毁
 					aliveKey = 'visible',
 					leaveDelay = 0.3,
 					autoDestory = true,
@@ -93,6 +93,7 @@ export default (defaultOptions = {}, wrapper) => {
 							},
 							methods: {
 								handleExtra(e) {
+									// close默认不传，用户可传递参数判断输入自己的触发的close
 									try {
 										let path = e.path || (e.composedPath && e.composedPath()) || [];
 										if (
@@ -101,9 +102,9 @@ export default (defaultOptions = {}, wrapper) => {
 										) {
 											if (this.$children[0] && this.$children[0][aliveKey]) {
 												this.$children[0][aliveKey] = false;
-												setTimeout(() => this.$emit('destory'), leaveDelay * 1000);
+												setTimeout(() => this.$emit('close'), leaveDelay * 1000);
 											} else {
-												this.$emit('destory');
+												this.$emit('close');
 											}
 										}
 									} catch (e) {
