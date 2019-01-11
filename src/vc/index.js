@@ -33,11 +33,10 @@ class Vc {
 				onPostArter: null,
 			},
 			CreatePortal: {
-				aliveRegExp: {
-					className: /(vc-hack-alive|vc-hack-cp)/
-				}
+				aliveRegExp: null
 			},
 			Paging: {
+				tableOpts: null,
 				pageOpts: null,
 			}
 		};
