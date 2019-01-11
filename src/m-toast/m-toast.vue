@@ -1,24 +1,31 @@
 <template>
 	<div class="vcm-toast">
 		<div 
-			v-show="maskClosable"
 			class="__bg" 
 			@click="handleClose" 
 		/>
 		<transition name="am-fade" @after-leave="handleRemove">
 			<div v-show="visible" class="__fixed">
 				<img v-if="mode === 'loading'" src="./spin.svg" class="loading">
-				<p v-if="message">{{ message }}</p>
+				<p v-if="content">{{ content }}</p>
+				<vc-row v-else :render="content" />
 			</div>
 		</transition>
 	</div>
 </template>
 
 <script>
+import CreateCustomer from "../create-customer/index";
+
+const CustomerRow = CreateCustomer({});
+
 export default {
-	name: 'vc-m-toast',
+	name: 'vcm-toast',
+	components: {
+		'vc-row': CustomerRow
+	},
 	props: {
-		message: String,
+		content: [String, Function],
 		maskClosable: {
 			type: Boolean,
 			default: true
@@ -45,7 +52,7 @@ export default {
 		if (this.duration !== 0) {
 			this.timer = setTimeout(() => {
 				// 主线程
-				this.handleClose();
+				this.visible = false;
 			}, this.duration * 1000 - 300); // 动画时间
 		}
 	},
@@ -57,7 +64,9 @@ export default {
 			this.$emit('close');
 		},
 		handleClose(e) {
-			this.visible = false;
+			if (this.maskClosable) {
+				this.visible = false;
+			}
 		}
 	}
 };

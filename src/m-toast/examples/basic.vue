@@ -27,7 +27,7 @@ export default {
 	methods: {
 		handleClick(v) {
 			if (v == 'normal') {
-				MToast.info('测试', 1.5, () => {
+				MToast.info('测试', 15, () => {
 					console.log('回调');
 				});
 			} else {
