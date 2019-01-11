@@ -1,4 +1,4 @@
-import { getCroppedImg, parseDOM, retrieveImageURL, isTouchDevice, isFileAPISupported } from '../utils/utils';
+import { getCroppedImg, retrieveImageURL, isTouchDevice, isFileAPISupported } from '../utils/utils';
 
 export const draggableEvents = {
 	start: ['touchstart', 'mousedown'],

@@ -190,7 +190,7 @@ export const getParseUrl = (url = `${location.pathname}${location.search}`, opts
 		query
 	};
 };
-export const parseDOM = (str) => {
+export const getParseDOM = (str) => {
 	const parser = typeof DOMParser === 'undefined' ? null : new DOMParser();
 
 	if (!parser) {
@@ -205,7 +205,7 @@ export const retrieveImageURL = (dataTransferItems, callback) => {
 		if (item.type === 'text/html') {
 			item.getAsString(value => {
 				// value = <img src="" ... /> 即网页拖入的值
-				const doc = parseDOM(value); // 生成一个document 类似iframe（但有区别）
+				const doc = getParseDOM(value); // 生成一个document 类似iframe（但有区别）
 				const img = doc.querySelector('img');
 				if (img && img.src) {
 					callback(img.src);
@@ -373,19 +373,19 @@ export const eleInRegExp = (el, exceptions) => {
  * query: 参数为字符串时的规则 如下
  * ['message','duration']
  */
-export const getOption = (params, query) => {
-	let newParam = {};
-	params.map((item, index) => {
-		if (typeof item === 'object') {
-			newParam = {
-				...newParam,
+export const getOption = (target, query = []) => {
+	let result = {};
+	target.map((item, index) => {
+		if (typeof item === 'object' && target.length === index + 1) {
+			result = {
+				...result,
 				...item
 			};
 		} else {
-			newParam[query[index]] = item;
+			result[query[index]] = item;
 		}
 		return true;
 	});
-	params = newParam;
-	return params;
+	target = result;
+	return target;
 };
