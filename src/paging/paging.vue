@@ -21,7 +21,6 @@
 			:data="data" 
 			:loading="loading"
 			:columns="columns"
-			:stripe="true"
 			v-bind="tableOpts"
 			@on-current-change="$emit('current-change', arguments[0], arguments[1])"
 			@on-select="$emit('select', arguments[0], arguments[1])"
@@ -71,6 +70,15 @@ import { Table, Page } from 'iview';
 import { getConstructUrl, getParseUrl, cloneDeep, cloneDeepEasier } from '../utils/utils';
 import { VcInstance } from '../vc/index';
 
+let localPageSize = 0;
+let localPageSizeKey = 'wya-vc.paging.localPageSize';
+try {
+	localPageSize = localStorage.getItem(localPageSizeKey);
+} catch (e) {
+	console.error('[vc-paging:error]', e);
+}
+
+
 export default {
 	name: "vc-paging",
 	components: {
@@ -81,7 +89,9 @@ export default {
 		// table组件属性
 		tableOpts: {
 			type: Object,
-			default: () => ({})
+			default: () => (VcInstance.config.Paging.tableOpts || {
+				stripe: true
+			})
 		},
 		dataSource: {
 			type: Object,
@@ -157,14 +167,20 @@ export default {
 		footer: {
 			type: Boolean,
 			default: true
-		} 
+		},
+		auth: {
+			type: Object,
+			default: () => ({
+				pageSize: true
+			})
+		}
 	},
 	data() {
 		let { query: { page = 1, pageSize } } = getParseUrl();
 		let { pageSizeOpts } = this.pageOpts;
 		this.defaultPageSize = Number(
-			pageSize 
-			|| VcInstance.config.Paging.pageSize 
+			pageSize
+			|| (this.auth.pageSize && localPageSize)
 			|| (pageSizeOpts && pageSizeOpts[0]) 
 			|| 10
 		);
@@ -189,7 +205,11 @@ export default {
 				// tabs切换时保持pageSize不变
 				let { query: { pageSize } } = getParseUrl();
 				if (this.pageSize != pageSize) {
-					this.pageSize = Number(pageSize || this.defaultPageSize);
+					this.pageSize = Number(
+						pageSize 
+						|| (this.auth.pageSize && localPageSize) 
+						|| this.defaultPageSize
+					);
 				}
 				
 				// 触发
@@ -226,12 +246,12 @@ export default {
 			}
 
 		},
-		rebuildData: {
-			deep: process.env.NODE_ENV !== 'production',
-			handler() {
-				// console.log('[vc-paging] - rebuild');
-			}
-		}
+		// rebuildData: {
+		// 	deep: process.env.NODE_ENV !== 'production',
+		// 	handler() {
+		// 		console.log('[vc-paging] - rebuild');
+		// 	}
+		// }
 	},
 	created() {
 		let { query: { page = 1 } } = getParseUrl();
@@ -323,6 +343,15 @@ export default {
 		handleChangePageSize(pageSize) {
 			this.$emit('page-size-change', pageSize); // 清理数据
 			this.pageSize = pageSize;
+
+			localPageSize = pageSize;
+
+			try {
+				localStorage.setItem(localPageSizeKey, pageSize);
+			} catch (e) {
+				console.error('[vc-paging:error]', e);
+			}
+
 
 			this.handleChange(1, pageSize);
 		},
