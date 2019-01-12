@@ -21,6 +21,7 @@
 			:data="data" 
 			:loading="loading"
 			:columns="columns"
+			:stripe="stripe"
 			v-bind="tableOpts"
 			@on-current-change="$emit('current-change', arguments[0], arguments[1])"
 			@on-select="$emit('select', arguments[0], arguments[1])"
@@ -89,9 +90,16 @@ export default {
 		// table组件属性
 		tableOpts: {
 			type: Object,
-			default: () => (VcInstance.config.Paging.tableOpts || {
-				stripe: true
-			})
+			default: () => (VcInstance.config.Paging.tableOpts || {})
+		},
+		stripe: {
+			type: Boolean,
+			// 默认为true
+			default: () => {
+				return typeof VcInstance.config.Paging.stripe === 'boolean'
+					? VcInstance.config.Paging.stripe
+					: true;
+			}
 		},
 		dataSource: {
 			type: Object,

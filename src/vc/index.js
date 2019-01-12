@@ -36,6 +36,7 @@ class Vc {
 				aliveRegExp: null
 			},
 			Paging: {
+				stripe: null,
 				tableOpts: null,
 				pageOpts: null,
 			}
