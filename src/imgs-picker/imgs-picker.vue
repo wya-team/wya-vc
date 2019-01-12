@@ -159,7 +159,7 @@ export default {
 		handleFileError(res, file) {
 			let { data, format } = this;
 			// 内部保存上传失败的文件，不传递给外层
-			this.data = data.filter((item) => {
+			this.data = data.map((item) => {
 				if (item.uid === file.uid) {
 					return {
 						...item,
