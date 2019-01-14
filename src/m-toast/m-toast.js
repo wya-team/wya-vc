@@ -32,6 +32,8 @@ const Target = {
 			// 主动卸载节点
 			Dom.removeChild(vm.$el);
 			delete VcInstance.APIS[cName];
+
+			vm = null;
 		});
 
 		// 不自动销毁

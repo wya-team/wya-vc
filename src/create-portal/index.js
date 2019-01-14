@@ -124,6 +124,8 @@ export default (defaultOptions = {}, wrapper) => {
 						// 主动卸载节点
 						target.removeChild(vm.$el);
 						delete VcInstance.APIS[cName];
+
+						vm = null;
 					});
 
 					const fn = (callback) => (res, opts = {}) => {
