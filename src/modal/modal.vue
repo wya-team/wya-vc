@@ -1,19 +1,27 @@
 <template>
 	<div class="vc-modal">
 		<transition name="mask">
-			<div v-if="value" class="_modal-mask"/>
+			<div 
+				v-if="value" 
+				v-show="mask"
+				class="_modal-mask"
+				@click="handleWrapClose"
+			/>
 		</transition>
-		<div class="_wrap">
+		<div
+			class="_wrap" 
+			@click="handleWrapClose"
+		>
 			<transition name="modal" @enter="enter">
 				<div 
-					v-show="value"
+					v-if="value"
 					ref="modal" 
-					:style="{width: width + 'px',transformOrigin: '0 0 0'}"
+					:style="{ width: width + 'px', transformOrigin: '0 0 0' }"
 					class="_modal-wrap"
 				>
 					<div class="_modal-header">
 						<slot name="header">
-							<p class="_header-inner">我是标题</p>
+							<p class="_header-inner">{{ title }}</p>
 							<a class="__modal-close" @click="handleClose">
 								<vc-icon type="close"/>
 							</a>
@@ -22,8 +30,8 @@
 					<div ref="slot" class="_modal-content"><slot/></div>
 					<div class="_modal-footer">
 						<slot name="footer">
-							<vc-button type="text">取消</vc-button>
-							<vc-button type="primary">确定</vc-button>
+							<vc-button type="text" @click="cancel">取消</vc-button>
+							<vc-button type="primary" @click="ok">确定</vc-button>
 						</slot>
 					</div>
 				</div>
@@ -50,9 +58,26 @@ export default {
 			type: Boolean,
 			default: false
 		},
+		mask: {
+			type: Boolean,
+			default: true,
+		},
 		e: {
 			type: Object
 		},
+		maskClosable: {
+			type: Boolean,
+			default: true
+		},
+		escClosable: {
+			type: Boolean,
+			default: true
+		},
+		title: String,
+		scrollable: {
+			type: Boolean,
+			default: true
+		}
 	},
 	data() {
 		return {
@@ -67,12 +92,16 @@ export default {
 		};
 	},
 	watch: {
-		value() {
-			// let modalDom = document.querySelector('._modal-wrap');
-			
+		value(val) {
+			if (this.scrollable && val) {
+				document.querySelector('body').style.overflow = 'hidden';
+			} else {
+				document.querySelector('body').style.overflow = 'auto';
+			}
 		}
 	},
 	mounted() {
+		let that = this; // 传递this
 		if (!this.e) {
 			document.documentElement.addEventListener('click', (e) => {
 				this.coord = {
@@ -83,13 +112,36 @@ export default {
 		} else {
 			this.coord = this.e;
 		}
+		document.addEventListener('keydown', (e) => {
+			this.escClose(e, that);
+		});
 	},
 	methods: {
 		handleClose() {
+			this.$emit('cancel');
 			this.$emit('input', false);
 		},
+		handleWrapClose(el) {
+			let className = el.target.getAttribute('class');
+			if (className && this.maskClosable) {
+				if (className.indexOf('_wrap') > -1 || className.indexOf('_modal-mask') > -1) {
+					this.handleClose();
+				}
+			}
+		}, // 点击遮罩层关闭
+		escClose(e, that) {
+			if (e.keyCode === 27 && this.escClosable && this.value) {
+				that.handleClose();
+			}
+		}, // esc关闭
+		cancel() {
+			this.handleClose();
+		},
+		ok() {
+			this.$emit('input', false);
+			this.$emit('ok');
+		},
 		enter(el) {
-			console.log(el);
 			this.newCoord = {
 				x: 0,
 				y: 0
@@ -128,6 +180,7 @@ export default {
 	._wrap{
 		position: fixed;
 		top: 100px;
+		left: 0;
 		width: 100%;
 		z-index: 1001;
 		._modal-wrap{
@@ -171,20 +224,20 @@ export default {
 			}
 		}
 	}
+	.mask-enter-active, 
+	.mask-leave-active,
+	.modal-enter-active, 
+	.modal-leave-active{
+		transition: transform .3s cubic-bezier(0.18, 0.89, 0.32, 1.28),
+			opacity .3s cubic-bezier(0.18, 0.89, 0.32, 1.28);
+	}
+	.mask-enter, .mask-leave-to{
+		opacity: 0;
+	}
+	.modal-enter, .modal-leave-to{
+		transform: scale(0);
+		opacity: 0;
+	}
 
-}
-.mask-enter-active, 
-.mask-leave-active,
-.modal-enter-active, 
-.modal-leave-active{
-	transition: all .1s linear;
-}
-.mask-enter, .mask-leave-to{
-	opacity: 0;
-}
-.modal-enter, .modal-leave-to{
-	transform-origin: -50px 500px 0;
-	transform: scale(0);
-	opacity: 0;
 }
 </style>
