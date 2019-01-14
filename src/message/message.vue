@@ -5,7 +5,7 @@
 			class="__bg"
 			@click="handleClose" 
 		/>
-		<transition name="am-fade" @after-leave="handleRemove">
+		<transition :duration="{ enter: 300, leave: 300 }" name="am-fade" @after-leave="handleRemove">
 			<div 
 				v-show="visible" 
 				ref="target" 
@@ -15,14 +15,15 @@
 				<div class="__content">
 					<!-- icon -->
 					<img v-if="mode === 'loading'" src="../m-toast/spin.svg" class="loading">
-					<vc-icon v-else :type="mode" :class="mode" style="font-size: 12px"/>
+					<vc-icon v-else :type="mode" :class="mode" class="__content-icon"/>
 					<!-- content -->
 					<p v-if="typeof content === 'string'">{{ content }}</p>
 					<vc-row v-else :render="content" />
 					<!-- close -->
 					<vc-icon 
 						v-if="closable" 
-						type="close" 
+						type="close"
+						style="font-size: 12px"
 						@click="handleClose" 
 					/>
 				</div>
@@ -141,18 +142,24 @@ $warning-hover-color: #ebb563;
 	.__fixed {
 		position: fixed;
 		z-index: 4000;
-		left: 50%;
-		transform: translateX(-50%);
-		transition: top .3s cubic-bezier(0.18, 0.89, 0.32, 1.28), 
+		width: 100%;
+		text-align: center;
+		transition: transform .3s cubic-bezier(0.18, 0.89, 0.32, 1.28), 
 			opacity .3s cubic-bezier(0.18, 0.89, 0.32, 1.28);
 	}
 	.__content {
-		@include commonFlex();
-		align-items: center;
+		// @include commonFlex();
+		// align-items: center;
+		display: inline-block;
 		padding: 8px 16px;
 		background: #fff;
 		box-shadow: $default-border-shadow;
 		border-radius: 4px;
+		.__content-icon, p, .loading{
+			display: inline-block;
+			vertical-align: middle;
+			font-size: 14px;
+		}
 		p {
 			font-size: 14px;
 			padding: 0 8px;
@@ -173,7 +180,7 @@ $warning-hover-color: #ebb563;
 		animation: vc-message-circle 1s linear infinite;
 	}
 	.am-fade-enter, .am-fade-leave-active {
-		top: 0;
+		transform: translateY(-100%);
 		opacity: 0;
 	}
 }
