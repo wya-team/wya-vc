@@ -1,7 +1,7 @@
 <template>
 	<div class="vcp-files-picker">
 		<vc-upload 
-			v-show="!disabled && (currentValue.length < max || max === 0)"
+			v-show="!disabled && (data.length < max || max === 0)"
 			v-bind="uploadOpts"
 			mode="files"
 			@file-start="handleFileStart"
@@ -9,18 +9,19 @@
 			@file-success="handleFileSuccess"
 			@file-error="handleFileError"
 			@error="$emit('error', arguments[0])"
+			@complete="handleFileComplete"
 		>
 			<slot name="trigger" />
 		</vc-upload>
 		<template v-if="!$scopedSlots.default">
 			<div 
-				v-for="(item, index) in currentValue" 
+				v-for="(item, index) in data" 
 				:key="index"
-				:class="item.retcode == 0 && item.percent == 100 || item.error_time ? '__error' : ''"
+				:class="item.retcode == 0 && item.percent == 100 || item.errorFlag ? '__error' : ''"
 				class="__item"
 			>
 				<span :title="item.title">{{ item.title }}</span>
-				<template v-if="item.error_time || item.retcode == 0">
+				<template v-if="item.errorFlag || item.retcode == 0">
 					<div>上传失败</div>
 				</template>
 				<template v-else>
@@ -30,19 +31,19 @@
 						</div>
 						<span style="margin-left: 10px">{{ item.percent }}%</span>
 					</div>
-					<div v-else-if="!item.url">文件上传完毕，请等待...</div>
+					<div v-else-if="!item[urlKey]">文件上传完毕，请等待...</div>
 					<div v-else>上传成功</div>
 				</template>
 				<span 
-					v-if="item.url || (item.retcode == 0 && item.percent == 100) || item.error_time" 
+					v-if="item[urlKey] || (item.retcode == 0 && item.percent == 100) || item.errorFlag" 
 					class="__close" 
-					@click="handleDel(item)"
+					@click="handleDel(item, index)"
 				>
 					x
 				</span>
 			</div>
 		</template>
-		<slot :files="currentValue" />
+		<slot :files="data" />
 	</div>
 </template>
 
@@ -57,11 +58,11 @@ export default {
 	},
 	mixins: [emitter],
 	model: {
-		prop: 'value',
+		prop: 'dataSource',
 		event: 'change'
 	},
 	props: {
-		value: {
+		dataSource: {
 			type: Array,
 			default() {
 				return [];
@@ -81,32 +82,23 @@ export default {
 				return {};
 			}
 		},
-		accept: String
+		accept: String,
+		urlKey: { // 后台返回的文件地址 key值
+			type: String,
+			default: 'url'
+		},
+		format: Function
 	},
 	data() {
 		return {
-			currentValue: this.value,
+			data: this.dataSource,
 			uploadOpts: this.upload
 		};
 	},
-	computed: {
-		
-	},
-	watch: {
-		value(val) {
-			this.setCurrentValue(val);
-		}
-	},
 	methods: {
-		setCurrentValue(value) {
-			if (value === this.currentValue) return;
-			
-			this.currentValue = value;
-			this.dispatch('FormItem', 'on-form-change', value);
-		},
 		handleFileStart(res) {
 			res.title = res.name;
-			this.currentValue = [...this.currentValue, res];
+			this.data = [...this.data, res];
 			// 开始上传时，最大值 -1
 			if (this.uploadOpts.multiple) {
 				let max = this.uploadOpts.max - 1;
@@ -115,7 +107,7 @@ export default {
 		},
 		handleFileProgress(e, file) {
 			if (parseInt(e.percent, 10) <= 100) {
-				this.currentValue = this.currentValue.map((item) => {
+				this.data = this.data.map((item) => {
 					if (file.uid === item.uid) {
 						return {
 							...item,
@@ -127,55 +119,49 @@ export default {
 			}
 		},
 		handleFileSuccess(res, file) {
-			console.log('file-success');
-			let { max, currentValue, getParse } = this;
-			// let value = [...currentValue, getParse ? getParse(res) : res.data];
-			let value;
-			value = currentValue.map((item) => {
+			let dataSource;
+			this.data = this.data.map((item) => {
 				if (item.uid === file.uid) {
-					return {
-						...item,
-						...res.data
-					};
+					let result = { ...item, ...res.data };
+					return this.getPrase ? this.getPrase(result) : result;
 				}
 				return item;
 			});
-			this.$emit('change', value);
-			this.setCurrentValue(value);
+			// 将已经上传成功的文件传递给外部
+			dataSource = this.data.filter((it) => !it.errorFlag && it[this.urlKey]);
+			this.$emit('change', dataSource);
+			this.dispatch('FormItem', 'on-form-change', dataSource);
 		},
 		handleFileError(res, file) {
-			console.log(res, 'error');
-			let { max, currentValue, getParse } = this;
-			// let value = [...currentValue, getParse ? getParse(res) : res.data];
-			let value;
-			value = currentValue.map((item) => {
+			// 内部保存上传失败的文件，不传递给外层
+			this.data = this.data.map((item) => {
 				if (item.uid === file.uid) {
 					return {
 						...item,
 						...res,
-						error_time: new Date().getTime()
+						errorFlag: new Date().getTime()
 					};
 				}
 				return item;
 			});
-			this.$emit('change', value);
 			this.$emit('error', res);
-			this.setCurrentValue(value);
 		},
 		handleFileComplete(res) {
-			console.log(res, 'compelte');
+			this.$emit('complete', res);
 		},
-		handleDel(item) {
-			let { currentValue, max, getParse } = this;
-			let value = currentValue.filter(_item => {
-				return _item.uid !== item.uid || _item.error_time != item.error_time;
-			});
-			this.$emit('change', value);
-			this.setCurrentValue(value);
+		handleDel(item, index) {
 			// 删除时，最大值加1
 			if (this.uploadOpts.multiple) {
 				this.uploadOpts.max = this.uploadOpts.max + 1;
 			}
+			if (item.errorFlag) {
+				this.data = this.data.filter(_item => _item.uid != item.uid);
+				return;
+			}
+			this.data.splice(index, 1);
+			let dataSource = this.data.filter(it => !it.errorFlag);
+			this.$emit('change', dataSource);
+			this.dispatch('FormItem', 'on-form-change', dataSource);
 		}
 	}
 };
