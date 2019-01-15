@@ -7,8 +7,8 @@
 		<i-form-item prop="imgs" @on-form-change="handleChange">
 			<vc-imgs-picker 
 				v-model="formValidate.imgs" 
-				:max="10"
-				:upload="{multiple: true, max: 10}"
+				:max="3"
+				:upload="{multiple: true, max: 3}"
 				@error="handleError"
 			/>
 		</i-form-item>
@@ -65,7 +65,7 @@ export default {
 			});
 		},
 		handleError(error) {
-			Message.warning(error.message);
+			Message.warning(error.msg);
 		}
 	}
 };
