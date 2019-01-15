@@ -61,7 +61,7 @@ import ImgsPreview from '../imgs-preview/index';
 import Icon from '../icon/index';
 
 export default {
-	name: "vc-tpl",
+	name: "vc-imgs-picker",
 	components: {
 		'vc-upload': Upload,
 		'vc-icon': Icon
