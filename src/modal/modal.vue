@@ -10,6 +10,7 @@
 		</transition>
 		<div 
 			ref="wrap"
+			:style="draggable ? 'top: 0px' : ''"
 			class="_wrap"
 			@click="handleWrapClose"
 		>
@@ -18,6 +19,7 @@
 					v-if="value"
 					ref="modal" 
 					:style="style"
+					:class="draggable ? '_modal-drag' : ''"
 					class="_modal-wrap"
 				>
 					<div ref="header" class="_modal-header" @mousedown="mouseDown">
@@ -31,8 +33,8 @@
 					<div ref="slot" class="_modal-content"><slot/></div>
 					<div class="_modal-footer">
 						<slot name="footer">
-							<vc-button type="text" @click="cancel">取消</vc-button>
-							<vc-button type="primary" @click="ok">确定</vc-button>
+							<vc-button type="text" @click="cancel">{{ cancelText }}</vc-button>
+							<vc-button type="primary" @click="ok">{{ okText }}</vc-button>
 						</slot>
 					</div>
 				</div>
@@ -44,6 +46,7 @@
 import Icon from '../icon';
 import Button from '../button';
 
+let zIndexNumber = 1001;
 export default {
 	name: "vc-modal",
 	components: {
@@ -77,11 +80,19 @@ export default {
 		title: String,
 		scrollable: {
 			type: Boolean,
-			default: true
+			default: false
 		},
 		draggable: {
 			type: Boolean,
 			default: false
+		},
+		okText: {
+			type: String,
+			default: '确定'
+		},
+		cancelText: {
+			type: String,
+			default: '取消'
 		}
 	},
 	data() {
@@ -100,28 +111,37 @@ export default {
 				dragX: null,
 				dragY: null,
 				dragging: false
-			},
+			}
 		};
 	},
 	computed: {
 		style() {
-			let style = {
-				// left: this.dragData.x + 'px',
-				// top: this.dragData.y + 'px',
-				// width: this.width + 'px',
-				// transformOrigin: '0 0 0'
-			};
-			style.left = this.dragData.x + 'px';
-			style.top = this.dragData.y + 'px';
-			style.width = this.width + 'px';
-			style.transformOrigin = '0 0 0';
+			let style = {};
+			if (this.draggable) {
+				style = {
+					left: this.dragData.x ? this.dragData.x + 'px' : `calc(50% - ${this.width / 2}px)`,
+					top: this.dragData.y ? this.dragData.y + 'px' : '100px',
+					zIndex: 4000,
+					width: this.width + 'px',
+					transformOrigin: '0 0 0'
+				};
+			} else {
+				style = {
+					width: this.width + 'px',
+					transformOrigin: '0 0 0'
+				};
+			}
+			// style.left = this.dragData.x + 'px';
+			// style.top = this.dragData.y + 'px';
+			// style.width = this.width + 'px';
+			// style.transformOrigin = '0 0 0';
 			// { width: width + 'px', transformOrigin: '0 0 0' }
 			return style;
 		}
 	},
 	watch: {
 		value(val) {
-			if (this.scrollable && val) {
+			if (!this.scrollable && val) {
 				document.querySelector('body').style.overflow = 'hidden';
 			} else {
 				document.querySelector('body').style.overflow = 'auto';
@@ -178,8 +198,8 @@ export default {
 			const $header = this.$refs.header;
 			const rect = $modal.getBoundingClientRect();
 			$header.style.cursor = 'move';
-			$wrap.style.top = 0;
-			$modal.classList.add('_modal-drag');
+			zIndexNumber += 1;
+			$wrap.style.zIndex = zIndexNumber;
 			this.dragData.x = rect.x || rect.left;
 			this.dragData.y = rect.y || rect.top;
 			const distance = {
@@ -299,8 +319,8 @@ export default {
 	.mask-leave-active,
 	.modal-enter-active, 
 	.modal-leave-active{
-		transition: transform .3s cubic-bezier(0.18, 0.89, 0.32, 1.28),
-			opacity .3s cubic-bezier(0.18, 0.89, 0.32, 1.28);
+		transition: transform .5s cubic-bezier(.075,.82,.165,1),
+			opacity .5s cubic-bezier(.075,.82,.165,1);
 	}
 	.mask-enter, .mask-leave-to{
 		opacity: 0;

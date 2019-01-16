@@ -2,6 +2,7 @@
 	<div>
 		<vc-button @click="showModal">点击出现对话框</vc-button>
 		<vc-button @click="showModal2">点击出现对话框,点击遮罩不能关闭</vc-button>
+		<vc-button @click="showModal3">点击出现对话框3</vc-button>
 		<div style="width: 100%; height: 2000px"/>
 		<vc-modal 
 			v-model="visible"
@@ -16,9 +17,24 @@
 			:mask="false"
 			:mask-closable="false"
 			:esc-closable="false"
-			:scrollable="false"
+			:scrollable="true"
 			:draggable="true"
 			title="标题2"
+			ok-text="保存"
+			cancel-text="关闭"
+		>
+			啦啦啦啦
+		</vc-modal>
+		<vc-modal 
+			v-model="visible3"
+			:mask="false"
+			:mask-closable="false"
+			:esc-closable="false"
+			:scrollable="true"
+			:draggable="true"
+			title="标题2"
+			ok-text="保存"
+			cancel-text="关闭"
 		>
 			啦啦啦啦
 		</vc-modal>
@@ -38,6 +54,7 @@ export default {
 		return {
 			visible: false,
 			visible2: false,
+			visible3: false,
 			event: {},
 		};
 	},
@@ -50,6 +67,9 @@ export default {
 		},
 		showModal2(e) {
 			this.visible2 = true;
+		},
+		showModal3(e) {
+			this.visible3 = true;
 		},
 		handleCandel() {
 			console.log('取消时回调');
