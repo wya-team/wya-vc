@@ -131,11 +131,6 @@ export default {
 					transformOrigin: '0 0 0'
 				};
 			}
-			// style.left = this.dragData.x + 'px';
-			// style.top = this.dragData.y + 'px';
-			// style.width = this.width + 'px';
-			// style.transformOrigin = '0 0 0';
-			// { width: width + 'px', transformOrigin: '0 0 0' }
 			return style;
 		}
 	},

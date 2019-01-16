@@ -6,6 +6,9 @@
 		<i-button @click="handleClick">
 			点我(不带延迟)
 		</i-button>
+		<i-button @click="handleClickVcModal">
+			点我(不带延迟,vc-modal)
+		</i-button>
 		<i-button @click="handleKeepAliveWithBefore">
 			点我(带延迟)(keep-alive)
 		</i-button>
@@ -20,6 +23,7 @@
 <script>
 import { Button } from 'iview';
 import { PModal, PModalWithBefore } from './basic/modal';
+import { VCPModal } from './basic/vc-modal';
 import { KeepAlive, KeepAliveWithBefore } from './basic/keep-alive';
 import { VcInstance } from '../../vc/index';
 
@@ -47,6 +51,15 @@ export default {
 		},
 		handleClick() {
 			PModal.popup({
+				data: { s: 1 }
+			}).then((res) => {
+				console.log(res, 'sure');
+			}).catch((res) => {
+				console.log(res, 'close');
+			});
+		},
+		handleClickVcModal() {
+			VCPModal.popup({
 				data: { s: 1 }
 			}).then((res) => {
 				console.log(res, 'sure');
