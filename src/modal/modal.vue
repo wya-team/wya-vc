@@ -8,18 +8,19 @@
 				@click="handleWrapClose"
 			/>
 		</transition>
-		<div
-			class="_wrap" 
+		<div 
+			ref="wrap"
+			class="_wrap"
 			@click="handleWrapClose"
 		>
 			<transition name="modal" @enter="enter">
 				<div 
 					v-if="value"
 					ref="modal" 
-					:style="{ width: width + 'px', transformOrigin: '0 0 0' }"
+					:style="style"
 					class="_modal-wrap"
 				>
-					<div class="_modal-header">
+					<div ref="header" class="_modal-header" @mousedown="mouseDown">
 						<slot name="header">
 							<p class="_header-inner">{{ title }}</p>
 							<a class="__modal-close" @click="handleClose">
@@ -77,6 +78,10 @@ export default {
 		scrollable: {
 			type: Boolean,
 			default: true
+		},
+		draggable: {
+			type: Boolean,
+			default: false
 		}
 	},
 	data() {
@@ -88,8 +93,31 @@ export default {
 			coord: {
 				x: 0,
 				y: 0
-			}
+			},
+			dragData: {
+				x: null,
+				y: null,
+				dragX: null,
+				dragY: null,
+				dragging: false
+			},
 		};
+	},
+	computed: {
+		style() {
+			let style = {
+				// left: this.dragData.x + 'px',
+				// top: this.dragData.y + 'px',
+				// width: this.width + 'px',
+				// transformOrigin: '0 0 0'
+			};
+			style.left = this.dragData.x + 'px';
+			style.top = this.dragData.y + 'px';
+			style.width = this.width + 'px';
+			style.transformOrigin = '0 0 0';
+			// { width: width + 'px', transformOrigin: '0 0 0' }
+			return style;
+		}
 	},
 	watch: {
 		value(val) {
@@ -141,6 +169,46 @@ export default {
 			this.$emit('input', false);
 			this.$emit('ok');
 		},
+		mouseDown(event) {
+			if (!this.draggable) {
+				return;
+			}
+			const $modal = this.$refs.modal;
+			const $wrap = this.$refs.wrap;
+			const $header = this.$refs.header;
+			const rect = $modal.getBoundingClientRect();
+			$header.style.cursor = 'move';
+			$wrap.style.top = 0;
+			$modal.classList.add('_modal-drag');
+			this.dragData.x = rect.x || rect.left;
+			this.dragData.y = rect.y || rect.top;
+			const distance = {
+				x: event.clientX,
+				y: event.clientY
+			};
+			this.dragData.dragX = distance.x;
+			this.dragData.dragY = distance.y;
+			document.addEventListener("mousemove", this.mouseMove);
+			document.addEventListener("mouseup", this.mouseUp);
+		},
+		mouseMove(event) {
+			const distance = {
+				x: event.clientX,
+				y: event.clientY
+			};
+			const diffDistance = {
+				x: distance.x - this.dragData.dragX,
+				y: distance.y - this.dragData.dragY
+			};
+			this.dragData.x += diffDistance.x;
+			this.dragData.y += diffDistance.y;
+			this.dragData.dragX = distance.x;
+			this.dragData.dragY = distance.y;
+		},
+		mouseUp() {
+			document.removeEventListener("mousemove", this.mouseMove);
+			document.removeEventListener("mouseup", this.mouseUp);
+		}, // 松开鼠标时清除move和up事件
 		enter(el) {
 			this.newCoord = {
 				x: 0,
@@ -188,6 +256,9 @@ export default {
 			background: #fff;
 			box-shadow: 0 4px 12px rgba(0,0,0,.15);
 			margin: auto;
+			&._modal-drag{
+				position: absolute;
+			}
 			._modal-header{
 				position: relative;
 				border-bottom: 1px solid #e8eaec;

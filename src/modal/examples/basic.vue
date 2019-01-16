@@ -17,6 +17,7 @@
 			:mask-closable="false"
 			:esc-closable="false"
 			:scrollable="false"
+			:draggable="true"
 			title="标题2"
 		>
 			啦啦啦啦
