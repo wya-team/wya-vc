@@ -1,22 +1,32 @@
 <template>
-	<vc-files-picker 
-		:max="10"
-		:upload="{multiple: true, max: 10}"
-		class="v-files-picker "
-		@error="handleError"
+	<i-form
+		ref="form"
+		:model="formValidate" 
+		:rules="ruleValidate" 
 	>
-		<!-- <template slot-scope="slotProps">
-			<div v-for="(item, index) in slotProps.files" :key="index">
-				{{ item }}
-			</div>
-		</template> -->
-		<div slot="trigger" class="_upload">
-			上传
-		</div>
-	</vc-files-picker>
+		<i-form-item prop="files">
+			<vc-files-picker 
+				v-model="formValidate.files"
+				:max="10"
+				:upload="{multiple: true, max: 10}"
+				class="v-files-picker "
+				@error="handleError"
+			>
+				<!-- <template slot-scope="slotProps">
+						<div v-for="(item, index) in slotProps.files" :key="index">
+							{{ item }}
+						</div>
+					</template> -->
+				<div slot="trigger" class="_upload">
+					上传
+				</div>
+			</vc-files-picker>
+		</i-form-item>
+		<div @click="handleSubmit">提交</div>
+	</i-form>
 </template>
 <script>
-import { Message } from 'iview';
+import { Form, FormItem, Message } from 'iview';
 import FilesPicker from '../files-picker';
 import { VcInstance } from '../../vc/index';
 
@@ -31,18 +41,36 @@ VcInstance.init({
 export default {
 	name: "vc-files-picker-basic",
 	components: {
-		"vc-files-picker": FilesPicker
+		"vc-files-picker": FilesPicker,
+		'i-form': Form,
+		'i-form-item': FormItem,
 	},
 	data() {
 		return {
+			formValidate: {
+				files: [],
+			},
+			ruleValidate: {
+				files: [
+					{ required: true, type: 'array', message: '请选择图片', trigger: 'change' }
+				],
+			}
 		};
 	},
 	computed: {
-		
 	},
 	methods: {
+		handleSubmit(name) {
+			this.$refs.form.validate((valid) => {
+				if (valid) {
+					Message.success('Success!');
+				} else {
+					Message.error('Fail!');
+				}
+			});
+		},
 		handleError(error) {
-			Message.warning(error.message);
+			Message.warning(error.msg);
 		}
 	}
 };

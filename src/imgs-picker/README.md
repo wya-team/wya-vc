@@ -1,6 +1,8 @@
 ## [Demo Basic](https://wya-team.github.io/wya-vc/dist/imgs-picker/basic.html)
 ## 功能
 图片上传
+##### 备注
+上传错误的文件数据不会传递给外层，切传递给组件的是 `dataSource` 必须是字符串数组
 
 ## API
 
@@ -8,10 +10,13 @@
 
 属性 | 说明 | 类型 | 默认值
 ---|---|---|---
+tag | 容器标签 | `string` | div
 dataSource | 上传的图片 | `array` | []
 max | 图片的最大数量 | `number` | 0（不限制）
 disabled | 是否禁止上传和删除 | `boolean` | false
 upload | upload组件的属性 | `object` | {}
+accept | 可接受的文件类型 | `string` | `image/gif`, `image/jpeg`, `image/jpg`, `image/png`
+format | 自定义返回数据格式 | `Function` | - 
 
 
 #### 事件
@@ -20,6 +25,7 @@ upload | upload组件的属性 | `object` | {}
 ---|---|---|---
 @change | `dataSource`值改变的回调 | `function` | -
 @error | 上传错误的回调的回调 | `function` | -
+@complete | 上传完成后的回调 | `function` | -
 
 
 #### 插槽

@@ -31,7 +31,7 @@
 				</p>
 				<div v-else-if="item.retcode == 0" class="g-pd-10 __flex-cc">
 					上传失败
-					<div class="__mask g-relative">
+					<div class="__mask">
 						<div>
 							<vc-icon type="delete" @click="handleDel(item)" />
 						</div>
@@ -40,7 +40,7 @@
 			</div>
 		</div>
 		<vc-upload 
-			v-show="!disabled && (dataSource.length < max || max === 0)"
+			v-show="!disabled && (data.length < max || max === 0)"
 			v-bind="uploadOpts"
 			:accept="accept"
 			class="__upload __normal"
@@ -49,6 +49,7 @@
 			@file-success="handleFileSuccess"
 			@file-error="handleFileError"
 			@error="$emit('error', arguments[0])"
+			@complete="handleFileComplete"
 		/>
 	</component>
 </template>
@@ -60,7 +61,7 @@ import ImgsPreview from '../imgs-preview/index';
 import Icon from '../icon/index';
 
 export default {
-	name: "vc-tpl",
+	name: "vc-imgs-picker",
 	components: {
 		'vc-upload': Upload,
 		'vc-icon': Icon
@@ -98,13 +99,8 @@ export default {
 		accept: {
 			type: String,
 			default: 'image/gif,image/jpeg,image/jpg,image/png' // 不默认为image/*是因为在Webkit浏览器下回响应很慢
-		}
-		// format: {
-		// 	type: Function,
-		// 	default() {
-				
-		// 	}
-		// }
+		},
+		format: Function
 	},
 	data() {
 		return {
@@ -112,20 +108,9 @@ export default {
 			uploadOpts: this.upload
 		};
 	},
-	watch: {
-		dataSource(val) {
-			this.setData(val);
-		}
-	},
 	methods: {
-		setData(dataSource) {
-			if (dataSource === this.data) return;
-			
-			this.data = dataSource;
-			this.dispatch('FormItem', 'on-form-change', dataSource);
-		},
 		handleFileStart(res) {
-			this.data.push(res);
+			this.data = [...this.data, res];
 			// 开始上传时，最大值 -1
 			if (this.uploadOpts.multiple) {
 				let max = this.uploadOpts.max - 1;
@@ -146,43 +131,49 @@ export default {
 			}
 		},
 		handleFileSuccess(res, file) {
-			let { data, format } = this;
 			let dataSource;
-			dataSource = data.map((item) => {
+			this.data = this.data.map((item) => {
 				if (item.uid === file.uid) {
-					return format ? format(res) : res.data.url;
+					return this.getUrl(res);
 				}
 				return item;
 			});
+			// 将已经上传成功的文件传递给外部
+			dataSource = this.data.filter((it) => !it.errorFlag && this.getUrl(res));
 			this.$emit('change', dataSource);
+			this.dispatch('FormItem', 'on-form-change', dataSource);
 		},
 		handleFileError(res, file) {
-			let { data, format } = this;
 			// 内部保存上传失败的文件，不传递给外层
-			this.data = data.map((item) => {
+			this.data = this.data.map((item) => {
 				if (item.uid === file.uid) {
 					return {
 						...item,
 						...res,
-						error_time: new Date().getTime()
+						errorFlag: new Date().getTime()
 					};
 				}
 				return item;
 			});
 			this.$emit('error', res);
 		},
-		handleDel(item) {
-			let { data, max, format } = this;
-			if (typeof item === 'object') {
-				this.data = data.filter(_item => _item.uid != item.uid);
-				return;
-			}
-			let dataSource = data.filter(_item => _item != item);
-			this.$emit('change', dataSource);
+		handleFileComplete(res) {
+			this.$emit('complete', res);
+		},
+		handleDel(item, index) {
 			// 删除时，最大值加1
 			if (this.uploadOpts.multiple) {
 				this.uploadOpts.max = this.uploadOpts.max + 1;
 			}
+			if (item.errorFlag) {
+				this.data = this.data.filter(it => it.uid != item.uid);
+				return;
+			}
+			// this.data.splice(index, 1);
+			this.data = this.data.filter(it => it != item);
+			let dataSource = this.data.filter(it => !it.errorFlag);
+			this.$emit('change', dataSource);
+			this.dispatch('FormItem', 'on-form-change', dataSource);
 		},
 		handlePreview(e, idx) {
 			let pos = {};
@@ -210,6 +201,9 @@ export default {
 			}).catch(() => {
 
 			});
+		},
+		getUrl(res) {
+			return this.format ? this.format(res) : res.data.url;
 		}
 	}
 };

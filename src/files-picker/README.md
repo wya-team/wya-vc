@@ -1,6 +1,8 @@
 ## [Demo Basic](https://wya-team.github.io/wya-vc/dist/files-picker/basic.html)
 ## 功能
 文件选择
+#### 备注
+上传错误的文件数据不会传递给外层
 
 ## API
 
@@ -8,11 +10,13 @@
 
 属性 | 说明 | 类型 | 默认值
 ---|---|---|---
-value | 上传的文件 | `array` | []
+dataSource | 上传的文件 | `array` | []
 max | 文件的最大数量 | `number` | 0（不限制）
 disabled | 是否禁止上传 | `boolean` | false
 upload | upload组件的属性 | `object` | {}
 accept | 文件接收类型 | `string` | -
+urlKey | 文件的线上地址字段 | `string` | `url`
+format | 自定义返回数据格式 | `Function` | -
 
 
 #### 事件
@@ -21,6 +25,7 @@ accept | 文件接收类型 | `string` | -
 ---|---|---|---
 @change | `value`值改变的回调 | `function` | -
 @error | 上传错误的回调的回调 | `function` | -
+@complete | 上传完成后的回调 | `function` | -
 
 
 
