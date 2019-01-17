@@ -317,10 +317,12 @@ export default {
 		transition: transform .5s cubic-bezier(.075,.82,.165,1),
 			opacity .5s cubic-bezier(.075,.82,.165,1);
 	}
-	.mask-enter, .mask-leave-to{
+	.mask-enter, 
+	.mask-leave-to{
 		opacity: 0;
 	}
-	.modal-enter, .modal-leave-to{
+	.modal-enter, 
+	.modal-leave-to{
 		transform: scale(0);
 		opacity: 0;
 	}
