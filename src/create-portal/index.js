@@ -130,7 +130,7 @@ export default (defaultOptions = {}, wrapper) => {
 
 					const fn = (callback) => (res, opts = {}) => {
 						
-						setTimeout(() => vm.$emit('destory'), leaveDelay * 1000);
+						setTimeout(() => vm && vm.$emit('destory'), leaveDelay * 1000);
 
 						callback(res);
 					};
