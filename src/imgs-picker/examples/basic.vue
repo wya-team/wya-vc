@@ -51,6 +51,11 @@ export default {
 	computed: {
 		
 	},
+	mounted() {
+		setTimeout(() => {
+			this.formValidate.imgs = ["https://wyatest.oss-cn-hangzhou.aliyuncs.com/oa2/20190117/1547696227226/222.jpg"];
+		}, 0);
+	},
 	methods: {
 		handleChange(value) {
 			console.log(value, 'change');

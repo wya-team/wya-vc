@@ -108,6 +108,19 @@ export default {
 			uploadOpts: this.upload
 		};
 	},
+	watch: {
+		dataSource(newVal) {
+			let errorData = this.data.filter((it) => it.errorFlag);
+			this.data = [...newVal, ...errorData];
+			if (this.upload.multiple) {
+				let max = this.upload.max || 1;
+				let canSelectNum = max - this.data.length;
+				if (this.uploadOpts.max != canSelectNum) {
+					this.uploadOpts.max = canSelectNum;
+				}
+			}
+		}
+	},
 	methods: {
 		handleFileStart(res) {
 			this.data = [...this.data, res];
