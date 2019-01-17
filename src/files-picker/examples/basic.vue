@@ -59,6 +59,14 @@ export default {
 	},
 	computed: {
 	},
+	mounted() {
+		setTimeout(() => {
+			this.formValidate.files = [{ 
+				url: "https://wyatest.oss-cn-hangzhou.aliyuncs.com/oa2/20190117/1547696227226/222.jpg",
+				title: 'xxxz',
+			}];
+		}, 0);
+	},
 	methods: {
 		handleSubmit(name) {
 			this.$refs.form.validate((valid) => {

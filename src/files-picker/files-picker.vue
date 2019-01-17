@@ -25,7 +25,7 @@
 					<div>上传失败</div>
 				</template>
 				<template v-else>
-					<div v-if="item.percent != 100" style="flex: 1; display: flex; align-items: center">
+					<div v-if="item.percent != 100 && !item[urlKey]" style="flex: 1; display: flex; align-items: center">
 						<div class="__pcontainer">
 							<div :style="{width: item.percent + '%'}" class="__progress" />
 						</div>
@@ -94,6 +94,19 @@ export default {
 			data: this.dataSource,
 			uploadOpts: this.upload
 		};
+	},
+	watch: {
+		dataSource(newVal) {
+			let errorData = this.data.filter((it) => it.errorFlag);
+			this.data = [...newVal, ...errorData];
+			if (this.upload.multiple) {
+				let max = this.upload.max || 1;
+				let canSelectNum = max - this.data.length;
+				if (this.uploadOpts.max != canSelectNum) {
+					this.uploadOpts.max = canSelectNum;
+				}
+			}
+		}
 	},
 	methods: {
 		handleFileStart(res) {
