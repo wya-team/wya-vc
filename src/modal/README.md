@@ -1,4 +1,4 @@
-## [Demo Basic](https://wya-team.github.io/wya-vc/dist/web/__tpl__/basic.html)
+## [Demo Basic](https://wya-team.github.io/wya-vc/dist/web/modal/basic.html)
 ## 功能
 Modal(对话框)
 
