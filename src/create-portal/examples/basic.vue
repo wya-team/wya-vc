@@ -9,6 +9,9 @@
 		<i-button @click="handleClickVcModal">
 			点我(不带延迟,vc-modal)
 		</i-button>
+		<i-button @click="handleClickVcDrawer">
+			点我(不带延迟,vc-drawer)
+		</i-button>
 		<i-button @click="handleKeepAliveWithBefore">
 			点我(带延迟)(keep-alive)
 		</i-button>
@@ -24,6 +27,7 @@
 import { Button } from 'iview';
 import { PModal, PModalWithBefore } from './basic/modal';
 import { VCPModal } from './basic/vc-modal';
+import { VCPDrawer } from './basic/vc-drawer';
 import { KeepAlive, KeepAliveWithBefore } from './basic/keep-alive';
 import { VcInstance } from '../../vc/index';
 
@@ -60,6 +64,15 @@ export default {
 		},
 		handleClickVcModal() {
 			VCPModal.popup({
+				data: { s: 1 }
+			}).then((res) => {
+				console.log(res, 'sure');
+			}).catch((res) => {
+				console.log(res, 'close');
+			});
+		},
+		handleClickVcDrawer() {
+			VCPDrawer.popup({
 				data: { s: 1 }
 			}).then((res) => {
 				console.log(res, 'sure');
