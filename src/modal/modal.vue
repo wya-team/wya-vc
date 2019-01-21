@@ -146,23 +146,27 @@ export default {
 	mounted() {
 		let that = this; // 传递this
 		if (!this.e) {
-			document.documentElement.addEventListener('click', (e) => {
-				this.coord = {
-					x: e.x,
-					y: e.y
-				};
-			});
+			document.documentElement.addEventListener('click', this.handleCoord);
 		} else {
 			this.coord = this.e;
 		}
-		document.addEventListener('keydown', (e) => {
-			this.escClose(e, that);
-		});
+		document.documentElement.addEventListener('keydown', this.escClose);
 	},
 	methods: {
+		handleCoord(e) {
+			this.coord = {
+				x: e.x,
+				y: e.y
+			};
+		},
 		handleClose() {
 			this.$emit('cancel');
 			this.$emit('input', false);
+			// 销毁事件
+			document.documentElement.removeEventListener('click', this.handleCoord);
+			document.documentElement.removeEventListener('keydown', this.escClose);
+			document.removeEventListener("mousemove", this.mouseMove);
+			document.removeEventListener("mouseup", this.mouseUp);
 		},
 		handleWrapClose(el) {
 			let className = el.target.getAttribute('class');
@@ -172,9 +176,9 @@ export default {
 				}
 			}
 		}, // 点击遮罩层关闭
-		escClose(e, that) {
+		escClose(e) {
 			if (e.keyCode === 27 && this.escClosable && this.value) {
-				that.handleClose();
+				this.handleClose();
 			}
 		}, // esc关闭
 		cancel() {
