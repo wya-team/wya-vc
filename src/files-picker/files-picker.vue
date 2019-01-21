@@ -92,13 +92,20 @@ export default {
 	data() {
 		return {
 			data: this.dataSource,
-			uploadOpts: this.upload
+			uploadOpts: { ...this.upload }
 		};
 	},
 	watch: {
 		dataSource(newVal) {
-			let errorData = this.data.filter((it) => it.errorFlag);
-			this.data = [...newVal, ...errorData];
+			let arr = this.data.length === 0 ? newVal : this.data;
+			this.data = arr.map((it) => {
+				for (let i = 0; i < newVal.length; i++) {
+					if (newVal[i].uid === it.uid) {
+						return newVal[i];
+					}
+				}
+				return it;
+			});
 			if (this.upload.multiple) {
 				let max = this.upload.max || 1;
 				let canSelectNum = max - this.data.length;
