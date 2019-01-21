@@ -9,7 +9,7 @@
 				v-model="formValidate.files"
 				:max="10"
 				:upload="{multiple: true, max: 10}"
-				class="v-files-picker "
+				class="v-files-picker"
 				@error="handleError"
 			>
 				<!-- <template slot-scope="slotProps">
