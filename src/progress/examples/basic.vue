@@ -25,6 +25,13 @@
 			:percent="70"
 			type="circle"
 		/>
+		<vc-progress
+			:stroke-width="10" 
+			:percent="50"
+			type="circle"
+		>
+			<div>自定义的数据</div>
+		</vc-progress>
 	</div>
 </template>
 <script>

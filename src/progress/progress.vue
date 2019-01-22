@@ -70,7 +70,7 @@ export default {
 		},
 		strokeWidth: {
 			type: Number,
-			default: 10
+			default: 6
 		},
 		size: {
 			type: Number,
