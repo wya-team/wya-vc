@@ -13,6 +13,7 @@ percent | 进度百分比 | `Number` | 0
 status | 状态 `normal` `success` `error` `active` | `String` | normal
 size | 环形进度条画布宽度（只有type为`circle`时可用） | `Number` | 120
 stroke-width | 进度条宽度 | `Number` | 6
+stroke-color | 环形进度条颜色 | `String` | #2d8cf0 
 show-info | 是否显示进度数值或者状态图标 | `Boolean` | true
 
 #### 事件

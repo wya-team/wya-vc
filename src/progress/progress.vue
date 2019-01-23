@@ -27,8 +27,8 @@
 						:d="pathString"
 						:style="pathStyle"
 						:stroke-width="strokeWidth" 
+						:stroke="strokeColor" 
 						stroke-linecap="round" 
-						stroke="#2d8cf0" 
 						fill-opacity="0" 
 					/>
 				</svg>
@@ -71,6 +71,10 @@ export default {
 		strokeWidth: {
 			type: Number,
 			default: 6
+		},
+		strokeColor: {
+			type: String,
+			default: '#2d8cf0'
 		},
 		size: {
 			type: Number,

@@ -28,6 +28,7 @@
 		<vc-progress
 			:stroke-width="10" 
 			:percent="50"
+			stroke-color="#ed4014"
 			type="circle"
 		>
 			<div>自定义的数据</div>
