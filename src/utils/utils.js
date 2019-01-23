@@ -180,7 +180,7 @@ export const getParseUrl = (url = `${location.pathname}${location.search}`, opts
 			if (isNaN(value) 
 				|| value[0] === '0' 
 				|| value === '' 
-				|| value > Number.MAX_SAFE_INTEGE
+				|| value > Number.MAX_SAFE_INTEGER
 			) {
 				query[key] = value;
 			} else {
