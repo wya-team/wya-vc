@@ -97,6 +97,7 @@ $warning-hover-color: #ebb563;
 	border-color: #dcdee2;
 	background: #fff;
 	user-select: none;
+	cursor: pointer;
 	transition: color .2s linear,background-color .2s linear,border .2s linear,box-shadow .2s linear;
 	outline:0 none !important;
 	&[disabled], &[disabled]:hover {
