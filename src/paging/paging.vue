@@ -67,7 +67,9 @@
 </template>
 
 <script>
-import { Table, Page } from 'iview';
+import Page from 'iview/src/components/page';
+import Table from 'iview/src/components/table';
+
 import { getConstructUrl, getParseUrl, cloneDeep, cloneDeepEasier } from '../utils/utils';
 import { VcInstance } from '../vc/index';
 
