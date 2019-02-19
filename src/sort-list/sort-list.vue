@@ -8,7 +8,7 @@
 			v-for="(item, index) in dataSource" 
 			:key="typeof item === 'object' ? item[valueKey] : item"
 			:is="tag"
-			:draggable="true"
+			:draggable="draggable"
 			class="__item"
 			@dragstart="handleDragStart($event, item)"
 			@dragenter="handleDragEnter($event, index, item)"
@@ -56,6 +56,10 @@ export default {
 			default: 'id'
 		},
 		mask: {
+			type: Boolean,
+			default: true
+		},
+		draggable: {
 			type: Boolean,
 			default: true
 		}
