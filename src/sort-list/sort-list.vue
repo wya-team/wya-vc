@@ -8,11 +8,11 @@
 			v-for="(item, index) in dataSource" 
 			:key="typeof item === 'object' ? item[valueKey] : item"
 			:is="tag"
-			:draggable="typeof item[draggableKey] === 'undefined' || item[draggableKey]"
+			:draggable="getDraggable(item)"
 			class="__item"
 			@dragstart="handleDragStart($event, item)"
-			@dragenter="(typeof item[draggableKey] === 'undefined' || item[draggableKey]) && handleDragEnter($event, index, item)"
-			@dragover.prevent="(typeof item[draggableKey] === 'undefined' || item[draggableKey]) && handleDragOver($event, index, item)"
+			@dragenter="getDraggable(item) && handleDragEnter($event, index, item)"
+			@dragover.prevent="getDraggable(item) && handleDragOver($event, index, item)"
 			@dragend="handleDragEnd"
 		>
 			<slot v-bind="typeof item === 'object' ? item : { src: item }" />
@@ -72,6 +72,10 @@ export default {
 		this.eleDrag = null;
 	},
 	methods: {
+		getDraggable(item) {
+			let value = item[this.draggableKey];
+			return !!(typeof value === 'undefined' || value);
+		},
 		/**
 		 * 获取左移、右移、拖拽、删除后的列表
 		 */
