@@ -21,6 +21,7 @@ mask      | 容器样式      | `object`  |      |
 v-model  | 数据源 | `array` | []
 mask  | 是否显示遮罩层 | `bool` | true
 valueKey  | 数据源唯一key值 | `string,number` | true
+disabledKey  | 判断是否可拖拽的key | `string` | `disabled`
 
 #### 事件
 

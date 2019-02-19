@@ -8,11 +8,11 @@
 			v-for="(item, index) in dataSource" 
 			:key="typeof item === 'object' ? item[valueKey] : item"
 			:is="tag"
-			:draggable="draggable"
+			:draggable="typeof item[draggableKey] === 'undefined' || item[draggableKey]"
 			class="__item"
 			@dragstart="handleDragStart($event, item)"
-			@dragenter="handleDragEnter($event, index, item)"
-			@dragover.prevent="handleDragOver($event, index, item)"
+			@dragenter="(typeof item[draggableKey] === 'undefined' || item[draggableKey]) && handleDragEnter($event, index, item)"
+			@dragover.prevent="(typeof item[draggableKey] === 'undefined' || item[draggableKey]) && handleDragOver($event, index, item)"
 			@dragend="handleDragEnd"
 		>
 			<slot v-bind="typeof item === 'object' ? item : { src: item }" />
@@ -55,6 +55,7 @@ export default {
 			type: [String, Number],
 			default: 'id'
 		},
+		draggableKey: String,
 		mask: {
 			type: Boolean,
 			default: true
