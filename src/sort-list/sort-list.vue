@@ -9,6 +9,7 @@
 			:key="typeof item === 'object' ? item[valueKey] : item"
 			:is="tag"
 			:draggable="getDraggable(item)"
+			:class="[getDraggable(item) ? '__item-active' : '__item-forbid']"
 			class="__item"
 			@dragstart="handleDragStart($event, item)"
 			@dragenter="getDraggable(item) && handleDragEnter($event, index, item)"
@@ -176,11 +177,17 @@ export default {
 	.__item {
 		transition: all .5s;
 	}
+	.__item-active {
+		cursor: move;
+	}
+	.__item-forbid {
+		cursor: no-drop;
+	}
 	& > div {
 		margin: 10px;
 		text-align: center;
 		position: relative;
-		cursor: move;
+		
 	}
 	& > div:hover .__mask {
 		transition: opacity .5s;
