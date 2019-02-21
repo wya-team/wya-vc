@@ -18,11 +18,10 @@
 			/>
 			<vc-input 
 				v-model="textvalue"
-				:rows="2"
 				:autosize="true"
 				type="textarea"
 				style="margin-top: 10px;"
-				placeholder="被禁用的input"
+				placeholder="被禁用的textarea"
 			/>
 		</div>
 	</div>
