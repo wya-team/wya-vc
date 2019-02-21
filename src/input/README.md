@@ -8,7 +8,6 @@ input（输入框）
 
 属性 | 说明 | 类型 | 默认值
 ---|---|---|---
-- | - | `any` | -
 type | 输入框类型 `text` `textarea` `password` | `String` | text
 placeholder | 占位文本 | `String` | -
 value | 绑定的值，用v-modal 双向绑定 | `String | Number` | -
