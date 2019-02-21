@@ -7,6 +7,9 @@
 				class="__clear"
 				@click="handleClear"
 			/>
+			<vc-icon
+				v-if="icon"
+			/>
 			<input
 				ref="input"
 				:id="id"
@@ -27,11 +30,13 @@
 				@blur="handleBlur"
 				@keyup.enter="handleEnter"
 			>
+			<slot name="suffix"/>
 		</template>
 		<textarea 
 			v-else 
 			ref="textarea"
 			:id="id"
+			:wrap="wrap"
 			:name="name"
 			:placeholder="placeholder"
 			:disabled="disabled"
@@ -40,6 +45,7 @@
 			:readonly="readonly" 
 			:maxlength="maxlength"
 			:autofocus="autofocus"
+			:autosize="autosize"
 			:spellcheck="spellcheck"
 			:style="textareaStyle"
 			class="__input"
@@ -53,6 +59,7 @@
 </template>
 <script>
 import Icon from '../icon';
+import calcTextareaHeight from './calcTextareaHeight';
 
 export default {
 	name: "vc-input",
@@ -62,6 +69,10 @@ export default {
 	props: {
 		id: String,
 		name: String,
+		wrap: {
+			validator: (val) => ['hard', 'soft'].includes(val),
+			default: 'soft'
+		},
 		type: {
 			type: String,
 			default: 'text'
@@ -78,7 +89,7 @@ export default {
 		},
 		rows: {
 			type: Number,
-			default: 2
+			default: 1
 		},
 		readonly: {
 			type: Boolean,
@@ -112,13 +123,7 @@ export default {
 	},
 	watch: {
 		value(e) {
-			console.log(this.$refs.textarea.scrollHeight);
-			if (this.type === 'textarea') {
-				// this.textareaStyle = {
-				// 	height: `${this.$refs.textarea.scrollHeight}px`,
-				// 	overflow: 'hidden'
-				// }; 
-			}
+			this.resizeTextarea();
 		}
 	},
 	methods: {
@@ -148,7 +153,7 @@ export default {
 			}
 			const minRows = autosize.minRows;
 			const maxRows = autosize.maxRows;
-			this.textareaStyles = calcTextareaHeight(this.$refs.textarea, minRows, maxRows);
+			this.textareaStyle = calcTextareaHeight(this.$refs.textarea, minRows, maxRows);
 		}
 	}
 };
