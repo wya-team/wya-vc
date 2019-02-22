@@ -10,6 +10,18 @@
 				@blur="handleBlur"
 				@enter="handleEnter"
 			/>
+			<div>
+				<vc-input 
+					v-model="value"
+					placeholder="显示placeholder"
+					@change="handleChange"
+					@focus="handleFocus"
+					@blur="handleBlur"
+					@enter="handleEnter"
+				>
+					<i slot="suffix">icon</i>
+				</vc-input>
+			</div>
 			<vc-input 
 				v-model="value"
 				style="margin-top: 10px;"
