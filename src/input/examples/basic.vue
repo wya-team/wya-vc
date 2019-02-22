@@ -39,7 +39,7 @@
 	</div>
 </template>
 <script>
-import Input from '../input';
+import Input from '..';
 
 export default {
 	name: "vc-tpl-basic",
