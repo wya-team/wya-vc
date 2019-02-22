@@ -161,15 +161,15 @@ export default {
 	}
 };
 </script>
-<style lang="less" scoped>
-.vc-input{
+<style lang="scss" scoped>
+.vc-input {
 	position: relative;
 	&:hover{
-		.__clear{
+		.__clear {
 			display: block;
 		}
 	}
-	.__input{
+	.__input {
 		position: relative;
 		display: inline-block;
 		width: 100%;
@@ -185,7 +185,7 @@ export default {
 		position: relative;
 		cursor: text;
 		transition: border .2s;
-		&.__disable{
+		&.__disable {
 			background-color: #f3f3f3;
 			opacity: 1;
 			cursor: not-allowed;
@@ -206,7 +206,7 @@ export default {
 		top: 50%;
 		transform: translateY(-50%);
 	}
-	.__clear{
+	.__clear {
 		position: absolute;
 		right: 10px;
 		z-index: 3;
