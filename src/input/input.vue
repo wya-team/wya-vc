@@ -7,9 +7,6 @@
 				class="__clear"
 				@click="handleClear"
 			/>
-			<vc-icon
-				v-if="icon"
-			/>
 			<input
 				ref="input"
 				:id="id"
@@ -30,7 +27,12 @@
 				@blur="handleBlur"
 				@keyup.enter="handleEnter"
 			>
-			<slot name="suffix"/>
+			<vc-icon 
+				v-if="clearable && value" 
+				type="search" 
+				class="__clear"
+			/>
+			<span class="suffix-icon"><slot name="suffix"/></span>
 		</template>
 		<textarea 
 			v-else 
@@ -118,6 +120,7 @@ export default {
 		inputClass() {
 			return {
 				'__disable': this.disabled,
+				'__suffix': this.$slots.suffix !== undefined
 			};
 		}
 	},
@@ -188,10 +191,20 @@ export default {
 			cursor: not-allowed;
 			color: #ccc;
 		}
+		&.__suffix{
+			padding-right: 30px; 
+		}
 	}
 	input::placeholder, 
 	textarea::placeholder{
 		color: #dcdee2;
+	}
+	.suffix-icon{
+		position: absolute;
+		right: 10px;
+		z-index: 3;
+		top: 50%;
+		transform: translateY(-50%);
 	}
 	.__clear{
 		position: absolute;
