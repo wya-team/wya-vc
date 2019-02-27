@@ -96,21 +96,24 @@ export default {
 		};
 	},
 	watch: {
-		dataSource(newVal) {
-			let arr = this.data.length === 0 ? newVal : this.data;
-			this.data = arr.map((it) => {
-				for (let i = 0; i < newVal.length; i++) {
-					if (newVal[i].uid === it.uid) {
-						return newVal[i];
+		dataSource: {
+			immediate: true,
+			handler(newVal) {
+				let arr = this.data.length === 0 ? newVal : this.data;
+				this.data = arr.map((it) => {
+					for (let i = 0; i < newVal.length; i++) {
+						if (newVal[i].uid === it.uid) {
+							return newVal[i];
+						}
 					}
-				}
-				return it;
-			});
-			if (this.upload.multiple) {
-				let max = this.upload.max || 1;
-				let canSelectNum = max - this.data.length;
-				if (this.uploadOpts.max != canSelectNum) {
-					this.uploadOpts.max = canSelectNum;
+					return it;
+				});
+				if (this.upload.multiple) {
+					let max = this.upload.max || 1;
+					let canSelectNum = max - this.data.length;
+					if (this.uploadOpts.max != canSelectNum) {
+						this.uploadOpts.max = canSelectNum;
+					}
 				}
 			}
 		}
