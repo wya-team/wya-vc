@@ -23,7 +23,9 @@ export default {
 		handleClick(callback) {
 			const { wait } = this;
 			if (callback) {
-				return debounce(callback, wait);
+				return debounce(callback, wait, {
+					leading: true
+				});
 			}
 		}
 	},
