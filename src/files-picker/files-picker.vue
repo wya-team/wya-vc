@@ -102,7 +102,9 @@ export default {
 				let arr = this.data.length === 0 ? newVal : this.data;
 				this.data = arr.map((it) => {
 					for (let i = 0; i < newVal.length; i++) {
-						if (newVal[i].uid === it.uid) {
+						if (typeof newVal[i].uid !== 'undefined' 
+						&& typeof it.uid !== 'undefined'
+						&& newVal[i].uid === it.uid) {
 							return newVal[i];
 						}
 					}
