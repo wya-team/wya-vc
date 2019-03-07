@@ -69,7 +69,6 @@ export default {
 	},
 	mounted() {
 		this.showSlot = this.$slots.default !== undefined;
-		console.log(this.showSlot);
 	},
 	methods: {
 	},
