@@ -10,7 +10,6 @@
 			v-for="(item, index) in dataSource" 
 			:key="index" 
 			style="height: 200px"
-			@click="handleReset"
 		>
 			{{ item }}
 		</div>
@@ -37,8 +36,8 @@ export default {
 		
 	},
 	methods: {
-		loadData() {
-			let page = this.current + 1;
+		loadData(isRefresh) {
+			let page = isRefresh ? 1 : this.current + 1;
 			return new Promise((resolve, reject) => {
 				setTimeout(() => {
 					ajax({
@@ -54,14 +53,16 @@ export default {
 						}
 					}).then((res) => {
 						this.total = res.data.totalPage;
-						this.current = this.current + 1;
-						this.dataSource.splice(this.dataSource.length, 0, ...res.data.list);
+						this.current = page;
+						isRefresh 
+							? (this.dataSource = res.data.list)
+							: this.dataSource.splice(this.dataSource.length, 0, ...res.data.list);
 						resolve();
 					}).catch((e) => {
 						console.log(e);
 						reject();
 					});
-				}, 3000);
+				}, isRefresh ? 3000 : 3000);
 			});
 			
 		},

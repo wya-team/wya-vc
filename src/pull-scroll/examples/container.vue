@@ -41,8 +41,8 @@ export default {
 		
 	},
 	methods: {
-		loadData() {
-			let page = this.current + 1;
+		loadData(isRefresh) {
+			let page = isRefresh ? 1 : this.current + 1;
 			return new Promise((resolve, reject) => {
 				setTimeout(() => {
 					ajax({
@@ -51,21 +51,23 @@ export default {
 							status: 1,
 							data: {
 								currentPage: page,
-								totalPage: 5,
+								totalPage: 200,
 								list: this.getFakeData(page)
 							}
 
 						}
 					}).then((res) => {
 						this.total = res.data.totalPage;
-						this.current = this.current + 1;
-						this.dataSource.splice(this.dataSource.length, 0, ...res.data.list);
+						this.current = page;
+						isRefresh 
+							? (this.dataSource = res.data.list)
+							: this.dataSource.splice(this.dataSource.length, 0, ...res.data.list);
 						resolve();
 					}).catch((e) => {
 						console.log(e);
 						reject();
 					});
-				}, 3000);
+				}, isRefresh ? 3000 : 3000);
 			});
 			
 		},
