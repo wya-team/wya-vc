@@ -1,11 +1,12 @@
 <template>
 	<vc-pull-scroll
+		:height="height"
 		:load-data="loadData"
 		:data-source="dataSource"
 		:current="current"
 		:total="total"
 	>
-		<div>这是一个window下的滚动</div>
+		<div>这是一个容器下的滚动</div>
 		<div 
 			v-for="(item, index) in dataSource" 
 			:key="index" 
@@ -28,9 +29,12 @@ export default {
 	},
 	data() {
 		return {
+			height: window.innerHeight,
+
+			// 数据源
 			current: 0,
 			total: 0,
-			dataSource: [],
+			dataSource: []
 		};
 	},
 	computed: {
@@ -47,7 +51,7 @@ export default {
 							status: 1,
 							data: {
 								currentPage: page,
-								totalPage: 200,
+								totalPage: 5,
 								list: this.getFakeData(page)
 							}
 
@@ -83,6 +87,5 @@ export default {
 			this.dataSource = [];
 		}
 	}
-
 };
 </script>
