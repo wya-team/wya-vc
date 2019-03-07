@@ -17,7 +17,6 @@
 			<div v-else-if="type === 'scroll'">
 				<span>{{ scrollText[status] }}</span>
 			</div>
-					
 		</div>
 	</div>
 </template>
@@ -77,12 +76,12 @@ export default {
 
 <style lang="scss">
 .vc-ps-status {
-	.__pull {
+	&.__pull {
 		position: absolute;
 		top: -75px;
 		left: 0;
 		right: 0;
-		padding-top: 45px;
+		margin-top: 45px;
 		height: 75px;
 		line-height: 30px;
 		width: 100%;
@@ -90,7 +89,7 @@ export default {
 		text-align: center;
 		transform: translateZ(0);
 	}
-	.__scroll {
+	&.__scroll {
 		overflow: hidden;
 		font-size: 12px;
 		transform: translateZ(0);

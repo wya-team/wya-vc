@@ -2,8 +2,8 @@
 	<div :style="{ height: h }" class="vc-pull-scroll">
 		<vc-status
 			v-if="pull"
-			:status="pullStatus" 
-			:y="pulledY" 
+			:status="status" 
+			:y="y" 
 			type="pull" 
 		/>
 		<vc-core
@@ -13,8 +13,11 @@
 			:reverse="reverse"
 			:current="current"
 			:scale-y="scaleY"
+			:pause-y="pauseY"
 			:load-data="loadData"
-			:is-end.sync="isEnd" 
+			:is-end="isEnd"
+			:y.sync="y"
+			:status.sync="status" 
 			:auto="auto"
 			@load-pending="handlePending"
 			@load-success="handleSuccess"
@@ -25,7 +28,7 @@
 		<vc-status
 			v-if="scroll"
 			:status="isEnd"
-			:y="pulledY" 
+			:y="y" 
 			:current="current"
 			:data-source="dataSource" 
 			type="scroll"
@@ -56,19 +59,15 @@ export default {
 			type: Boolean,
 			default: true
 		},
-		pulledPauseY: {
-			type: Number,
-			default: 60,
-		},
 		current: String | Number,
 		total: String | Number,
-		...pick(Core.props, ['scaleY', 'reverse', 'dataSource', 'show', 'loadData']),
+		...pick(Core.props, ['scaleY', 'pauseY', 'reverse', 'dataSource', 'show', 'loadData']),
 		...pick(Status.props, ['scrollText', 'pullText'])
 	},
 	data() {
 		return {
-			pulledY: 0, // 下拉的距离
-			pullStatus: 0, // 下拉的距离
+			y: 0, // 下拉的距离
+			status: 0, // 下拉的距离
 			isEnd: 0
 		};
 	},
@@ -84,31 +83,28 @@ export default {
 	},
 	methods: {
 		reset() {
-			this.pulledY = 0;
-			this.pullStatus = 0;
-		},
-		handlePulling(value) {
-			this.pulledY = value;
+			this.y = 0;
+			this.status = 0;
 		},
 		handleChange(value) {
-			const { pulledPauseY } = this.props;
+			const { pauseY } = this;
 			/**
 			 * 0.未touchstart 
-			 * 1.pulling但未达到pulledPauseY 
-			 * 2.pulling达到pulledPauseY 
+			 * 1.pulling但未达到pauseY 
+			 * 2.pulling达到pauseY 
 			 * 3.进入pause状态 （loading）
 			 */
-			switch (pullStatus) {
+			switch (value) {
 				case 0:
-					this.pulledY = 0;
-					this.pullStatus = value;
+					this.y = 0;
+					this.status = value;
 					break;
 				case 3:
-					this.pulledY = this.pulledPauseY;
-					this.pullStatus = value;
+					this.y = this.pauseY;
+					this.status = value;
 					break;
 				default:
-					this.pullStatus = value;
+					this.status = value;
 					break;
 			}
 		},

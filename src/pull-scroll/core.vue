@@ -22,6 +22,10 @@ export default {
 			type: Number,
 			default: 0.4,
 		},
+		pauseY: {
+			type: Number,
+			default: 75,
+		},
 		reverse: {
 			type: Boolean,
 			default: false
@@ -37,7 +41,8 @@ export default {
 		y: Number,
 		auto: Boolean, // 是否有内部控制滚动
 		isEnd: Number,
-		current: Number
+		current: Number,
+		status: Number
 	},
 	data() {
 		return {
@@ -56,38 +61,65 @@ export default {
 			}
 		}
 	},
-	created() {
+	beforeCreate() {
 		this.prvScrollTop = 0;// 当前列表上次滚动到的位置
 		this.timer = null;
+
+		this.touching = false;
+		this.shouldLoadForPull = true;
+		this.isLoadingForScroll = false;
+
+		this.startY = undefined; // 记录pull起始位置
+		this.endY = undefined; // 记录pull当前位置
 	},
 	mounted() {
-		this.pullContainer = (this.auto) 
-			? document.body
-			: this.$refs.target.parentNode;
-		this.scrollContainer = (this.auto) 
+		this.container = (this.auto) 
 			? window
 			: this.$refs.target.parentNode;
 		// pull
-		this.pullContainer.addEventListener('touchstart', this.handleStart);
-		this.pullContainer.addEventListener('touchmove', this.handleMove, { passive: false });
-		this.pullContainer.addEventListener('touchend', this.handleEnd);
-		this.pullContainer.addEventListener('mousedown', this.handleStart);
-		this.pullContainer.addEventListener('mousemove', this.handleMove, { passive: false });
-		this.pullContainer.addEventListener('mouseup', this.handleEnd);
+		this.container.addEventListener('touchstart', this.handleStart);
+		this.container.addEventListener('touchmove', this.handleMove, { passive: false });
+		this.container.addEventListener('touchend', this.handleEnd);
+		this.container.addEventListener('mousedown', this.handleStart);
+		this.container.addEventListener('mousemove', this.handleMove, { passive: false });
+		this.container.addEventListener('mouseup', this.handleEnd);
 		// scroll
-		this.scrollContainer.addEventListener('scroll', this.handleScroll);
+		this.container.addEventListener('scroll', this.handleScroll);
 	},
 	destroyed() {
 		// 解绑事件
-		this.pullContainer.removeEventListener('touchstart', this.handleStart);
-		this.pullContainer.removeEventListener('touchmove', this.handleMove);
-		this.pullContainer.removeEventListener('touchend', this.handleEnd);
-		this.pullContainer.removeEventListener('mousedown', this.handleStart);
-		this.pullContainer.removeEventListener('mousemove', this.handleMove);
-		// this.pullContainer.removeEventListener('mouseup', this.handleEnd);
-		this.pullContainer.removeEventListener('scroll', this.handleScroll);
+		this.container.removeEventListener('touchstart', this.handleStart);
+		this.container.removeEventListener('touchmove', this.handleMove);
+		this.container.removeEventListener('touchend', this.handleEnd);
+		this.container.removeEventListener('mousedown', this.handleStart);
+		this.container.removeEventListener('mousemove', this.handleMove);
+		this.container.removeEventListener('mouseup', this.handleEnd);
+		this.container.removeEventListener('scroll', this.handleScroll);
 	},
 	methods: {
+		getPosition() {
+			let isWindow = (this.container === window);
+
+			let scrollEle = (isWindow) ? document : this.container;
+			// https://stackoverflow.com/questions/12788487/document-scrolltop-always-returns-0
+			let scrollTop = (isWindow) 
+				? document.scrollingElement.scrollTop
+				: scrollEle.scrollTop;
+			// 容器高，视口的高
+			let containerHeight = (isWindow) 
+				? document.documentElement.clientHeight 
+				: scrollEle.offsetHeight;
+			// 内容的总高度
+			let totalHeight = (isWindow) 
+				? document.body.clientHeight 
+				: scrollEle.scrollHeight;
+
+			return {
+				containerHeight,
+				totalHeight,
+				scrollTop
+			};
+		},
 		loadFirstData() {
 			if (!this.show || this.isEnd > 0) { // 禁用，加载完成或者加载中无视
 				return false;
@@ -101,47 +133,101 @@ export default {
 		handleScroll(event) {
 			const { scroll, reverse } = this;
 			if (!scroll) return;
-			let isWindow = (this.scrollContainer === window);
 			// 延迟计算
 			this.timer && clearTimeout(this.timer);
 			this.timer = setTimeout(() => {
 				if (!this.show || this.isEnd == 2) {
 					return;
 				}
-				let scrollEle = (isWindow) 
-					? document 
-					: this.scrollContainer;
 
-				// https://stackoverflow.com/questions/12788487/document-scrolltop-always-returns-0
-				let scrollTop = (isWindow) 
-					? document.scrollingElement.scrollTop
-					: scrollEle.scrollTop;
+				const { scrollTop, totalHeight, containerHeight } = this.getPosition();
 				// 防止向上滚动也拉数据
 				if (!reverse && this.prvScrollTop > scrollTop) {
 					return;
 				}
 				this.prvScrollTop = scrollTop;
-
-				// 容器高，视口的高
-				let containerHeight = (isWindow) 
-					? document.documentElement.clientHeight 
-					: scrollEle.offsetHeight;
-				// 内容的总高度
-				let scrollHeight = (isWindow) 
-					? document.body.clientHeight 
-					: scrollEle.scrollHeight;
 				
 				if (
-					(!reverse && scrollTop >= scrollHeight - containerHeight - 100)
+					(!reverse && scrollTop >= totalHeight - containerHeight - 100)
 					|| (reverse && scrollTop == 0)
 				) {
 					this._loadData(false);
 				}
 			}, 50); 
 		},
-		_loadData(pullRefresh) {
+
+		handleStart(e) {
+			if (!this.pull || this.isLoadingForScroll) return;
+			this.touching = true;
+		},
+		handleMove(e) {
+			if (!this.pull || !this.touching || this.isLoadingForScroll) return;
+
+			const eTouchScreenY = e.touches 
+				? e.touches[0].screenY 
+				: e.screenY; // 也可使用clientY
+
+			if (this.status) { // 状态非0时
+				const pulledY = (eTouchScreenY - this.startY) * this.scaleY; // 用scaleY对pull的距离进行缩放
+				if (pulledY >= 0) { // 进行下拉
+					this.endY = eTouchScreenY;
+
+					this.$emit('update:y', pulledY);
+
+					if (this.status !== 3) { // 在状态不为3时，即状态为1或2时
+						const { pauseY } = this;
+						
+						if (pulledY > pauseY) { // 拉动的值超过设定的，即提示释放刷新
+							if (this.status !== 2) {
+								this.$emit('update:status', 2);
+							}
+						} else if (this.status !== 1) { // 拉动的值不超过设定的，即提示下拉刷新
+							this.$emit('update:status', 1);
+						}
+					}
+				} else { // 上滑，其实只有状态为3时才会进入该逻辑，pulledY < 0时，回到状态0
+					// event.preventDefault(); 屏蔽滚动
+					this.$emit('update:status', 0);
+					this.$emit('update:y', 0);
+				}
+			} else if (this.getPosition().scrollTop === 0) { // 状态为0时, scrollTop为0时进入状态1
+				this.startY = eTouchScreenY;
+				this.$emit('update:status', 1);
+			}
+		},
+
+		handleEnd() {
+			if (!this.pull || this.isLoadingForScroll) return;
+			if (this.status) {
+				// 判断是否进入状态3还是回到状态0
+				let isPause; 
+				if (this.y > this.pauseY) {
+					this.$emit('update:status', 3);
+
+					// 准备去请求数据啦
+					this.shouldLoadForPull && this._loadData(true);
+					// 不允许下拉刷新获取数据
+					this.shouldLoadForPull = false;
+					isPause = true;
+				} else {
+					this.$emit('update:status', 0);
+					isPause = false;
+				}
+			
+				this.$emit('update:y', isPause ? this.pauseY : 0);
+			}
+
+			this.touching = false;
+		},
+		reset() {
+			this.$emit('update:y', 0);
+			this.$emit('update:status', 0);
+			this.shouldLoadForPull = true;
+		},
+		_loadData(isRefresh) {
+			!isRefresh && (this.isLoadingForScroll = true);
 			// 请求
-			const load = this.loadData(pullRefresh);
+			const load = this.loadData(isRefresh);
 			if (load && load.then) {
 				this.$emit('load-pending');
 				load.then((res) => {
@@ -151,6 +237,8 @@ export default {
 					this.$emit('load-fail', res);
 					return Promise.reject(res);
 				}).finally(() => {
+					!isRefresh && (this.isLoadingForScroll = false);
+					isRefresh && this.reset();
 					this.$emit('load-finish');
 				});
 			} else {
