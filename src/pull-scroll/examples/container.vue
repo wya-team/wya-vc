@@ -64,7 +64,6 @@ export default {
 							: this.dataSource.splice(this.dataSource.length, 0, ...res.data.list);
 						resolve();
 					}).catch((e) => {
-						console.log(e);
 						reject();
 					});
 				}, isRefresh ? 3000 : 3000);

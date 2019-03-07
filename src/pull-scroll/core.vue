@@ -1,5 +1,5 @@
 <template>
-	<div ref="target" :style="{ transform: `translateY(${y}px)`}">
+	<div ref="target">
 		<slot/>
 	</div>
 </template>
@@ -97,24 +97,25 @@ export default {
 		this.container.removeEventListener('scroll', this.handleScroll);
 	},
 	methods: {
-		getPosition() {
+		getParams() {
 			let isWindow = (this.container === window);
 
-			let scrollEle = (isWindow) ? document : this.container;
+			let el = (isWindow) ? document : this.container;
 			// https://stackoverflow.com/questions/12788487/document-scrolltop-always-returns-0
 			let scrollTop = (isWindow) 
 				? document.scrollingElement.scrollTop
-				: scrollEle.scrollTop;
+				: el.scrollTop;
 			// 容器高，视口的高
 			let containerHeight = (isWindow) 
 				? document.documentElement.clientHeight 
-				: scrollEle.offsetHeight;
+				: el.offsetHeight;
 			// 内容的总高度
 			let totalHeight = (isWindow) 
 				? document.body.clientHeight 
-				: scrollEle.scrollHeight;
+				: el.scrollHeight;
 
 			return {
+				el,
 				containerHeight,
 				totalHeight,
 				scrollTop
@@ -140,7 +141,7 @@ export default {
 					return;
 				}
 
-				const { scrollTop, totalHeight, containerHeight } = this.getPosition();
+				const { scrollTop, totalHeight, containerHeight } = this.getParams();
 				// 防止向上滚动也拉数据
 				if (!reverse && this.prvScrollTop > scrollTop) {
 					return;
@@ -157,27 +158,51 @@ export default {
 		},
 
 		handleStart(e) {
-			if (!this.pull || this.isLoadingForScroll) return;
 			this.touching = true;
+
+			// 使微信不露底
+			this.startYForWeiXin = event.touches 
+				? event.touches[0].screenY 
+				: event.screenY; 
+
+			this.$emit('pull-start');
 		},
 		handleMove(e) {
-			if (!this.pull || !this.touching || this.isLoadingForScroll) return;
 
 			const eTouchScreenY = e.touches 
 				? e.touches[0].screenY 
 				: e.screenY; // 也可使用clientY
+			let scrollStatus = '11';
+			
+			const { containerHeight, totalHeight, scrollTop } = this.getParams();
+			if (scrollTop === 0) {
+				// 如果内容小于容器则同时禁止上下滚动
+				// '00'容器足够包含内容，本身就不应该支持滚动，'01'在顶部，支持上滑，向下滚动，支持滚动
+				scrollStatus = containerHeight >= totalHeight ? '00' : '01';
+			} else if (scrollTop + containerHeight >= totalHeight) {
+				// 已经滚到底部了只支持下拉滚动，即向上滚动
+				scrollStatus = '10';
+			} // 其他情况属于 '11'
 
+			if (scrollStatus != '11') {
+				// 判断当前的滚动方向
+				let direction = eTouchScreenY - this.startYForWeiXin > 0 ? '10' : '01';
+				// 操作方向和当前允许状态求与运算，运算结果为0，就说明不允许该方向滚动，则禁止默认事件，阻止滚动
+				if (!(parseInt(scrollStatus, 2) & parseInt(direction, 2))) { // 连着均是'10'或'01' 不阻止滚动
+					e.preventDefault();
+				}
+			}
+
+
+			if (!this.pull || !this.touching || this.isLoadingForScroll) return;
 			if (this.status) { // 状态非0时
 				const pulledY = (eTouchScreenY - this.startY) * this.scaleY; // 用scaleY对pull的距离进行缩放
 				if (pulledY >= 0) { // 进行下拉
 					this.endY = eTouchScreenY;
-
-					this.$emit('update:y', pulledY);
+					this.$emit('update:y', this.status === 3 && pulledY < this.pauseY ? this.pauseY : pulledY);
 
 					if (this.status !== 3) { // 在状态不为3时，即状态为1或2时
-						const { pauseY } = this;
-						
-						if (pulledY > pauseY) { // 拉动的值超过设定的，即提示释放刷新
+						if (pulledY > this.pauseY) { // 拉动的值超过设定的，即提示释放刷新
 							if (this.status !== 2) {
 								this.$emit('update:status', 2);
 							}
@@ -186,11 +211,11 @@ export default {
 						}
 					}
 				} else { // 上滑，其实只有状态为3时才会进入该逻辑，pulledY < 0时，回到状态0
-					// event.preventDefault(); 屏蔽滚动
+					// e.preventDefault(); // 屏蔽滚动
 					this.$emit('update:status', 0);
 					this.$emit('update:y', 0);
 				}
-			} else if (this.getPosition().scrollTop === 0) { // 状态为0时, scrollTop为0时进入状态1
+			} else if (this.getParams().scrollTop === 0) { // 状态为0时, scrollTop为0时进入状态1
 				this.startY = eTouchScreenY;
 				this.$emit('update:status', 1);
 			}
@@ -198,11 +223,15 @@ export default {
 
 		handleEnd() {
 			if (!this.pull || this.isLoadingForScroll) return;
+
 			if (this.status) {
 				// 判断是否进入状态3还是回到状态0
 				let isPause; 
 				if (this.y > this.pauseY) {
 					this.$emit('update:status', 3);
+
+					// 强制置顶
+					this.getParams().el.scrollTop = 0;
 
 					// 准备去请求数据啦
 					this.shouldLoadForPull && this._loadData(true);
@@ -218,6 +247,8 @@ export default {
 			}
 
 			this.touching = false;
+
+			this.$emit('pull-end');
 		},
 		reset() {
 			this.$emit('update:y', 0);

@@ -2,11 +2,13 @@
 	<div :style="{ height: h }" class="vc-pull-scroll">
 		<vc-status
 			v-if="pull"
+			:style="style" 
 			:status="status" 
 			:y="y" 
 			type="pull" 
 		/>
 		<vc-core
+			:style="style"
 			:show="show"
 			:pull="pull"
 			:scroll="scroll"
@@ -22,11 +24,14 @@
 			@load-pending="handlePending"
 			@load-success="handleSuccess"
 			@load-finish="handleFinish"
+			@pull-start="handleStart"
+			@pull-end="handleEnd"
 		>
 			<slot />
 		</vc-core>
 		<vc-status
 			v-if="scroll"
+			:style="style"
 			:status="isEnd"
 			:y="y" 
 			:current="current"
@@ -68,7 +73,9 @@ export default {
 		return {
 			y: 0, // 下拉的距离
 			status: 0, // 下拉的距离
-			isEnd: 0
+			isEnd: 0,
+
+			pulling: false,
 		};
 	},
 	computed: {
@@ -79,6 +86,12 @@ export default {
 		},
 		auto() {
 			return this.height === 'auto';
+		},
+		style() {
+			return {
+				transition: `transform ${!this.pulling && (this.status === 0 || this.status === 3) ? '300' : '0'}ms ease-out`,
+				transform: `translate3d(0, ${this.y}px, 0)`
+			};
 		}
 	},
 	methods: {
@@ -118,6 +131,12 @@ export default {
 		handleFinish(res) {
 			this.isEnd = this.total < this.current + 1 ? 2 : 0;
 			// this.$emit('load-finish', res);
+		},
+		handleStart() {
+			this.pulling = true;
+		},
+		handleEnd() {
+			this.pulling = false;
 		}
 	}
 };

@@ -1,10 +1,13 @@
 <template>
 	<div 
-		:style="{ transform: `translateY(${y}px)` }" 
 		:class="`__${type}`"
 		class="vc-ps-status"
 	>
 		<div class="__content">
+			<span
+				v-if="type === 'pull'"
+				v-text="pullText[status]" 
+			/>
 			<span
 				v-if="isLoading"
 				class="__loading" 
