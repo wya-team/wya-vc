@@ -2,8 +2,7 @@
 	<div class="vc-modal">
 		<transition name="mask">
 			<div 
-				v-if="value" 
-				v-show="mask"
+				v-if="mask && value"
 				class="_modal-mask"
 				@click="handleWrapClose"
 			/>
@@ -255,12 +254,13 @@ export default {
 <style lang="less" scoped>
 .vc-modal{
 	._modal-mask{
+		opacity: 1;
 		position: fixed;
 		top: 0;
 		bottom: 0;
 		left: 0;
 		right: 0;
-		background-color: rgba(55,55,55,.6);
+		background-color: rgba(0,0,0,.65);
 		height: 100%;
 		z-index: 1000;
 	}
@@ -315,11 +315,16 @@ export default {
 		}
 	}
 	.mask-enter-active, 
+	.modal-enter-active,{
+		will-change: transform;
+		transition: transform .5s cubic-bezier(.08, .82, .17, 1),
+			opacity .5s cubic-bezier(.08, .82, .17, 1);
+	}
 	.mask-leave-active,
-	.modal-enter-active, 
 	.modal-leave-active{
-		transition: transform .5s cubic-bezier(.075,.82,.165,1),
-			opacity .5s cubic-bezier(.075,.82,.165,1);
+		will-change: transform;
+		transition: transform .5s cubic-bezier(.08, .82, .17, 1),
+			opacity .5s cubic-bezier(.08, .82, .17, 1);
 	}
 	.mask-enter, 
 	.mask-leave-to{
