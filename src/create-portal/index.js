@@ -69,13 +69,8 @@ export default (defaultOptions = {}, wrapper) => {
 						fn && fn(options);
 						
 					} else {
-
-						const VueComponent = Vue.extend({ 
-							...wrapper, 
-							components: { 
-								...wrapper.components, 
-								...components 
-							} 
+						const VueComponent = Vue.extend({
+							...wrapper,
 						});
 						
 						vm = new VueComponent({
@@ -83,6 +78,10 @@ export default (defaultOptions = {}, wrapper) => {
 							store, // vuex,
 							router, // vue-router
 							propsData,
+							components: { 
+								...wrapper.components, 
+								...components 
+							},
 							...parent,
 							mounted() {
 								alive && document.addEventListener('click', this.handleExtra, true);
@@ -115,7 +114,7 @@ export default (defaultOptions = {}, wrapper) => {
 							}
 						});
 					}
-					
+
 					// tag
 					vm.__AUTO_DESTORY__ = autoDestory;
 
