@@ -1,9 +1,6 @@
 <!--
 TODO
 1. 各个方位的呼出动画
-2. 已完成。 transfer：默认插在body内，false跟着span走 ，如果使用getPopupContainer，transfer失效，popper插在容器内
-3. 已完成。显示遮挡换方向
-4. 已完成。点击消失有BUG
 备注： 不要在引用的地方带有vc-popover的className
 -->
 <template>
