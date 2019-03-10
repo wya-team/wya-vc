@@ -1,7 +1,6 @@
 <!--
 TODO
 1. 各个方位的呼出动画
-备注： 不要在引用的地方带有vc-popover的className
 -->
 <template>
 	<span ref="popupContainer" style="position: relative">

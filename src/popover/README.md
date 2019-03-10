@@ -2,6 +2,9 @@
 ## 功能
 Popover
 
+## 待开发
+- 各个位置的呼出动画
+
 ## API
 
 #### 属性
@@ -192,3 +195,6 @@ arrow | 浮层有无箭头 | `boolean` | `true`
 		</div>
 	</div>
 ```
+
+## 注意事项
+- 不要在引用的地方带有vc-popover的className
