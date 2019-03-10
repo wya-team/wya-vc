@@ -3,7 +3,8 @@ TODO
 1. 各个方位的呼出动画
 2. 已完成。 transfer：默认插在body内，false跟着span走 ，如果使用getPopupContainer，transfer失效，popper插在容器内
 3. 已完成。显示遮挡换方向
-4. 点击消失有BUG
+4. 已完成。点击消失有BUG
+备注： 不要在引用的地方带有vc-popover的className
 -->
 <template>
 	<span ref="popupContainer" style="position: relative">
@@ -49,6 +50,7 @@ const config = {
 		animate: String,
 		placement: {
 			type: String,
+			default: 'bottom',
 			validator: (value) => {
 				return [
 					'bottom', 'bottom-left', 'bottom-right',
@@ -213,7 +215,7 @@ const config = {
 		handleDocumentClick(e) {
 			// 不能更createProtal中的click监听方法同名
 			let path = e.path || (e.composedPath && e.composedPath()) || [];
-			if (!this.$el.contains(e.target)) {
+			if (!this.$el.contains(e.target) && !path.some(item => /vc-popover/.test(item.className))) {
 				this.handleClose();
 			}		
 		},

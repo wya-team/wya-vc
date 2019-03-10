@@ -1,5 +1,5 @@
 <template>
-	<div class="vc-popover-basic" style="background: #f2f2f2; height: 3000px">
+	<div class="vc1-popover-basic" style="background: #f2f2f2; height: 3000px">
 		<div ref="parent" class="_btn-container">
 			<div class="__left" style="margin-top: 32px; margin-bottom: 32px">
 				<vc-popover 
@@ -189,7 +189,7 @@ export default {
 </script>
 
 <style lang="scss">
-.vc-popover-basic {
+.vc1-popover-basic {
 	padding: 50px 0 0 0;
 	// overflow: auto;
 	// height: 1400px; 
