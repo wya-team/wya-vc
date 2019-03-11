@@ -2,8 +2,7 @@
 	<div class="vc-drawer">
 		<transition name="mask">
 			<div 
-				v-if="value" 
-				v-show="mask" 
+				v-if="mask && value"
 				:style="maskStyle"
 				class="__drawer-mask"
 				@click="handleMaskClose"
