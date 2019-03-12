@@ -48,8 +48,7 @@ format | 自定义返回数据格式 | `Function` | -
 	</vc-files-picker>
 </template>
 <script>
-import FilesPicker from '../files-picker';
-import { VcInstance } from '../../vc/index';
+import { VcInstance, FilesPicker } from '@wya/vc';
 
 VcInstance.init({
 	Upload: {

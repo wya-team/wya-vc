@@ -86,8 +86,7 @@ VcInstance.init({
 </template>
 
 <script>
-import { Message } from 'iview';
-import { Upload } from 'wya-vc';
+import { Upload, Message } from '@wya/vc';
 
 export default {
 	name: "vc-upload-basic",

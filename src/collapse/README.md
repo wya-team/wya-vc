@@ -56,14 +56,13 @@ name | 当前面板的 `name`，与 `Collapse` 的 `value` 对应，不填为索
 </template>
 
 <script>
-import Collapse from '../collapse';
-import CollapseItem from '../collapse-item';
+import Collapse from '..';
 
 export default {
 	name: "vc-collapse-basic",
 	components: {
 		"vc-collapse": Collapse,
-		"vc-collapse-item": CollapseItem
+		"vc-collapse-item": Collapse.Item
 	},
 	data() {
 		return {

@@ -39,21 +39,19 @@ operate | 蒙层中的操作视图 | `{src, index}`
 
 ```html
 <template>
-	<i-form
+	<vc-form
 		ref="form"
 		:model="formValidate" 
 		:rules="ruleValidate" 
 	>
-		<i-form-item prop="imgs">
+		<vc-form-item prop="imgs">
 			<vc-imgs-picker v-model="formValidate.imgs" :max="2" />
-		</i-form-item>
+		</vc-form-item>
 		<div @click="handleSubmit">提交</div>
-	</i-form >
+	</vc-form >
 </template>
 <script>
-import { Form, FormItem, Input } from 'iview';
-import ImgsPicker from '../imgs-picker';
-import { VcInstance } from '../../vc/index';
+import { ImgsPicker, Form, FormItem, Input, VcInstance } from '@wya/vc';
 
 VcInstance.init({
 	Upload: {
@@ -66,9 +64,9 @@ export default {
 	name: "vc-print-basic",
 	components: {
 		'vc-imgs-picker': ImgsPicker,
-		'i-form': Form,
-		'i-form-item': FormItem,
-		'i-input': Input,
+		'vc-form': Form,
+		'vc-form-item': Form.Item,
+		'vc-input': Input,
 	},
 	data() {
 		return {

@@ -1,22 +1,25 @@
 <template>
-	<i-form
+	<vc-form
 		ref="form"
 		:model="formValidate" 
 		:rules="ruleValidate" 
 	>
-		<i-form-item prop="imgs" @on-form-change="handleChange">
+		<vc-form-item prop="imgs" @on-form-change="handleChange">
 			<vc-imgs-picker 
 				v-model="formValidate.imgs" 
 				:max="3"
 				:upload="{multiple: true, max: 3}"
 				@error="handleError"
 			/>
-		</i-form-item>
+		</vc-form-item>
 		<div @click="handleSubmit">提交</div>
-	</i-form >
+	</vc-form >
 </template>
 <script>
-import { Form, FormItem, Input, Message } from 'iview';
+import Form from '../../form';
+import Input from '../../input';
+import Message from '../../message';
+
 import ImgsPicker from '../imgs-picker';
 import { VcInstance } from '../../vc/index';
 
@@ -32,9 +35,9 @@ export default {
 	name: "vc-print-basic",
 	components: {
 		'vc-imgs-picker': ImgsPicker,
-		'i-form': Form,
-		'i-form-item': FormItem,
-		'i-input': Input,
+		'vc-form': Form,
+		'vc-form-item': Form.Item,
+		'vc-input': Input,
 	},
 	data() {
 		return {

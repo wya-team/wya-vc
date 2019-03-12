@@ -35,7 +35,7 @@ change | 组件关闭时候触发出来的一个事件，参数为false | `funct
 	</div>
 </template>
 <script>
-import { MPopup } from 'wya-vc';
+import { MPopup } from '@wya/vc';
 
 export default {
 	name: "vc-popup-basic",

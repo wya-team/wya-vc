@@ -1,10 +1,10 @@
 <template>
-	<i-form
+	<vc-form
 		ref="form"
 		:model="formValidate" 
 		:rules="ruleValidate" 
 	>
-		<i-form-item prop="files">
+		<vc-form-item prop="files">
 			<vc-files-picker 
 				v-model="formValidate.files"
 				:max="10"
@@ -21,12 +21,14 @@
 					上传
 				</div>
 			</vc-files-picker>
-		</i-form-item>
+		</vc-form-item>
 		<div @click="handleSubmit">提交</div>
-	</i-form>
+	</vc-form>
 </template>
 <script>
-import { Form, FormItem, Message } from 'iview';
+import Form from '../../form';
+import Input from '../../input';
+import Message from '../../message';
 import FilesPicker from '../files-picker';
 import { VcInstance } from '../../vc/index';
 
@@ -42,8 +44,8 @@ export default {
 	name: "vc-files-picker-basic",
 	components: {
 		"vc-files-picker": FilesPicker,
-		'i-form': Form,
-		'i-form-item': FormItem,
+		'vc-form': Form,
+		'vc-form-item': Form.Item,
 	},
 	data() {
 		return {

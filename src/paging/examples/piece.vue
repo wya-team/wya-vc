@@ -33,7 +33,7 @@
 	</vc-paging>
 </template>
 <script>
-import { ajax } from 'wya-fetch';
+import { ajax } from '@wya/fetch';
 import Paging from '../paging';
 import { initPage } from './utils/utils';
 

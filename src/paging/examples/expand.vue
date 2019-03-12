@@ -1,6 +1,6 @@
 <template>
 	<div>
-		<i-input 
+		<vc-input 
 			v-model="keyword" 
 			search 
 			enter-button="搜索" 
@@ -8,12 +8,12 @@
 			style="margin: 20px; width: 300px"
 			@on-search="handleSearch"
 		/>
-		<i-tabs 
+		<vc-tabs 
 			:value="type" 
 			:animated="false" 
 			@on-click="handleChange"
 		>
-			<i-tab-pane 
+			<vc-tab-pane 
 				v-for="(item) in tabs"
 				:key="item.value"
 				:label="item.label" 
@@ -38,13 +38,16 @@
 					@selection-change="handleSelect"
 					@expand="handleExpand"
 				/>
-			</i-tab-pane>
-		</i-tabs>
+			</vc-tab-pane>
+		</vc-tabs>
 	</div>
 </template>
 <script>
-import { ajax } from 'wya-fetch';
-import { Tabs, TabPane, Input, Message } from 'iview';
+import { ajax } from '@wya/fetch';
+import Tabs from '../../tabs';
+import Input from '../../input';
+import Message from '../../message';
+
 import Paging from '../paging';
 import { initPage } from './utils/utils';
 import { getConstructUrl, getParseUrl } from '../../utils/utils';
@@ -60,9 +63,9 @@ export default {
 	name: "vc-paging-basic",
 	components: {
 		'vc-paging': Paging,
-		'i-tabs': Tabs,
-		'i-tab-pane': TabPane,
-		'i-input': Input
+		'vc-tabs': Tabs,
+		'vc-tab-pane': Tab.Pane,
+		'vc-input': Input
 	},
 	data() {
 		const { query = {} } = getParseUrl();

@@ -24,7 +24,7 @@ opts | 额外参数 | `object` | `{}`
 	<customer-row :render="renderRow" name="customer-render-test"/>
 </template>
 <script>
-import CreateCustomer from '../index';
+import { CreateCustomer } from '@wya/vc';
 
 const CustomerRow = CreateCustomer({
 	name: String

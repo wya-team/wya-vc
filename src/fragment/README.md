@@ -24,7 +24,7 @@
 	</div>
 </template>
 <script>
-import { Fragment } from 'wya-vc';
+import { Fragment } from '@wya/vc';
 
 export default {
 	name: 'vc-fragment-basic',

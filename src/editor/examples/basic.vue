@@ -1,23 +1,25 @@
 <template>
-	<i-form
+	<vc-form
 		ref="form"
 		:model="formValidate" 
 		:rules="ruleValidate" 
 		@submit.native.prevent
 	>
-		<i-form-item prop="value" @on-form-change="handleChange">
+		<vc-form-item prop="value" @on-form-change="handleChange">
 			<vc-editor 
 				ref="editor"
 				v-model="formValidate.value"
 				:options="options"
 				:disabled="disabled"
 			/>
-		</i-form-item>
-		<i-button @click="handleSubmit">提交</i-button>
-	</i-form >
+		</vc-form-item>
+		<vc-button @click="handleSubmit">提交</vc-button>
+	</vc-form >
 </template>
 <script>
-import { Form, FormItem, Input, Button } from 'iview';
+import Form from '../../form';
+import Input from '../../input';
+import Button from '../../button';
 import Editor from '../editor';
 import { VcInstance } from '../../vc/index';
 
@@ -33,9 +35,9 @@ export default {
 	name: "vc-editor-basic",
 	components: {
 		"vc-editor": Editor,
-		'i-button': Button,
-		'i-form': Form,
-		'i-form-item': FormItem,
+		'vc-button': Button,
+		'vc-form': Form,
+		'vc-form-item': Form.Item,
 	},
 	data() {
 		return {

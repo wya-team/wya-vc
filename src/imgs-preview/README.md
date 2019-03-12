@@ -54,7 +54,7 @@ renderRow(h, params) {
 	</div>
 </template>
 <script>
-import ImgsPreview from 'wya-vc';
+import ImgsPreview from '@wya/vc';
 
 export default {
 	name: "vc-imgs-preview-basic",

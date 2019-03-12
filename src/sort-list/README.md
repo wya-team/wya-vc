@@ -52,7 +52,7 @@ disabledKey  | 判断是否可拖拽的key | `string` | `disabled`
 </template>
 <script>
 import _ from 'lodash';
-import { SortList } from 'wya-vc';
+import { SortList } from '@wya/vc';
 
 let count = 0;
 export default {

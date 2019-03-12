@@ -1,4 +1,4 @@
-import { EventStore } from 'wya-ps';
+import { EventStore } from '@wya/ps';
 
 class Vc {
 	constructor() {

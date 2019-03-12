@@ -34,7 +34,7 @@ tag | 外层标签`span / div / **` | `str obj func` | div
 	</div>
 </template>
 <script>
-import Print from 'wya-vc';
+import Print from '@wya/vc';
 
 export default {
 	name: "vc-print-basic",

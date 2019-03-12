@@ -17,7 +17,7 @@
 	</div>
 </template>
 <script>
-import { Message } from 'iview';
+import Message from '../../message';
 import Copy from '../copy';
 
 export default {

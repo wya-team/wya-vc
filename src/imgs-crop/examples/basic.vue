@@ -14,8 +14,8 @@
 			@mouse-move="handleFn"
 			@position-change="handleFn"
 		/>
-		<i-slider :min="0.3" :max="3" :step="0.01" v-model="scale" />
-		<i-slider :min="0" :max="360" v-model="rotate" />
+		<vc-slider :min="0.3" :max="3" :step="0.01" v-model="scale" />
+		<vc-slider :min="0" :max="360" v-model="rotate" />
 		
 		<div @click="handleSave">保存</div>
 
@@ -24,14 +24,14 @@
 	
 </template>
 <script>
-import { Slider } from 'iview';
+import Slider from '../../slider';
 import ImgsCrop from '../imgs-crop';
 
 export default {
 	name: "vc-tpl-basic",
 	components: {
 		'vc-imgs-crop': ImgsCrop,
-		'i-slider': Slider,
+		'vc-slider': Slider,
 	},
 	data() {
 		return {

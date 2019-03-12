@@ -1,6 +1,6 @@
 ## [Demo Basic](https://wya-team.github.io/wya-vc/dist/icon/basic.html)
 ## 功能
-`wya-vc` 图标
+`@wya/vc` 图标
 
 ## API
 
@@ -26,7 +26,7 @@ type | icon类型 | `string` | -
 	<vc-icon type="up" />
 </template>
 <script>
-import Icon from '../icon';
+import { Icon } from '@wya/vc';
 
 export default {
 	name: "vc-icon-basic",

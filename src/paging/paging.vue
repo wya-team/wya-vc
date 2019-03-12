@@ -74,7 +74,7 @@ import { getConstructUrl, getParseUrl, cloneDeep, cloneDeepEasier } from '../uti
 import { VcInstance } from '../vc/index';
 
 let localPageSize = 0;
-let localPageSizeKey = 'wya-vc.paging.localPageSize';
+let localPageSizeKey = '@wya/vc.paging.localPageSize';
 try {
 	localPageSize = localStorage.getItem(localPageSizeKey);
 } catch (e) {

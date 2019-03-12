@@ -28,8 +28,8 @@
 	</div>
 </template>
 <script>
-import { Message } from 'iview';
-import { ajax } from 'wya-fetch';
+import { ajax } from '@wya/fetch';
+import Message from '../../message';
 import Upload from '../index';
 import { VcInstance } from '../../vc/index';
 

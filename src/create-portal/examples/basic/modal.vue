@@ -1,22 +1,22 @@
 <template>
-	<i-modal
+	<vc-modal
 		v-model="visible"
 		title="title"
 		@on-ok="handleOk"
 		@on-cancel="handleCancel"
 	>
 		<p> {{ data }} </p>
-	</i-modal>
+	</vc-modal>
 </template>
 
 <script>
-import { Modal } from 'iview';
+import Modal from '../../../modal/index';
 import CreatePortal from '../../index';
 
 const config = {
 	name: "vc-tpl-basic",
 	components: {
-		'i-modal': Modal
+		'vc-modal': Modal
 	},
 	props: {
 		data: Object
@@ -35,7 +35,7 @@ const config = {
 	methods: {
 		handleOk() {
 			/**
-			 * v-model会默认被触发，要由该组件控制，给组件i-modal传值 loading: true
+			 * v-model会默认被触发，要由该组件控制，给组件vc-modal传值 loading: true
 			 */
 			// this.visible = false;
 			this.$emit('sure');

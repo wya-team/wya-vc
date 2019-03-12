@@ -1,30 +1,30 @@
 <template>
 	<div class="v-tpl-basic">
-		<i-button @click="handleClickWithBefore">
+		<vc-button @click="handleClickWithBefore">
 			点我(带延迟)
-		</i-button>
-		<i-button @click="handleClick">
+		</vc-button>
+		<vc-button @click="handleClick">
 			点我(不带延迟)
-		</i-button>
-		<i-button @click="handleClickVcModal">
+		</vc-button>
+		<vc-button @click="handleClickVcModal">
 			点我(不带延迟,vc-modal)
-		</i-button>
-		<i-button @click="handleClickVcDrawer">
+		</vc-button>
+		<vc-button @click="handleClickVcDrawer">
 			点我(不带延迟,vc-drawer)
-		</i-button>
-		<i-button @click="handleKeepAliveWithBefore">
+		</vc-button>
+		<vc-button @click="handleKeepAliveWithBefore">
 			点我(带延迟)(keep-alive)
-		</i-button>
-		<i-button @click="handleKeepAlive">
+		</vc-button>
+		<vc-button @click="handleKeepAlive">
 			点我(不带延迟)(keep-alive)
-		</i-button>
-		<i-button @click="handleClean">
+		</vc-button>
+		<vc-button @click="handleClean">
 			销毁
-		</i-button>
+		</vc-button>
 	</div>
 </template>
 <script>
-import { Button } from 'iview';
+import Button from '../../button';
 import { PModal, PModalWithBefore } from './basic/modal';
 import { VCPModal } from './basic/vc-modal';
 import { VCPDrawer } from './basic/vc-drawer';
@@ -34,7 +34,7 @@ import { VcInstance } from '../../vc/index';
 export default {
 	name: "vc-tpl-basic",
 	components: {
-		'i-button': Button
+		'vc-button': Button
 	},
 	data() {
 		return {

@@ -36,7 +36,7 @@ disabled | 富文本是否不可编辑 | `boolean` | false
 	/>
 </template>
 <script>
-import Editor from '../editor';
+import { Editor } from '@wya/vc';
 
 export default {
 	name: "vc-editor-basic",

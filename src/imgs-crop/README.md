@@ -35,7 +35,7 @@ cross-origin | CORS - `'', 'anonymous', 'use-credentials'` | `string` | `anonymo
 	<vc-imgs-crop :src="src" />
 </template>
 <script>
-import { ImgsCrop } from 'wya-vc';
+import { ImgsCrop } from '@wya/vc';
 
 export default {
 	name: "vc-tpl-basic",

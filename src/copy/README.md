@@ -27,7 +27,7 @@ tag | 外层标签`span / div / **` | `str obj func` | div
 	</div>
 </template>
 <script>
-import { Copy } from 'wya-vc';
+import { Copy } from '@wya/vc';
 
 export default {
 	name: "vc-copy-basic",

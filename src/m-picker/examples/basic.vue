@@ -29,26 +29,26 @@
 		<h3 @click="handleClick">点击直接调用</h3>
 
 		<h2>表单</h2>
-		<i-form
+		<vc-form
 			ref="form"
 			:show-message="false"
 			:model="formValidate" 
 			:rules="ruleValidate" 
 		>
-			<i-form-item prop="addr" @on-form-change="handleChange">
+			<vc-form-item prop="addr" @on-form-change="handleChange">
 				<vcm-picker
 					:data-source="dataSource" 
 					:cascade="true" 
 					:cols="3" 
 					v-model="formValidate.addr"
 				/>
-			</i-form-item>
+			</vc-form-item>
 			<div @click="handleSubmit">提交表单</div>
-		</i-form >
+		</vc-form >
 	</div>
 </template>
 <script>
-import { Form, FormItem } from 'iview';
+import Form from '../../form';
 import MToast from '../../m-toast/index';
 import MPicker from '../m-picker.vue';
 import { cloneDeep } from '../../utils/index';
@@ -58,8 +58,8 @@ export default {
 	name: "vcm-picker-basic",
 	components: {
 		'vcm-picker': MPicker,
-		'i-form': Form,
-		'i-form-item': FormItem
+		'vc-form': Form,
+		'vc-form-item': Form.Item
 	},
 	data() {
 		return {

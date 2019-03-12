@@ -35,7 +35,7 @@ cName | 自定义cName, 替代先前cName | `string` | -
 - 例子
 ```vue
 <template>
-	<i-modal
+	<vc-modal
 		v-model="visible"
 		title="Common Modal dialog box title"
 		@on-ok="handleOk"
@@ -44,17 +44,16 @@ cName | 自定义cName, 替代先前cName | `string` | -
 		<p>Content of dialog</p>
 		<p>Content of dialog</p>
 		<p>Content of dialog</p>
-	</i-modal>
+	</vc-modal>
 </template>
 
 <script>
-import { Modal } from 'iview';
-import CreatePortal from '../../index';
+import { Modal, CreatePortal } from '@wya/vc';
 
 const config = {
 	name: "vc-tpl-basic",
 	components: {
-		'i-modal': Modal
+		'vc-modal': Modal
 	},
 	data() {
 		return {

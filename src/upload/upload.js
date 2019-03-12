@@ -1,4 +1,4 @@
-import { ajax } from 'wya-fetch';
+import { ajax } from '@wya/fetch';
 import { getUid, attrAccept, initItem } from '../utils/utils';
 import { VcInstance } from '../vc/index';
 import { Tips } from './tips';
@@ -256,7 +256,7 @@ export default {
 			try {
 				response = await onBefore(file);
 				if (typeof response !== 'object') {
-					console.error('[wya-vc/upload]: onBefore必须返回对象');
+					console.error('[@wya/vc/upload]: onBefore必须返回对象');
 					return;
 				}
 			} catch (error) {

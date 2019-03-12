@@ -1,4 +1,4 @@
-import Message from 'iview/src/components/message';
+import Message from '../message';
 import { copyToClipboard } from './utils';
 
 export default {

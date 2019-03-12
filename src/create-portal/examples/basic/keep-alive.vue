@@ -1,5 +1,5 @@
 <template>
-	<i-drawer 
+	<vc-drawer 
 		v-model="visible" 
 		:mask="false" 
 		:closable="true"
@@ -9,21 +9,22 @@
 		@on-close="handleCancel"
 	>
 		<div v-if="!loading">{{ data }} </div>
-		<i-spin v-if="loading"/>
+		<vc-spin v-if="loading"/>
 		<div @click="handleCancel">取消</div>
 		<div @click="handleOk">确定</div>
-	</i-drawer>
+	</vc-drawer>
 </template>
 
 <script>
-import { Drawer, Spin } from 'iview';
+import Spin from '../../../spin';
+import Drawer from '../../../drawer';
 import CreatePortal from '../../index';
 
 const config = {
 	name: "vc-tpl-basic-keep-alive",
 	components: {
-		'i-drawer': Drawer,
-		'i-spin': Spin,
+		'vc-drawer': Drawer,
+		'vc-spin': Spin,
 	},
 	props: {
 		data: Object,

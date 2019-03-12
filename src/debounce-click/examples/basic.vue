@@ -4,7 +4,7 @@
 	</vc-debounce-click>
 </template>
 <script>
-import { Button } from 'iview';
+import Button from '../../button';
 import DebounceClick from '../debounce-click';
 
 export default {

@@ -1,4 +1,4 @@
-# wya-vc
+# \@wya/vc
 [![npm][npm-image]][npm-url] [![changelog][changelog-image]][changelog-url]
 
 ## [Demo](https://wya-team.github.io/wya-vc/dist/index.html)
@@ -6,7 +6,7 @@
 ## 安装
 
 ```vim
-npm install wya-vc --save
+npm install @wya/vc --save
 ```
 
 ## 使用方式 => 按需加载，需要安装 `babel-plugin-import`
@@ -21,7 +21,7 @@ npm install babel-plugin-import --save-dev
 			"import",
 			[
 				{
-					"libraryName": "wya-vc",
+					"libraryName": "@wya/vc",
 					"libraryDirectory": "lib"
 				}
 			]
@@ -29,13 +29,16 @@ npm install babel-plugin-import --save-dev
 	]
 }
 ```
+
+- template下可以使用`vc-loader`
+
 - 注册选项
 ```js
-import { Vc } from 'wya-vc';
+import { Vc } from '@wya/vc';
 
 Vue.use(Vc, {
 	// config
-})
+});
 ```
 
 ```js
@@ -46,7 +49,7 @@ import { Copy } from 'wya-vc';
 ## 组件（暂时不归类）
 ### 实例
 - [`Vc: 上下文传递`](https://github.com/wya-team/wya-vc/tree/master/src/vc/)
-### 通用（移动优先）
+### 通用（PC优先）
 - [`Calendar: 日历展示`](https://github.com/wya-team/wya-vc/tree/master/src/calendar/)
 - [`Copy: 复制`](https://github.com/wya-team/wya-vc/tree/master/src/copy/)
 - [`CreateCustomer: 创建自定义组件`](https://github.com/wya-team/wya-vc/tree/master/src/create-customer/)
@@ -66,9 +69,13 @@ import { Copy } from 'wya-vc';
 
 ### PC - PC端
 
+## Todo
+
+- 提前编译
+
 <!--  以下内容无视  -->
 [changelog-image]: https://img.shields.io/badge/changelog-md-blue.svg
 [changelog-url]: CHANGELOG.md
 
-[npm-image]: https://img.shields.io/npm/v/wya-vc.svg
-[npm-url]: https://www.npmjs.com/package/wya-vc
+[npm-image]: https://img.shields.io/npm/v/@wya/vc.svg
+[npm-url]: https://www.npmjs.com/package/@wya/vc

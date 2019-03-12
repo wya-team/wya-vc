@@ -15,24 +15,26 @@
 		<h3 @click="handleClick">点击直接调用</h3>
 
 		<h2>表单</h2>
-		<i-form
+		<vc-form
 			ref="form"
 			:show-message="false"
 			:model="formValidate" 
 			:rules="ruleValidate" 
 		>
-			<i-form-item prop="timeV" @on-form-change="handleChange">
+			<vc-form-item prop="timeV" @on-form-change="handleChange">
 				<vcm-date-picker
 					v-model="formValidate.timeV"
 					mode="datetime"
 				/>
-			</i-form-item>
+			</vc-form-item>
 			<div @click="handleSubmit">提交表单</div>
-		</i-form >
+		</vc-form >
 	</div>
 </template>
 <script>
-import { Form, FormItem } from 'iview';
+import Form from '../../form';
+import Input from '../../input';
+import Message from '../../message';
 import MToast from '../../m-toast/index';
 import MDatePicker from '../m-date-picker';
 import { cloneDeep } from '../../utils/index';
@@ -41,8 +43,8 @@ export default {
 	name: "vcm-date-picker-basic",
 	components: {
 		'vcm-date-picker': MDatePicker,
-		'i-form': Form,
-		'i-form-item': FormItem
+		'vc-form': Form,
+		'vc-form-item': Form.Item
 	},
 	data() {
 		return {

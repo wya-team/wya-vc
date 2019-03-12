@@ -26,7 +26,7 @@ lang="en" |语言（'ch'或'en'）|String|'ch'
 	</div>
 </template>
 <script>
-import { Calendar } from "wya-vc";
+import { Calendar } from "@wya/vc";
 
 export default {
 	name: "vc-tpl-calendar",

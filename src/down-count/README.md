@@ -42,7 +42,7 @@ end	| 结束回调 | `func(id)` |	 -
 	/> 
 </template>
 <script>
-import { DownCount } from "wya-vc";
+import { DownCount } from "@wya/vc";
 
 export default {
 	name: "demo",
