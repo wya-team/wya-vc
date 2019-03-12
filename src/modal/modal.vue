@@ -244,8 +244,6 @@ export default {
 			} else {
 				this.newCoord.y = this.coord.y - modalY;
 			}
-			console.log('modalX:', modalX, 'modalY:', modalY);
-			console.log('X:', this.newCoord.x, 'Y:', this.newCoord.y);
 			el.style.transformOrigin = this.newCoord.x + 'px ' + this.newCoord.y + 'px 0';
 		}
 	}
