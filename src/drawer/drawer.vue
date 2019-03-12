@@ -128,7 +128,7 @@ export default {
 	}
 };
 </script>
-<style lang="less" scoped>
+<style lang="scss" scoped>
 .vc-drawer{
 	.__drawer-mask{
 		position: fixed;
