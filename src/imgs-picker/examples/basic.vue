@@ -73,7 +73,7 @@ export default {
 			});
 		},
 		handleError(error) {
-			Message.warning(error.msg);
+			Message.warn(error.msg);
 		}
 	}
 };

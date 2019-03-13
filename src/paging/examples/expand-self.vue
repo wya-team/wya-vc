@@ -56,7 +56,7 @@ export default {
 	components: {
 		'vc-paging': Paging,
 		'vc-tabs': Tabs,
-		'vc-tab-pane': Tab.Pane,
+		'vc-tab-pane': Tabs.Pane,
 		'vc-input': Input
 	},
 	data() {
