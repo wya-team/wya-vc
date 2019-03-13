@@ -37,7 +37,7 @@ export default {
 	name: "vc-paging-basic",
 	components: {
 		'vc-paging': Paging,
-		'vc-table-column': Table.TableColumn
+		'vc-table-column': Table.Column
 	},
 	data() {
 		return {

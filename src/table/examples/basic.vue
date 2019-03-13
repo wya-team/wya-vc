@@ -33,7 +33,7 @@ import Table from '..';
 export default {
 	components: {
 		'el-table': Table,
-		'el-table-column': Table.TableColumn
+		'el-table-column': Table.Column
 	},
 	data() {
 		return {

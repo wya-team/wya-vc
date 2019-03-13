@@ -73,7 +73,7 @@ export default {
 		'vc-tabs': Tabs,
 		'vc-tab-pane': Tabs.Pane,
 		'vc-input': Input,
-		'vc-table-column': Table.TableColumn
+		'vc-table-column': Table.Column
 	},
 	data() {
 		const { query = {} } = getParseUrl();
