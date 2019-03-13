@@ -99,6 +99,7 @@ const getHTMLConfig = () => {
 			ret.push(
 				new HtmlWebpackPlugin({
 					cssPath: ENV_IS_DEV ? '/templates/iview.css' : '/wya-vc/dist/iview.css', 
+					elmCssPath: ENV_IS_DEV ? '/templates/elm.css' : '/wya-vc/dist/elm.css', 
 					template: path.resolve(APP_ROOT, 'templates/tpl.ejs'),
 					chunks: [chunk],
 					inject: 'body',

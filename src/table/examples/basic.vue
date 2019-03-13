@@ -1,116 +1,84 @@
 <template>
-	<vc-table
-		:columns="columns"
-		:data="data"
-		width="550"
-		border
-	/>
+	<div>
+		<div @click="resetDateFilter">清除日期过滤器</div>
+		<div @click="clearFilter">清除所有过滤器</div>
+		<el-table
+			ref="filterTable"
+			:data="tableData"
+			style="width: 100%">
+			<el-table-column
+				:filters="[{text: '2016-05-01', value: '2016-05-01'}, {text: '2016-05-02', value: '2016-05-02'}, {text: '2016-05-03', value: '2016-05-03'}, {text: '2016-05-04', value: '2016-05-04'}]"
+				:filter-method="filterHandler"
+				prop="date"
+				label="日期"
+				sortable
+				width="180"
+				column-key="date"
+			/>
+			<el-table-column
+				prop="name"
+				label="姓名"
+				width="180"/>
+			<el-table-column
+				:formatter="formatter"
+				prop="address"
+				label="地址"/>
+		</el-table>
+	</div>
 </template>
+
 <script>
 import Table from '..';
+import TableColumn from '../../table-column';
+
 
 export default {
-	name: "vc-table-basic",
 	components: {
-		'vc-table': Table
+		'el-table': Table,
+		'el-table-column': TableColumn
 	},
 	data() {
 		return {
-			columns: [
-				{
-					title: 'Name',
-					key: 'name',
-					width: 100,
-					fixed: 'left'
-				},
-				{
-					title: 'Age',
-					key: 'age',
-					width: 100
-				},
-				{
-					title: 'Province',
-					key: 'province',
-					width: 100
-				},
-				{
-					title: 'City',
-					key: 'city',
-					width: 100
-				},
-				{
-					title: 'Address',
-					key: 'address',
-					width: 200
-				},
-				{
-					title: 'Postcode',
-					key: 'zip',
-					width: 100
-				},
-				{
-					title: 'Action',
-					key: 'action',
-					fixed: 'right',
-					width: 120,
-					render: (h, params) => {
-						return h('div', [
-							h('div', {
-								props: {
-									type: 'text',
-									size: 'small'
-								}
-							}, 'View'),
-							h('div', {
-								props: {
-									type: 'text',
-									size: 'small'
-								}
-							}, 'Edit')
-						]);
-					}
-				}
-			],
-			data: [
-				{
-					name: 'John Brown',
-					age: 18,
-					address: 'New York No. 1 Lake Park',
-					province: 'America',
-					city: 'New York',
-					zip: 100000
-				},
-				{
-					name: 'Jim Green',
-					age: 24,
-					address: 'Washington, D.C. No. 1 Lake Park',
-					province: 'America',
-					city: 'Washington, D.C.',
-					zip: 100000
-				},
-				{
-					name: 'Joe Black',
-					age: 30,
-					address: 'Sydney No. 1 Lake Park',
-					province: 'Australian',
-					city: 'Sydney',
-					zip: 100000
-				},
-				{
-					name: 'Jon Snow',
-					age: 26,
-					address: 'Ottawa No. 2 Lake Park',
-					province: 'Canada',
-					city: 'Ottawa',
-					zip: 100000
-				}
-			]
+			tableData: [{
+				date: '2016-05-02',
+				name: '王小虎',
+				address: '上海市普陀区金沙江路 1518 弄',
+				tag: '家'
+			}, {
+				date: '2016-05-04',
+				name: '王小虎',
+				address: '上海市普陀区金沙江路 1517 弄',
+				tag: '公司'
+			}, {
+				date: '2016-05-01',
+				name: '王小虎',
+				address: '上海市普陀区金沙江路 1519 弄',
+				tag: '家'
+			}, {
+				date: '2016-05-03',
+				name: '王小虎',
+				address: '上海市普陀区金沙江路 1516 弄',
+				tag: '公司'
+			}]
 		};
 	},
-	computed: {
-		
-	},
 	methods: {
+		resetDateFilter() {
+			this.$refs.filterTable.clearFilter('date');
+		},
+		clearFilter() {
+			this.$refs.filterTable.clearFilter();
+		},
+		formatter(row, column) {
+			return row.address;
+		},
+		filterTag(value, row) {
+			return row.tag === value;
+		},
+		filterHandler(value, row, column) {
+			const property = column.property;
+			return row[property] === value;
+		}
 	}
 };
 </script>

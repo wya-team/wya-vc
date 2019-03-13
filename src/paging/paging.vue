@@ -15,30 +15,33 @@
 			<slot v-bind="item" />
 		</template>
 		
-		<i-table
+		<el-table
 			v-else
 			ref="tableTarget" 
 			:data="data" 
-			:loading="loading"
-			:columns="columns"
-			:stripe="stripe"
 			v-bind="tableOpts"
-			@on-current-change="$emit('current-change', arguments[0], arguments[1])"
-			@on-select="$emit('select', arguments[0], arguments[1])"
-			@on-select-cancel="$emit('select-cancel', arguments[0])"
-			@on-select-all="$emit('select-all', arguments[0])"
-			@on-select-all-cancel="$emit('select-all-cancel', arguments[0])"
-			@on-selection-change="$emit('selection-change', arguments[0])"
-			@on-sort-change="$emit('sort-change', arguments[0])"
-			@on-filter-change="$emit('filter-change', arguments[0])"
-			@on-row-click="$emit('row-click', arguments[0], arguments[1])"
-			@on-row-dblclick="$emit('row-dblclick', arguments[0], arguments[1])"
-			@on-expand="$emit('expand', arguments[0], arguments[1])"
+			@select="$emit('select', arguments[0], arguments[1])"
+			@select-all="$emit('select-all', arguments[0])"
+			@selection-change="$emit('selection-change', arguments[0])"
+			@cell-mouse-enter="$emit('cell-mouse-enter', arguments[0], arguments[1], arguments[2], arguments[3])"
+			@cell-mouse-leave="$emit('cell-mouse-leave', arguments[0], arguments[1], arguments[2], arguments[3])"
+			@cell-click="$emit('cell-click', arguments[0], arguments[1], arguments[2], arguments[3])"
+			@cell-dblclick="$emit('cell-dblclick', arguments[0], arguments[1], arguments[2], arguments[3])"
+			@row-click="$emit('row-click', arguments[0], arguments[1], arguments[2])"
+			@row-contextmenu="$emit('row-contextmenu', arguments[0], arguments[1], arguments[2])"
+			@row-dblclick="$emit('row-dblclick',arguments[0], arguments[1], arguments[2])"
+			@header-click="$emit('header-click', arguments[0], arguments[1])"
+			@header-contextmenu="$emit('header-contextmenu', arguments[0], arguments[1])"
+			@sort-change="$emit('sort-change', arguments[0])"
+			@filter-change="$emit('filter-change', arguments[0])"
+			@current-change="$emit('current-change', arguments[0], arguments[1])"
+			@header-dragend="$emit('header-dragend', arguments[0], arguments[1], arguments[2], arguments[3])"
+			@expand-change="$emit('expand-change', arguments[0], arguments[1])"
 		>
-			<slot name="header" />
-			<slot name="footer" />
-			<slot name="loading" />
-		</i-table>
+			<slot/>
+			<slot slot="append" name="append" />
+			<slot slot="empty" name="empty"/>
+		</el-table>
 		
 		<div v-if="footer" class="__footer">
 			<div>
@@ -68,7 +71,7 @@
 
 <script>
 import Page from 'iview/src/components/page';
-import Table from 'iview/src/components/table';
+import Table from '../table';
 
 import { getConstructUrl, getParseUrl, cloneDeep, cloneDeepEasier } from '../utils/utils';
 import { VcInstance } from '../vc/index';
@@ -85,7 +88,7 @@ try {
 export default {
 	name: "vc-paging",
 	components: {
-		'i-table': Table,
+		'el-table': Table,
 		'i-page': Page,
 	},
 	props: {

@@ -6,7 +6,7 @@
 			enter-button="搜索" 
 			placeholder="请输入关键字搜索"
 			style="margin: 20px; width: 300px"
-			@on-search="handleSearch"
+			@search="handleSearch"
 		/>
 		<vc-tabs 
 			:value="type" 
@@ -21,17 +21,31 @@
 			>
 				<vc-paging
 					:show="item.value == type" 
-					:type="item.value"
-					:columns="columns" 
 					:data-source="listInfo[item.value].data"
 					:total="listInfo[item.value].total"
 					:reset="listInfo[item.value].reset"
 					:current.sync="current[item.value]"
+					:page-opts="page"
 					:history="true"
 					:load-data="loadData"
-					:page-opts="page"
+					style="width: 100%"
 					@page-size-change="handleResetFirst"
-				/>
+				>
+					<vc-table-column
+						prop="id"
+						label="ID"
+						width="180"
+					/>
+					<vc-table-column
+						prop="name"
+						label="姓名"
+						width="180"
+					/>
+					<vc-table-column
+						prop="status"
+						label="状态"
+					/>
+				</vc-paging>
 			</vc-tab-pane>
 		</vc-tabs>
 	</div>
@@ -42,6 +56,7 @@ import Tabs from '../../tabs';
 import Input from '../../input';
 import Message from '../../message';
 import Paging from '../paging';
+import TableColumn from '../../table-column';
 import { initPage } from './utils/utils';
 import { getConstructUrl, getParseUrl } from '../../utils/utils';
 
@@ -56,8 +71,9 @@ export default {
 	components: {
 		'vc-paging': Paging,
 		'vc-tabs': Tabs,
-		'vc-tab-pane': Tab.Pane,
-		'vc-input': Input
+		'vc-tab-pane': Tabs.Pane,
+		'vc-input': Input,
+		'vc-table-column': TableColumn
 	},
 	data() {
 		const { query = {} } = getParseUrl();

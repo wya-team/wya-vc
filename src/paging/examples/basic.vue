@@ -1,26 +1,43 @@
 <template>
 	<vc-paging
 		:data-source="listInfo.data"
-		:columns="columns" 
+		:load-data="loadData"
 		:total="listInfo.total"
 		:reset="listInfo.reset"
 		:page-opts="page"
 		:table-opts="table"
 		:history="true"
-		:load-data="loadData"
 		:show="show"
+		style="width: 100%"
 		@page-size-change="handleResetFirst"
-	/>
+	>
+		<vc-table-column
+			prop="date"
+			label="日期"
+			width="180"
+		/>
+		<vc-table-column
+			prop="name"
+			label="姓名"
+			width="180"
+		/>
+		<vc-table-column
+			prop="address"
+			label="地址"
+		/>
+	</vc-paging>
 </template>
 <script>
 import { ajax } from '@wya/fetch';
 import Paging from '../paging';
 import { initPage } from './utils/utils';
+import TableColumn from '../../table-column';
 
 export default {
 	name: "vc-paging-basic",
 	components: {
-		'vc-paging': Paging
+		'vc-paging': Paging,
+		'vc-table-column': TableColumn
 	},
 	data() {
 		return {
@@ -108,7 +125,9 @@ export default {
 					id: `${page}_${i}`,
 					name: page + '-Business' + Math.floor(Math.random() * 100 + 1),
 					status: Math.floor(Math.random() * 3 + 1),
-					opt: Math.floor(Math.random() * 3 + 1)
+					opt: Math.floor(Math.random() * 3 + 1),
+					date: '2016-05-02',
+					address: '上海市普陀区金沙江路 1518 弄'
 				});
 			}
 			return fakeData;
