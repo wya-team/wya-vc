@@ -1,5 +1,10 @@
 import { EventStore } from '@wya/ps';
 
+/**
+ * 组件库设计完毕，此css会被移除
+ */
+import 'iview/dist/styles/iview.css';
+
 class Vc {
 	constructor() {
 		this.hasInit = false;

@@ -2,11 +2,12 @@
 	<div>
 		<div @click="resetDateFilter">清除日期过滤器</div>
 		<div @click="clearFilter">清除所有过滤器</div>
-		<el-table
+		<vc-table
 			ref="filterTable"
 			:data="tableData"
-			style="width: 100%">
-			<el-table-column
+			style="width: 100%"
+		>
+			<vc-table-column
 				:filters="[{text: '2016-05-01', value: '2016-05-01'}, {text: '2016-05-02', value: '2016-05-02'}, {text: '2016-05-03', value: '2016-05-03'}, {text: '2016-05-04', value: '2016-05-04'}]"
 				:filter-method="filterHandler"
 				prop="date"
@@ -15,15 +16,17 @@
 				width="180"
 				column-key="date"
 			/>
-			<el-table-column
+			<vc-table-column
 				prop="name"
 				label="姓名"
-				width="180"/>
-			<el-table-column
+				width="180"
+			/>
+			<vc-table-column
 				:formatter="formatter"
 				prop="address"
-				label="地址"/>
-		</el-table>
+				label="地址"
+			/>
+		</vc-table>
 	</div>
 </template>
 
@@ -32,8 +35,8 @@ import Table from '..';
 
 export default {
 	components: {
-		'el-table': Table,
-		'el-table-column': Table.Column
+		'vc-table': Table,
+		'vc-table-column': Table.Column
 	},
 	data() {
 		return {

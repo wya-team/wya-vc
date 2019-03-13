@@ -15,7 +15,7 @@
 			<slot v-bind="item" />
 		</template>
 		
-		<el-table
+		<vc-table
 			v-else
 			ref="tableTarget" 
 			:data="data" 
@@ -41,7 +41,7 @@
 			<slot/>
 			<slot slot="append" name="append" />
 			<slot slot="empty" name="empty"/>
-		</el-table>
+		</vc-table>
 		
 		<div v-if="footer" class="__footer">
 			<div>
@@ -54,7 +54,7 @@
 					:current="currentPage" 
 					name="page"
 				/>
-				<i-page
+				<vc-page
 					v-else
 					ref="pageTarget"  
 					:total="total" 
@@ -88,8 +88,8 @@ try {
 export default {
 	name: "vc-paging",
 	components: {
-		'el-table': Table,
-		'i-page': Page,
+		'vc-table': Table,
+		'vc-page': Page,
 	},
 	props: {
 		// table组件属性
