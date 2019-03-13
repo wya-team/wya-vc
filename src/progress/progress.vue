@@ -145,7 +145,7 @@ export default {
 	}
 };
 </script>
-<style lang="less" scoped>
+<style lang="scss" scoped>
 .vc-progress{
 	.__line{
 		.__wrapper{
