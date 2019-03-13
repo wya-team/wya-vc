@@ -18,11 +18,13 @@
 			<el-table-column
 				prop="name"
 				label="姓名"
-				width="180"/>
+				width="180"
+			/>
 			<el-table-column
 				:formatter="formatter"
 				prop="address"
-				label="地址"/>
+				label="地址"
+			/>
 		</el-table>
 	</div>
 </template>
