@@ -61,7 +61,7 @@
         "@babel/preset-env": "^7.3.1",
         "@babel/runtime": "^7.3.4",
         "@wya/ps": "^1.0.2",
-        "@wya/fetch": "^1.0.0",
+        "@wya/fetch": "^0.0.1",
         "@wya/utils": "^1.0.0",
         "autoprefixer": "^8.3.0",
         "babel-eslint": "^8.2.3",
