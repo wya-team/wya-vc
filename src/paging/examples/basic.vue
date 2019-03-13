@@ -30,14 +30,14 @@
 <script>
 import { ajax } from '@wya/http';
 import Paging from '../paging';
+import Table from '../../table';
 import { initPage } from './utils/utils';
-import TableColumn from '../../table-column';
 
 export default {
 	name: "vc-paging-basic",
 	components: {
 		'vc-paging': Paging,
-		'vc-table-column': TableColumn
+		'vc-table-column': Table.TableColumn
 	},
 	data() {
 		return {

@@ -29,13 +29,11 @@
 
 <script>
 import Table from '..';
-import TableColumn from '../../table-column';
-
 
 export default {
 	components: {
 		'el-table': Table,
-		'el-table-column': TableColumn
+		'el-table-column': Table.TableColumn
 	},
 	data() {
 		return {

@@ -56,7 +56,7 @@ import Tabs from '../../tabs';
 import Input from '../../input';
 import Message from '../../message';
 import Paging from '../paging';
-import TableColumn from '../../table-column';
+import Table from '../../table';
 import { initPage } from './utils/utils';
 import { getConstructUrl, getParseUrl } from '../../utils/utils';
 
@@ -73,7 +73,7 @@ export default {
 		'vc-tabs': Tabs,
 		'vc-tab-pane': Tabs.Pane,
 		'vc-input': Input,
-		'vc-table-column': TableColumn
+		'vc-table-column': Table.TableColumn
 	},
 	data() {
 		const { query = {} } = getParseUrl();
