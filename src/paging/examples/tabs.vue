@@ -51,7 +51,7 @@
 	</div>
 </template>
 <script>
-import { ajax } from '@wya/fetch';
+import { ajax } from '@wya/http';
 import Tabs from '../../tabs';
 import Input from '../../input';
 import Message from '../../message';

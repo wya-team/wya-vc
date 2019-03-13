@@ -1,4 +1,4 @@
-import { ajax } from '@wya/fetch';
+import { ajax } from '@wya/http';
 import { getUid, attrAccept, initItem } from '../utils/utils';
 import { VcInstance } from '../vc/index';
 import { Tips } from './tips';

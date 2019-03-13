@@ -16,7 +16,7 @@
 	</vc-pull-scroll>
 </template>
 <script>
-import { ajax } from '@wya/fetch';
+import { ajax } from '@wya/http';
 import PullScroll from '..';
 
 let count = 0;

@@ -28,7 +28,7 @@
 	</div>
 </template>
 <script>
-import { ajax } from '@wya/fetch';
+import { ajax } from '@wya/http';
 import Message from '../../message';
 import Upload from '../index';
 import { VcInstance } from '../../vc/index';

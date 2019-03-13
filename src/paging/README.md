@@ -73,7 +73,7 @@ render | 自定义展示 | `func` | `(h, { row, index }, handleClick)`
 	/>
 </template>
 <script>
-import { ajax } from '@wya/fetch';
+import { ajax } from '@wya/http';
 import { Paging } from '@wya/vc';
 
 const initPage = {
