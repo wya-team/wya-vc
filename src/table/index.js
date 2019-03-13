@@ -1,5 +1,5 @@
 import Table from './src/table.vue';
 import TableColumn from './src/table-column';
 
-Table.TableColumn = TableColumn;
+Table.Column = TableColumn;
 export default Table;
