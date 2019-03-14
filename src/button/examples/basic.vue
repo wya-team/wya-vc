@@ -4,8 +4,8 @@
 			<vc-button :wait="5000" type="default" @click="showNum">default</vc-button>
 			<vc-button type="primary">primary</vc-button>
 			<vc-button type="text">text</vc-button>
-			<vc-button type="success">success</vc-button>
-			<vc-button type="error">error</vc-button>
+			<vc-button type="success" size="large">success</vc-button>
+			<vc-button type="error" size="small">error</vc-button>
 			<vc-button type="warning">warning</vc-button>
 			<vc-button disabled type="primary">Primary</vc-button>
 		</div>
