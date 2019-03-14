@@ -3,6 +3,7 @@
 		:data-source="listInfo.data"
 		:load-data="loadData"
 		:total="listInfo.total"
+		:count="listInfo.count"
 		:reset="listInfo.reset"
 		:page-opts="page"
 		:table-opts="table"
@@ -47,44 +48,6 @@ export default {
 			},
 			page: undefined,
 			table: undefined,
-			columns: [
-				{
-					type: 'selection',
-					width: 60
-				},
-				{
-					title: 'Name',
-					key: 'name'
-				},
-				{
-					title: 'Status',
-					key: 'status',
-					render: (h, params) => {
-						return h('div', {
-							style: {
-								marginRight: '5px'
-							},
-							on: {
-								click: this.handleResetFirst
-							}
-						}, '回到首页刷新');
-					}
-				},
-				{
-					title: 'Opt',
-					key: 'opt',
-					render: (h, params) => {
-						return h('div', {
-							style: {
-								marginRight: '5px'
-							},
-							on: {
-								click: this.handleResetCur
-							}
-						}, '当前页刷新');
-					}
-				}
-			],
 		};
 	},
 	computed: {
@@ -97,21 +60,23 @@ export default {
 				localData: {
 					status: 1,
 					data: {
-						currentPage: page,
-						total: 100,
+						page: {
+							current: page,
+							total: 100,
+							count: pageSize * 100,
+						},
 						list: this.getFakeData(page, pageSize)
 					}
 
 				}
 			}).then((res) => {
 				console.log(`page: ${page}@success`);
-				const { currentPage, total, list } = res.data;
 				this.listInfo = {
 					...this.listInfo,
-					total,
+					...res.data.page,
 					data: {
 						...this.listInfo.data,
-						[currentPage]: list
+						[page]: res.data.list
 					}
 				};
 			}).catch((e) => {

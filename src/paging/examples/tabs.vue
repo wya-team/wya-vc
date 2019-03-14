@@ -23,6 +23,7 @@
 					:show="item.value == type" 
 					:data-source="listInfo[item.value].data"
 					:total="listInfo[item.value].total"
+					:count="listInfo[item.value].count"
 					:reset="listInfo[item.value].reset"
 					:current.sync="current[item.value]"
 					:page-opts="page"
@@ -90,45 +91,7 @@ export default {
 				{ label: '标签一', value: '1' }, 
 				{ label: '标签二', value: '2' }, 
 				{ label: '标签三', value: '3' }
-			],
-			columns: [
-				{
-					type: 'selection',
-					width: 60
-				},
-				{
-					title: 'Name',
-					key: 'name'
-				},
-				{
-					title: 'Status',
-					key: 'status',
-					render: (h, params) => {
-						return h('div', {
-							style: {
-								marginRight: '5px'
-							},
-							on: {
-								click: this.handleResetFirst
-							}
-						}, '回到首页刷新');
-					}
-				},
-				{
-					title: 'Opt',
-					key: 'opt',
-					render: (h, params) => {
-						return h('div', {
-							style: {
-								marginRight: '5px'
-							},
-							on: {
-								click: this.handleResetCur
-							}
-						}, '当前页刷新');
-					}
-				}
-			],
+			]
 		};
 	},
 	computed: {
@@ -146,19 +109,21 @@ export default {
 					const res = {
 						status: 1,
 						data: {
-							currentPage: page,
-							total: 100,
+							page: {
+								current: page,
+								total: 100,
+								count: pageSize * 100,
+							},
 							list: this.getFakeData(page, pageSize)
 						}
 					};
-					const { currentPage, total, list } = res.data;
 					this.listInfo = {
 						...this.listInfo,
 						[type]: {
-							total,
+							...res.data.page,
 							data: {
 								...this.listInfo[type].data,
-								[currentPage]: list
+								[page]: res.data.list
 							}
 						}
 						

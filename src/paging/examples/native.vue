@@ -51,21 +51,23 @@ export default {
 				localData: {
 					status: 1,
 					data: {
-						currentPage: page,
-						total: 100,
+						page: {
+							current: page,
+							total: 100,
+							count: pageSize * 100,
+						},
 						list: this.getFakeData(page, pageSize)
 					}
 
 				}
 			}).then((res) => {
 				console.log(`page: ${page}@success`);
-				const { currentPage, total, list } = res.data;
 				this.listInfo = {
 					...this.listInfo,
-					total,
+					...res.data.page,
 					data: {
 						...this.listInfo.data,
-						[currentPage]: list
+						[page]: res.data.list
 					}
 				};
 			}).catch((e) => {

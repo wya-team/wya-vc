@@ -1,8 +1,9 @@
 <template>
 	<vc-page
 		:current.sync="current"
+		:count="100" 
 		:total="100" 
-		show-total 
+		show-count 
 		show-elevator 
 		show-sizer 
 	/>
@@ -17,7 +18,7 @@ export default {
 	},
 	data() {
 		return {
-			current: 3
+			current: 3,
 		};
 	},
 	computed: {

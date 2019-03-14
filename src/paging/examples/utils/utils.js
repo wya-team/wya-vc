@@ -1,5 +1,9 @@
 export const initPage = {
-	total: 0,
 	reset: false,
-	data: {}
+	current: 0,
+	total: 0,
+	count: 0,
+	data: {
+
+	}
 };
