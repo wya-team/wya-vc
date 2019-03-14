@@ -32,7 +32,7 @@
 					<div ref="slot" class="_modal-content"><slot/></div>
 					<div class="_modal-footer">
 						<slot name="footer">
-							<vc-button type="text" @click="cancel">{{ cancelText }}</vc-button>
+							<vc-button style="margin-right: 8px;" @click="cancel">{{ cancelText }}</vc-button>
 							<vc-button type="primary" @click="ok">{{ okText }}</vc-button>
 						</slot>
 					</div>
@@ -53,9 +53,12 @@ export default {
 		'vc-button': Button
 	},
 	props: {
+		size: {
+			type: String,
+			default: 'small'
+		},
 		width: {
-			type: Number,
-			default: 400
+			type: Number
 		},
 		value: {
 			type: Boolean,
@@ -116,18 +119,43 @@ export default {
 	computed: {
 		style() {
 			let style = {};
+			let minHeight = {};
+			let newWidth = 0;
+			let height = 0;
+			if (this.width) {
+				newWidth = this.width;
+			} else {
+				switch (this.size) {
+					case 'small':
+						newWidth = 480;
+						height = '296px';
+						break;
+					case 'medium':
+						newWidth = 640;
+						height = '502px';
+						break;
+					case 'large': 
+						newWidth = 662;
+						height = '662px';
+						break;
+					default:
+						return;
+				}
+			}
 			if (this.draggable) {
 				style = {
-					left: this.dragData.x ? this.dragData.x + 'px' : `calc(50% - ${this.width / 2}px)`,
+					left: this.dragData.x ? this.dragData.x + 'px' : `calc(50% - ${newWidth / 2}px)`,
 					top: this.dragData.y ? this.dragData.y + 'px' : '100px',
 					zIndex: 4000,
-					width: this.width + 'px',
-					transformOrigin: '0 0 0'
+					width: newWidth + 'px',
+					transformOrigin: '0 0 0',
+					minHeight: height
 				};
 			} else {
 				style = {
-					width: this.width + 'px',
-					transformOrigin: '0 0 0'
+					width: newWidth + 'px',
+					transformOrigin: '0 0 0',
+					minHeight: height
 				};
 			}
 			return style;
@@ -244,14 +272,12 @@ export default {
 			} else {
 				this.newCoord.y = this.coord.y - modalY;
 			}
-			console.log('modalX:', modalX, 'modalY:', modalY);
-			console.log('X:', this.newCoord.x, 'Y:', this.newCoord.y);
 			el.style.transformOrigin = this.newCoord.x + 'px ' + this.newCoord.y + 'px 0';
 		}
 	}
 };
 </script>
-<style lang="scss" scoped>
+<style lang="scss">
 .vc-modal{
 	._modal-mask{
 		opacity: 1;
@@ -273,26 +299,28 @@ export default {
 		._modal-wrap{
 			position: relative;
 			background: #fff;
-			box-shadow: 0 4px 12px rgba(0,0,0,.15);
+			box-shadow: 0px 0px 8px 0px rgba(0, 0, 0, 0.1);
 			margin: auto;
+			border-radius: 4px;
+			padding-bottom: 63px;
 			&._modal-drag{
 				position: absolute;
 			}
 			._modal-header{
 				position: relative;
-				border-bottom: 1px solid #e8eaec;
-				padding: 14px 16px;
+				border-bottom: 1px solid #e8e8e8;
+				padding: 14px 24px;
 				line-height: 1;
 				font-size: 14px;
-				font-weight: 700;
+				font-weight: 400;
 				._header-inner{
 					display: inline-block;
 					width: 100%;
 					height: 20px;
 					line-height: 20px;
 					font-size: 14px;
-					color: #17233d;
-					font-weight: 700;
+					color: #333;
+					font-weight: 400;
 					overflow: hidden;
 					text-overflow: ellipsis;
 					white-space: nowrap;
@@ -305,11 +333,14 @@ export default {
 				}
 			}
 			._modal-content{
-				padding: 16px;
+				height: calc(100% - 114px);
 			}
 			._modal-footer{
-				border-top: 1px solid #e8eaec;
-				padding: 12px 18px;
+				position: absolute;
+				bottom: 0;
+				width: 100%;
+				border-top: 1px solid #e8e8e8;
+				padding: 17px 24px;
 				text-align: right;
 			}
 		}
