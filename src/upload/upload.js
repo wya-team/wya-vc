@@ -271,9 +271,9 @@ export default {
 				url: url || defaultUrl,
 				type: "FORM",
 				param: {
-					name: name || FORM_NAME || 'file',
-					file,
-					data: { ...extra, ...response }
+					[name || FORM_NAME || 'file']: file,
+					...extra, 
+					...response
 				},
 				headers,
 				localData,
