@@ -77,8 +77,8 @@ export default {
 <style lang="scss" scoped>
 @import '../style/index.scss';
 
-$primary-color: #2d8cf0;
-$primary-hover-color: #57a3f3;
+$primary-color: #5495f6;
+$primary-hover-color: #67a4ff;
 
 $success-color: #19be6b;
 $success-hover-color: #47cb89;
@@ -89,7 +89,7 @@ $error-hover-color: #f16643;
 $warning-color: #e6a23c;
 $warning-hover-color: #ebb563;
 .vc-btn {
-	padding: 5px 15px 6px;
+	padding: 3px 16px 4px;
 	font-size: 12px;
 	border-radius: 4px;
 	border: 1px solid transparent;
@@ -100,9 +100,9 @@ $warning-hover-color: #ebb563;
 	transition: color .2s linear,background-color .2s linear,border .2s linear,box-shadow .2s linear;
 	outline:0 none !important;
 	&[disabled], &[disabled]:hover {
-		color: #c5c8ce;
-		background-color: #f7f7f7;
-		border-color: #dcdee2;
+		color: #aaa;
+		background-color: #f4f4f4;
+		border-color: #d9d9d9;
 		cursor: not-allowed;
 	}
 	&.vc-btn-circle {
@@ -170,7 +170,7 @@ $warning-hover-color: #ebb563;
 	}
 }
 .vc-btn-large {
-	padding: 6px 15px;
+	padding: 4px 16px;
     font-size: 14px;
     border-radius: 4px;
 	&.vc-btn-circle {
@@ -178,7 +178,7 @@ $warning-hover-color: #ebb563;
 	}
 }
 .vc-btn-small {
-	padding: 1px 7px 2px;
+	padding: 0 8px;
     font-size: 12px;
     border-radius: 3px;
 	&.vc-btn-circle {
