@@ -51,13 +51,14 @@
 				<slot 
 					v-if="$slots.page || $scopedSlots.page"
 					:total="total"
+					:count="count"
 					:current="currentPage" 
 					name="page"
 				/>
 				<vc-page
 					v-else
 					ref="pageTarget"  
-					:total="total" 
+					:total="count" 
 					:current="currentPage"
 					:page-size="pageSize"
 					v-bind="pageOpts"
@@ -186,6 +187,10 @@ export default {
 			default: () => ({
 				pageSize: true
 			})
+		},
+		count: {
+			type: String | Number, // iview为total
+			default: 0
 		}
 	},
 	data() {
@@ -230,16 +235,16 @@ export default {
 			}
 		},
 		/**
-		 * 先有total，才可以设置 currentPage，否则无效
+		 * 先有count，才可以设置 currentPage，否则无效
 		 */
 		dataSource(v) {
 			let page = this.reset === true 
 				? this.currentPage // 当前页刷新
 				: 1; // 首页刷新
-			if (this.total === 0 && this.show) {
+			if (this.count === 0 && this.show) {
 				this.currentPage = 0;
 				this.handleChange(page);
-			} else if (this.total === 0) {
+			} else if (this.count === 0) {
 				this.currentPage = 0;
 			}
 
@@ -303,7 +308,7 @@ export default {
 			let data = cloneDeep(this.dataSource[page]);
 			// 初始化结构数据
 			if (this.show 
-				&& this.total !== 0 
+				&& this.count !== 0 
 				&& data 
 				&& data.__expand__ === undefined 
 				&& data.some(item => item.children instanceof Array)

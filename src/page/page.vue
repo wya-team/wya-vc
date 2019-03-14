@@ -5,9 +5,9 @@
 		:page-size-opts="pageSizeOpts"
 		:placement="placement"
 		:size="size"
-		:total="total"
+		:total="count || total"
 		:simple="simple"
-		:show-total="showTotal"
+		:show-total="showCount || showTotal"
 		:show-elevator="showElevator"
 		:show-sizer="showSizer"
 		:class-name="className"
@@ -31,7 +31,15 @@ export default {
 		'i-page': Page
 	},
 	props: {
-		...Page.props
+		...Page.props,
+		count: {
+			type: String | Number, // iview为total
+			default: 0
+		},
+		showCount: {
+			type: Boolean, // iview为show-total
+			default: true
+		}
 	},
 	data() {
 		return {

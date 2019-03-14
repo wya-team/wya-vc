@@ -13,7 +13,8 @@ history | url表示 | `boolean` | false
 sync | 同步`vuex/vue-router`（this.$route） | `bool` | false
 dataSource | 数据源 | `obj:{ str: arr }` | -
 columns | item | `arr` | -
-total | 总数量 | `number` | 0
+total | 总页数 | `number` | 0
+count | **总条数** | `number` | 0
 reset | 刷新时候使用，当前页刷新（true）,首页刷新（false） | `boolean` | -
 tableOpts | 表格额外参数 | `obj` | -
 pageOpts | 分页额外参数 | `obj` | -
