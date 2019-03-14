@@ -58,7 +58,7 @@
 				<vc-page
 					v-else
 					ref="pageTarget"  
-					:total="count" 
+					:total="Number(count)" 
 					:current="currentPage"
 					:page-size="pageSize"
 					v-bind="pageOpts"
