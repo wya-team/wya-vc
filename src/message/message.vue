@@ -111,11 +111,11 @@ export default {
 };
 </script>
 
-<style lang="scss" scoped>
+<style lang="scss">
 @import '../style/index.scss';
 //弹框类的颜色
-$primary-color: #2d8cf0;
-$primary-hover-color: #57a3f3;
+$primary-color: #5495f6;
+$primary-hover-color: #67a4ff;
 
 $success-color: #19be6b;
 $success-hover-color: #47cb89;
@@ -151,18 +151,19 @@ $warning-hover-color: #ebb563;
 		// @include commonFlex();
 		// align-items: center;
 		display: inline-block;
-		padding: 8px 16px;
+		padding: 9px 16px 10px;
 		background: #fff;
-		box-shadow: $default-border-shadow;
+		box-shadow: 0px 0px 8px 0px rgba(0, 0, 0, 0.1);
 		border-radius: 4px;
 		.__content-icon, p, .loading{
 			display: inline-block;
 			vertical-align: middle;
 			font-size: 14px;
+			margin-right: 8px;
 		}
 		p {
 			font-size: 14px;
-			padding: 0 8px;
+			// padding: 0 8px;
 		}
 	}
 	.success {
