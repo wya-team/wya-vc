@@ -1,5 +1,5 @@
 <template>
-	<div>
+	<div style="padding: 20px">
 		<div @click="resetDateFilter">清除日期过滤器</div>
 		<div @click="clearFilter">清除所有过滤器</div>
 		<vc-table
@@ -9,13 +9,9 @@
 		>
 			<vc-table-item>
 				<vc-table-column
-					:filters="[{text: '2016-05-01', value: '2016-05-01'}, {text: '2016-05-02', value: '2016-05-02'}, {text: '2016-05-03', value: '2016-05-03'}, {text: '2016-05-04', value: '2016-05-04'}]"
-					:filter-method="filterHandler"
 					prop="date"
 					label="日期"
-					sortable
 					width="180"
-					column-key="date"
 				/>
 				<vc-table-column
 					prop="name"

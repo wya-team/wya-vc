@@ -492,10 +492,10 @@
 
 .el-table .cell,
 .el-table th div {
-	padding-right: 10px;
+	padding-right: 12px;
 	overflow: hidden;
 	text-overflow: ellipsis;
-	padding-left: 10px
+	padding-left: 12px
 }
 
 .el-table tr input[type=checkbox] {
@@ -825,7 +825,7 @@
 .el-table__body tr.hover-row.el-table__row--striped.current-row>td,
 .el-table__body tr.hover-row.el-table__row--striped>td,
 .el-table__body tr.hover-row>td {
-	background-color: #ecf5ff
+	background-color: #F9F9F9;
 }
 
 .el-table__column-resize-proxy {
@@ -857,7 +857,7 @@
 }
 
 .el-table--enable-row-hover .el-table__body tr:hover>td {
-	background-color: #f5f7fa
+	background-color: #F9F9F9
 }
 
 .el-table--fluid-height .el-table__fixed,
