@@ -444,7 +444,12 @@ export default {
 		let columnIndex;
 
 		if (!this.isSubColumn) {
-			columnIndex = [].indexOf.call(parent.$refs.hiddenColumns.children, this.$el);
+			let children = parent.$refs.hiddenColumns.children;
+			if (children.length === 1 && children[0].className === 'vc-table-item') {
+				columnIndex = [].indexOf.call(children[0].children, this.$el);
+			} else {
+				columnIndex = [].indexOf.call(children, this.$el);
+			}
 		} else {
 			columnIndex = [].indexOf.call(parent.$el.children, this.$el);
 		}

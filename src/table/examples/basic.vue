@@ -7,25 +7,27 @@
 			:data="tableData"
 			style="width: 100%"
 		>
-			<vc-table-column
-				:filters="[{text: '2016-05-01', value: '2016-05-01'}, {text: '2016-05-02', value: '2016-05-02'}, {text: '2016-05-03', value: '2016-05-03'}, {text: '2016-05-04', value: '2016-05-04'}]"
-				:filter-method="filterHandler"
-				prop="date"
-				label="日期"
-				sortable
-				width="180"
-				column-key="date"
-			/>
-			<vc-table-column
-				prop="name"
-				label="姓名"
-				width="180"
-			/>
-			<vc-table-column
-				:formatter="formatter"
-				prop="address"
-				label="地址"
-			/>
+			<vc-table-item>
+				<vc-table-column
+					:filters="[{text: '2016-05-01', value: '2016-05-01'}, {text: '2016-05-02', value: '2016-05-02'}, {text: '2016-05-03', value: '2016-05-03'}, {text: '2016-05-04', value: '2016-05-04'}]"
+					:filter-method="filterHandler"
+					prop="date"
+					label="日期"
+					sortable
+					width="180"
+					column-key="date"
+				/>
+				<vc-table-column
+					prop="name"
+					label="姓名"
+					width="180"
+				/>
+				<vc-table-column
+					:formatter="formatter"
+					prop="address"
+					label="地址"
+				/>
+			</vc-table-item>
 		</vc-table>
 	</div>
 </template>
@@ -36,7 +38,8 @@ import Table from '..';
 export default {
 	components: {
 		'vc-table': Table,
-		'vc-table-column': Table.Column
+		'vc-table-column': Table.Column,
+		'vc-table-item': Table.Item
 	},
 	data() {
 		return {
