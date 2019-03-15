@@ -16,11 +16,12 @@
 .el-table th {
 	padding: 7px 0;
 }
-.el-table__row {
-	:first-child {
+
+.el-table td {
+	&:first-child {
 		padding-left: 12px;
 	}
-	:last-child {
+	&:last-child {
 		padding-right: 12px;
 	}
 }

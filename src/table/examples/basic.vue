@@ -9,10 +9,14 @@
 		>
 			<vc-table-item>
 				<vc-table-column
+					:formatter="formatter"
 					prop="date"
 					label="日期"
 					width="180"
-				/>
+				>
+					<div>回到首页刷新</div>
+					<div>当前页刷新</div>
+				</vc-table-column>
 				<vc-table-column
 					prop="name"
 					label="姓名"
