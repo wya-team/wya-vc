@@ -8,8 +8,9 @@
 			/>
 		</transition>
 		<div 
+			v-if="confirm"
 			ref="wrap"
-			:style="draggable ? 'top: 0px' : ''"
+			:style="wrapStyle"
 			class="_wrap"
 			@click="handleWrapClose"
 		>
@@ -17,7 +18,43 @@
 				<div 
 					v-if="value"
 					ref="modal" 
-					:style="style"
+					:style="modalStyle"
+					:class="draggable ? '_modal-drag' : ''"
+					class="_modal-wrap"
+				>
+					<div class="__confirm-top">
+						<vc-icon :type="mode" :class="mode" class="__confirm-icon"/>
+						<div class="__right">
+							<div ref="header" class="_confirm-header" @mousedown="mouseDown">
+								<span class="__title">{{ title }}</span>
+							</div>
+							<div class="_confirm-content">
+								<p v-if="typeof content === 'string'">{{ content }}</p>
+								<vc-row v-else :render="content" />
+							</div>
+						</div>
+					</div>
+					<div class="_confirm-footer">
+						<slot name="footer">
+							<vc-button v-if="showCancel" style="margin-right: 8px;" @click="cancel">{{ cancelText }}</vc-button>
+							<vc-button type="primary" @click="ok">{{ okText }}2222</vc-button>
+						</slot>
+					</div>
+				</div>
+			</transition>
+		</div>
+		<div 
+			v-else
+			ref="wrap"
+			:style="wrapStyle"
+			class="_wrap"
+			@click="handleWrapClose"
+		>
+			<transition name="modal" @enter="enter">
+				<div 
+					v-if="value"
+					ref="modal" 
+					:style="modalStyle"
 					:class="draggable ? '_modal-drag' : ''"
 					class="_modal-wrap"
 				>
@@ -44,15 +81,31 @@
 <script>
 import Icon from '../icon';
 import Button from '../button';
+import CreateCustomer from "../create-customer/index";
 
 let zIndexNumber = 1001;
+const CustomerRow = CreateCustomer({});
 export default {
 	name: "vc-modal",
 	components: {
 		'vc-icon': Icon,
-		'vc-button': Button
+		'vc-button': Button,
+		'vc-row': CustomerRow
 	},
 	props: {
+		mode: String,
+		confirm: {
+			type: Boolean,
+			default: false
+		},
+		content: [String, Function],
+		render: {
+			type: Function
+		},
+		showCancel: {
+			type: Boolean,
+			default: true
+		},
 		size: {
 			type: String,
 			default: 'small'
@@ -95,6 +148,9 @@ export default {
 		cancelText: {
 			type: String,
 			default: '取消'
+		},
+		styles: {
+			type: Object
 		}
 	},
 	data() {
@@ -117,7 +173,21 @@ export default {
 		};
 	},
 	computed: {
-		style() {
+		wrapStyle() {
+			let style = {};
+			if (this.draggable) {
+				style = {
+					...this.styles,
+					top: 0
+				};
+			} else {
+				style = {
+					...this.styles
+				};
+			}
+			return style;
+		},
+		modalStyle() {
 			let style = {};
 			let minHeight = {};
 			let newWidth = 0;
@@ -127,16 +197,27 @@ export default {
 			} else {
 				switch (this.size) {
 					case 'small':
-						newWidth = 480;
-						height = '296px';
+						if (this.confirm) {
+							newWidth = 340;
+							height = '154px';
+						} else {
+							newWidth = 480;
+							height = '296px';
+						}
 						break;
 					case 'medium':
 						newWidth = 640;
 						height = '502px';
 						break;
 					case 'large': 
-						newWidth = 662;
-						height = '662px';
+						
+						if (this.confirm) {
+							newWidth = 390;
+							height = '198px';
+						} else {
+							newWidth = 662;
+							height = '662px';
+						}
 						break;
 					default:
 						return;
@@ -261,7 +342,12 @@ export default {
 				y: 0
 			};
 			let modalX = el.offsetLeft;
-			let modalY = 100;
+			let modalY = 0;
+			if (el.offsetTop) {
+				modalY = el.offsetTop;
+			} else {
+				modalY = (window.screen.height - el.clientHeight) / 2;
+			}
 			if (modalX > this.coord.x) {
 				this.newCoord.x = -(modalX - this.coord.x);
 			} else {
@@ -292,7 +378,8 @@ export default {
 	}
 	._wrap{
 		position: fixed;
-		top: 100px;
+		top: 50%;
+		transform: translateY(-50%);
 		left: 0;
 		width: 100%;
 		z-index: 1001;
@@ -340,6 +427,51 @@ export default {
 				bottom: 0;
 				width: 100%;
 				border-top: 1px solid #e8e8e8;
+				padding: 17px 24px;
+				text-align: right;
+			}
+			// confirm
+			.__confirm-top {
+				display: flex;
+				padding: 14px 16px;
+				.success {
+					color: #52C41A;
+				}
+				.error {
+					color: #F5222D;
+				}
+				.warning {
+					color: #FAAD14;
+				}
+				.info {
+					color: #1890FF;
+				}
+				.__confirm-icon {
+					margin-right: 8px;
+					font-size: 28px;
+				}
+				.__right {
+					._confirm-header {
+						position: relative;
+						margin-bottom: 16px;
+						line-height: 1;
+						font-weight: 400;
+						font-size: 0;
+						.__title {
+							display: inline-block;
+							vertical-align: middle;
+							margin-top: 6px;
+							font-size: 14px;
+							color: #333;
+							font-weight: 400;
+						}
+					}
+				}
+			}
+			._confirm-footer {
+				position: absolute;
+				bottom: 0;
+				width: 100%;
 				padding: 17px 24px;
 				text-align: right;
 			}

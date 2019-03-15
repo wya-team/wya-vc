@@ -10,6 +10,8 @@ Modal(对话框)
 ---|---|---|---
 value | 对话框是否显示，可用v-modal双向绑定 | `Boolean` | false
 title | 对话框标题，如果使用slot自定义header，则title无效 | `String` | -
+size | 对话框的三个默认大小 `small` `medium` `large` | `String` | small
+style | 设置`.-wrap`的style，例如：{top: '100px'} | `Object` | -
 ok-text |自定义确定按钮的文案 | `String` | 确定
 cancel-text | 自定义取消按钮的文案 | `String` | 取消
 width | 对话框的宽度 | `Number` | 400
@@ -18,6 +20,20 @@ mask-closable | 点击遮罩层是否关闭 | `Booelan` | true
 esc-closable | 点击esc是否关闭 | `Boolean` | true
 scrollable | 页面是否可以滚动 | `Boolean` | false
 draggable | 是否可以拖拽 | `Boolean` | false
+
+通过以下方式调用
+`this.$Modal.info(config)`
+`this.$Modal.success(config)`
+`this.$Modal.error(config)`
+`this.$Modal.warning(config)`
+
+属性 | 说明 | 类型 | 默认值
+---|---|---|---
+value | 对话框是否显示，可用v-modal双向绑定 | `Boolean` | false
+title | 对话框标题，如果使用slot自定义header，则title无效 | `String` | -
+content | 对话框内容 | `String` | -
+render | 自定义描述内容，使用 Vue 的 Render 函数 | `Function` | -
+showCancel | 是否显示取消按钮 | `Boolean` | false
 
 #### 事件
 
