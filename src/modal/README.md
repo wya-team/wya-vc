@@ -34,6 +34,7 @@ title | 对话框标题，如果使用slot自定义header，则title无效 | `St
 content | 对话框内容 | `String` | -
 render | 自定义描述内容，使用 Vue 的 Render 函数 | `Function` | -
 showCancel | 是否显示取消按钮 | `Boolean` | false
+size | 对话框大小 `small` `large` | `String` | small
 
 #### 事件
 
