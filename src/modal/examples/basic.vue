@@ -42,9 +42,8 @@
 	</div>
 </template>
 <script>
-import Modal from '../modal';
 import Button from '../../button';
-import $Modal from '../index';
+import Modal from '../index';
 
 export default {
 	name: "vc-tpl-basic",
@@ -74,7 +73,7 @@ export default {
 			this.visible3 = true;
 		},
 		handleModal() {
-			$Modal.error({
+			Modal.error({
 				title: 'confirm',
 				content: '啦啦啦啦啦啦啦啦啦啦啦',
 				showCancel: false
