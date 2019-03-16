@@ -35,7 +35,7 @@ vertical|按钮纵向排列|`Boolean`|`false`
 
 ```html
 // 样式选择
-<vc-button type="medium">default</vc-button>
+<vc-button type="default">default</vc-button>
 <vc-button type="primary">primary</vc-button>
 <vc-button type="text">text</vc-button>
 <vc-button type="success">success</vc-button>
@@ -46,7 +46,7 @@ vertical|按钮纵向排列|`Boolean`|`false`
 <vc-button disabled type="primary">primary</vc-button>
 
 // 圆角
-<vc-button type="medium" circle>default</vc-button>
+<vc-button type="default" circle>default</vc-button>
 <vc-button type="primary" circle>primary</vc-button>
 <vc-button type="success" circle>success</vc-button>
 <vc-button type="error" circle>error</vc-button>
