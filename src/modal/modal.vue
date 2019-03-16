@@ -8,8 +8,9 @@
 			/>
 		</transition>
 		<div 
+			v-if="confirm"
 			ref="wrap"
-			:style="draggable ? 'top: 0px' : ''"
+			:style="wrapStyle"
 			class="_wrap"
 			@click="handleWrapClose"
 		>
@@ -17,7 +18,43 @@
 				<div 
 					v-if="value"
 					ref="modal" 
-					:style="style"
+					:style="modalStyle"
+					:class="draggable ? '_modal-drag' : ''"
+					class="_modal-wrap"
+				>
+					<div class="__confirm-top">
+						<vc-icon :type="mode" :class="mode" class="__confirm-icon"/>
+						<div class="__right">
+							<div ref="header" class="_confirm-header" @mousedown="mouseDown">
+								<span class="__title">{{ title }}</span>
+							</div>
+							<div class="_confirm-content">
+								<p v-if="typeof content === 'string'">{{ content }}</p>
+								<vc-row v-else :render="content" />
+							</div>
+						</div>
+					</div>
+					<div class="_confirm-footer">
+						<slot name="footer">
+							<vc-button v-if="showCancel" style="margin-right: 8px;" @click="cancel">{{ cancelText }}</vc-button>
+							<vc-button type="primary" @click="ok">{{ okText }}2222</vc-button>
+						</slot>
+					</div>
+				</div>
+			</transition>
+		</div>
+		<div 
+			v-else
+			ref="wrap"
+			:style="wrapStyle"
+			class="_wrap"
+			@click="handleWrapClose"
+		>
+			<transition name="modal" @enter="enter">
+				<div 
+					v-if="value"
+					ref="modal" 
+					:style="modalStyle"
 					:class="draggable ? '_modal-drag' : ''"
 					class="_modal-wrap"
 				>
@@ -32,7 +69,7 @@
 					<div ref="slot" class="_modal-content"><slot/></div>
 					<div class="_modal-footer">
 						<slot name="footer">
-							<vc-button type="text" @click="cancel">{{ cancelText }}</vc-button>
+							<vc-button style="margin-right: 8px;" @click="cancel">{{ cancelText }}</vc-button>
 							<vc-button type="primary" @click="ok">{{ okText }}</vc-button>
 						</slot>
 					</div>
@@ -44,18 +81,37 @@
 <script>
 import Icon from '../icon';
 import Button from '../button';
+import CreateCustomer from "../create-customer/index";
 
 let zIndexNumber = 1001;
+const CustomerRow = CreateCustomer({});
 export default {
 	name: "vc-modal",
 	components: {
 		'vc-icon': Icon,
-		'vc-button': Button
+		'vc-button': Button,
+		'vc-row': CustomerRow
 	},
 	props: {
+		mode: String,
+		confirm: {
+			type: Boolean,
+			default: false
+		},
+		content: [String, Function],
+		render: {
+			type: Function
+		},
+		showCancel: {
+			type: Boolean,
+			default: true
+		},
+		size: {
+			type: String,
+			default: 'small'
+		},
 		width: {
-			type: Number,
-			default: 400
+			type: Number
 		},
 		value: {
 			type: Boolean,
@@ -92,6 +148,9 @@ export default {
 		cancelText: {
 			type: String,
 			default: '取消'
+		},
+		styles: {
+			type: Object
 		}
 	},
 	data() {
@@ -114,20 +173,70 @@ export default {
 		};
 	},
 	computed: {
-		style() {
+		wrapStyle() {
 			let style = {};
 			if (this.draggable) {
 				style = {
-					left: this.dragData.x ? this.dragData.x + 'px' : `calc(50% - ${this.width / 2}px)`,
-					top: this.dragData.y ? this.dragData.y + 'px' : '100px',
-					zIndex: 4000,
-					width: this.width + 'px',
-					transformOrigin: '0 0 0'
+					...this.styles,
+					top: 0
 				};
 			} else {
 				style = {
-					width: this.width + 'px',
-					transformOrigin: '0 0 0'
+					...this.styles
+				};
+			}
+			return style;
+		},
+		modalStyle() {
+			let style = {};
+			let minHeight = {};
+			let newWidth = 0;
+			let height = 0;
+			if (this.width) {
+				newWidth = this.width;
+			} else {
+				switch (this.size) {
+					case 'small':
+						if (this.confirm) {
+							newWidth = 340;
+							height = '154px';
+						} else {
+							newWidth = 480;
+							height = '296px';
+						}
+						break;
+					case 'medium':
+						newWidth = 640;
+						height = '502px';
+						break;
+					case 'large': 
+						
+						if (this.confirm) {
+							newWidth = 390;
+							height = '198px';
+						} else {
+							newWidth = 662;
+							height = '662px';
+						}
+						break;
+					default:
+						return;
+				}
+			}
+			if (this.draggable) {
+				style = {
+					left: this.dragData.x ? this.dragData.x + 'px' : `calc(50% - ${newWidth / 2}px)`,
+					top: this.dragData.y ? this.dragData.y + 'px' : '100px',
+					zIndex: 4000,
+					width: newWidth + 'px',
+					transformOrigin: '0 0 0',
+					minHeight: height
+				};
+			} else {
+				style = {
+					width: newWidth + 'px',
+					transformOrigin: '0 0 0',
+					minHeight: height
 				};
 			}
 			return style;
@@ -233,7 +342,12 @@ export default {
 				y: 0
 			};
 			let modalX = el.offsetLeft;
-			let modalY = 100;
+			let modalY = 0;
+			if (el.offsetTop) {
+				modalY = el.offsetTop;
+			} else {
+				modalY = (window.screen.height - el.clientHeight) / 2;
+			}
 			if (modalX > this.coord.x) {
 				this.newCoord.x = -(modalX - this.coord.x);
 			} else {
@@ -249,7 +363,7 @@ export default {
 	}
 };
 </script>
-<style lang="scss" scoped>
+<style lang="scss">
 .vc-modal{
 	._modal-mask{
 		opacity: 1;
@@ -264,33 +378,36 @@ export default {
 	}
 	._wrap{
 		position: fixed;
-		top: 100px;
+		top: 50%;
+		transform: translateY(-50%);
 		left: 0;
 		width: 100%;
 		z-index: 1001;
 		._modal-wrap{
 			position: relative;
 			background: #fff;
-			box-shadow: 0 4px 12px rgba(0,0,0,.15);
+			box-shadow: 0px 0px 8px 0px rgba(0, 0, 0, 0.1);
 			margin: auto;
+			border-radius: 4px;
+			padding-bottom: 63px;
 			&._modal-drag{
 				position: absolute;
 			}
 			._modal-header{
 				position: relative;
-				border-bottom: 1px solid #e8eaec;
-				padding: 14px 16px;
+				border-bottom: 1px solid #e8e8e8;
+				padding: 14px 24px;
 				line-height: 1;
 				font-size: 14px;
-				font-weight: 700;
+				font-weight: 400;
 				._header-inner{
 					display: inline-block;
 					width: 100%;
 					height: 20px;
 					line-height: 20px;
 					font-size: 14px;
-					color: #17233d;
-					font-weight: 700;
+					color: #333;
+					font-weight: 400;
 					overflow: hidden;
 					text-overflow: ellipsis;
 					white-space: nowrap;
@@ -303,11 +420,59 @@ export default {
 				}
 			}
 			._modal-content{
-				padding: 16px;
+				height: calc(100% - 114px);
 			}
 			._modal-footer{
-				border-top: 1px solid #e8eaec;
-				padding: 12px 18px;
+				position: absolute;
+				bottom: 0;
+				width: 100%;
+				border-top: 1px solid #e8e8e8;
+				padding: 17px 24px;
+				text-align: right;
+			}
+			// confirm
+			.__confirm-top {
+				display: flex;
+				padding: 14px 16px;
+				.success {
+					color: #52C41A;
+				}
+				.error {
+					color: #F5222D;
+				}
+				.warning {
+					color: #FAAD14;
+				}
+				.info {
+					color: #1890FF;
+				}
+				.__confirm-icon {
+					margin-right: 8px;
+					font-size: 28px;
+				}
+				.__right {
+					._confirm-header {
+						position: relative;
+						margin-bottom: 16px;
+						line-height: 1;
+						font-weight: 400;
+						font-size: 0;
+						.__title {
+							display: inline-block;
+							vertical-align: middle;
+							margin-top: 6px;
+							font-size: 14px;
+							color: #333;
+							font-weight: 400;
+						}
+					}
+				}
+			}
+			._confirm-footer {
+				position: absolute;
+				bottom: 0;
+				width: 100%;
+				padding: 17px 24px;
 				text-align: right;
 			}
 		}

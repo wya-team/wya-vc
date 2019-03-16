@@ -3,6 +3,7 @@
 		<vc-button @click="showModal">点击出现对话框</vc-button>
 		<vc-button @click="showModal2">点击出现对话框,点击遮罩不能关闭</vc-button>
 		<vc-button @click="showModal3">点击出现对话框3</vc-button>
+		<vc-button type="primary" @click="handleModal">Button</vc-button>
 		<div style="width: 100%; height: 2000px"/>
 		<vc-modal 
 			v-model="visible"
@@ -43,6 +44,7 @@
 <script>
 import Modal from '../modal';
 import Button from '../../button';
+import $Modal from '../index';
 
 export default {
 	name: "vc-tpl-basic",
@@ -70,6 +72,13 @@ export default {
 		},
 		showModal3(e) {
 			this.visible3 = true;
+		},
+		handleModal() {
+			$Modal.error({
+				title: 'confirm',
+				content: '啦啦啦啦啦啦啦啦啦啦啦',
+				showCancel: false
+			});
 		},
 		handleCandel() {
 			console.log('取消时回调');
