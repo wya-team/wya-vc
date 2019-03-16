@@ -1,30 +1,29 @@
 import { ModalConfirm } from './confirm';
+import Modal from './modal';
 
-const $Modal = {
-	info(data) {
-		data.mode = "info";
-		this.handleClickVcModal(data);
-	},
-	success(data) {
-		data.mode = "success";
-		this.handleClickVcModal(data);
-	},
-	error(data) {
-		data.mode = "error";
-		this.handleClickVcModal(data);
-	},
-	warning(data) {
-		data.mode = "warn";
-		this.handleClickVcModal(data);
-	},
-	handleClickVcModal(data) {
-		ModalConfirm.popup({
-			...data
-		}).then((res) => {
-			console.log(res, 'sure');
-		}).catch((res) => {
-			console.log(res, 'close');
-		});
-	}
+const handleClickVcModal = (data) => {
+	ModalConfirm.popup({
+		...data
+	}).then((res) => {
+		console.log(res, 'sure');
+	}).catch((res) => {
+		console.log(res, 'close');
+	});
 };
-export default $Modal;
+Modal.info = function (data) {
+	data.mode = "info";
+	handleClickVcModal(data);
+};
+Modal.success = function (data) {
+	data.mode = "success";
+	handleClickVcModal(data);
+};
+Modal.error = function (data) {
+	data.mode = "error";
+	handleClickVcModal(data);
+};
+Modal.warning = function (data) {
+	data.mode = "warning";
+	handleClickVcModal(data);
+};
+export default Modal;
