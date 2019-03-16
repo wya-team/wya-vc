@@ -22,10 +22,10 @@ scrollable | 页面是否可以滚动 | `Boolean` | false
 draggable | 是否可以拖拽 | `Boolean` | false
 
 通过以下方式调用
-`this.$Modal.info(config)`
-`this.$Modal.success(config)`
-`this.$Modal.error(config)`
-`this.$Modal.warning(config)`
+`Modal.info(config)`
+`Modal.success(config)`
+`Modal.error(config)`
+`Modal.warning(config)`
 
 属性 | 说明 | 类型 | 默认值
 ---|---|---|---
