@@ -3,7 +3,9 @@
 [![npm][npm-image]][npm-url] [![changelog][changelog-image]][changelog-url]
 
 <details>
-<summary style="font-size: 1.5em; font-weight: bold; border-bottom: 1px solid #eaecef; padding-bottom: .3em;">安装 / 导入 / 使用</summary>
+<summary>安装 / 导入 / 使用</summary>
+
+#### 
 
 - 安装
 
@@ -51,7 +53,7 @@ import { Copy } from 'wya-vc';
 
 
 <details open>
-<summary style="font-size: 1.5em; font-weight: bold; border-bottom: 1px solid #eaecef; padding-bottom: .3em;">组件</summary>
+<summary>组件</summary>
 
 - 实例
 
@@ -175,7 +177,7 @@ import { Copy } from 'wya-vc';
 
 
 <details>
-<summary style="font-size: 1.5em; font-weight: bold; border-bottom: 1px solid #eaecef; padding-bottom: .3em;">TODO</summary>
+<summary>TODO</summary>
 
 - 提前编译
 
