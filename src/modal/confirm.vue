@@ -119,5 +119,13 @@ const config = {
 };
 export default config;
 
-export const ModalConfirm = CreatePortal({}, config);
+/**
+ * Modal
+ */
+let Confirm = CreatePortal({}, config);
+
+export const createModal = mode => options => {
+	return Confirm.popup({ ...options, mode });
+};
+
 </script>
