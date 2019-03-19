@@ -1,7 +1,6 @@
 ## 功能
 - 针对`@wya/vc`组件的配置和方法
-- 带有注册器的: `userOptions` > `regiserOptions` > `globalOptions` > `defaultOptions`
-- 参数配置原则: `userOptions` > `globalOptions(vc)` > `defaultOptions`
+- 参数配置原则: `userOptions(single)` > `globalOptions(Vc)` > `defaultOptions(single)`
 
 ## 方法
 

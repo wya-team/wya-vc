@@ -1,6 +1,6 @@
 {
     "name": "@wya/vc",
-    "version": "1.0.7",
+    "version": "1.0.10",
     "description": "wya for vue components",
     "main": "lib/index.js",
     "files": [
@@ -26,6 +26,7 @@
         "all": "npm-run-all --parallel --race --continue-on-error lint:watch serve",
         "lint-staged": "lint-staged",
         "pre-commit:install": "cp .hooks/* .git/hooks/",
+        "readme": "node ./config/readme.config.js",
         "test": "jest --config ./tests/config/jest.config.js"
     },
     "author": "wya-team",
