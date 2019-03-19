@@ -215,7 +215,7 @@ export default {
 							newWidth = 390;
 							height = '198px';
 						} else {
-							newWidth = 662;
+							newWidth = 864;
 							height = '662px';
 						}
 						break;
