@@ -15,8 +15,8 @@ tag | 外层标签`span / div / **` | `str obj func` | div
 
 属性 | 说明 | 类型 | 默认值
 ---|---|---|---
-@before | 复制前的操作, 要求返回`Promise` | `(e) => Promise` | -
-@after | 复制后的操作 | `(value) => void` | -
+@before | 复制前的操作 | `(value: String)` |  Promise
+@after | 复制后的操作 | `(value: String)` | -
 
 ## 基础用法
 

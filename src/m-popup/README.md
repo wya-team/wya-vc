@@ -19,7 +19,7 @@ maskClosable | 是否允许通过点击遮罩关闭弹窗 | `Boolean` | true
 
 属性 | 说明 | 类型 | 默认值
 ---|---|---|---
-change | 组件关闭时候触发出来的一个事件，参数为false | `function` | -
+change | 组件关闭时候触发出来的一个事件，参数为false | `value: Boolean` | -
 
 
 

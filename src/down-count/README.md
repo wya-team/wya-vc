@@ -8,23 +8,23 @@
 
 属性 | 说明 | 类型 | 默认值
 ---|---|---|---
-t | 刷新周期，单位秒 | `num`	| 1		
-render | 自定义渲染 | `func` | -
-target-time	| 目标时间 | `str` / `num` |	-
-server-time	| 服务器时间 | `str` / `num` | -	
-before-text	| 前缀 | `str` |	-
-after-text	| 后缀 | `str` | -
-format | 格式(DD:HH:MM:SS:mm) | `str` | 'DD:HH:MM:SS'
-tag | 标签 | `str` | 'span'
+t | 刷新周期，单位秒 | `Number`	| 1		
+render | 自定义渲染 | `Function` | -
+target-time	| 目标时间 | `String`, `Number` |	-
+server-time	| 服务器时间 | `String`, `Number` | -	
+before-text	| 前缀 | `String` |	-
+after-text	| 后缀 | `String` | -
+format | 格式(DD:HH:MM:SS:mm) | `String` | 'DD:HH:MM:SS'
+tag | 标签 | `String` | 'span'
 
 
 #### 事件
 
 属性 | 说明 | 类型 | 默认值
 ---|---|---|---
-error | 警告回调 | `func(msg)` | -
-change | 变化回调 | `func({ ... })` | -
-end	| 结束回调 | `func(id)` |	 -
+error | 警告回调 | `msg: String` | -
+change | 变化回调 | `{...}` | -
+end	| 结束回调 | - |	 -
 			
 
 ## 基础用法

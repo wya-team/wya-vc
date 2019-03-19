@@ -10,12 +10,12 @@
 
 属性 | 说明 | 类型 | 默认值
 ---|---|---|---
-tag | 容器标签 | `string` | div
-dataSource | 上传的图片 | `array` | []
-max | 图片的最大数量 | `number` | 0（不限制）
-disabled | 是否禁止上传和删除 | `boolean` | false
-upload | upload组件的属性 | `object` | {}
-accept | 可接受的文件类型 | `string` | `image/gif`, `image/jpeg`, `image/jpg`, `image/png`
+tag | 容器标签 | `String` | div
+dataSource | 上传的图片 | `Array` | []
+max | 图片的最大数量 | `Number` | 0（不限制）
+disabled | 是否禁止上传和删除 | `Boolean` | false
+upload | upload组件的属性 | `Object` | {}
+accept | 可接受的文件类型 | `String` | `image/gif`, `image/jpeg`, `image/jpg`, `image/png`
 format | 自定义返回数据格式 | `Function` | - 
 
 
@@ -23,9 +23,9 @@ format | 自定义返回数据格式 | `Function` | -
 
 属性 | 说明 | 类型 | 默认值
 ---|---|---|---
-@change | `dataSource`值改变的回调 | `function` | -
-@error | 上传错误的回调的回调 | `function` | -
-@complete | 上传完成后的回调 | `function` | -
+@change | `dataSource`值改变的回调 | `-` | -
+@error | 上传错误的回调的回调 | `-` | -
+@complete | 上传完成后的回调 | `-` | -
 
 
 #### 插槽

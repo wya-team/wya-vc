@@ -8,24 +8,24 @@
 
 属性 | 说明 | 类型 | 默认值
 ---|---|---|---
-value | 富文本内容 | `string` | -
-options | 富文本toolbar | `object` | -
-disabled | 富文本是否不可编辑 | `boolean` | false
+value | 富文本内容 | `String` | -
+options | 富文本toolbar | `Object` | -
+disabled | 富文本是否不可编辑 | `Boolean` | false
 
 
 #### 事件
 
 属性 | 说明 | 类型 | 默认值
 ---|---|---|---
-@blur | 富文本失去焦点 | `function` | `function(editor)`
-@focus | 富文本获取焦点 | `function` | `function(editor)`
-@change | 富文本内容变化 | `function` | `function({ html, text, editor })`
+@blur | 富文本失去焦点 | `editor` | `-`
+@focus | 富文本获取焦点 | `editor` | `-`
+@change | 富文本内容变化 | `{ html, text, editor }` | `-`
 
 
 
 ## 基础用法
 
-```html
+```vue
 <template>
 	<vc-editor 
 		ref="editor"

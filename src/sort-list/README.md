@@ -13,21 +13,21 @@
 
 属性         | 说明        | 类型        | 默认值  |
 ---------- | --------- | --------- | ---- |
-v-model | 必填，数据源    | `array`   |      |
-mask      | 容器样式      | `object`  |      |
+v-model | 必填，数据源    | `Array`   |      |
+mask      | 容器样式      | `Object`  |      |
 
 属性 | 说明 | 类型 | 默认值
 ---|---|---|---
-v-model  | 数据源 | `array` | []
-mask  | 是否显示遮罩层 | `bool` | true
-valueKey  | 数据源唯一key值 | `string,number` | true
-disabledKey  | 判断是否可拖拽的key | `string` | `disabled`
+v-model  | 数据源 | `Array` | []
+mask  | 是否显示遮罩层 | `Bool` | true
+valueKey  | 数据源唯一key值 | `String, Number` | true
+disabledKey  | 判断是否可拖拽的key | `String` | `disabled`
 
 #### 事件
 
 属性 | 说明 | 类型 | 默认值
 ---|---|---|---
-`@change` | 数据改变后的回调 | `func` | -
+`@change` | 数据改变后的回调 | `-` | -
 
 
 

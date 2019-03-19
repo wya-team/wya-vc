@@ -1,4 +1,4 @@
-## [Demo Basic](https://wya-team.github.io/wya-vc/dist/web/__tpl__/basic.html)
+## [Demo Basic](https://wya-team.github.io/wya-vc/dist/web/collapse/basic.html)
 ## 功能
 折叠板
 
@@ -9,8 +9,8 @@
 #### collapse
 属性 | 说明 | 类型 | 默认值
 ---|---|---|---
-accordion | 是否开启手风琴模式，开启后每次至多展开一个面板 | `boolean` | `false`
-value | 当前激活的面板的 `name`，可以使用 `v-model` 双向绑定 | `array | string` | -
+accordion | 是否开启手风琴模式，开启后每次至多展开一个面板 | `Boolean` | `false`
+value | 当前激活的面板的 `name`，可以使用 `v-model` 双向绑定 | `Array | string` | -
 
 
 #### collapse-item
@@ -24,7 +24,7 @@ name | 当前面板的 `name`，与 `Collapse` 的 `value` 对应，不填为索
 #### collapse
 属性 | 说明 | 类型 | 默认值
 ---|---|---|---
-@change | 切换面板时触发，返回当前已展开的面板的 key，格式为数组 | `func` | 返回值 `[]`
+@change | 切换面板时触发，返回当前已展开的面板的 key，格式为数组 | (valye: Array) | -
 
 
 

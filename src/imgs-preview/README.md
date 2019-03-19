@@ -13,7 +13,6 @@ dataSource | 源数据 | `array` | `[{ src, msrc, w, h ....}] | ["", ""]`
 opts | photoSwipe参数 | `obj` | -
 events | photoSwipe事件 | `obj` | -
 id | 外层标识 | `str` | -
-id | 外层标识 | `obj` | -
 
 #### 方法
 属性 | 说明 | 类型 | 默认值

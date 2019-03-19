@@ -10,12 +10,12 @@
 
 属性 | 说明 | 类型 | 默认值
 ---|---|---|---
-dataSource | 上传的文件 | `array` | []
-max | 文件的最大数量 | `number` | 0（不限制）
-disabled | 是否禁止上传 | `boolean` | false
-upload | upload组件的属性 | `object` | {}
-accept | 文件接收类型 | `string` | -
-urlKey | 文件的线上地址字段 | `string` | `url`
+dataSource | 上传的文件 | `Array` | []
+max | 文件的最大数量 | `Number` | 0（不限制）
+disabled | 是否禁止上传 | `Boolean` | false
+upload | upload组件的属性 | `Object` | {}
+accept | 文件接收类型 | `String` | -
+urlKey | 文件的线上地址字段 | `String` | `url`
 format | 自定义返回数据格式 | `Function` | -
 
 
@@ -23,9 +23,9 @@ format | 自定义返回数据格式 | `Function` | -
 
 属性 | 说明 | 类型 | 默认值
 ---|---|---|---
-@change | `value`值改变的回调 | `function` | -
-@error | 上传错误的回调的回调 | `function` | -
-@complete | 上传完成后的回调 | `function` | -
+@change | `value`值改变的回调 | `value` | -
+@error | 上传错误的回调的回调 | `-` | -
+@complete | 上传完成后的回调 | `-` | -
 
 
 

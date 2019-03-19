@@ -1,7 +1,7 @@
 <template>
 	<i-cascader 
 		:data="data"
-		:value	="value	"
+		:value="value	"
 		:render-format="renderFormat"
 		:disabled="disabled"
 		:clearable="clearable"

@@ -9,27 +9,20 @@
 属性 | 说明 | 类型 | 默认值
 ---|---|---|---
 type | 按钮的样式选择:`default`、`primary`、`text`、`success`、`error`、`warning` |`String` | `default`
-default|禁止点击|`Boolean`|`false`
-circle|按钮是否圆角|`Boolean`|`false`
-size|按钮大小:`large`、`medium`、`small`|`String`|`medium`
-icon|按钮内的图标|`String`|-
-long|长按钮|`Boolean`|`false`
-wait|阻止重复点击|`Number`|250
+default | 禁止点击 | `Boolean` | `false`
+circle | 按钮是否圆角 | `Boolean` | `false`
+size | 按钮大小:`large`、`medium`、`small` | `String` | `medium`
+icon | 按钮内的图标 | `String` | -
+long | 长按钮 | `Boolean` | `false`
+wait | 阻止重复点击 | `Number` | 250
 
-- `button-group`
+#### Group 属性
 
 属性 | 说明 | 类型 | 默认值
 ---|---|---|---
 size | 调节按钮组件的大小:`large`、`medium`、`small` | `String` | `medium`
-circle|按钮是否圆角|`Boolean`|`false`
-vertical|按钮纵向排列|`Boolean`|`false`
-#### 事件
-
-属性 | 说明 | 类型 | 默认值
----|---|---|---
-- | - | `any` | -
-
-
+circle | 按钮是否圆角 | `Boolean` | `false`
+vertical | 按钮纵向排列 | `Boolean` | `false`
 
 ## 基础用法
 

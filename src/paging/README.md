@@ -27,35 +27,33 @@ expandOpts | 展开的属性参数 | `obj` | -
 
 属性 | 说明 | 类型 | 默认值
 ---|---|---|---
-all | 全部展开 | `bool` | false
-index | 插入的索引位置 | `number` | 0
-key | 唯一标识 | `string` | 'id'
-keys | 默认展开的项目 | `array` | []
-width | 宽度 | `number` | 60
-indentSize | 缩进单位 | `number` | 20
-render | 自定义展示 | `func` | `(h, { row, index }, handleClick)`
+all | 全部展开 | `Boolean` | false
+index | 插入的索引位置 |  | 0
+key | 唯一标识 | `String` | 'id'
+keys | 默认展开的项目 | `Array` | []
+width | 宽度 | `Number` | 60
+indentSize | 缩进单位 | `Number` | 20
+render | 自定义展示 | `Function` | `(h, { row, index }, handleClick)`
 
 #### 事件
 
-属性 | 说明 | 类型 | 默认值
+属性 | 说明 | 参数 | 返回值
 ---|---|---|---
-@load-pending | 加载中 | `func` | -
-@load-success | 加载成功 | `func` | -
-@load-error | 加载失败 | `func` | -
-@load-finish | 加载结束（都会触发） | `func` | -
-@expand | 点击展开(异步则结束后触发) | `func` | -
+@load-pending | 加载中 | - | -
+@load-success | 加载成功 | - | -
+@load-error | 加载失败 | - | -
+@load-finish | 加载结束（都会触发） | - | -
+@expand | 点击展开(异步则结束后触发) | - | -
 
 `iView`中的 `table` 和 `page` 的事件代`on`
 
 
 #### 方法
 
-属性 | 说明 | 类型 | 默认值
+属性 | 说明 | 参数 | 返回值
 ---|---|---|---
-`load-data` | 数据加载请求 | `func -> Promise` | -
-`load-expand-data` | 展开异步加载 | `func -> Promise'resolve(children)'` | -
-
-`iView`中的 `table` 和 `page` 的事件代`on`
+`load-data` | 数据加载请求 | `page, PageSize` | `Promise`
+`load-expand-data` | 展开异步加载 | `-` | `Promise`(resolve(children))
 
 ## 基础用法
 

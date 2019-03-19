@@ -1,4 +1,4 @@
-## [Demo Basic](https://wya-team.github.io/wya-vc/dist/web/__tpl__/basic.html)
+## [Demo Basic](https://wya-team.github.io/wya-vc/dist/web/pull-scroll/basic.html)
 ## 功能
 tpl
 
@@ -13,9 +13,15 @@ tpl
 
 #### 事件
 
-属性 | 说明 | 类型 | 默认值
+属性 | 说明 | 参数 | 返回值
 ---|---|---|---
-- | - | `any` | -
+- | - | `any`|---
+
+#### Slot
+
+属性 | 说明
+---|---
+- | -
 
 
 

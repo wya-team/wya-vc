@@ -8,7 +8,7 @@
 
 属性 | 说明 | 类型 | 默认值
 ---|---|---|---
-mode | 日期选择器类型['datetime', 'date', 'time'] | `String` | -
+mode -> type? | 日期选择器类型['datetime', 'date', 'time'] | `String` | -
 minDate | 最小日期 | `Date` | new Date('1990')
 maxDate | 最大日期 | `Date` | new Date('2020')
 value | 返回值 | `Date` | -
