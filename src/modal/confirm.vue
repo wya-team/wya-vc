@@ -6,6 +6,14 @@
 		:content="content"
 		:mode="mode"
 		:show-cancel="showCancel"
+		:ok-text="okText"
+		:cancel-text="cancelText"
+		:mask-closable="maskClosable"
+		:esc-closable="escClosable"
+		:mask="mask"
+		:size="size"
+		:render="render"
+		:styles="styles"
 		@ok="handleOk"
 		@cancel="handleCancel"
 	/>
@@ -21,10 +29,52 @@ const config = {
 		'vc-modal': Modal
 	},
 	props: {
-		title: String,
-		content: [String, Function],
-		mode: String,
-		showCancel: Boolean
+		title: {
+			type: String,
+			default: '',
+		},
+		content: {
+			type: [String, Function],
+			default: ''
+		},
+		render: {
+			type: Function
+		},
+		mode: {
+			type: String,
+			default: '',
+		},
+		showCancel: {
+			type: Boolean,
+			default: true,
+		},
+		okText: {
+			type: String,
+			default: '确定'
+		},
+		cancelText: {
+			type: String,
+			default: '取消'
+		},
+		maskClosable: {
+			type: Boolean,
+			default: true
+		},
+		escClosable: {
+			type: Boolean,
+			default: true
+		},
+		mask: {
+			type: Boolean,
+			default: true,
+		},
+		size: {
+			type: String,
+			default: 'small'
+		},
+		styles: {
+			type: Object
+		}
 	},
 	data() {
 		return {

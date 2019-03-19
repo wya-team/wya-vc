@@ -76,7 +76,9 @@ export default {
 			Modal.error({
 				title: 'confirm',
 				content: '啦啦啦啦啦啦啦啦啦啦啦',
-				showCancel: false
+				showCancel: false,
+				okText: '啦啦啦啦',
+				mask: false
 			});
 		},
 		handleCandel() {

@@ -37,7 +37,7 @@
 					<div class="_confirm-footer">
 						<slot name="footer">
 							<vc-button v-if="showCancel" style="margin-right: 8px;" @click="cancel">{{ cancelText }}</vc-button>
-							<vc-button type="primary" @click="ok">{{ okText }}2222</vc-button>
+							<vc-button type="primary" @click="ok">{{ okText }}</vc-button>
 						</slot>
 					</div>
 				</div>

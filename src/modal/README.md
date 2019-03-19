@@ -23,8 +23,11 @@ draggable | 是否可以拖拽 | `Boolean` | false
 
 通过以下方式调用
 `Modal.info(config)`
+
 `Modal.success(config)`
+
 `Modal.error(config)`
+
 `Modal.warning(config)`
 
 属性 | 说明 | 类型 | 默认值
