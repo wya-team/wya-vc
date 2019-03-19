@@ -14,6 +14,7 @@
 		:size="size"
 		:render="render"
 		:styles="styles"
+		:loading="loading"
 		@ok="handleOk"
 		@cancel="handleCancel"
 	/>
@@ -74,6 +75,13 @@ const config = {
 		},
 		styles: {
 			type: Object
+		},
+		loading: {
+			type: Boolean,
+			default: false
+		},
+		ok: {
+			type: Function
 		}
 	},
 	data() {
@@ -94,8 +102,14 @@ const config = {
 			/**
 			 * v-model会默认被触发，要由该组件控制，给组件i-modal传值 loading: true
 			 */
-			// this.visible = false;
-			this.$emit('sure');
+			if (this.loading) {
+				if (this.ok()) {
+					this.visible = false;
+					this.$emit('sure');
+				}
+			} else {
+				this.$emit('sure');
+			}
 		},
 		handleCancel() {
 			// this.visible = false;

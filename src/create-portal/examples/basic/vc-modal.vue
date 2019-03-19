@@ -1,6 +1,7 @@
 <template>
 	<vc-modal
 		v-model="visible"
+		:loading="true"
 		title="title"
 		@ok="handleOk"
 		@cancel="handleCancel"

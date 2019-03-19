@@ -20,6 +20,7 @@ mask-closable | 点击遮罩层是否关闭 | `Booelan` | true
 esc-closable | 点击esc是否关闭 | `Boolean` | true
 scrollable | 页面是否可以滚动 | `Boolean` | false
 draggable | 是否可以拖拽 | `Boolean` | false
+loading | 点击确定异步回调 | `Boolean` | false
 
 通过以下方式调用
 `Modal.info(config)`
@@ -88,8 +89,25 @@ footer | 自定义页脚内容
             showModal(e) {
                 this.visible = true;
             },
+            handleConfirm() {
+                Modal.error({
+                    title: 'confirm',
+                    content: '啦啦啦啦啦啦啦啦啦啦啦',
+                    okText: '啦啦啦啦',
+                    mask: false,
+                    loading: true,
+                    ok: () => {
+                        return true; //确定按钮的异步回调
+                    }
+                }).then((res) => {
+                    console.log(res);
+                }).catch((err) => {
+                    console.log(err);
+                });
+            }
             handleOk() {
-                console.log('确定的回调')
+                console.log('确定的回调');
+
             },
             handleCancel() {
                 console.log('取消的回调')

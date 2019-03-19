@@ -94,6 +94,10 @@ export default {
 	},
 	props: {
 		mode: String,
+		loading: {
+			type: Boolean,
+			default: false,
+		},
 		confirm: {
 			type: Boolean,
 			default: false
@@ -169,7 +173,8 @@ export default {
 				dragX: null,
 				dragY: null,
 				dragging: false
-			}
+			},
+			buttonLoading: false
 		};
 	},
 	computed: {
@@ -293,8 +298,12 @@ export default {
 			this.handleClose();
 		},
 		ok() {
-			this.$emit('input', false);
 			this.$emit('ok');
+			if (this.loading) {
+				this.buttonLoading = true;
+			} else {
+				this.$emit('input', false);
+			}
 		},
 		mouseDown(event) {
 			if (!this.draggable) {
@@ -420,7 +429,7 @@ export default {
 				}
 			}
 			._modal-content{
-				height: calc(100% - 114px);
+				height: calc(100% - 51px);
 				padding: 16px 24px;
 			}
 			._modal-footer{
