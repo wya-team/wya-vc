@@ -238,6 +238,7 @@ export const createPopover = (opts = {}) => {
 .vc-popover {
 	position: absolute;
 	transition: top .02s linear, left .02s linear;
+	z-index: 999;
 	._popover-container {
 		background-color: #ffffff;
 		padding: 5px 12px;
