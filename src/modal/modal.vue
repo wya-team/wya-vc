@@ -421,6 +421,7 @@ export default {
 			}
 			._modal-content{
 				height: calc(100% - 114px);
+				padding: 16px 24px;
 			}
 			._modal-footer{
 				position: absolute;
