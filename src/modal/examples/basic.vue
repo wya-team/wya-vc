@@ -7,8 +7,9 @@
 		<div style="width: 100%; height: 2000px"/>
 		<vc-modal 
 			v-model="visible"
+			:loading="true"
 			title="标题1"
-			@cancel="handleCandel"
+			@cancel="handleCancel"
 			@ok="handleOk"
 		>
 			啦啦啦啦
@@ -76,15 +77,25 @@ export default {
 			Modal.error({
 				title: 'confirm',
 				content: '啦啦啦啦啦啦啦啦啦啦啦',
-				showCancel: false,
 				okText: '啦啦啦啦',
-				mask: false
+				mask: false,
+				loading: true,
+				ok: () => {
+					return true;
+				}
+			}).then((res) => {
+				console.log(res);
+			}).catch((err) => {
+				console.log(err);
 			});
 		},
-		handleCandel() {
+		handleCancel() {
 			console.log('取消时回调');
 		},
 		handleOk() {
+			setTimeout(() => {
+				this.visible = false;
+			}, 2000);
 			console.log('确定时回调');
 		}
 	}

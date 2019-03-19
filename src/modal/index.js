@@ -2,7 +2,7 @@ import { ModalConfirm } from './confirm';
 import Modal from './modal';
 
 const handleClickVcModal = (data) => {
-	ModalConfirm.popup({
+	return ModalConfirm.popup({
 		...data
 	}).then((res) => {
 		console.log(res, 'sure');
@@ -12,18 +12,18 @@ const handleClickVcModal = (data) => {
 };
 Modal.info = function (data) {
 	data.mode = "info";
-	handleClickVcModal(data);
+	return handleClickVcModal(data);
 };
 Modal.success = function (data) {
 	data.mode = "success";
-	handleClickVcModal(data);
+	return handleClickVcModal(data);
 };
 Modal.error = function (data) {
 	data.mode = "error";
-	handleClickVcModal(data);
+	return handleClickVcModal(data);
 };
 Modal.warning = function (data) {
 	data.mode = "warning";
-	handleClickVcModal(data);
+	return handleClickVcModal(data);
 };
 export default Modal;
