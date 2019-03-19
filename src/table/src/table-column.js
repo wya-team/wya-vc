@@ -4,6 +4,7 @@ import ElCheckbox from './ui/checkbox';
 import { getPropByPath } from './util';
 
 let columnIdSeed = 1;
+const TABLE_ITEM_REGEX = /vc-table-item/;
 
 const defaults = {
 	default: {
@@ -445,7 +446,7 @@ export default {
 
 		if (!this.isSubColumn) {
 			let children = parent.$refs.hiddenColumns.children;
-			if (children.length === 1 && children[0].className === 'vc-table-item') {
+			if (children.length === 1 && TABLE_ITEM_REGEX.test(children[0].className)) {
 				columnIndex = [].indexOf.call(children[0].children, this.$el);
 			} else {
 				columnIndex = [].indexOf.call(children, this.$el);
