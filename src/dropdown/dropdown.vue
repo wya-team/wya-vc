@@ -4,6 +4,7 @@
 		:visible="visible"
 		:placement="placement"
 		:transfer="transfer"
+		:transfer-class-name ="transferClassName "
 		@on-click="$emit('click', arguments[0])"
 		@on-visible-change="$emit('visible-change', arguments[0])"
 		@on-clickoutside="$emit('clickoutside', arguments[0])"
