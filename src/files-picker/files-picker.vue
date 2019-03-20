@@ -20,26 +20,29 @@
 				:class="item.retcode == 0 && item.percent == 100 || item.errorFlag ? '__error' : ''"
 				class="__item"
 			>
-				<span :title="item.title">{{ item.title }}</span>
-				<template v-if="item.errorFlag || item.retcode == 0">
+				<vc-icon type="error" class="__download" />
+				<div :title="item.title" class="__title">{{ item.title }}</div>
+				<!-- <template v-if="item.errorFlag || item.retcode == 0">
 					<div>上传失败</div>
-				</template>
-				<template v-else>
-					<div v-if="item.percent != 100 && !item[urlKey]" style="flex: 1; display: flex; align-items: center">
+				</template> -->
+				<!-- <template v-else> -->
+				<template>
+					<!-- <div v-if="item.percent != 100 && !item[urlKey]" style="flex: 1; display: flex; align-items: center"> -->
+					<div style="flex: 1; display: flex; align-items: center">
 						<div class="__pcontainer">
 							<div :style="{width: item.percent + '%'}" class="__progress" />
 						</div>
-						<span style="margin-left: 10px">{{ item.percent }}%</span>
+						<!-- <span style="margin-left: 10px">{{ item.percent }}%</span> -->
 					</div>
-					<div v-else-if="!item[urlKey]">文件上传完毕，请等待...</div>
-					<div v-else>上传成功</div>
+					<!-- <div v-else-if="!item[urlKey]">文件上传完毕，请等待...</div>
+					<div v-else>上传成功</div> -->
 				</template>
 				<span 
 					v-if="item[urlKey] || (item.retcode == 0 && item.percent == 100) || item.errorFlag" 
 					class="__close" 
 					@click="handleDel(item, index)"
 				>
-					x
+					<vc-icon type="close" />
 				</span>
 			</div>
 		</template>
@@ -50,11 +53,13 @@
 <script>
 import emitter from '../extends/mixins/emitter'; // 表单验证
 import Upload from '../upload/index';
+import Icon from '../icon';
 
 export default {
 	name: "vc-files-picker",
 	components: {
-		'vc-upload': Upload
+		'vc-upload': Upload,
+		'vc-icon': Icon
 	},
 	mixins: [emitter],
 	model: {
@@ -199,18 +204,33 @@ export default {
 	// flex-wrap: wrap;
 	margin: 20px;
 	.__error {
-		border: 1px solid #e61212 !important;
-		color: #e61212 !important
+		// border: 1px solid #e61212 !important;
+		.__title {
+			color: #E74854 !important;
+		}
+		.__progress {
+			background-color: #E74854 !important;
+		}
 	}
 	.__item {
 		position: relative;
-		display: flex;
+		// display: flex;
 		align-items: center;
 		box-sizing: border-box;
-		margin-right: 8px;
-		margin-bottom: 8px;
-		border: 1px solid #d9d9d9;
-		padding: 8px;
+		// margin-right: 8px;
+		// margin-bottom: 8px;
+		// border: 1px solid #d9d9d9;
+		margin-top: 16px;
+		padding-left: 20px;
+		.__title {
+			font-size: 12px;
+			color: #676767;
+		}
+		.__download {
+			position: absolute;
+			left: 2px;
+			top: 0px;
+		}
 		span:first-child {
 			overflow: hidden;
 			text-overflow:ellipsis;
@@ -221,20 +241,21 @@ export default {
 		.__close {
 			position: absolute;
 			top: 4px;
-			right: 10px;
+			right: 0px;
 			cursor: pointer;
 		}
 		.__pcontainer {
 			flex: 1;
-			background-color: #9c9c9c;
+			background-color: #e8e8e8;
 			height: 4px;
 			border-radius: 2px;
 			overflow: hidden;
-			margin-left: 20px;
+			margin-top: 6px;
+			// margin-left: 20px;
 			.__progress {
 				display: block;
 				margin: 0;
-				background-color: #0085ff;
+				background-color: #5495F6;
 				height: 4px;
 				border-radius: 2px;
 			}
