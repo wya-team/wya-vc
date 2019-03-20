@@ -18,7 +18,7 @@
 					v-if="value"
 					ref="modal" 
 					:style="containerStyle"
-					:class="{ '__drag': draggable }"
+					:class="{ '__drag': draggable, 'large' : size === 'large' || size === 'medium'}"
 					class="__container"
 				>
 					<div ref="header" :class="{ '__confirm': mode }" class="__header" @mousedown="handleMouseDown">
@@ -382,6 +382,11 @@ export default {
 		padding-bottom: 63px;
 		&.__drag {
 			position: absolute;
+		}
+		&.large, &.medium{
+			@media screen and (max-height: 768px) {
+				min-height: 400px !important;
+			}
 		}
 	}
 
