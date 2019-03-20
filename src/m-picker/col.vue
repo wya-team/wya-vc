@@ -10,11 +10,11 @@
 	>
 		<div class="__mask" />
 		<div :style="styleH" class="__indicator" />
-		<div :style="[styleH, transform, transition]" class="__items">
+		<div :style="[transform, transition]" class="__items">
 			<div
 				v-for="(item, index) in dataSource"
 				:key="index"
-				:style="itemStyle"
+				:style="[styleH, itemStyle]"
 				class="__item">
 				{{ typeof item === 'object' && item['label'] ? item['label'] : item }}
 			</div>
