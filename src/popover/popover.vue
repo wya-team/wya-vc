@@ -7,7 +7,7 @@ TODO
 		<slot />
 		<transition :name="animate || `am-popup`" @after-leave="handleRemove">
 			<div 
-				v-show="show" 
+				v-if="show" 
 				ref="popper"
 				:style="popStyle" 
 				:class="popClass"
@@ -216,7 +216,7 @@ const config = {
 			}		
 		},
 		handleRemove() {
-			this.popper && this.parentNode.removeChild(this.popper);
+			// this.popper && this.parentNode.removeChild(this.popper);
 			this.popper = null;
 			this.fitPlacement = this.placement; // reset
 		},
