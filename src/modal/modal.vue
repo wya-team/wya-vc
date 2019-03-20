@@ -3,79 +3,66 @@
 		<transition name="mask">
 			<div 
 				v-if="mask && value"
-				class="_modal-mask"
-				@click="handleWrapClose"
+				class="__mask"
+				@click="handleWrapperClose"
 			/>
 		</transition>
 		<div 
-			v-if="confirm"
 			ref="wrap"
-			:style="wrapStyle"
-			class="_wrap"
-			@click="handleWrapClose"
+			:style="wrapperStyle"
+			class="__wrapper"
+			@click="handleWrapperClose"
 		>
-			<transition name="modal" @enter="enter">
+			<transition name="modal" @enter="handleEnter">
 				<div 
 					v-if="value"
 					ref="modal" 
-					:style="modalStyle"
-					:class="draggable ? '_modal-drag' : ''"
-					class="_modal-wrap"
+					:style="containerStyle"
+					:class="{ '__drag': draggable }"
+					class="__container"
 				>
-					<div class="__confirm-top">
-						<vc-icon :type="mode" :class="mode" class="__confirm-icon"/>
-						<div class="__right">
-							<div ref="header" class="_confirm-header" @mousedown="mouseDown">
-								<span class="__title">{{ title }}</span>
-							</div>
-							<div class="_confirm-content">
-								<p v-if="typeof content === 'string'">{{ content }}</p>
-								<vc-row v-else :render="content" />
-							</div>
-						</div>
-					</div>
-					<div class="_confirm-footer">
-						<slot name="footer">
-							<vc-button v-if="showCancel" style="margin-right: 8px;" @click="cancel">{{ cancelText }}</vc-button>
-							<vc-button type="primary" @click="ok">{{ okText }}</vc-button>
-						</slot>
-					</div>
-				</div>
-			</transition>
-		</div>
-		<div 
-			v-else
-			ref="wrap"
-			:style="wrapStyle"
-			class="_wrap"
-			@click="handleWrapClose"
-		>
-			<transition name="modal" @enter="enter">
-				<div 
-					v-if="value"
-					ref="modal" 
-					:style="modalStyle"
-					:class="draggable ? '_modal-drag' : ''"
-					class="_modal-wrap"
-				>
-					<div ref="header" class="_modal-header" @mousedown="mouseDown">
+					<div ref="header" :class="{ '__confirm': mode }" class="__header" @mousedown="handleMouseDown">
+						<vc-icon
+							v-if="mode"
+							:type="mode" 
+							:class="`__${mode}`" 
+							class="__icon"
+						/>
+						<!-- 用户可以自定义，但也有默认 -->
 						<slot name="header">
-							<p class="_header-inner">{{ title }}</p>
-							<a class="__modal-close" @click="handleClose">
+							<p class="__title">{{ title }}</p>
+							<div v-if="closable && !mode" class="__close" @click="handleClose">
 								<vc-icon type="close"/>
-							</a>
+							</div>
 						</slot>
 					</div>
-					<div ref="slot" class="_modal-content"><slot/></div>
-					<div class="_modal-footer">
+					<div :class="{ '__confirm' : mode }" class="__content">
+						<p 
+							v-if="typeof content === 'string'"
+						>{{ content }}</p>
+						<vc-row 
+							v-else-if="typeof content === 'function'" 
+							:render="content" 
+						/>
+
+						<slot v-if="$slots.default" />
+					</div>
+					<div :class="{ '__confirm': mode }" class="__footer">
 						<slot name="footer">
-							<vc-button style="margin-right: 8px;" @click="cancel">{{ cancelText }}</vc-button>
-							<vc-button type="primary" @click="ok">{{ okText }}</vc-button>
+							<vc-button 
+								style="margin-right: 8px;" 
+								@click="handleCancel"
+							>{{ cancelText }}</vc-button>
+							<vc-button 
+								type="primary" 
+								@click="handleOk"
+							>{{ okText }}</vc-button>
 						</slot>
 					</div>
 				</div>
 			</transition>
 		</div>
+		
 	</div>
 </template>
 <script>
@@ -98,17 +85,9 @@ export default {
 			type: Boolean,
 			default: false,
 		},
-		confirm: {
-			type: Boolean,
-			default: false
-		},
 		content: [String, Function],
 		render: {
 			type: Function
-		},
-		showCancel: {
-			type: Boolean,
-			default: true
 		},
 		size: {
 			type: String,
@@ -125,8 +104,9 @@ export default {
 			type: Boolean,
 			default: true,
 		},
-		e: {
-			type: Object
+		closable: {
+			type: Boolean,
+			default: true,
 		},
 		maskClosable: {
 			type: Boolean,
@@ -178,7 +158,10 @@ export default {
 		};
 	},
 	computed: {
-		wrapStyle() {
+		isConfirm() {
+			return this.okText || this.cancelText;
+		},
+		wrapperStyle() {
 			let style = {};
 			if (this.draggable) {
 				style = {
@@ -192,7 +175,7 @@ export default {
 			}
 			return style;
 		},
-		modalStyle() {
+		containerStyle() {
 			let style = {};
 			let minHeight = {};
 			let newWidth = 0;
@@ -202,7 +185,7 @@ export default {
 			} else {
 				switch (this.size) {
 					case 'small':
-						if (this.confirm) {
+						if (this.mode) {
 							newWidth = 340;
 							height = '154px';
 						} else {
@@ -216,7 +199,7 @@ export default {
 						break;
 					case 'large': 
 						
-						if (this.confirm) {
+						if (this.mode) {
 							newWidth = 390;
 							height = '198px';
 						} else {
@@ -257,13 +240,14 @@ export default {
 		}
 	},
 	mounted() {
-		let that = this; // 传递this
-		if (!this.e) {
-			document.documentElement.addEventListener('click', this.handleCoord);
-		} else {
-			this.coord = this.e;
-		}
-		document.documentElement.addEventListener('keydown', this.escClose);
+		document.addEventListener('click', this.handleCoord);
+		document.addEventListener('keydown', this.handleEscClose);
+	},
+	destroyed() {
+		document.removeEventListener('click', this.handleCoord);
+		document.removeEventListener('keydown', this.handleEscClose);
+		document.removeEventListener("mousemove", this.handleMouseMove);
+		document.removeEventListener("mouseup", this.handleMouseUp);
 	},
 	methods: {
 		handleCoord(e) {
@@ -275,29 +259,24 @@ export default {
 		handleClose() {
 			this.$emit('cancel');
 			this.$emit('input', false);
-			// 销毁事件
-			document.documentElement.removeEventListener('click', this.handleCoord);
-			document.documentElement.removeEventListener('keydown', this.escClose);
-			document.removeEventListener("mousemove", this.mouseMove);
-			document.removeEventListener("mouseup", this.mouseUp);
 		},
-		handleWrapClose(el) {
+		handleWrapperClose(el) {
 			let className = el.target.getAttribute('class');
 			if (className && this.maskClosable) {
-				if (className.indexOf('_wrap') > -1 || className.indexOf('_modal-mask') > -1) {
+				if (className.includes('__wrapper') || className.includes('__mask')) {
 					this.handleClose();
 				}
 			}
 		}, // 点击遮罩层关闭
-		escClose(e) {
+		handleEscClose(e) {
 			if (e.keyCode === 27 && this.escClosable && this.value) {
 				this.handleClose();
 			}
 		}, // esc关闭
-		cancel() {
+		handleCancel() {
 			this.handleClose();
 		},
-		ok() {
+		handleOk() {
 			this.$emit('ok');
 			if (this.loading) {
 				this.buttonLoading = true;
@@ -305,7 +284,7 @@ export default {
 				this.$emit('input', false);
 			}
 		},
-		mouseDown(event) {
+		handleMouseDown(event) {
 			if (!this.draggable) {
 				return;
 			}
@@ -324,10 +303,10 @@ export default {
 			};
 			this.dragData.dragX = distance.x;
 			this.dragData.dragY = distance.y;
-			document.addEventListener("mousemove", this.mouseMove);
-			document.addEventListener("mouseup", this.mouseUp);
+			document.addEventListener("mousemove", this.handleMouseMove);
+			document.addEventListener("mouseup", this.handleMouseUp);
 		},
-		mouseMove(event) {
+		handleMouseMove(event) {
 			const distance = {
 				x: event.clientX,
 				y: event.clientY
@@ -341,11 +320,11 @@ export default {
 			this.dragData.dragX = distance.x;
 			this.dragData.dragY = distance.y;
 		},
-		mouseUp() {
-			document.removeEventListener("mousemove", this.mouseMove);
-			document.removeEventListener("mouseup", this.mouseUp);
+		handleMouseUp() {
+			document.removeEventListener("mousemove", this.handleMouseMove);
+			document.removeEventListener("mouseup", this.handleMouseUp);
 		}, // 松开鼠标时清除move和up事件
-		enter(el) {
+		handleEnter(el) {
 			this.newCoord = {
 				x: 0,
 				y: 0
@@ -373,8 +352,8 @@ export default {
 };
 </script>
 <style lang="scss">
-.vc-modal{
-	._modal-mask{
+.vc-modal {
+	.__mask {
 		opacity: 1;
 		position: fixed;
 		top: 0;
@@ -385,126 +364,112 @@ export default {
 		height: 100%;
 		z-index: 1000;
 	}
-	._wrap{
+	.__wrapper {
 		position: fixed;
 		top: 50%;
 		transform: translateY(-50%);
 		left: 0;
 		width: 100%;
 		z-index: 1001;
-		._modal-wrap{
-			position: relative;
-			background: #fff;
-			box-shadow: 0px 0px 8px 0px rgba(0, 0, 0, 0.1);
-			margin: auto;
-			border-radius: 4px;
-			padding-bottom: 63px;
-			&._modal-drag{
-				position: absolute;
-			}
-			._modal-header{
-				position: relative;
-				border-bottom: 1px solid #e8e8e8;
-				padding: 14px 24px;
-				line-height: 1;
-				font-size: 14px;
-				font-weight: 400;
-				._header-inner{
-					display: inline-block;
-					width: 100%;
-					height: 20px;
-					line-height: 20px;
-					font-size: 14px;
-					color: #333;
-					font-weight: 400;
-					overflow: hidden;
-					text-overflow: ellipsis;
-					white-space: nowrap;
-				}
-				.__modal-close{
-					position: absolute;
-					top: 17px;
-					right: 16px;
-					color: #999;
-				}
-			}
-			._modal-content{
-				height: calc(100% - 51px);
-				padding: 16px 24px;
-			}
-			._modal-footer{
-				position: absolute;
-				bottom: 0;
-				width: 100%;
-				border-top: 1px solid #e8e8e8;
-				padding: 17px 24px;
-				text-align: right;
-			}
-			// confirm
-			.__confirm-top {
-				display: flex;
-				padding: 14px 16px;
-				.success {
-					color: #52C41A;
-				}
-				.error {
-					color: #F5222D;
-				}
-				.warning {
-					color: #FAAD14;
-				}
-				.info {
-					color: #1890FF;
-				}
-				.__confirm-icon {
-					margin-right: 8px;
-					font-size: 28px;
-				}
-				.__right {
-					._confirm-header {
-						position: relative;
-						margin-bottom: 16px;
-						line-height: 1;
-						font-weight: 400;
-						font-size: 0;
-						.__title {
-							display: inline-block;
-							vertical-align: middle;
-							margin-top: 6px;
-							font-size: 14px;
-							color: #333;
-							font-weight: 400;
-						}
-					}
-				}
-			}
-			._confirm-footer {
-				position: absolute;
-				bottom: 0;
-				width: 100%;
-				padding: 17px 24px;
-				text-align: right;
-			}
+		max-height: calc(100% - 40px);
+	}
+	.__container {
+		position: relative;
+		background: #fff;
+		box-shadow: 0px 0px 8px 0px rgba(0, 0, 0, 0.1);
+		margin: auto;
+		border-radius: 4px;
+		padding-bottom: 63px;
+		&.__drag {
+			position: absolute;
+		}
+	}
+
+	.__header {
+		position: relative;
+		border-bottom: 1px solid #e8e8e8;
+		padding: 14px 24px;
+		line-height: 1;
+		font-size: 14px;
+		font-weight: 400;
+		display: flex;
+		align-items: center;
+		// padding: 14px 16px;
+		&.__confirm {
+			border-bottom: none;
+		}
+	}
+	.__content { 
+		height: calc(100% - 51px);
+		overflow-y: auto;
+		padding: 16px 24px;
+		&.__confirm{
+			padding: 0;
+		}
+	}
+	.__footer {
+		position: absolute;
+		bottom: 0;
+		width: 100%;
+		border-top: 1px solid #e8e8e8;
+		padding: 17px 24px;
+		text-align: right;
+		&.__confirm {
+			border-top: none;
+		}
+	}
+	.__title {
+		display: inline-block;
+		width: 100%;
+		height: 20px;
+		line-height: 20px;
+		font-size: 14px;
+		color: #333;
+		font-weight: 400;
+		overflow: hidden;
+		text-overflow: ellipsis;
+		white-space: nowrap;
+	}
+	.__close {
+		position: absolute;
+		top: 17px;
+		right: 16px;
+		color: #999;
+	}
+	.__icon {
+		margin-right: 8px;
+		font-size: 28px;
+		&.__success {
+			color: #52C41A;
+		}
+		&.__error {
+			color: #F5222D;
+		}
+		&.__warning {
+			color: #FAAD14;
+		}
+		&.__info {
+			color: #1890FF;
 		}
 	}
 	.mask-enter-active, 
-	.modal-enter-active,{
+	.modal-enter-active, {
 		will-change: transform;
 		transition: transform .5s cubic-bezier(.08, .82, .17, 1),
 			opacity .5s cubic-bezier(.08, .82, .17, 1);
 	}
 	.mask-leave-active,
-	.modal-leave-active{
+	.modal-leave-active {
 		will-change: transform;
 		transition: transform .5s cubic-bezier(.08, .82, .17, 1),
 			opacity .5s cubic-bezier(.08, .82, .17, 1);
 	}
 	.mask-enter, 
-	.mask-leave-to{
+	.mask-leave-to {
 		opacity: 0;
 	}
 	.modal-enter, 
-	.modal-leave-to{
+	.modal-leave-to {
 		transform: scale(0);
 		opacity: 0;
 	}
