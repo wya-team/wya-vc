@@ -1,8 +1,8 @@
 <template>
 	<div>
-		<vc-date-picker type="date" confirm placeholder="Select date" style="width: 200px"/>
+		<vc-date-picker mode="date" confirm placeholder="Select date" style="width: 200px"/>
 		<vc-date-picker 
-			type="daterange" 
+			mode="daterange" 
 			confirm 
 			placement="bottom-end" 
 			placeholder="Select date" 

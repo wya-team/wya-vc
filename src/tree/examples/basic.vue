@@ -1,5 +1,5 @@
 <template>
-	<vc-tree :data="data5" :render="renderContent" />
+	<vc-tree :data-source="data5" :render="renderContent" />
 </template>
 <script>
 import Tree from '..';

@@ -1,6 +1,6 @@
 ## [Demo Basic](https://wya-team.github.io/wya-vc/dist/web/tree/basic.html)
 ## 功能
-tpl
+树选择
 
 ## API
 
@@ -8,7 +8,7 @@ tpl
 
 属性 | 说明 | 类型 | 默认值
 ---|---|---|---
-data | 可嵌套的节点属性的数组，生成 tree 的数据 | Array | []
+data-source | 可嵌套的节点属性的数组，生成 tree 的数据 | Array | []
 multiple | 是否支持多选 | Boolean | false
 show-checkbox | 是否显示多选框 | Boolean | false
 empty-text | 没有数据时的提示 | String | 暂无数据
@@ -18,6 +18,7 @@ children-key | 定义子节点键 | String | children
 check-strictly | 在显示复选框的情况下，是否严格的遵循父子不互相关联的做法 | Boolean | false
 check-directly 3.3.0 | 开启后，在 show-checkbox 模式下，select 的交互也将转为 check | Boolean | false
 
+> data -> data-source
 
 #### 事件
 

@@ -4,7 +4,7 @@
 		<div @click="clearFilter">清除所有过滤器</div>
 		<vc-table
 			ref="filterTable"
-			:data="tableData"
+			:data-source="tableData"
 			style="width: 100%"
 		>
 			<vc-table-item>

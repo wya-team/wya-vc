@@ -3,7 +3,7 @@
 		<vc-time-picker confirm placeholder="Select time" style="width: 168px"/>
 		<vc-time-picker 
 			confirm 
-			type="timerange" 
+			mode="timerange" 
 			placement="bottom-end" 
 			placeholder="Select time" 
 			style="width: 168px"/>

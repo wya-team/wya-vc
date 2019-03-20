@@ -1,6 +1,6 @@
 <template>
 	<i-cascader 
-		:data="data"
+		:data="dataSource"
 		:value="value	"
 		:render-format="renderFormat"
 		:disabled="disabled"
@@ -28,7 +28,8 @@ export default {
 		'i-cascader': Cascader
 	},
 	props: {
-		...Cascader.props
+		...Cascader.props,
+		dataSource: Cascader.props.data 
 	},
 	data() {
 		return {

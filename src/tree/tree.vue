@@ -1,7 +1,7 @@
 <template>
 	<i-tree
 		ref="tree"
-		:data="data"
+		:data="dataSource"
 		:multiple="multiple"
 		:show-checkbox="showCheckbox"
 		:empty-text="emptyText"
@@ -26,7 +26,8 @@ export default {
 		'i-tree': Tree
 	},
 	props: {
-		...Tree.props
+		...Tree.props,
+		dataSource: Tree.props.data
 	},
 	data() {
 		return {

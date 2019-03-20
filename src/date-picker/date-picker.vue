@@ -39,7 +39,11 @@ export default {
 	},
 	props: {
 		...DatePicker.props,
-		...Picker.props
+		...Picker.props,
+		mode: {
+			type: String,
+			default: 'date'
+		}
 	},
 	data() {
 		return {

@@ -45,7 +45,7 @@
 					width: bodyWidth
 			}"/>
 			<div
-				v-if="!data || data.length === 0"
+				v-if="!dataSource || dataSource.length === 0"
 				ref="emptyBlock"
 				:style="{
 					width: bodyWidth
@@ -65,7 +65,7 @@
 		<div
 			v-mousewheel="handleHeaderFooterMousewheel"
 			v-if="showSummary"
-			v-show="data && data.length > 0"
+			v-show="dataSource && dataSource.length > 0"
 			ref="footerWrapper"
 			class="el-table__footer-wrapper">
 			<table-footer
@@ -126,7 +126,7 @@
 			</div>
 			<div
 				v-if="showSummary"
-				v-show="data && data.length > 0"
+				v-show="dataSource && dataSource.length > 0"
 				ref="fixedFooterWrapper"
 				class="el-table__fixed-footer-wrapper">
 				<table-footer
@@ -183,7 +183,7 @@
 			</div>
 			<div
 				v-if="showSummary"
-				v-show="data && data.length > 0"
+				v-show="dataSource && dataSource.length > 0"
 				ref="rightFixedFooterWrapper"
 				class="el-table__fixed-footer-wrapper">
 				<table-footer
@@ -236,7 +236,7 @@ export default {
 	},
 	mixins: [Locale, Migrating],
 	props: {
-		data: {
+		dataSource: {
 			type: Array,
 			default() {
 				return [];
@@ -380,7 +380,7 @@ export default {
 					};
 				}
 				return {
-					bottom: (this.layout.scrollX && this.data.length) ? this.layout.gutterWidth + 'px' : ''
+					bottom: (this.layout.scrollX && this.dataSource.length) ? this.layout.gutterWidth + 'px' : ''
 				};
 			} else {
 				if (this.showSummary) {
@@ -410,7 +410,7 @@ export default {
 		currentRowKey(newVal) {
 			this.store.setCurrentRowKey(newVal);
 		},
-		data: {
+		dataSource: {
 			immediate: true,
 			handler(value) {
 				this.store.commit('setData', value);

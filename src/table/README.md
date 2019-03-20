@@ -8,7 +8,7 @@
 
 属性 | 说明 | 类型 | 默认值
 ---|---|---|---
-data | 显示的数据 | Array | - 
+data-source | 显示的数据 | Array | - 
 height | Table 的高度，默认为自动高度。如果 height 为 number 类型，单位 px；如果 height 为 string 类型，则这个高度会设置为 Table 的 style.height 的值，Table 的高度会受控于外部样式。 | String/Number | - 
 max-height | Table 的最大高度 | String/Number | - 
 stripe | 是否为斑马纹 table | Boolean | false
@@ -38,6 +38,7 @@ summary-method | 自定义的合计计算方法 | Function({ columns, data }) | 
 span-method | 合并行或列的计算方法 | Function({ row, column, rowIndex, columnIndex }) | - 
 select-on-indeterminate | 在多选表格中，当仅有部分行被选中时，点击表头的多选框时的行为。若为 true，则选中所有行；若为 false，则取消选择所有行 | Boolean | true 
 
+> data -> data-source
 
 #### 事件
 

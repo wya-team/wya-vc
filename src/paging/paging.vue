@@ -18,7 +18,7 @@
 		<vc-table
 			v-else
 			ref="tableTarget" 
-			:data="data" 
+			:data-source="data" 
 			v-bind="tableOpts"
 			@select="$emit('select', arguments[0], arguments[1])"
 			@select-all="$emit('select-all', arguments[0])"

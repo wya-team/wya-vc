@@ -1,6 +1,6 @@
 <template>
 	<i-time-picker 
-		:type="type"
+		:type="mode"
 		:value="value"
 		:format="format"
 		:steps="steps"
@@ -35,7 +35,11 @@ export default {
 	},
 	props: {
 		...TimePicker.props,
-		...Picker.props
+		...Picker.props,
+		mode: {
+			type: String,
+			default: 'time'
+		}
 	},
 	data() {
 		return {

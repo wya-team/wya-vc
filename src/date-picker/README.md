@@ -9,7 +9,7 @@
 属性 | 说明 | 类型 | 默认值
 ---|---|---|---
 属性	说明	类型	默认值
-type | 显示类型，可选值为 `date`、`daterange`、`datetime`、`datetimerange`、`year`、`month` | String | date
+mode | 显示类型，可选值为 `date`、`daterange`、`datetime`、`datetimerange`、`year`、`month` | String | date
 value | 日期，可以是 JavaScript 的 Date，例如 new Date()，也可以是标准的日期格式，点击右边查看
 注意：value 使用 v-model 时，值是 Date 类型，可以配合 @change 使用 |  Date | -
 format | 展示的日期格式 |  Date | date, daterange(yyyy-MM-dd), datetime, datetimerange(yyyy-MM-dd, HH:mm:ss), year(yyyy), month(yyyy-MM)
@@ -29,9 +29,11 @@ readonly | 完全只读，开启后不会弹出选择器，只在没有设置 op
 editable | 文本框是否可以输入，只在没有使用 slot 时有效 | Boolean | true
 transfer | 是否将弹层放置于 body 内，在 Tabs、带有 fixed 的 Table 列内使用时，建议添加此属性，它将不受父级样式影响，从而达到更好的效果 | Boolean | false
 element-id | 给表单元素设置 id，详见 Form 用法。 | String | -
-time-picker-options | 可以在 type 为 `datetime` 和 `datetimerange` 下，配置 `TimePicker` 的属性，比如时间间隔 `:time-picker-options="{steps: [1, 10, 10]}"` | Object | {}
+time-picker-options | 可以在 mode 为 `datetime` 和 `datetimerange` 下，配置 `TimePicker` 的属性，比如时间间隔 `:time-picker-options="{steps: [1, 10, 10]}"` | Object | {}
 separator | 两个日期间的分隔符 | String | -	
 
+
+> typpe -> mode 
 
 #### 事件
 

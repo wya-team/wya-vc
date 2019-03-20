@@ -8,7 +8,7 @@
 
 属性 | 说明 | 类型 | 默认值
 ---|---|---|---
-type | 显示类型，可选值为 `time`、`timerange` | String | time
+mode | 显示类型，可选值为 `time`、`timerange` | String | time
 value |                             时间，可以是 JavaScript 的 Date，例如 **new Date()**，也可以是标准的时间格式，点击右边查看                            注意：value 使用 v-model 时，值是 Date 类型，可以配合 @on-change 使用                         | [ Date](javascript:void(0)) | -
 format | 展示的时间格式 | [ Date](javascript:void(0)) | HH:mm:ss
 steps | 下拉列表的时间间隔，数组的三项分别对应小时、分钟、秒。例如设置为 [1, 15] 时，分钟会显示：00、15、30、45。 | Array | []
@@ -25,6 +25,7 @@ transfer | 是否将弹层放置于 body 内，在 Tabs、带有 fixed 的 Table
 element-id | 给表单元素设置 `id`，详见 Form 用法。 | String | -
 separator | 两个日期间的分隔符 | String |  - 
 
+> type -> mode
 
 #### 事件
 

@@ -1,5 +1,5 @@
 <template>
-	<vc-cascader :data="data" v-model="value1"/>
+	<vc-cascader :data-source="dataSource" v-model="value1"/>
 </template>
 <script>
 import Cascader from '../cascader';
@@ -12,7 +12,7 @@ export default {
 	data() {
 		return {
 			value1: [],
-			data: [{
+			dataSource: [{
 				value: 'beijing',
 				label: '北京',
 				children: [

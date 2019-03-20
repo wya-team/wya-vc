@@ -8,7 +8,7 @@
 
 属性 | 说明 | 类型 | 默认值
 ---|---|---|---
-data | 可选项的数据源，格式参照示例说明 | Array | []
+data-source | 可选项的数据源，格式参照示例说明 | Array | []
 value | 当前已选项的数据，格式参照示例说明 | Array | []
 render-format | 选择后展示的函数，用于自定义显示格式 | Function | label => label.join(' / ')
 disabled | 是否禁用选择器 | Boolean | false
@@ -23,6 +23,8 @@ not-found-text | 当搜索列表为空时显示的内容 | String | 无匹配数
 ~~transfer~~ | ~~是否将弹层放置于 body 内，在 Tabs、带有 fixed 的 Table 列内使用时，建议添加此属性，它将不受父级样式影响，从而达到更好的效果~~ | ~~Boolean~~ | ~~false~~
 element-id | 给表单元素设置 id，详见 Form 用法 | String | -
 
+
+> data -> data-source
 
 #### 事件
 
