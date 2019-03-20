@@ -1,7 +1,6 @@
 <template>
 	<i-input 
 		ref="input"
-		:type="type"
 		:value="value"
 		:size="size"
 		:placeholder="placeholder"
@@ -21,6 +20,7 @@
 		:element-id="elementId"
 		:spellcheck="spellcheck"
 		:wrap="wrap"
+		type="textarea"
 		@on-enter="$emit('enter', arguments[0])"
 		@on-click="$emit('click', arguments[0])"
 		@on-change="$emit('change', arguments[0])"
@@ -42,19 +42,12 @@
 import Input from 'iview/src/components/input';
 
 export default {
-	name: "vc-input",
+	name: "vc-textarea",
 	components: {
 		'i-input': Input
 	},
 	props: {
-		...Input.props,
-		type: {
-			type: String,
-			validator(value) {
-				return ['text', 'password'].includes(value);
-			},
-			default: 'text'
-		},
+		...Input.props
 	},
 	data() {
 		return {

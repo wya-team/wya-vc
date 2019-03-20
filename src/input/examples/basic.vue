@@ -28,13 +28,6 @@
 				disabled
 				placeholder="被禁用的input"
 			/>
-			<vc-input 
-				v-model="textvalue"
-				:autosize="true"
-				type="textarea"
-				style="margin-top: 10px;"
-				placeholder="被禁用的textarea"
-			/>
 		</div>
 	</div>
 </template>

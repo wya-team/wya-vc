@@ -8,7 +8,7 @@ input（输入框）
 
 属性 | 说明 | 类型 | 默认值
 ---|---|---|---
-type | 输入框类型 `text` `textarea` `password` | `String` | text
+type | 输入框类型 `text` `password` | `String` | text
 placeholder | 占位文本 | `String` | -
 value | 绑定的值，用v-modal 双向绑定 | `String | Number` | -
 disabled | 禁用输入框 | `Boolean` | false 
@@ -16,8 +16,6 @@ clearable | 显示清空按钮 | `Boolean` | false
 readonly | 输入框只读 | `Boolean` | false
 maxlength | 最大输入长度 | `Number` | -
 autofocus | 自动获取焦点 | `Boolean` | false
-autosize | textarea 自动是适应高度，可传入对象 {maxRows:2; minRows:2} | `Boolean | Object` | false
-rows | textarea 默认行数 | `Number` | 1
 
 #### 事件
 
@@ -48,13 +46,6 @@ enter | 按下回车键是触发 | - | -
             style="margin-top: 10px;"
             disabled
             placeholder="被禁用的input"
-        />
-        <vc-input 
-            v-model="textvalue"
-            :autosize="true"
-            type="textarea"
-            style="margin-top: 10px;"
-            placeholder="被禁用的textarea"
         />
     </div>
 </template>
