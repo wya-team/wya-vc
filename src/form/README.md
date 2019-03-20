@@ -1,6 +1,6 @@
-## [Demo Basic](https://wya-team.github.io/wya-vc/dist/web/form/basic.html)
+## [Demo Basic](https://wya-team.github.io/wya-vc/dist/form/basic.html)
 ## 功能
-tpl
+表单管理
 
 ## API
 

@@ -1,4 +1,4 @@
-## [Demo Basic](https://wya-team.github.io/wya-vc/dist/web/time-picker/basic.html)
+## [Demo Basic](https://wya-team.github.io/wya-vc/dist/time-picker/basic.html)
 ## 功能
  时间选择器
 

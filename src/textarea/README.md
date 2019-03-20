@@ -1,4 +1,4 @@
-## [Demo Basic](https://wya-team.github.io/wya-vc/dist/web/textarea/basic.html)
+## [Demo Basic](https://wya-team.github.io/wya-vc/dist/textarea/basic.html)
 ## 功能
 textarea（输入框）
 

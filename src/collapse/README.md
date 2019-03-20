@@ -1,4 +1,4 @@
-## [Demo Basic](https://wya-team.github.io/wya-vc/dist/web/collapse/basic.html)
+## [Demo Basic](https://wya-team.github.io/wya-vc/dist/collapse/basic.html)
 ## 功能
 折叠板
 

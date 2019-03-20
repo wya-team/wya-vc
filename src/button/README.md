@@ -1,4 +1,4 @@
-## [Demo Basic](https://wya-team.github.io/wya-vc/dist/web/button/basic.html)
+## [Demo Basic](https://wya-team.github.io/wya-vc/dist/button/basic.html)
 ## 功能
 按钮
 

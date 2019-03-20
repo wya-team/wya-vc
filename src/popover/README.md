@@ -1,4 +1,4 @@
-## [Demo Basic](https://wya-team.github.io/wya-vc/dist/web/popover/basic.html)
+## [Demo Basic](https://wya-team.github.io/wya-vc/dist/popover/basic.html)
 ## 功能
 Popover
 

@@ -1,4 +1,4 @@
-## [Demo Basic](https://wya-team.github.io/wya-vc/dist/web/date-picker/basic.html)
+## [Demo Basic](https://wya-team.github.io/wya-vc/dist/date-picker/basic.html)
 ## 功能
 日期选择器
 

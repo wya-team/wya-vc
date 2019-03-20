@@ -1,4 +1,4 @@
-## [Demo Basic](https://wya-team.github.io/wya-vc/dist/web/switch/basic.html)
+## [Demo Basic](https://wya-team.github.io/wya-vc/dist/switch/basic.html)
 ## 功能
 开关
 

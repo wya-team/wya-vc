@@ -1,4 +1,4 @@
-## [Demo Basic](https://wya-team.github.io/wya-vc/dist/web/radio/basic.html)
+## [Demo Basic](https://wya-team.github.io/wya-vc/dist/radio/basic.html)
 ## 功能
 单选框
 

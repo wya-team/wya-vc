@@ -1,4 +1,4 @@
-## [Demo Basic](https://wya-team.github.io/wya-vc/dist/web/color-picker/basic.html)
+## [Demo Basic](https://wya-team.github.io/wya-vc/dist/color-picker/basic.html)
 ## 功能
 ColorPicker 颜色选择器
 

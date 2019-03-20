@@ -1,6 +1,6 @@
-## [Demo Basic](https://wya-team.github.io/wya-vc/dist/web/page/basic.html)
+## [Demo Basic](https://wya-team.github.io/wya-vc/dist/page/basic.html)
 ## 功能
-tpl
+分页
 
 ## API
 

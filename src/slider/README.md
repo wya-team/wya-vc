@@ -1,6 +1,6 @@
-## [Demo Basic](https://wya-team.github.io/wya-vc/dist/web/slider/basic.html)
+## [Demo Basic](https://wya-team.github.io/wya-vc/dist/slider/basic.html)
 ## 功能
-tpl
+滑动
 
 ## API
 

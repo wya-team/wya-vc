@@ -1,4 +1,4 @@
-## [Demo Basic](https://wya-team.github.io/wya-vc/dist/web/calendar/basic.html)
+## [Demo Basic](https://wya-team.github.io/wya-vc/dist/calendar/basic.html)
 ## 功能
 日历展示
 

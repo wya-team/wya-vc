@@ -1,4 +1,4 @@
-## [Demo Basic](https://wya-team.github.io/wya-vc/dist/web/input/basic.html)
+## [Demo Basic](https://wya-team.github.io/wya-vc/dist/input/basic.html)
 ## 功能
 input（输入框）
 

@@ -1,6 +1,6 @@
-## [Demo Basic](https://wya-team.github.io/wya-vc/dist/web/input-number/basic.html)
+## [Demo Basic](https://wya-team.github.io/wya-vc/dist/input-number/basic.html)
 ## 功能
-tpl
+数字输入框
 
 ## API
 

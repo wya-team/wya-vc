@@ -1,4 +1,4 @@
-## [Demo Basic](https://wya-team.github.io/wya-vc/dist/web/imgs-crop/basic.html)
+## [Demo Basic](https://wya-team.github.io/wya-vc/dist/imgs-crop/basic.html)
 ## 功能
 图片裁剪
 

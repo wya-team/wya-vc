@@ -1,4 +1,4 @@
-## [Demo Basic](https://wya-team.github.io/wya-vc/dist/web/m-picker/basic.html)
+## [Demo Basic](https://wya-team.github.io/wya-vc/dist/m-picker/basic.html)
 ## 功能
 移动端选择器
 

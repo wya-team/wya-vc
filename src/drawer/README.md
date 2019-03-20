@@ -1,4 +1,4 @@
-## [Demo Basic](https://wya-team.github.io/wya-vc/dist/web/drawer/basic.html)
+## [Demo Basic](https://wya-team.github.io/wya-vc/dist/drawer/basic.html)
 ## 功能
 抽屉（Drawer）
 

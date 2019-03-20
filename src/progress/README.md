@@ -1,4 +1,4 @@
-## [Demo Basic](https://wya-team.github.io/wya-vc/dist/web/progress/basic.html)
+## [Demo Basic](https://wya-team.github.io/wya-vc/dist/progress/basic.html)
 ## 功能
 进度条（Progress）
 

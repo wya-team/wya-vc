@@ -1,4 +1,4 @@
-## [Demo Basic](https://wya-team.github.io/wya-vc/dist/web/dropdown/basic.html)
+## [Demo Basic](https://wya-team.github.io/wya-vc/dist/dropdown/basic.html)
 ## 功能
 下拉菜单
 

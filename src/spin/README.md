@@ -1,6 +1,6 @@
-## [Demo Basic](https://wya-team.github.io/wya-vc/dist/web/spin/basic.html)
+## [Demo Basic](https://wya-team.github.io/wya-vc/dist/spin/basic.html)
 ## 功能
-tpl
+加载中
 
 ## API
 

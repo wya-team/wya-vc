@@ -1,4 +1,4 @@
-## [Demo Basic](https://wya-team.github.io/wya-vc/dist/web/check-box/basic.html)
+## [Demo Basic](https://wya-team.github.io/wya-vc/dist/check-box/basic.html)
 ## 功能
 多选框
 

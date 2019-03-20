@@ -1,4 +1,4 @@
-## [Demo Basic](https://wya-team.github.io/wya-vc/dist/web/card/basic.html)
+## [Demo Basic](https://wya-team.github.io/wya-vc/dist/card/basic.html)
 ## 功能
 卡片
 

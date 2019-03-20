@@ -1,4 +1,4 @@
-## [Demo Basic](https://wya-team.github.io/wya-vc/dist/web/tag/basic.html)
+## [Demo Basic](https://wya-team.github.io/wya-vc/dist/tag/basic.html)
 ## 功能
 标签
 

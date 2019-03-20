@@ -1,4 +1,4 @@
-## [Demo Basic](https://wya-team.github.io/wya-vc/dist/web/tabs/basic.html)
+## [Demo Basic](https://wya-team.github.io/wya-vc/dist/tabs/basic.html)
 ## 功能
 tpl
 

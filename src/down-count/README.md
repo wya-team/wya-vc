@@ -1,4 +1,4 @@
-## [Demo Basic](https://wya-team.github.io/wya-vc/dist/web/down-count/basic.html)
+## [Demo Basic](https://wya-team.github.io/wya-vc/dist/down-count/basic.html)
 ## 功能
 倒计时
 

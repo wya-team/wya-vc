@@ -1,4 +1,4 @@
-## [Demo Basic](https://wya-team.github.io/wya-vc/dist/web/debounce-click/basic.html)
+## [Demo Basic](https://wya-team.github.io/wya-vc/dist/debounce-click/basic.html)
 ## 功能
 tpl
 
