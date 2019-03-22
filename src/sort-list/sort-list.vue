@@ -109,7 +109,7 @@ export default {
 
 			this.$emit('change', newValue);
 			// for iview
-			this.dispatch('FormItem', 'on-form-change', newValue);
+			this.dispatch('vc-form-item', 'form-change', newValue);
 		},
 
 		/**
@@ -144,7 +144,7 @@ export default {
 			const newValue = this.getSortList({ item, index, type: 'drag' });
 			this.$emit('change', newValue);
 			// for iview
-			this.dispatch('FormItem', 'on-form-change', newValue);
+			this.dispatch('vc-form-item', 'form-change', newValue);
 
 			clearTimeout(this.timer);
 			this.timer = setTimeout(() => {

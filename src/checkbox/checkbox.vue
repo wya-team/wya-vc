@@ -15,12 +15,14 @@
 </template>
 <script>
 import Checkbox from 'iview/src/components/checkbox';
+import formHack from '../extends/mixins/form-hack';
 
 export default {
-	name: "vc-checkbox",
+	// name: 'vc-checkbox',
 	components: {
 		'i-checkbox': Checkbox
 	},
+	mixins: [formHack],
 	props: {
 		...Checkbox.props
 	},

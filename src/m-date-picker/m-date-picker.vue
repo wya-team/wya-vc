@@ -63,7 +63,7 @@ export default {
 				this.$emit('change', res.date, res);
 
 				// form表单
-				this.dispatch('FormItem', 'on-form-change', res.date);
+				this.dispatch('vc-form-item', 'form-change', res.date);
 			}).catch(err => {
 				console.log(err);
 			});

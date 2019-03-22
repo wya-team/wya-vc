@@ -75,7 +75,7 @@ export default {
 					this.$emit('change', res.value, res);
 
 					// form表单
-					this.dispatch('FormItem', 'on-form-change', res.value);
+					this.dispatch('vc-form-item', 'form-change', res.value);
 				}).catch(err => {
 					console.log(err);
 				});

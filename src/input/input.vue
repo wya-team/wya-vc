@@ -40,12 +40,14 @@
 </template>
 <script>
 import Input from 'iview/src/components/input';
+import formHack from '../extends/mixins/form-hack';
 
 export default {
-	name: "vc-input",
+	// name: "vc-input",
 	components: {
 		'i-input': Input
 	},
+	mixins: [formHack],
 	props: {
 		...Input.props,
 		type: {

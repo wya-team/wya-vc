@@ -22,12 +22,14 @@
 </template>
 <script>
 import InputNumber from 'iview/src/components/input-number';
+import formHack from '../extends/mixins/form-hack';
 
 export default {
-	name: "vc-input-number",
+	// name: "vc-input-number",
 	components: {
 		'i-input-number': InputNumber
 	},
+	mixins: [formHack],
 	props: {
 		...InputNumber.props
 	},

@@ -16,12 +16,13 @@
 </template>
 <script>
 import Switch from 'iview/src/components/switch';
+import formHack from '../extends/mixins/form-hack';
 
 export default {
-	name: "vc-switch",
 	components: {
 		'i-switch': Switch
 	},
+	mixins: [formHack],
 	props: {
 		...Switch.props
 	},

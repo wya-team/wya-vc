@@ -18,12 +18,14 @@
 </template>
 <script>
 import Slider from 'iview/src/components/slider';
+import formHack from '../extends/mixins/form-hack';
 
 export default {
-	name: "vc-slider",
+	// name: 'vc-slider',
 	components: {
 		'i-slider': Slider
 	},
+	mixins: [formHack],
 	props: {
 		...Slider.props
 	},

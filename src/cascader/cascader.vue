@@ -21,12 +21,14 @@
 </template>
 <script>
 import Cascader from 'iview/src/components/cascader';
+import formHack from '../extends/mixins/form-hack';
 
 export default {
-	name: "vc-cascader",
+	// name: 'vc-cascader',//
 	components: {
 		'i-cascader': Cascader
 	},
+	mixins: [formHack],
 	props: {
 		...Cascader.props,
 		dataSource: Cascader.props.data 

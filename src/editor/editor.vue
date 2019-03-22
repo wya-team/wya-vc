@@ -34,7 +34,7 @@ import { getUid } from '../utils/utils';
 import defaultOptinos from './options';
 
 export default {
-	name: "vc-editor",
+	// name: "vc-editor",
 	components: {
 		'toolbar': Toolbar,
 		'vc-upload': Upload,
@@ -125,7 +125,7 @@ export default {
 				this.content = html;
 				this.$emit('input', this.content);
 				this.$emit('change', { html, text, editor });
-				this.dispatch('FormItem', 'on-form-change', this.content);
+				this.dispatch('vc-form-item', 'form-change', this.content);
 			});
 		},
 		initListener() {

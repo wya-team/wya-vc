@@ -10,12 +10,14 @@
 </template>
 <script>
 import CheckboxGroup from 'iview/src/components/checkbox-group';
+import formHack from '../extends/mixins/form-hack';
 
 export default {
-	name: "vc-checkbox-group",
+	// name: 'vc-checkbox-group',
 	components: {
 		'i-checkbox-group': CheckboxGroup
 	},
+	mixins: [formHack],
 	props: {
 		...CheckboxGroup.props
 	},

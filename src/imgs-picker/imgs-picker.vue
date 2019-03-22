@@ -164,7 +164,9 @@ export default {
 			// 将已经上传成功的文件传递给外部
 			dataSource = this.data.filter((it) => !it.errorFlag && this.getUrl(res));
 			this.$emit('change', dataSource);
-			this.dispatch('FormItem', 'on-form-change', dataSource);
+
+			// form表单
+			this.dispatch('vc-form-item', 'form-change', dataSource);
 		},
 		handleFileError(res, file) {
 			// 内部保存上传失败的文件，不传递给外层
@@ -196,7 +198,9 @@ export default {
 			this.data = this.data.filter(it => it != item);
 			let dataSource = this.data.filter(it => !it.errorFlag);
 			this.$emit('change', dataSource);
-			this.dispatch('FormItem', 'on-form-change', dataSource);
+
+			// form表单
+			this.dispatch('vc-form-item', 'form-change', dataSource);
 		},
 		handlePreview(e, idx) {
 			let pos = {};

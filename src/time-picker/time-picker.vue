@@ -27,12 +27,13 @@
 <script>
 import TimePicker from 'iview/src/components/time-picker';
 import Picker from 'iview/src/components/date-picker/picker';
+import formHack from '../extends/mixins/form-hack';
 
 export default {
-	name: "vc-time-picker",
 	components: {
 		'i-time-picker': TimePicker
 	},
+	mixins: [formHack],
 	props: {
 		...TimePicker.props,
 		...Picker.props,

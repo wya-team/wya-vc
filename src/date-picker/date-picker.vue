@@ -31,12 +31,14 @@
 <script>
 import DatePicker from 'iview/src/components/date-picker';
 import Picker from 'iview/src/components/date-picker/picker';
+import formHack from '../extends/mixins/form-hack';
 
 export default {
-	name: "vc-date-picker",
+	// name: 'vc-date-picker',
 	components: {
 		'i-date-picker': DatePicker
 	},
+	mixins: [formHack],
 	props: {
 		...DatePicker.props,
 		...Picker.props,

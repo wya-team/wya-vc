@@ -14,12 +14,14 @@
 </template>
 <script>
 import Radio from 'iview/src/components/radio';
+import formHack from '../extends/mixins/form-hack';
 
 export default {
-	name: "vc-radio",
+	// name: "vc-radio",
 	components: {
 		'i-radio': Radio
 	},
+	mixins: [formHack],
 	props: {
 		...Radio.props
 	},

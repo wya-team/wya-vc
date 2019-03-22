@@ -28,12 +28,14 @@
 </template>
 <script>
 import Select from 'iview/src/components/select';
+import formHack from '../extends/mixins/form-hack';
 
 export default {
-	name: "vc-select",
+	// name: 'vc-select',
 	components: {
 		'i-select': Select
 	},
+	mixins: [formHack],
 	props: {
 		...Select.props
 	},

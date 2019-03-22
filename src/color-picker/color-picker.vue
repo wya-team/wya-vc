@@ -17,12 +17,13 @@
 </template>
 <script>
 import ColorPicker from 'iview/src/components/color-picker';
+import formHack from '../extends/mixins/form-hack';
 
 export default {
-	name: "vc-color-picker",
 	components: {
 		'i-color-picker': ColorPicker
 	},
+	mixins: [formHack],
 	props: {
 		...ColorPicker.props
 	},
