@@ -139,7 +139,6 @@ export default {
 	mounted() {
 		if (this.prop) {
 			this.dispatch('vc-form', 'form-item-add', this);
-
 			Object.defineProperty(this, 'initialValue', {
 				value: this.fieldValue
 			});
@@ -260,18 +259,16 @@ export default {
 	}
 	.__content {
 		position: relative;
-		// line-height: 32px;
+		line-height: 28px;
 		font-size: 12px
 	}
 	.__label {
 		text-align: right;
 		vertical-align: middle;
 		float: left;
-		font-size: 12px;
 		color: #515a6e;
-		line-height: 1;
-		// padding: 10px 12px 10px 0;
-		padding: 8px 0 8px 0;
+		font-size: 12px;
+		line-height: 28px;
 		-webkit-box-sizing: border-box;
 		box-sizing: border-box
 	}
