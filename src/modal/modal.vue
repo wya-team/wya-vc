@@ -213,7 +213,7 @@ export default {
 			}
 			if (this.draggable) {
 				style = {
-					left: this.dragData.x ? this.dragData.x + 'px' : `calc(50% - ${newWidth / 2}px)`,
+					left: this.dragData.x ? this.dragData.x + 'px' : `${document.body.clientWidth / 2 - newWidth / 2}px`,
 					top: this.dragData.y ? this.dragData.y + 'px' : '100px',
 					zIndex: 4000,
 					width: newWidth + 'px',
@@ -371,7 +371,6 @@ export default {
 		left: 0;
 		width: 100%;
 		z-index: 1001;
-		max-height: calc(100% - 40px);
 	}
 	.__container {
 		position: relative;
@@ -405,7 +404,6 @@ export default {
 		}
 	}
 	.__content { 
-		height: calc(100% - 51px);
 		overflow-y: auto;
 		padding: 16px 24px;
 		&.__confirm{

@@ -76,7 +76,14 @@ export default {
 		handleModal() {
 			Modal.error({
 				title: 'confirm',
-				content: '啦啦啦啦啦啦啦啦啦啦啦',
+				content: (h) => {
+					return h('input', {
+						type: 'textarea',
+						style: {
+							height: '500px'
+						}
+					});
+				},
 				okText: '啦啦啦啦',
 				mask: false,
 				loading: true,
