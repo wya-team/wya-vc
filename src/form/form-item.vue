@@ -260,7 +260,7 @@ export default {
 	}
 	.__content {
 		position: relative;
-		line-height: 32px;
+		// line-height: 32px;
 		font-size: 12px
 	}
 	.__label {
@@ -270,7 +270,8 @@ export default {
 		font-size: 12px;
 		color: #515a6e;
 		line-height: 1;
-		padding: 10px 12px 10px 0;
+		// padding: 10px 12px 10px 0;
+		padding: 8px 0 8px 0;
 		-webkit-box-sizing: border-box;
 		box-sizing: border-box
 	}
