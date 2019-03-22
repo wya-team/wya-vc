@@ -311,5 +311,14 @@ export default {
 	.am-fade-enter, .am-fade-leave-active {
 		opacity: 0;
 	}
+	/**
+	 * 嵌套
+	 */
+	.vc-form-item {
+		margin-bottom: 0
+	}
+	.vc-form-item .__content {
+		margin-left: 0 !important
+	}
 }
 </style>
