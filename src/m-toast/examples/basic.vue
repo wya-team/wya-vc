@@ -24,7 +24,7 @@ export default {
 		MToast.info('测试1', 3);
 		MToast.info('测试2', 3);
 		MToast.info('测试3', 3);
-		setTimeout(MToast.destory, 1000);
+		setTimeout(MToast.destroy, 1000);
 	},
 	methods: {
 		handleClick(v) {

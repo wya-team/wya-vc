@@ -82,15 +82,15 @@ const Target = {
 			mode: 'error'
 		});
 	},
-	destory(id) {
+	destroy(id) {
 		try {
 			if (id) {
 				let instance = typeof id === 'object' ? id : VcInstance.APIS[id];
-				instance && instance.$emit('destory');
+				instance && instance.$emit('destroy');
 			} else {
 				Object.keys(VcInstance.APIS).forEach(item => {
 					if (item.includes(basicName)) {
-						VcInstance.APIS[item] && VcInstance.APIS[item].$emit('destory');
+						VcInstance.APIS[item] && VcInstance.APIS[item].$emit('destroy');
 					}
 				});
 			}
