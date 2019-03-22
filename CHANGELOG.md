@@ -1,5 +1,10 @@
 # 历史版本
 
+### 1.0.12 (2019-03-21)
+
+- message: `hide -> destory`
+- m-toast: `hide -> destory`
+
 ### 1.0.11 (2019-03-20)
 
 - cascader: `data -> data-source`
