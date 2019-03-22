@@ -46,6 +46,12 @@ show-message | 是否显示校验错误信息 | Boolean | true
 label | label 内容
 
 
+#### 配合form验证的自定义组件
+
+```
+this.dispatch('vc-form-item', 'form-change', ...args);
+```
+
 ## 基础用法
 
 ```vue
