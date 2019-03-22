@@ -70,7 +70,7 @@ export default {
 				let errorsList = [];
 				this.fields.forEach(item => {
 					item.validate('', res => {
-						if (res.msg) {
+						if (res && res.msg) {
 							errorsList.push(res);
 							valid = false;
 						}
