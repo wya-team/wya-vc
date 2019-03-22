@@ -18,7 +18,7 @@ onClose | 关闭后的回调 | `Function` | -
 
 ## 基础用法
 
-```js
+```jsx
 // 参数用多个字符串传递，传入顺序不可变
 Message.success(content, duration, onClose);
 
@@ -43,6 +43,7 @@ Message.success('全局提示的文字', {
 		// 回调
 	}
 });
+
 // 自定义render函数
 Message.info({
 	maskClosable: false,
@@ -55,14 +56,16 @@ Message.info({
 		// 回调
 	}
 });
-//
-Message.info(String, {});
 
-Message.success(String, {});
+Message.info(msg: String, opts: Object);
 
-Message.warn(String, {});
+Message.success(msg: String, opts: Object);
 
-Message.error(String, {});
+Message.warn(msg: String, opts: Object);
 
-Message.loading(String, {});
+Message.error(msg: String, opts: Object);
+
+Message.loading(msg: String, opts: Object);
+
+Message.destory(id);
 ```

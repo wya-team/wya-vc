@@ -9,8 +9,10 @@
 	</div>
 </template>
 <script>
-import Message from '../index';
+import Message from '..';
 import Button from '../../button';
+
+window.Message = Message;
 
 export default {
 	name: "vc-tpl-basic",

@@ -5,7 +5,9 @@
 	</div>
 </template>
 <script>
-import MToast from '../index';
+import MToast from '..';
+
+window.MToast = MToast;
 
 export default {
 	name: "vc-tpl-basic",
@@ -22,7 +24,7 @@ export default {
 		MToast.info('测试1', 3);
 		MToast.info('测试2', 3);
 		MToast.info('测试3', 3);
-		setTimeout(MToast.hide, 1000);
+		setTimeout(MToast.destory, 1000);
 	},
 	methods: {
 		handleClick(v) {

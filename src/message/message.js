@@ -82,7 +82,7 @@ const Target = {
 			mode: 'error'
 		});
 	},
-	hide(id) {
+	destory(id) {
 		try {
 			if (id) {
 				let instance = typeof id === 'object' ? id : VcInstance.APIS[id];
