@@ -9,10 +9,10 @@
 
 属性 | 说明 | 类型 | 默认值
 ---|---|---|---
-dataSource | 源数据 | `array` | `[{ src, msrc, w, h ....}] | ["", ""]`
-opts | photoSwipe参数 | `obj` | -
-events | photoSwipe事件 | `obj` | -
-id | 外层标识 | `str` | -
+dataSource | 源数据 | `Array<Object>, Array<String>` | `[{ src, msrc, w, h ....}] | ["", ""]`
+opts | photoSwipe参数 | `Object` | -
+events | photoSwipe事件 | `Object` | -
+id | 外层标识 | `String` | -
 
 #### 方法
 属性 | 说明 | 类型 | 默认值
@@ -25,7 +25,8 @@ renderRow | 自定义组件 | `(h, params) => jsx` | -
 
 属性 | 说明 | 默认值
 ---|---|---
-operate | 蒙层中的操作视图 | `{src, index}`
+operate | 蒙层中的操作视图 | `{src, index, show}`
+row | 同方法renderRow | `{src, index}`
 
 
 #### 自定义组件

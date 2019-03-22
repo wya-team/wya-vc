@@ -8,17 +8,29 @@
 			:key="index"
 			class="__item"
 		>
-			<vc-row 
+			<vc-row
+				v-if="!$slots.row && !$scopedSlots.row" 
 				:src="item | getImage"
 				:index="index"
 				:render="renderRow"
+			/>
+			<slot 
+				v-else
+				:src="item | getImage" 
+				:index="index" 
+				name="row" 
 			/>
 			<div class="__mask">
 				<div v-if="!$slots.operate && !$scopedSlots.operate">
 					<vc-icon type="preview" @click.stop="handleShow($event, index)" />
 				</div>
 				<div v-else>
-					<slot v-bind="{src: item | getImage, index}" name="operate" />
+					<slot 
+						:src="item | getImage" 
+						:index="index" 
+						:show="handleShow" 
+						name="operate" 
+					/>
 				</div>
 			</div>
 		</div>
@@ -98,7 +110,7 @@ export default {
 				}
 			}).then(() => {
 
-			}).catch(() => {
+			}).catch((e) => {
 
 			});
 		}

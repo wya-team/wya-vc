@@ -1,11 +1,30 @@
 <template>
 	<div>
-		<vc-imgs-preview :data-source="dataSource" :render-row="renderRow"/>
+		<!-- 自定义 renderRow -->
+		<vc-imgs-preview :data-source="dataSource" :render-row="renderRow" />
+		
+		<!-- 自定义 renderRow -->
+		<vc-imgs-preview :data-source="dataSource">
+			<template #row="it">
+				<img 
+					:src="it.src" 
+					:key="it.index" 
+					:style="{ width: '100px', height: '100px', borderRadius: '20px' }"
+				>
+			</template>
+		</vc-imgs-preview>
+
+		<!-- 自定义 operate -->
+		<vc-imgs-preview :data-source="dataSource">
+			<template #operate="it">
+				<div @click="it.show($event, it.index)">{{ it.index }}</div>
+			</template>
+		</vc-imgs-preview>
 		<span @click="handleClick">自定义预览</span>
 	</div>
 </template>
 <script>
-import ImgsPreview from '../imgs-preview';
+import ImgsPreview from '..';
 
 export default {
 	name: "vc-imgs-preview-basic",
@@ -16,31 +35,31 @@ export default {
 		return {
 			dataSource: [
 				{
-					url: 'https://oss.ruishan666.com/image/xcx/180228/803943951788/裤子.png',
+					src: 'https://oss.ruishan666.com/image/xcx/180228/803943951788/裤子.png',
 					title: 'Image 1',
 					w: 1200,
 					h: 900
 				},
 				{
-					url: 'https://oss.ruishan666.com/image/xcx/180313/942990884682/10053600,2880,1800.jpg',
+					src: 'https://oss.ruishan666.com/image/xcx/180313/942990884682/10053600,2880,1800.jpg',
 					title: 'Image 2',
 					w: 1200,
 					h: 900
 				},
 				{
-					url: 'https://oss.ruishan666.com/image/xcx/180313/942990767112/10049533,2880,1800.jpg',
+					src: 'https://oss.ruishan666.com/image/xcx/180313/942990767112/10049533,2880,1800.jpg',
 					title: 'Image 2',
 					w: 1200,
 					h: 900
 				},
 				{
-					url: 'https://oss.ruishan666.com/image/xcx/180228/803943510611/衣服-01.png',
+					src: 'https://oss.ruishan666.com/image/xcx/180228/803943510611/衣服-01.png',
 					title: 'Image 2',
 					w: 1200,
 					h: 900
 				},
 				{
-					url: 'https://oss.ruishan666.com/image/xcx/180313/942996157518/10053669,2880,1800.jpg',
+					src: 'https://oss.ruishan666.com/image/xcx/180313/942996157518/10053669,2880,1800.jpg',
 					title: 'Image 2',
 					w: 1200,
 					h: 900
@@ -58,17 +77,13 @@ export default {
 	methods: {
 		renderRow(h, params) {
 			const { src, index } = params; 
-			return <img src={src.url} key={src.url} style={{ width: '100px', height: '100px' }} />;
-			// return h('img', {
-			// 	attrs: {
-			// 		src,
-			// 		width: 100,
-			// 		height: 100,
-			// 	},
-			// 	on: {
-			// 		click: (e) => console.log(e)
-			// 	}
-			// });
+			return (
+				<img 
+					src={src} 
+					key={index} 
+					style={{ width: '100px', height: '100px', borderRadius: '50px' }} 
+				/>
+			);
 		},
 		handleClick(e) {
 			let pos = {};

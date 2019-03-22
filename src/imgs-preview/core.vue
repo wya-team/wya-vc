@@ -122,7 +122,9 @@ const config = {
 		images() {
 			return this.dataSource.map((item, index) => {
 				if (typeof item === 'object') {
-					return item;
+					return {
+						...item
+					}; // 会被photoswiper所引用
 				} else {
 					return {
 						src: item,
@@ -234,18 +236,6 @@ const config = {
 
 			// 初始化
 			this.photoSwipe.init();
-		},
-		/**
-		 * 更新元素
-		 * 暂时用不到
-		 */
-		updatePhotoSwipe() {
-			this.photoSwipe.items.length = 0;
-			this.images.forEach((item) => {
-				this.photoSwipe.items.push(item);
-			});
-			this.photoSwipe.invalidateCurrItems();
-			this.photoSwipe.updateSize(true);
 		},
 		/**
 		 * 销毁实例
