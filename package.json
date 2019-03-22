@@ -43,6 +43,7 @@
         "deepmerge": "^1.2.0",
         "echarts": "^4.2.0-rc.2",
         "html2canvas": "^1.0.0-alpha.12",
+        "inquirer-autocomplete-prompt": "^1.0.1",
         "iview": "^3.3.0",
         "lodash": "^4.17.11",
         "normalize-wheel": "^1.0.1",

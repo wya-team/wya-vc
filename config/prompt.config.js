@@ -2,7 +2,8 @@
  * 强化项目的读写能力
  */
 const { resolve } = require('path');
-const { prompt, Separator } = require('inquirer');
+const { prompt, Separator, registerPrompt } = require('inquirer');
+const autocomplete = require('inquirer-autocomplete-prompt');
 const fs = require('fs-extra');
 
 const directory = resolve(__dirname, '../src/');
@@ -28,13 +29,24 @@ const question = [
 		default: '8082'
 	},
 	{
-		type: 'list',
-		name: 'component',
+		type: 'autocomplete',
 		message: 'Select component:',
-		choices: components,
-		default: 'all'
+		name: 'component',
+		// suggestOnly: true, 开启后可以验证数据且需要使用tab选中
+		default: 'all',
+		source: (answers, input) => {
+			input = input || '';
+			return new Promise((resolve => {
+				let filter = input 
+					? components.filter(item => item.includes(input))
+					: components;
+				resolve(filter);
+			}));
+		}
 	}
 ];
+
+registerPrompt('autocomplete', autocomplete);
 prompt(question).then((result = {}) => {
 	let { port, component: str } = result;
 	result.component = str != 'all' ? str.replace(/([a-z\dA-Z])([A-Z])/g, '$1-$2').toLowerCase() : '';
