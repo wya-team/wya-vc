@@ -1,4 +1,4 @@
-import FormItem from 'iview/src/components/form-item';
+import FormItem from './form-item';
 import Form from './form';
 
 Form.Item = FormItem;

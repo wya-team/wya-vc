@@ -1,0 +1,34 @@
+<template>
+	<input :type="type" :value="value" @input="handleInput">
+</template>
+
+<script>
+import emitter from '../../../extends/mixins/emitter'; // 表单验证
+
+export default {
+	name: '',
+	components: {
+
+	},
+	mixins: [emitter],
+	props: {
+		type: String,
+		value: String | Number,
+	},
+	data() {
+		return {
+		};
+	},
+	methods: {
+		handleInput(e) {
+			this.$emit('input', e.target.value);
+
+			// form表单
+			this.dispatch('vc-form-item', 'form-change', e.target.value);
+		}
+	},
+};
+</script>
+
+<style lang="scss" scoped>
+</style>
