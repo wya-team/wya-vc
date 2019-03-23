@@ -1,6 +1,6 @@
 ## 功能
 - 针对`@wya/vc`组件的配置和方法
-- 参数配置原则: `userOptions(single)` > `globalOptions(Vc)` > `defaultOptions(single)`
+- 参数配置原则: `userOptions(single)` > `registerOptions(HOF)` > `globalOptions(Vc)` > `defaultOptions(single)`
 
 ## 方法
 
