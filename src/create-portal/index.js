@@ -2,10 +2,10 @@ import Vue from 'vue';
 import { VcInstance } from '../vc/index';
 import { getUid, eleInRegExp } from '../utils/utils';
 
-export default (defaultOptions = {}, wrapper) => {
+export default (globalOptions = {}, wrapper) => {
 	let isNeedWaiting = false;
 
-	if (!defaultOptions.cName && !wrapper.name) {
+	if (!globalOptions.cName && !wrapper.name) {
 		console.log('传送门：cName 必传');
 		return;
 	}
@@ -18,7 +18,7 @@ export default (defaultOptions = {}, wrapper) => {
 
 	class Statics {
 		static init(userOptions = {}) {
-			let options = { ...VcInstance.config.CreatePortal, ...defaultOptions, ...userOptions };
+			let options = { ...VcInstance.config.CreatePortal, ...globalOptions, ...userOptions };
 			return new Promise((resolve, reject) => {
 				// init options
 				// ['v-transfer-dom']
