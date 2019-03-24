@@ -59,7 +59,7 @@ const config = {
 		trigger: {
 			type: String,
 			default: 'hover',
-			validator: (value) => (['hover', 'click'].indexOf(value) !== -1)
+			validator: (value) => (['hover', 'click', 'focus'].indexOf(value) !== -1)
 		},
 		content: String,
 		getPopupContainer: Function,
@@ -114,6 +114,9 @@ const config = {
 		} else if (this.trigger === 'click') {
 			this.triggerElm.addEventListener('click', this.handleToggle);
 			document.addEventListener('click', this.handleDocumentClick);
+		} else if (this.trigger === 'focus') {
+			this.triggerElm.addEventListener('focus', this.handleSlotFocus);
+			this.triggerElm.addEventListener('blur', this.handleSlotBlur);
 		}
 	},
 	destroyed() {
@@ -123,6 +126,9 @@ const config = {
 		} else if (this.trigger === 'click') {
 			this.triggerElm.removeEventListener('click', this.handleToggle);
 			document.removeEventListener('click', this.handleDocumentClick);
+		} else if (this.trigger === 'focus') {
+			this.triggerElm.removeEventListener('focus', this.handleSlotFocus);
+			this.triggerElm.removeEventListener('blur', this.handleSlotBlur);
 		}
 		this.handleRemove();
 	},
@@ -202,6 +208,12 @@ const config = {
 			this.timer = setTimeout(() => {
 				this.show = false;
 			}, 200);
+		},
+		handleSlotFocus() {
+			this.show = true;
+		},
+		handleSlotBlur() {
+			this.show = false;
 		},
 		handleToggle() {
 			this.show = !this.show;
