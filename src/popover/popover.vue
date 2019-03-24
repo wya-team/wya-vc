@@ -104,8 +104,8 @@ const config = {
 		}
 	},
 	mounted() {
-		if (!this.$slots.default[0]) {
-			return console.error('【 vc-popover 】: 请检查默认插槽是否写入');
+		if (!this.$slots.default[0].elm) {
+			return console.error('【 vc-popover 】: 请检查默认插槽是否是一个Node');
 		}
 		this.triggerElm = this.$slots.default[0].elm;
 		if (this.trigger === 'hover') {
