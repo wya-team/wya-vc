@@ -1,136 +1,17 @@
-import { EventStore } from '@wya/ps';
-
 /**
  * 组件库设计完毕，此css会被移除
  */
 import 'iview/dist/styles/iview.css';
+import Manager from './manager';
 
-class Vc {
-	constructor() {
-		this.hasInit = false;
-		this.APIS = {};
-		this.config = {
-			/**
-			 * vuex + vue-router
-			 */
-			store: null,
-			router: null,
-			eventStore: null,
-			/**
-			 * components
-			 */
-			PGallery: {
-				URL_PGALLERY_PATHS_LIST_GET: null,
-				URL_PGALLERY_PATHS_ITEM_RENAME_POST: null,
-				URL_PGALLERY_PATHS_ITEM_DEL_POST: null,
-				URL_PGALLERY_PATHS_ITEM_ADD_POST: null,
-				URL_PGALLERY_IMGS_LIST_GET: null,
-				URL_PGALLERY_IMGS_ITEM_DEL_POST: null,
-				URL_PGALLERY_IMGS_UPLOAD_POST: null,
-				URL_PGALLERY_IMGS_ITEM_ADD_POST: null,
-				URL_PGALLERY_IMGS_ITEM_RENAME_POST: null,
-				URL_PGALLERY_IMGS_ITEM_MOVE_POST: null,
-			},	
-			Upload: {
-				IMG_UPLOAD_URL: null,
-				FILE_UPLOAD_URL: null,
-				onPostBefore: null,
-				onPostArter: null,
-			},
-			CreatePortal: {
-				aliveRegExp: null
-			},
-			Paging: {
-				stripe: null,
-				tableOpts: null,
-				pageOpts: null,
-			}
-		};
+export { default as VcBasic } from './basic';
+export { default as VcError } from './error';
 
-		this.initEventStore(new EventStore());
-	}
-
-	initEventStore(instance) {
-		this.on = instance.on.bind(instance);
-		this.off = instance.off.bind(instance);
-		this.emit = instance.emit.bind(instance);
-		this.once = instance.once.bind(instance);
-	}
-
-	/**
-	 * 初始化配置全局
-	 */
-	init(opts = {}) {
-		if (!this.hasInit) {
-			this.config = {
-				...this.config,
-				...opts
-			};
-
-			opts.eventStore && this.initEventStore(opts.eventStore);
-
-			this.hasInit = true;
-		} else {
-			console.error('只能初始化一次');
-		}
-		return this;
-	}
-
-	/**
-	 * 清理Portals类型组件
-	 * @param  {str | array} cName 清理的组件名
-	 * @param  {str | array} force 是否强制清理, cName 存在会变为true
-	 */
-	clean(cName, force = false) {
-		try {
-			// 清理对象 
-			let target = [];
-			if (cName) {
-				if (typeof cName === 'string') {
-					target = [cName];
-				} else if (cName instanceof Array && cName.length > 0) {
-					target = cName;
-				}
-				target = target.reduce((pre, cur) => { pre[cur] = ''; return pre; }, {});
-
-				// 清理
-				force = true;
-			} else {
-				target = this.APIS;
-			}
-			for (let i in target) {
-				if (this.APIS[i] && (force === true || this.APIS[i].__AUTO_DESTORY__ === true)) {
-					this.APIS[i].$emit('destory');
-					delete this.APIS[i];
-				}
-			}
-		} catch (e) {
-			console.log(`[vc-instance]: ${e}`);
-		}
-		return this;
-	}
-
-	/**
-	 * 清理全部
-	 */
-	cleanAll() {
-		try {
-			for (let i in this.APIS) {
-				if (this.APIS[i]) {
-					this.APIS[i].$emit('destory');
-					delete this.APIS[i];
-				}
-			}
-		} catch (e) {
-			console.log(`[vc-instance]: ${e}`);
-		}
-		return this;
-	}
-}
 /**
  * 组件内部调用
  */
-export const VcInstance = new Vc();
+export const VcInstance = new Manager();
+
 
 /**
  * 注册使用
@@ -141,4 +22,5 @@ export default {
 	},
 	instance: VcInstance
 };
+
 
