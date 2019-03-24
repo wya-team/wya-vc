@@ -1,8 +1,7 @@
-/* eslint-disable global-require */
-const { JSDOM } = require('jsdom');
-const Enzyme = require('enzyme');
+import { JSDOM } from 'jsdom';
+import Vue from 'vue';
 
-// fixed jsdom miss
+// jsdom 失效时添加
 if (typeof window === 'undefined') {
 	const documentHTML = '<!doctype html><html><body><div id="root"></div></body></html>';
 	global.document = new JSDOM(documentHTML);
@@ -14,6 +13,16 @@ if (typeof window === 'undefined') {
 	};
 }
 
-global.requestAnimationFrame = global.requestAnimationFrame || (cb => setTimeout(cb, 0));
+global.requestAnimationFrame = global.requestAnimationFrame || function (cb) {
+	return setTimeout(cb, 0);
+};
+// 挂载元素并返回已渲染的文本的工具函数
+global.createComponent = (wrapper, propsData) => {
+	const Constructor = Vue.extend(wrapper);
+	const vm = new Constructor({ propsData }).$mount();
+	return vm;
+};
+
+const Enzyme = require('enzyme');
 
 Enzyme.configure({});
