@@ -77,7 +77,6 @@ const config = {
 			show: this.visible,
 			popStyle: {},
 			fitPlacement: this.placement,
-			fixTop: 0, // 基于body定位时，如果body滚动，会导致y的高度变化，所以在初始化时记录页面渲染时y的值
 		};
 	},
 	computed: {
@@ -109,7 +108,6 @@ const config = {
 			return console.error('【 vc-popover 】: 请检查默认插槽是否写入');
 		}
 		this.triggerElm = this.$slots.default[0].elm;
-		this.fixTop = this.triggerElm.getBoundingClientRect().y;
 		if (this.trigger === 'hover') {
 			this.triggerElm.addEventListener('mouseenter', this.handleMouseOver);
 			this.triggerElm.addEventListener('mouseleave', this.handleMouseOut);
@@ -186,7 +184,7 @@ const config = {
 				};
 			} else {
 				rect = this.triggerElm.getBoundingClientRect(); // 基于body
-				rect.y = this.fixTop;
+				rect.y = document.scrollingElement.scrollTop + rect.y;
 			}
 			
 			this.getFitPlacement(rect);
@@ -238,7 +236,7 @@ export const createPopover = (opts = {}) => {
 .vc-popover {
 	position: absolute;
 	transition: top .02s linear, left .02s linear;
-	z-index: 999;
+	z-index: 1001;
 	._popover-container {
 		background-color: #ffffff;
 		padding: 5px 12px;
