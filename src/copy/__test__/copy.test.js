@@ -1,18 +1,11 @@
 import Vue from 'vue';
-import Copy from '../copy.vue';
+import Copy from '..';
 
-// 挂载元素并返回已渲染的文本的工具函数
-function getRenderedText(Component, propsData) {
-	const Constructor = Vue.extend(Component);
-	const vm = new Constructor({
-		propsData
-	}).$mount();
-	return vm;
-}
+
 
 describe('Copy', () => {
 	test('测试传递属性', () => {
-		const component = getRenderedText(
+		const component = createComponent(
 			Copy, 
 			{
 				value: 'Hello'
