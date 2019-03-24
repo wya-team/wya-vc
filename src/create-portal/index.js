@@ -24,7 +24,7 @@ export default (globalOptions = {}, wrapper) => {
 				// ['v-transfer-dom']
 				const { 
 					el, 
-					root: _root, 
+					tag = 'div',
 					cName = wrapper.name,
 					alive = false, // 再次调用，实例不销毁
 					aliveRegExp = { className: /(vc-hack-alive|vc-hack-cp)/ }, // 实例以外且该数组内的, 点击不销毁
@@ -41,8 +41,8 @@ export default (globalOptions = {}, wrapper) => {
 					...rest
 				} = options;
 
-				let container = document.createElement(el || 'div');
-				let target = document.querySelector(_root || 'body');
+				let container = document.createElement(tag);
+				let target = typeof el === 'string' ? document.querySelector(el || 'body') : el;
 
 				let render = (res = {}) => {
 					// destory

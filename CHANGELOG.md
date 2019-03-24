@@ -1,9 +1,12 @@
 # 历史版本
 
+### 1.0.13 (2019-03-21)
+- create-portal: `el -> tag`, `root -> el`
+
 ### 1.0.12 (2019-03-21)
 
-- message: `hide -> destory`
-- m-toast: `hide -> destory`
+- message: `hide -> destroy`
+- m-toast: `hide -> destroy`
 
 ### 1.0.11 (2019-03-20)
 
