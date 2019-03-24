@@ -7,15 +7,20 @@
 					trigger="click" 
 					placement="left-top"
 					content="LeftTop"
+					@visible-change="handleVisibleChange"
 				>
 					<vc-button class="_btn _m-tb-10">
 						LT
 					</vc-button>
-					<div slot="content" style="height: 100px; width: 200px">
-						getPopupContainer
-					</div>
+					<template #content>
+						<div style="height: 100px; width: 200px">
+							动态改变内容{{ content }}
+						</div>
+					</template>
+					
 				</vc-popover>
 				<vc-popover 
+					v-model="visible"
 					:transfer="false"
 					trigger="click" 
 					placement="left" 
@@ -24,17 +29,22 @@
 					<vc-button class="_btn _m-tb-10">
 						Left
 					</vc-button>
-					<div slot="content" style="height: 100px; width: 200px">
-						transfer="false"
-					</div>
+					<template #content>
+						<div style="height: 100px; width: 200px">
+							跟随父节点
+							<span @click="visible = false">点击我关闭弹窗</span>
+						</div>
+					</template>
 				</vc-popover>
 				<vc-popover trigger="click" placement="left-bottom" content="LeftBottom">
 					<vc-button class="_btn _m-tb-10">
 						LB
 					</vc-button>
-					<div slot="content" style="height: 100px; width: 200px">
-						Body
-					</div>
+					<template #content>
+						<div style="height: 100px; width: 200px">
+							Body
+						</div>
+					</template>
 				</vc-popover>
 			</div>
 			<div class="__middle">
@@ -48,9 +58,11 @@
 						<vc-button class="_btn _m-lr-10">
 							TL
 						</vc-button>
-						<div slot="content" style="height: 100px; width: 200px">
-							getPopupContainer
-						</div>
+						<template #content>
+							<div style="height: 100px; width: 200px">
+								getPopupContainer
+							</div>
+						</template>
 					</vc-popover>
 					<vc-popover 
 						:transfer="false"
@@ -61,9 +73,11 @@
 						<vc-button class="_btn _m-lr-10">
 							Top
 						</vc-button>
-						<div slot="content" style="height: 100px; width: 200px">
-							transfer="false"
-						</div>
+						<template #content>
+							<div style="height: 100px; width: 200px">
+								transfer="false"
+							</div>
+						</template>
 					</vc-popover>
 					<vc-popover 
 						trigger="click" 
@@ -73,9 +87,11 @@
 						<vc-button class="_btn _m-lr-10">
 							TR
 						</vc-button>
-						<div slot="content" style="height: 100px; width: 200px">
-							Body
-						</div>
+						<template #content>
+							<div style="height: 100px; width: 200px">
+								Body
+							</div>
+						</template>
 					</vc-popover>
 				</div>
 				<div class="_flex-jc-sb">
@@ -88,9 +104,11 @@
 						<vc-button class="_btn _m-lr-10">
 							BL
 						</vc-button>
-						<div slot="content" style="height: 100px; width: 200px">
-							getPopupContainer
-						</div>
+						<template #content>
+							<div style="height: 100px; width: 200px">
+								getPopupContainer
+							</div>
+						</template>
 					</vc-popover>
 					<vc-popover 
 						:transfer="false"
@@ -101,9 +119,11 @@
 						<vc-button class="_btn _m-lr-10">
 							Bottom
 						</vc-button>
-						<div slot="content" style="height: 100px; width: 200px">
-							transfer="false"
-						</div>
+						<template #content>
+							<div style="height: 100px; width: 200px">
+								transfer="false"
+							</div>
+						</template>
 					</vc-popover>
 					<vc-popover 
 						trigger="click" 
@@ -113,9 +133,11 @@
 						<vc-button class="_btn _m-lr-10">
 							BR
 						</vc-button>
-						<div slot="content" style="height: 100px; width: 200px">
-							Body
-						</div>
+						<template #content>
+							<div style="height: 100px; width: 200px">
+								Body
+							</div>
+						</template>
 					</vc-popover>
 				</div>
 			</div>
@@ -129,9 +151,11 @@
 					<vc-button class="_btn _m-tb-10">
 						RT
 					</vc-button>
-					<div slot="content" style="height: 100px; width: 200px">
-						getPopupContainer
-					</div>
+					<template #content>
+						<div style="height: 100px; width: 200px">
+							getPopupContainer
+						</div>
+					</template>
 				</vc-popover>
 				<vc-popover 
 					:transfer="false"
@@ -142,9 +166,11 @@
 					<vc-button class="_btn _m-tb-10">
 						Right
 					</vc-button>
-					<div slot="content" style="height: 100px; width: 200px">
-						transfer="false"
-					</div>
+					<template #content>
+						<div style="height: 100px; width: 200px">
+							transfer="false"
+						</div>
+					</template>
 				</vc-popover>
 				<vc-popover 
 					trigger="click" 
@@ -154,9 +180,11 @@
 					<vc-button class="_btn _m-tb-10">
 						RB
 					</vc-button>
-					<div slot="content" style="height: 100px; width: 200px">
-						Body
-					</div>
+					<template #content>
+						<div style="height: 100px; width: 200px">
+							Body
+						</div>
+					</template>
 				</vc-popover>
 			</div>
 		</div>
@@ -175,14 +203,24 @@ export default {
 	},
 	data() {
 		return {
+			content: 1,
+			visible: false
 		};
 	},
 	computed: {
 		
 	},
+	mounted() {
+		setTimeout(() => {
+			this.content = 111111;
+		}, 5000);
+	},
 	methods: {
 		getPopupContainer() {
 			return this.$refs.parent;
+		},
+		handleVisibleChange(visible) {
+			console.log('visible: ', visible);
 		}
 	}
 };

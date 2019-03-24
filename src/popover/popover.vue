@@ -5,40 +5,18 @@ TODO
 <template>
 	<span ref="popupContainer" style="position: relative">
 		<slot />
-		<transition :name="animate || `am-popup`" @after-leave="handleRemove">
-			<div 
-				v-if="show" 
-				ref="popper"
-				:style="popStyle" 
-				:class="popClass"
-				class="vc-popover" 
-				style="transform-origin: 100% 16px;"
-				@mouseover="handleMouseOver"
-				@mouseout="handleMouseOut"
-			>
-				<div class="_popover-container">
-					<div v-if="arrow" :class="arrowClass" class="__arrow" />
-					<slot v-if="$slots.content || $scopedSlots.content" name="content" />
-					<component 
-						v-else-if="Object.keys($options.components).indexOf(content) > -1" 
-						:is="content" 
-					/>
-					<div v-else>{{ content }}</div>
-				</div>
-			</div>
-		</transition>
 	</span>
 </template>
 
 <script>
-import Popper from './Popper';
-import CreatePortal from '../create-portal/index';
+import Popper from './popper';
+import { Func } from './core';
 
 const config = {
 	name: "vc-popover",
 	model: {
 		prop: 'visible',
-		event: 'change'
+		event: 'visible-change'
 	},
 	mixins: [Popper],
 	props: {
@@ -74,165 +52,120 @@ const config = {
 	},
 	data() {
 		return {
-			show: this.visible,
-			popStyle: {},
-			fitPlacement: this.placement,
 		};
 	},
-	computed: {
-		popClass() {
-			return `vc-popover-${this.fitPlacement}`;
-		},
-		arrowClass() {
-			let placement = this.fitPlacement.split('-')[0];
-			return `__arrow-${placement}-basic __arrow-${this.fitPlacement}`;
-		}
-	},
 	watch: {
+		visible: {
+			immediate: true,
+			handler(val) {
+				this.show = val;
+			}
+		},
 		show: {
 			immediate: true,
-			handler(newVal) {
-				if (newVal) {
+			handler(val) {
+				this.$emit('visible-change', val);
+				if (val) {
 					this.$nextTick(() => {
-						this.popper = this.$refs.popper;
 						this.parentNode = this.getParentNode();
-						this.parentNode.appendChild(this.popper);
-						this.setPopperStyle();
+						Func.popup({
+							el: this.parentNode,
+							...this.$props,
+							popContainer: this.popContainer,
+							slots: this.$slots,
+							onMouseOver: this.handleMouseOver.bind(this),
+							onMouseOut: this.handleMouseOut.bind(this),
+							getInstance: vm => { 
+								this.popperInstance = vm; 
+								this.popper = vm.$el; 
+							}
+						}).then((result) => {
+						}).catch((err) => {
+						});
 					});
+				} else {
+					this.popperInstance && this.popperInstance.handleRemove();
 				}
 			}
 		}
 	},
 	mounted() {
-		if (!this.$slots.default[0].elm) {
-			return console.error('【 vc-popover 】: 请检查默认插槽是否是一个Node');
+		this.popContainer = this.$el;
+		if (this.trigger === 'focus') {
+			if (!this.$slots.default[0].elm) {
+				return console.error('【 vc-popover 】: trggier为focus的模式下默认插槽必须是一个有focus和blur事件的节点');
+			}
+			this.popContainer = this.$slots.default[0].elm;
 		}
-		this.triggerElm = this.$slots.default[0].elm;
 		if (this.trigger === 'hover') {
-			this.triggerElm.addEventListener('mouseenter', this.handleMouseOver);
-			this.triggerElm.addEventListener('mouseleave', this.handleMouseOut);
+			this.popContainer.addEventListener('mouseenter', this.handleMouseOver);
+			this.popContainer.addEventListener('mouseleave', this.handleMouseOut);
 		} else if (this.trigger === 'click') {
-			this.triggerElm.addEventListener('click', this.handleToggle);
+			this.popContainer.addEventListener('click', this.handleTriggerClick);
 			document.addEventListener('click', this.handleDocumentClick);
 		} else if (this.trigger === 'focus') {
-			this.triggerElm.addEventListener('focus', this.handleSlotFocus);
-			this.triggerElm.addEventListener('blur', this.handleSlotBlur);
+			this.popContainer.addEventListener('focus', this.handleSlotFocus);
+			this.popContainer.addEventListener('blur', this.handleSlotBlur);
 		}
 	},
 	destroyed() {
 		if (this.trigger === 'hover') {
-			this.triggerElm.removeEventListener('mouseenter', this.handleMouseOver);
-			this.triggerElm.removeEventListener('mouseleave', this.handleMouseOut);
+			this.popContainer.removeEventListener('mouseenter', this.handleMouseOver);
+			this.popContainer.removeEventListener('mouseleave', this.handleMouseOut);
 		} else if (this.trigger === 'click') {
-			this.triggerElm.removeEventListener('click', this.handleToggle);
+			this.popContainer.removeEventListener('click', this.handleTriggerClick);
 			document.removeEventListener('click', this.handleDocumentClick);
 		} else if (this.trigger === 'focus') {
-			this.triggerElm.removeEventListener('focus', this.handleSlotFocus);
-			this.triggerElm.removeEventListener('blur', this.handleSlotBlur);
+			this.popContainer.removeEventListener('focus', this.handleSlotFocus);
+			this.popContainer.removeEventListener('blur', this.handleSlotBlur);
 		}
-		this.handleRemove();
+		this.popperInstance && this.popperInstance.$emit('destroy');
 	},
 	methods: {
 		// get
 		getParentNode() {
 			if (this.getPopupContainer) return this.getPopupContainer();
 			
-			return this.transfer ? document.body : this.$refs.popupContainer;
-		},
-		getFitPlacement(rect) {
-			// 目前判断是否可展示下是针对于整个页面，没有针对父容器
-			let elmRect = this.triggerElm.getBoundingClientRect();
-			let parentRect = document.body.getBoundingClientRect();
-			if (this.placement.indexOf('left') === 0) {
-				if (elmRect.x - this.popper.offsetWidth < 0) {
-					this.fitPlacement = this.fitPlacement.replace('left', 'right');
-				}
-			} else if (this.placement.indexOf('right') === 0) {
-				let remanentWidth = parentRect.width - elmRect.x + elmRect.width - this.popper.offsetWidth;
-				if (remanentWidth < 0) {
-					this.fitPlacement = this.fitPlacement.replace('right', 'left');
-				}
-			} else if (this.placement.indexOf('top') === 0) {
-				if (elmRect.y - this.popper.offsetHeight < 0) {
-					this.fitPlacement = this.fitPlacement.replace('top', 'bottom');
-				}
-			} else if (this.placement.indexOf('bottom') === 0) {
-				let remanentHeight = parentRect.height - elmRect.y + elmRect.height - this.popper.offsetHeight;
-				if (remanentHeight < 0) {
-					this.fitPlacement = this.fitPlacement.replace('bottom', 'top');
-				}
-			}
-			
-		},
-		// set
-		setPopperStyle() {
-			let rect;
-			if (this.getPopupContainer) { // 基于传入的容器节点
-				let elmRect = this.triggerElm.getBoundingClientRect();
-				let parentRect = this.parentNode.getBoundingClientRect();
-				let y = elmRect.y - parentRect.y;
-				let x = elmRect.x - parentRect.x;
-				if (x < 0 || y < 0) {
-					return console.error('【 vc-popover 】: getPopupContainer选择节点应为容器元素');
-				}
-				rect = {
-					y,
-					x,
-					height: elmRect.height,
-					width: elmRect.width
-				};
-			} else if (!this.transfer) { // 基于父节点
-				rect = {
-					y: this.triggerElm.offsetTop,
-					x: this.triggerElm.offsetLeft,
-					height: this.triggerElm.offsetHeight,
-					width: this.triggerElm.offsetWidth
-				};
-			} else {
-				rect = this.triggerElm.getBoundingClientRect(); // 基于body
-				rect.y = document.scrollingElement.scrollTop + rect.y;
-			}
-			
-			this.getFitPlacement(rect);
-			this.popper && this.getPopupStyle(rect);
+			return this.transfer ? document.body : this.$el;
 		},
 		// handle
 		handleMouseOver() {
 			if (this.trigger !== 'hover') return;
 			this.timer && clearTimeout(this.timer);
-			this.show = true;
+			this.setShow(true);
 		},
 		handleMouseOut() {
 			if (this.trigger !== 'hover') return;
 			this.timer && clearTimeout(this.timer);
 			this.timer = setTimeout(() => {
-				this.show = false;
+				this.setShow(false);
 			}, 200);
 		},
 		handleSlotFocus() {
-			this.show = true;
+			this.setShow(true);
 		},
 		handleSlotBlur() {
-			this.show = false;
+			this.setShow(false);
 		},
-		handleToggle() {
-			this.show = !this.show;
+		handleTriggerClick(e) {
+			// 因为transfer为false时，是直接挂在父节点上的，点击pop内容区域时click事件冒泡，导致执行了该toggle方法
+			if (!this.transfer && this.isPopArea(e)) return;
+			this.setShow(!this.show);
 		},
 		handleDocumentClick(e) {
 			// 不能更createProtal中的click监听方法同名
-			let path = e.path || (e.composedPath && e.composedPath()) || [];
-			if (!this.$el.contains(e.target) && !path.some(item => /vc-popover/.test(item.className))) {
-				this.handleClose();
+			if (!this.$el.contains(e.target) && !this.isPopArea(e)) {
+				this.setShow(false);
 			}		
 		},
-		handleRemove() {
-			// this.popper && this.parentNode.removeChild(this.popper);
-			this.popper = null;
-			this.fitPlacement = this.placement; // reset
+		setShow(value) {
+			this.show = value;
 		},
-		handleClose(e) {
-			this.show = false;
-		},
+		// 是否在pop弹层区域
+		isPopArea(e) {
+			let path = e.path || (e.composedPath && e.composedPath()) || [];
+			return path.some(item => /vc-popover/.test(item.className));
+		}
 	}
 };
 
