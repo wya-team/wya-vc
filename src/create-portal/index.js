@@ -23,7 +23,7 @@ export default (globalOptions = {}, wrapper) => {
 				// init options
 				// ['v-transfer-dom']
 				const { 
-					el, 
+					el = 'body', 
 					tag = 'div',
 					cName = wrapper.name,
 					alive = false, // 再次调用，实例不销毁
@@ -42,7 +42,7 @@ export default (globalOptions = {}, wrapper) => {
 				} = options;
 
 				let container = document.createElement(tag);
-				let target = typeof el === 'string' ? document.querySelector(el || 'body') : el;
+				let target = typeof el === 'string' ? document.querySelector(el) : el;
 
 				let render = (res = {}) => {
 					// destory
