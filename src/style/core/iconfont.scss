@@ -42,3 +42,11 @@
 .#{$iconfont-css-prefix}-error:before { content: "\e937"; }
 .#{$iconfont-css-prefix}-loading:before { content: "\e79e"; }
 .#{$iconfont-css-prefix}-close:before { content: "\e612"; }
+
+.icon {
+	width: 1em;
+	height: 1em;
+	vertical-align: -0.15em;
+	fill: currentColor;
+	overflow: hidden;
+}
