@@ -2,7 +2,7 @@
  * 组件库设计完毕，此css会被移除
  */
 import 'iview/dist/styles/iview.css';
-import Manager from './manager';
+import VcManager from './manager';
 
 export { default as VcBasic } from './basic';
 export { default as VcError } from './error';
@@ -10,7 +10,7 @@ export { default as VcError } from './error';
 /**
  * 组件内部调用
  */
-export const VcInstance = new Manager();
+export const VcInstance = new VcManager();
 
 
 /**

@@ -1,4 +1,13 @@
-class Basic {
+import VcError from './error';
+
+class VcBasic {
+	setConfig(options = {}) {
+		this.config = {
+			...this.config,
+			...options
+		};
+	}
+	
 	/**
 	 * 清理Portals类型组件
 	 * @param  {str | array} cName 清理的组件名
@@ -22,13 +31,13 @@ class Basic {
 				target = this.APIS;
 			}
 			for (let i in target) {
-				if (this.APIS[i] && (force === true || this.APIS[i].__AUTO_DESTORY__ === true)) {
-					this.APIS[i].$emit('destory');
+				if (this.APIS[i] && (force === true || this.APIS[i].__AUTO_DESTROY__ === true)) {
+					this.APIS[i].$emit('destroy');
 					delete this.APIS[i];
 				}
 			}
 		} catch (e) {
-			console.log(`[vc-instance]: ${e}`);
+			throw new VcError('instance', e);
 		}
 		return this;
 	}
@@ -40,12 +49,12 @@ class Basic {
 		try {
 			for (let i in this.APIS) {
 				if (this.APIS[i]) {
-					this.APIS[i].$emit('destory');
+					this.APIS[i].$emit('destroy');
 					delete this.APIS[i];
 				}
 			}
 		} catch (e) {
-			console.log(`[vc-instance]: ${e}`);
+			throw new VcError('instance', e);
 		}
 		return this;
 	}
@@ -54,6 +63,44 @@ class Basic {
 /**
  * 仅用户共享属性
  */
-Basic.prototype.APIS = {};
+VcBasic.prototype.APIS = {};
 
-export default Basic;
+VcBasic.prototype.config = {
+	/**
+	 * vuex + vue-router
+	 */
+	store: null,
+	router: null,
+	eventStore: null,
+	/**
+	 * components
+	 */
+	PGallery: {
+		URL_PGALLERY_PATHS_LIST_GET: null,
+		URL_PGALLERY_PATHS_ITEM_RENAME_POST: null,
+		URL_PGALLERY_PATHS_ITEM_DEL_POST: null,
+		URL_PGALLERY_PATHS_ITEM_ADD_POST: null,
+		URL_PGALLERY_IMGS_LIST_GET: null,
+		URL_PGALLERY_IMGS_ITEM_DEL_POST: null,
+		URL_PGALLERY_IMGS_UPLOAD_POST: null,
+		URL_PGALLERY_IMGS_ITEM_ADD_POST: null,
+		URL_PGALLERY_IMGS_ITEM_RENAME_POST: null,
+		URL_PGALLERY_IMGS_ITEM_MOVE_POST: null,
+	},	
+	Upload: {
+		IMG_UPLOAD_URL: null,
+		FILE_UPLOAD_URL: null,
+		onPostBefore: null,
+		onPostArter: null,
+	},
+	CreatePortal: {
+		aliveRegExp: null
+	},
+	Paging: {
+		stripe: null,
+		tableOpts: null,
+		pageOpts: null,
+	}
+};
+
+export default VcBasic;
