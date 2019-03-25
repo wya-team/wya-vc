@@ -46,7 +46,7 @@ export default {
 	mounted() {
 	},
 	destoryed() {
-		this.pickerInstance && this.pickerInstance.$emit('destory');
+		this.pickerInstance && this.pickerInstance.$emit('destroy');
 	},
 	methods: {
 		async handleClick() {

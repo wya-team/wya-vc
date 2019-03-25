@@ -108,7 +108,7 @@ const config = {
 			this.$emit('show-change', false);
 
 			// CreatePortal事件或模拟其事件
-			this.$emit('destory');
+			this.$emit('destroy');
 		},
 		handleOk() {
 			let selectedData = getSelectedData(this.values, this.dataSource);

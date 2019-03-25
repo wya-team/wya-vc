@@ -5,7 +5,7 @@
 		:cols="cols"
 		:value="currentValue"
 		@picker-change="handleChange"
-		@destory="handleDestory"
+		@destory="handleDestroy"
 		@close="handleClose"
 		@sure="handleSure"
 	/>
@@ -204,8 +204,8 @@ const config = {
 		/**
 		 * CreatePortal事件或模拟其事件
 		 */
-		handleDestory() {
-			this.$emit('destory');
+		handleDestroy() {
+			this.$emit('destroy');
 		},
 		handleClose() {
 			this.$emit('close', []);

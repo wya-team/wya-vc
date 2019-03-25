@@ -38,7 +38,7 @@ const Target = {
 		});
 
 		// 不自动销毁
-		vm.__AUTO_DESTORY__ = false;
+		vm.__AUTO_DESTROY__ = false;
 
 		VcInstance.APIS[cName] = vm;
 
