@@ -28,10 +28,12 @@ export default {
 		},
 		type: {
 			type: String,
+			validator: (value) => (['default', 'primary', 'text', 'success', 'error', 'warning'].indexOf(value) !== -1),
 			default: 'default'
 		},
 		size: {
 			type: String,
+			validator: (value) => (['small', 'medium', 'large'].indexOf(value) !== -1),
 			default: 'medium'
 		},
 		wait: {

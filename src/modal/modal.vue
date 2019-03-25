@@ -80,7 +80,10 @@ export default {
 		'vc-row': CustomerRow
 	},
 	props: {
-		mode: String,
+		mode: {
+			type: String,
+			validator: (value) => (['info', 'success', 'error', 'warning'].indexOf(value) !== -1),
+		},
 		loading: {
 			type: Boolean,
 			default: false,
@@ -91,6 +94,7 @@ export default {
 		},
 		size: {
 			type: String,
+			validator: (value) => (['small', 'medium', 'large'].indexOf(value) !== -1),
 			default: 'small'
 		},
 		width: {

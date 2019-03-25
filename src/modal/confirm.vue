@@ -71,6 +71,7 @@ const config = {
 		},
 		size: {
 			type: String,
+			validator: (value) => (['small', 'medium', 'large'].indexOf(value) !== -1),
 			default: 'small'
 		},
 		styles: {
