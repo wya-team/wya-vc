@@ -13,6 +13,7 @@ okText | 确定按钮的文字 | `string` | `确定`
 cancelText | 取消按钮的文字 | `string` | `取消`
 okType | 确定按钮的样式类型（其他值参考`button`的`type`） | `string` | `primary`
 cancelType | 确定按钮的样式类型（其他值参考`button`的`type`） | `string` | `default`
+iconType | icon的类型(取值参考`vc-icon`) | `string` | `warn`
 
 
 #### 事件
@@ -27,6 +28,7 @@ cancel | 点击取消按钮的回调 | - | -
 属性 | 说明
 ---|---
 title | 弹层标题的插槽
+icon | 弹层icon的插槽
 
 
 ## 基础用法

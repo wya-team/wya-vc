@@ -8,7 +8,9 @@
 		<template #content>
 			<div class="vc-popconfirm-content">
 				<div class="__popconfirm-title">
-					<vc-icon type="warn" class="__popconfirm-icon" />
+					<slot name="icon">
+						<vc-icon :type="iconType" class="__popconfirm-icon" />
+					</slot>
 					<slot name="title">{{ title }}</slot>
 				</div>
 				<div class="__popconfirm-footer">
@@ -70,6 +72,10 @@ export default {
 		cancelType: {
 			type: String,
 			default: 'default'
+		},
+		iconType: {
+			type: String,
+			default: 'warn'
 		}
 	},
 	data() {
