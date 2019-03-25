@@ -5,8 +5,7 @@
 		:closable="true"
 		:width="width"
 		placement="right"
-		class="g-drawer"
-		@on-close="handleCancel"
+		@close="handleCancel"
 	>
 		<div v-if="!loading">{{ data }} </div>
 		<vc-spin v-if="loading"/>
@@ -64,6 +63,9 @@ export default config;
 
 export const KeepAliveWithBefore = CreatePortal({
 	alive: true,
+	aliveRegExp: {
+		className: /(vc-btn)/
+	},
 	onBefore() {
 		return new Promise((resolve, reject) => {
 			setTimeout(resolve, 1000);

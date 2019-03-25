@@ -1,16 +1,17 @@
 <template>
 	<vc-modal
 		v-model="visible"
+		:loading="true"
 		title="title"
-		@on-ok="handleOk"
-		@on-cancel="handleCancel"
+		@ok="handleOk"
+		@cancel="handleCancel"
 	>
 		<p> {{ data }} </p>
 	</vc-modal>
 </template>
 
 <script>
-import Modal from '../../../modal/index';
+import Modal from '../../../modal/modal';
 import CreatePortal from '../../index';
 
 const config = {
@@ -34,8 +35,9 @@ const config = {
 	},
 	methods: {
 		handleOk() {
+			console.log(2);
 			/**
-			 * v-model会默认被触发，要由该组件控制，给组件vc-modal传值 loading: true
+			 * v-model会默认被触发，要由该组件控制，给组件i-modal传值 loading: true
 			 */
 			// this.visible = false;
 			this.$emit('sure');
