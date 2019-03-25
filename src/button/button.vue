@@ -91,7 +91,8 @@ $error-hover-color: #f16643;
 $warning-color: #e6a23c;
 $warning-hover-color: #ebb563;
 .vc-btn {
-	padding: 3px 16px 4px;
+	padding: 7px 16px;
+	line-height: 1;
 	font-size: 12px;
 	border-radius: 4px;
 	border: 1px solid transparent;
@@ -114,9 +115,6 @@ $warning-hover-color: #ebb563;
 		width: 100%;
 	}
 	.wyaicon{
-		vertical-align: middle;
-	}
-	span{
 		vertical-align: middle;
 	}
 }
@@ -172,7 +170,7 @@ $warning-hover-color: #ebb563;
 	}
 }
 .vc-btn-large {
-	padding: 4px 16px;
+	padding: 8px 16px;
     font-size: 14px;
     border-radius: 4px;
 	&.vc-btn-circle {
@@ -180,7 +178,7 @@ $warning-hover-color: #ebb563;
 	}
 }
 .vc-btn-small {
-	padding: 0 8px;
+	padding: 3px 8px;
     font-size: 12px;
     border-radius: 3px;
 	&.vc-btn-circle {

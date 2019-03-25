@@ -126,7 +126,7 @@ export default {
 }
 .vc-btn-group-large {
 	.vc-btn {
-		padding: 4px 16px;
+		padding: 8px 16px;
 		font-size: 14px;
 		&:first-child {
 			border-top-left-radius: 4px;
@@ -144,7 +144,7 @@ export default {
 }
 .vc-btn-group-small {
 	.vc-btn {
-		padding: 0 8px;
+		padding: 3px 8px;
 		font-size: 12px;
 		&:first-child {
 			border-top-left-radius: 3px;

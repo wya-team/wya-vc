@@ -28,7 +28,7 @@
 			<vc-button size="small">large</vc-button>
 		</div>
 		<div class="box-wrapper">
-			<vc-button size="large" icon="search">large</vc-button>
+			<vc-button size="large" icon="success">large</vc-button>
 			<vc-button type="success" size="large" icon="search" round/>
 		</div>
 		<div>
