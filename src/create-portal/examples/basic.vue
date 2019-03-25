@@ -21,10 +21,18 @@
 		<vc-button @click="handleClean">
 			销毁
 		</vc-button>
+
+		<vc-button 
+			@click="handleTestingStart"
+		>压力测试</vc-button>
+		<vc-button 
+			@click="handleTestingEnd"
+		>结束测试</vc-button>
 	</div>
 </template>
 <script>
 import Button from '../../button';
+import Message from '../../message';
 import { PModal, PModalWithBefore } from './basic/modal';
 import { VCPModal } from './basic/vc-modal';
 import { VCPDrawer } from './basic/vc-drawer';
@@ -44,6 +52,16 @@ export default {
 		
 	},
 	methods: {
+		handleTestingStart() {
+			clearInterval(this.timer);
+			this.timer = setInterval(() => {
+				Message.info(Math.random().toString(), { mask: false });
+			}, 50);
+			// Message.info(Math.random().toString(), { mask: false, duration: 110000 });
+		},
+		handleTestingEnd() {
+			clearInterval(this.timer);
+		},
 		handleClickWithBefore() {
 			PModalWithBefore.popup({
 				data: { s: 1 }
