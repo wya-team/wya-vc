@@ -18,7 +18,7 @@ class MessageManager extends CreatePortal.Core {
 	run(params, opts) {
 		let query = ['content', 'duration', 'onClose'];
 		let number = Object.keys(this.APIS)
-			.filter(item => item.includes(this.defaultOptions.cName)).length;
+			.filter(item => item.includes(this.globalOptions.cName)).length;
 		let options = {
 			...opts,
 			...getOption(params, query),
