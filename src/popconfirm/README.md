@@ -13,8 +13,8 @@ okText | 确定按钮的文字 | `string` | `确定`
 cancelText | 取消按钮的文字 | `string` | `取消`
 okType | 确定按钮的样式类型（其他值参考`button`的`type`） | `string` | `primary`
 cancelType | 确定按钮的样式类型（其他值参考`button`的`type`） | `string` | `default`
-iconType | icon的类型(取值参考`vc-icon`) | `string` | `warn`
-
+type | 类型`warn` `success` `info` `error` | `string` | `warn`
+其他属性请参考Popover
 
 #### 事件
 

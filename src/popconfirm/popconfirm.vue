@@ -9,7 +9,7 @@
 			<div class="vc-popconfirm-content">
 				<div class="__popconfirm-title">
 					<slot name="icon">
-						<vc-icon :type="iconType" class="__popconfirm-icon" />
+						<vc-icon :type="type" :class="iconColor" class="__popconfirm-icon" />
 					</slot>
 					<slot name="title">{{ title }}</slot>
 				</div>
@@ -73,9 +73,10 @@ export default {
 			type: String,
 			default: 'default'
 		},
-		iconType: {
+		type: {
 			type: String,
-			default: 'warn'
+			default: 'warn',
+			validator: (value) => (['warn', 'info', 'success', 'error'].indexOf(value) !== -1)
 		}
 	},
 	data() {
@@ -84,7 +85,9 @@ export default {
 		};
 	},
 	computed: {
-		
+		iconColor() {
+			return `__popconfirm-${this.type}`;
+		}
 	},
 	methods: {
 		handleOk(e) {
@@ -109,7 +112,18 @@ export default {
 			position: absolute;
 			top: 1px;
 			left: 0px;
-			color: #FFBF00;
+			&-warn {
+				color: #ffbf00;
+			}
+			&-info {
+				color: #0177de;
+			}
+			&-success {
+				color: #00a854;
+			}
+			&-error {
+				color: #f04134;
+			}
 		}
 	}
 	.__popconfirm-footer {
