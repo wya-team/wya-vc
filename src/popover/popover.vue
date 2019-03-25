@@ -52,6 +52,7 @@ const config = {
 	},
 	data() {
 		return {
+			show: this.visible
 		};
 	},
 	watch: {
