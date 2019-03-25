@@ -50,7 +50,7 @@
 					<div :class="{ '__confirm': mode }" class="__footer">
 						<slot name="footer">
 							<vc-button 
-								style="margin-right: 8px;" 
+								style="margin-right: 12px;"
 								@click="handleCancel"
 							>{{ cancelText }}</vc-button>
 							<vc-button 
@@ -421,8 +421,13 @@ export default {
 		border-top: 1px solid #e8e8e8;
 		padding: 17px 24px;
 		text-align: right;
+		font-size: 0;
 		&.__confirm {
 			border-top: none;
+		}
+		button {
+			display: inline-block;
+			vertical-align: middle;
 		}
 	}
 	.__title {
