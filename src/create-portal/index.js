@@ -146,6 +146,7 @@ export default (globalOptions = {}, wrapper) => {
 
 					// 插入	
 					vm.$el.parentElement === null && target.appendChild(vm.$el);
+					vm.$slots = rest.slots;
 
 					isNeedWaiting = false;
 				};
