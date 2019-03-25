@@ -24,13 +24,17 @@ class PortalCore extends VcBasic {
 		this.wrapper = wrapper;
 
 		// 与全局配置, 重新生成默认配置
-		this.defaultOptions = {
-			...defaultOptions,
+		globalOptions.cName = cName;
+		this.globalOptions = globalOptions;
+	}
+
+	_getDefaultOptions() {
+		return {
+			...defaultOptions, 
 			store: this.config.store,
 			router: this.config.router,
 			...this.config.CreatePortal, 
-			...globalOptions,
-			cName
+			...this.globalOptions,
 		};
 	}
 
@@ -48,7 +52,10 @@ class PortalCore extends VcBasic {
 		if (typeof userOptions !== 'object') {
 			userOptions = {};
 		}
-		return this._init({ ...this.defaultOptions, ...userOptions });
+		return this._init({ 
+			...this._getDefaultOptions(),
+			...userOptions 
+		});
 	}
 
 	_init(options) {
@@ -165,7 +172,6 @@ class PortalCore extends VcBasic {
 					alive && document.addEventListener('click', this.handleExtra, true);
 				},
 				destroyed() {
-					
 					alive && document.removeEventListener('click', this.handleExtra, true);
 				},
 				methods: {
@@ -185,7 +191,7 @@ class PortalCore extends VcBasic {
 								}
 							}
 						} catch (e) {
-							console.log(e);
+							throw new VcError('create-portal', e);
 						}
 						
 					}
@@ -227,7 +233,7 @@ class PortalCore extends VcBasic {
 	}
 	
 	destroy(target) {
-		const { multiple, cName } = this.defaultOptions;
+		const { multiple, cName } = this._getDefaultOptions();
 		target = target || cName;
 		const instance = typeof target === 'object' 
 			? target 
@@ -238,7 +244,6 @@ class PortalCore extends VcBasic {
 		} else if (multiple) {
 			Object.keys(this.APIS).forEach(item => {
 				if (item.includes(cName)) {
-					console.log(item);
 					this.APIS[item] && this.APIS[item].$emit('destroy');
 				}
 			});
