@@ -1,7 +1,6 @@
 import Vue from 'vue';
 import MToast from './m-toast.vue';
-import { VcInstance } from '../vc/index';
-import { getUid, getOption } from '../utils/index';
+import { getOption } from '../utils/index';
 import CreatePortal from '../create-portal/index';
 
 const registerOptions = {
