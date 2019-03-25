@@ -69,37 +69,37 @@ VcBasic.prototype.config = {
 	/**
 	 * vuex + vue-router
 	 */
-	store: null,
-	router: null,
-	eventStore: null,
+	store: undefined,
+	router: undefined,
+	eventStore: undefined,
 	/**
 	 * components
 	 */
 	PGallery: {
-		URL_PGALLERY_PATHS_LIST_GET: null,
-		URL_PGALLERY_PATHS_ITEM_RENAME_POST: null,
-		URL_PGALLERY_PATHS_ITEM_DEL_POST: null,
-		URL_PGALLERY_PATHS_ITEM_ADD_POST: null,
-		URL_PGALLERY_IMGS_LIST_GET: null,
-		URL_PGALLERY_IMGS_ITEM_DEL_POST: null,
-		URL_PGALLERY_IMGS_UPLOAD_POST: null,
-		URL_PGALLERY_IMGS_ITEM_ADD_POST: null,
-		URL_PGALLERY_IMGS_ITEM_RENAME_POST: null,
-		URL_PGALLERY_IMGS_ITEM_MOVE_POST: null,
+		URL_PGALLERY_PATHS_LIST_GET: undefined,
+		URL_PGALLERY_PATHS_ITEM_RENAME_POST: undefined,
+		URL_PGALLERY_PATHS_ITEM_DEL_POST: undefined,
+		URL_PGALLERY_PATHS_ITEM_ADD_POST: undefined,
+		URL_PGALLERY_IMGS_LIST_GET: undefined,
+		URL_PGALLERY_IMGS_ITEM_DEL_POST: undefined,
+		URL_PGALLERY_IMGS_UPLOAD_POST: undefined,
+		URL_PGALLERY_IMGS_ITEM_ADD_POST: undefined,
+		URL_PGALLERY_IMGS_ITEM_RENAME_POST: undefined,
+		URL_PGALLERY_IMGS_ITEM_MOVE_POST: undefined,
 	},	
 	Upload: {
-		IMG_UPLOAD_URL: null,
-		FILE_UPLOAD_URL: null,
-		onPostBefore: null,
-		onPostArter: null,
+		IMG_UPLOAD_URL: undefined,
+		FILE_UPLOAD_URL: undefined,
+		onPostBefore: undefined,
+		onPostArter: undefined,
 	},
 	CreatePortal: {
-		aliveRegExp: null
+		aliveRegExp: undefined
 	},
 	Paging: {
-		stripe: null,
-		tableOpts: null,
-		pageOpts: null,
+		stripe: undefined,
+		tableOpts: undefined,
+		pageOpts: undefined,
 	}
 };
 
