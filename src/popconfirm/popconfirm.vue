@@ -110,7 +110,7 @@ export default {
 		position: relative;
 		.__popconfirm-icon {
 			position: absolute;
-			top: 1px;
+			top: 3px;
 			left: 0px;
 			&-warn {
 				color: #ffbf00;
