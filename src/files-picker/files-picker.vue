@@ -20,7 +20,7 @@
 				:class="item.retcode == 0 && item.percent == 100 || item.errorFlag ? '__error' : ''"
 				class="__item"
 			>
-				<vc-icon type="error" class="__download" />
+				<vc-icon type="link" class="__download" />
 				<div :title="item.title" class="__title">{{ item.title }}</div>
 				<!-- <template v-if="item.errorFlag || item.retcode == 0">
 					<div>上传失败</div>
@@ -228,8 +228,8 @@ export default {
 		}
 		.__download {
 			position: absolute;
-			left: 2px;
-			top: 0px;
+			left: 0px;
+			top: 10px;
 		}
 		span:first-child {
 			overflow: hidden;
