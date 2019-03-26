@@ -62,21 +62,22 @@ class PortalCore extends VcBasic {
 		const { onBefore, onSure, onClose, promise, ...rest } = options;
 
 		return promise 
-			? new Promise((resolve, reject) => {
+			? new Promise(async (resolve, reject) => {
 				if (onBefore && !this.waiting) {
-					this.waiting = true;
-					onBefore({ ...options })
-						.then((response = {}) => {
-							this._render({ 
-								options, 
-								response,
-								onSure: resolve,
-								onClose: reject,
-							});
-						}).catch((res = {}) => {
-							this.waiting = false;
-							reject(res);
+					try {
+						this.waiting = true;
+						let response = await onBefore({ ...options });
+						this._render({ 
+							options, 
+							response,
+							onSure: resolve,
+							onClose: reject,
 						});
+					} catch (res) {
+						this.waiting = false;
+						reject(res);
+					}
+					
 				} else {
 					this._render({ 
 						options, 
