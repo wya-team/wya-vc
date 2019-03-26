@@ -7,6 +7,7 @@
 					trigger="click" 
 					placement="left-top"
 					content="LeftTop"
+					theme="dark"
 					@visible-change="handleVisibleChange"
 				>
 					<vc-button class="_btn _m-tb-10">

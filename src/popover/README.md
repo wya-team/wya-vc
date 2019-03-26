@@ -2,9 +2,6 @@
 ## 功能
 Popover
 
-## 待开发
-- 各个位置的呼出动画
-
 ## API
 
 #### 属性
@@ -19,6 +16,7 @@ content | 显示的内容 | `string` | 无
 getPopupContainer | 浮层渲染父节点 | `func` | 无
 transfer | 是否渲染到body上，默认body | `boolean` | 无
 arrow | 浮层有无箭头 | `boolean` | `true`
+theme | 颜色主体`light` `dark` | `string` | `light`
 
 
 #### 事件

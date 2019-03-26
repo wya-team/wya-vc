@@ -5,13 +5,11 @@
 			ref="popper"
 			:style="popStyle" 
 			:class="popClass"
-			class="vc-popover" 
-			style="transform-origin: 100% 16px;"
 			@mouseover="handleMouseOver"
 			@mouseout="handleMouseOut"
 		>
-			<div class="_popover-container">
-				<div v-if="arrow" :class="arrowClass" class="__arrow" />
+			<div :class="popoverContainer">
+				<div v-if="arrow" :class="arrowClass" />
 				<slot v-if="$slots.content || $scopedSlots.content" name="content" />
 				<div v-else>{{ content }}</div>
 			</div>
@@ -21,6 +19,7 @@
 
 <script>
 import Popper from './popper';
+import PopoverProps from './props';
 import CreateProtal from '../create-portal/index';
 
 const popup = {
@@ -30,35 +29,7 @@ const popup = {
 	},
 	mixins: [Popper],
 	props: {
-		visible: Boolean,
-		animate: String,
-		placement: {
-			type: String,
-			default: 'bottom',
-			validator: (value) => {
-				return [
-					'bottom', 'bottom-left', 'bottom-right',
-					'top', 'top-left', 'top-right',
-					'right', 'right-top', 'right-bottom',
-					'left', 'left-top', 'left-bottom'
-				].indexOf(value) !== -1;
-			}
-		},
-		trigger: {
-			type: String,
-			default: 'hover',
-			validator: (value) => (['hover', 'click', 'focus'].indexOf(value) !== -1)
-		},
-		content: String,
-		getPopupContainer: Function,
-		transfer: {
-			type: Boolean,
-			default: true
-		},
-		arrow: { // 是否显示箭头
-			type: Boolean,
-			default: true
-		},
+		...PopoverProps,
 		popContainer: HTMLElement,
 		onMouseOver: Function,
 		onMouseOout: Function,
@@ -72,11 +43,14 @@ const popup = {
 	},
 	computed: {
 		popClass() {
-			return `vc-popover-${this.fitPlacement}`;
+			return `vc-popover-${this.fitPlacement} vc-popover`;
+		},
+		popoverContainer() {
+			return `__popover-${this.theme} __popover-container`; 
 		},
 		arrowClass() {
 			let placement = this.fitPlacement.split('-')[0];
-			return `__arrow-${placement}-basic __arrow-${this.fitPlacement}`;
+			return `__popover-arrow __popover-arrow-${placement}-${this.theme} __popover-arrow-${this.fitPlacement}`;
 		}
 	},
 	watch: {
@@ -174,12 +148,18 @@ export const Func = CreateProtal({}, popup);
 	position: absolute;
 	transition: top .02s linear, left .02s linear;
 	z-index: 1001;
-	._popover-container {
-		background-color: #ffffff;
+	.__popover-dark {
+		color: white;
+		background-color: rgba(0, 0, 0, 0.75);
+	}
+	.__popover-light {
+		background-color: #fff;
+	}
+	.__popover-container {
 		padding: 5px 12px;
 		border-radius: 4px;
 		box-shadow: 0 2px 8px rgba(0, 0, 0, 0.15);
-		.__arrow {
+		.__popover-arrow {
 			background: transparent;
 			width: 9px;
 			height: 9px;
@@ -188,82 +168,115 @@ export const Func = CreateProtal({}, popup);
 			display: block;
 			border-width: 4px;
 			border-style: solid;
+			border-color: transparent;
 		}
 		// arrow-top
-		.__arrow-top-basic {
+		.__popover-arrow-top-basic {
 			bottom: 4px;
 			box-shadow: 3px 3px 7px rgba(0,0,0,0.07);
 			border-top-color: transparent;
-			border-right-color: #fff;
-			border-bottom-color: #fff;
 			border-left-color: transparent;
 		}
-		.__arrow-top {
+		.__popover-arrow-top-light {
+			@extend .__popover-arrow-top-basic;
+			border-right-color: #fff;
+			border-bottom-color: #fff;
+		}
+		.__popover-arrow-top-dark {
+			@extend .__popover-arrow-top-basic;
+			border-right-color: rgba(0, 0, 0, 0.75);
+			border-bottom-color: rgba(0, 0, 0, 0.75);
+		}
+		.__popover-arrow-top {
 			left: 50%;
 			transform: translateX(-50%) rotate(45deg);
-		} 
-		.__arrow-top-left {
-			left: 16px;
-		}
-		.__arrow-top-right {
-			right: 16px;
+			&-left {
+				left: 16px;
+			}
+			&-right {
+				right: 16px;
+			}
 		}
 		// arrow-bottom
-		.__arrow-bottom-basic {
+		.__popover-arrow-bottom-basic {
 			top: 4px;
 			box-shadow: -2px -2px 5px rgba(0,0,0,0.06);
-			border-top-color: #fff;
 			border-right-color: transparent;
 			border-bottom-color: transparent;
+		}
+		.__popover-arrow-bottom-light {
+			@extend .__popover-arrow-bottom-basic;
+			border-top-color: #fff;
 			border-left-color: #fff;
 		}
-		.__arrow-bottom {
+		.__popover-arrow-bottom-dark {
+			@extend .__popover-arrow-bottom-basic;
+			border-top-color: rgba(0, 0, 0, 0.75);
+			border-left-color: rgba(0, 0, 0, 0.75);
+		}
+		.__popover-arrow-bottom {
 			left: 50%;
 			transform: translateX(-50%) rotate(45deg);
-		}
-		.__arrow-bottom-left {
-			left: 16px;
-		}
-		.__arrow-bottom-right {
-			right: 16px;
+			&-left {
+				left: 16px;
+			}
+			&-right {
+				right: 16px;
+			}
 		}
 		// arrow-right
-		.__arrow-right-basic {
+		.__popover-arrow-right-basic {
 			left: 4px;
 			box-shadow: -3px 3px 7px rgba(0,0,0,0.07);
 			border-top-color: transparent;
 			border-right-color: transparent;
+		}
+		.__popover-arrow-right-light {
+			@extend .__popover-arrow-right-basic;
 			border-bottom-color: #fff;
 			border-left-color: #fff;
 		}
-		.__arrow-right {
+		.__popover-arrow-right-dark {
+			@extend .__popover-arrow-right-basic;
+			border-bottom-color: rgba(0, 0, 0, 0.75);
+			border-left-color: rgba(0, 0, 0, 0.75);
+		}
+		.__popover-arrow-right {
 			top: 50%;
 			transform: translateY(-50%) rotate(45deg);
-		}
-		.__arrow-right-top {
-			top: 12px;
-		}
-		.__arrow-right-bottom {
-			bottom: 12px;
+			&-top {
+				top: 12px;
+			}
+			&-bottom {
+				bottom: 12px;
+			}
 		}
 		// arrow-left
-		.__arrow-left-basic {
+		.__popover-arrow-left-basic {
 			right: 4px;
 			box-shadow: 3px -3px 7px rgba(0,0,0,0.07);
-			border-top-color: #fff;
-			border-right-color: #fff;
 			border-bottom-color: transparent;
 			border-left-color: transparent;
 		}
-		.__arrow-left {
+		.__popover-arrow-left-light {
+			@extend .__popover-arrow-left-basic;
+			border-top-color: #fff;
+			border-right-color: #fff;
+		}
+		.__popover-arrow-left-dark {
+			@extend .__popover-arrow-left-basic;
+			border-top-color: rgba(0, 0, 0, 0.75);
+			border-right-color: rgba(0, 0, 0, 0.75);
+		}
+		.__popover-arrow-left {
 			top: 50%;
 			transform: translateY(-50%) rotate(45deg);
-		}
-		.__arrow-left-top {
-			top: 12px;
-		}
-		.__arrow-left-bottom {
-			bottom: 12px;
+			&-top {
+				top: 12px;
+			}
+			&-bottom {
+				bottom: 12px;
+			}
 		}
 	}
 }
@@ -290,6 +303,6 @@ export const Func = CreateProtal({}, popup);
 }
 .am-popup-enter, .am-popup-leave-active {
 	opacity: 0;
-	transform: scale(.9)
+	transform: scale(.8)
 }
 </style>
