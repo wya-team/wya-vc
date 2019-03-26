@@ -86,7 +86,7 @@ export default {
 	},
 	computed: {
 		iconColor() {
-			return `__popconfirm-${this.type}`;
+			return `__popconfirm-icon-${this.type}`;
 		}
 	},
 	methods: {

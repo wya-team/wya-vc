@@ -2,6 +2,7 @@
 	<div style="padding: 200px">
 		<vc-popconfirm
 			title="Are you sure to delete this task?"
+			type="info"
 		>
 			触发
 		</vc-popconfirm>
