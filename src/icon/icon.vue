@@ -1,15 +1,10 @@
 <template>
-	<!-- <i 
-		:class="`wyaicon wyaicon-${type}`"
-		@click="$emit('click', $event)" 
-	/> -->
-	<svg class="icon" aria-hidden="true">
+	<svg class="vc-icon" aria-hidden="true">
 		<use :xlink:href="`#icon-${type}`"/>
 	</svg>
 </template>
 <script>
 import "./iconfont";
-import '../style/index.scss';
 
 export default {
 	name: "vc-icon",
@@ -27,4 +22,12 @@ export default {
 	}
 };
 </script>
-<style></style>
+<style>
+.vc-icon {
+	width: 1em;
+	height: 1em;
+	vertical-align: -0.15em;
+	fill: currentColor;
+	overflow: hidden;
+}
+</style>
