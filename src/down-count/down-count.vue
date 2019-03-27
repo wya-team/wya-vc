@@ -10,6 +10,7 @@
 		:after-text="afterText" 
 		:format="format"
 		:tag="tag" 
+		:dynamic="dynamic"
 	/>
 </template>
 <script>
@@ -26,26 +27,45 @@ const DownCount = CreateCustomer({
 	format: String,
 	beforeText: String,
 	afterText: String,
-	tag: String
+	tag: String,
+	dynamic: Boolean
 });
 const defaultRender = (h, params) => {
-	const { days, hours, minutes, seconds, ms, beforeText, afterText, format, tag, } = params;
+	const { days, hours, minutes, seconds, ms, beforeText, afterText, format, tag, dynamic } = params;
 	let result;
+	let day = days + '天';
+	let hour = hours + '小时';
+	let minute = minutes + '分';
+	let second = seconds + '秒';
+	if (dynamic) {
+		if (day === '00天') {
+			day = '';
+			if (hour === '00小时') {
+				hour = '';
+				if (minute === '00分') {
+					minute = '';
+					if (second === '00秒') {
+						second = '';
+					}
+				}
+			}
+		}
+	}
 	switch (format) {
 		case "DD":
-			result = `${beforeText}${days}天${afterText}`;
+			result = `${beforeText}${day}${afterText}`;
 			break;
 		case "DD:HH":
-			result = `${beforeText}${days}天${hours}小时${afterText}`;
+			result = `${beforeText}${day}${hour}${afterText}`;
 			break;
 		case "DD:HH:MM":
-			result = `${beforeText}${days}天${hours}小时${minutes}分${afterText}`;
+			result = `${beforeText}${day}${hour}${minute}${afterText}`;
 			break;
 		case "DD:HH:MM:SS:mm":
-			result = `${beforeText}${days}天${hours}小时${minutes}分${seconds}秒${ms}${afterText}`;
+			result = `${beforeText}${day}${hour}${minute}${second}${ms}${afterText}`;
 			break;
 		default:
-			result = `${beforeText}${days}天${hours}小时${minutes}分${seconds}秒${afterText}`;
+			result = `${beforeText}${day}${hour}${minute}${second}${afterText}`;
 			break;
 	}
 	return (
@@ -63,6 +83,10 @@ export default {
 		"down-count": DownCount
 	},
 	props: {
+		dynamic: {
+			type: Boolean,
+			default: false
+		},
 		tag: {
 			type: String,
 			default: "span"
