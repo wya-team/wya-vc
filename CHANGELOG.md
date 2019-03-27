@@ -1,5 +1,8 @@
 # 历史版本
 
+### 1.0.25 (2019-03-28)
+- down-count: `render -> render-row`
+
 ### 1.0.13 (2019-03-21)
 - create-portal: `el -> tag`, `root -> el`
 
