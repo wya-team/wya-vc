@@ -1,6 +1,8 @@
 <template>
 	<div :class="classes" class="vc-form-item">
-		<label v-if="label" :style="labelStyle" class="__label">{{ label }}</label>
+		<label v-if="label || $slots.label" :for="labelFor" :style="labelStyle" class="__label">
+			<slot name="label">{{ label }}</slot>
+		</label>
 		<div :style="contentStyle" class="__content">
 			<slot />
 			<transition name="am-fade">
