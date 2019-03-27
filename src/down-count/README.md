@@ -9,7 +9,7 @@
 属性 | 说明 | 类型 | 默认值
 ---|---|---|---
 t | 刷新周期，单位秒 | `Number`	| 1		
-render | 自定义渲染 | `Function` | -
+render-row | 自定义渲染 | `Function` | -
 target-time	| 目标时间 | `String`, `Number` |	-
 server-time	| 服务器时间 | `String`, `Number` | -	
 before-text	| 前缀 | `String` |	-

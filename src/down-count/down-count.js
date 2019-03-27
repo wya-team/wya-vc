@@ -1,24 +1,8 @@
-<template>
-	<down-count 
-		:render="render" 
-		:days="days" 
-		:hours="hours" 
-		:minutes="minutes" 
-		:seconds="seconds" 
-		:ms="ms" 
-		:before-text="beforeText" 
-		:after-text="afterText" 
-		:format="format"
-		:tag="tag" 
-		:dynamic="dynamic"
-	/>
-</template>
-<script>
 import { debounce } from 'lodash';
 import CreateCustomer from "../create-customer/index";
 import { prefixZero } from "../utils/utils";
 
-const DownCount = CreateCustomer({
+const Row = CreateCustomer({
 	days: [String, Number],
 	hours: [String, Number],
 	minutes: [String, Number],
@@ -28,64 +12,16 @@ const DownCount = CreateCustomer({
 	beforeText: String,
 	afterText: String,
 	tag: String,
-	dynamic: Boolean
+	className: String,
+	showZero: Boolean
 });
-const defaultRender = (h, params) => {
-	const { days, hours, minutes, seconds, ms, beforeText, afterText, format, tag, dynamic } = params;
-	let result;
-	let day = days + '天';
-	let hour = hours + '小时';
-	let minute = minutes + '分';
-	let second = seconds + '秒';
-	if (dynamic) {
-		if (day === '00天') {
-			day = '';
-			if (hour === '00小时') {
-				hour = '';
-				if (minute === '00分') {
-					minute = '';
-					if (second === '00秒') {
-						second = '';
-					}
-				}
-			}
-		}
-	}
-	switch (format) {
-		case "DD":
-			result = `${beforeText}${day}${afterText}`;
-			break;
-		case "DD:HH":
-			result = `${beforeText}${day}${hour}${afterText}`;
-			break;
-		case "DD:HH:MM":
-			result = `${beforeText}${day}${hour}${minute}${afterText}`;
-			break;
-		case "DD:HH:MM:SS:mm":
-			result = `${beforeText}${day}${hour}${minute}${second}${ms}${afterText}`;
-			break;
-		default:
-			result = `${beforeText}${day}${hour}${minute}${second}${afterText}`;
-			break;
-	}
-	return (
-		h(tag, {
-			domProps: {
-				innerHTML: result
-			}
-			
-		})
-	); 
-};
+
 export default {
 	name: "vc-down-count",
-	components: {
-		"down-count": DownCount
-	},
 	props: {
-		dynamic: {
+		showZero: {
 			type: Boolean,
-			default: false
+			default: true
 		},
 		tag: {
 			type: String,
@@ -115,10 +51,7 @@ export default {
 			type: [String, Number],
 			default: ""
 		},
-		render: {
-			type: Function,
-			default: defaultRender
-		}
+		renderRow: Function
 	},
 	data() {
 		return {
@@ -152,6 +85,38 @@ export default {
 			}
 
 			return new Date(this.targetTime.replace(/-/g, "/"));
+		},
+		result() {
+			if (this.renderRow) {
+				return;
+			}
+			let v;
+			let day = this.days + '天';
+			let hour = this.hours + '小时';
+			let minute = this.minutes + '分';
+			let second = this.seconds + '秒';
+			let ms = this.ms;
+
+			switch (this.format) {
+				case "DD":
+					v = `${this.beforeText}${day}${this.afterText}`;
+					break;
+				case "DD:HH":
+					v = `${this.beforeText}${day}${hour}${this.afterText}`;
+					break;
+				case "DD:HH:MM":
+					v = `${this.beforeText}${day}${hour}${minute}${this.afterText}`;
+					break;
+				case "DD:HH:MM:SS:mm":
+					v = `${this.beforeText}${day}${hour}${minute}${second}${ms}${this.afterText}`;
+					break;
+				default:
+					v = `${this.beforeText}${day}${hour}${minute}${second}${this.afterText}`;
+					break;
+			}
+			!this.showZero && (v = v.replace(/00(天|小时|分|秒)?/g, ''));
+
+			return v;
 		}
 	},
 	watch: {
@@ -234,6 +199,48 @@ export default {
 
 			}
 		}
+	},
+	render(h) {
+		if (this.$scopedSlots.default) {
+			return h(this.tag, { class: "vc-down-count" }, [
+				this.$scopedSlots.default({
+					days: this.days,
+					hours: this.hours,
+					minutes: this.minutes,
+					seconds: this.seconds,
+					ms: this.ms,
+					beforeText: this.beforeText,
+					afterText: this.afterText,
+					format: this.forma,
+					tag: this.tag,
+					showZero: this.showZer,
+				})
+			]);
+		} else if (this.renderRow) {
+			return (
+				<Row
+					className="vc-down-count"
+					render={this.renderRow} 
+					days={this.days} 
+					hours={this.hours} 
+					minutes={this.minutes} 
+					seconds={this.seconds} 
+					ms={this.ms} 
+					beforeText={this.beforeText} 
+					afterText={this.afterText} 
+					format={this.format}
+					tag={this.tag} 
+					showZero={this.showZero}
+				/>
+			);
+		} else {
+			return h(this.tag, {
+				domProps: {
+					innerHTML: this.result
+				},
+				class: "vc-down-count"
+			});
+		}
 	}
 };
-</script>
+
