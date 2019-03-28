@@ -18,7 +18,6 @@ import emitter from '../extends/mixins/emitter'; // 表单验证
 
 export default {
 	name: "vcm-date-picker",
-	popup: Func.popup,
 	components: {},
 	mixins: [emitter],
 	model: {
