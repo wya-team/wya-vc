@@ -8,7 +8,7 @@
 			:key="index"
 			class="__item"
 		>
-			<vc-row
+			<vc-customer-row
 				v-if="!$slots.row && !$scopedSlots.row" 
 				:src="item | getImage"
 				:index="index"
@@ -22,7 +22,7 @@
 			/>
 			<div class="__mask">
 				<div v-if="!$slots.operate && !$scopedSlots.operate">
-					<vc-icon type="preview" @click.stop="handleShow($event, index)" />
+					<vc-icon type="up" @click.stop="handleShow($event, index)" />
 				</div>
 				<div v-else>
 					<slot 
@@ -41,16 +41,15 @@ import Core, { Func } from './core';
 import CreateCustomer from '../create-customer/index';
 import Icon from '../icon/index';
 
-const VcRow = CreateCustomer({
+const Row = CreateCustomer({
 	src: [Object, String],
 	index: Number,
 	
 });
 export default {
 	name: "vc-imgs-preview-row",
-	popup: Func.popup,
 	components: {
-		VcRow,
+		'vc-customer-row': Row,
 		'vc-icon': Icon
 	},
 	filters: {
@@ -111,7 +110,7 @@ export default {
 			}).then(() => {
 
 			}).catch((e) => {
-
+				console.log(e);
 			});
 		}
 	}
