@@ -23,7 +23,7 @@
 export default {
 	name: "vcm-popup",
 	model: {
-		prop: 'show',
+		prop: 'visible',
 		event: 'change'
 	},
 	props: {
@@ -31,7 +31,7 @@ export default {
 			type: Boolean,
 			default: true
 		},
-		show: {
+		visible: {
 			type: Boolean,
 			default: false
 		},
@@ -50,12 +50,12 @@ export default {
 	},
 	data() {
 		return {
-			isActive: this.show,
+			isActive: this.visible,
 		};
 	},
 	computed: {},
 	watch: {
-		show: {
+		visible: {
 			immediate: true,
 			handler(v) {
 				this.isActive = v;
