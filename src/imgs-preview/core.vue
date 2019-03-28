@@ -30,20 +30,19 @@
 						title="全屏"
 					/>
 					<button class="pswp__button pswp__button--zoom" title="缩放"/>
-
 					<vc-icon 
 						type="rotate-right" 
 						class="vc-pswp-button" 
 						title="向右旋转90度"
 						@click="handleRotate(90)" 
 					/>
+					<!-- icon标签不能直接为svg, 否则会报错 -->
 					<vc-icon 
 						type="rotate-left" 
 						class="vc-pswp-button" 
 						title="向左旋转90度"
 						@click="handleRotate(-90)" 
 					/>
-					
 					<div class="pswp__preloader">
 						<div class="pswp__preloader__icn">
 							<div class="pswp__preloader__cut">
@@ -206,6 +205,7 @@ const config = {
 				this.images, 
 				this.opts
 			);
+
 			this.getInstance && this.getInstance(this.photoSwipe);
 
 			this.photoSwipe.next = () => {
@@ -274,6 +274,7 @@ export const Func = CreatePortal({}, config);
 		color: white;
 		line-height: 44px;
 		text-align: center;
+		font-size: 20px
 	}
 }
 </style>

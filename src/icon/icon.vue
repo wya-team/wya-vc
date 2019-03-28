@@ -1,7 +1,9 @@
 <template>
-	<svg class="vc-icon" aria-hidden="true" @click="$emit('click', $event)">
-		<use :xlink:href="`#icon-${type}`"/>
-	</svg>
+	<i class="vc-icon" @click="$emit('click', $event)">
+		<svg aria-hidden="true">
+			<use :xlink:href="`#icon-${type}`"/>
+		</svg>
+	</i>
 </template>
 <script>
 import "./iconfont";
@@ -23,7 +25,7 @@ export default {
 };
 </script>
 <style>
-.vc-icon {
+.vc-icon svg {
 	width: 1em;
 	height: 1em;
 	vertical-align: -0.15em;
