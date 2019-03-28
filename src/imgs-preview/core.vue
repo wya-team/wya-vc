@@ -32,14 +32,14 @@
 					<button class="pswp__button pswp__button--zoom" title="缩放"/>
 					<vc-icon 
 						type="rotate-right" 
-						class="vc-pswp-button" 
+						class="vc-imgs-preview-core__button" 
 						title="向右旋转90度"
 						@click="handleRotate(90)" 
 					/>
 					<!-- icon标签不能直接为svg, 否则会报错 -->
 					<vc-icon 
 						type="rotate-left" 
-						class="vc-pswp-button" 
+						class="vc-imgs-preview-core__button" 
 						title="向左旋转90度"
 						@click="handleRotate(-90)" 
 					/>
@@ -253,9 +253,11 @@ export default config;
 export const Func = CreatePortal({}, config);
 
 </script>
-<style lang='scss' scoped>
-.pswp {
-	.vc-pswp-button {
+<style lang='scss'>
+@import '../style/index.scss';
+
+@include block(vc-imgs-preview-core) {
+	@include element(button) {
 		width: 44px;
 		height: 44px;
 		position: relative;

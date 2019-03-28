@@ -6,7 +6,7 @@
 		<div
 			v-for="(item, index) in dataSource"
 			:key="index"
-			class="__item"
+			class="vc-imgs-preview__item"
 		>
 			<vc-customer-row
 				v-if="!$slots.row && !$scopedSlots.row" 
@@ -20,7 +20,7 @@
 				:index="index" 
 				name="row" 
 			/>
-			<div class="__mask">
+			<div class="vc-imgs-preview__mask">
 				<div v-if="!$slots.operate && !$scopedSlots.operate">
 					<vc-icon type="up" @click.stop="handleShow($event, index)" />
 				</div>
@@ -116,23 +116,27 @@ export default {
 	}
 };
 </script>
-<style lang="scss" scoped>
-.vc-imgs-preview {
+<style lang="scss">
+@import '../style/index.scss';
+
+@include block(vc-imgs-preview) {
 	img {
 		display: block;
 	}
-	.__item {
+	@include element(item) { 
 		box-sizing: border-box;
 		cursor: pointer;
 		position: relative;
 		margin-bottom: 5px;
-		margin-right: 5px;
-	}
-	.__item:hover .__mask {
-		transition: opacity 0.5s;
-		opacity: 1;
-	}
-	.__mask {
+		margin-right: 5px; 
+		&:hover {
+			@include element(mask) {
+				transition: opacity 0.5s;
+				opacity: 1;
+			}
+		}
+	}; 
+	@include element(mask) {
 		opacity: 0;
 		position: absolute;
 		top: 0;
