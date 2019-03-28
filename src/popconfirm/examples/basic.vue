@@ -4,17 +4,19 @@
 			title="Are you sure to delete this task?"
 			type="info"
 		>
-			触发
+			<vc-button type="primary">Button</vc-button>
 		</vc-popconfirm>
 	</div>
 </template>
 <script>
 import Popconfirm from '../popconfirm';
+import Button from '../../button/index';
 
 export default {
 	name: "vc-popconfirm-baisc",
 	components: {
-		'vc-popconfirm': Popconfirm
+		'vc-popconfirm': Popconfirm,
+		'vc-button': Button
 	},
 	data() {
 		return {

@@ -105,12 +105,12 @@ export default {
 .vc-popconfirm-content {
 	padding: 7px 4px;
 	.__popconfirm-title {
-		padding-left: 22px;
+		padding-left: 20px;
 		padding-bottom: 12px;
 		position: relative;
 		.__popconfirm-icon {
 			position: absolute;
-			top: 3px;
+			top: 0px;
 			left: 0px;
 			&-warn {
 				color: #ffbf00;

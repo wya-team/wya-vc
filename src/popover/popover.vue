@@ -58,7 +58,7 @@ const config = {
 						});
 					});
 				} else {
-					this.popperInstance && this.popperInstance.handleRemove();
+					this.popperInstance && this.popperInstance.close();
 				}
 			}
 		}

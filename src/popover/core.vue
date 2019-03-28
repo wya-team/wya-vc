@@ -1,5 +1,5 @@
 <template>
-	<transition :name="animate || `am-popup`" @after-leave="handleRemove">
+	<transition :name="animate || `am-popup`" @after-leave="close">
 		<div 
 			v-show="show"
 			ref="popper"
@@ -9,7 +9,7 @@
 			@mouseout="handleMouseOut"
 		>
 			<div :class="popoverContainer">
-				<div v-if="arrow" :class="arrowClass" />
+				<div v-if="arrow" :class="arrowClass" :style="arrowStyle" />
 				<slot v-if="$slots.content || $scopedSlots.content" name="content" />
 				<div v-else>{{ content }}</div>
 			</div>
@@ -38,7 +38,10 @@ const popup = {
 		return {
 			show: false,
 			popStyle: {},
-			fitPlacement: this.placement
+			arrowStyle: {},
+			fitPlacement: this.placement,
+			triggerElm: null,
+			arrowElm: null
 		};
 	},
 	computed: {
@@ -53,25 +56,26 @@ const popup = {
 			return `__popover-arrow __popover-arrow-${placement}-${this.theme} __popover-arrow-${this.fitPlacement}`;
 		}
 	},
-	watch: {
-		
-	},
-	created() {
-	},
 	mounted() {
 		this.popper = this.$refs.popper;
 		this.show = true;
 		this.$nextTick(() => {
+			this.triggerElm = this.getTriggerElm();
 			this.setPopperStyle();
 		});
 	},
-	updated() {
-		
-	},
 	methods: {
+		getTriggerElm() {
+			let slotHeight = this.$slots.default[0].elm.getBoundingClientRect().height;
+			let parentHeight = this.popContainer.getBoundingClientRect().height;
+			if (slotHeight > parentHeight) {
+				return this.$slots.default[0].elm;
+			}
+			return this.popContainer;
+		},
 		getFitPlacement(rect) {
 			// 目前判断是否可展示下是针对于整个页面，没有针对父容器
-			let elmRect = this.popContainer.getBoundingClientRect();
+			let elmRect = this.triggerElm.getBoundingClientRect();
 			let parentRect = document.body.getBoundingClientRect();
 			if (this.placement.indexOf('left') === 0) {
 				if (elmRect.x - this.popper.offsetWidth < 0) {
@@ -98,7 +102,7 @@ const popup = {
 		setPopperStyle() {
 			let rect;
 			if (this.getPopupContainer) { // 基于传入的容器节点
-				let elmRect = this.popContainer.getBoundingClientRect();
+				let elmRect = this.triggerElm.getBoundingClientRect();
 				let parentRect = this.$el.parentElement.getBoundingClientRect();
 				let y = elmRect.y - parentRect.y;
 				let x = elmRect.x - parentRect.x;
@@ -115,11 +119,11 @@ const popup = {
 				rect = {
 					y: 0,
 					x: 0,
-					height: this.popContainer.offsetHeight,
-					width: this.popContainer.offsetWidth
+					height: this.triggerElm.offsetHeight,
+					width: this.triggerElm.offsetWidth
 				};
 			} else {
-				rect = this.popContainer.getBoundingClientRect(); // 基于body
+				rect = this.triggerElm.getBoundingClientRect(); // 基于body
 				rect.y = document.scrollingElement.scrollTop + rect.y;
 			}
 			
@@ -132,7 +136,7 @@ const popup = {
 		handleMouseOut() {
 			this.onMouseOut && this.onMouseOut();
 		},
-		handleRemove() {
+		close() {
 			this.show = false;
 			this.$emit('close');
 		},
@@ -244,12 +248,6 @@ export const Func = CreateProtal({}, popup);
 		.__popover-arrow-right {
 			top: 50%;
 			transform: translateY(-50%) rotate(45deg);
-			&-top {
-				top: 12px;
-			}
-			&-bottom {
-				bottom: 12px;
-			}
 		}
 		// arrow-left
 		.__popover-arrow-left-basic {
@@ -271,12 +269,6 @@ export const Func = CreateProtal({}, popup);
 		.__popover-arrow-left {
 			top: 50%;
 			transform: translateY(-50%) rotate(45deg);
-			&-top {
-				top: 12px;
-			}
-			&-bottom {
-				bottom: 12px;
-			}
 		}
 	}
 }
@@ -303,6 +295,6 @@ export const Func = CreateProtal({}, popup);
 }
 .am-popup-enter, .am-popup-leave-active {
 	opacity: 0;
-	transform: scale(.8)
+	transform: scale(.7)
 }
 </style>
