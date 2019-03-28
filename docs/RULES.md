@@ -91,3 +91,9 @@ export default {
 </style>
 
 ```
+
+##### 6.【强制】其他
+
+- 弹窗均使用CreatePortal, 包括select, picker, popover等
+- 报错统一使用VcError类
+- 相互间调用只定位到index.js文件, 所以方法提前暴露
