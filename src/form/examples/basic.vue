@@ -1,5 +1,11 @@
 <template>
 	<vc-form ref="formValidate" :model="formValidate">
+		<vc-form-item>
+			<template #label>
+				？？	<i>2</i>	
+			</template>
+			<vc-tpl v-model="formValidate.name" type="text" placeholder="Enter something..." />
+		</vc-form-item>
 		<vc-form-item
 			v-for="(item, index) in formValidate.items"
 			v-if="item.status"
@@ -37,6 +43,7 @@ export default {
 		return {
 			index: 1,
 			formValidate: {
+				name: "wya",
 				items: [
 					{
 						value: '',
