@@ -82,13 +82,28 @@ export default {
 </script>
 
 <style lang="scss"> <!-- 不要使用scoped -->
+
 <!-- BEM -->
-.vc-[component-name]{
-	&__header {
-	
+@import '../style/index.scss';
+
+@include block(vc-xxx) {
+	img {
+		display: block;
+	}
+	@include element(item) { 
+		&:hover {
+			@include element(mask) {
+				transition: opacity 0.5s;
+				opacity: 1;
+			}
+		}
+	}; 
+	@include element(mask) {
+		@include modifier(small) {
+			
+		}
 	}
 }
-</style>
 
 ```
 

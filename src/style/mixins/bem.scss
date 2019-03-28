@@ -1,0 +1,161 @@
+/* Var
+ -------------------------- */
+$B: '';
+$E: '';
+
+$element-separator: '__';
+$modifier-separator: '--';
+$state-prefix: 'is-';
+
+/* Func
+ -------------------------- */
+@function selectorToString($selector) {
+	$selector: inspect($selector);
+	$selector: str-slice($selector, 2, -2);
+	@return $selector;
+}
+
+@function containsModifier($selector) {
+	$selector: selectorToString($selector);
+
+	@if str-index($selector, $modifier-separator) {
+		@return true;
+	} @else {
+		@return false;
+	}
+}
+
+@function containWhenFlag($selector) {
+	$selector: selectorToString($selector);
+
+	@if str-index($selector, '.' + $state-prefix) {
+		@return true; } @else {
+		@return false; }
+}
+
+@function containPseudoClass($selector) {
+	$selector: selectorToString($selector);
+
+	@if str-index($selector, ':') {
+		@return true; } @else {
+		@return false; }
+}
+
+@function hitAllSpecialNestRule($selector) {
+
+	@return containsModifier($selector) or containWhenFlag($selector) or containPseudoClass($selector);
+}
+
+/* Mix
+ -------------------------- */
+
+@mixin block($block) {
+	$B: $block !global;
+
+	.#{$block} {
+		@content;
+	}
+}
+
+@mixin element($element) {
+	$E: $element !global;
+	$selector: &;
+
+	@if hitAllSpecialNestRule($selector) {
+		@at-root {
+			#{$selector} {
+				.#{$B + $element-separator + $element} {
+					@content;
+				}
+			}
+		}
+	} @else {
+		@at-root {
+			.#{$B + $element-separator + $element} {
+				@content;
+			}
+		}
+	}
+}
+
+@mixin modifier($modifier) {
+	$selector: &;
+
+	@at-root {
+		#{& + $modifier-separator + $modifier} {
+			@content;
+		}
+	}
+}
+
+@mixin configurable-m($modifier, $E-flag: false) {
+	$selector: &;
+	$interpolation: '';
+
+	@if $E-flag {
+		$interpolation: $element-separator + $E-flag;
+	}
+
+	@at-root {
+		#{$selector} {
+			.#{$B + $interpolation + $modifier-separator + $modifier} {
+				@content;
+			}
+		}
+	}
+}
+
+@mixin spec-selector($specSelector: '', $element: $E, $modifier: false, $block: $B) {
+	$modifierCombo: '';
+
+	@if $modifier {
+		$modifierCombo: $modifier-separator + $modifier;
+	}
+
+	@at-root {
+		#{&}#{$specSelector}.#{$block + $element-separator + $element + $modifierCombo} {
+			@content; }
+	}
+}
+
+@mixin meb($modifier: false, $element: $E, $block: $B) {
+	$selector: &;
+	$modifierCombo: '';
+
+	@if $modifier {
+		$modifierCombo: $modifier-separator + $modifier;
+	}
+
+	@at-root {
+		#{$selector} {
+			.#{$block + $element-separator + $element + $modifierCombo} {
+				@content; }
+		}
+	}
+}
+
+@mixin when($state) {
+	$selector: &;
+
+	@at-root {
+		#{$selector}.#{$state-prefix + $state} {
+			@content;
+		}
+	}
+}
+
+@mixin extend-rule($name) {
+	@extend #{'%shared-'+$name};
+}
+
+@mixin share-rule($name) {
+	$rule-name: '%shared-'+$name;
+
+	@at-root #{$rule-name} {
+		@content; }
+}
+
+@mixin pseudo($pseudo) {
+	@at-root #{&}#{':#{$pseudo}'} {
+		@content; }
+}
