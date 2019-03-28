@@ -1,8 +1,8 @@
 /**
  * 弹层位置  mixin
  */
-const EXTRA_DISTANCE = 4; // 而外的距离
-const HALF_ARROW = 12.73 / 2; // 箭头一般的高度
+const EXTRA_DISTANCE = 4; // 额外的距离
+const HALF_ARROW = 12.73 / 2; // 箭头一半的高度
 export default {
 	methods: {
 		getPopupStyle(rect) {
