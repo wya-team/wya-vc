@@ -26,6 +26,8 @@ class PortalCore extends VcBasic {
 		// 与全局配置, 重新生成默认配置
 		globalOptions.cName = cName;
 		this.globalOptions = globalOptions;
+
+		this.popup = ::this.popup;
 	}
 
 	_getDefaultOptions() {
