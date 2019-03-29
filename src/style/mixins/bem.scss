@@ -29,16 +29,22 @@ $state-prefix: 'is-';
 	$selector: selectorToString($selector);
 
 	@if str-index($selector, '.' + $state-prefix) {
-		@return true; } @else {
-		@return false; }
+		@return true;
+	} 
+	@else {
+		@return false;
+	}
 }
 
 @function containPseudoClass($selector) {
 	$selector: selectorToString($selector);
 
 	@if str-index($selector, ':') {
-		@return true; } @else {
-		@return false; }
+		@return true;
+	} 
+	@else {
+		@return false;
+	}
 }
 
 @function hitAllSpecialNestRule($selector) {
@@ -57,7 +63,10 @@ $state-prefix: 'is-';
 	}
 }
 
-@mixin element($element) {
+/**
+ * @param $root: 默认置顶
+ */
+@mixin element($element, $root: true) {
 	$E: $element !global;
 	$selector: &;
 
@@ -69,19 +78,29 @@ $state-prefix: 'is-';
 				}
 			}
 		}
-	} @else {
+	} @else if $root {
 		@at-root {
 			.#{$B + $element-separator + $element} {
 				@content;
 			}
 		}
+	} @else {
+		.#{$B + $element-separator + $element} {
+			@content;
+		}
 	}
 }
 
-@mixin modifier($modifier) {
+@mixin modifier($modifier, $root: true) {
 	$selector: &;
-
-	@at-root {
+	
+	@if $root {
+		@at-root {
+			#{& + $modifier-separator + $modifier} {
+				@content;
+			}
+		}
+	} @else {
 		#{& + $modifier-separator + $modifier} {
 			@content;
 		}
@@ -105,6 +124,12 @@ $state-prefix: 'is-';
 	}
 }
 
+/**
+ * 1. +, >, ~, ' '
+ * 2. 同element
+ * 3. 同modifier
+ * 4. 同block
+ */
 @mixin spec-selector($specSelector: '', $element: $E, $modifier: false, $block: $B) {
 	$modifierCombo: '';
 
@@ -114,7 +139,8 @@ $state-prefix: 'is-';
 
 	@at-root {
 		#{&}#{$specSelector}.#{$block + $element-separator + $element + $modifierCombo} {
-			@content; }
+			@content;
+		}
 	}
 }
 
@@ -129,11 +155,16 @@ $state-prefix: 'is-';
 	@at-root {
 		#{$selector} {
 			.#{$block + $element-separator + $element + $modifierCombo} {
-				@content; }
+				@content;
+			}
 		}
 	}
 }
 
+/**
+ * -> [className].is_require 
+ * 与xxx:hover类似
+ */
 @mixin when($state) {
 	$selector: &;
 
@@ -144,6 +175,19 @@ $state-prefix: 'is-';
 	}
 }
 
+/**
+ * 用 @at-root 来重置 & 读取次数的计数
+ * 如 [clsssName] [className]:hover
+ */
+@mixin pseudo($pseudo) {
+	@at-root #{&}#{':#{$pseudo}'} {
+		@content;
+	}
+}
+
+/**
+ * 自定义规则
+ */
 @mixin extend-rule($name) {
 	@extend #{'%shared-'+$name};
 }
@@ -152,10 +196,6 @@ $state-prefix: 'is-';
 	$rule-name: '%shared-'+$name;
 
 	@at-root #{$rule-name} {
-		@content; }
-}
-
-@mixin pseudo($pseudo) {
-	@at-root #{&}#{':#{$pseudo}'} {
-		@content; }
+		@content;
+	}
 }
