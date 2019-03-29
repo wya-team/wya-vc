@@ -8,7 +8,7 @@
 		@click="handleClick"
 	>
 		<vc-icon v-if="!!icon" :type="icon"/>
-		<img v-if="loading" src="../m-toast/spin.svg" class="vc-btn-loading">
+		<img v-if="loading" src="../m-toast/spin.svg" class="vc-btn__loading">
 		<span v-if="hasSlot" ref="slot"><slot/></span>
 	</vc-debounce-click>
 </template>
@@ -133,6 +133,11 @@ $warning-hover-color: #ebb563;
 	cursor: pointer;
 	transition: color .2s linear,background-color .2s linear,border .2s linear,box-shadow .2s linear;
 	outline:0 none !important;
+	@include element(loading) {
+		width: 14px;
+		height: 14px;
+		animation: vc-button-circle 1s linear infinite;
+	}
 	@include when(circle) {
 		border-radius: 32px;
 	}
@@ -243,11 +248,6 @@ $warning-hover-color: #ebb563;
 	}
 }
 
-.vc-btn-loading {
-	width: 14px;
-	height: 14px;
-	animation: vc-button-circle 1s linear infinite;
-}
 @keyframes vc-button-circle {
 	to {
 		transform: rotate(1turn);
