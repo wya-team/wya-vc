@@ -1,8 +1,8 @@
 <template>
 	<div style="width: 100%;text-align: center">
 		<div class="box-wrapper">
-			<vc-button :wait="5000" type="default" @click="showNum">default</vc-button>
-			<vc-button type="primary">primary</vc-button>
+			<vc-button :wait="5000" type="default" @click="handleClick">default</vc-button>
+			<vc-button type="primary" @click="handleClick">primary</vc-button>
 			<vc-button type="text" size="small">text</vc-button>
 			<vc-button type="success" size="large">success</vc-button>
 			<vc-button type="error" size="small">error</vc-button>
@@ -80,19 +80,25 @@
 				<vc-button icon="up"/>
 			</vc-button-group>
 		</div>
+		<div>
+			<br>
+			<vc-button-group size="small">
+				<vc-button type="primary" @click="handlePromise1">Promise1</vc-button>
+				<vc-button type="success" @click="handlePromise2">Promise2</vc-button>
+			</vc-button-group>
+		</div>
 	</div>
 </template>
 <script>
 import Button from '../button';
+import Message from '../../message';
 import ButtonGroup from '../button-group';
-import DebounceClick from '../../debounce-click';
 
 export default {
 	name: "vc-button-basic",
 	components: {
 		"vc-button": Button,
-		"vc-button-group": ButtonGroup,
-		'vc-debounce-click': DebounceClick
+		"vc-button-group": ButtonGroup
 	},
 	data() {
 		return {
@@ -102,8 +108,22 @@ export default {
 		
 	},
 	methods: {
-		showNum(e) {
-			console.log(e, new Date());
+		handleClick(e) {
+			console.log(e);
+			Message.info(new Date().getTime().toString());
+			// console.log(e, );
+		},
+		handlePromise1(e, callback) {
+			return new Promise((resolve, reject) => {
+				setTimeout(() => {
+					resolve();
+				}, 3000);	
+			});
+		},
+		handlePromise2(e, callback) {
+			return this.handlePromise1().then(() => {
+				console.log(typeof callback);
+			});
 		}
 	}
 };

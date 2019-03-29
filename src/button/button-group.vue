@@ -1,19 +1,27 @@
 <template>
-	<div :class="classes">
+	<div :class="classes" class="vc-btn-group">
 		<slot/>
 	</div>
 </template>
 <script>
-const basicClass = 'vc-btn-group';
 export default {
 	name: "vc-button-group",
 	props: {
-		vertical: Boolean,
-		circle: Boolean,
+		vertical: {
+			type: Boolean,
+			default: false
+		},
+		circle: {
+			type: Boolean,
+			default: false
+		},
 		size: {
 			type: String,
 			default: 'medium'
 		}
+	},
+	provide() {
+		return { group: this };
 	},
 	data() {
 		return {
@@ -22,11 +30,10 @@ export default {
 	computed: {
 		classes() {
 			return [
-				`${basicClass}`,
 				{
-					[`${basicClass}-vertical`]: this.vertical,
-					[`${basicClass}-circle`]: this.circle,
-					[`${basicClass}-${this.size}`]: !!this.size
+					'is-vertical': this.vertical,
+					'is-circle': this.circle,
+					[`is-${this.size}`]: !!this.size
 				}
 			];
 		},
@@ -35,10 +42,12 @@ export default {
 	}
 };
 </script>
-<style lang="scss" scoped>
-.vc-btn-group {
+<style lang="scss">
+@import '../style/index.scss';
+
+@include block(vc-btn-group) {
 	display: inline-block;
-	.vc-btn {
+	@include block(vc-btn) {
 		position: relative;
 		display: block;
 		float: left;
@@ -56,8 +65,44 @@ export default {
 			z-index: 2;
 		}
 	}
-	&.vc-btn-group-vertical {
-		.vc-btn {
+	@include when(large) {
+		@include block(vc-btn) {
+			padding: 8px 16px;
+			font-size: 14px;
+			&:first-child {
+				border-top-left-radius: 4px;
+				border-top-right-radius: 0;
+				border-bottom-left-radius: 4px;
+				border-bottom-right-radius: 0;
+			}
+			&:last-child {
+				border-top-left-radius: 0;
+				border-top-right-radius: 4px;
+				border-bottom-left-radius: 0;
+				border-bottom-right-radius: 4px;
+			}
+		}
+	}
+	@include when(small) {
+		@include block(vc-btn) {
+			padding: 3px 8px;
+			font-size: 12px;
+			&:first-child {
+				border-top-left-radius: 3px;
+				border-top-right-radius: 0;
+				border-bottom-left-radius: 3px;
+				border-bottom-right-radius: 0;
+			}
+			&:last-child {
+				border-top-left-radius: 0;
+				border-top-right-radius: 3px;
+				border-bottom-left-radius: 0;
+				border-bottom-right-radius: 3px;
+			}
+		}
+	}
+	@include when(vertical) {
+		@include block(vc-btn) {
 			float: none;
 			margin-left: 0;
 			margin-top: -1px;
@@ -74,6 +119,106 @@ export default {
 				border-bottom-right-radius: 4px;
 			}
 		}
+		@include when(circle) {
+			@include block(vc-btn) {
+				&:first-child {
+					border-top-left-radius: 36px;
+					border-top-right-radius: 36px; 
+					border-bottom-left-radius: 0;
+					border-bottom-right-radius: 0; 
+				}
+				&:last-child {
+					border-top-left-radius: 0;
+					border-top-right-radius: 0; 
+					border-bottom-left-radius: 36px;
+					border-bottom-right-radius: 36px; 
+				}
+			}
+			@include when(large) {
+				@include block(vc-btn) {
+					&:first-child {
+						border-top-left-radius: 36px;
+						border-top-right-radius: 36px; 
+						border-bottom-left-radius: 0;
+						border-bottom-right-radius: 0; 
+					}
+					&:last-child {
+						border-top-left-radius: 0;
+						border-top-right-radius: 0; 
+						border-bottom-left-radius: 36px;
+						border-bottom-right-radius: 36px; 
+					}
+				}
+			}
+			@include when(small) {
+				@include block(vc-btn) {
+					&:first-child {
+						border-top-left-radius: 24px;
+						border-top-right-radius: 24px; 
+						border-bottom-left-radius: 0;
+						border-bottom-right-radius: 0; 
+					}
+					&:last-child {
+						border-top-left-radius: 0;
+						border-top-right-radius: 0; 
+						border-bottom-left-radius: 24px;
+						border-bottom-right-radius: 24px; 
+					}
+				}
+			}
+		}
+	}
+	@include when(circle) {
+		@include block(vc-btn) {
+			&:first-child {
+				border-top-left-radius: 32px;
+				border-top-right-radius: 0; 
+				border-bottom-left-radius: 32px;
+				border-bottom-right-radius: 0; 
+			}
+			&:last-child {
+				border-top-left-radius: 0px;
+				border-top-right-radius: 32px;
+				border-bottom-left-radius: 0px;
+				border-bottom-right-radius: 32px;
+			}
+		}
+		@include when(large) {
+			@include block(vc-btn) {
+				&:first-child {
+					border-top-left-radius: 36px;
+					border-top-right-radius: 0; 
+					border-bottom-left-radius: 36px;
+					border-bottom-right-radius: 0; 
+				}
+				&:last-child {
+					border-top-left-radius: 0px;
+					border-top-right-radius: 36px;
+					border-bottom-left-radius: 0px;
+					border-bottom-right-radius: 36px;
+				}
+			}
+		}
+		@include when(small) {
+			@include block(vc-btn) {
+				&:first-child {
+					border-top-left-radius: 24px;
+					border-top-right-radius: 0; 
+					border-bottom-left-radius: 24px;
+					border-bottom-right-radius: 0; 
+				}
+				&:last-child {
+					border-top-left-radius: 0px;
+					border-top-right-radius: 24px;
+					border-bottom-left-radius: 0px;
+					border-bottom-right-radius: 24px;
+				}
+			}
+		}
+	}
+}
+.vc-btn-group {
+	&.vc-btn-group-vertical {
 		&.vc-btn-group-circle {
 			&.vc-btn-group-large {
 				.vc-btn {

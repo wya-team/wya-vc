@@ -1,20 +1,21 @@
 <template>
-	<vc-debounce-click 
-		:tag="tag" 
+	<vc-debounce-click
+		:tag="tag"
 		:class="classes" 
-		:disabled="disabled"
+		:disabled="disabled" 
 		:wait="wait"
-		@click="$emit('click', $event)"
+		class="vc-btn"
+		@click="handleClick"
 	>
-		<vc-icon v-if="icon ? true : false" :type="icon"/>
-		<span v-if="showSlot" ref="slot"><slot/></span>
+		<vc-icon v-if="!!icon" :type="icon"/>
+		<img v-if="loading" src="../m-toast/spin.svg" class="vc-btn-loading">
+		<span v-if="hasSlot" ref="slot"><slot/></span>
 	</vc-debounce-click>
 </template>
 <script>
 import Icon from "../icon";
 import DebounceClick from '../debounce-click';
 
-const basicClass = 'vc-btn';
 export default {
 	name: "vc-button",
 	components: {
@@ -28,12 +29,12 @@ export default {
 		},
 		type: {
 			type: String,
-			validator: (value) => (['default', 'primary', 'text', 'success', 'error', 'warning'].indexOf(value) !== -1),
+			validator: (value) => /default|primary|text|success|error|warning/.test(value),
 			default: 'default'
 		},
 		size: {
 			type: String,
-			validator: (value) => (['small', 'medium', 'large'].indexOf(value) !== -1),
+			validator: (value) => /(small|medium|large)/.test(value),
 			default: 'medium'
 		},
 		wait: {
@@ -46,38 +47,67 @@ export default {
 		round: Boolean,
 		long: Boolean,
 	},
+	inject: {
+		group: {
+			from: 'group',
+			default: () => ({
+				size: 'medium',
+				vertical: false,
+				circle: false
+			})
+		}
+	},
 	data() {
 		return {
-			showSlot: true
+			hasSlot: true,
+			loading: false
 		};
 	},
 	computed: {
-		tagName() {
-			return 'button';
-		},
 		classes() {
 			return [
-				`${basicClass}`,
-				`${basicClass}-${this.type}`,
 				{
-					[`${basicClass}-circle`]: this.circle,
-					[`${basicClass}-${this.size}`]: !!this.size,
-					[`${basicClass}-icon-only`]: !this.showSlot,
-					[`${basicClass}-round`]: this.round,
-					[`${basicClass}-long`]: this.long
+					'is-circle': this.circle || this.group.circle,
+					'is-alone': !this.hasSlot,
+					'is-round': this.round,
+					'is-long': this.long,
+					'is-disabled': this.disabled,
+					[`is-${this.size}`]: true,
+					[`is-${this.type}`]: true
 				}
 			];
 		},
 	},
 	mounted() {
-		this.showSlot = this.$slots.default !== undefined;
+		this.hasSlot = this.$slots.default !== undefined;
 	},
 	methods: {
+		handleClick(e) {
+			let { $listeners: { click } } = this;
+
+			let fn = click && click(e);
+
+			if (fn && fn.then) {
+				this.loading = true;
+				fn.then((res) => {
+					return res;
+				}).catch((res) => {
+					return Promise.reject(res);
+				}).finally(() => {
+					this.loading = false;
+				});
+			}
+		}
 	},
 };
 </script>
-<style lang="scss" scoped>
+<style lang="scss">
 @import '../style/index.scss';
+// 定义默认属性
+
+$default-color: #57a3f3;
+$default-border-color: #dcdee2;
+$default-hover-color: #57a3f3;
 
 $primary-color: #5495f6;
 $primary-hover-color: #67a4ff;
@@ -90,131 +120,137 @@ $error-hover-color: #f16643;
 
 $warning-color: #e6a23c;
 $warning-hover-color: #ebb563;
-.vc-btn {
+
+@include block(vc-btn) {
 	padding: 7px 16px;
 	line-height: 1;
 	font-size: 12px;
 	border-radius: 4px;
 	border: 1px solid transparent;
-	border-color: #dcdee2;
-	background: #fff;
+	border-color: $default-border-color;
+	background: $white;
 	user-select: none;
 	cursor: pointer;
 	transition: color .2s linear,background-color .2s linear,border .2s linear,box-shadow .2s linear;
 	outline:0 none !important;
-	&[disabled], &[disabled]:hover {
-		color: #aaa;
-		background-color: #f4f4f4;
-		border-color: #d9d9d9;
-		cursor: not-allowed;
-	}
-	&.vc-btn-circle {
+	@include when(circle) {
 		border-radius: 32px;
 	}
-	&.vc-btn-long{
+	@include when(long) {
 		width: 100%;
 	}
-	.wyaicon{
-		vertical-align: middle;
+	@include when(default) {
+		&:hover {
+			color: $default-hover-color;
+			background-color: $white;
+			border-color: $default-hover-color;
+		}
 	}
-}
-.vc-btn-default {
-	&:hover {
-		color: #57a3f3;
-		background-color: #fff;
-		border-color: #57a3f3;
+	@include when(primary) {
+		color: $white;
+		background-color: $primary-color;
+		border-color: $primary-color;
+		&:hover {
+			background-color: $primary-hover-color;
+			border-color: $primary-hover-color;
+		}
 	}
-}
-.vc-btn-primary {
-	color: #fff;
-    background-color: $primary-color;
-    border-color: $primary-color;
-	&:hover {
-		background-color: $primary-hover-color;
-		border-color: $primary-hover-color;
+	@include when(text) {
+		color: $c51;
+		background-color: transparent;
+		border-color: transparent;
+		&:hover {
+			color: $primary-hover-color;
+		}
 	}
-}
-.vc-btn-text {
-	color: #515a6e;
-    background-color: transparent;
-    border-color: transparent;
-	&:hover {
-		color: $primary-hover-color;
+	@include when(success) {
+		color: $white;
+		background-color: $success-color;
+		border-color: $success-color;
+		&:hover {
+			background-color: $success-hover-color;
+			border-color: $success-hover-color;
+		}
 	}
-}
-.vc-btn-success {
-	color: #fff;
-    background-color: $success-color;
-    border-color: $success-color;
-	&:hover {
-		background-color: $success-hover-color;
-		border-color: $success-hover-color;
+	@include when(error) {
+		color: $white;
+		background-color: $error-color;
+		border-color: $error-color;
+		&:hover {
+			background-color: $error-hover-color;
+			border-color: $error-hover-color;
+		}
 	}
-}
-.vc-btn-error {
-	color: #fff;
-    background-color: $error-color;
-    border-color: $error-color;
-	&:hover {
-		background-color: $error-hover-color;
-		border-color: $error-hover-color;
+	@include when(warning) {
+		color: $white;
+		background-color: $warning-color;
+		border-color: $warning-color;
+		&:hover {
+			background: $warning-hover-color;
+			border-color: $warning-hover-color;
+		}
 	}
-}
-.vc-btn-warning {
-	color: #fff;
-    background-color: $warning-color;
-    border-color: $warning-color;
-	&:hover {
-		background: $warning-hover-color;
-		border-color: $warning-hover-color;
+	@include when(disabled) {
+		color: $caaa;
+		background-color: $cf4;
+		border-color: $cd9;
+		cursor: not-allowed;
 	}
-}
-.vc-btn-large {
-	padding: 8px 16px;
-    font-size: 14px;
-    border-radius: 4px;
-	&.vc-btn-circle {
-		border-radius: 36px;
+	@include when(large) {
+		padding: 8px 16px;
+		font-size: 14px;
+		border-radius: 4px;
+		@include when(circle) {
+			border-radius: 36px;
+		}
 	}
-}
-.vc-btn-small {
-	padding: 3px 8px;
-    font-size: 12px;
-    border-radius: 3px;
-	&.vc-btn-circle {
-		border-radius: 24px;
-	}
-}
-.vc-btn-icon-only {
-	&.vc-btn-round {
-		border-radius: 50%;
-		width: 32px;
-		height: 32px;
-		padding: 0;
+	@include when(small) {
+		padding: 3px 8px;
 		font-size: 12px;
-		.wyaicon{
-			vertical-align: baseline;
-			line-height: 1.5;
+		border-radius: 3px;
+		@include when(circle){
+			border-radius: 24px;
 		}
 	}
-	&.vc-btn-large {
-		&.vc-btn-round {
-			border-radius: 50%;
-			width: 36px;
-			height: 36px;
-			padding: 0;
-			font-size: 14px;
+	@include when(alone) {
+		& {
+			@include when(round) {
+				border-radius: 50%;
+				width: 32px;
+				height: 32px;
+				padding: 0;
+				font-size: 12px;
+			}
+			@include when(large) {
+				@include when(round) {
+					border-radius: 50%;
+					width: 36px;
+					height: 36px;
+					padding: 0;
+					font-size: 14px;
+				}
+			}
+			@include when(small) {
+				@include when(round) {
+					border-radius: 50%;
+					width: 24px;
+					height: 24px;
+					padding: 0;
+					font-size: 12px;
+				}
+			}
 		}
 	}
-	&.vc-btn-small {
-		&.vc-btn-round {
-			border-radius: 50%;
-			width: 24px;
-			height: 24px;
-			padding: 0;
-			font-size: 12px;
-		}
+}
+
+.vc-btn-loading {
+	width: 14px;
+	height: 14px;
+	animation: vc-button-circle 1s linear infinite;
+}
+@keyframes vc-button-circle {
+	to {
+		transform: rotate(1turn);
 	}
-	
 }
 </style>
