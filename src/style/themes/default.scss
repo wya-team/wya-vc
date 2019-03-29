@@ -6,19 +6,13 @@ $scale: 1 !default;
 // 单位
 $unit: px !default;
 
-// 全局前缀
-$prefix: g !default;
-
 // 栅格布局 12等分
 $total: 12 !default;
 
-// modules
-$module: 'pc';
-
 // 主要颜色
-$main-color-1: $red !default;
-$main-color-2: $blue !default;
-$main-color-3: $yellow !default;
+$main-color-1: $red-mid !default;
+$main-color-2: $blue-mid !default;
+$main-color-3: $yellow-mid !default;
 
 // 背景颜色
 $body-bg-color: #f5f6fa;
@@ -31,12 +25,12 @@ $disable-bg-color: #eee;
 
 // 字体颜色
 $font-color-deep: $black !default;
-$font-color-dark: $gray_1 !default;
-$font-color-mid: $gray_2 !default;
-$font-color-light: $gray_3 !default;
+$font-color-dark: $black-dark !default;
+$font-color-mid: $black-mid !default;
+$font-color-light: $black-light !default;
 
 // 边框颜色
-$border-color: #cdcdcd !default;
+$border-color: #e6e6e6 !default;
 
 // 字体尺寸
 $font-size-base: 14px !default;
@@ -50,17 +44,40 @@ $line-height-limit: 32px !default; //限高
 $default-border-radius: 8px;
 
 // 水平间距
-$padding-xs: 5px !default;
-$padding-sm: 10px !default;
-$padding-md: 15px !default;
-$padding-lg: 20px !default;
-$padding-xl: 30px !default;
+$padding-5: 5px !default;
+$padding-8: 8px !default;
+$padding-10: 10px !default;
+$padding-12: 12px !default;
+$padding-13: 13px !default;
+$padding-15: 15px !default;
+$padding-16: 16px !default;
+$padding-18: 18px !default;
+$padding-20: 20px !default;
+$padding-21: 21px !default;
+$padding-24: 24px !default;
+$padding-25: 25px !default;
+$padding-30: 30px !default;
+$padding-32: 32px !default;
+$padding-48: 48px !default;
+$padding-56: 56px !default;
+
 // 垂直间距
-$margin-xs: 5px !default;
-$margin-sm: 10px !default;
-$margin-md: 15px !default;
-$margin-lg: 20px !default;
-$margin-xl: 30px !default;
+$margin-5: 5px !default;
+$margin-8: 8px !default;
+$margin-10: 10px !default;
+$margin-12: 12px !default;
+$margin-13: 13px !default;
+$margin-15: 15px !default;
+$margin-18: 18px !default;
+$margin-16: 16px !default;
+$margin-20: 20px !default;
+$margin-21: 21px !default;
+$margin-24: 24px !default;
+$margin-25: 25px !default;
+$margin-30: 30px !default;
+$margin-32: 32px !default;
+$margin-48: 48px !default;
+$margin-56: 56px !default;
 
 // z-index
 $modal-zindex: 999 !default;
@@ -94,8 +111,5 @@ $popup-timing: ease !default;
 
 // box-shadow
 $scrollbar-track-box-shadow: inset 0 0 10px rgba(0, 0, 0, 0) !default;
-$default-border-shadow:0 -1px 9.9px 0.1px rgba(0, 0, 0, 0.05);
-
-// ICONFONT
-$iconfont-css-prefix: "wyaicon";
-$icon-url: "//at.alicdn.com/t/font_781952_9utp6r4garc";
+$default-border-shadow: 0 0 8px 0 rgba(0, 0, 0, 0.1);
+$default-border-shadow-top: 0 -2px 10px 0 rgba(0, 0, 0, 0.08);

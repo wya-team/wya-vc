@@ -1,29 +1,69 @@
 // 主要颜色
-$red: #ca1622;
+$red-mid: #ca1622;
 
-$pink: #fa5a6e;
-$pink_1: #fff2ea;
+$pink-mid: #fa5a6e;
+$pink-light: #fff2ea;
 
-$orange: #fe9053;
-$orange_1: #fe9053;
+// 橙色系列
+$orange-dark: #ef3528;
+$orange-mid: #fa6f60;
+$orange-light: #fc9780;
 
-$green: #56c16d;
-$green_1: #06bf04;
+$green-dark: #06bf04;
+$green-mid: #56c16d;
 
-$blue: #2e76ef;
-$blue_1: #16a3ff;
-$blue_2: #0b76fe;
-$blue_3: #4e4aff;
+// 蓝色系系
+$blue-dark: #0b76fe;
+$blue-mid: #16a3ff;
+$blue-light: #6ab4ff;
 
-$yellow: #ffd31c;
+// 黄色系
+$yellow-dark: #f2c300;
+$yellow-mid: #ffd00d;
+$yellow-light: #ffd31c;
 
-$purple: #c851ea;
+// 紫色系
+$purple-dark: #8b61f3;
+$purple-mid: #a48efc;
+$purple-light: #cca3ff;
 
-$gray_1: #333;
-$gray_2: #666;
-$gray_3: #999;
-$gray_4: #fefefe;
-$gray_5: #f7f7f7;
+// 灰色系
+$gray-dark: #edeef0;
+$gray-mid: #f5f6f7;
+$gray-light: #f7f8fa;
 
+// 白色系
 $white: #fff;
+
+// 黑色系
 $black: #000;
+$black-dark: #2e3136;
+$black-mid: #636770;
+$black-light: #9c9fa6;
+
+// nav bar
+$c444: #444;
+$c67: #676767;
+$cf8: #f8f8f8;
+$cef: #efefef;
+
+// border
+$ce8: #e8e8e8;
+$cd9: #d9d9d9;
+$cf4: #f4f4f4;
+$cf9: #f9f9f9;
+
+// text
+$c000: #000;
+$c333: #333;
+$c51: #515151;
+$c67: #676767;
+$c999: #999;
+$caaa: #aaa;
+$cbd: #bdbdbd;
+
+// status
+$info: #0177de;
+$success: #00a854;
+$error: #f04134;
+$warn: #ffbf00;
