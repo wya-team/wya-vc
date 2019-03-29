@@ -47,7 +47,7 @@
 
 						<slot v-if="$slots.default" />
 					</div>
-					<div :class="{ '__confirm': mode }" class="__footer">
+					<div v-if="!hideFooter" :class="{ '__confirm': mode }" class="__footer">
 						<slot name="footer">
 							<vc-button 
 								style="margin-right: 12px;"
@@ -83,6 +83,10 @@ export default {
 		mode: {
 			type: String,
 			validator: (value) => (['info', 'success', 'error', 'warning'].indexOf(value) !== -1),
+		},
+		hideFooter: {
+			type: Boolean,
+			default: true
 		},
 		loading: {
 			type: Boolean,
