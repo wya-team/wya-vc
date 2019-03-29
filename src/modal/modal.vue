@@ -442,9 +442,7 @@ export default {
 		font-size: 14px;
 		color: #333;
 		font-weight: 400;
-		overflow: hidden;
-		text-overflow: ellipsis;
-		white-space: nowrap;
+		word-wrap: break-word;
 	}
 	.__close {
 		position: absolute;
