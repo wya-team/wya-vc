@@ -1,12 +1,12 @@
 <template>
 	<div :class="classes" class="vc-form-item">
-		<label v-if="label || $slots.label" :for="labelFor" :style="labelStyle" class="__label">
+		<label v-if="label || $slots.label" :for="labelFor" :style="labelStyle" class="vc-form-item__label">
 			<slot name="label">{{ label }}</slot>
 		</label>
-		<div :style="contentStyle" class="__content">
+		<div :style="contentStyle" class="vc-form-item__content">
 			<slot />
 			<transition name="am-fade">
-				<div v-if="showError" class="__tip">{{ validateMessage }}</div>
+				<div v-if="showError" class="vc-form-item__tip">{{ validateMessage }}</div>
 			</transition>
 		</div>
 	</div>
@@ -88,11 +88,11 @@ export default {
 	computed: {
 		classes() {
 			return { 
-				__require: this.required || this.isRequired,
-				__error: this.validateState === 'error',
-				__validating: this.validateState === 'validating',
-				__inline: this.form.inline,
-				[`__${this.form.labelPosition}`]: true,
+				'is-require': this.required || this.isRequired,
+				'is-error': this.validateState === 'error',
+				'is-validating': this.validateState === 'validating',
+				'is-inline': this.form.inline,
+				[`is-${this.form.labelPosition}`]: true,
 			};
 		},
 		labelStyle() {
@@ -169,6 +169,7 @@ export default {
 		getRules() {
 			let formRules = this.form.rules;
 			const selfRules = this.rules;
+
 			// getPropByPath(formRules, this.prop.replace(/\.[0-9]+\./g, '.'));
 			formRules = formRules ? formRules[this.prop] : [];
 			return [].concat(selfRules || formRules || []);
@@ -245,7 +246,11 @@ export default {
 </script>
 
 <style lang='scss'>
-.vc-form-item {
+@import '../style/index.scss';
+
+$block: vc-form-item;
+
+@include block($block) {
 	margin-bottom: 24px;
 	vertical-align: top;
 	zoom: 1;
@@ -259,12 +264,12 @@ export default {
 		font-size: 0;
 		height: 0;
 	}
-	.__content {
+	@include element(content) { 
 		position: relative;
 		line-height: 28px;
 		font-size: 12px
-	}
-	.__label {
+	} 
+	@include element(label) { 
 		text-align: right;
 		vertical-align: middle;
 		float: left;
@@ -274,51 +279,59 @@ export default {
 		-webkit-box-sizing: border-box;
 		box-sizing: border-box
 	}
-	&.__require {
-		.__label:before {
-			content: '*';
-			display: inline-block;
-			margin-right: 4px;
-			line-height: 1;
-			font-family: SimSun;
-			font-size: 12px;
-			color: #ed4014
+	/**
+	 * -> vc-form-item.is_require
+	 */
+	& {
+		@include when(require) {
+			@include element(label) {
+				&:before {
+					content: '*';
+					display: inline-block;
+					margin-right: 4px;
+					line-height: 1;
+					font-family: SimSun;
+					font-size: 12px;
+					color: #ed4014
+				}
+			}
+		}
+		@include when(error) {
+			@include element(tip) {
+				position: absolute;
+				top: 100%;
+				left: 0;
+				line-height: 1;
+				padding-top: 6px;
+				color: #ed4014;
+				transition: opacity .3s cubic-bezier(0.18, 0.89, 0.32, 1.28);
+			}
+		}
+		@include when(left) {
+			@include element(label) {
+				text-align: left
+			}
+		}
+		@include when(top) {
+			@include element(label) {
+				float: none;
+				display: inline-block;
+				padding: 0 0 10px 0
+			}
 		}
 	}
-	&.__error .__tip {
-		position: absolute;
-		top: 100%;
-		left: 0;
-		line-height: 1;
-		padding-top: 6px;
-		color: #ed4014;
-		transition: opacity .3s cubic-bezier(0.18, 0.89, 0.32, 1.28);
-	}
-	&.__inline {
-		display: inline-block;
-		margin-right: 10px;
-		vertical-align: top;
-	}
-	&.__left .__label {
-		text-align: left
-	}
 
-	&.__top .__label {
-		float: none;
-		display: inline-block;
-		padding: 0 0 10px 0
-	}
 	.am-fade-enter, .am-fade-leave-active {
 		opacity: 0;
 	}
 	/**
-	 * 嵌套
+	 * 嵌套管理
 	 */
-	.vc-form-item {
-		margin-bottom: 0
-	}
-	.vc-form-item .__content {
-		margin-left: 0 !important
+	@include block(vc-form-item) {
+		margin-bottom: 0;
+		@include element(content, false) {
+			margin-left: 0 !important;
+		}
 	}
 }
 </style>
