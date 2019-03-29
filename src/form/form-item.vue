@@ -39,6 +39,13 @@ const getPropByPath = (obj, path) => {
 	};
 };
 
+const filterEmpty = (val) => {
+	if (val instanceof Array) {
+		val = val.filter(i => i !== '');
+	}
+	return val;
+};
+
 export default {
 	name: 'vc-form-item',
 	components: {},
@@ -196,7 +203,7 @@ export default {
 			descriptor[this.prop] = rules;
 			let validator = new AsyncValidator(descriptor);
 			let model = {};
-			model[this.prop] = this.fieldValue;
+			model[this.prop] = filterEmpty(this.fieldValue);
 			validator.validate(model, { firstFields: false }, (errors, fields) => {
 				this.validateState = !errors ? 'success' : 'error';
 				this.validateMessage = errors ? errors[0].message : '';
