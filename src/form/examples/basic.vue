@@ -1,10 +1,10 @@
 <template>
-	<vc-form ref="formValidate" :model="formValidate">
-		<vc-form-item>
-			<template #label>
+	<vc-form ref="formValidate" :model="formValidate" :rules="ruleValidate">
+		<vc-form-item prop="array" label="array">
+			<!-- <template #label>
 				？？	<i>2</i>	
-			</template>
-			<vc-tpl v-model="formValidate.name" type="text" placeholder="Enter something..." />
+			</template> -->
+			<vc-array v-model="formValidate.array" />
 		</vc-form-item>
 		<vc-form-item
 			v-for="(item, index) in formValidate.items"
@@ -19,10 +19,10 @@
 			</vc-tpl>
 		</vc-form-item>
 		<vc-form-item>
-			<div type="dashed" long icon="md-add" @click="handleAdd">Add item</div>
+			<div @click="handleAdd">Add item</div>
 		</vc-form-item>
 		<vc-form-item>
-			<div type="primary" @click="handleSubmit('formValidate')">Submit</div>
+			<div @click="handleSubmit('formValidate')">Submit</div>
 			<div style="margin-left: 8px" @click="handleReset('formValidate')">Reset</div>
 		</vc-form-item>
 	</vc-form>
@@ -31,19 +31,21 @@
 import Form from '..';
 
 import Tpl from './basic/tpl'; // 可以使用trigger
+import FakeArray from './basic/array'; // 可以使用trigger
 
 export default {
 	name: "vc-tpl-basic",
 	components: {
 		'vc-form': Form,
 		'vc-form-item': Form.Item,
-		'vc-tpl': Tpl
+		'vc-tpl': Tpl,
+		'vc-array': FakeArray,
 	},
 	data() {
 		return {
 			index: 1,
 			formValidate: {
-				name: "wya",
+				array: [],
 				items: [
 					{
 						value: '',
@@ -55,7 +57,10 @@ export default {
 			ruleValidate: {
 				items: {
 
-				}
+				},
+				array: [{
+					required: true
+				}]
 			}
 		};
 	},
@@ -67,7 +72,7 @@ export default {
 			this.$refs[name].validate().then((res) => {
 
 			}).catch((res) => {
-				console.log(res);
+				console.log(res, this.formValidate);
 			});
 		},
 		handleReset(name) {
