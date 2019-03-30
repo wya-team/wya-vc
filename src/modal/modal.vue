@@ -355,14 +355,13 @@ export default {
 			let { $listeners: { ok }, onOk } = this;
 			ok = ok || onOk; // 兼容portal
 			let callback = () => {
-				this.btnLoading = false;
 				this.isActive = false;
 				this.$emit('sure');
 			};
 			let fn = ok && ok(e);
 
+			// loading效果由vc-btn触发
 			if (fn && fn.then) {
-				this.btnLoading = true;
 				return fn.then((res) => {
 					return res;
 				}).catch((res) => {
