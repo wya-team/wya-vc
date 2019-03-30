@@ -134,8 +134,9 @@ $warning-hover-color: #ebb563;
 	transition: color .2s linear,background-color .2s linear,border .2s linear,box-shadow .2s linear;
 	outline:0 none !important;
 	@include element(loading) {
-		width: 14px;
-		height: 14px;
+		vertical-align: middle;
+		width: 10px;
+		height: 10px;
 		animation: vc-button-circle 1s linear infinite;
 	}
 	@include when(circle) {
