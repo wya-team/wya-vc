@@ -50,7 +50,7 @@ export default {
 	},
 	data() {
 		return {
-			isActive: this.visible,
+			isActive: false
 		};
 	},
 	computed: {},
@@ -83,6 +83,7 @@ export default {
 		},
 		/**
 		 * 动画执行后关闭
+		 * 同时close兼容portal设计
 		 */
 		handleRemove() {
 			!this._isDestroyed && (
