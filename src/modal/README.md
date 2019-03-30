@@ -46,6 +46,13 @@ size | 对话框大小 `small` `large` | `String` | small
 ---|---|---|---
 ok | 点击确定的回调 | `Function` | -
 cancel | 点击取消的回调 | `Function` | -
+close | 弹窗关闭后触发(可作用与portal) | `Function` | -
+
+#### 额外事件（兼容portal）
+
+属性 | 说明 | 类型 | 默认值
+---|---|---|---
+sure | 确定时触发 | `Function` | -
 
 #### Modal slot
 
@@ -59,69 +66,73 @@ footer | 自定义页脚内容
 
 ```html
 <template>
-    <div>
-        <div @click="showModal">点击触发</div>
-        <vc-modal 
-            v-model="visible"
-            title="标题2"
-            ok-text="保存"
-            cancel-text="关闭"
-            :mask="false"
-            :mask-closable="false"
-            :esc-closable="false"
-            :scrollable="true"
-            :draggable="true"
-            @ok="handleOk"
-            @cancel="handleCancel"
-        >
-            啦啦啦啦
-        </vc-modal>
-    </div>
+	<div>
+		<div @click="showModal">点击触发</div>
+		<vc-modal 
+			v-model="visible"
+			title="标题2"
+			ok-text="保存"
+			cancel-text="关闭"
+			:mask="false"
+			:mask-closable="false"
+			:esc-closable="false"
+			:scrollable="true"
+			:draggable="true"
+			@ok="handleOk"
+			@cancel="handleCancel"
+			@close="handleClose"
+		>
+			啦啦啦啦
+		</vc-modal>
+	</div>
 <template>
 <script>
-    export default {
-        data () {
-            return {
-                visible: false;
-            }
-        },
-        methods: {
-            showModal(e) {
-                this.visible = true;
-            },
-            handleConfirm() {
-                Modal.error({
-                    title: 'confirm',
-                    content: '啦啦啦啦啦啦啦啦啦啦啦',
-                    okText: '啦啦啦啦',
-                    mask: false,
-                    loading: true,
-                    ok: () => {
-                        return true; //确定按钮的异步回调
-                    }
-                }).then((res) => {
-                    console.log(res);
-                }).catch((err) => {
-                    console.log(err);
-                });
-            }
-            handleOk() {
-                console.log('确定的回调');
+	export default {
+		data () {
+			return {
+				visible: false;
+			}
+		},
+		methods: {
+			showModal(e) {
+				this.visible = true;
+			},
+			handleConfirm() {
+				Modal.error({
+					title: 'confirm',
+					content: '啦啦啦啦啦啦啦啦啦啦啦',
+					okText: '啦啦啦啦',
+					mask: false,
+					loading: true,
+					ok: () => {
+						return true; //确定按钮的异步回调
+					}
+				}).then((res) => {
+					console.log(res);
+				}).catch((err) => {
+					console.log(err);
+				});
+			}
+			handleOk() {
+				console.log('确定的回调');
 
-            },
-            handleCancel() {
-                console.log('取消的回调')
-            }
-        }
-    }
+			},
+			handleCancel() {
+				console.log('取消的回调')
+			},
+			handleClose() {
+				console.log('关闭')
+			}
+		}
+	}
 </script>
 
 <!--自定义header和footer -->
  <vc-modal>
-    <div slot="header">我是标题</div>
-    <div slot="footer">
-        <button>取消</button>
-        <button>确定</button>
-    </div>
+	<div slot="header">我是标题</div>
+	<div slot="footer">
+		<button>取消</button>
+		<button>确定</button>
+	</div>
 </vc-modal>
 ```

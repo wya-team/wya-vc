@@ -1,14 +1,15 @@
 <template>
 	<div>
-		<vc-button @click="showModal">点击出现对话框</vc-button>
-		<vc-button @click="showModal2">点击出现对话框,点击遮罩不能关闭</vc-button>
-		<vc-button @click="showModal3">点击出现对话框3</vc-button>
-		<vc-button type="primary" @click="handleModal">Button</vc-button>
+		<vc-button @click="handleModal">点击出现对话框</vc-button>
+		<vc-button @click="handleModal2">点击出现对话框,点击遮罩不能关闭</vc-button>
+		<vc-button @click="handleModal3">点击出现对话框3</vc-button>
+		<vc-button type="primary" @click="handleModal4">Button</vc-button>
 		<div style="width: 100%; height: 2000px"/>
 		<vc-modal 
 			v-model="visible"
 			:loading="true"
 			title="标题1"
+			@close="handleClose"
 			@cancel="handleCancel"
 			@ok="handleOk"
 		>
@@ -24,6 +25,9 @@
 			title="标题2"
 			ok-text="保存"
 			cancel-text="关闭"
+			@close="handleClose"
+			@cancel="handleCancel"
+			@ok="handleOk"
 		>
 			啦啦啦啦
 		</vc-modal>
@@ -37,6 +41,9 @@
 			title="标题2"
 			ok-text="保存"
 			cancel-text="关闭"
+			@close="handleClose"
+			@cancel="handleCancel"
+			@ok="handleOk"
 		>
 			啦啦啦啦
 		</vc-modal>
@@ -64,16 +71,16 @@ export default {
 		
 	},
 	methods: {
-		showModal(e) {
+		handleModal(e) {
 			this.visible = true;
 		},
-		showModal2(e) {
+		handleModal2(e) {
 			this.visible2 = true;
 		},
-		showModal3(e) {
+		handleModal3(e) {
 			this.visible3 = true;
 		},
-		handleModal() {
+		handleModal4() {
 			Modal.error({
 				title: 'confirm',
 				content: (h) => {
@@ -85,25 +92,34 @@ export default {
 					});
 				},
 				okText: '啦啦啦啦',
-				mask: false,
-				loading: true,
-				ok: () => {
-					return true;
+				mask: true,
+				closeWithCancel: true,
+				onOk: () => {
+					console.log('ok');
+					return new Promise((resolve, reject) => {
+						setTimeout(() => {
+							resolve();
+						}, 1000);
+					});
+				},
+				onCancel: () => {
+					console.log('cancel');
 				}
-			}).then((res) => {
-				console.log(res);
-			}).catch((err) => {
-				console.log(err);
 			});
 		},
-		handleCancel() {
-			console.log('取消时回调');
+		handleClose() {
+			console.log('关闭后都会触发');
 		},
-		handleOk() {
-			setTimeout(() => {
-				this.visible = false;
-			}, 2000);
-			console.log('确定时回调');
+		handleCancel() {
+			console.log('点击取消这个按钮时回调');
+		},
+		handleOk(e) {
+			return new Promise((resolve, reject) => {
+				setTimeout(() => {
+					// this.visible = false;
+					resolve();
+				}, 1000);
+			});
 		}
 	}
 };

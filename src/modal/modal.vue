@@ -1,42 +1,41 @@
 <template>
 	<div class="vc-modal">
-		<transition name="mask">
+		<transition name="am-fade">
 			<div 
-				v-if="mask && value"
-				class="__mask"
-				@click="handleWrapperClose"
+				v-show="mask && isActive"
+				class="vc-modal__mask"
+				@click="handleClose(maskClosable)"
 			/>
 		</transition>
 		<div 
 			ref="wrap"
 			:style="wrapperStyle"
-			class="__wrapper"
-			@click="handleWrapperClose"
+			class="vc-modal__wrapper"
 		>
-			<transition name="modal" @enter="handleEnter">
+			<transition name="modal" @enter="handleEnter" @after-leave="handleRemove">
 				<div 
-					v-if="value"
+					v-show="isActive"
 					ref="modal" 
 					:style="containerStyle"
-					:class="{ '__drag': draggable, 'large' : size === 'large' || size === 'medium'}"
-					class="__container"
+					:class="{ 'is-drag': draggable, 'is-large' : size === 'large' || size === 'medium'}"
+					class="vc-modal__container"
 				>
-					<div ref="header" :class="{ '__confirm': mode }" class="__header" @mousedown="handleMouseDown">
+					<div ref="header" :class="{ 'is-confirm': mode }" class="vc-modal__header" @mousedown="handleMouseDown">
 						<vc-icon
 							v-if="mode"
 							:type="mode" 
-							:class="`__${mode}`" 
-							class="__icon"
+							:class="`is-${mode}`" 
+							class="vc-modal__icon"
 						/>
 						<!-- 用户可以自定义，但也有默认 -->
 						<slot name="header">
-							<p class="__title">{{ title }}</p>
-							<div v-if="closable && !mode" class="__close" @click="handleClose">
+							<p class="vc-modal__title">{{ title }}</p>
+							<div v-if="closable && !mode" class="vc-modal__close" @click="handleClose">
 								<vc-icon type="close"/>
 							</div>
 						</slot>
 					</div>
-					<div :class="{ '__confirm' : mode }" class="__content">
+					<div :class="{ 'is-confirm' : mode }" class="vc-modal__content">
 						<p 
 							v-if="typeof content === 'string'"
 						>{{ content }}</p>
@@ -47,14 +46,16 @@
 
 						<slot v-if="$slots.default" />
 					</div>
-					<div v-if="!hideFooter" :class="{ '__confirm': mode }" class="__footer">
+					<div v-if="footer" :class="{ 'is-confirm': mode }" class="vc-modal__footer">
 						<slot name="footer">
-							<vc-button 
+							<vc-button
+								:loading="isLoading"
 								style="margin-right: 12px;"
 								@click="handleCancel"
 							>{{ cancelText }}</vc-button>
 							<vc-button 
-								type="primary" 
+								:loading="isLoading" 
+								type="primary"
 								@click="handleOk"
 							>{{ okText }}</vc-button>
 						</slot>
@@ -79,18 +80,19 @@ export default {
 		'vc-button': Button,
 		'vc-row': CustomerRow
 	},
+	model: {
+		prop: 'visible',
+		event: 'visible-change'
+	},
 	props: {
 		mode: {
 			type: String,
-			validator: (value) => (['info', 'success', 'error', 'warning'].indexOf(value) !== -1),
+			validator: v => /(info|success|error|warning)/.test(v),
 		},
-		hideFooter: {
-			type: Boolean,
-			default: false
-		},
+		// 给内部的button按钮
 		loading: {
 			type: Boolean,
-			default: false,
+			default: true,
 		},
 		content: [String, Function],
 		render: {
@@ -98,13 +100,13 @@ export default {
 		},
 		size: {
 			type: String,
-			validator: (value) => (['small', 'medium', 'large'].indexOf(value) !== -1),
+			validator: v => /(small|medium|large)/.test(v),
 			default: 'small'
 		},
 		width: {
 			type: Number
 		},
-		value: {
+		visible: {
 			type: Boolean,
 			default: false
 		},
@@ -123,6 +125,10 @@ export default {
 		escClosable: {
 			type: Boolean,
 			default: true
+		},
+		closeWithCancel: {
+			type: Boolean,
+			default: true // 如果关闭, cancel只能是取消的按钮
 		},
 		title: String,
 		scrollable: {
@@ -143,6 +149,20 @@ export default {
 		},
 		styles: {
 			type: Object
+		},
+		footer: {
+			type: Boolean,
+			default: true
+		},
+
+		/**
+		 * 兼容portal设计, 实现Promise方式
+		 */
+		onOk: {
+			type: Function
+		},
+		onCancel: {
+			type: Function
 		}
 	},
 	data() {
@@ -162,12 +182,13 @@ export default {
 				dragY: null,
 				dragging: false
 			},
-			buttonLoading: false
+			btnLoading: false,
+			isActive: false
 		};
 	},
 	computed: {
-		isConfirm() {
-			return this.okText || this.cancelText;
+		isLoading() {
+			return this.loading && this.btnLoading;
 		},
 		wrapperStyle() {
 			let style = {};
@@ -239,11 +260,15 @@ export default {
 		}
 	},
 	watch: {
-		value(val) {
-			if (!this.scrollable && val) {
-				document.querySelector('body').style.overflow = 'hidden';
-			} else {
-				document.querySelector('body').style.overflow = 'auto';
+		visible: {
+			immediate: true,
+			handler(v) {
+				this.isActive = v;
+				if (!this.scrollable && v) {
+					document.querySelector('body').style.overflow = 'hidden';
+				} else {
+					document.querySelector('body').style.overflow = 'auto';
+				}
 			}
 		}
 	},
@@ -263,34 +288,6 @@ export default {
 				x: e.x,
 				y: e.y
 			};
-		},
-		handleClose() {
-			this.$emit('cancel');
-			this.$emit('input', false);
-		},
-		handleWrapperClose(el) {
-			let className = el.target.getAttribute('class');
-			if (className && this.maskClosable) {
-				if (className.includes('__wrapper') || className.includes('__mask')) {
-					this.handleClose();
-				}
-			}
-		}, // 点击遮罩层关闭
-		handleEscClose(e) {
-			if (e.keyCode === 27 && this.escClosable && this.value) {
-				this.handleClose();
-			}
-		}, // esc关闭
-		handleCancel() {
-			this.handleClose();
-		},
-		handleOk() {
-			this.$emit('ok');
-			if (this.loading) {
-				this.buttonLoading = true;
-			} else {
-				this.$emit('input', false);
-			}
 		},
 		handleMouseDown(event) {
 			if (!this.draggable) {
@@ -355,13 +352,82 @@ export default {
 				this.newCoord.y = this.coord.y - modalY;
 			}
 			el.style.transformOrigin = this.newCoord.x + 'px ' + this.newCoord.y + 'px 0';
+		},
+		handleEscClose(e) {
+			if (e.keyCode === 27 && this.escClosable && this.isActive) {
+				this.handleClose();
+			}
+		},
+		/**
+		 * 用户点击确定的回调
+		 * 同时sure兼容portal设计
+		 */
+		handleOk(e) {
+			let { $listeners: { ok }, onOk } = this;
+			ok = ok || onOk; // 兼容portal
+			let callback = () => {
+				this.btnLoading = false;
+				this.isActive = false;
+				this.$emit('sure');
+			};
+			let fn = ok && ok(e);
+
+			if (fn && fn.then) {
+				this.btnLoading = true;
+				return fn.then((res) => {
+					return res;
+				}).catch((res) => {
+					return Promise.reject(res);
+				}).finally(() => {
+					callback();
+				});
+			} else {
+				callback();
+			}
+		},
+		/**
+		 * 关闭事件
+		 */
+		handleClose(closable = true) {
+			if (closable) {
+				this.isActive = false;
+				// 用户主要取消与关闭事件关联
+				this.closeWithCancel && this.cancel();
+			}
+		},
+		/**
+		 * 用户点击取消按钮时为取消
+		 */
+		handleCancel(maskClosable = true) {
+			this.isActive = false;
+			this.cancel();
+		},
+		/**
+		 * 动画执行后关闭, 关闭事件都会被执行
+		 * visible-change 由移除之后触发
+		 * 同时close兼容portal设计
+		 */
+		handleRemove() {
+			!this._isDestroyed && (
+				this.$emit('close'),
+				this.$emit('visible-change', false)
+			);
+		},
+		/**
+		 * 取消兼容
+		 */
+		cancel() {
+			const { onCancel } = this;
+			onCancel ? onCancel() : this.$emit('cancel');
 		}
 	}
 };
 </script>
 <style lang="scss">
-.vc-modal {
-	.__mask {
+@import '../style/index.scss';
+
+@include block(vc-modal) {
+	@include element(mask) {
 		opacity: 1;
 		position: fixed;
 		top: 0;
@@ -371,8 +437,9 @@ export default {
 		background-color: rgba(0,0,0,.65);
 		height: 100%;
 		z-index: 1000;
+		transition: opacity 0.2s ease;
 	}
-	.__wrapper {
+	@include element(wrapper) {
 		position: fixed;
 		top: 50%;
 		transform: translateY(-50%);
@@ -380,24 +447,24 @@ export default {
 		width: 100%;
 		z-index: 1001;
 	}
-	.__container {
+	@include element(container) {
 		position: relative;
 		background: #fff;
 		box-shadow: 0px 0px 8px 0px rgba(0, 0, 0, 0.1);
 		margin: auto;
 		border-radius: 4px;
 		padding-bottom: 63px;
-		&.__drag {
+		@include when(drag) {
 			position: absolute;
 		}
-		&.large, &.medium{
+		@include when(large) {
 			@media screen and (max-height: 768px) {
 				min-height: 400px !important;
 			}
 		}
 	}
 
-	.__header {
+	@include element(header) {
 		position: relative;
 		border-bottom: 1px solid #e8e8e8;
 		padding: 14px 24px;
@@ -407,18 +474,18 @@ export default {
 		display: flex;
 		align-items: center;
 		// padding: 14px 16px;
-		&.__confirm {
+		@include when(confirm) {
 			border-bottom: none;
 		}
 	}
-	.__content { 
+	@include element(content) { 
 		overflow-y: auto;
 		padding: 16px 24px;
-		&.__confirm{
+		@include when(confirm) {
 			padding: 0;
 		}
 	}
-	.__footer {
+	@include element(footer) {
 		position: absolute;
 		bottom: 0;
 		width: 100%;
@@ -426,15 +493,15 @@ export default {
 		padding: 17px 24px;
 		text-align: right;
 		font-size: 0;
-		&.__confirm {
+		@include when(confirm) {
 			border-top: none;
-		}
-		button {
-			display: inline-block;
-			vertical-align: middle;
+			button {
+				display: inline-block;
+				vertical-align: middle;
+			}
 		}
 	}
-	.__title {
+	@include element(title) {
 		display: inline-block;
 		width: 100%;
 		height: 20px;
@@ -444,49 +511,51 @@ export default {
 		font-weight: 400;
 		word-wrap: break-word;
 	}
-	.__close {
+	@include element(close) {
 		position: absolute;
 		top: 17px;
 		right: 16px;
 		color: #999;
 	}
-	.__icon {
+	@include element(icon) {
 		margin-right: 8px;
 		font-size: 28px;
-		&.__success {
+		@include when(success) {
 			color: #52C41A;
 		}
-		&.__error {
+		@include when(error) {
 			color: #F5222D;
 		}
-		&.__warning {
+		@include when(warning) {
 			color: #FAAD14;
 		}
-		&.__info {
+		@include when(info) {
 			color: #1890FF;
 		}
 	}
-	.mask-enter-active, 
-	.modal-enter-active, {
-		will-change: transform;
-		transition: transform .5s cubic-bezier(.08, .82, .17, 1),
-			opacity .5s cubic-bezier(.08, .82, .17, 1);
-	}
-	.mask-leave-active,
-	.modal-leave-active {
-		will-change: transform;
-		transition: transform .5s cubic-bezier(.08, .82, .17, 1),
-			opacity .5s cubic-bezier(.08, .82, .17, 1);
-	}
-	.mask-enter, 
-	.mask-leave-to {
-		opacity: 0;
-	}
-	.modal-enter, 
-	.modal-leave-to {
-		transform: scale(0);
-		opacity: 0;
-	}
-
 }
+
+// fade存在bug, am-前缀处理，原因未知
+.am-fade-enter, .am-fade-leave-to {
+	opacity: 0;
+}
+
+.modal-enter-active, {
+	will-change: transform;
+	transition: transform .5s cubic-bezier(.08, .82, .17, 1),
+		opacity .5s cubic-bezier(.08, .82, .17, 1);
+}
+.modal-leave-active {
+	will-change: transform;
+	transition: transform .5s cubic-bezier(.08, .82, .17, 1),
+		opacity .5s cubic-bezier(.08, .82, .17, 1);
+}
+
+.modal-enter,
+.modal-leave-to {
+	transform: scale(0);
+	opacity: 0;
+}
+
+
 </style>

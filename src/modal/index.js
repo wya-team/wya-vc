@@ -1,9 +1,10 @@
-import { createModal } from './confirm';
+import ModalManager, { allowMethod } from './manager';
 import Modal from './modal';
 
-Modal.info = createModal('info');
-Modal.success = createModal('success');
-Modal.error = createModal('error');
-Modal.warning = createModal('warning');
+ModalManager.allowMethod.forEach(m => {
+	Modal[m] = (userOptions) => {
+		return ModalManager[m](userOptions);
+	};
+});
 
 export default Modal;
