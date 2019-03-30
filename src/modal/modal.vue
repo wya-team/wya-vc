@@ -49,12 +49,10 @@
 					<div v-if="footer" :class="{ 'is-confirm': mode }" class="vc-modal__footer">
 						<slot name="footer">
 							<vc-button
-								:loading="isLoading"
 								style="margin-right: 12px;"
 								@click="handleCancel"
 							>{{ cancelText }}</vc-button>
 							<vc-button 
-								:loading="isLoading" 
 								type="primary"
 								@click="handleOk"
 							>{{ okText }}</vc-button>
@@ -88,11 +86,6 @@ export default {
 		mode: {
 			type: String,
 			validator: v => /(info|success|error|warning)/.test(v),
-		},
-		// 给内部的button按钮
-		loading: {
-			type: Boolean,
-			default: true,
 		},
 		content: [String, Function],
 		render: {
@@ -182,14 +175,10 @@ export default {
 				dragY: null,
 				dragging: false
 			},
-			btnLoading: false,
 			isActive: false
 		};
 	},
 	computed: {
-		isLoading() {
-			return this.loading && this.btnLoading;
-		},
 		wrapperStyle() {
 			let style = {};
 			if (this.draggable) {
