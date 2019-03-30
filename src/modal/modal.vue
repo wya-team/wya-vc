@@ -422,9 +422,9 @@ export default {
 		bottom: 0;
 		left: 0;
 		right: 0;
-		background-color: rgba(0,0,0,.65);
+		background-color: $mask-bg-color;
 		height: 100%;
-		z-index: 1000;
+		z-index: $mask-zindex;
 		transition: opacity 0.2s ease;
 	}
 	@include element(wrapper) {
@@ -433,12 +433,12 @@ export default {
 		transform: translateY(-50%);
 		left: 0;
 		width: 100%;
-		z-index: 1001;
+		z-index: $modal-zindex;
 	}
 	@include element(container) {
 		position: relative;
-		background: #fff;
-		box-shadow: 0px 0px 8px 0px rgba(0, 0, 0, 0.1);
+		background: $white;
+		box-shadow: $border-shadow;
 		margin: auto;
 		border-radius: 4px;
 		padding-bottom: 63px;
@@ -454,7 +454,7 @@ export default {
 
 	@include element(header) {
 		position: relative;
-		border-bottom: 1px solid #e8e8e8;
+		border-bottom: 1px solid $modal-border-color;
 		padding: 14px 24px;
 		line-height: 1;
 		font-size: 14px;
@@ -477,7 +477,7 @@ export default {
 		position: absolute;
 		bottom: 0;
 		width: 100%;
-		border-top: 1px solid #e8e8e8;
+		border-top: 1px solid $modal-border-color;
 		padding: 17px 24px;
 		text-align: right;
 		font-size: 0;
@@ -495,7 +495,7 @@ export default {
 		height: 20px;
 		line-height: 20px;
 		font-size: 14px;
-		color: #333;
+		color: $c333;
 		font-weight: 400;
 		word-wrap: break-word;
 	}
@@ -503,22 +503,22 @@ export default {
 		position: absolute;
 		top: 17px;
 		right: 16px;
-		color: #999;
+		color: $c999;
 	}
 	@include element(icon) {
 		margin-right: 8px;
 		font-size: 28px;
 		@include when(success) {
-			color: #52C41A;
+			color: $success;
 		}
 		@include when(error) {
-			color: #F5222D;
+			color: $error;
 		}
 		@include when(warning) {
-			color: #FAAD14;
+			color: $warn;
 		}
 		@include when(info) {
-			color: #1890FF;
+			color: $info;
 		}
 	}
 }
@@ -530,13 +530,13 @@ export default {
 
 .modal-enter-active, {
 	will-change: transform;
-	transition: transform .5s cubic-bezier(.08, .82, .17, 1),
-		opacity .5s cubic-bezier(.08, .82, .17, 1);
+	transition: transform $modal-duration $ease-out-circ,
+		opacity $modal-duration $ease-out-circ;
 }
 .modal-leave-active {
 	will-change: transform;
-	transition: transform .5s cubic-bezier(.08, .82, .17, 1),
-		opacity .5s cubic-bezier(.08, .82, .17, 1);
+	transition: transform $modal-duration $ease-out-circ,
+		opacity $modal-duration $ease-out-circ;
 }
 
 .modal-enter,
