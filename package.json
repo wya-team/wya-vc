@@ -1,6 +1,6 @@
 {
     "name": "@wya/vc",
-    "version": "1.0.21",
+    "version": "1.0.26",
     "description": "wya for vue components",
     "main": "lib/index.js",
     "files": [
@@ -43,7 +43,6 @@
         "deepmerge": "^1.2.0",
         "echarts": "^4.2.0-rc.2",
         "html2canvas": "^1.0.0-alpha.12",
-        "inquirer-autocomplete-prompt": "^1.0.1",
         "iview": "^3.3.0",
         "lodash": "^4.17.11",
         "normalize-wheel": "^1.0.1",
@@ -97,6 +96,7 @@
         "html-webpack-plugin": "^3.2.0",
         "identity-obj-proxy": "^3.0.0",
         "inquirer": "^5.2.0",
+        "inquirer-autocomplete-prompt": "^1.0.1",
         "jest": "^24.1.0",
         "jsdom": "^14.0.0",
         "less": "^3.0.1",

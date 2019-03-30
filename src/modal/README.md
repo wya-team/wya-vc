@@ -8,7 +8,10 @@ Modal(对话框)
 
 属性 | 说明 | 类型 | 默认值
 ---|---|---|---
-value | 对话框是否显示，可用v-modal双向绑定 | `Boolean` | false
+model | `info|success|error|warning` | `String` | -
+title | 内容标题| `String` | -
+content | 内容,可以是jsx | `String|Function` | -
+visible | 对话框是否显示，可用v-model双向绑定 | `Boolean` | false
 title | 对话框标题，如果使用slot自定义header，则title无效 | `String` | -
 size | 对话框的三个默认大小 `small` `medium` `large` | `String` | small
 style | 设置`.-wrap`的style，例如：{top: '100px'} | `Object` | -
@@ -16,35 +19,17 @@ ok-text |自定义确定按钮的文案 | `String` | 确定
 cancel-text | 自定义取消按钮的文案 | `String` | 取消
 width | 对话框的宽度 | `Number` | 400
 mask | 遮罩层是否显示 | `Boolean` | true
-mask-closable | 点击遮罩层是否关闭 | `Booelan` | true
+mask-closable | 点击遮罩层是否关闭 | `Booelan` | true
 esc-closable | 点击esc是否关闭 | `Boolean` | true
 scrollable | 页面是否可以滚动 | `Boolean` | false
 draggable | 是否可以拖拽 | `Boolean` | false
-loading | 点击确定异步回调 | `Boolean` | false
-
-通过以下方式调用
-`Modal.info(config)`
-
-`Modal.success(config)`
-
-`Modal.error(config)`
-
-`Modal.warning(config)`
-
-属性 | 说明 | 类型 | 默认值
----|---|---|---
-value | 对话框是否显示，可用v-modal双向绑定 | `Boolean` | false
-title | 对话框标题，如果使用slot自定义header，则title无效 | `String` | -
-content | 对话框内容 | `String` | -
-render | 自定义描述内容，使用 Vue 的 Render 函数 | `Function` | -
-showCancel | 是否显示取消按钮 | `Boolean` | false
-size | 对话框大小 `small` `large` | `String` | small
+close-with-cancel | `主动`关闭时出发cancel事件 | `Boolean` | true
 
 #### 事件
 
 属性 | 说明 | 类型 | 默认值
 ---|---|---|---
-ok | 点击确定的回调 | `Function` | -
+ok | 点击确定的回调, 配合Promise触发loading效果 | `Function` | -
 cancel | 点击取消的回调 | `Function` | -
 close | 弹窗关闭后触发(可作用与portal) | `Function` | -
 
@@ -61,6 +46,22 @@ sure | 确定时触发 | `Function` | -
 header | 自定义页头内容
 footer | 自定义页脚内容
 
+#### 方法
+
+```js
+Modal.info({});
+
+Modal.success({});
+
+Modal.error({});
+
+Modal.warning({});
+
+```
+> 方法同上属性值, 事件使用`onOk`, `onCancel`
+
+## TODO
+使用`renderHeader`, `renderFooter` 方法式调用`slot`写法
 
 ## 基础用法
 

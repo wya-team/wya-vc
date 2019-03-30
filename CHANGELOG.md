@@ -1,7 +1,17 @@
 # 历史版本
 
-### 1.0.25 (2019-03-28)
-- down-count: `render -> render-row`
+### 1.0.26 (2019-03-30)
+- form: 添加`slot`, `label`
+- form: 过滤数组字段中为`''`的情况
+- button: `loading`功能（内部属性）,`click`事件为`Promise`情况使用
+- modal: 优化`modal`结构, 新增`close`事件, 默认`closeWithCancel: true`开启主动关闭时触发`cancel`（`cancel`为取消按钮）
+- modal: 默认`ok`事件返回`Promise`, 将触发`loading`效果;
+- modal: 新增`footer`字段
+- popover: 定位和样式调整
+- icon: 新增图标预览功能
+- down-count: `render -> render-row`, 新增字段`showZero`控制是否显示`00`
+- 针对bem规则优化`button`, `modal`, `form`, `imgs-preview`样式优化 
+
 
 ### 1.0.13 (2019-03-21)
 - create-portal: `el -> tag`, `root -> el`
