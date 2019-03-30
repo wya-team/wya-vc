@@ -15,7 +15,7 @@ $main-color-2: $blue-mid !default;
 $main-color-3: $yellow-mid !default;
 
 // 背景颜色
-$body-bg-color: #f5f6fa;
+$body-bg-color: $gray-mid;
 $scrollbar-track-bg-color: rgba(0, 0, 0, 0) !default;
 $scrollbar-thumb-bg-color: rgba(0, 0, 0, 0.2) !default;
 $popup-bg-color: $white !default;
@@ -30,7 +30,8 @@ $font-color-mid: $black-mid !default;
 $font-color-light: $black-light !default;
 
 // 边框颜色
-$border-color: #e6e6e6 !default;
+$border-color: $cd9 !default;
+$modal-border-color: $ce8 !default;
 
 // 字体尺寸
 $font-size-base: 14px !default;
@@ -80,9 +81,9 @@ $margin-48: 48px !default;
 $margin-56: 56px !default;
 
 // z-index
-$modal-zindex: 999 !default;
-$popup-zindex: 999 !default;
-$mask-zindex: 99 !default;
+$modal-zindex: 1002 !default;
+$popup-zindex: 1002 !default;
+$mask-zindex: 1001 !default;
 $tooltip-zindex: 1999 !default;
 
 // Animation
@@ -111,5 +112,5 @@ $popup-timing: ease !default;
 
 // box-shadow
 $scrollbar-track-box-shadow: inset 0 0 10px rgba(0, 0, 0, 0) !default;
-$default-border-shadow: 0 0 8px 0 rgba(0, 0, 0, 0.1);
-$default-border-shadow-top: 0 -2px 10px 0 rgba(0, 0, 0, 0.08);
+$border-shadow: 0 0 8px 0 rgba(0, 0, 0, 0.1);
+$border-shadow-top: 0 -2px 10px 0 rgba(0, 0, 0, 0.08);
