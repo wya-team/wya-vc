@@ -2,7 +2,7 @@
 	<div class="vc-message">
 		<div 
 			v-if="mask"
-			class="__bg"
+			class="vc-message__mask"
 			@click="handleClose" 
 		/>
 		<transition :duration="{ enter: 300, leave: 300 }" name="am-fade" @after-leave="handleRemove">
@@ -10,14 +10,17 @@
 				v-show="visible" 
 				ref="target" 
 				:style="style"
-				class="__fixed"
+				class="vc-message__wrapper"
 			>
-				<div class="__content">
+				<div class="vc-message__container">
 					<!-- icon -->
-					<img v-if="mode === 'loading'" src="../m-toast/spin.svg" class="loading">
-					<vc-icon v-else :type="mode" :class="mode" class="__content-icon"/>
+					<img v-if="mode === 'loading'" src="../m-toast/spin.svg" class="vc-message__loading">
+					<vc-icon v-else :type="mode" :class="`is-${mode}`" class="vc-message__icon"/>
 					<!-- content -->
-					<p v-if="typeof content === 'string'">{{ content }}</p>
+					<p 
+						v-if="typeof content === 'string'"
+						class="vc-message__content"
+					>{{ content }}</p>
 					<vc-row v-else :render="content" />
 					<!-- close -->
 					<vc-icon 
@@ -111,25 +114,13 @@ export default {
 };
 </script>
 
-<style lang="scss" scoped>
+<style lang="scss">
 @import '../style/index.scss';
-//弹框类的颜色
-$primary-color: #2d8cf0;
-$primary-hover-color: #57a3f3;
 
-$success-color: #19be6b;
-$success-hover-color: #47cb89;
-
-$error-color: #ed4014;
-$error-hover-color: #f16643;
-
-$warning-color: #e6a23c;
-$warning-hover-color: #ebb563;
-
-.vc-message {
-	.__bg {
+@include block(vc-message) {
+	@include element(mask) {
 		position: fixed;
-		background: rgba(0, 0, 0, 0.4);
+		background: $mask-bg-color;
 		z-index: 3999;
 		height: 100%;
 		width: 100%;
@@ -139,42 +130,38 @@ $warning-hover-color: #ebb563;
 		bottom: 0;
 		opacity: 0;
 	}
-	.__fixed {
+	@include element(wrapper) {
 		position: fixed;
 		z-index: 4000;
 		width: 100%;
-		text-align: center;
-		transition: transform .3s cubic-bezier(0.18, 0.89, 0.32, 1.28), 
-			opacity .3s cubic-bezier(0.18, 0.89, 0.32, 1.28);
+		display: flex;
+		justify-content: center;
+		transition: transform $modal-duration $ease-out-circ,
+			opacity $modal-duration $ease-out-circ;
 	}
-	.__content {
-		// @include commonFlex();
-		// align-items: center;
-		display: inline-block;
+	@include element(container) {
+		display: flex;
+		align-items: center;
 		padding: 8px 16px;
-		background: #fff;
-		box-shadow: $default-border-shadow;
+		background: $white;
+		box-shadow: $border-shadow;
 		border-radius: 4px;
-		.__content-icon, p, .loading{
-			display: inline-block;
-			vertical-align: middle;
-			font-size: 14px;
+		font-size: 14px;
+		@include element(icon) {
+			padding-right: 5px;
+			@include when(success) {
+				color: $success;
+			}
+			@include when(error) {
+				color: $error;
+			}
+			@include when(warn) {
+				color: $warn;
+			}
 		}
-		p {
-			font-size: 14px;
-			padding: 0 8px;
-		}
 	}
-	.success {
-		color: $success-color;
-	}
-	.error {
-		color: $error-color;
-	}
-	.warn {
-		color: $warning-color;
-	}
-	.loading {
+	@include element(loading) {
+		margin-right: 5px;
 		width: 14px;
 		height: 14px;
 		animation: vc-message-circle 1s linear infinite;
