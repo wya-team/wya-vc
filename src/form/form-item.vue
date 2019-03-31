@@ -280,7 +280,7 @@ $block: vc-form-item;
 		text-align: right;
 		vertical-align: middle;
 		float: left;
-		color: #515a6e;
+		color: $c333;
 		font-size: 12px;
 		line-height: 28px;
 		-webkit-box-sizing: border-box;
@@ -299,7 +299,7 @@ $block: vc-form-item;
 					line-height: 1;
 					font-family: SimSun;
 					font-size: 12px;
-					color: #ed4014
+					color: $error
 				}
 			}
 		}
@@ -310,7 +310,7 @@ $block: vc-form-item;
 				left: 0;
 				line-height: 1;
 				padding-top: 6px;
-				color: #ed4014;
+				color: $error;
 				transition: opacity .3s cubic-bezier(0.18, 0.89, 0.32, 1.28);
 			}
 		}
