@@ -24,7 +24,7 @@ export default {
 	name: "vcm-popup",
 	model: {
 		prop: 'visible',
-		event: 'change'
+		event: 'visible-change'
 	},
 	props: {
 		fixed: {
@@ -88,7 +88,7 @@ export default {
 		handleRemove() {
 			!this._isDestroyed && (
 				this.$emit('close'),
-				this.$emit('change', false),
+				this.$emit('visible-change', false),
 				this.zIndex = -1
 			);
 		}
