@@ -515,7 +515,7 @@ export default {
 			color: $error;
 		}
 		@include when(warning) {
-			color: $warn;
+			color: $warning;
 		}
 		@include when(info) {
 			color: $info;
