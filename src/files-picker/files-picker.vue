@@ -22,20 +22,12 @@
 			>
 				<vc-icon type="link" class="__download" />
 				<div :title="item.title" class="__title">{{ item.title }}</div>
-				<!-- <template v-if="item.errorFlag || item.retcode == 0">
-					<div>上传失败</div>
-				</template> -->
-				<!-- <template v-else> -->
 				<template>
-					<!-- <div v-if="item.percent != 100 && !item[urlKey]" style="flex: 1; display: flex; align-items: center"> -->
 					<div style="flex: 1; display: flex; align-items: center">
 						<div class="__pcontainer">
 							<div :style="{width: item.percent + '%'}" class="__progress" />
 						</div>
-						<!-- <span style="margin-left: 10px">{{ item.percent }}%</span> -->
 					</div>
-					<!-- <div v-else-if="!item[urlKey]">文件上传完毕，请等待...</div>
-					<div v-else>上传成功</div> -->
 				</template>
 				<span 
 					v-if="item[urlKey] || (item.retcode == 0 && item.percent == 100) || item.errorFlag" 
