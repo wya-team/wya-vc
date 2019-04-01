@@ -2,8 +2,11 @@ import VcError from './error';
 
 class VcBasic {
 	setConfig(options = {}) {
-		this.config = {
-			...this.config,
+		/**
+		 * 共享配置
+		 */
+		VcBasic.prototype.config = {
+			...VcBasic.prototype.config,
 			...options
 		};
 	}
