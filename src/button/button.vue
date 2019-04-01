@@ -29,7 +29,7 @@ export default {
 		},
 		type: {
 			type: String,
-			validator: v => /default|primary|text|success|error|warning/.test(v),
+			validator: v => /(default|primary|text|success|error|warning)/.test(v),
 			default: 'default'
 		},
 		size: {

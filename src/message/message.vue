@@ -75,7 +75,7 @@ export default {
 		mode: {
 			type: String,
 			default: 'info',
-			validator: v => /info|loading|success|error|warning/.test(v)
+			validator: v => /(info|loading|success|error|warning)/.test(v)
 		}
 	},
 	data() {
