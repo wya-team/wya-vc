@@ -75,7 +75,7 @@ export default {
 		mode: {
 			type: String,
 			default: 'info',
-			validator: (val) => ['info', 'loading', 'success', 'warn', 'error'].includes(val)
+			validator: v => /info|loading|success|error|warning/.test(v)
 		}
 	},
 	data() {

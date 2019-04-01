@@ -29,12 +29,12 @@ export default {
 		},
 		type: {
 			type: String,
-			validator: (value) => /default|primary|text|success|error|warning/.test(value),
+			validator: v => /default|primary|text|success|error|warning/.test(v),
 			default: 'default'
 		},
 		size: {
 			type: String,
-			validator: (value) => /(small|medium|large)/.test(value),
+			validator: v => /(small|medium|large)/.test(v),
 			default: 'medium'
 		},
 		wait: {
