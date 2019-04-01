@@ -1,19 +1,27 @@
 <template>
 	<vc-popover
-		v-model="show"
+		v-model="isActive"
 		:placement="placement"
 		:trigger="trigger"
+		:visible="visible"
+		:animate="animate"
+		:theme="theme"
+		:content="content"
+		:get-popup-container="getPopupContainer"
+		:transfer="transfer"
+		:arrow="arrow"
+		@close="handleClose"
 	>
 		<slot />
 		<template #content>
-			<div class="vc-popconfirm-content">
-				<div class="__popconfirm-title">
+			<div class="vc-popconfirm__content">
+				<div class="vc-popconfirm__title">
 					<slot name="icon">
-						<vc-icon :type="type" :class="iconColor" class="__popconfirm-icon" />
+						<vc-icon :type="type" :class="`is-${type}`" class="vc-popconfirm__icon" />
 					</slot>
 					<slot name="title">{{ title }}</slot>
 				</div>
-				<div class="__popconfirm-footer">
+				<div class="vc-popconfirm__footer">
 					<vc-button 
 						:type="cancelType" 
 						style="margin-right: 8px;"
@@ -35,6 +43,7 @@
 	</vc-popover>
 </template>
 <script>
+import { pick } from 'lodash';
 import Popover from "../popover/index";
 import Button from '../button/index';
 import Icon from '../icon/index';
@@ -46,8 +55,21 @@ export default {
 		'vc-button': Button,
 		'vc-icon': Icon,
 	},
+	model: {
+		prop: 'visible',
+		event: 'visible-change'
+	},
 	props: {
-		...Popover.props,
+		...pick(Popover.props, [
+			'visible', 
+			'animate', 
+			'placement', 
+			'theme', 
+			'content', 
+			'getPopupContainer', 
+			'transfer', 
+			'arrow'
+		]),
 		title: String,
 		placement: {
 			type: String,
@@ -76,57 +98,85 @@ export default {
 		type: {
 			type: String,
 			default: 'warning',
-			validator: (value) => (['warning', 'info', 'success', 'error'].indexOf(value) !== -1)
+			validator: v => /(warning|info|success|error)/.test(v),
 		}
 	},
 	data() {
 		return {
-			show: this.visible
+			isActive: false
 		};
 	},
 	computed: {
-		iconColor() {
-			return `__popconfirm-icon-${this.type}`;
+		
+	},
+	watch: {
+		visible: {
+			immediate: true,
+			handler(v, old) {
+				this.isActive = v;
+			}
 		}
 	},
 	methods: {
+		handleClose() {
+			this.$emit('visible-change', false);
+			this.$emit('close');
+		},
 		handleOk(e) {
-			this.show = false;
-			this.$emit('ok', e);
+			let { $listeners: { ok } } = this;
+			let callback = () => {
+				this.isActive = false;
+			};
+			let fn = ok && ok(e);
+
+			// loading效果由vc-btn触发
+			if (fn && fn.then) {
+				return fn.then((res) => {
+					return res;
+				}).catch((res) => {
+					return Promise.reject(res);
+				}).finally(() => {
+					callback();
+				});
+			} else {
+				callback();
+			}
 		},
 		handleCancel(e) {
-			this.show = false;
+			this.isActive = false;
 			this.$emit('cancel', e);
 		}
 	}
 };
 </script>
 <style lang="scss">
-.vc-popconfirm-content {
+@import '../style/index.scss';
+
+@include block(vc-popconfirm) {
 	padding: 7px 4px;
-	.__popconfirm-title {
+	@include element(title) {
 		padding-left: 20px;
 		padding-bottom: 12px;
 		position: relative;
-		.__popconfirm-icon {
-			position: absolute;
-			top: 0px;
-			left: 0px;
-			&-warn {
-				color: #ffbf00;
-			}
-			&-info {
-				color: #0177de;
-			}
-			&-success {
-				color: #00a854;
-			}
-			&-error {
-				color: #f04134;
-			}
+	}
+	@include element(icon) {
+		position: absolute;
+		top: 0px;
+		left: 0px;
+		@include when(warning) {
+			color: $warning;
+		}
+		@include when(info) {
+			color: $info;
+		}
+		@include when(success) {
+			color: $success;
+		}
+		@include when(error) {
+			color: $error;
 		}
 	}
-	.__popconfirm-footer {
+	@include element(footer) {
 		text-align: right;
 		margin-bottom: 6px;
 	}
