@@ -75,8 +75,8 @@ export default {
 		},
 		type: {
 			type: String,
-			default: 'warn',
-			validator: (value) => (['warn', 'info', 'success', 'error'].indexOf(value) !== -1)
+			default: 'warning',
+			validator: (value) => (['warning', 'info', 'success', 'error'].indexOf(value) !== -1)
 		}
 	},
 	data() {
