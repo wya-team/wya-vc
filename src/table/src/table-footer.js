@@ -1,5 +1,5 @@
 import LayoutObserver from './layout-observer';
-/* eslint-disable */
+
 export default {
 	name: 'ElTableFooter',
 
@@ -61,7 +61,7 @@ export default {
 							this._l(this.columns, (column, cellIndex) => <td
 								colspan={ column.colSpan }
 								rowspan={ column.rowSpan }
-								class={ [column.id, column.headerAlign, column.className || '', this.isCellHidden(cellIndex, this.columns, column) ? 'is-hidden' : '', !column.children ? 'is-leaf' : '', column.labelClassName] }>
+								class={ this.getRowClasses(column, cellIndex) }>
 								<div class={ ['cell', column.labelClassName] }>
 									{
 										sums[cellIndex]
@@ -150,6 +150,20 @@ export default {
 			} else {
 				return (index < this.leftFixedCount) || (index >= this.columnsCount - this.rightFixedCount);
 			}
+		},
+
+		getRowClasses(column, cellIndex) {
+			const classes = [column.id, column.align, column.labelClassName];
+			if (column.className) {
+				classes.push(column.className);
+			}
+			if (this.isCellHidden(cellIndex, this.columns, column)) {
+				classes.push('is-hidden');
+			}
+			if (!column.children) {
+				classes.push('is-leaf');
+			}
+			return classes;
 		}
 	}
 };

@@ -2,6 +2,7 @@ import ElTag from './ui/tag';
 import objectAssign from './utils/merge';
 import ElCheckbox from './ui/checkbox';
 import { getPropByPath } from './util';
+import Icon from '../../icon/index';
 
 let columnIdSeed = 1;
 const TABLE_ITEM_REGEX = /vc-table-item/;
@@ -89,9 +90,9 @@ const getDefaultColumn = function (type, options) {
 	const column = {};
 
 	objectAssign(column, defaults[type || 'default']);
-	/* eslint-disable */
+
 	for (let name in options) {
-		if (options.hasOwnProperty(name)) {
+		if (options.hasOwnProperty(name)) { /* eslint-disable-line */
 			const value = options[name];
 			if (typeof value !== 'undefined') {
 				column[name] = value;
@@ -208,7 +209,8 @@ export default {
 
 	components: {
 		ElCheckbox,
-		ElTag
+		ElTag,
+		'vc-icon': Icon
 	},
 
 	computed: {
@@ -297,7 +299,7 @@ export default {
 
 		// Deprecation warning for renderHeader property
 		if (this.renderHeader) {
-			console.warn('[Element Warn][TableColumn]Comparing to render-header, scoped-slot header is easier to use. We recommend users to use scoped-slot header.');
+			console.warn('[Element Warn][TableColumn]Comparing to render-header, scoped-slot header is easier to use. We recommend users to use scoped-slot header.'); /* eslint-disable-line */
 		}
 
 		this.columnConfig = column;
@@ -327,10 +329,16 @@ export default {
 			if (!renderCell) {
 				renderCell = DEFAULT_RENDER_CELL;
 			}
+			const children = [
+				_self.renderTreeCell(data),
+				renderCell(h, data)
+			];
 
 			return _self.showOverflowTooltip || _self.showTooltipWhenOverflow
-				? <div class="cell el-tooltip" style={ { width: (data.column.realWidth || data.column.width) - 1 + 'px' } }>{ renderCell(h, data) }</div>
-				: <div class="cell">{ renderCell(h, data) }</div>;
+				? <div class="cell el-tooltip" style={ { width: (data.column.realWidth || data.column.width) - 1 + 'px' } }>{ children }</div>
+				: (<div class="cell">
+					{ children }
+				</div>);
 		};
 	},
 
@@ -435,6 +443,32 @@ export default {
 		labelClassName(newVal) {
 			if (this.columnConfig) {
 				this.columnConfig.labelClassName = newVal;
+			}
+		}
+	},
+
+	methods: {
+		renderTreeCell(data) {
+			if (!data.treeNode) return null;
+			const ele = [];
+			ele.push(<span class="el-table__indent" style={{ 'padding-left': data.treeNode.indent + 'px' }}></span>);
+			if (data.treeNode.hasChildren) {
+				ele.push(<div class={ ['el-table__expand-icon', data.treeNode.expanded ? 'el-table__expand-icon--expanded' : '']}
+					on-click={this.handleTreeExpandIconClick.bind(this, data)}>
+					<vc-icon type="triangle-right" />
+				</div>);
+			} else {
+				ele.push(<span class="el-table__placeholder"></span>);
+			}
+			return ele;
+		},
+
+		handleTreeExpandIconClick(data, e) {
+			e.stopPropagation();
+			if (data.store.states.lazy && !data.treeNode.loaded) {
+				data.store.loadData(data.row, data.treeNode);
+			} else {
+				data.store.toggleTreeExpansion(data.treeNode.rowKey);
 			}
 		}
 	},

@@ -41,15 +41,12 @@
 				:row-class-name="rowClassName"
 				:row-style="rowStyle"
 				:highlight="highlightCurrentRow"
-				:style="{
-					width: bodyWidth
-			}"/>
+				:style="{ width: bodyWidth }"
+			/>
 			<div
 				v-if="!dataSource || dataSource.length === 0"
 				ref="emptyBlock"
-				:style="{
-					width: bodyWidth
-				}"
+				:style="{ width: bodyWidth }"
 				class="el-table__empty-block">
 				<span class="el-table__empty-text">
 					<slot name="empty">{{ emptyText || t('el.table.emptyText') }}</slot>
@@ -58,7 +55,8 @@
 			<div
 				v-if="$slots.append"
 				ref="appendWrapper"
-				class="el-table__append-wrapper">
+				class="el-table__append-wrapper"
+			>
 				<slot name="append"/>
 			</div>
 		</div>
@@ -67,7 +65,8 @@
 			v-if="showSummary"
 			v-show="dataSource && dataSource.length > 0"
 			ref="footerWrapper"
-			class="el-table__footer-wrapper">
+			class="el-table__footer-wrapper"
+		>
 			<table-footer
 				:store="store"
 				:border="border"
@@ -76,16 +75,17 @@
 				:default-sort="defaultSort"
 				:style="{
 					width: layout.bodyWidth ? layout.bodyWidth + 'px' : ''
-			}"/>
+				}"
+			/>
 		</div>
 		<div
 			v-mousewheel="handleFixedMousewheel"
 			v-if="fixedColumns.length > 0"
 			ref="fixedWrapper"
-			:style="[{
-					width: layout.fixedWidth ? layout.fixedWidth + 'px' : ''
-				},
-				fixedHeight]"
+			:style="[
+				{ width: layout.fixedWidth ? layout.fixedWidth + 'px' : '' },
+				fixedHeight
+			]"
 			class="el-table__fixed">
 			<div
 				v-if="showHeader"
@@ -98,14 +98,15 @@
 					:style="{
 						width: bodyWidth
 					}"
-					fixed="left"/>
+					fixed="left"
+				/>
 			</div>
 			<div
 				ref="fixedBodyWrapper"
-				:style="[{
-						top: layout.headerHeight + 'px'
-					},
-					fixedBodyHeight]"
+				:style="[
+					{ top: layout.headerHeight + 'px' },
+					fixedBodyHeight
+				]"
 				class="el-table__fixed-body-wrapper">
 				<table-body
 					:store="store"
@@ -116,7 +117,8 @@
 					:style="{
 						width: bodyWidth
 					}"
-					fixed="left"/>
+					fixed="left"
+				/>
 				<div
 					v-if="$slots.append"
 					:style="{
@@ -194,7 +196,8 @@
 					:style="{
 						width: bodyWidth
 					}"
-					fixed="right"/>
+					fixed="right"
+				/>
 			</div>
 		</div>
 		<div
@@ -204,7 +207,8 @@
 				width: layout.scrollY ? layout.gutterWidth + 'px' : '0',
 				height: layout.headerHeight + 'px'
 			}"
-			class="el-table__fixed-right-patch"/>
+			class="el-table__fixed-right-patch"
+		/>
 		<div v-show="resizeProxyVisible" ref="resizeProxy" class="el-table__column-resize-proxy"/>
 	</div>
 </template>
@@ -221,7 +225,26 @@ import TableLayout from './table-layout';
 import TableBody from './table-body';
 import TableHeader from './table-header';
 import TableFooter from './table-footer';
-/* eslint-disable */
+import { getRowIdentity } from './util';
+
+const flattenData = function (data) {
+	if (!data) return data;
+	let newData = [];
+	const flatten = arr => {
+		arr.forEach((item) => {
+			newData.push(item);
+			if (Array.isArray(item.children)) {
+				flatten(item.children);
+			}
+		});
+	};
+	flatten(data);
+	if (data.length === newData.length) {
+		return data;
+	} else {
+		return newData;
+	}
+};
 let tableIdSeed = 1;
 export default {
 	name: 'el-table',
@@ -253,7 +276,7 @@ export default {
 		stripe: Boolean,
 		border: Boolean,
 		rowKey: [String, Function],
-		context: {},
+		context: {}, /* eslint-disable-line */
 		showHeader: {
 			type: Boolean,
 			default: true
@@ -280,13 +303,21 @@ export default {
 		selectOnIndeterminate: {
 			type: Boolean,
 			default: true
-		}
+		},
+		indent: {
+			type: Number,
+			default: 16
+		},
+		lazy: Boolean,
+		load: Function
 	},
 	data() {
 		const store = new TableStore(this, {
 			rowKey: this.rowKey,
 			defaultExpandAll: this.defaultExpandAll,
-			selectOnIndeterminate: this.selectOnIndeterminate
+			selectOnIndeterminate: this.selectOnIndeterminate,
+			indent: this.indent,
+			lazy: this.lazy
 		});
 		const layout = new TableLayout({
 			store,
@@ -413,6 +444,8 @@ export default {
 		dataSource: {
 			immediate: true,
 			handler(value) {
+				this.store.states.treeData = this.getTableTreeData(value);
+				value = flattenData(value);
 				this.store.commit('setData', value);
 				if (this.$ready) {
 					this.$nextTick(() => {
@@ -567,6 +600,53 @@ export default {
 		},
 		toggleAllSelection() {
 			this.store.commit('toggleAllSelection');
+		},
+		getRowKey(row) {
+			const rowKey = getRowIdentity(row, this.store.states.rowKey);
+			if (!rowKey) {
+				throw new Error('if there\'s nested data, rowKey is required.');
+			}
+			return rowKey;
+		},
+		getTableTreeData(data) {
+			const treeData = {};
+			const traverse = (children, parentData, level) => {
+				children.forEach(item => {
+					const rowKey = this.getRowKey(item);
+					treeData[rowKey] = {
+						display: false,
+						level
+					};
+					parentData.children.push(rowKey);
+					if (Array.isArray(item.children) && item.children.length) {
+						treeData[rowKey].children = [];
+						treeData[rowKey].expanded = false;
+						traverse(item.children, treeData[rowKey], level + 1);
+					}
+				});
+			};
+			if (data) {
+				data.forEach(item => {
+					const containChildren = Array.isArray(item.children) && item.children.length;
+					if (!(containChildren || item.hasChildren)) return;
+					const rowKey = this.getRowKey(item);
+					const treeNode = {
+						level: 0,
+						expanded: false,
+						display: true,
+						children: []
+					};
+					if (containChildren) {
+						treeData[rowKey] = treeNode;
+						traverse(item.children, treeData[rowKey], 1);
+					} else if (item.hasChildren && this.lazy) {
+						treeNode.hasChildren = true;
+						treeNode.loaded = false;
+						treeData[rowKey] = treeNode;
+					}
+				});
+			}
+			return treeData;
 		}
 	},
 };

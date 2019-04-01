@@ -1746,3 +1746,47 @@
 	-webkit-transform: scale(.45, .45);
 	transform: scale(.45, .45)
 }
+
+.el-table [class*=el-table__row--level] .el-table__expand-icon {
+    display: inline-block;
+    width: 14px;
+    vertical-align: middle;
+    margin-right: 5px
+}
+
+.el-table__expand-column .cell {
+    padding: 0;
+    text-align: center
+}
+
+.el-table__expand-icon {
+    position: relative;
+    cursor: pointer;
+    color: #666;
+    font-size: 12px;
+    transition: transform .2s ease-in-out;
+}
+
+.el-table__expand-icon--expanded {
+	transform: rotate(90deg);
+}
+
+.el-table__expand-icon>.el-icon {
+    position: absolute;
+    left: 50%;
+    top: 50%;
+    margin-left: -5px;
+    margin-top: -5px
+}
+
+.el-table__expanded-cell {
+    background-color: #fff
+}
+
+.el-table__expanded-cell[class*=cell] {
+    padding: 20px 50px
+}
+
+.el-table__expanded-cell:hover {
+    background-color: transparent!important
+}

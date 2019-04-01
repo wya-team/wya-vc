@@ -1,6 +1,6 @@
 import Vue from 'vue';
 import scrollbarWidth from './utils/scrollbar-width';
-/* eslint-disable */
+
 class TableLayout {
 	constructor(options) {
 		this.observers = [];
@@ -26,7 +26,7 @@ class TableLayout {
 		this.gutterWidth = scrollbarWidth();
 
 		for (let name in options) {
-			if (options.hasOwnProperty(name)) {
+			if (options.hasOwnProperty(name)) { /* eslint-disable-line */
 				this[name] = options[name];
 			}
 		}
@@ -79,13 +79,13 @@ class TableLayout {
 		this.appendHeight = appendWrapper ? appendWrapper.offsetHeight : 0;
 
 		if (this.showHeader && !headerWrapper) return;
-		const headerHeight = this.headerHeight = !this.showHeader ? 0 : headerWrapper.offsetHeight;
+		const headerHeight = this.headerHeight = !this.showHeader ? 0 : headerWrapper.offsetHeight;  /* eslint-disable-line */
 		if (this.showHeader && headerWrapper.offsetWidth > 0 && (this.table.columns || []).length > 0 && headerHeight < 2) {
 			return Vue.nextTick(() => this.updateElsHeight());
 		}
-		const tableHeight = this.tableHeight = this.table.$el.clientHeight;
+		const tableHeight = this.tableHeight = this.table.$el.clientHeight;  /* eslint-disable-line */
 		if (this.height !== null && (!isNaN(this.height) || typeof this.height === 'string')) {
-			const footerHeight = this.footerHeight = footerWrapper ? footerWrapper.offsetHeight : 0;
+			const footerHeight = this.footerHeight = footerWrapper ? footerWrapper.offsetHeight : 0;  /* eslint-disable-line */
 			this.bodyHeight = tableHeight - headerHeight - footerHeight + (footerWrapper ? 1 : 0);
 		}
 		this.fixedBodyHeight = this.scrollX ? this.bodyHeight - this.gutterWidth : this.bodyHeight;

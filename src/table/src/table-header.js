@@ -2,7 +2,6 @@ import Vue from 'vue';
 import ElCheckbox from './ui/checkbox';
 import ElTag from './ui/tag';
 import { hasClass, addClass, removeClass } from './utils/dom';
-import FilterPanel from './filter-panel.vue';
 import LayoutObserver from './layout-observer';
 /* eslint-disable */
 const getAllColumns = (columns) => {
@@ -111,21 +110,6 @@ export default {
 											column.renderHeader
 												? column.renderHeader.call(this._renderProxy, h, { column, $index: cellIndex, store: this.store, _self: this.$parent.$vnode.context })
 												: column.label
-										}
-										{
-											column.sortable
-												? <span class="caret-wrapper" on-click={ ($event) => this.handleSortClick($event, column) }>
-													<i class="sort-caret ascending" on-click={ ($event) => this.handleSortClick($event, column, 'ascending') }>
-													</i>
-													<i class="sort-caret descending" on-click={ ($event) => this.handleSortClick($event, column, 'descending') }>
-													</i>
-												</span>
-												: ''
-										}
-										{
-											column.filterable
-												? <span class="el-table__column-filter-trigger" on-click={ ($event) => this.handleFilterClick($event, column) }><i class={ ['el-icon-arrow-down', column.filterOpened ? 'el-icon-arrow-up' : ''] }></i></span>
-												: ''
 										}
 									</div>
 								</th>)
@@ -303,44 +287,7 @@ export default {
 			this.store.commit('toggleAllSelection');
 		},
 
-		handleFilterClick(event, column) {
-			event.stopPropagation();
-			const target = event.target;
-			let cell = target.tagName === 'TH' ? target : target.parentNode;
-			cell = cell.querySelector('.el-table__column-filter-trigger') || cell;
-			const table = this.$parent;
-
-			let filterPanel = this.filterPanels[column.id];
-
-			if (filterPanel && column.filterOpened) {
-				filterPanel.showPopper = false;
-				return;
-			}
-
-			if (!filterPanel) {
-				filterPanel = new Vue(FilterPanel);
-				this.filterPanels[column.id] = filterPanel;
-				if (column.filterPlacement) {
-					filterPanel.placement = column.filterPlacement;
-				}
-				filterPanel.table = table;
-				filterPanel.cell = cell;
-				filterPanel.column = column;
-				!this.$isServer && filterPanel.$mount(document.createElement('div'));
-			}
-
-			setTimeout(() => {
-				filterPanel.showPopper = true;
-			}, 16);
-		},
-
 		handleHeaderClick(event, column) {
-			if (!column.filters && column.sortable) {
-				this.handleSortClick(event, column);
-			} else if (column.filterable && !column.sortable) {
-				this.handleFilterClick(event, column);
-			}
-
 			this.$parent.$emit('header-click', column, event);
 		},
 
@@ -461,53 +408,6 @@ export default {
 			const index = sortOrders.indexOf(order || null);
 			return sortOrders[index > sortOrders.length - 2 ? 0 : index + 1];
 		},
-
-		handleSortClick(event, column, givenOrder) {
-			event.stopPropagation();
-			let order = column.order === givenOrder
-				? null
-				: (givenOrder || this.toggleOrder(column));
-
-			let target = event.target;
-			while (target && target.tagName !== 'TH') {
-				target = target.parentNode;
-			}
-
-			if (target && target.tagName === 'TH') {
-				if (hasClass(target, 'noclick')) {
-					removeClass(target, 'noclick');
-					return;
-				}
-			}
-
-			if (!column.sortable) return;
-
-			const states = this.store.states;
-			let sortProp = states.sortProp;
-			let sortOrder;
-			const sortingColumn = states.sortingColumn;
-
-			if (sortingColumn !== column || (sortingColumn === column && sortingColumn.order === null)) {
-				if (sortingColumn) {
-					sortingColumn.order = null;
-				}
-				states.sortingColumn = column;
-				sortProp = column.property;
-			}
-
-			if (!order) {
-				sortOrder = column.order = null;
-				states.sortingColumn = null;
-				sortProp = null;
-			} else {
-				sortOrder = column.order = order;
-			}
-
-			states.sortProp = sortProp;
-			states.sortOrder = sortOrder;
-
-			this.store.commit('changeSortCondition');
-		}
 	},
 
 	data() {
