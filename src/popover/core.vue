@@ -1,15 +1,20 @@
 <template>
-	<transition :name="animate || `am-popup`" @after-leave="close">
+	<transition :name="animate || `am-popup`" @after-leave="handleRemove">
 		<div 
-			v-show="show"
-			ref="popper"
-			:style="popStyle" 
-			:class="popClass"
-			@mouseover="handleMouseOver"
-			@mouseout="handleMouseOut"
+			v-show="isActive"
+			:style="wrapperStyle"
+			:class="wrapperClasses"
+			class="vc-popover-core" 
+			@mouseout="isHover && onChange($event, true)"
+			@mouseleave="isHover && onChange($event, false)"
 		>
-			<div :class="popoverContainer">
-				<div v-if="arrow" :class="arrowClass" :style="arrowStyle" />
+			<div :class="themeClasses" class="vc-popover-core__container">
+				<div 
+					v-if="arrow" 
+					:style="arrowStyle"
+					:class="[themeClasses, posClasses]"
+					class="vc-popover-core__arrow"
+				/>
 				<slot v-if="$slots.content || $scopedSlots.content" name="content" />
 				<div v-else>{{ content }}</div>
 			</div>
@@ -19,127 +24,172 @@
 
 <script>
 import Popper from './popper';
-import PopoverProps from './props';
 import CreateProtal from '../create-portal/index';
 
 const popup = {
 	name: 'vc-popover-core',
-	components: {
-
-	},
 	mixins: [Popper],
 	props: {
-		...PopoverProps,
-		popContainer: HTMLElement,
-		onMouseOver: Function,
-		onMouseOout: Function,
+		visible: Boolean,
+		animate: String,
+		placement: {
+			type: String,
+			default: 'bottom',
+			validator: (value) => {
+				return [
+					'bottom', 'bottom-left', 'bottom-right',
+					'top', 'top-left', 'top-right',
+					'right', 'right-top', 'right-bottom',
+					'left', 'left-top', 'left-bottom'
+				].includes(value);
+			}
+		},
+		theme: {
+			type: String,
+			default: 'light',
+			validator: v => /(light|dark)/.test(v)
+		},
+		content: String,
+		getPopupContainer: Function,
+		transfer: {
+			type: Boolean,
+			default: true
+		},
+		arrow: { // 是否显示箭头
+			type: Boolean,
+			default: true
+		},
+		popupContainer: HTMLElement,
+		onChange: Function,
+		isHover: Boolean,
 	},
 	data() {
 		return {
-			show: false,
-			popStyle: {},
+			isActive: false,
+			wrapperStyle: {},
 			arrowStyle: {},
-			fitPlacement: this.placement,
-			triggerElm: null,
-			arrowElm: null
+			fitPos: this.placement,
 		};
 	},
 	computed: {
-		popClass() {
-			return `vc-popover-${this.fitPlacement} vc-popover`;
+		themeClasses() {
+			return {
+				'is-light': /light/.test(this.theme),
+				'is-dark': /dark/.test(this.theme),
+			};
 		},
-		popoverContainer() {
-			return `__popover-${this.theme} __popover-container`; 
+		wrapperClasses() {
+			return {
+				'is-top': /top/.test(this.fitPos),
+				'is-right': /right/.test(this.fitPos),
+				'is-bottom': /bottom/.test(this.fitPos),
+				'is-left': /left/.test(this.fitPos),
+			};
 		},
-		arrowClass() {
-			let placement = this.fitPlacement.split('-')[0];
-			return `__popover-arrow __popover-arrow-${placement}-${this.theme} __popover-arrow-${this.fitPlacement}`;
+		posClasses() {
+			return {
+				[`is-${this.fitPos.split('-')[0]}-basic`]: true,
+				[`is-${this.fitPos}`]: true
+			};
 		}
 	},
 	mounted() {
-		this.popper = this.$refs.popper;
-		this.show = true;
+		this.isActive = true;
 		this.$nextTick(() => {
-			this.triggerElm = this.getTriggerElm();
+			this.triggerEl = this.getTriggerEl();
 			this.setPopperStyle();
 		});
+
+		// 捕获阶段执行
+		!this.isHover && document.addEventListener('click', this.handleClick, true);
 	},
+	destroyed() {
+		!this.isHover && document.removeEventListener('click', this.handleClick, true);
+	}, 
 	methods: {
-		getTriggerElm() {
+		/**
+		 * hack
+		 * 外层高度没有撑开时
+		 */
+		getTriggerEl() {
 			let slotHeight = this.$slots.default[0].elm.getBoundingClientRect().height;
-			let parentHeight = this.popContainer.getBoundingClientRect().height;
+			let parentHeight = this.popupContainer.getBoundingClientRect().height;
 			if (slotHeight > parentHeight) {
 				return this.$slots.default[0].elm;
 			}
-			return this.popContainer;
+			return this.popupContainer;
 		},
-		getFitPlacement(rect) {
+
+		getFitPos(rect) {
 			// 目前判断是否可展示下是针对于整个页面，没有针对父容器
-			let elmRect = this.triggerElm.getBoundingClientRect();
+			let elRect = this.triggerEl.getBoundingClientRect();
 			let parentRect = document.body.getBoundingClientRect();
 			if (this.placement.indexOf('left') === 0) {
-				if (elmRect.x - this.popper.offsetWidth < 0) {
-					this.fitPlacement = this.fitPlacement.replace('left', 'right');
+				if (elRect.x - this.$el.offsetWidth < 0) {
+					this.fitPos = this.fitPos.replace('left', 'right');
 				}
 			} else if (this.placement.indexOf('right') === 0) {
-				let remanentWidth = window.innerWidth - elmRect.x - elmRect.width - this.popper.offsetWidth;
+				let remanentWidth = window.innerWidth - elRect.x - elRect.width - this.$el.offsetWidth;
 				if (remanentWidth < 0) {
-					this.fitPlacement = this.fitPlacement.replace('right', 'left');
+					this.fitPos = this.fitPos.replace('right', 'left');
 				}
 			} else if (this.placement.indexOf('top') === 0) {
-				if (elmRect.y - this.popper.offsetHeight < 0) {
-					this.fitPlacement = this.fitPlacement.replace('top', 'bottom');
+				if (elRect.y - this.$el.offsetHeight < 0) {
+					this.fitPos = this.fitPos.replace('top', 'bottom');
 				}
 			} else if (this.placement.indexOf('bottom') === 0) {
-				let remanentHeight = window.innerHeight - elmRect.y - elmRect.height - this.popper.offsetHeight;
+				let remanentHeight = window.innerHeight - elRect.y - elRect.height - this.$el.offsetHeight;
 				if (remanentHeight < 0) {
-					this.fitPlacement = this.fitPlacement.replace('bottom', 'top');
+					this.fitPos = this.fitPos.replace('bottom', 'top');
 				}
 			}
 			
 		},
+
 		// set
 		setPopperStyle() {
 			let rect;
 			if (this.getPopupContainer) { // 基于传入的容器节点
-				let elmRect = this.triggerElm.getBoundingClientRect();
+				let elRect = this.triggerEl.getBoundingClientRect();
 				let parentRect = this.$el.parentElement.getBoundingClientRect();
-				let y = elmRect.y - parentRect.y;
-				let x = elmRect.x - parentRect.x;
+				let y = elRect.y - parentRect.y;
+				let x = elRect.x - parentRect.x;
 				if (x < 0 || y < 0) {
 					return console.error('【 vc-popover 】: getPopupContainer选择节点应为容器元素');
 				}
 				rect = {
 					y,
 					x,
-					height: elmRect.height,
-					width: elmRect.width
+					height: elRect.height,
+					width: elRect.width
 				};
 			} else if (!this.transfer) { // 基于父节点
 				rect = {
 					y: 0,
 					x: 0,
-					height: this.triggerElm.offsetHeight,
-					width: this.triggerElm.offsetWidth
+					height: this.triggerEl.offsetHeight,
+					width: this.triggerEl.offsetWidth
 				};
 			} else {
-				rect = this.triggerElm.getBoundingClientRect(); // 基于body
+				rect = this.triggerEl.getBoundingClientRect(); // 基于body
 				rect.y = document.scrollingElement.scrollTop + rect.y;
 			}
 			
-			this.getFitPlacement(rect);
-			this.popper && this.getPopupStyle(rect);
+			this.getFitPos(rect);
+			this.$el && this.getPopupStyle(rect);
 		},
-		handleMouseOver() {
-			this.onMouseOver && this.onMouseOver();
+		handleClick(e) {
+			this.onChange(e);
 		},
-		handleMouseOut() {
-			this.onMouseOut && this.onMouseOut();
-		},
-		close() {
-			this.show = false;
-			this.$emit('close');
-		},
+		/**
+		 * 动画执行后关闭
+		 * 同时close兼容portal设计
+		 */
+		handleRemove() {
+			!this._isDestroyed && (
+				this.$emit('close')
+			);
+		}
 	},
 };
 
@@ -147,154 +197,153 @@ export default popup;
 export const Func = CreateProtal({}, popup);
 </script>
 
-<style lang="scss" scoped>
-.vc-popover {
+<style lang="scss">
+@import '../style/index.scss';
+
+@include block(vc-popover-core) {
 	position: absolute;
 	transition: top .02s linear, left .02s linear;
 	z-index: 1001;
-	.__popover-dark {
-		color: white;
-		background-color: rgba(0, 0, 0, 0.75);
+	@include when(top) {
+		padding-bottom: 8px;
 	}
-	.__popover-light {
-		background-color: #fff;
+	@include when(bottom) {
+		padding-top: 8px;
 	}
-	.__popover-container {
+	@include when(right) {
+		padding-left: 8px;
+	}
+	@include when(left) {
+		padding-right: 8px;
+	}
+	@include element(container) {
 		padding: 5px 12px;
 		border-radius: 4px;
-		box-shadow: 0 2px 8px rgba(0, 0, 0, 0.15);
-		.__popover-arrow {
-			background: transparent;
-			width: 9px;
-			height: 9px;
-			transform: rotate(45deg);
-			position: absolute;
-			display: block;
-			border-width: 4px;
-			border-style: solid;
-			border-color: transparent;
+		box-shadow: $border-shadow;
+		@include when(dark) {
+			color: $white;
+			background-color: $dark-bg-color;
 		}
-		// arrow-top
-		.__popover-arrow-top-basic {
+		@include when(light) {
+			background-color: $white;
+		}
+	}
+	@include element(arrow) {
+		background: transparent;
+		width: 9px;
+		height: 9px;
+		transform: rotate(45deg);
+		position: absolute;
+		display: block;
+		border-width: 4px;
+		border-style: solid;
+		border-color: transparent;
+		@include when(top-basic) {
 			bottom: 4px;
 			box-shadow: 3px 3px 7px rgba(0,0,0,0.07);
 			border-top-color: transparent;
 			border-left-color: transparent;
+			@include when(light) {
+				border-right-color: $white;
+				border-bottom-color: $white;
+			}
+			@include when(dark) {
+				border-right-color: $dark-bg-color;
+				border-bottom-color: $dark-bg-color;
+			}
 		}
-		.__popover-arrow-top-light {
-			@extend .__popover-arrow-top-basic;
-			border-right-color: #fff;
-			border-bottom-color: #fff;
-		}
-		.__popover-arrow-top-dark {
-			@extend .__popover-arrow-top-basic;
-			border-right-color: rgba(0, 0, 0, 0.75);
-			border-bottom-color: rgba(0, 0, 0, 0.75);
-		}
-		.__popover-arrow-top {
+		@include when(top) {
 			left: 50%;
 			transform: translateX(-50%) rotate(45deg);
-			&-left {
-				left: 16px;
-			}
-			&-right {
-				right: 16px;
-			}
 		}
-		// arrow-bottom
-		.__popover-arrow-bottom-basic {
+		@include when(top-left) {
+			left: 16px;
+		}
+		@include when(top-right) {
+			right: 16px;
+		}
+
+		@include when(bottom-basic) {
 			top: 4px;
-			box-shadow: -2px -2px 5px rgba(0,0,0,0.06);
+			box-shadow: -2px -2px 5px rgba(0, 0, 0, 0.06);
 			border-right-color: transparent;
 			border-bottom-color: transparent;
+			@include when(light) {
+				border-top-color: $white;
+				border-left-color: $white;
+			}
+			@include when(dark) {
+				border-top-color: $dark-bg-color;
+				border-left-color: $dark-bg-color;
+			}
+			
 		}
-		.__popover-arrow-bottom-light {
-			@extend .__popover-arrow-bottom-basic;
-			border-top-color: #fff;
-			border-left-color: #fff;
-		}
-		.__popover-arrow-bottom-dark {
-			@extend .__popover-arrow-bottom-basic;
-			border-top-color: rgba(0, 0, 0, 0.75);
-			border-left-color: rgba(0, 0, 0, 0.75);
-		}
-		.__popover-arrow-bottom {
+		@include when(bottom) {
 			left: 50%;
 			transform: translateX(-50%) rotate(45deg);
-			&-left {
-				left: 16px;
-			}
-			&-right {
-				right: 16px;
-			}
 		}
-		// arrow-right
-		.__popover-arrow-right-basic {
+		@include when(bottom-left) {
+			left: 16px;
+		}
+		@include when(bottom-right) {
+			right: 16px;
+		}
+
+		@include when(right-basic) {
 			left: 4px;
-			box-shadow: -3px 3px 7px rgba(0,0,0,0.07);
+			box-shadow: -3px 3px 7px rgba(0, 0, 0, 0.07);
 			border-top-color: transparent;
 			border-right-color: transparent;
+
+			@include when(light) {
+				border-bottom-color: $white;
+				border-left-color: $white;
+			}
+			@include when(dark) {
+				border-bottom-color: $dark-bg-color;
+				border-left-color: $dark-bg-color;
+			}
 		}
-		.__popover-arrow-right-light {
-			@extend .__popover-arrow-right-basic;
-			border-bottom-color: #fff;
-			border-left-color: #fff;
-		}
-		.__popover-arrow-right-dark {
-			@extend .__popover-arrow-right-basic;
-			border-bottom-color: rgba(0, 0, 0, 0.75);
-			border-left-color: rgba(0, 0, 0, 0.75);
-		}
-		.__popover-arrow-right {
+
+		@include when(left) {
 			top: 50%;
 			transform: translateY(-50%) rotate(45deg);
 		}
-		// arrow-left
-		.__popover-arrow-left-basic {
+
+		@include when(left-basic) {
 			right: 4px;
-			box-shadow: 3px -3px 7px rgba(0,0,0,0.07);
+			box-shadow: 3px -3px 7px rgba(0, 0, 0, 0.07);
 			border-bottom-color: transparent;
 			border-left-color: transparent;
+
+			@include when(light) {
+				border-top-color: $white;
+				border-right-color: $white;
+			}
+			@include when(dark) {
+				border-top-color: $dark-bg-color;
+				border-right-color: $dark-bg-color;
+			}
 		}
-		.__popover-arrow-left-light {
-			@extend .__popover-arrow-left-basic;
-			border-top-color: #fff;
-			border-right-color: #fff;
-		}
-		.__popover-arrow-left-dark {
-			@extend .__popover-arrow-left-basic;
-			border-top-color: rgba(0, 0, 0, 0.75);
-			border-right-color: rgba(0, 0, 0, 0.75);
-		}
-		.__popover-arrow-left {
+
+
+		@include when(right) {
 			top: 50%;
 			transform: translateY(-50%) rotate(45deg);
 		}
 	}
+	// 动画
+	&.am-popup-enter-active {
+		transition: all .2s $ease-out-circ;
+	}
+	&.am-popup-leave-active {
+		transition: all .2s $ease-in-out-circ;
+		
+	}
+	&.am-popup-enter, &.am-popup-leave-active {
+		opacity: 0;
+		transform: scale(.7)
+	}
 }
-// popper距离触发节点的距离
-.vc-popover-top, .vc-popover-top-left, .vc-popover-top-right {
-	padding-bottom: 8px;
-}
-.vc-popover-bottom, .vc-popover-bottom-left, .vc-popover-bottom-right {
-	padding-top: 8px;
-}
-.vc-popover-left, .vc-popover-left-top, .vc-popover-left-bottom {
-	padding-right: 8px;
-}
-.vc-popover-right, .vc-popover-right-top, .vc-popover-right-bottom {
-	padding-left: 8px;
-}
-// 动画
-.am-popup-enter-active {
-	transition: all .2s cubic-bezier(0.08, 0.82, 0.17, 1);
-}
-.am-popup-leave-active {
-	transition: all .2s cubic-bezier(0.78, 0.14, 0.15, 0.86);
-	
-}
-.am-popup-enter, .am-popup-leave-active {
-	opacity: 0;
-	transform: scale(.7)
-}
+
 </style>

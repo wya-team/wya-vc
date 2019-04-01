@@ -1,16 +1,19 @@
 <template>
-	<div class="vc1-popover-basic" style="background: #f2f2f2; height: 3000px">
-		<div ref="parent" class="_btn-container">
-			<div class="__left" style="margin-top: 32px; margin-bottom: 32px">
+	<div class="vc-popover-basic">
+		<div @click="isHover=!isHover">{{ trigger }}</div>
+		<div ref="parent" class="vc-popover-basic__container">
+			<div class="vc-popover-basic__left" style="margin-top: 32px; margin-bottom: 32px">
 				<vc-popover 
 					:get-popup-container="getPopupContainer"
-					trigger="click" 
+					:visible="true" 
+					:trigger="trigger"
 					placement="left-top"
 					content="LeftTop"
 					theme="dark"
 					@visible-change="handleVisibleChange"
+					@close="handleClose"
 				>
-					<vc-button class="_btn _m-tb-10">
+					<vc-button class="g-btn g-m-tb-10">
 						LT
 					</vc-button>
 					<template #content>
@@ -23,11 +26,11 @@
 				<vc-popover 
 					v-model="visible"
 					:transfer="false"
-					trigger="click" 
+					:trigger="trigger" 
 					placement="left" 
 					content="Left"
 				>
-					<vc-button class="_btn _m-tb-10">
+					<vc-button class="g-btn g-m-tb-10">
 						Left
 					</vc-button>
 					<template #content>
@@ -37,8 +40,8 @@
 						</div>
 					</template>
 				</vc-popover>
-				<vc-popover trigger="click" placement="left-bottom" content="LeftBottom">
-					<vc-button class="_btn _m-tb-10">
+				<vc-popover :trigger="trigger" placement="left-bottom" content="LeftBottom">
+					<vc-button class="g-btn g-m-tb-10">
 						LB
 					</vc-button>
 					<template #content>
@@ -48,15 +51,15 @@
 					</template>
 				</vc-popover>
 			</div>
-			<div class="__middle">
-				<div class="_flex-jc-sb">
+			<div class="vc-popover-basic__middle">
+				<div class="g-jc-sb">
 					<vc-popover 
 						:get-popup-container="getPopupContainer"
-						trigger="click" 
+						:trigger="trigger" 
 						placement="top-left" 
 						content="TopLeft"
 					>
-						<vc-button class="_btn _m-lr-10">
+						<vc-button class="g-btn g-m-lr-10">
 							TL
 						</vc-button>
 						<template #content>
@@ -67,11 +70,11 @@
 					</vc-popover>
 					<vc-popover 
 						:transfer="false"
-						trigger="click" 
+						:trigger="trigger" 
 						placement="top" 
 						content="Top"
 					>
-						<vc-button class="_btn _m-lr-10">
+						<vc-button class="g-btn g-m-lr-10">
 							Top
 						</vc-button>
 						<template #content>
@@ -81,11 +84,11 @@
 						</template>
 					</vc-popover>
 					<vc-popover 
-						trigger="click" 
+						:trigger="trigger" 
 						placement="top-right" 
 						content="TopRight"
 					>
-						<vc-button class="_btn _m-lr-10">
+						<vc-button class="g-btn g-m-lr-10">
 							TR
 						</vc-button>
 						<template #content>
@@ -95,14 +98,14 @@
 						</template>
 					</vc-popover>
 				</div>
-				<div class="_flex-jc-sb">
+				<div class="g-jc-sb">
 					<vc-popover 
 						:get-popup-container="getPopupContainer"
-						trigger="click" 
+						:trigger="trigger" 
 						placement="bottom-left"
 						content="BottomLeft"
 					>
-						<vc-button class="_btn _m-lr-10">
+						<vc-button class="g-btn g-m-lr-10">
 							BL
 						</vc-button>
 						<template #content>
@@ -113,11 +116,11 @@
 					</vc-popover>
 					<vc-popover 
 						:transfer="false"
-						trigger="click" 
+						:trigger="trigger" 
 						placement="bottom" 
 						content="Bottom"
 					>
-						<vc-button class="_btn _m-lr-10">
+						<vc-button class="g-btn g-m-lr-10">
 							Bottom
 						</vc-button>
 						<template #content>
@@ -127,11 +130,11 @@
 						</template>
 					</vc-popover>
 					<vc-popover 
-						trigger="click" 
+						:trigger="trigger" 
 						placement="bottom-right"
 						content="BottomRight"
 					>
-						<vc-button class="_btn _m-lr-10">
+						<vc-button class="g-btn g-m-lr-10">
 							BR
 						</vc-button>
 						<template #content>
@@ -142,14 +145,14 @@
 					</vc-popover>
 				</div>
 			</div>
-			<div class="__right" style="margin-top: 32px; margin-bottom: 32px">
+			<div class="vc-popover-basic__right" style="margin-top: 32px; margin-bottom: 32px">
 				<vc-popover 
 					:get-popup-container="getPopupContainer"
-					trigger="click" 
+					:trigger="trigger" 
 					placement="right-top" 
 					content="RightTop"
 				>
-					<vc-button class="_btn _m-tb-10">
+					<vc-button class="g-btn g-m-tb-10">
 						RT
 					</vc-button>
 					<template #content>
@@ -160,11 +163,11 @@
 				</vc-popover>
 				<vc-popover 
 					:transfer="false"
-					trigger="click" 
+					:trigger="trigger" 
 					placement="right" 
 					content="Right"
 				>
-					<vc-button class="_btn _m-tb-10">
+					<vc-button class="g-btn g-m-tb-10">
 						Right
 					</vc-button>
 					<template #content>
@@ -174,11 +177,11 @@
 					</template>
 				</vc-popover>
 				<vc-popover 
-					trigger="click" 
+					:trigger="trigger" 
 					placement="right-bottom" 
 					content="RightBottom"
 				>
-					<vc-button class="_btn _m-tb-10">
+					<vc-button class="g-btn g-m-tb-10">
 						RB
 					</vc-button>
 					<template #content>
@@ -205,11 +208,14 @@ export default {
 	data() {
 		return {
 			content: 1,
-			visible: false
+			visible: false,
+			isHover: false
 		};
 	},
 	computed: {
-		
+		trigger() {
+			return this.isHover ? 'hover' : 'click';
+		}
 	},
 	mounted() {
 		setTimeout(() => {
@@ -222,20 +228,41 @@ export default {
 		},
 		handleVisibleChange(visible) {
 			console.log('visible: ', visible);
+		},
+		handleClose() {
+			console.log('close');
 		}
 	}
 };
 </script>
 
 <style lang="scss">
-.vc1-popover-basic {
+@import '../../style/index.scss';
+
+.g-m-lr-10 {
+	margin-right: 10px;
+	margin-left: 10px;
+}
+.g-m-tb-10 {
+	margin-top: 10px;
+	margin-bottom: 10px;
+}
+.g-jc-sb {
+	display: flex;
+	justify-content: space-between
+}
+.g-btn {
+	width: 80px
+}
+
+@include block(vc-popover-basic) {
 	padding: 50px 0 0 0;
-	// overflow: auto;
-	// height: 1400px; 
 	display: flex;
 	align-items: flex-start;
 	justify-content: center;
-	._btn-container {
+	background: #f2f2f2; 
+	height: 3000px;
+	@include element(container) {
 		display: flex;
 		height: 400px; 
 		width: auto; 
@@ -243,36 +270,21 @@ export default {
 		overflow: unset; 
 		position: relative; 
 		background: #666666;
-		.__left {
+		@include element(left) {
 			display: flex;
 			flex-direction: column;
 			margin-right: 10px;
 		}
-		.__middle {
+		@include element(middle) {
 			display: flex;
 			flex-direction: column;
 			justify-content: space-between
 		}
-		.__right {
+		@include element(right) {
 			display: flex;
 			flex-direction: column;
 			margin-left: 10px;
 		}
-	}
-	._m-lr-10 {
-		margin-right: 10px;
-		margin-left: 10px;
-	}
-	._m-tb-10 {
-		margin-top: 10px;
-		margin-bottom: 10px;
-	}
-	._flex-jc-sb {
-		display: flex;
-		justify-content: space-between
-	}
-	._btn {
-		width: 80px
 	}
 }
 </style>

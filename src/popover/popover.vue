@@ -1,167 +1,132 @@
-<!--
-TODO
-1. 各个方位的呼出动画
--->
 <template>
-	<span ref="popupContainer" style="position: relative">
+	<component 
+		:is="tag" 
+		style="position: relative;"
+		@focus="isFocus && handleChange($event, true)"
+		@blur="isFocus && handleChange($event, false)"
+		@mouseenter="isHover && handleChange($event, true)"
+		@mouseleave="isHover && handleChange($event, false)"
+		@click="isClick && handleChange($event, !isActive)"
+	>
 		<slot />
-	</span>
+	</component>
 </template>
 
 <script>
-import Popper from './popper';
-import PopoverProps from './props';
-import { Func } from './core';
+import { pick } from 'lodash';
+import Core, { Func } from './core';
 
-const config = {
+export default {
 	name: "vc-popover",
 	model: {
 		prop: 'visible',
 		event: 'visible-change'
 	},
-	mixins: [Popper],
 	props: {
-		...PopoverProps
+		...pick(Core.props, [
+			'visible', 
+			'animate', 
+			'placement', 
+			'theme', 
+			'content', 
+			'getPopupContainer', 
+			'transfer', 
+			'arrow'
+		]),
+		trigger: {
+			type: String,
+			default: 'hover',
+			validator: v => /(hover|click|focus)/.test(v)
+		},
+		tag: {
+			type: String,
+			default: 'span'
+		},
 	},
 	data() {
 		return {
-			show: this.visible
+			isActive: false
 		};
+	},
+	computed: {
+		isHover() {
+			return this.trigger === 'hover';
+		},
+		isClick() {
+			return this.trigger === 'click';
+		},
+		isFocus() {
+			return this.trigger === 'focus';
+		}
 	},
 	watch: {
 		visible: {
 			immediate: true,
-			handler(val) {
-				this.show = val;
-			}
-		},
-		show: {
-			immediate: true,
-			handler(val) {
-				this.$emit('visible-change', val);
-				if (val) {
-					this.$nextTick(() => {
-						this.parentNode = this.getParentNode();
-						Func.popup({
-							el: this.parentNode,
-							...this.$props,
-							popContainer: this.popContainer,
-							slots: this.$slots,
-							onMouseOver: this.handleMouseOver.bind(this),
-							onMouseOut: this.handleMouseOut.bind(this),
-							getInstance: vm => { 
-								this.popperInstance = vm; 
-								this.popper = vm.$el; 
-							}
-						}).then((result) => {
-						}).catch((err) => {
-						});
-					});
-				} else {
-					this.popperInstance && this.popperInstance.close();
-				}
+			handler(v, old) {
+				this.isActive = v;
+
+				this._isMounted && this.refresh();
 			}
 		}
 	},
 	mounted() {
-		this.popContainer = this.$el;
-		if (this.trigger === 'focus') {
-			if (!this.$slots.default[0].elm) {
-				return console.error('【 vc-popover 】: trggier为focus的模式下默认插槽必须是一个有focus和blur事件的节点');
-			}
-			this.popContainer = this.$slots.default[0].elm;
-		}
-		switch (this.trigger) {
-			case 'hover':
-				this.popContainer.addEventListener('mouseenter', this.handleMouseOver);
-				this.popContainer.addEventListener('mouseleave', this.handleMouseOut);
-				break;
-			case 'click':
-				this.popContainer.addEventListener('click', this.handleTriggerClick);
-				document.addEventListener('click', this.handleDocumentClick);
-				break;
-			case 'focus':
-				this.popContainer.addEventListener('focus', this.handleSlotFocus);
-				this.popContainer.addEventListener('blur', this.handleSlotBlur);
-				break;
-			default:
-				break;
-		}
+		this.isActive && this.refresh();
 	},
 	destroyed() {
-		switch (this.trigger) {
-			case 'hover':
-				this.popContainer.removeEventListener('mouseenter', this.handleMouseOver);
-				this.popContainer.removeEventListener('mouseleave', this.handleMouseOut);
-				break;
-			case 'click':
-				this.popContainer.removeEventListener('click', this.handleTriggerClick);
-				document.removeEventListener('click', this.handleDocumentClick);
-				break;
-			case 'focus':
-				this.popContainer.removeEventListener('focus', this.handleSlotFocus);
-				this.popContainer.removeEventListener('blur', this.handleSlotBlur);
-				break;
-			default:
-				break;
-		}
 		this.popperInstance && this.popperInstance.$emit('destroy');
 	},
 	methods: {
-		// get
-		getParentNode() {
-			if (this.getPopupContainer) return this.getPopupContainer();
-			
-			return this.transfer ? document.body : this.$el;
+		refresh() {
+			if (this.isActive) {
+				let el = this.getPopupContainer 
+					? this.getPopupContainer()
+					: this.transfer 
+						? document.body 
+						: this.$el;
+				this.popperInstance = Func.popup({
+					el,
+					popupContainer: this.$el,
+					slots: this.$slots,
+					onChange: ::this.handleChange,
+					onClose: () => this.$emit('close'),
+					isHover: this.isHover,
+					promise: false,
+					...this.$props,
+				});
+			} else if (this.popperInstance) {
+				this.popperInstance.isActive = false;
+			}
 		},
-		setShow(value) {
-			this.show = value;
-		},
-		// handle
-		handleMouseOver() {
-			if (this.trigger !== 'hover') return;
-			this.timer && clearTimeout(this.timer);
-			this.setShow(true);
-		},
-		handleMouseOut() {
-			if (this.trigger !== 'hover') return;
-			this.timer && clearTimeout(this.timer);
-			this.timer = setTimeout(() => {
-				this.setShow(false);
-			}, 200);
-		},
-		handleTriggerClick(e) {
-			// 因为transfer为false时，是直接挂在父节点上的，点击pop内容区域时click事件冒泡，导致执行了该toggle方法
-			if (!this.transfer && this.isPopArea(e)) return;
-			this.setShow(!this.show);
-		},
-		handleDocumentClick(e) {
-			// 不能更createProtal中的click监听方法同名
-			if (!this.$el.contains(e.target) && !this.isPopArea(e)) {
-				this.setShow(false);
-			}		
-		},
-		handleSlotFocus() {
-			this.setShow(true);
-		},
-		handleSlotBlur() {
-			this.setShow(false);
-		},
-		// 是否在pop弹层区域
-		isPopArea(e) {
+		/**
+		 * transfer: false
+		 * 是直接挂在父节点上的，
+		 * 点击pop内容区域时click事件冒泡，导致执行了该toggle方法
+		 * v: true, false, undefined(处理 doc click)
+		 */
+		handleChange(e = {}, v) {
+			this.isHover && this.timer && clearTimeout(this.timer);
 			let path = e.path || (e.composedPath && e.composedPath()) || [];
-			return path.some(item => /vc-popover/.test(item.className));
+			let isPopArea = path.some(item => /vc-popover-core/.test(item.className));
+
+			if (!this.transfer && isPopArea) return;
+
+			// doc click
+			if (v === undefined) {
+				if (!isPopArea && !this.$el.contains(e.target)) {
+					v = false;
+				} else {
+					return;
+				}
+			}
+
+			if (v != this.isActive) {
+				this.timer = setTimeout(() => {
+					this.$emit('visible-change', v);
+					this.isActive = v;
+					this.refresh();
+				}, this.isHover && v === false ? 200 : 0);
+			} 
 		}
 	}
 };
-
-export default config;
-
-export const createPopover = (opts = {}) => {
-	return { ...config, ...opts };
-};
-
 </script>
-
-<style lang='scss'>
-</style>

@@ -24,6 +24,7 @@ theme | 颜色主体`light` `dark` | `string` | `light`
 属性 | 说明 | 参数 | 返回值
 ---|---|---|---
 `visible-change` | 弹层显示隐藏的回调 | `visible` | `true | false`
+`close` | 关闭时回调 | - | -
 
 #### Slot
 
