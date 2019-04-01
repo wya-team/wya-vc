@@ -3,9 +3,11 @@
 		<!-- 原生table -->
 		<table v-if="mode === 'native'" class="_native-table">
 			<thead>
-				<th v-for="item in columns" :key="item">
-					{{ item }}
-				</th>
+				<slot v-bind="columns" name="header">
+					<th v-for="item in columns" :key="item">
+						{{ item }}
+					</th>
+				</slot>
 			</thead>
 			<slot :data="data" />
 		</table>
