@@ -48,9 +48,9 @@ class MessageManager extends CreatePortal.Core {
 		});
 	}
 
-	warn(...params) {
+	warning(...params) {
 		this.run(params, {
-			mode: 'warn'
+			mode: 'warning'
 		});
 	}
 
