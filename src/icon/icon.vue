@@ -25,10 +25,13 @@ export default {
 };
 </script>
 <style>
+.vc-icon {
+	display: inline-block;
+	line-height: 0;
+}
 .vc-icon svg {
 	width: 1em;
 	height: 1em;
-	vertical-align: -0.15em;
 	fill: currentColor;
 	overflow: hidden;
 }
