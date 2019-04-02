@@ -203,7 +203,7 @@ export const Func = CreateProtal({}, popup);
 @include block(vc-popover-core) {
 	position: absolute;
 	transition: top .02s linear, left .02s linear;
-	z-index: 1001;
+	z-index: $popup-zindex;
 	@include when(top) {
 		padding-bottom: 8px;
 	}
