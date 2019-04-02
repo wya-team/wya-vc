@@ -240,7 +240,7 @@ export const Func = CreateProtal({}, popup);
 		border-color: transparent;
 		@include when(top-basic) {
 			bottom: 4px;
-			box-shadow: 3px 3px 7px rgba(0,0,0,0.07);
+			box-shadow: 3px 3px 7px rgba(0, 0, 0, 0.07);
 			border-top-color: transparent;
 			border-left-color: transparent;
 			@include when(light) {

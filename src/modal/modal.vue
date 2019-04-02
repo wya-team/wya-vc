@@ -433,7 +433,7 @@ export default {
 		transform: translateY(-50%);
 		left: 0;
 		width: 100%;
-		z-index: $modal-zindex;
+		z-index: $popup-zindex;
 	}
 	@include element(container) {
 		position: relative;
@@ -530,13 +530,13 @@ export default {
 
 .modal-enter-active, {
 	will-change: transform;
-	transition: transform $modal-duration $ease-out-circ,
-		opacity $modal-duration $ease-out-circ;
+	transition: transform $popup-duration $ease-out-circ,
+		opacity $popup-duration $ease-out-circ;
 }
 .modal-leave-active {
 	will-change: transform;
-	transition: transform $modal-duration $ease-out-circ,
-		opacity $modal-duration $ease-out-circ;
+	transition: transform $popup-duration $ease-out-circ,
+		opacity $popup-duration $ease-out-circ;
 }
 
 .modal-enter,

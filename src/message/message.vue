@@ -136,8 +136,8 @@ export default {
 		width: 100%;
 		display: flex;
 		justify-content: center;
-		transition: transform $modal-duration $ease-out-circ,
-			opacity $modal-duration $ease-out-circ;
+		transition: transform $popup-duration $ease-out-circ,
+			opacity $popup-duration $ease-out-circ;
 	}
 	@include element(container) {
 		display: flex;

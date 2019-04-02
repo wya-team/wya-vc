@@ -82,10 +82,11 @@ $margin-48: 48px !default;
 $margin-56: 56px !default;
 
 // z-index
-$modal-zindex: 1002 !default;
 $popup-zindex: 1002 !default;
 $mask-zindex: 1001 !default;
-$tooltip-zindex: 1999 !default;
+
+$popup-zindex: 1002 !default;
+$mask-zindex: 1001 !default;
 
 // Animation
 $ease-out: cubic-bezier(0.215, 0.61, 0.355, 1);
@@ -102,13 +103,11 @@ $ease-in-quint: cubic-bezier(0.755, 0.05, 0.855, 0.06);
 $ease-in-out-quint: cubic-bezier(0.86, 0, 0.07, 1);
 
 // duration
-$mask-duration: 0.5s !default;
-$modal-duration: 0.5s !default;
 $popup-duration: 0.5s !default;
+$mask-duration: 0.5s !default;
 
 // timing
 $mask-timing: ease !default;
-$modal-timing: ease !default;
 $popup-timing: ease !default;
 
 // box-shadow
