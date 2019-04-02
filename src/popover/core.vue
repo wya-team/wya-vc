@@ -96,8 +96,7 @@ const popup = {
 	mounted() {
 		this.isActive = true;
 		this.$nextTick(() => {
-			this.triggerEl = this.getTriggerEl();
-			this.setPopperStyle();
+			this.setPopupStyle();
 		});
 
 		// 捕获阶段执行
@@ -111,7 +110,7 @@ const popup = {
 		 * hack
 		 * 外层高度没有撑开时
 		 */
-		getTriggerEl() {
+		getHackContainer() {
 			let slotHeight = this.$slots.default[0].elm.getBoundingClientRect().height;
 			let parentHeight = this.popupContainer.getBoundingClientRect().height;
 			if (slotHeight > parentHeight) {
@@ -120,63 +119,39 @@ const popup = {
 			return this.popupContainer;
 		},
 
-		getFitPos(rect) {
-			// 目前判断是否可展示下是针对于整个页面，没有针对父容器
-			let elRect = this.triggerEl.getBoundingClientRect();
-			let parentRect = document.body.getBoundingClientRect();
-			if (this.placement.indexOf('left') === 0) {
-				if (elRect.x - this.$el.offsetWidth < 0) {
-					this.fitPos = this.fitPos.replace('left', 'right');
-				}
-			} else if (this.placement.indexOf('right') === 0) {
-				let remanentWidth = window.innerWidth - elRect.x - elRect.width - this.$el.offsetWidth;
-				if (remanentWidth < 0) {
-					this.fitPos = this.fitPos.replace('right', 'left');
-				}
-			} else if (this.placement.indexOf('top') === 0) {
-				if (elRect.y - this.$el.offsetHeight < 0) {
-					this.fitPos = this.fitPos.replace('top', 'bottom');
-				}
-			} else if (this.placement.indexOf('bottom') === 0) {
-				let remanentHeight = window.innerHeight - elRect.y - elRect.height - this.$el.offsetHeight;
-				if (remanentHeight < 0) {
-					this.fitPos = this.fitPos.replace('bottom', 'top');
-				}
-			}
-			
-		},
-
 		// set
-		setPopperStyle() {
-			let rect;
-			if (this.getPopupContainer) { // 基于传入的容器节点
-				let elRect = this.triggerEl.getBoundingClientRect();
-				let parentRect = this.$el.parentElement.getBoundingClientRect();
-				let y = elRect.y - parentRect.y;
-				let x = elRect.x - parentRect.x;
-				if (x < 0 || y < 0) {
-					return console.error('【 vc-popover 】: getPopupContainer选择节点应为容器元素');
-				}
-				rect = {
-					y,
-					x,
-					height: elRect.height,
-					width: elRect.width
-				};
-			} else if (!this.transfer) { // 基于父节点
-				rect = {
-					y: 0,
-					x: 0,
-					height: this.triggerEl.offsetHeight,
-					width: this.triggerEl.offsetWidth
-				};
-			} else {
-				rect = this.triggerEl.getBoundingClientRect(); // 基于body
-				rect.y = document.scrollingElement.scrollTop + rect.y;
-			}
-			
-			this.getFitPos(rect);
-			this.$el && this.getPopupStyle(rect);
+		setPopupStyle() {
+			if (!this.$el) return;
+
+			const popupContainer = this.getHackContainer();
+
+			const { transfer, getPopupContainer } = this;
+
+			let rect = this.getRect({
+				transfer,
+				popupContainer,
+				el: this.$el,
+				hasContainer: !!getPopupContainer
+			});
+
+			let result = this.getFitPos({
+				rect,
+				popupContainer,
+				el: this.$el,
+				placement: this.placement
+			});
+
+
+			let { wrapperStyle, arrowStyle } = this.getPopupStyle({
+				rect,
+				popupContainer,
+				el: this.$el,
+				placement: result
+			});
+
+			this.fitPos = result;
+			this.wrapperStyle = wrapperStyle;
+			this.arrowStyle = arrowStyle;
 		},
 		handleClick(e) {
 			this.onChange(e);
