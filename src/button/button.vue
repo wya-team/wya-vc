@@ -82,10 +82,10 @@ export default {
 		this.hasSlot = this.$slots.default !== undefined;
 	},
 	methods: {
-		handleClick(e) {
+		handleClick(e, callback) {
 			let { $listeners: { click } } = this;
 
-			let fn = click && click(e);
+			let fn = click && click(e, callback);
 
 			if (fn && fn.then) {
 				this.loading = true;

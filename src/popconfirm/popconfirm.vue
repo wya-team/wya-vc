@@ -127,7 +127,7 @@ export default {
 			let callback = () => {
 				this.isActive = false;
 			};
-			let fn = ok && ok(e);
+			let fn = ok && ok(e, callback);
 
 			// loading效果由vc-btn触发
 			if (fn && fn.then) {
@@ -135,10 +135,8 @@ export default {
 					return res;
 				}).catch((res) => {
 					return Promise.reject(res);
-				}).finally(() => {
-					callback();
 				});
-			} else {
+			} else if (!fn) {
 				callback();
 			}
 		},

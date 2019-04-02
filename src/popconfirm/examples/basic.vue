@@ -42,11 +42,13 @@ export default {
 		handleCancel() {
 			console.log('点击取消这个按钮时回调');
 		},
-		handleOk(e) {
+		handleOk(e, callback) {
 			return new Promise((resolve, reject) => {
 				setTimeout(() => {
-					resolve();
+					reject();
 				}, 1000);
+			}).catch((res) => {
+				console.log(res);
 			});
 		}
 	}

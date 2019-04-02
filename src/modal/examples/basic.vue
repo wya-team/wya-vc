@@ -119,6 +119,8 @@ export default {
 					// this.visible = false;
 					resolve();
 				}, 1000);
+			}).catch((res) => {
+				console.log(res);
 			});
 		}
 	}
