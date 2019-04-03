@@ -60,6 +60,12 @@ export default {
 			default: () => ({})
 		},
 
+		// ajax额外的数据
+		async: {
+			type: Boolean,
+			default: true
+		},
+
 		// ajax headers
 		headers: {
 			type: Object,
@@ -233,7 +239,7 @@ export default {
 				"post-before": postBefore,
 				"post-after": postAfter,
 			} = this.$listeners;
-			const { url, mode, name, headers, extra = {} } = this;
+			const { async, url, mode, name, headers, extra = {} } = this;
 			const { URL_UPLOAD_FILE_POST, URL_UPLOAD_IMG_POST, FORM_NAME, onPostBefore, onPostAfter } = VcInstance.config.Upload || {};
 			const defaultUrl = mode === 'images' ? URL_UPLOAD_IMG_POST : URL_UPLOAD_FILE_POST;
 			// 上传前/后的回调
@@ -275,6 +281,7 @@ export default {
 					...extra, 
 					...response
 				},
+				async,
 				headers,
 				localData,
 				onAfter,
