@@ -169,7 +169,9 @@ const popup = {
 };
 
 export default popup;
-export const Func = CreateProtal({}, popup);
+export const Func = CreateProtal({
+	promise: false,
+}, popup);
 </script>
 
 <style lang="scss">

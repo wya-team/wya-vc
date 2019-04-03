@@ -50,6 +50,7 @@ export default {
 		};
 	},
 	computed: {
+		// trigger切换, Vue同时会对相关事件卸载
 		isHover() {
 			return this.trigger === 'hover';
 		},
@@ -91,7 +92,6 @@ export default {
 					onChange: ::this.handleChange,
 					onClose: () => this.$emit('close'),
 					isHover: this.isHover,
-					promise: false,
 					...this.$props,
 				});
 			} else if (this.popperInstance) {
@@ -121,11 +121,14 @@ export default {
 			}
 
 			if (v != this.isActive) {
-				this.timer = setTimeout(() => {
+				let callback = () => {
 					this.$emit('visible-change', v);
 					this.isActive = v;
 					this.refresh();
-				}, this.isHover && v === false ? 200 : 0);
+				};
+				this.isHover && v === false 
+					? (this.timer = setTimeout(callback, 200))
+					: callback();
 			} 
 		}
 	}
