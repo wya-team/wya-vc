@@ -1,13 +1,12 @@
 <template>
-	<div>
+	<div style="padding: 100px">
 		<vc-button @click="handleModal">点击出现对话框</vc-button>
 		<vc-button @click="handleModal2">点击出现对话框,点击遮罩不能关闭</vc-button>
-		<vc-button @click="handleModal3">点击出现对话框3</vc-button>
-		<vc-button type="primary" @click="handleModal4">Button</vc-button>
+		<vc-button @click="handleModal3">create-portal</vc-button>
+		<vc-button type="primary" @click="handleModal4">Modal.methods</vc-button>
 		<div style="width: 100%; height: 2000px"/>
 		<vc-modal 
-			v-model="visible"
-			:loading="true"
+			v-model="visible1"
 			title="标题1"
 			@close="handleClose"
 			@cancel="handleCancel"
@@ -20,8 +19,8 @@
 			:mask="false"
 			:mask-closable="false"
 			:esc-closable="false"
-			:scrollable="true"
-			:draggable="true"
+			scrollable
+			draggable
 			title="标题2"
 			ok-text="保存"
 			cancel-text="关闭"
@@ -29,29 +28,14 @@
 			@cancel="handleCancel"
 			@ok="handleOk"
 		>
-			啦啦啦啦
-		</vc-modal>
-		<vc-modal 
-			v-model="visible3"
-			:mask="false"
-			:mask-closable="false"
-			:esc-closable="false"
-			:scrollable="true"
-			:draggable="true"
-			title="标题2"
-			ok-text="保存"
-			cancel-text="关闭"
-			@close="handleClose"
-			@cancel="handleCancel"
-			@ok="handleOk"
-		>
-			啦啦啦啦
+			可以拖拽
 		</vc-modal>
 	</div>
 </template>
 <script>
 import Button from '../../button';
 import Modal from '../index';
+import { Portal } from './basic/portal';
 
 export default {
 	name: "vc-tpl-basic",
@@ -61,7 +45,7 @@ export default {
 	},
 	data() {
 		return {
-			visible: false,
+			visible1: true,
 			visible2: false,
 			visible3: false,
 			event: {},
@@ -72,17 +56,23 @@ export default {
 	},
 	methods: {
 		handleModal(e) {
-			this.visible = true;
+			this.visible1 = !this.visible1;
 		},
 		handleModal2(e) {
-			this.visible2 = true;
+			this.visible2 = !this.visible2;
 		},
 		handleModal3(e) {
-			this.visible3 = true;
+			Portal.popup({
+
+			}).then(() => {
+
+			}).catch(() => {
+
+			});
 		},
 		handleModal4() {
-			Modal.error({
-				title: 'confirm',
+			Modal.warning({
+				title: 'warning',
 				content: (h) => {
 					return h('input', {
 						type: 'textarea',
@@ -94,10 +84,11 @@ export default {
 				okText: '啦啦啦啦',
 				mask: true,
 				closeWithCancel: true,
-				onOk: () => {
+				onOk: (e, callback) => {
 					console.log('ok');
 					return new Promise((resolve, reject) => {
 						setTimeout(() => {
+							callback();
 							resolve();
 						}, 1000);
 					});
@@ -113,10 +104,10 @@ export default {
 		handleCancel() {
 			console.log('点击取消这个按钮时回调');
 		},
-		handleOk(e) {
+		handleOk(e, callback) {
 			return new Promise((resolve, reject) => {
 				setTimeout(() => {
-					// this.visible = false;
+					callback();
 					resolve();
 				}, 1000);
 			}).catch((res) => {
