@@ -9,15 +9,15 @@
 		</transition>
 		<div 
 			ref="wrap"
-			:style="wrapperStyle"
+			:style="[styles, draggable && { top: 0 }]"
 			class="vc-modal__wrapper"
 		>
-			<transition name="modal" @enter="handleEnter" @after-leave="handleRemove">
+			<transition name="am-modal" @enter="handleEnter" @after-leave="handleRemove">
 				<div 
 					v-show="isActive"
 					ref="modal" 
-					:style="containerStyle"
 					:class="{ 'is-drag': draggable, 'is-large' : size === 'large' || size === 'medium'}"
+					:style="[basicStyle, draggableStyle]"
 					class="vc-modal__container"
 				>
 					<div ref="header" :class="{ 'is-confirm': mode }" class="vc-modal__header" @mousedown="handleMouseDown">
@@ -65,11 +65,17 @@
 	</div>
 </template>
 <script>
+import scrollbar from './scrollbar';
 import Icon from '../icon';
 import Button from '../button';
 import CreateCustomer from "../create-customer/index";
 
-let zIndexNumber = 1001;
+let globalEvent = {};
+document.addEventListener('click', (e) => {
+	globalEvent = e;
+}, true);
+
+let zIndexNumber = 1002;
 const CustomerRow = CreateCustomer({});
 export default {
 	name: "vc-modal",
@@ -78,6 +84,7 @@ export default {
 		'vc-button': Button,
 		'vc-row': CustomerRow
 	},
+	mixins: [scrollbar],
 	model: {
 		prop: 'visible',
 		event: 'visible-change'
@@ -160,92 +167,49 @@ export default {
 	},
 	data() {
 		return {
-			newCoord: {
-				x: 0,
-				y: 0
-			},
-			coord: {
-				x: 0,
-				y: 0
-			},
-			dragData: {
-				x: null,
-				y: null,
-				dragX: null,
-				dragY: null,
-				dragging: false
-			},
+			x: undefined,
+			y: undefined,
 			isActive: false
 		};
 	},
 	computed: {
-		wrapperStyle() {
-			let style = {};
-			if (this.draggable) {
-				style = {
-					...this.styles,
-					top: 0
-				};
-			} else {
-				style = {
-					...this.styles
-				};
+		defaultSize() {
+			let width;
+			let height;
+			switch (this.size) {
+				case 'small':
+					width = this.mode ? 340 : 480;
+					height = this.mode ? 154 : 296;
+					break;
+				case 'medium':
+					width = 640;
+					height = 502;
+					break;
+				case 'large': 
+					width = this.mode ? 390 : 864;
+					height = this.mode ? 198 : 662;
+					break;
+				default:
+					break;
 			}
-			return style;
+			return {
+				width,
+				height
+			};
 		},
-		containerStyle() {
-			let style = {};
-			let minHeight = {};
-			let newWidth = 0;
-			let height = 0;
-			if (this.width) {
-				newWidth = this.width;
-			} else {
-				switch (this.size) {
-					case 'small':
-						if (this.mode) {
-							newWidth = 340;
-							height = '154px';
-						} else {
-							newWidth = 480;
-							height = '296px';
-						}
-						break;
-					case 'medium':
-						newWidth = 640;
-						height = '502px';
-						break;
-					case 'large': 
-						
-						if (this.mode) {
-							newWidth = 390;
-							height = '198px';
-						} else {
-							newWidth = 864;
-							height = '662px';
-						}
-						break;
-					default:
-						return;
-				}
-			}
-			if (this.draggable) {
-				style = {
-					left: this.dragData.x ? this.dragData.x + 'px' : `${document.body.clientWidth / 2 - newWidth / 2}px`,
-					top: this.dragData.y ? this.dragData.y + 'px' : '100px',
-					zIndex: 4000,
-					width: newWidth + 'px',
-					transformOrigin: '0 0 0',
-					minHeight: height
-				};
-			} else {
-				style = {
-					width: newWidth + 'px',
-					transformOrigin: '0 0 0',
-					minHeight: height
-				};
-			}
-			return style;
+		basicStyle() {
+			return {
+				width: `${this.defaultSize.width}px`,
+				minHeight: `${this.defaultSize.height}px`,
+				transformOrigin: 'center'
+			};
+		},	
+		draggableStyle() {
+			if (!this.draggable) return;
+			return {
+				left: `${this.x || document.body.clientWidth / 2 - this.defaultSize.width / 2}px`,
+				top: `${this.y || 100}px`
+			};
 		}
 	},
 	watch: {
@@ -253,30 +217,29 @@ export default {
 			immediate: true,
 			handler(v) {
 				this.isActive = v;
-				if (!this.scrollable && v) {
-					document.querySelector('body').style.overflow = 'hidden';
-				} else {
-					document.querySelector('body').style.overflow = 'auto';
-				}
 			}
 		}
 	},
+	created() {
+		this.startX = 0;
+		this.startY = 0;
+		this.originX = globalEvent.x;
+		this.originY = globalEvent.y;
+	},
 	mounted() {
-		document.addEventListener('click', this.handleCoord);
 		document.addEventListener('keydown', this.handleEscClose);
+		document.addEventListener('click', this.handleClick, true);
 	},
 	destroyed() {
-		document.removeEventListener('click', this.handleCoord);
+		document.removeEventListener('click', this.handleClick, true);
 		document.removeEventListener('keydown', this.handleEscClose);
 		document.removeEventListener("mousemove", this.handleMouseMove);
 		document.removeEventListener("mouseup", this.handleMouseUp);
 	},
 	methods: {
-		handleCoord(e) {
-			this.coord = {
-				x: e.x,
-				y: e.y
-			};
+		handleClick(e) {
+			this.originX = e.x;
+			this.originY = e.y;
 		},
 		handleMouseDown(event) {
 			if (!this.draggable) {
@@ -289,58 +252,39 @@ export default {
 			$header.style.cursor = 'move';
 			zIndexNumber += 1;
 			$wrap.style.zIndex = zIndexNumber;
-			this.dragData.x = rect.x || rect.left;
-			this.dragData.y = rect.y || rect.top;
-			const distance = {
-				x: event.clientX,
-				y: event.clientY
-			};
-			this.dragData.dragX = distance.x;
-			this.dragData.dragY = distance.y;
+			this.x = rect.x || rect.left;
+			this.y = rect.y || rect.top;
+
+			this.startX = event.clientX;
+			this.startY = event.clientY;
+
 			document.addEventListener("mousemove", this.handleMouseMove);
 			document.addEventListener("mouseup", this.handleMouseUp);
 		},
-		handleMouseMove(event) {
-			const distance = {
-				x: event.clientX,
-				y: event.clientY
-			};
-			const diffDistance = {
-				x: distance.x - this.dragData.dragX,
-				y: distance.y - this.dragData.dragY
-			};
-			this.dragData.x += diffDistance.x;
-			this.dragData.y += diffDistance.y;
-			this.dragData.dragX = distance.x;
-			this.dragData.dragY = distance.y;
+		handleMouseMove(e) {
+
+			this.x += e.clientX - this.startX;
+			this.y += e.clientY - this.startY;
+			this.startX = e.clientX;
+			this.startY = e.clientY;
 		},
+		/**
+		 * 松开鼠标时清除move和up事件
+		 */
 		handleMouseUp() {
 			document.removeEventListener("mousemove", this.handleMouseMove);
 			document.removeEventListener("mouseup", this.handleMouseUp);
-		}, // 松开鼠标时清除move和up事件
+		},
 		handleEnter(el) {
-			this.newCoord = {
-				x: 0,
-				y: 0
-			};
+			let x = 0;
+			let y = 0;
 			let modalX = el.offsetLeft;
-			let modalY = 0;
-			if (el.offsetTop) {
-				modalY = el.offsetTop;
-			} else {
-				modalY = (window.screen.height - el.clientHeight) / 2;
-			}
-			if (modalX > this.coord.x) {
-				this.newCoord.x = -(modalX - this.coord.x);
-			} else {
-				this.newCoord.x = this.coord.x - modalX;
-			}
-			if (modalY > this.coord.y) {
-				this.newCoord.y = -(modalY - this.coord.y);
-			} else {
-				this.newCoord.y = this.coord.y - modalY;
-			}
-			el.style.transformOrigin = this.newCoord.x + 'px ' + this.newCoord.y + 'px 0';
+			let modalY = el.offsetTop || (window.screen.height - el.clientHeight) / 2;
+
+			x = this.originX - modalX;
+			y = this.originY - modalY;
+
+			el.style.transformOrigin = `${x}px ${y}px 0`;
 		},
 		handleEscClose(e) {
 			if (e.keyCode === 27 && this.escClosable && this.isActive) {
@@ -423,7 +367,7 @@ export default {
 		background-color: $mask-bg-color;
 		height: 100%;
 		z-index: $mask-zindex;
-		transition: opacity 0.2s ease;
+		transition: opacity $popup-duration ease .05s;
 	}
 	@include element(wrapper) {
 		position: fixed;
@@ -519,29 +463,39 @@ export default {
 			color: $info;
 		}
 	}
-}
+	// fade存在bug, am-前缀处理，原因未知
+	.am-fade-enter, .am-fade-leave-to {
+		opacity: 0;
+	}
+	
+	// $ease-out: cubic-bezier(0.215, 0.61, 0.355, 1);
+	// $ease-in: cubic-bezier(0.55, 0.055, 0.675, 0.19);
+	// $ease-in-out: cubic-bezier(0.645, 0.045, 0.355, 1);
+	// $ease-out-back: cubic-bezier(0.12, 0.4, 0.29, 1.46);
+	// $ease-in-back: cubic-bezier(0.71, -0.46, 0.88, 0.6);
+	// $ease-in-out-back: cubic-bezier(0.71, -0.46, 0.29, 1.46);
+	// $ease-out-circ: cubic-bezier(0.08, 0.82, 0.17, 1);
+	// $ease-in-circ: cubic-bezier(0.6, 0.04, 0.98, 0.34);
+	// $ease-in-out-circ: cubic-bezier(0.78, 0.14, 0.15, 0.86);
+	// $ease-out-quint: cubic-bezier(0.23, 1, 0.32, 1);
+	// $ease-in-quint: cubic-bezier(0.755, 0.05, 0.855, 0.06);
+	// $ease-in-out-quint: cubic-bezier(0.86, 0, 0.07, 1);
+	
+	.am-modal-enter-active, {
+		will-change: transform, opacity; // 提前优化
+		transition: transform $popup-duration $ease-out-circ,
+			opacity $popup-duration $ease-out-circ;
+	}
+	.am-modal-leave-active {
+		will-change: transform, opacity;
+		transition: transform $popup-duration $ease-out-circ,
+			opacity $popup-duration $ease-out-circ;
+	}
 
-// fade存在bug, am-前缀处理，原因未知
-.am-fade-enter, .am-fade-leave-to {
-	opacity: 0;
+	.am-modal-enter,
+	.am-modal-leave-to {
+		transform: scale(0);
+		opacity: 0;
+	}
 }
-
-.modal-enter-active, {
-	will-change: transform;
-	transition: transform $popup-duration $ease-out-circ,
-		opacity $popup-duration $ease-out-circ;
-}
-.modal-leave-active {
-	will-change: transform;
-	transition: transform $popup-duration $ease-out-circ,
-		opacity $popup-duration $ease-out-circ;
-}
-
-.modal-enter,
-.modal-leave-to {
-	transform: scale(0);
-	opacity: 0;
-}
-
-
 </style>
