@@ -1,7 +1,7 @@
 export default {
 	watch: {
 		isActive: {
-			immediate: false,
+			immediate: false, // 非立即的
 			handler(v) {
 				this.setScrollBar(v);
 			}

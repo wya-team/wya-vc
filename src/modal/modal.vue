@@ -8,14 +8,14 @@
 			/>
 		</transition>
 		<div 
-			ref="wrap"
+			ref="wrapper"
 			:style="[styles, draggable && { top: 0 }]"
 			class="vc-modal__wrapper"
 		>
 			<transition name="am-modal" @enter="handleEnter" @after-leave="handleRemove">
 				<div 
 					v-show="isActive"
-					ref="modal" 
+					ref="container" 
 					:class="{ 'is-drag': draggable, 'is-large' : size === 'large' || size === 'medium'}"
 					:style="[basicStyle, draggableStyle]"
 					class="vc-modal__container"
@@ -69,11 +69,7 @@ import scrollbar from './scrollbar';
 import Icon from '../icon';
 import Button from '../button';
 import CreateCustomer from "../create-customer/index";
-
-let globalEvent = {};
-document.addEventListener('click', (e) => {
-	globalEvent = e;
-}, true);
+import { VcInstance } from "../vc/index";
 
 let zIndexNumber = 1002;
 const CustomerRow = CreateCustomer({});
@@ -201,14 +197,17 @@ export default {
 			return {
 				width: `${this.defaultSize.width}px`,
 				minHeight: `${this.defaultSize.height}px`,
-				transformOrigin: 'center'
 			};
 		},	
 		draggableStyle() {
 			if (!this.draggable) return;
+
+			let left = this.x || window.innerWidth / 2 - this.defaultSize.width / 2;
+			let top = this.y || window.innerHeight / 2 - this.defaultSize.height / 2;
+
 			return {
-				left: `${this.x || document.body.clientWidth / 2 - this.defaultSize.width / 2}px`,
-				top: `${this.y || 100}px`
+				left: `${left}px`,
+				top: `${top}px`,
 			};
 		}
 	},
@@ -223,8 +222,8 @@ export default {
 	created() {
 		this.startX = 0;
 		this.startY = 0;
-		this.originX = globalEvent.x;
-		this.originY = globalEvent.y;
+		this.originX = VcInstance.globalEvent.x;
+		this.originY = VcInstance.globalEvent.y;
 	},
 	mounted() {
 		document.addEventListener('keydown', this.handleEscClose);
@@ -238,6 +237,8 @@ export default {
 	},
 	methods: {
 		handleClick(e) {
+			// this.isActive click先触发,后设置后
+			if (this.draggable && this.isActive && this.originX) return;
 			this.originX = e.x;
 			this.originY = e.y;
 		},
@@ -245,13 +246,13 @@ export default {
 			if (!this.draggable) {
 				return;
 			}
-			const $modal = this.$refs.modal;
-			const $wrap = this.$refs.wrap;
+			const $container = this.$refs.container;
+			const $wrapper = this.$refs.wrapper;
 			const $header = this.$refs.header;
-			const rect = $modal.getBoundingClientRect();
+			const rect = $container.getBoundingClientRect();
 			$header.style.cursor = 'move';
 			zIndexNumber += 1;
-			$wrap.style.zIndex = zIndexNumber;
+			$wrapper.style.zIndex = zIndexNumber;
 			this.x = rect.x || rect.left;
 			this.y = rect.y || rect.top;
 
@@ -262,11 +263,17 @@ export default {
 			document.addEventListener("mouseup", this.handleMouseUp);
 		},
 		handleMouseMove(e) {
-
+			let x = 0;
+			let y = 0;
 			this.x += e.clientX - this.startX;
 			this.y += e.clientY - this.startY;
 			this.startX = e.clientX;
 			this.startY = e.clientY;
+
+			x = this.originX - this.x;
+			y = this.originY - this.y;
+
+			this.$refs.container.style.transformOrigin = `${x}px ${y}px 0`;
 		},
 		/**
 		 * 松开鼠标时清除move和up事件
@@ -468,33 +475,27 @@ export default {
 		opacity: 0;
 	}
 	
-	// $ease-out: cubic-bezier(0.215, 0.61, 0.355, 1);
-	// $ease-in: cubic-bezier(0.55, 0.055, 0.675, 0.19);
-	// $ease-in-out: cubic-bezier(0.645, 0.045, 0.355, 1);
-	// $ease-out-back: cubic-bezier(0.12, 0.4, 0.29, 1.46);
-	// $ease-in-back: cubic-bezier(0.71, -0.46, 0.88, 0.6);
-	// $ease-in-out-back: cubic-bezier(0.71, -0.46, 0.29, 1.46);
-	// $ease-out-circ: cubic-bezier(0.08, 0.82, 0.17, 1);
-	// $ease-in-circ: cubic-bezier(0.6, 0.04, 0.98, 0.34);
-	// $ease-in-out-circ: cubic-bezier(0.78, 0.14, 0.15, 0.86);
-	// $ease-out-quint: cubic-bezier(0.23, 1, 0.32, 1);
-	// $ease-in-quint: cubic-bezier(0.755, 0.05, 0.855, 0.06);
-	// $ease-in-out-quint: cubic-bezier(0.86, 0, 0.07, 1);
-	
+	/**
+	 * http://cubic-bezier.com
+	 * 看不下去就自己调整
+	 */
 	.am-modal-enter-active, {
 		will-change: transform, opacity; // 提前优化
-		transition: transform $popup-duration $ease-out-circ,
-			opacity $popup-duration $ease-out-circ;
+		transition: transform 0.3s cubic-bezier(.43, .84, .61, .99),
+			opacity 0.3s cubic-bezier(.43, .84, .61, .99);
 	}
 	.am-modal-leave-active {
 		will-change: transform, opacity;
-		transition: transform $popup-duration $ease-out-circ,
-			opacity $popup-duration $ease-out-circ;
+		transition: transform 0.3s cubic-bezier(.34, .91, .62, .93),
+			opacity 0.3s cubic-bezier(.34, .91, .62, .93);
 	}
 
-	.am-modal-enter,
+	.am-modal-enter {
+		transform: scale(0.5);
+		opacity: 0;
+	}
 	.am-modal-leave-to {
-		transform: scale(0);
+		transform: scale(0.2);
 		opacity: 0;
 	}
 }
