@@ -22,8 +22,8 @@
 			scrollable
 			draggable
 			title="标题2"
-			ok-text="保存"
-			cancel-text="关闭"
+			ok-text="保存2"
+			cancel-text="关闭2"
 			@close="handleClose"
 			@cancel="handleCancel"
 			@ok="handleOk"
@@ -76,14 +76,12 @@ export default {
 				content: (h) => {
 					return h('input', {
 						type: 'textarea',
-						style: {
-							height: '500px'
-						}
 					});
 				},
 				okText: '啦啦啦啦',
 				mask: true,
 				closeWithCancel: true,
+				// draggable: true,
 				onOk: (e, callback) => {
 					console.log('ok');
 					return new Promise((resolve, reject) => {
