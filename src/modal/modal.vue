@@ -189,7 +189,7 @@ export default {
 					break;
 			}
 			return {
-				width,
+				width: this.width || width,
 				height
 			};
 		},
