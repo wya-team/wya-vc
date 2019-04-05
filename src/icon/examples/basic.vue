@@ -1,6 +1,7 @@
 <template>
 	<div>
 		<h1>点击复制</h1>
+		<vc-icon />
 		<div class="vc-icon-basic">
 			<span v-for="item in items" :key="item" >
 				<vc-icon :type="item"/>
@@ -10,7 +11,7 @@
 	</div>
 </template>
 <script>
-import Icon from '../icon';
+import Icon from '..';
 import Copy from '../../copy';
 import all from '../svg';
 
@@ -43,6 +44,12 @@ export default {
 	}
 	i {
 		font-size: 30px
+	}
+	svg {
+		width: 1em;
+		height: 1em;
+		fill: currentColor;
+		overflow: hidden;
 	}
 }
 </style>
