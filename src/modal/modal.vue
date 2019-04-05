@@ -67,7 +67,7 @@
 </template>
 <script>
 import { debounce } from 'lodash';
-import scrollbar from './scrollbar';
+import scrollbarMixin from './scrollbar-mixin';
 import Icon from '../icon';
 import Button from '../button';
 import CreateCustomer from "../create-customer/index";
@@ -83,7 +83,7 @@ export default {
 		'vc-button': Button,
 		'vc-row': CustomerRow
 	},
-	mixins: [scrollbar],
+	mixins: [scrollbarMixin],
 	model: {
 		prop: 'visible',
 		event: 'visible-change'

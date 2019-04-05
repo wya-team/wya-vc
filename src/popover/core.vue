@@ -23,12 +23,12 @@
 </template>
 
 <script>
-import Popper from './popper';
+import posMixin from './pos-mixin';
 import CreateProtal from '../create-portal/index';
 
 const popup = {
 	name: 'vc-popover-core',
-	mixins: [Popper],
+	mixins: [posMixin],
 	props: {
 		visible: Boolean,
 		animate: String,
