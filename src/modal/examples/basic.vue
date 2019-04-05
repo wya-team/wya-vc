@@ -7,6 +7,7 @@
 		<div style="width: 100%; height: 2000px"/>
 		<vc-modal 
 			v-model="visible1"
+			:mask-closable="true"
 			title="标题1"
 			@close="handleClose"
 			@cancel="handleCancel"
@@ -36,7 +37,9 @@
 import Button from '../../button';
 import Modal from '../index';
 import { Portal } from './basic/portal';
+import { VcInstance } from '../../vc/index';
 
+window.vc = VcInstance;
 export default {
 	name: "vc-tpl-basic",
 	components: {
