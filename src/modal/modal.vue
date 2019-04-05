@@ -13,7 +13,7 @@
 			class="vc-modal__wrapper"
 			@resize="handleClose($event, maskClosable)"
 		>
-			<transition name="am-modal" @after-leave="handleRemove">
+			<transition name="am-modal" @enter="handleEnter" @after-leave="handleRemove">
 				<div 
 					v-show="isActive"
 					ref="container" 
@@ -66,11 +66,13 @@
 	</div>
 </template>
 <script>
+import { debounce } from 'lodash';
 import scrollbar from './scrollbar';
 import Icon from '../icon';
 import Button from '../button';
 import CreateCustomer from "../create-customer/index";
 import { VcInstance } from "../vc/index";
+
 
 let zIndexNumber = 1002;
 const CustomerRow = CreateCustomer({});
@@ -228,17 +230,14 @@ export default {
 		this.originY = VcInstance.globalEvent.y;
 	},
 	mounted() {
-		this.resetOrigin();
-
 		document.addEventListener('keydown', this.handleEscClose);
 		document.addEventListener('click', this.handleClick, true);
 	},
 	updated() {
 		/**
-		 * 拖动和数据刷新, 都需要初始化原始值
-		 * TODO: 用户手动触发？
+		 * 非拖动状态下, 外部,会触发设置初始值
 		 */
-		// this.isActive && this.resetOrigin();
+		!this.draggable && this.isActive && this.resetOrigin();
 	},
 	destroyed() {
 		document.removeEventListener('click', this.handleClick, true);
@@ -292,6 +291,9 @@ export default {
 
 			document.removeEventListener("mousemove", this.handleMouseMove);
 			document.removeEventListener("mouseup", this.handleMouseUp);
+		},
+		handleEnter(e) {
+			this.resetOrigin();
 		},
 		handleEscClose(e) {
 			if (e.keyCode === 27 && this.escClosable && this.isActive) {
@@ -366,7 +368,7 @@ export default {
 		/**
 		 * 设置原始坐标
 		 */
-		resetOrigin() {
+		resetOrigin: debounce(function () {
 			let el = this.$refs.container;
 			let x = 0;
 			let y = 0;
@@ -381,7 +383,7 @@ export default {
 			y = this.originY - modalY;
 
 			el.style.transformOrigin = `${x}px ${y}px 0`;
-		}
+		})
 	}
 };
 </script>
