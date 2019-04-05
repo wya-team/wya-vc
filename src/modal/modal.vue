@@ -383,7 +383,7 @@ export default {
 			y = this.originY - modalY;
 
 			el.style.transformOrigin = `${x}px ${y}px 0`;
-		})
+		}, 250)
 	}
 };
 </script>
