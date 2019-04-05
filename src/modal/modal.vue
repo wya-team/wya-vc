@@ -4,15 +4,16 @@
 			<div 
 				v-show="mask && isActive"
 				class="vc-modal__mask"
-				@click="handleClose(maskClosable)"
+				@click="handleClose($event, maskClosable)"
 			/>
 		</transition>
 		<div 
 			ref="wrapper"
 			:style="[styles, draggable && { top: 0 }]"
 			class="vc-modal__wrapper"
+			@resize="handleClose($event, maskClosable)"
 		>
-			<transition name="am-modal" @enter="handleEnter" @after-leave="handleRemove">
+			<transition name="am-modal" @after-leave="handleRemove">
 				<div 
 					v-show="isActive"
 					ref="container" 
@@ -30,7 +31,7 @@
 						<!-- 用户可以自定义，但也有默认 -->
 						<slot name="header">
 							<p class="vc-modal__title">{{ title }}</p>
-							<div v-if="closable && !mode" class="vc-modal__close" @click="handleClose">
+							<div v-if="closable && !mode" class="vc-modal__close" @click="handleClose($event, true)">
 								<vc-icon type="close"/>
 							</div>
 						</slot>
@@ -163,8 +164,8 @@ export default {
 	},
 	data() {
 		return {
-			x: undefined,
-			y: undefined,
+			x: 0,
+			y: 0,
 			isActive: false
 		};
 	},
@@ -197,6 +198,7 @@ export default {
 			return {
 				width: `${this.defaultSize.width}px`,
 				minHeight: `${this.defaultSize.height}px`,
+				maxHeight: `${window.innerHeight - 20}px`,
 			};
 		},	
 		draggableStyle() {
@@ -226,8 +228,17 @@ export default {
 		this.originY = VcInstance.globalEvent.y;
 	},
 	mounted() {
+		this.resetOrigin();
+
 		document.addEventListener('keydown', this.handleEscClose);
 		document.addEventListener('click', this.handleClick, true);
+	},
+	updated() {
+		/**
+		 * 拖动和数据刷新, 都需要初始化原始值
+		 * TODO: 用户手动触发？
+		 */
+		// this.isActive && this.resetOrigin();
 	},
 	destroyed() {
 		document.removeEventListener('click', this.handleClick, true);
@@ -242,7 +253,7 @@ export default {
 			this.originX = e.x;
 			this.originY = e.y;
 		},
-		handleMouseDown(event) {
+		handleMouseDown(e) {
 			if (!this.draggable) {
 				return;
 			}
@@ -256,8 +267,8 @@ export default {
 			this.x = rect.x || rect.left;
 			this.y = rect.y || rect.top;
 
-			this.startX = event.clientX;
-			this.startY = event.clientY;
+			this.startX = e.clientX;
+			this.startY = e.clientY;
 
 			document.addEventListener("mousemove", this.handleMouseMove);
 			document.addEventListener("mouseup", this.handleMouseUp);
@@ -269,33 +280,22 @@ export default {
 			this.y += e.clientY - this.startY;
 			this.startX = e.clientX;
 			this.startY = e.clientY;
-
-			x = this.originX - this.x;
-			y = this.originY - this.y;
-
-			this.$refs.container.style.transformOrigin = `${x}px ${y}px 0`;
 		},
 		/**
 		 * 松开鼠标时清除move和up事件
 		 */
 		handleMouseUp() {
+			/**
+			 * 放手后重新设置原点
+			 */
+			this.resetOrigin();
+
 			document.removeEventListener("mousemove", this.handleMouseMove);
 			document.removeEventListener("mouseup", this.handleMouseUp);
 		},
-		handleEnter(el) {
-			let x = 0;
-			let y = 0;
-			let modalX = el.offsetLeft;
-			let modalY = el.offsetTop || (window.screen.height - el.clientHeight) / 2;
-
-			x = this.originX - modalX;
-			y = this.originY - modalY;
-
-			el.style.transformOrigin = `${x}px ${y}px 0`;
-		},
 		handleEscClose(e) {
 			if (e.keyCode === 27 && this.escClosable && this.isActive) {
-				this.handleClose();
+				this.handleClose(e, true);
 			}
 		},
 		/**
@@ -325,8 +325,13 @@ export default {
 		/**
 		 * 关闭事件
 		 */
-		handleClose(closable = true) {
-			if (closable) {
+		handleClose(e, closable) {
+			if (closable 
+				|| (
+					this.maskClosable 
+					&& e.target.classList.contains('vc-modal__wrapper')
+				)
+			) {
 				this.isActive = false;
 				// 用户主要取消与关闭事件关联
 				this.closeWithCancel && this.cancel();
@@ -335,7 +340,7 @@ export default {
 		/**
 		 * 用户点击取消按钮时为取消
 		 */
-		handleCancel(maskClosable = true) {
+		handleCancel() {
 			this.isActive = false;
 			this.cancel();
 		},
@@ -356,6 +361,26 @@ export default {
 		cancel() {
 			const { onCancel } = this;
 			onCancel ? onCancel() : this.$emit('cancel');
+		},
+
+		/**
+		 * 设置原始坐标
+		 */
+		resetOrigin() {
+			let el = this.$refs.container;
+			let x = 0;
+			let y = 0;
+			/**
+			 * 拖拽使用this.x, this.y
+			 * 其他正常的布局
+			 */
+			let modalX = this.x || el.offsetLeft;
+			let modalY = this.y || el.offsetTop || (window.screen.height - el.clientHeight) / 2;
+
+			x = this.originX - modalX;
+			y = this.originY - modalY;
+
+			el.style.transformOrigin = `${x}px ${y}px 0`;
 		}
 	}
 };
@@ -391,6 +416,8 @@ export default {
 		margin: auto;
 		border-radius: 4px;
 		padding-bottom: 63px;
+		display: flex;
+		flex-direction: column;
 		@include when(drag) {
 			position: absolute;
 		}
@@ -495,7 +522,7 @@ export default {
 		opacity: 0;
 	}
 	.am-modal-leave-to {
-		transform: scale(0.2);
+		transform: scale(0.3);
 		opacity: 0;
 	}
 }

@@ -11,6 +11,12 @@ export default {
 		// 初始值
 		this.__INIT__ = document.body.style.overflow;
 	},
+	/**
+	 * 被强制清理时触发
+	 */
+	beforeDestroy() {
+		this.setScrollBar(false);
+	},
 	methods: {
 		setScrollBar(v) {
 			if (this.scrollable || !this._isMounted || this.__INIT__ === 'hidden') return;
