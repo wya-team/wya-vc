@@ -136,16 +136,17 @@ export default {
 			let total = tmp.reduce((pre, cur) => {
 				return pre * (cur.children.length || 1);
 			}, 1);
-			let source = [];
-			let count = [];
-			
 
 			for (let i = 0; i < total; i++) {
 				let label = this.columns.reduce((pre, cur, columnIndex) => {
+
 					let rowspan = this.getRowSpan(columnIndex + 1);
+					let j = Math.floor(i / rowspan);
+
 					pre.push(
-						cur.children[Math.floor(i / rowspan)] 
-						|| cur.children[i % cur.children.length]
+						cur.children[j <= cur.children.length ? j : j % cur.children.length] 
+						|| cur.children[i % cur.children.length] 
+						|| {}
 					);
 					return pre;
 				}, []);
