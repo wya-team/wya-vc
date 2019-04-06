@@ -1,11 +1,11 @@
 <template>
 	<div>
 		<div style="padding: 20px">
-			<div @click="resetDateFilter">清除日期过滤器</div>
-			<div @click="clearFilter">清除所有过滤器</div>
+			<div @click="handleClearDate">清除日期过滤器</div>
+			<div @click="handleClear">清除所有过滤器</div>
 			<vc-table
 				ref="filterTable"
-				:data-source="tableData"
+				:data-source="dataSource"
 				style="width: 100%"
 				row-key="id"
 			>
@@ -32,7 +32,7 @@
 			</vc-table>
 		</div>
 		<vc-table
-			:data-source="tableData"
+			:data-source="dataSource"
 			border
 			row-key="id">
 			<vc-table-column
@@ -64,7 +64,7 @@ export default {
 	},
 	data() {
 		return {
-			tableData: [
+			dataSource: [
 				{
 					id: 1,
 					date: '2016-05-02',
@@ -106,21 +106,14 @@ export default {
 		};
 	},
 	methods: {
-		resetDateFilter() {
+		handleClearDate() {
 			this.$refs.filterTable.clearFilter('date');
 		},
-		clearFilter() {
+		handleClear() {
 			this.$refs.filterTable.clearFilter();
 		},
 		formatter(row, column) {
 			return row.address;
-		},
-		filterTag(value, row) {
-			return row.tag === value;
-		},
-		filterHandler(value, row, column) {
-			const property = column.property;
-			return row[property] === value;
 		},
 		handleResetFirst() {
 
