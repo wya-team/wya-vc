@@ -7,9 +7,9 @@
 方法 | 说明 | 类型 | 默认值
 ---|---|---|---
 init | 初始化 | `any` | -
-clean | 删除api式组件 | `func` | `(cName, focre){}`
+clear | 删除api式组件 | `func` | `(cName, focre){}`
 
-> clean() 清理需要自动销毁的组件，clean(null, true), 强制清除所有组件；clean('xxx'), 清理单个
+> clear() 清理需要自动销毁的组件，clear(null, true), 强制清除所有组件；clear('xxx'), 清理单个
 
 ## 组件配置
 

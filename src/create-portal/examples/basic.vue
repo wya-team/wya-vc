@@ -12,7 +12,7 @@
 		<vc-button @click="handleKeepAlive">
 			点我(不带延迟)(keep-alive)
 		</vc-button>
-		<vc-button @click="handleClean">
+		<vc-button @click="handleClear">
 			销毁
 		</vc-button>
 
@@ -91,8 +91,8 @@ export default {
 			});
 		},
 		handleClean() {
-			// this.$vc.clean();
-			VcInstance.clean('vc-tpl-basic-keep-alive');
+			// this.$vc.clear();
+			VcInstance.clear('vc-tpl-basic-keep-alive');
 		}
 	}
 };

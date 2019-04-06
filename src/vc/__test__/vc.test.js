@@ -10,7 +10,7 @@ describe('vc.js', () => {
 		 * 来自继承
 		 */
 		expect(typeof VcInstance.APIS).toBe('object');
-		expect(typeof VcInstance.clean).toBe('function');
-		expect(typeof VcInstance.cleanAll).toBe('function');
+		expect(typeof VcInstance.clear).toBe('function');
+		expect(typeof VcInstance.clearAll).toBe('function');
 	});
 });

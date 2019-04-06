@@ -16,7 +16,7 @@ class VcBasic {
 	 * @param  {str | array} cName 清理的组件名
 	 * @param  {str | array} force 是否强制清理, cName 存在会变为true
 	 */
-	clean(cName, force = false) {
+	clear(cName, force = false) {
 		try {
 			// 清理对象 
 			let target = [];
@@ -48,7 +48,7 @@ class VcBasic {
 	/**
 	 * 清理全部
 	 */
-	cleanAll() {
+	clearAll() {
 		try {
 			for (let i in this.APIS) {
 				if (this.APIS[i]) {
