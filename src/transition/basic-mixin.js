@@ -3,11 +3,11 @@ export default {
 	props: {
 		/**
 		 * 进入/离开持续时间
-		 * {enter: 300, leave: 300}
+		 * {enter: .3, leave: .3}
 		 */
 		duration: {
 			type: [Number, Object],
-			default: 300
+			default: 0.3
 		},
 		/**
 		 * 进入/离开延迟时间
@@ -68,10 +68,10 @@ export default {
 		 */
 		handleBeforeEnter(el) {
 			let duration = this.duration.enter || this.duration;
-			el.style.animationDuration = `${duration}ms`;
+			el.style.animationDuration = `${duration}s`;
 
 			let delay = this.delay.enter || this.delay;
-			el.style.animationDelay = `${delay}ms`;
+			el.style.animationDelay = `${delay}s`;
 
 			this.resetStyles(el);
 			this.$emit('before-enter', el);
@@ -82,17 +82,22 @@ export default {
 		},
 		handleBeforeLeave(el) {
 			let duration = this.duration.leave || this.duration;
-			el.style.animationDuration = `${duration}ms`;
+			el.style.animationDuration = `${duration}s`;
 
 			let delay = this.delay.leave || this.delay;
-			el.style.animationDelay = `${delay}ms`;
+			el.style.animationDelay = `${delay}s`;
 
 			this.resetStyles(el);
 			this.$emit('before-leave', el);
 		},
-		handleLeave(el, done) {
+
+		/**
+		 * 特殊处理
+		 * 如果第二个参数为done, 且接收的话, 由用户管理结束
+		 */
+		handleLeave(el) {
 			this.resetAbsolute(el);
-			this.$emit('leave', el, done);
+			this.$emit('leave', el);
 		},
 		handleAfterLeave(el) {
 			this.clearStyles(el);

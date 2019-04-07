@@ -31,7 +31,7 @@ export default {
 		animation-name: vc-fade-out;
 	}
 	@include modifier(move) {
-		transition: transform .3s ease-out;
+		transition: transform $popup-duration ease-out;
 	}
 }
 

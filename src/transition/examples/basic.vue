@@ -1,6 +1,6 @@
 <template>
 	<div style="padding: 100px">
-		<vc-transition>
+		<vc-transition-fade>
 			<div v-show="visible">
 				<p>test</p>
 				<p>test</p>
@@ -12,7 +12,7 @@
 				<p>test</p>
 				<p>test</p>
 			</div>
-		</vc-transition>
+		</vc-transition-fade>
 		<h3 @click="handleClick">{{ visible }}</h3>
 	</div>
 </template>
@@ -22,7 +22,7 @@ import Transtion from '..';
 export default {
 	name: "vc-transtion-basic",
 	components: {
-		'vc-transition': Transtion
+		'vc-transition-fade': Transtion.Fade
 	},
 	data() {
 		return {
