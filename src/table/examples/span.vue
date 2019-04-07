@@ -5,7 +5,7 @@
 				👌保存👌
 			</div>
 			<div 
-				@click="handleCategory"
+				@click="handleAddCategory"
 			>👌添加分类👌</div>
 			<div v-for="(i, iindex) in sku" :key="i.value">
 				<div style="display: flex; align-items: center;">
@@ -103,7 +103,7 @@ export default {
 			console.log(this.dataSource, /dataSource/);
 			console.log(this.sku, /sku/);
 		},
-		handleCategory() {
+		handleAddCategory() {
 			this.sku.push({
 				value: ++categoryCount,
 				label: `${categoryCount}`,
