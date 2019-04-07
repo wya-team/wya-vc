@@ -130,9 +130,14 @@ export default {
 			let target = [];
 			let index = 0;
 
-			// 总条数
+			
 			let tmp = this.columns.slice();
-			if (tmp.length === 0) return;
+			if (tmp.length === 0) {
+				this.dataSource = [];
+				return;
+			}
+
+			// 总条数
 			let total = tmp.reduce((pre, cur) => {
 				return pre * (cur.children.length || 1);
 			}, 1);
