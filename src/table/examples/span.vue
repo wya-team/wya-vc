@@ -128,8 +128,6 @@ export default {
 		},
 		makeData() {
 			let target = [];
-			let index = 0;
-
 			
 			let tmp = this.columns.slice();
 			if (tmp.length === 0) {
@@ -147,21 +145,29 @@ export default {
 
 					let rowspan = this.getRowSpan(columnIndex + 1);
 					let j = Math.floor(i / rowspan);
+					let length = cur.children.length;
 
 					pre.push(
-						cur.children[j <= cur.children.length ? j : j % cur.children.length] 
-						|| cur.children[i % cur.children.length] 
+						cur.children[j <= length ? j : j % length] 
+						|| cur.children[i % length] 
 						|| {}
 					);
 					return pre;
 				}, []);
 
+				/**
+				 * 必须构建唯一的id, 确保每次key会变化
+				 * 如果是随机数, 正常情况下是代码错了 - -！ 
+				 */
+				let id = label.reduce((pre, cur) => {
+					return `${pre}__${cur.value}`;
+				}, i) || Math.random();
 
 				// 这里去判断初始值还是已编辑
 				target[i] = {
-					id: Math.random(), // 必须构建唯一的id, 确保每次key会变化
-					index: i, // 必须要有,用于getSpan
+					id, 
 					label,
+					index: i, // 必须要有,用于getSpan (已绑定在id上)
 					stock: 0,
 					price: 0,
 				};
