@@ -41,7 +41,7 @@ export default {
 		y: Number,
 		auto: Boolean, // 是否有内部控制滚动
 		isEnd: Number,
-		current: Number,
+		current: Number | String,
 		status: Number
 	},
 	data() {

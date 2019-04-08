@@ -5,9 +5,10 @@
 		:data-source="dataSource"
 		:current="current"
 		:total="total"
+		reverse
 	>
 		<template #header>
-			<div>这是一个容器下的滚动</div>
+			<div>反向滚动</div>
 		</template>
 		<template #default="it">
 			<div style="padding: 20px">{{ it }}</div>
@@ -58,7 +59,7 @@ export default {
 						this.current = page;
 						isRefresh 
 							? (this.dataSource = res.data.list)
-							: this.dataSource.splice(this.dataSource.length, 0, ...res.data.list);
+							: this.dataSource.splice(0, 0, ...res.data.list);
 						resolve();
 					}).catch((e) => {
 						reject();

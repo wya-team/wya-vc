@@ -5,14 +5,12 @@
 		:current="current"
 		:total="total"
 	>
-		<div>这是一个window下的滚动</div>
-		<div 
-			v-for="(item, index) in dataSource" 
-			:key="index" 
-			style="height: 200px"
-		>
-			{{ item }}
-		</div>
+		<template #header>
+			<div>这是一个window下的滚动</div>
+		</template>
+		<template #default="it">
+			<div style="padding: 20px">{{ it }}</div>
+		</template>
 	</vc-pull-scroll>
 </template>
 <script>

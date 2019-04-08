@@ -1,12 +1,13 @@
 <template>
 	<div :style="{ height: h }" class="vc-pull-scroll">
 		<vc-status
-			v-if="pull"
+			v-if="pull && reverse"
 			:style="style" 
 			:status="status" 
 			:y="y" 
 			type="pull" 
 		/>
+		<!-- TODO: reverse-status -->
 		<vc-core
 			:style="style"
 			:show="show"
@@ -27,10 +28,14 @@
 			@pull-start="handleStart"
 			@pull-end="handleEnd"
 		>
-			<slot />
+			<slot name="header" />
+			<template v-for="item in dataSource">
+				<slot v-bind="item" />
+			</template>
+			<slot name="footer" />
 		</vc-core>
 		<vc-status
-			v-if="scroll"
+			v-if="scroll && !reverse"
 			:style="style"
 			:status="isEnd"
 			:y="y" 
@@ -64,9 +69,8 @@ export default {
 			type: Boolean,
 			default: true
 		},
-		current: String | Number,
 		total: String | Number,
-		...pick(Core.props, ['scaleY', 'pauseY', 'reverse', 'dataSource', 'show', 'loadData']),
+		...pick(Core.props, ['scaleY', 'pauseY', 'reverse', 'dataSource', 'show', 'loadData', 'current']),
 		...pick(Status.props, ['scrollText', 'pullText'])
 	},
 	data() {
@@ -129,7 +133,7 @@ export default {
 			// this.$emit('load-success', res);
 		},
 		handleFinish(res) {
-			this.isEnd = this.total < this.current + 1 ? 2 : 0;
+			this.isEnd = this.total < Number(this.current) + 1 ? 2 : 0;
 			// this.$emit('load-finish', res);
 		},
 		handleStart() {
