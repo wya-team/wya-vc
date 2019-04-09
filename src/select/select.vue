@@ -6,6 +6,7 @@
 		:disabled="disabled"
 		:clearable="clearable"
 		:filterable="filterable"
+		:remote="remote"
 		:remote-method="remoteMethod"
 		:loading="loading"
 		:loading-text="loadingText"
