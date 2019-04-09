@@ -164,7 +164,11 @@ export default {
 			if (rules.length && this.required) {
 				return;
 			} else if (rules.length) {
-				this.isRequired = rules.find(rule => rule.required);
+				this.isRequired = rules.some(rule => {
+					return typeof rule.required === 'function' 
+						? rule.required(() => {}) // 避免报错 契合业务的一种设计（@wya/utils - RegEx: validator）
+						: rule.required;
+				});
 			} else if (this.required) {
 				this.isRequired = this.required;
 			}
