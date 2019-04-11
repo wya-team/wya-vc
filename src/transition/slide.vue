@@ -21,7 +21,7 @@ export default {
 		direction: {
 			type: String,
 			default: 'left',
-			validator: v => /(left|right|down|bottom)/.test(v)
+			validator: v => /(left|right|down|up)/.test(v)
 		},
 		styles: {
 			type: Object,
