@@ -1,28 +1,33 @@
 <template>
 	<div class="vcm-toast">
 		<div 
-			class="__bg" 
+			class="vcm-toast__bg" 
 			@click="handleClose" 
 		/>
-		<transition name="am-fade" @after-leave="handleRemove">
-			<div v-show="visible" class="__fixed">
-				<img v-if="mode === 'loading'" src="./spin.svg" class="loading">
+		<vc-transition-fade 
+			:duration="{ enter: 0.3, leave: 0.15 }"
+			@after-leave="handleRemove"
+		>
+			<div v-show="visible" class="vcm-toast__wrapper">
+				<img v-if="mode === 'loading'" src="./spin.svg" class="vcm-toast__loading">
 				<p v-if="content">{{ content }}</p>
 				<vc-row v-else :render="content" />
 			</div>
-		</transition>
+		</vc-transition-fade>
 	</div>
 </template>
 
 <script>
 import CreateCustomer from "../create-customer/index";
+import Transition from "../transition/index";
 
 const CustomerRow = CreateCustomer({});
 
 export default {
 	name: 'vcm-toast',
 	components: {
-		'vc-row': CustomerRow
+		'vc-row': CustomerRow,
+		'vc-transition-fade': Transition.Fade
 	},
 	props: {
 		content: [String, Function],
@@ -72,11 +77,14 @@ export default {
 };
 </script>
 
-<style lang="scss" scoped>
-.vcm-toast {
-	.__bg {
+<style lang="scss">
+
+@import '../style/index.scss';
+
+@include block(vcm-toast) {
+	@include element(bg) {
 		position: fixed;
-		background: rgba(0, 0, 0, 0.4);
+		// background: $mask-bg-color;
 		z-index: 3999;
 		height: 100%;
 		width: 100%;
@@ -86,7 +94,7 @@ export default {
 		bottom: 0;
 		opacity: 0;
 	}
-	.__fixed {
+	@include element(wrapper) {
 		position: fixed;
 		left: 50%;
 		top: 50%;
@@ -100,15 +108,11 @@ export default {
 		line-height: 1.5;
 		color: #fff;
 		text-align: center;
-		transition: opacity .3s cubic-bezier(0.18, 0.89, 0.32, 1.28);
 	}
-	.loading {
+	@include element(loading) {
 		width: 30px;
 		height: 30px;
 		animation: vcm-toast-circle 1s linear infinite;
-	}
-	.am-fade-enter, .am-fade-leave-active {
-		opacity: 0;
 	}
 }
 @keyframes vcm-toast-circle {
