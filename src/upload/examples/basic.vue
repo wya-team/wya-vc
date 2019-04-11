@@ -142,7 +142,7 @@ export default {
 			console.log(res);
 			Message.destroy();
 			Message.error({
-				content: res.msg
+				content: res.msg || 'test'
 			});
 		},
 	}
