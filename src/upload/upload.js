@@ -99,11 +99,11 @@ export default {
 	},
 	created() {
 		this.reqs = {};
-		this._isMounted = false;
+		this.__isMounted = false;
 		this.setDefaultCycle();
 	},
 	mounted() {
-		this._isMounted = true;
+		this.__isMounted = true;
 
 		if (!this.showTips) return;
 		Tips.popup({
@@ -119,7 +119,7 @@ export default {
 
 	},
 	destroyed() {
-		this._isMounted = false;
+		this.__isMounted = false;
 		this.tips && this.tips.$emit('close');
 		this.cancel();
 	},
@@ -232,7 +232,7 @@ export default {
 		},
 
 		async post(file) {
-			if (!this._isMounted) {
+			if (!this.__isMounted) {
 				return;
 			}
 			const { 

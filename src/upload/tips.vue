@@ -1,26 +1,26 @@
 <template>
-	<transition name="fade" @after-leave="hide">
+	<vc-transition-fade @after-leave="hide">
 		<div v-if="visible" ref="target" class="vc-upload-tips">
-			<div class="__header">
+			<div class="vc-upload-tips__header">
 				<span>当前选择上传进度</span>
 				<span @click="hide">&#10005;</span>
 			</div>
-			<div v-if="showTips" class="__result" @click="setTipsStatus">
+			<div v-if="showTips" class="vc-upload-tips__result" @click="setTipsStatus">
 				<span>上传结束，成功: {{ success }}，失败: {{ error }}，总数: {{ total }}</span>
-				<span class="__icon">&#10005;</span>
+				<span class="vc-upload-tips__icon">&#10005;</span>
 			</div>
-			<div class="__content">
+			<div class="vc-upload-tips__content">
 				<div>文件名</div>
 				<div>文件大小</div>
 				<div>状态</div>
 			</div>
 			<ul>
 				<li v-for="({ name, size, percent, msg }, key) in itemObj" :key="key">
-					<div :style="{ width: `${msg ? 100 : percent}%` }" class="__bar" />
-					<div class="__content">
+					<div :style="{ width: `${msg ? 100 : percent}%` }" class="vc-upload-tips__bar" />
+					<div class="vc-upload-tips__content">
 						<div>{{ name }}</div>
 						<div>{{ (size / 1024 / 1024).toFixed(2) }} MB</div>
-						<div :class="msg ? `__error` : `__success`">
+						<div :class="msg ? `is-error` : `is-success`" class="vc-upload-tips__status">
 							<span v-if="msg">{{ msg }}</span>
 							<span v-else-if="!msg && (Number(percent) === 100)">&#10004;</span>
 							<span v-else>上传中</span>
@@ -29,13 +29,17 @@
 				</li>
 			</ul>
 		</div>
-	</transition>
+	</vc-transition-fade>
 </template>
 <script>
 import CreatePortal from '../create-portal/index';
+import Transition from '../transition/index';
 
 const config = {
 	name: "vc-upload-tips",
+	components: {
+		'vc-transition-fade': Transition.Fade
+	},
 	props: {
 	},
 	data() {
@@ -117,10 +121,8 @@ export const Tips = CreatePortal({}, config);
 </script>
 <style lang="scss" scoped>
 @import '../style/index.scss';
-.fade-enter, .fade-leave-active {
-	opacity: 0;
-}
-.vc-upload-tips {
+
+@include block(vc-upload-tips) {
 	width: 600px;
 	position: fixed;
 	right: 5px;
@@ -129,9 +131,8 @@ export const Tips = CreatePortal({}, config);
 	border-radius: 3px;
 	box-shadow: 0 0 50px rgba(#000, 0.2);
 	opacity: 1;
-	transition: opacity .3s cubic-bezier(0.18, 0.89, 0.32, 1.28);
 	background: white;
-	.__header {
+	@include element(header) {
 		@include commonFlex();
 		justify-content: space-between;
 		align-items: center;
@@ -149,7 +150,7 @@ export const Tips = CreatePortal({}, config);
 		height: 30px;
 		border-bottom: 1px solid #e8e8e8;
 	}
-	.__bar {
+	@include element(bar) {
 		height: 30px;
 		background-color: #f5f5f5;
 		position: absolute;
@@ -157,7 +158,7 @@ export const Tips = CreatePortal({}, config);
 		left: 0;
 		z-index: -1;
 	}
-	.__content {
+	@include element(content) {
 		width: 100%;
 		height: 30px;
 		@include commonFlex();
@@ -180,7 +181,7 @@ export const Tips = CreatePortal({}, config);
 			}
 		}
 	}
-	.__result {
+	@include element(result) {
 		position: absolute;
 		top: 50px;
 		left: 0;
@@ -190,22 +191,25 @@ export const Tips = CreatePortal({}, config);
 		line-height: 30px;
 		background-color: #3abfbf;
 		color: #fff;
-		.__icon {
-			position: absolute;
-			top: 0;
-			right: 5px;
-			color: #fff;
-			display: inline-block;
-			width: 30px;
-			height: 30px;
-			text-align: center;
+	}
+	@include element(icon) {
+		position: absolute;
+		top: 0;
+		right: 5px;
+		color: #fff;
+		display: inline-block;
+		width: 30px;
+		height: 30px;
+		text-align: center;
+	}
+	@include element(status) {
+		@include when(success) {
+			color: #5cb85c;
+		}
+		@include when(error) {
+			color: #d9534f;
 		}
 	}
-	.__success {
-		color: #5cb85c;
-	}
-	.__error {
-		color: #d9534f;
-	}
-}	
+}
+
 </style>
