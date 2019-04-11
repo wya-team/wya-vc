@@ -1,5 +1,10 @@
 <template>
-	<transition :name="animate || `am-popup`" @after-leave="handleRemove">
+	<!-- TODO: Transtion 动态的动画组件 -->
+	<vc-transition-scale 
+		:mode="animate || 'part'" 
+		:duration="{ enter: 0.3, leave: 0.15 }"
+		@after-leave="handleRemove"
+	>
 		<div 
 			v-show="isActive"
 			:style="wrapperStyle"
@@ -19,16 +24,20 @@
 				<div v-else>{{ content }}</div>
 			</div>
 		</div>
-	</transition>
+	</vc-transition-scale>
 </template>
 
 <script>
 import posMixin from './pos-mixin';
 import CreateProtal from '../create-portal/index';
+import Transition from '../transition/index';
 
 const popup = {
 	name: 'vc-popover-core',
 	mixins: [posMixin],
+	components: {
+		'vc-transition-scale': Transition.Scale
+	},
 	props: {
 		visible: Boolean,
 		animate: String,
@@ -308,18 +317,6 @@ export const Func = CreateProtal({
 			top: 50%;
 			transform: translateY(-50%) rotate(45deg);
 		}
-	}
-	// 动画
-	&.am-popup-enter-active {
-		transition: all .2s $ease-out-circ;
-	}
-	&.am-popup-leave-active {
-		transition: all .2s $ease-in-out-circ;
-		
-	}
-	&.am-popup-enter, &.am-popup-leave-active {
-		opacity: 0;
-		transform: scale(.7)
 	}
 }
 
