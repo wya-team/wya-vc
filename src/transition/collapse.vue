@@ -1,6 +1,7 @@
 <template>
 	<component 
 		:is="componentType"
+		:tag="tag"
 		v-bind="$attrs"
 		move-class="vc-transition-collapse--move"
 		v-on="$listeners"

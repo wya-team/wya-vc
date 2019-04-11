@@ -1,4 +1,7 @@
 export default {
+	/**
+	 * 将属性传递给transition/group
+	 */
 	inheritAttrs: false,
 	props: {
 		/**
