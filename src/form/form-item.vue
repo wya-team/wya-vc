@@ -5,15 +5,16 @@
 		</label>
 		<div :style="contentStyle" class="vc-form-item__content">
 			<slot />
-			<transition name="am-fade">
+			<vc-transition-fade>
 				<div v-if="showError" class="vc-form-item__tip">{{ validateMessage }}</div>
-			</transition>
+			</vc-transition-fade>
 		</div>
 	</div>
 </template>
 
 <script>
 import AsyncValidator from 'async-validator';
+import Transition from '../transition/index';
 import emitter from '../extends/mixins/emitter';
 
 const getPropByPath = (obj, path) => {
@@ -48,7 +49,9 @@ const filterEmpty = (val) => {
 
 export default {
 	name: 'vc-form-item',
-	components: {},
+	components: {
+		'vc-transition-fade': Transition.Fade
+	},
 	mixins: [emitter],
 	props: {
 		label: {
@@ -315,7 +318,6 @@ $block: vc-form-item;
 				line-height: 1;
 				padding-top: 6px;
 				color: $error;
-				transition: opacity .3s cubic-bezier(0.18, 0.89, 0.32, 1.28);
 			}
 		}
 		@include when(left) {
@@ -330,10 +332,6 @@ $block: vc-form-item;
 				padding: 0 0 10px 0
 			}
 		}
-	}
-
-	.am-fade-enter, .am-fade-leave-active {
-		opacity: 0;
 	}
 	/**
 	 * 嵌套管理
