@@ -19,10 +19,13 @@ class MessageManager extends CreatePortal.Core {
 		let query = ['content', 'duration', 'onClose'];
 		let number = Object.keys(this.APIS)
 			.filter(item => item.includes(this.globalOptions.cName)).length;
+		let top = 30 + number * 40;
+		let maxH = window.innerHeight - 100;
+		
 		let options = {
 			...opts,
 			...getOption(params, query),
-			top: 30 + number * 40,
+			top: top > maxH ? maxH : top,
 		};
 		// 执行弹窗
 		return this.popup(options);

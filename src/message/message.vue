@@ -9,7 +9,7 @@
 			<div 
 				v-show="visible" 
 				ref="target" 
-				:style="style"
+				:style="{ top: `${top}px` }"
 				class="vc-message__wrapper"
 			>
 				<div class="vc-message__container">
@@ -86,11 +86,6 @@ export default {
 			visible: false,
 		};
 	},
-	computed: {
-		style() {
-			return this.visible ? { top: `${this.top}px` } : {};
-		}
-	},
 	mounted() {
 		this.visible = true;
 		if (this.duration !== 0) {
@@ -138,8 +133,6 @@ export default {
 		width: 100%;
 		display: flex;
 		justify-content: center;
-		transition: transform $popup-duration $ease-out-circ,
-			opacity $popup-duration $ease-out-circ;
 	}
 	@include element(container) {
 		display: flex;
