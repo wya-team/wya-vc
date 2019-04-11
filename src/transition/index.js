@@ -1,3 +1,4 @@
+import BasicMixin from './basic-mixin';
 import Fade from './fade';
 import Scale from './scale';
 import Slide from './slide';
@@ -9,7 +10,9 @@ const Transition = {
 	Scale,
 	Slide,
 	Zoom,
-	Collapse
+	Collapse,
+	// mixin
+	BasicMixin
 };
 
 export default Transition;
