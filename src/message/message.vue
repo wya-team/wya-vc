@@ -5,7 +5,7 @@
 			class="vc-message__mask"
 			@click="handleClose" 
 		/>
-		<vc-transition-slide direction="up" @after-leave="handleRemove">
+		<vc-transition-slide mode="up" @after-leave="handleRemove">
 			<div 
 				v-show="visible" 
 				ref="target" 
