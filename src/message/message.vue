@@ -5,7 +5,7 @@
 			class="vc-message__mask"
 			@click="handleClose" 
 		/>
-		<transition :duration="{ enter: 300, leave: 300 }" name="am-fade" @after-leave="handleRemove">
+		<vc-transition-slide direction="up" @after-leave="handleRemove">
 			<div 
 				v-show="visible" 
 				ref="target" 
@@ -31,12 +31,13 @@
 					/>
 				</div>
 			</div>
-		</transition>
+		</vc-transition-slide>
 	</div>
 </template>
 
 <script>
 import Icon from "../icon";
+import Transition from '../transition';
 import CreateCustomer from "../create-customer/index";
 
 const CustomerRow = CreateCustomer({});
@@ -45,7 +46,8 @@ export default {
 	name: 'vc-message',
 	components: {
 		'vc-icon': Icon,
-		'vc-row': CustomerRow
+		'vc-row': CustomerRow,
+		'vc-transition-slide': Transition.Slide,
 	},
 	props: {
 		content: [String, Function],
@@ -165,10 +167,6 @@ export default {
 		width: 14px;
 		height: 14px;
 		animation: vc-message-circle 1s linear infinite;
-	}
-	.am-fade-enter, .am-fade-leave-active {
-		transform: translateY(-100%);
-		opacity: 0;
 	}
 }
 
