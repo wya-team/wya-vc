@@ -28,6 +28,7 @@ class PortalCore extends VcBasic {
 		this.globalOptions = globalOptions;
 
 		this.popup = ::this.popup;
+		this.destroy = ::this.destroy;
 	}
 
 	_getDefaultOptions() {
