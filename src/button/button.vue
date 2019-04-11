@@ -131,8 +131,14 @@ $warning-hover-color: #ebb563;
 	background: $white;
 	user-select: none;
 	cursor: pointer;
-	transition: color .2s linear,background-color .2s linear,border .2s linear,box-shadow .2s linear;
 	outline:0 none !important;
+	/**
+	 * 外部v-show控制
+	 */
+	transition: color .2s linear, 
+		background-color .2s linear,
+		border .2s linear,
+		box-shadow .2s linear;
 	@include element(loading) {
 		vertical-align: middle;
 		width: 10px;
