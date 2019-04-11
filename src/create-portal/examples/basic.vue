@@ -90,7 +90,7 @@ export default {
 				console.log(res, 'close');
 			});
 		},
-		handleClean() {
+		handleClear() {
 			// this.$vc.clear();
 			VcInstance.clear('vc-tpl-basic-keep-alive');
 		}
