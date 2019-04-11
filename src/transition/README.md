@@ -47,8 +47,10 @@ mode | `x|y|center` | `String` | -
 
 ## 基础用法
 
+> appear: boolean，是否在初始渲染时使用过渡。默认为 false。 所以如果想一出来就有动画, 可以设置appear为true
+
 ```jsx
-<vc-transition-fade>
+<vc-transition-fade appear>
 	<div v-show="visible"></div>
 </vc-transition-fade>
 

@@ -42,6 +42,7 @@
 			<component 
 				:is="`vc-transition-${transitionName}`" 
 				:mode="mode"
+				:appear="true"
 			>
 				<div v-show="visible" style="background: #f5f6f7">
 					<p>test</p>
@@ -93,7 +94,7 @@ export default {
 		return {
 			visible: true,
 			isGroup: false,
-			transitionName: 'collapse',
+			transitionName: 'fade',
 			transitionOptions: [
 				'fade',
 				'scale',
