@@ -16,16 +16,23 @@
 					v-text="item" 
 				/>
 			</select>
-			<select v-if="transitionName === 'slide'" v-model="slideDirectionName">
+			<select v-if="transitionName === 'slide'" v-model="slideModeName">
 				<option 
-					v-for="item in slideDirectionOptions" 
+					v-for="item in slideModeOptions" 
 					:key="item" 
 					v-text="item" 
 				/>
 			</select>
-			<select v-if="transitionName === 'zoom'" v-model="zoomDirectionName">
+			<select v-if="transitionName === 'scale'" v-model="scaleModeName">
 				<option 
-					v-for="item in zoomDirectionOptions" 
+					v-for="item in scaleModeOptions" 
+					:key="item" 
+					v-text="item" 
+				/>
+			</select>
+			<select v-if="transitionName === 'zoom'" v-model="zoomModeName">
+				<option 
+					v-for="item in zoomModeOptions" 
 					:key="item" 
 					v-text="item" 
 				/>
@@ -34,7 +41,7 @@
 		<div v-if="!isGroup">
 			<component 
 				:is="`vc-transition-${transitionName}`" 
-				:direction="direction"
+				:mode="mode"
 			>
 				<div v-show="visible" style="background: #f5f6f7">
 					<p>test</p>
@@ -52,7 +59,7 @@
 		<div v-else>
 			<component 
 				:is="`vc-transition-${transitionName}`" 
-				:direction="direction" 
+				:mode="mode"
 				group 
 				tag="div"
 				style="display: flex; flex-wrap: wrap"
@@ -94,19 +101,30 @@ export default {
 				'zoom',
 				'collapse'
 			],
-			slideDirectionName: 'left',
-			slideDirectionOptions: ['left', 'right', 'down', 'up'],
-			zoomDirectionName: 'x',
-			zoomDirectionOptions: ['x', 'y', 'center'],
+			slideModeName: 'left',
+			slideModeOptions: ['left', 'right', 'down', 'up'],
+			zoomModeName: 'x',
+			zoomModeOptions: ['x', 'y', 'center'],
+
+			scaleModeName: 'both',
+			scaleModeOptions: ['both', 'part'],
 
 			colors: Array.from({ length: 5 }, () => ({ id: count++ }))
 		};
 	},
 	computed: {
-		direction() {
-			return this.transitionName === 'zoom' 
-				? this.zoomDirectionName 
-				: this.slideDirectionName;
+		
+		mode() {
+			switch (this.transitionName) {
+				case 'scale':
+					return this.scaleModeName;
+				case 'slide':
+					return this.slideModeName;
+				case 'zoom':
+					return this.zoomModeName;
+				default:
+					return '';
+			}
 		}
 	},
 	methods: {

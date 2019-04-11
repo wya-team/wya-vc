@@ -22,6 +22,24 @@ origin | 变换的初始位置, 可以用style代替, 更短~~ | `String` | -
 styles | 转换期间应用的元素样式 | `Object` | `{}`
 
 
+#### `vc-transition-slide`属性
+
+属性 | 说明 | 类型 | 默认值
+---|---|---|---
+mode | `left|right|down|up` | `String` | -
+
+#### `vc-transition-scale`属性
+
+属性 | 说明 | 类型 | 默认值
+---|---|---|---
+mode | `both|part` | `String` | -
+
+#### `vc-transition-zoom`属性
+
+属性 | 说明 | 类型 | 默认值
+---|---|---|---
+mode | `x|y|center` | `String` | -
+
 #### 事件
 
 - 同`transtion`组件

@@ -3,9 +3,9 @@
 		:is="componentType"
 		:tag="tag"
 		v-bind="$attrs"
-		:enter-active-class="`vc-transition__zoom-${direction}--in`"
-		:move-class="`vc-transition__zoom-${direction}--move`"
-		:leave-active-class="`vc-transition__zoom-${direction}--out`"
+		:enter-active-class="`vc-transition__zoom-${mode}--in`"
+		:move-class="`vc-transition__zoom-${mode}--move`"
+		:leave-active-class="`vc-transition__zoom-${mode}--out`"
 		v-on="hooks"
 	>
 		<slot />
@@ -18,7 +18,7 @@ export default {
 	name: 'vc-transition-zoom',
 	mixins: [basicMixin],
 	props: {
-		direction: {
+		mode: {
 			type: String,
 			default: 'x',
 			validator: v => /(x|y|center)/.test(v)
@@ -37,15 +37,15 @@ export default {
 <style lang="scss">
 @import '../style/index.scss';
 
-@mixin zoom($direction) {
+@mixin zoom($mode) {
 	@include block(vc-transition) {
-		@include element(zoom-#{$direction}) {
+		@include element(zoom-#{$mode}) {
 			@include modifier(in) {
-				animation-name: vc-zoom-#{$direction}-in;
+				animation-name: vc-zoom-#{$mode}-in;
 				animation-timing-function: $ease-out-circ;
 			}
 			@include modifier(out) {
-				animation-name: vc-zoom-#{$direction}-out;
+				animation-name: vc-zoom-#{$mode}-out;
 				animation-timing-function: $ease-in-out-circ;
 			}
 			/**

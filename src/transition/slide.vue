@@ -3,9 +3,9 @@
 		:is="componentType"
 		:tag="tag"
 		v-bind="$attrs"
-		:enter-active-class="`vc-transition__slide-${direction}--in`"
-		:move-class="`vc-transition__slide-${direction}--move`"
-		:leave-active-class="`vc-transition__slide-${direction}--out`"
+		:enter-active-class="`vc-transition__slide-${mode}--in`"
+		:move-class="`vc-transition__slide-${mode}--move`"
+		:leave-active-class="`vc-transition__slide-${mode}--out`"
 		v-on="hooks"
 	>
 		<slot />
@@ -18,7 +18,7 @@ export default {
 	name: 'vc-transition-slide',
 	mixins: [basicMixin],
 	props: {
-		direction: {
+		mode: {
 			type: String,
 			default: 'left',
 			validator: v => /(left|right|down|up)/.test(v)
@@ -37,15 +37,17 @@ export default {
 <style lang="scss">
 @import '../style/index.scss';
 
-@mixin slide($direction) {
+@mixin slide($mode) {
 	@include block(vc-transition) {
-		@include element(slide-#{$direction}) {
+		@include element(slide-#{$mode}) {
 			@include modifier(in) {
-				animation-name: vc-slide-#{$direction}-in;
+				will-change: transform, opacity;
+				animation-name: vc-slide-#{$mode}-in;
 				animation-timing-function: ease-out;
 			}
 			@include modifier(out) {
-				animation-name: vc-slide-#{$direction}-out;
+				will-change: transform, opacity;
+				animation-name: vc-slide-#{$mode}-out;
 				animation-timing-function: ease-out;
 			}
 			/**

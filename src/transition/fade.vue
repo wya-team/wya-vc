@@ -35,10 +35,12 @@ export default {
 @include block(vc-transition) {
 	@include element(fade) {
 		@include modifier(in) {
+			will-change: opacity;
 			animation-name: vc-fade-in;
 			animation-timing-function: linear;
 		}
 		@include modifier(out) {
+			will-change: opacity;
 			animation-name: vc-fade-out;
 			animation-timing-function: linear;
 		}
