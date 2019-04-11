@@ -4,27 +4,24 @@
 			<slot />
 			<slot :is-expend="isActive" name="icon" />
 		</div>
-		<transition
-			@before-enter="beforeEnter" 
-			@enter="enter" 
-			@after-enter="afterEnter" 
-			@before-leave="beforeLeave" 
-			@leave="leave" 
-			@after-leave="afterLeave" 
-		>
-			<div v-show="isActive">
+		<vc-expand v-model="isActive">
+			<div>
 				<slot name="content"/>
 			</div>
-		</transition>
+		</vc-expand>
 	</component>
 </template>
 <script>
 import Icon from '../icon/index';
+// import Transition from '../transition/index';
+import Expand from '../expand/index';
 
 export default {
 	name: "vc-collapse-item",
 	components: {
-		'vc-icon': Icon
+		'vc-icon': Icon,
+		'vc-expand': Expand,
+		// 'vc-transition-collapse': Transition.Collapse,
 	},
 	props: {
 		tag: {
@@ -45,46 +42,6 @@ export default {
 		
 	},
 	methods: {
-		beforeEnter(el) {
-			el.className += ' vc-collapse-transition';
-			 if (!el.dataset) el.dataset = {};
-
-			el.style.height = '0';
-		},
-		enter(el) {
-			el.dataset.oldOverflow = el.style.overflow;
-			if (el.scrollHeight !== 0) {
-				el.style.height = el.scrollHeight + 'px';
-			} else {
-				el.style.height = '';
-			}
-
-			el.style.overflow = 'hidden';
-		},
-		afterEnter(el) {
-			el.className = el.className.replace(' vc-collapse-transition', '');
-			el.style.height = '';
-			el.style.overflow = el.dataset.oldOverflow;
-		},
-		beforeLeave(el) {
-			if (!el.dataset) el.dataset = {};
-			el.dataset.oldOverflow = el.style.overflow;
-
-			el.style.height = el.scrollHeight + 'px';
-			el.style.overflow = 'hidden';
-		},
-		leave(el) {
-			if (el.scrollHeight !== 0) {
-				el.className += ' vc-collapse-transition';
-				el.style.height = 0;
-			}
-		},
-		afterLeave(el) {
-			el.className = el.className.replace(' vc-collapse-transition', '');
-			el.style.height = '';
-			el.style.overflow = el.dataset.oldOverflow;
-		},
-
 		handleToggle() {
 			this.$parent.handleToggle({
 				name: this.name || this.index,
@@ -94,8 +51,3 @@ export default {
 	}
 };
 </script>
-<style>
-.vc-collapse-transition {
-	transition: height .2s ease-in-out
-}
-</style>

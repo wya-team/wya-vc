@@ -1,11 +1,11 @@
 <template>
 	<div>
 		<span @click="handleToggle">
-			更多搜索条件{{ show ? `up` : `down` }}
+			更多搜索条件{{ visible ? `up` : `down` }}
 		</span>
 		<vc-expand 
 			ref="expand"
-			v-model="show"
+			v-model="visible"
 		>
 			<div>
 				<div>1</div>
@@ -31,12 +31,12 @@ export default {
 	},
 	data() {
 		return {
-			show: false
+			visible: false
 		};
 	},
 	methods: {
 		handleToggle() {
-			this.$refs.expand.toggle();
+			this.visible = !this.visible;
 		}
 	}
 };
