@@ -1,4 +1,8 @@
 # 历史版本
+### 
+
+- transition: 新增动画`fade`, `slide`, `zoom`, `scale`,  `collapse`.额外扩展`basic-mixin.js`
+- expand: `v-model`调整内部属性`show` -> `visible`, `change` -> `visible-change`
 
 ### 1.0.34 (2019-04-06)
 - vc: `clean` -> `clear`
