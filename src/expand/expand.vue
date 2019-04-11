@@ -1,5 +1,5 @@
 <template>
-	<vc-transition-collapse>
+	<vc-transition-collapse :duration="{ enter: 0.2, leave: 0.2 }">
 		<component v-show="isActive" :is="tag">
 			<slot />
 		</component>
@@ -37,16 +37,20 @@ export default {
 	computed: {
 		
 	},
-	methods: {
-		/**
-		 * 外部调用
-		 */
-		toggle() {
-			this.isActive = !this.isActive;
-			this.$emit('visible-change', this.isActive);
-
-			VcInstance.emit('vc-expand', { visible: this.isActive });
+	watch: {
+		visible: {
+			immediate: true,
+			handler(v, old) {
+				this.isActive = v;
+				/**
+				 * [visible description]
+				 * @type {[type]}
+				 */
+				VcInstance.emit('vc-expand', { visible: v });
+			}
 		}
+	},
+	methods: {
 	}
 };
 </script>
