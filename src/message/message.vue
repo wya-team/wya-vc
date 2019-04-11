@@ -21,7 +21,10 @@
 						v-if="typeof content === 'string'"
 						class="vc-message__content"
 					>{{ content }}</p>
-					<vc-row v-else :render="content" />
+					<vc-row 
+						v-else-if="typeof content === 'function'" 
+						:render="content" 
+					/>
 					<!-- close -->
 					<vc-icon 
 						v-if="closable" 
