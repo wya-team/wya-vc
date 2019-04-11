@@ -1,19 +1,23 @@
 <template>
 	<div class="vc-modal">
-		<transition name="am-fade">
+		<vc-transition-fade :delay=".05">
 			<div 
 				v-show="mask && isActive"
 				class="vc-modal__mask"
 				@click="handleClose($event, maskClosable)"
 			/>
-		</transition>
+		</vc-transition-fade>
 		<div 
 			ref="wrapper"
 			:style="[styles, draggable && { top: 0 }]"
 			class="vc-modal__wrapper"
 			@resize="handleClose($event, maskClosable)"
 		>
-			<transition name="am-modal" @enter="handleEnter" @after-leave="handleRemove">
+			<vc-transition-scale 
+				mode="part" 
+				@enter="handleEnter" 
+				@after-leave="handleRemove"
+			>
 				<div 
 					v-show="isActive"
 					ref="container" 
@@ -60,7 +64,7 @@
 						</slot>
 					</div>
 				</div>
-			</transition>
+			</vc-transition-scale>
 		</div>
 		
 	</div>
@@ -70,6 +74,7 @@ import { debounce } from 'lodash';
 import scrollbarMixin from './scrollbar-mixin';
 import Icon from '../icon';
 import Button from '../button';
+import Transition from '../transition';
 import CreateCustomer from "../create-customer/index";
 import { VcInstance } from "../vc/index";
 
@@ -81,7 +86,9 @@ export default {
 	components: {
 		'vc-icon': Icon,
 		'vc-button': Button,
-		'vc-row': CustomerRow
+		'vc-row': CustomerRow,
+		'vc-transition-fade': Transition.Fade,
+		'vc-transition-scale': Transition.Scale,
 	},
 	mixins: [scrollbarMixin],
 	model: {
@@ -383,7 +390,7 @@ export default {
 			y = this.originY - modalY;
 
 			el.style.transformOrigin = `${x}px ${y}px 0`;
-		}, 250)
+		}, 250, { leading: true })
 	}
 };
 </script>
@@ -401,7 +408,6 @@ export default {
 		background-color: $mask-bg-color;
 		height: 100%;
 		z-index: $mask-zindex;
-		transition: opacity $popup-duration ease .05s;
 	}
 	@include element(wrapper) {
 		position: fixed;
@@ -498,34 +504,6 @@ export default {
 		@include when(info) {
 			color: $info;
 		}
-	}
-	// fade存在bug, am-前缀处理，原因未知
-	.am-fade-enter, .am-fade-leave-to {
-		opacity: 0;
-	}
-	
-	/**
-	 * http://cubic-bezier.com
-	 * 看不下去就自己调整
-	 */
-	.am-modal-enter-active, {
-		will-change: transform, opacity; // 提前优化
-		transition: transform 0.3s cubic-bezier(.43, .84, .61, .99),
-			opacity 0.3s cubic-bezier(.43, .84, .61, .99);
-	}
-	.am-modal-leave-active {
-		will-change: transform, opacity;
-		transition: transform 0.3s cubic-bezier(.34, .91, .62, .93),
-			opacity 0.3s cubic-bezier(.34, .91, .62, .93);
-	}
-
-	.am-modal-enter {
-		transform: scale(0.5);
-		opacity: 0;
-	}
-	.am-modal-leave-to {
-		transform: scale(0.3);
-		opacity: 0;
 	}
 }
 </style>
