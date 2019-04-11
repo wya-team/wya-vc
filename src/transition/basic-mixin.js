@@ -123,6 +123,9 @@ export default {
 			});
 		},
 		resetAbsolute(el) {
+			/**
+			 * 先脱离文档流, 不占用高度;
+			 */
 			this.group && (el.style.position = 'absolute');
 
 			return this;

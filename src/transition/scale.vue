@@ -3,9 +3,9 @@
 		:is="componentType"
 		:tag="tag"
 		v-bind="$attrs"
-		enter-active-class="vc-transition__fade--in"
-		move-class="vc-transition__fade--move"
-		leave-active-class="vc-transition__fade--out"
+		enter-active-class="vc-transition__scale--in"
+		move-class="vc-transition__scale--move"
+		leave-active-class="vc-transition__scale--out"
 		v-on="hooks"
 	>
 		<slot />
@@ -15,17 +15,8 @@
 import basicMixin from './basic-mixin';
 
 export default {
-	name: 'vc-transition-fade',
-	mixins: [basicMixin],
-	props: {
-		styles: {
-			type: Object,
-			default: () => ({
-				animationFillMode: 'both',
-				animationTimingFunction: undefined,
-			})
-		}
-	}
+	name: 'vc-transition-scale',
+	mixins: [basicMixin]
 };
 
 </script>
@@ -33,14 +24,12 @@ export default {
 @import '../style/index.scss';
 
 @include block(vc-transition) {
-	@include element(fade) {
+	@include element(scale) {
 		@include modifier(in) {
-			animation-name: vc-fade-in;
-			animation-timing-function: linear;
+			animation-name: vc-scale-in;
 		}
 		@include modifier(out) {
-			animation-name: vc-fade-out;
-			animation-timing-function: linear;
+			animation-name: vc-scale-out;
 		}
 		/**
 		 * transition-group下删除元素, 其他元素位置变化动画
@@ -51,9 +40,10 @@ export default {
 	}
 }
 
-@keyframes vc-fade-in {
+@keyframes vc-scale-in {
 	from {
 		opacity: 0;
+		transform: scale(0)
 	}
 
 	to {
@@ -61,13 +51,14 @@ export default {
 	}
 }
 
-@keyframes vc-fade-out {
+@keyframes vc-scale-out {
 	from {
 		opacity: 1;
 	}
 
 	to {
 		opacity: 0;
+		transform: scale(0);
 	}
 }
 
