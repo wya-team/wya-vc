@@ -1,4 +1,4 @@
-## [Demo Basic](https://wya-team.github.io/wya-vc/dist/m-toast/basic.html)
+## [Demo Basic](https://wya-team.github.io/wya-vc/dist/toast-mobile/basic.html)
 ## 功能
 弹出层（未开发完成）
 

@@ -1,4 +1,4 @@
-## [Demo Basic](https://wya-team.github.io/wya-vc/dist/m-date-picker/basic.html)
+## [Demo Basic](https://wya-team.github.io/wya-vc/dist/date-picker/mobile-basic.html)
 ## 功能
 移动端日期选择器
 

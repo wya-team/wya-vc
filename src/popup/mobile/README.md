@@ -1,4 +1,4 @@
-## [Demo Basic](https://wya-team.github.io/wya-vc/dist/m-popup/basic.html)
+## [Demo Basic](https://wya-team.github.io/wya-vc/dist/popup/mobile-basic.html)
 ## 功能
 移动端弹出层
 
