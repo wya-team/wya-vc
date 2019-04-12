@@ -310,15 +310,17 @@ $block: vc-form-item;
 				}
 			}
 		}
-		@include when(error) {
-			@include element(tip) {
-				position: absolute;
-				top: 100%;
-				left: 0;
-				line-height: 1;
-				padding-top: 6px;
-				color: $error;
-			}
+		/**
+		 * 不使用is-error
+		 * 影响v-if动画
+		 */
+		@include element(tip) {
+			position: absolute;
+			top: 100%;
+			left: 0;
+			line-height: 1;
+			padding-top: 6px;
+			color: $error;
 		}
 		@include when(left) {
 			@include element(label) {
