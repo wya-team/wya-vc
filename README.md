@@ -15,19 +15,25 @@ npm install @wya/vc --save
 
 - 按需加载，需要安装 [`babel-plugin-import`](https://github.com/ant-design/babel-plugin-import/issues) 配置`.babelrc`
 
-```vim
+```js
 {
-	"plugins": [
+	[
 		[
 			"import",
 			[
 				{
-					"libraryName": "@wya/vc",
-					"libraryDirectory": "lib"
+					libraryName: "@wya/vc",
+					libraryDirectory: "lib",
+					customName: (name) => {
+						if (/^m-/.test(name)) {
+							return `@wya/vc/lib/${name.replace(/^m-/, '')}/index.m`;
+						}
+						return `@wya/vc/lib/${name}`;
+					}
 				}
 			]
 		]
-	]
+	];
 }
 ```
 
