@@ -155,7 +155,7 @@ import { Copy } from 'wya-vc';
 
 名称 | 说明 | 开发 | 计划
 ---|---|---|---
-[MTouch][MTouch] | 手势 | 1 | -
+[Touch][Touch] | 手势 | 1 | -
 
 - 反馈
 
@@ -218,12 +218,12 @@ import { Copy } from 'wya-vc';
 [ImgsPreview]: https://github.com/wya-team/wya-vc/tree/master/src/imgs-preview/
 [Input]: https://github.com/wya-team/wya-vc/tree/master/src/input/
 [InputNumber]: https://github.com/wya-team/wya-vc/tree/master/src/input-number/
-[MDatePicker]: https://github.com/wya-team/wya-vc/tree/master/src/m-date-picker/
-[MForm]: https://github.com/wya-team/wya-vc/tree/master/src/m-form/
-[MPicker]: https://github.com/wya-team/wya-vc/tree/master/src/m-picker/
-[MPopup]: https://github.com/wya-team/wya-vc/tree/master/src/m-popup/
-[MToast]: https://github.com/wya-team/wya-vc/tree/master/src/m-toast/
-[MTouch]: https://github.com/wya-team/wya-vc/tree/master/src/m-touch/
+[MDatePicker]: https://github.com/wya-team/wya-vc/tree/master/src/mobile/date-picker/
+[MForm]: https://github.com/wya-team/wya-vc/tree/master/src/mobile/form/
+[MPicker]: https://github.com/wya-team/wya-vc/tree/master/src/mobile/picker/
+[MPopup]: https://github.com/wya-team/wya-vc/tree/master/src/mobile/popup/
+[MToast]: https://github.com/wya-team/wya-vc/tree/master/src/mobile/toast/
+[MTouch]: https://github.com/wya-team/wya-vc/tree/master/src/mobile/touch/
 [Message]: https://github.com/wya-team/wya-vc/tree/master/src/message/
 [Modal]: https://github.com/wya-team/wya-vc/tree/master/src/modal/
 [Option]: https://github.com/wya-team/wya-vc/tree/master/src/option/

@@ -14,7 +14,7 @@
 			>
 				<div class="vc-message__container">
 					<!-- icon -->
-					<img v-if="mode === 'loading'" src="../m-toast/spin.svg" class="vc-message__loading">
+					<img v-if="mode === 'loading'" src="../toast/spin.svg" class="vc-message__loading">
 					<vc-icon v-else :type="mode" :class="`is-${mode}`" class="vc-message__icon"/>
 					<!-- content -->
 					<p 

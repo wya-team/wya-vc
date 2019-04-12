@@ -8,7 +8,7 @@
 		@click="handleClick"
 	>
 		<vc-icon v-if="!!icon" :type="icon"/>
-		<img v-if="loading" src="../m-toast/spin.svg" class="vc-btn__loading">
+		<img v-if="loading" src="../toast/spin.svg" class="vc-btn__loading">
 		<span v-if="hasSlot" ref="slot"><slot/></span>
 	</vc-debounce-click>
 </template>
