@@ -24,7 +24,7 @@
 tag | 外层标签`span / div / **` | `str obj func` | span
 prefix-cls | 外层标签prefixCls | `str` | c-upload
 multiple | 多图上传 | `bool` | false
-max | 一次性最多选择的文件数量 `multiple` 为 `true` 时才有效 | `number` | 1
+max | 一次性最多选择的文件数量 `multiple` 为 `true` 或者 `directory` 为 `true` 时才有效 | `number` | 1
 disabled | 禁用，增加样式`${prefixCls}-disabled` | `str` | false
 accept | 文件格式 | `str` | -
 mode | 文件归类（images / file）,提前定位文件类型（内置图片压缩） | `str` | images
@@ -35,6 +35,7 @@ size | 限制上传文件大小, 默认不限制（单位：mb） | `float` | `0
 extra | ajax需要传递的参数 | `obj` | {}
 headers | ajax: headers | `obj` | {}
 show-tips | 展示显示进度弹窗 | `bool` | `false`
+directory | 是否选取文件夹 | `bool` | `false`
 
 
 #### 事件

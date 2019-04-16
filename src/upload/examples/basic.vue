@@ -95,7 +95,7 @@ export default {
 	},
 	methods: {
 		handleError(error) {
-			console.error(error.message);
+			console.error(error.msg);
 		},
 		/**
 		 * 总线

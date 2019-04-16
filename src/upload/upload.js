@@ -30,7 +30,7 @@ export default {
 			default: false 
 		},
 
-		// 选择文件时最多选择文件数量， 在multiple为true的情况下有效
+		// 选择文件时最多选择文件数量， 在multiple为true 或者 directory为true的情况下有效
 		max: {
 			type: Number,
 			default: 1
@@ -79,6 +79,11 @@ export default {
 		},
 
 		showTips: {
+			type: Boolean,
+			default: false
+		},
+		// 选取文件夹
+		directory: {
 			type: Boolean,
 			default: false
 		}
@@ -165,6 +170,9 @@ export default {
 			const length = postFiles.length;
 			if (this.multiple && length > this.max) {
 				this.$emit('error', { msg: `可选文件数量不能超过${this.max}个` });
+				return;
+			} else if (this.directory && length > this.max) {
+				this.$emit('error', { msg: `文件夹内文件的数量不能超过${this.max}个` });
 				return;
 			}
 			
@@ -351,7 +359,8 @@ export default {
 			prefixCls,
 			disabled,
 			accept,
-			multiple
+			multiple,
+			directory
 		} = this;
 
 		// class
@@ -371,7 +380,8 @@ export default {
 			attrs: {
 				type: 'file',
 				accept,
-				multiple
+				multiple,
+				webkitdirectory: directory
 			},
 			style: {
 				display: 'none'
