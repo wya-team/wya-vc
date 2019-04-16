@@ -1,24 +1,36 @@
 <template>
 	<div class="vcm-stepper">
-		<span :class="minusDisabledClass" class="vcm-stepper__handler vcm-stepper__minus" @click="handleMinus" />
+		<span 
+			:class="{ 'is-active': minusActive }" 
+			class="vcm-stepper__handler vcm-stepper__minus" 
+			@click="handleMinus" 
+		/>
 		<input 
-			:value="value"
+			:value="currentValue"
 			:disabled="readOnly"
-			:style="{'text-align': value > 99 ? 'right' : 'center', ...inputStyle}"
+			:style="{'text-align': currentValue > 99 ? 'right' : 'center', ...inputStyle}"
 			type="tel"
 			class="vcm-stepper__input"
 			@input="handleInput"
 		>
-		<span :class="addDisabledClass" class="vcm-stepper__handler vcm-stepper__add" @click="handleAdd" />
+		<span 
+			:class="{ 'is-active': addActive }" 
+			class="vcm-stepper__handler vcm-stepper__add" 
+			@click="handleAdd" 
+		/>
 	</div>
 </template>
 
 <script>
-// 正整数正则
-const IntegerRegEx = /^[1-9]\d*$/;
+import { RegEx } from '@wya/utils';
+import { VcError } from '../../vc/index';
 
 export default {
 	name: 'vcm-stepper',
+	model: {
+		prop: 'value',
+		event: 'change'
+	},
 	props: {
 		value: {
 			type: Number | String,
@@ -35,7 +47,7 @@ export default {
 		step: {
 			type: Number | String,
 			default: 1,
-			validator: (value) => IntegerRegEx.test(value)
+			validator: (v) => RegEx.integer.test(v)
 		},
 		disabled: {
 			type: Boolean,
@@ -55,65 +67,84 @@ export default {
 
 	data() {
 		return {
-			
+			currentValue: 0
 		};
 	},
 	computed: {
-		minusDisabledClass() {
-			return this.value <= this.min ? '' : 'is-click';
+		addActive() {
+			return this.currentValue < this.max;
 		},
-		addDisabledClass() {
-			return this.value >= this.max ? '' : 'is-click';
+		minusActive() {
+			return this.currentValue > this.min;
+		}
+	},
+	watch: {
+		/**
+		 * TODO
+		 * 是否由外部直接控制
+		 */
+		value: {
+			immediate: true,
+			handler(v, old) {
+				v != this.currentValue && (this.currentValue = v);
+			}
 		}
 	},
 	methods: {
 		// handle
-		async handleAdd() {
-			if (!this.disabled && !!this.addDisabledClass) {
-				// 如果外部有传入加的方法，则以外部方法优先,内部不会去改变value，得由外部修改
+		handleAdd() {
+			if (!this.disabled && this.addActive) {
 				let { $listeners: { add } } = this;
 				if (add) { return add(); }
 				
-				let result = this.value + Number(this.step);
+				let result = this.currentValue + Number(this.step);
 				let value = result >= this.max ? this.max : result;
-				let shouldChange = await this.beforeChange(value);
-				if (!shouldChange) return;
 
-				this.$emit('input', value);
+				this.setValue(value);
 			}
 		},
-		async handleMinus() {
-			if (!this.disabled && !!this.minusDisabledClass) {
-				// 如果外部有传入减的方法，则以外部方法优先,内部不会去改变value，得由外部修改
+		handleMinus() {
+			if (!this.disabled && this.minusActive) {
 				let { $listeners: { minus } } = this;
 				if (minus) { return minus(); }
 
-				let result = this.value - Number(this.step);
+				let result = this.currentValue - Number(this.step);
 				let value = result <= this.min ? this.min : result;
-				let shouldChange = await this.beforeChange(value);
-				if (!shouldChange) return;
 
-				this.$emit('input', value);
+				this.setValue(value);
 			}
 		},
-		async handleInput(e) {
+		handleInput(e) {
 			let value = Number(e.target.value);
-			value = IntegerRegEx.test(value) ? value : Math.floor(value);
-			if (value <= this.min) value = this.min;
-			if (value >= this.max) value = this.max;
-			let shouldChange = await this.beforeChange(value);
-			if (!shouldChange) return;
-			this.$emit('input', value);
-			// 【hack】前后value相同时，不会触发update，在这里强制更新
-			this.$forceUpdate();
+			value = RegEx.integer.test(value) ? value : Math.floor(value);
+
+			value <= this.min && (value = this.min);
+			value >= this.max && (value = this.max);
+
+			this.setValue(value);
 		},
-		async beforeChange(value) {
-			let { $listeners: { before } } = this;
-			if (before) {
-				let res = await before(value);
-				return res;
-			}
-			return true;
+		/**
+		 * TODO
+		 * 实际业务场景, 是否需要一次等待setValue结束后触发
+		 */
+		async setValue(value) {
+			try {
+				let { $listeners: { before } } = this;
+
+				let state = true;
+
+				if (before) {
+					state = await before(value);
+				}
+				
+				if (state) {
+					this.currentValue = value;
+					this.$emit('change', value);
+				}
+			} catch (e) {
+				throw new VcError('stepper', e);
+			} 
+			
 		}
 	}
 };
@@ -142,7 +173,7 @@ export default {
 		display: block;
 		background-color: #F5F5F5;
 		cursor: pointer;
-		@include when(click) {
+		@include when(active) {
 			@include pseudo(active) {
 				background-color: rgba(221, 221, 221, 0.616);
 			}

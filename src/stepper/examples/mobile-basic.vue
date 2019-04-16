@@ -1,15 +1,13 @@
 <template>
-	<stepper 
-		v-model="value"
-	/>
+	<vcm-stepper v-model="value" />
 </template>
 <script>
 import Stepper from '../index';
 
 export default {
-	name: "vc-stepper-basic",
+	name: "vcm-stepper-basic",
 	components: {
-		Stepper
+		'vcm-stepper': Stepper
 	},
 	data() {
 		return {
