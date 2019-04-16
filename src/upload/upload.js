@@ -1,6 +1,6 @@
 import { ajax } from '@wya/http';
 import { getUid, attrAccept, initItem } from '../utils/utils';
-import { VcInstance } from '../vc/index';
+import { VcInstance, VcError } from '../vc/index';
 import { Tips } from './tips';
 
 export default {
@@ -88,6 +88,7 @@ export default {
 			type: Boolean,
 			default: false
 		},
+
 		// 选取文件夹
 		directory: {
 			type: Boolean,
@@ -248,8 +249,19 @@ export default {
 				"post-after": postAfter,
 			} = this.$listeners;
 			const { async, url, mode, name, headers, extra = {} } = this;
-			const { URL_UPLOAD_FILE_POST, URL_UPLOAD_IMG_POST, FORM_NAME, onPostBefore, onPostAfter } = VcInstance.config.Upload || {};
-			const defaultUrl = mode === 'images' ? URL_UPLOAD_IMG_POST : URL_UPLOAD_FILE_POST;
+
+			const { 
+				URL_UPLOAD_FILE_POST, 
+				URL_UPLOAD_IMG_POST, 
+				FORM_NAME, 
+				onPostBefore, 
+				onPostAfter 
+			} = VcInstance.config.Upload || {};
+
+			const defaultUrl = mode === 'images' 
+				? URL_UPLOAD_IMG_POST 
+				: URL_UPLOAD_FILE_POST;
+
 			// 上传前/后的回调
 			const onBefore = postBefore || onPostBefore || (() => ({}));
 			const onAfter = postAfter || onPostAfter;
@@ -258,10 +270,6 @@ export default {
 			const { ajax, size } = this;
 			let localData;
 			if (size && file.size > size * 1024 * 1024) {
-				// localData = {
-				// 	status: 0,
-				// 	msg: `上传失败，大小限制为${size}MB`
-				// };
 				this.$emit('error', { msg: `上传失败，大小限制为${size}MB` });
 				return;
 			}
@@ -270,8 +278,7 @@ export default {
 			try {
 				response = await onBefore(file);
 				if (typeof response !== 'object') {
-					console.error('[@wya/vc/upload]: onBefore必须返回对象');
-					return;
+					throw new VcError('upload', 'onBefore必须返回对象');
 				}
 			} catch (error) {
 				this.handleReject(error, file);
@@ -285,9 +292,9 @@ export default {
 				url: url || defaultUrl,
 				type: "FORM",
 				param: {
-					[name || FORM_NAME || 'file']: file,
 					...extra, 
-					...response
+					...response,
+					[name || FORM_NAME || 'file']: file, // oss特殊场景, 需要file作为最后一个字段
 				},
 				async,
 				headers,
