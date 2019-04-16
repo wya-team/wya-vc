@@ -388,7 +388,7 @@ export default {
 				type: 'file',
 				accept,
 				multiple,
-				webkitdirectory: this.directory
+				webkitdirectory: directory
 			},
 			style: {
 				display: 'none'
