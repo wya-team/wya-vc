@@ -16,7 +16,7 @@
 			@dragover.prevent="getDraggable(item) && handleDragOver($event, index, item)"
 			@dragend="handleDragEnd"
 		>
-			<slot v-bind="typeof item === 'object' ? item : { src: item }" :index="index" />
+			<slot v-bind="typeof item === 'object' ? item : { src: item }" :sort-index="index" />
 			<div v-if="mask" class="__mask">
 				<span 
 					:style="{visibility: index !== 0 ? 'unset' : 'hidden'}"
