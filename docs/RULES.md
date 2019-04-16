@@ -113,3 +113,9 @@ export default {
 - 报错统一使用VcError类
 - 相互间调用只定位到index.js文件, 所以方法提前暴露
 - 动画统一使用vc-transition
+
+##### 7. 依赖说明
+
+- `@wya/ps`
+- `@wya/http`
+- `@wya/utils`
