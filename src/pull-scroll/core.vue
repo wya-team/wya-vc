@@ -42,6 +42,7 @@ export default {
 		auto: Boolean, // 是否有内部控制滚动
 		isEnd: Number,
 		current: Number | String,
+		total: String | Number,
 		status: Number
 	},
 	data() {
@@ -52,12 +53,17 @@ export default {
 
 	},
 	watch: {
-		current: {
+		total: {
 			immediate: true,
-			handler(value, old) {
-				if (value == 0) {
+			handler(v, old) {
+				if (v == 0) {
 					this.loadFirstData();
 				}
+			}
+		},
+		show(v, old) {
+			if (v && old === false && this.total == 0) {
+				this.loadFirstData();
 			}
 		}
 	},
@@ -122,10 +128,10 @@ export default {
 			};
 		},
 		loadFirstData() {
-			if (!this.show || this.isEnd > 0) { // 禁用，加载完成或者加载中无视
+			if (!this.show || (this.total != 0 && this.isEnd > 0)) { // 禁用，加载完成或者加载中无视
 				return false;
 			}
-			this._loadData(false);
+			this._loadData(1, false);
 			/**
 			 * 重新清理下高度参数
 			 */
@@ -133,7 +139,7 @@ export default {
 		},
 		handleScroll(event) {
 			const { scroll, reverse } = this;
-			if (!scroll) return;
+			if (!scroll || this.total === 0) return;
 			// 延迟计算
 			this.timer && clearTimeout(this.timer);
 			this.timer = setTimeout(() => {
@@ -152,7 +158,7 @@ export default {
 					(!reverse && scrollTop >= totalHeight - containerHeight - 100)
 					|| (reverse && scrollTop == 0)
 				) {
-					this._loadData(false);
+					this._loadData(this.current + 1, false);
 				}
 			}, 50); 
 		},
@@ -234,7 +240,7 @@ export default {
 					this.getParams().el.scrollTop = 0;
 
 					// 准备去请求数据啦
-					this.shouldLoadForPull && this._loadData(true);
+					this.shouldLoadForPull && this._loadData(1, true);
 					// 不允许下拉刷新获取数据
 					this.shouldLoadForPull = false;
 					isPause = true;
@@ -255,14 +261,14 @@ export default {
 			this.$emit('update:status', 0);
 			this.shouldLoadForPull = true;
 		},
-		_loadData(isRefresh) {
+		_loadData(page, isRefresh) {
 			!isRefresh && (this.isLoadingForScroll = true);
 			// 请求
-			const load = this.loadData(isRefresh);
+			const load = this.loadData(page, isRefresh);
 			if (load && load.then) {
 				this.$emit('load-pending');
 				load.then((res) => {
-					this.$emit('load-success', res);
+					this.$emit('load-success', res, page);
 					return res;
 				}).catch((res) => {
 					this.$emit('load-fail', res);

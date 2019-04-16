@@ -1,7 +1,7 @@
 <template>
 	<div :style="{ height: h }" class="vc-pull-scroll">
 		<vc-status
-			v-if="pull && reverse"
+			v-if="pull"
 			:style="style" 
 			:status="status" 
 			:y="y" 
@@ -14,7 +14,8 @@
 			:pull="pull"
 			:scroll="scroll"
 			:reverse="reverse"
-			:current="current"
+			:current="currentPage"
+			:total="total"
 			:scale-y="scaleY"
 			:pause-y="pauseY"
 			:load-data="loadData"
@@ -35,11 +36,11 @@
 			<slot name="footer" />
 		</vc-core>
 		<vc-status
-			v-if="scroll && !reverse"
+			v-if="scroll"
 			:style="style"
 			:status="isEnd"
 			:y="y" 
-			:current="current"
+			:current="currentPage"
 			:data-source="dataSource" 
 			type="scroll"
 		/>
@@ -69,8 +70,7 @@ export default {
 			type: Boolean,
 			default: true
 		},
-		total: String | Number,
-		...pick(Core.props, ['scaleY', 'pauseY', 'reverse', 'dataSource', 'show', 'loadData', 'current']),
+		...pick(Core.props, ['scaleY', 'pauseY', 'reverse', 'dataSource', 'show', 'loadData', 'current', 'total']),
 		...pick(Status.props, ['scrollText', 'pullText'])
 	},
 	data() {
@@ -80,6 +80,9 @@ export default {
 			isEnd: 0,
 
 			pulling: false,
+
+			// 页面
+			currentPage: 0,
 		};
 	},
 	computed: {
@@ -127,14 +130,15 @@ export default {
 		},
 		handlePending(res) {
 			this.isEnd = 1;
-			// this.$emit('load-pending', res);
+			this.$emit('load-pending', res);
 		},
-		handleSuccess(res) {
-			// this.$emit('load-success', res);
+		handleSuccess(res, page) {
+			this.currentPage = page;
+			this.$emit('load-success', res);
 		},
 		handleFinish(res) {
-			this.isEnd = this.total < Number(this.current) + 1 ? 2 : 0;
-			// this.$emit('load-finish', res);
+			this.isEnd = this.total < Number(this.currentPage) + 1 ? 2 : 0;
+			this.$emit('load-finish', res);
 		},
 		handleStart() {
 			this.pulling = true;

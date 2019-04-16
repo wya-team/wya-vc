@@ -2,14 +2,13 @@
 	<vc-pull-scroll
 		:load-data="loadData"
 		:data-source="dataSource"
-		:current="current"
 		:total="total"
 	>
 		<template #header>
 			<div>这是一个window下的滚动</div>
 		</template>
 		<template #default="it">
-			<div style="padding: 20px">{{ it }}</div>
+			<div style="padding: 20px" @click="handleReset">{{ it }}</div>
 		</template>
 	</vc-pull-scroll>
 </template>
@@ -25,7 +24,6 @@ export default {
 	},
 	data() {
 		return {
-			current: 0,
 			total: 0,
 			dataSource: [],
 		};
@@ -34,8 +32,7 @@ export default {
 		
 	},
 	methods: {
-		loadData(isRefresh) {
-			let page = isRefresh ? 1 : this.current + 1;
+		loadData(page, isRefresh) {
 			return new Promise((resolve, reject) => {
 				setTimeout(() => {
 					ajax({
@@ -43,15 +40,17 @@ export default {
 						localData: {
 							status: 1,
 							data: {
-								currentPage: page,
-								totalPage: 200,
+								page: {
+									current: page,
+									total: 2,
+								},
 								list: this.getFakeData(page)
 							}
 
 						}
 					}).then((res) => {
-						this.total = res.data.totalPage;
-						this.current = page;
+						console.log('@wya/vc:', page);
+						this.total = res.data.page.total;
 						isRefresh 
 							? (this.dataSource = res.data.list)
 							: this.dataSource.splice(this.dataSource.length, 0, ...res.data.list);
@@ -77,7 +76,6 @@ export default {
 			return fakeData;
 		},
 		handleReset() {
-			this.current = 0;
 			this.total = 0;
 			this.dataSource = [];
 		}

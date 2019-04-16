@@ -29,7 +29,6 @@ export default {
 			height: window.innerHeight,
 
 			// 数据源
-			current: 0,
 			total: 0,
 			dataSource: []
 		};
@@ -38,8 +37,7 @@ export default {
 		
 	},
 	methods: {
-		loadData(isRefresh) {
-			let page = isRefresh ? 1 : this.current + 1;
+		loadData(page, isRefresh) {
 			return new Promise((resolve, reject) => {
 				setTimeout(() => {
 					ajax({
@@ -47,20 +45,23 @@ export default {
 						localData: {
 							status: 1,
 							data: {
-								currentPage: page,
-								totalPage: 200,
+								page: {
+									current: page,
+									total: 2,
+								},
 								list: this.getFakeData(page)
 							}
 
 						}
 					}).then((res) => {
-						this.total = res.data.totalPage;
-						this.current = page;
+						console.log('@wya/vc:', page);
+						this.total = res.data.page.total;
 						isRefresh 
 							? (this.dataSource = res.data.list)
 							: this.dataSource.splice(this.dataSource.length, 0, ...res.data.list);
 						resolve();
 					}).catch((e) => {
+						console.log(e);
 						reject();
 					});
 				}, isRefresh ? 3000 : 3000);
@@ -80,7 +81,6 @@ export default {
 			return fakeData;
 		},
 		handleReset() {
-			this.current = 0;
 			this.total = 0;
 			this.dataSource = [];
 		}

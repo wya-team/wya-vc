@@ -1,17 +1,15 @@
 <template>
 	<vc-pull-scroll
-		:height="height"
 		:load-data="loadData"
 		:data-source="dataSource"
-		:current="current"
 		:total="total"
 		reverse
 	>
 		<template #header>
-			<div>反向滚动</div>
+			<div>这是一个window下的滚动</div>
 		</template>
 		<template #default="it">
-			<div style="padding: 20px">{{ it }}</div>
+			<div style="padding: 20px" @click="handleReset">{{ it }}</div>
 		</template>
 	</vc-pull-scroll>
 </template>
@@ -27,20 +25,15 @@ export default {
 	},
 	data() {
 		return {
-			height: window.innerHeight,
-
-			// 数据源
-			current: 0,
 			total: 0,
-			dataSource: []
+			dataSource: [],
 		};
 	},
 	computed: {
 		
 	},
 	methods: {
-		loadData(isRefresh) {
-			let page = isRefresh ? 1 : this.current + 1;
+		loadData(page, isRefresh) {
 			return new Promise((resolve, reject) => {
 				setTimeout(() => {
 					ajax({
@@ -48,20 +41,23 @@ export default {
 						localData: {
 							status: 1,
 							data: {
-								currentPage: page,
-								totalPage: 200,
+								page: {
+									current: page,
+									total: 2,
+								},
 								list: this.getFakeData(page)
 							}
 
 						}
 					}).then((res) => {
-						this.total = res.data.totalPage;
-						this.current = page;
+						console.log('@wya/vc:', page);
+						this.total = res.data.page.total;
 						isRefresh 
 							? (this.dataSource = res.data.list)
-							: this.dataSource.splice(0, 0, ...res.data.list);
+							: this.dataSource.splice(this.dataSource.length, 0, ...res.data.list);
 						resolve();
 					}).catch((e) => {
+						console.log(e);
 						reject();
 					});
 				}, isRefresh ? 3000 : 3000);
@@ -81,10 +77,10 @@ export default {
 			return fakeData;
 		},
 		handleReset() {
-			this.current = 0;
 			this.total = 0;
 			this.dataSource = [];
 		}
 	}
+
 };
 </script>
