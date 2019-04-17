@@ -1,4 +1,5 @@
 import { EventStore } from '@wya/ps';
+import IconManager from '../icon/manager';
 import VcBasic from './basic';
 import VcError from './error';
 
@@ -23,6 +24,11 @@ class VcManager extends VcBasic {
 		if (!this.hasInit) {
 			super.setConfig(opts);
 			this.hasInit = true;
+
+			Promise.all(this.config.Icon.urls.map(url => IconManager.load(url)))
+				.catch((e) => {
+					throw new VcError('instance', e);
+				});
 		} else {
 			throw new VcError('instance', '只能初始化一次');
 		}

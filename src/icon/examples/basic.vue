@@ -1,7 +1,6 @@
 <template>
 	<div>
 		<h1>点击复制</h1>
-		<vc-icon />
 		<div class="vc-icon-basic">
 			<span v-for="item in items" :key="item" >
 				<vc-icon :type="item"/>
@@ -13,7 +12,7 @@
 <script>
 import Icon from '..';
 import Copy from '../../copy';
-import all from '../svg';
+import IconManager from '../manager';
 
 export default {
 	name: "vc-icon-basic",
@@ -23,17 +22,36 @@ export default {
 	},
 	data() {
 		return {
-			items: all.match(/id="icon-(\S{1,})"/g).map(i => i.replace(/("|id="icon-)/g, ""))
+			items: [],
+			path: '',
+			svgString: ''
 		};
 	},
 	computed: {
 		
+	},
+	mounted() {
+		IconManager.ready(() => {
+			this.items = Object.keys(IconManager.icons);
+		});
+		Promise.all([
+			IconManager.load('//at.alicdn.com/t/font_1096960_wt7ajzwziwm.js'),
+			IconManager.load('//at.alicdn.com/t/font_1096957_ljld7iua9l.js')
+		]).then(() => {
+			this.items = Object.keys(IconManager.icons);
+		}).catch((e) => {
+			console.log(e);
+		});
+
 	},
 	methods: {
 	}
 };
 </script>
 <style>
+input {
+	border: 1px solid #666
+}
 .vc-icon-basic {
 	display: flex;
 	flex-wrap: wrap;

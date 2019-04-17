@@ -81,6 +81,7 @@ document.addEventListener('click', (e) => {
 VcBasic.prototype.APIS = {};
 
 VcBasic.prototype.config = {
+	debug: process.env.NODE_ENV === 'development',
 	/**
 	 * vuex + vue-router
 	 */
@@ -115,6 +116,9 @@ VcBasic.prototype.config = {
 		stripe: undefined,
 		tableOpts: undefined,
 		pageOpts: undefined,
+	},
+	Icon: {
+		urls: []
 	}
 };
 

@@ -1,12 +1,17 @@
 <template>
 	<i class="vc-icon" @click="$emit('click', $event)">
-		<svg aria-hidden="true">
-			<use :xlink:href="`#icon-${type}`"/>
+		<svg :viewBox="viewBox" xmlns="http://www.w3.org/2000/svg">
+			<path 
+				v-for="(it, i) in path"
+				:key="i" 
+				:d="it.d" 
+				:fill="it.fill"
+			/>
 		</svg>
 	</i>
 </template>
 <script>
-import "./iconfont";
+import IconManager from './manager';
 
 export default {
 	name: "vc-icon",
@@ -15,12 +20,22 @@ export default {
 	},
 	data() {
 		return {
+			viewBox: '0 0 1024 1024',
+			path: []
 		};
 	},
-	computed: {
-		
+	created() {
+		IconManager.icons[this.type] 
+			? this.getConfig() 
+			: IconManager.ready(::this.getConfig);
 	},
+	
 	methods: {
+		getConfig() {
+			if (!IconManager.icons[this.type]) return;
+			this.viewBox = IconManager.icons[this.type].viewBox;
+			this.path = IconManager.icons[this.type].path;
+		}
 	}
 };
 </script>
