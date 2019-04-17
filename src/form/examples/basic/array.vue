@@ -54,7 +54,7 @@ section {
 	display: flex;
 	> div {
 		border: 1px solid #c9c9c9;
-		padding: 0 20px
+		padding: 40px 20px
 	}
 	.red {
 		color: red;

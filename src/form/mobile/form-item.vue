@@ -1,42 +1,37 @@
 <template>
-	<div :class="classes" class="vc-form-item">
-		<label v-if="label || $slots.label" :for="labelFor" :style="labelStyle" class="vc-form-item__label">
+	<div :class="classes" class="vcm-form-item">
+		<label v-if="label || $slots.label" :for="labelFor" :style="labelStyle" class="vcm-form-item__label">
 			<slot name="label">{{ label }}</slot>
 		</label>
-		<div :style="contentStyle" class="vc-form-item__content">
+		<div :style="contentStyle" class="vcm-form-item__content">
 			<slot />
-			<vc-transition-fade>
-				<div v-if="showError" class="vc-form-item__tip">{{ validateMessage }}</div>
-			</vc-transition-fade>
 		</div>
 	</div>
 </template>
 
 <script>
-import basicFormItemMixin from './form-item-mixin';
-import Transition from '../transition/index';
+import basicFormItemMixin from '../form-item-mixin';
 
 export default {
 	/**
 	 * 表单特殊, name由mixin管理
 	 */
-	components: {
-		'vc-transition-fade': Transition.Fade
-	},
 	mixins: [basicFormItemMixin],
 };
 
 </script>
 
 <style lang='scss'>
-@import '../style/index.scss';
-
-$block: vc-form-item;
+@import '../../style/index.scss';
+$block: vcm-form-item;
 
 @include block($block) {
-	margin-bottom: 24px;
 	vertical-align: top;
 	zoom: 1;
+	padding-top: 12px;
+	padding-bottom: 12px;
+	padding-right: 12px;
+	border-bottom: 1px solid #e8e8e8;
 	&:before, &:after {
 		content: "";
 		display: table;
@@ -79,18 +74,6 @@ $block: vc-form-item;
 				}
 			}
 		}
-		/**
-		 * 不使用is-error
-		 * 影响v-if动画
-		 */
-		@include element(tip) {
-			position: absolute;
-			top: 100%;
-			left: 0;
-			line-height: 1;
-			padding-top: 6px;
-			color: $error;
-		}
 		@include when(left) {
 			@include element(label) {
 				text-align: left
@@ -103,23 +86,7 @@ $block: vc-form-item;
 				padding: 0 0 10px 0
 			}
 		}
-		/**
-		 * 此模式下需要删除label
-		 */
-		@include when(inline) {
-			display: inline-block;
-			margin-right: 10px;
-			vertical-align: top
-		}
-	}
-	/**
-	 * 嵌套管理
-	 */
-	@include block(vc-form-item) {
-		margin-bottom: 0;
-		@include element(content, false) {
-			margin-left: 0 !important;
-		}
 	}
 }
+
 </style>
