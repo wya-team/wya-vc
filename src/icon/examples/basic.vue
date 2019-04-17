@@ -1,11 +1,12 @@
 <template>
 	<div>
 		<h1>点击复制</h1>
+		<h2 @click="handleClick">点我切换 prefix: {{ mobile ? 'vcm-' : 'vc-' }}</h2>
 		<div class="vc-icon-basic">
 			<span v-for="item in items" :key="item" >
 				<vc-icon :type="item"/>
 				<vc-copy 
-					:value="`<vc${/^m-/.test(item) ? 'm' : ''}-icon type=&quot;${item}&quot; />`"
+					:value="`<vc${m}-icon type=&quot;${item}&quot; />`"
 				>{{ item }}</vc-copy>
 			</span>
 		</div>
@@ -13,8 +14,11 @@
 </template>
 <script>
 import Icon from '..';
+import { Storage } from '@wya/utils';
 import Copy from '../../copy';
 import IconManager from '../manager';
+
+let mobile = !!(Storage.get('@wya/vc/demo/icon') || {}).status;
 
 export default {
 	name: "vc-icon-basic",
@@ -26,11 +30,14 @@ export default {
 		return {
 			items: [],
 			path: '',
-			svgString: ''
+			svgString: '',
+			mobile,
 		};
 	},
 	computed: {
-		
+		m() {
+			return this.mobile ? 'm' : '';
+		}
 	},
 	mounted() {
 		IconManager.ready(() => {
@@ -47,6 +54,10 @@ export default {
 
 	},
 	methods: {
+		handleClick() {
+			this.mobile = !this.mobile;
+			Storage.set('@wya/vc/demo/icon', { status: this.mobile });
+		}
 	}
 };
 </script>
