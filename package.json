@@ -1,6 +1,6 @@
 {
     "name": "@wya/vc",
-    "version": "1.1.4",
+    "version": "1.1.5",
     "description": "wya for vue components",
     "main": "lib/index.js",
     "files": [
@@ -15,7 +15,7 @@
         "build:pre": "rollup -c --config ./config/rollup.config.js",
         "build": "cross-env UGLIFY_JS=true npm run dist",
         "build:dev": "cross-env UGLIFY_JS=false npm run dist",
-        "lib": "rm -rf ./lib && cross-env NODE_ENV=production babel src --out-dir lib --copy-files --ignore **.test.js,**.md,examples/**,  && npm publish --access public",
+        "lib": "rm -rf ./lib && cross-env NODE_ENV=production babel src --out-dir lib --copy-files --ignore '**.test.js','**.md','examples/**' && npm publish --access public",
         "remove:dist": "rm -rf ./dist",
         "lint": "esw config ./src --ext .vue,.js",
         "lint:fix": "npm run lint -- --fix",
