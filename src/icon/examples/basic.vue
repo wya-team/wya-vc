@@ -4,7 +4,9 @@
 		<div class="vc-icon-basic">
 			<span v-for="item in items" :key="item" >
 				<vc-icon :type="item"/>
-				<vc-copy :value="`<vc-icon type=&quot;${item}&quot; />`">{{ item }}</vc-copy>
+				<vc-copy 
+					:value="`<vc${/^m-/.test(item) ? 'm' : ''}-icon type=&quot;${item}&quot; />`"
+				>{{ item }}</vc-copy>
 			</span>
 		</div>
 	</div>
