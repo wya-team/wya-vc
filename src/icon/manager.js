@@ -14,11 +14,11 @@ class Manager {
 		this.icons = {};
 		this.injects = [];
 
-		this.readyFn = [];
+		this.readyFn = {};
 		/**
 		 * 初始化加载
 		 */
-		this.load(basicUrl);
+		this.basicStatus = this.load(basicUrl);
 	}
 
 	/**
@@ -36,8 +36,12 @@ class Manager {
 					await this.parser(svgStr, url);
 
 					// 执行
-					this.readyFn.forEach((fn) => fn());
-					this.readyFn = [];
+					Object.entries(this.readyFn).forEach(([type, fns]) => {
+						if (this.icons[type] && fns) {
+							fns.forEach(fn => fn());
+							this.readyFn[type] = null;
+						}
+					});
 
 					// 结束
 					resolve();
@@ -78,11 +82,17 @@ class Manager {
 		});
 	}
 
-	/**
-	 * TODO: ready中找不到会无限的注册（量虽少）, 造成能存泄漏
-	 */
-	ready(fn) {
-		this.readyFn.push(fn);
+	ready(type, fn) {
+		if (typeof type !== 'string') return;
+
+		this.readyFn[type] = this.readyFn[type] || [];
+
+		if (this.readyFn[type].length > 100) {
+			this.readyFn[type] = null;
+			throw new VcError('icon', `${type}不存在该图标，不要重复注册`);
+		}
+
+		this.readyFn[type].push(fn); 
 	}
   
 }

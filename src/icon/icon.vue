@@ -27,12 +27,11 @@ export default {
 	created() {
 		IconManager.icons[this.type] 
 			? this.getConfig() 
-			: IconManager.ready(::this.getConfig);
+			: IconManager.ready(this.type, ::this.getConfig);
 	},
 	
 	methods: {
 		getConfig() {
-			if (!IconManager.icons[this.type]) return;
 			this.viewBox = IconManager.icons[this.type].viewBox;
 			this.path = IconManager.icons[this.type].path;
 		}
