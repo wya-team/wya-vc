@@ -1,16 +1,9 @@
 <template>
 	<vc-popover
+		v-bind="$attrs"
 		v-model="isActive"
 		:placement="placement"
 		:trigger="trigger"
-		:visible="visible"
-		:animate="animate"
-		:theme="theme"
-		:content="content"
-		:get-popup-container="getPopupContainer"
-		:transfer="transfer"
-		:arrow="arrow"
-		@close="handleClose"
 	>
 		<slot />
 		<template #content>
@@ -26,14 +19,14 @@
 						:type="cancelType" 
 						style="margin-right: 8px;"
 						size="small"
-						@click="handleCancel"
+						@click.stop.prevent="handleCancel"
 					>
 						{{ cancelText }}
 					</vc-button>
 					<vc-button 
 						:type="okType" 
 						size="small"
-						@click="handleOk"
+						@click.stop.prevent="handleOk"
 					>
 						{{ okText }}
 					</vc-button>
@@ -55,22 +48,25 @@ export default {
 		'vc-button': Button,
 		'vc-icon': Icon,
 	},
+	inheritAttrs: false,
 	model: {
 		prop: 'visible',
 		event: 'visible-change'
 	},
 	props: {
-		...pick(Popover.props, [
-			'visible', 
-			'animate', 
-			'placement', 
-			'theme', 
-			'content', 
-			'getPopupContainer', 
-			'transfer', 
-			'arrow'
-		]),
+		// ...pick(Popover.props, [
+		// 	'animate', 
+		// 	'theme', 
+		// 	'content', 
+		// 	'getPopupContainer', 
+		// 	'transfer', 
+		// 	'arrow'
+		// ]),
 		title: String,
+		visible: {
+			type: Boolean,
+			default: false
+		},
 		placement: {
 			type: String,
 			default: 'top'

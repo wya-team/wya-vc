@@ -2,6 +2,7 @@
 	<div style="padding: 200px">
 		<vc-popconfirm
 			v-model="visible"
+			:trigger="trigger"
 			title="Are you sure to delete this task?"
 			type="info"
 			@close="handleClose"
@@ -12,6 +13,7 @@
 		</vc-popconfirm>
 
 		<vc-button @click="handleClick">外部点击</vc-button>
+		<vc-button @click="handleTrigger">{{ trigger }}</vc-button>
 	</div>
 </template>
 <script>
@@ -26,7 +28,8 @@ export default {
 	},
 	data() {
 		return {
-			visible: false
+			visible: false,
+			trigger: 'hover'
 		};
 	},
 	computed: {
@@ -46,10 +49,14 @@ export default {
 			return new Promise((resolve, reject) => {
 				setTimeout(() => {
 					reject();
+					callback();
 				}, 1000);
 			}).catch((res) => {
 				console.log(res);
 			});
+		},
+		handleTrigger() {
+			this.trigger = this.trigger === 'hover' ? 'click' : 'hover'; 
 		}
 	}
 };
