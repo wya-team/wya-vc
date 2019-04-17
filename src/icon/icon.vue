@@ -5,7 +5,7 @@
 				v-for="(it, i) in path"
 				:key="i" 
 				:d="it.d" 
-				:fill="it.fill"
+				:fill="inherit && it.fill"
 			/>
 		</svg>
 	</i>
@@ -17,6 +17,10 @@ export default {
 	name: "vc-icon",
 	props: {
 		type: String,
+		inherit: {
+			type: Boolean,
+			default: false
+		}
 	},
 	data() {
 		return {

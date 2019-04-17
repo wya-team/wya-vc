@@ -8,14 +8,15 @@
 
 属性 | 说明 | 类型 | 默认值
 ---|---|---|---
-type | icon类型 | `string` | -
+type | icon类型 | `String` | -
+inherit | 是否使用svg预设的颜色 | `Boolean` | false
 
 
 #### 事件
 
 属性 | 说明 | 类型 | 默认值
 ---|---|---|---
-@click | 点击事件 | `function` | -
+@click | 点击事件 | `Function` | -
 
 
 

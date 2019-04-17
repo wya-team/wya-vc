@@ -4,7 +4,7 @@
 		<h2 @click="handleClick">点我切换 prefix: {{ mobile ? 'vcm-' : 'vc-' }}</h2>
 		<div class="vc-icon-basic">
 			<span v-for="item in items" :key="item" >
-				<vc-icon :type="item"/>
+				<vc-icon :type="item" inherit />
 				<vc-copy 
 					:value="`<vc${m}-icon type=&quot;${item}&quot; />`"
 				>{{ item }}</vc-copy>
