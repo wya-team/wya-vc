@@ -10,7 +10,7 @@
 			:style="wrapperStyle"
 			:class="wrapperClasses"
 			class="vc-popover-core" 
-			@mouseout="isHover && onChange($event, true)"
+			@mouseenter="isHover && onChange($event, true)"
 			@mouseleave="isHover && onChange($event, false)"
 		>
 			<div :class="themeClasses" class="vc-popover-core__container">
