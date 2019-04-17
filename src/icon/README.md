@@ -11,6 +11,8 @@
 type | icon类型 | `String` | -
 inherit | 是否使用svg预设的颜色 | `Boolean` | false
 
+> 如果要改变颜色的话: `:inherit="false"`
+
 
 #### 事件
 

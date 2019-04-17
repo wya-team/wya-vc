@@ -32,7 +32,6 @@ export default {
 		return {
 			items: [],
 			path: '',
-			svgString: '',
 			mobile,
 		};
 	},
@@ -62,9 +61,6 @@ export default {
 };
 </script>
 <style>
-input {
-	border: 1px solid #666
-}
 .vc-icon-basic {
 	display: flex;
 	flex-wrap: wrap;
