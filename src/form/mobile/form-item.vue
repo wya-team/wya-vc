@@ -26,22 +26,10 @@ export default {
 $block: vcm-form-item;
 
 @include block($block) {
-	vertical-align: top;
-	zoom: 1;
 	padding-top: 12px;
 	padding-bottom: 12px;
 	padding-right: 12px;
-	border-bottom: 1px solid #e8e8e8;
-	&:before, &:after {
-		content: "";
-		display: table;
-	}
-	&:after {
-		clear: both;
-		visibility: hidden;
-		font-size: 0;
-		height: 0;
-	}
+	@include commonBorder1PX(bottom);
 	@include element(content) { 
 		position: relative;
 		line-height: 28px;

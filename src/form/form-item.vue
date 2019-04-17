@@ -35,18 +35,7 @@ $block: vc-form-item;
 
 @include block($block) {
 	margin-bottom: 24px;
-	vertical-align: top;
-	zoom: 1;
-	&:before, &:after {
-		content: "";
-		display: table;
-	}
-	&:after {
-		clear: both;
-		visibility: hidden;
-		font-size: 0;
-		height: 0;
-	}
+	@include commonClearfix();
 	@include element(content) { 
 		position: relative;
 		line-height: 28px;

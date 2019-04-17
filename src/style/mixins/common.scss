@@ -60,16 +60,21 @@
  * @return {[type]} [description]
  */
 
-@mixin commonClearfix {
+@mixin commonClearfix($content: false) {
 	zoom: 1;
 	&:before,
 	&:after {
 		content: " ";
 		display: table;
 		clear: both;
-		visibility: hidden;
-		font-size: 0;
-		height: 0;
+		@if $content {
+			@content;
+ } @else {
+			visibility: hidden;
+			font-size: 0;
+			height: 0;
+		}
+ 		
 	}
 }
 
@@ -102,5 +107,133 @@
 		-webkit-border-radius: 5px;
 		border-radius: 5px;
 		background: rgba(0, 0, 0, 0.2);
+	}
+}
+
+/**
+ * 1px
+ * 已为父元素添加position: relative;
+ * 其他只操作before和after;
+ * 暂时不抽离公用
+ */
+
+@mixin commonBorder1PX($direction: '') {
+	position: relative;
+	transform: translateZ(0);
+	& {
+		&:before,
+		&:after {
+			position: absolute;
+			content: " ";
+			display: table;
+			clear: both;
+			box-sizing: border-box;
+			pointer-events: none;
+			z-index: -1;
+		}
+		@if $direction == 'top' {
+			&:before {
+				border-top: 1px solid #e9e9e9;
+				left: 0;
+				top: 0;
+				width: 100%;
+				transform-origin: 0 top;
+			}
+		} @else if $direction == 'right' {
+			&:after {
+				border-right: 1px solid #e9e9e9;
+				top: 0;
+				right: 0;
+				height: 100%;
+				transform-origin: right 0;
+			}
+		} @else if $direction == 'bottom' {
+			&:after {
+				border-bottom: 1px solid #e9e9e9;
+				left: 0;
+				bottom: 0;
+				width: 100%;
+				transform-origin: 0 bottom;
+			}
+		} @else if $direction == 'left' {
+			&:before {
+				border-left: 1px solid #e9e9e9;
+				top: 0;
+				left: 0;
+				height: 100%;
+				transform-origin: left 0;
+			}
+		} @else {
+			&:after {
+				border: 1px solid #e9e9e9;
+				left: 0;
+				top: 0;
+				width: 100%;
+				height: 100%;
+				transform-origin: 0 0;
+			}
+		}
+	}
+	@media (min-resolution: 2dppx) {
+		& {
+			@if $direction == 'top' {
+				&:before {
+					width: 200%;
+					transform: scale(0.5);
+				}
+			} @else if $direction == 'right' {
+				&:after {
+					height: 200%;
+					transform: scale(0.5);
+				}
+			} @else if $direction == 'bottom' {
+				&:after {
+					width: 200%;
+					transform: scale(0.5);
+				}
+			} @else if $direction == 'left' {
+				&:before {
+					height: 200%;
+					transform: scale(0.5);
+				}
+			} @else {
+				&:after {
+					width: 200%;
+					height: 200%;
+					transform: scale(0.5);
+				}
+			}
+		}
+	}
+	@media (min-resolution: 3dppx) {
+		& {
+			@if $direction == 'top' {
+				&:before {
+					width: 300%;
+					transform: scale(0.333);
+				}
+			} @else if $direction == 'right' {
+				&:after {
+					height: 300%;
+					transform: scale(0.333);
+				}
+			} @else if $direction == 'bottom' {
+				&:after {
+					width: 300%;
+					transform: scale(0.333);
+				}
+			} @else if $direction == 'left' {
+				&:before {
+					height: 300%;
+					transform: scale(0.333);
+				}
+			} @else {
+				&:after {
+					width: 300%;
+					height: 300%;
+					transform: scale(0.333);
+				}
+			}
+		}
 	}
 }
