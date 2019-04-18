@@ -438,7 +438,7 @@ export default {
 
 	@include element(header) {
 		position: relative;
-		border-bottom: 1px solid $modal-border-color;
+		border-bottom: 1px solid $border-line-color:;
 		padding: 14px 24px;
 		line-height: 1;
 		font-size: 14px;
@@ -461,7 +461,7 @@ export default {
 		position: absolute;
 		bottom: 0;
 		width: 100%;
-		border-top: 1px solid $modal-border-color;
+		border-top: 1px solid $border-line-color:;
 		padding: 17px 24px;
 		text-align: right;
 		font-size: 0;
