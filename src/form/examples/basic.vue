@@ -29,8 +29,8 @@
 			<div @click="handleAdd">Add item</div>
 		</vc-form-item>
 		<vc-form-item>
-			<div @click="handleSubmit('formValidate')">Submit</div>
-			<div style="margin-left: 8px" @click="handleReset('formValidate')">Reset</div>
+			<vc-button type="primary" @click="handleSubmit('formValidate')">Submit</vc-button>
+			<vc-button style="margin-left: 8px" @click="handleReset('formValidate')">Reset</vc-button>
 		</vc-form-item>
 	</vc-form>
 </template>
@@ -40,6 +40,7 @@ import Form from '..';
 import Tpl from './basic/tpl'; // 可以使用trigger
 import FakeArray from './basic/array'; // 可以使用trigger
 import Input from '../../input';
+import Button from '../../button';
 
 export default {
 	name: "vc-tpl-basic",
@@ -49,6 +50,7 @@ export default {
 		'vc-tpl': Tpl,
 		'vc-array': FakeArray,
 		'vc-input': Input,
+		'vc-button': Button,
 	},
 	data() {
 		return {

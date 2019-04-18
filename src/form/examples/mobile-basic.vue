@@ -5,7 +5,8 @@
 		:rules="ruleValidate"
 		:label-width="96"
 		label-position="left"
-		style="padding-left: 15px" 
+		style="padding-left: 15px"
+		@submit.native.prevent 
 	>	
 		<vcm-form-item prop="input" label="input">
 			<vcm-input v-model="formValidate.input" type="text" placeholder="Enter something..." />
@@ -29,8 +30,8 @@
 			<div @click="handleAdd">Add item</div>
 		</vcm-form-item>
 		<vcm-form-item>
-			<div @click="handleSubmit('formValidate')">Submit</div>
-			<div style="margin-left: 8px" @click="handleReset('formValidate')">Reset</div>
+			<vcm-button type="primary" @click="handleSubmit('formValidate')">Submit</vcm-button>
+			<vcm-button style="margin-left: 8px" @click="handleReset('formValidate')">Reset</vcm-button>
 		</vcm-form-item>
 	</vcm-form>
 </template>
@@ -39,17 +40,19 @@ import MForm from '../index.m';
 
 import Tpl from './basic/tpl';
 import FakeArray from './basic/array';
-import Input from '../../input/index.m';
+import MInput from '../../input/index.m';
 import MToast from '../../toast/index.m';
+import MButton from '../../button/index.m';
 
 export default {
-	name: "vc-tpl-basic",
+	name: "vcm-tpl-basic",
 	components: {
 		'vcm-form': MForm,
 		'vcm-form-item': MForm.Item,
 		'vcm-tpl': Tpl,
 		'vcm-array': FakeArray,
-		'vcm-input': Input
+		'vcm-input': MInput,
+		'vcm-button': MButton,
 	},
 	data() {
 		return {

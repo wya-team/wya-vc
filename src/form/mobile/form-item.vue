@@ -32,18 +32,17 @@ $block: vcm-form-item;
 	@include commonBorder1PX(bottom);
 	@include element(content) { 
 		position: relative;
-		line-height: 28px;
-		font-size: 12px
+		font-size: 16px;
+		line-height: 24px;
 	} 
 	@include element(label) { 
 		text-align: right;
 		vertical-align: middle;
 		float: left;
 		color: $c333;
-		font-size: 12px;
-		line-height: 28px;
-		-webkit-box-sizing: border-box;
-		box-sizing: border-box
+		font-size: 16px;
+		line-height: 24px;
+		box-sizing: border-box;
 	}
 	/**
 	 * -> vc-form-item.is_require
@@ -74,6 +73,9 @@ $block: vcm-form-item;
 				padding: 0 0 10px 0
 			}
 		}
+	}
+	&:last-child:after {
+		display: none
 	}
 }
 
