@@ -15,7 +15,7 @@
 	</div>
 </template>
 <script>
-import _ from 'lodash';
+import { shuffle } from 'lodash';
 import SortList from '../sort-list';
 
 let count = 0;
@@ -40,7 +40,7 @@ export default {
 			this.dataSource.shift();
 		},
 		handleShuffle() {
-			this.dataSource = _.shuffle(this.dataSource);
+			this.dataSource = shuffle(this.dataSource);
 		}
 	}
 };
