@@ -14,12 +14,12 @@
 	>
 		<!-- 
 		<item 
-			slot-scope="it"
+			slot-scope="{ it }"
 			v-bind="it"
 			class="_item"
 		/> 
 		-->
-		<div slot-scope="it" :key="it.id" class="_item">
+		<div slot-scope="{ it }" :key="it.id" class="_item">
 			<div>{{ it.name }}</div>
 			<div @click="handleResetFirst">回到首页刷新</div>
 			<div @click="handleResetCur">当前页刷新</div>

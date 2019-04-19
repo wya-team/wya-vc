@@ -16,7 +16,8 @@
 			@dragover.prevent="getDraggable(item) && handleDragOver($event, index, item)"
 			@dragend="handleDragEnd"
 		>
-			<slot v-bind="typeof item === 'object' ? item : { src: item }" />
+			<!-- 项目中统一使用it, key由slot决定 -->
+			<slot :it="item" :index="index" />
 			<div v-if="mask" class="__mask">
 				<span 
 					:style="{visibility: index !== 0 ? 'unset' : 'hidden'}"

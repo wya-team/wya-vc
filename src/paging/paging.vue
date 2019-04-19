@@ -1,7 +1,7 @@
 <template>
 	<div class="vc-paging">
 		<!-- 原生table -->
-		<table v-if="mode === 'native'" class="_native-table">
+		<table v-if="mode === 'native'" class="vc-paging__native">
 			<thead>
 				<slot v-bind="columns" name="header">
 					<th v-for="item in columns" :key="item">
@@ -13,8 +13,9 @@
 		</table>
 
 		<!-- 没有头部栏的header -->
-		<template v-for="item in data" v-else-if="mode === 'piece'">
-			<slot v-bind="item" />
+		<!-- 项目中统一使用it, key由slot决定 -->
+		<template v-for="(item, index) in data" v-else-if="mode === 'piece'">
+			<slot :it="item" :index="index" />
 		</template>
 		
 		<vc-table
@@ -45,7 +46,7 @@
 			<slot slot="empty" name="empty"/>
 		</vc-table>
 		
-		<div v-if="footer" class="__footer">
+		<div v-if="footer" class="vc-paging__footer">
 			<div>
 				<slot name="extra" />
 			</div>
@@ -525,12 +526,14 @@ export default {
 	}
 };
 </script>
-<style lang="scss" scoped>
-.vc-paging {
-	._native-table {
-		border-collapse:collapse;
+<style lang="scss">
+@import '../style/index.scss';
+
+@include block(vc-paging) {
+	@include element(native) {
+		border-collapse: collapse;
 	}
-	.__footer {
+	@include element(footer) {
 		display: flex; 
 		justify-content: space-between; 
 		align-items: center; 

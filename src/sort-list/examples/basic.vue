@@ -2,7 +2,7 @@
 	<div>
 		<vc-sort-list v-model="dataSource">
 			<div 
-				slot-scope="it" 
+				slot-scope="{ it }" 
 				:style="{ background: `#ff33${it.id}${it.id}` }"
 				style="width: 200px;line-height: 5; color: white"
 			>

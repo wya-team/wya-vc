@@ -1,4 +1,11 @@
 # 历史版本
+
+### 1.2.0 (2019-04-19)
+
+- pull-scroll: it -> { it, index }
+- paging[piece]: it -> { it, index }
+- sort-list: it -> { it, index }
+
 ### 1.0.35 (2019-04-11)
 
 - transition: 新增动画`fade`, `slide`, `zoom`, `scale`,  `collapse`.额外扩展`basic-mixin.js`

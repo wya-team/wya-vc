@@ -30,8 +30,9 @@
 			@pull-end="handleEnd"
 		>
 			<slot name="header" />
-			<template v-for="item in dataSource">
-				<slot v-bind="item" />
+			<!-- 项目中统一使用it, key由slot决定 -->
+			<template v-for="(item, index) in dataSource">
+				<slot :it="item" :index="index"/>
 			</template>
 			<slot name="footer" />
 		</vc-core>

@@ -8,7 +8,7 @@
 		<template #header>
 			<div>这是一个window下的滚动</div>
 		</template>
-		<template #default="it">
+		<template #default="{ it }">
 			<div style="padding: 20px" @click="handleReset">{{ it }}</div>
 		</template>
 	</vc-pull-scroll>
