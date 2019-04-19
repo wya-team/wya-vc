@@ -28,12 +28,23 @@ export default {
 			path: []
 		};
 	},
-	created() {
-		IconManager.icons[this.type] 
-			? this.getConfig() 
-			: IconManager.ready(this.type, ::this.getConfig);
+	watch: {
+		type: {
+			immediate: true,
+			handler(v, old) {
+				IconManager.icons[this.type] 
+					? this.getConfig() 
+					: (
+						IconManager
+							.off(old, this.callback)
+							.on(this.type, this.callback)
+					);
+			}
+		}
 	},
-	
+	created() {
+		this.callback = ::this.getConfig;
+	},
 	methods: {
 		getConfig() {
 			this.viewBox = IconManager.icons[this.type].viewBox;

@@ -83,6 +83,10 @@ VcBasic.prototype.APIS = {};
 VcBasic.prototype.config = {
 	debug: process.env.NODE_ENV === 'development',
 	/**
+	 * 用于过时的缓存, 如icon的缓存解析
+	 */
+	version: '1.0.0',
+	/**
 	 * vuex + vue-router
 	 */
 	store: undefined,

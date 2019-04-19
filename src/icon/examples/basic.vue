@@ -1,18 +1,19 @@
 <template>
 	<div>
-		<h1>点击复制</h1>
+		<h1>点击图标复制</h1>
+		<h1 @click="handleShuffle">乱序测试</h1>
 		<h2 @click="handleClick">点我切换 prefix: {{ mobile ? 'vcm-' : 'vc-' }}</h2>
 		<div class="vc-icon-basic">
-			<span v-for="item in items" :key="item" >
+			<!-- index 仅用于乱序测试 -->
+			<vc-copy v-for="(item, index) in items" :key="index" :value="`<vc${m}-icon type=&quot;${item}&quot; />`">
 				<vc-icon :type="item" inherit />
-				<vc-copy 
-					:value="`<vc${m}-icon type=&quot;${item}&quot; />`"
-				>{{ item }}</vc-copy>
-			</span>
+				<p>{{ item }}</p>
+			</vc-copy>
 		</div>
 	</div>
 </template>
 <script>
+import { shuffle } from 'lodash';
 import Icon from '..';
 import { Storage } from '@wya/utils';
 import Copy from '../../copy';
@@ -56,6 +57,9 @@ export default {
 		handleClick() {
 			this.mobile = !this.mobile;
 			Storage.set('@wya/vc/demo/icon', { status: this.mobile });
+		},
+		handleShuffle() {
+			this.items = shuffle(this.items);
 		}
 	}
 };
@@ -64,10 +68,11 @@ export default {
 .vc-icon-basic {
 	display: flex;
 	flex-wrap: wrap;
-	span {
+	div {
 		width: 200px;
 		padding: 20px;
 		text-align: center;
+		cursor: pointer;
 	}
 	i {
 		font-size: 30px
