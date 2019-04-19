@@ -96,7 +96,7 @@ class Manager {
 	}
 
 	on(type, fn) {
-		if (typeof type !== 'string') return;
+		if (typeof type !== 'string') return this;
 
 		this.events[type] = this.events[type] || [];
 
@@ -114,7 +114,7 @@ class Manager {
 	 * 必传
 	 */
 	off(type, fn) {
-		if (typeof type !== 'string' || typeof fn !== 'function') return;
+		if (typeof type !== 'string' || typeof fn !== 'function') return this;
 
 		this.events[type] = this.events[type].filter((i) => i != fn);
 
