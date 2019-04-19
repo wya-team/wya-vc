@@ -1,6 +1,6 @@
 <template>
 	<tbody>
-		<template v-for="item in data">
+		<template v-for="item in dataSource">
 			<vc-fragment :key="item.id">
 				<tr>
 					<td colspan="4">
@@ -55,7 +55,7 @@ export default {
 	},
 	props: {
 		it: [Object, Array],
-		data: {
+		dataSource: {
 			type: Array,
 			default: () => ([])
 		},

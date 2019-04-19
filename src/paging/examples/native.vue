@@ -13,7 +13,9 @@
 		class="vc-table-native"
 		@page-size-change="handleResetFirst"
 	>
-		<list slot-scope="it" v-bind="it" />
+		<template #default="{ dataSource }">
+			<list :data-source="dataSource" />
+		</template>
 	</vc-paging>
 </template>
 <script>

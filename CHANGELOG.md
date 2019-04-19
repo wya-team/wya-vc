@@ -3,7 +3,7 @@
 ### 1.2.0 (2019-04-19)
 
 - pull-scroll: it -> { it, index }
-- paging[piece]: it -> { it, index }
+- paging[piece]: it -> { it, index }, data -> data-source
 - sort-list: it -> { it, index }
 
 ### 1.0.35 (2019-04-11)

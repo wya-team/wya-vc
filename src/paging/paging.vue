@@ -9,7 +9,7 @@
 					</th>
 				</slot>
 			</thead>
-			<slot :data="data" />
+			<slot :data-source="data" />
 		</table>
 
 		<!-- 没有头部栏的header -->
