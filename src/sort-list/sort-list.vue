@@ -84,7 +84,12 @@ export default {
 			const { dataSource } = this;
 			const { item, index, type } = current; // id:移动对象，i：目标位置，type：类型
 			let isObject = typeof item === 'object';
-			const arr = dataSource.filter(it => it != item);
+			const arr = dataSource.filter(it => {
+				if (isObject) {
+					return it[this.valueKey] !== item[this.valueKey];
+				}
+				return it !== item;
+			});
 
 			let targetIndex;
 			switch (type) {
