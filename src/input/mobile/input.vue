@@ -83,7 +83,7 @@ $block: vcm-input;
 	width: 100%;
 	cursor: text;
 	font-size: 12px;
-	height: 28px; // border
+	height: 28px;
 	line-height: 1.5;
 	// overflow: hidden;
 	box-sizing: border-box;
@@ -94,7 +94,7 @@ $block: vcm-input;
 		outline: 0;
 		color: $c51;
 		padding-top: 5px;
-		padding-bottom: 5px; // 18 + 8 = 26
+		padding-bottom: 5px; // 18 + 10 = 28
 		padding-left: 7px;
 		padding-right: 7px;
 		&::placeholder {
@@ -108,9 +108,9 @@ $block: vcm-input;
 		}
 	}
 	@include element(icon) {
-		width: 26px;
-		height: 26px;
-		line-height: 26px;
+		width: 28px;
+		height: 28px;
+		line-height: 28px;
 		font-size: 13px;
 		text-align: left;
 		padding-left: 1px; // hack for vcm-icon
@@ -136,13 +136,13 @@ $block: vcm-input;
 		height: 100%;
 		text-align: center;
 		font-size: 13px;
-		line-height: 26px;
+		line-height: 28px;
 	}
 	@include element(append) {
 		height: 100%;
 		text-align: center;
 		font-size: 13px;
-		line-height: 26px;
+		line-height: 28px;
 	}
 	@include element(search) {
 		cursor: pointer;
