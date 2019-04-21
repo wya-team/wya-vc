@@ -20,15 +20,11 @@ export default {
 			default: false
 		},
 		labelPosition: {
-			validator(value) {
-				return ['left', 'right', 'top'].includes(value);
-			},
+			validator: v => /^(left|right|top)$/.test(v),
 			default: 'right'
 		},
 		autocomplete: {
-			validator(value) {
-				return ['on', 'off'].includes(value);
-			},
+			validator: v => /^(on|off)$/.test(v),
 			default: 'off'
 		}
 	},
