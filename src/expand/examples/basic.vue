@@ -3,6 +3,7 @@
 		<span @click="handleToggle">
 			更多搜索条件{{ visible ? `up` : `down` }}
 		</span>
+		<vc-icon :type="`triangle-${visible ? `up2` : `down2`}`"/>
 		<vc-expand 
 			ref="expand"
 			v-model="visible"
@@ -23,11 +24,13 @@
 
 <script>
 import Expand from '../index';
+import Icon from '../../icon/index';
 
 export default {
 	name: 'vc-expand-basic',
 	components: {
-		'vc-expand': Expand
+		'vc-expand': Expand,
+		'vc-icon': Icon,
 	},
 	data() {
 		return {
