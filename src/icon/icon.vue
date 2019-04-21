@@ -1,5 +1,5 @@
 <template>
-	<i class="vc-icon" @click="$emit('click', $event)">
+	<i class="vc-icon" @click="handleClick">
 		<svg :viewBox="viewBox" xmlns="http://www.w3.org/2000/svg">
 			<path 
 				v-for="(it, i) in path"
@@ -49,18 +49,24 @@ export default {
 		getConfig() {
 			this.viewBox = IconManager.icons[this.type].viewBox;
 			this.path = IconManager.icons[this.type].path;
+		},
+		handleClick(e) {
+			this.$emit('click', e);
 		}
 	}
 };
 </script>
-<style>
+<style lang="scss">
 .vc-icon {
 	display: inline-block;
+	vertical-align: middle;
 	line-height: 0;
 }
 .vc-icon svg {
 	width: 1em;
 	height: 1em;
+	vertical-align: -0.15em; // 居中
+	// padding: 0.05em;
 	fill: currentColor;
 	overflow: hidden;
 }
