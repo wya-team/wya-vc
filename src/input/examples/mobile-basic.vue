@@ -1,8 +1,9 @@
 <template>
 	<div>
-		<div style="width: 300px">
-			<vc-input 
+		<div>
+			<vcm-input
 				v-model="value"
+				style="height: 200px"
 				clearable
 				search
 				enter-txt="搜索"
@@ -13,7 +14,7 @@
 				@enter="handleEnter"
 			/>
 			<div>
-				<vc-input 
+				<vcm-input 
 					v-model="value"
 					placeholder="显示placeholder"
 					@change="handleChange"
@@ -22,9 +23,9 @@
 					@enter="handleEnter"
 				>
 					<p slot="append">ico2222n</p>
-				</vc-input>
+				</vcm-input>
 			</div>
-			<vc-input 
+			<vcm-input 
 				v-model="value"
 				style="margin-top: 10px;"
 				disabled
@@ -34,12 +35,12 @@
 	</div>
 </template>
 <script>
-import Input from '..';
+import Input from '../index.m';
 
 export default {
-	name: "vc-tpl-basic",
+	name: "vcm-tpl-basic",
 	components: {
-		'vc-input': Input
+		'vcm-input': Input
 	},
 	data() {
 		return {

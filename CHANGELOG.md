@@ -1,4 +1,9 @@
 # 历史版本
+### 1.2.2()
+
+- input: slot（prepend， append， 其他不支持）
+- input: 不再支持`icon`,`prefix`,`suffix`
+
 
 ### 1.2.0 (2019-04-19)
 

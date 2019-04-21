@@ -1,7 +1,7 @@
 <template>
-	<div :class="classes" class="vc-input">
+	<div :class="classes" class="vcm-input">
 		<!-- 前置 -->
-		<div v-if="$slots.prepend" class="vc-input__prepend">
+		<div v-if="$slots.prepend" class="vcm-input__prepend">
 			<slot name="prepend" />
 		</div>
 		<input
@@ -18,7 +18,7 @@
 			:value="currentValue"
 			:number="number"
 			:autofocus="autofocus"
-			class="vc-input__wrapper"
+			class="vcm-input__wrapper"
 			@keyup.enter="handleEnter"
 			@keyup="handleKeyup"
 			@keypress="handleKeypress"
@@ -32,75 +32,61 @@
 			@change="handleChange"
 		>
 		<!-- 清除 -->
-		<vc-transition-fade>
-			<vc-icon
+		<vcm-transition-fade>
+			<vcm-icon
 				v-if="clearable && currentValue" 
-				class="vc-input__icon vc-input__icon-clear" 
+				class="vcm-input__icon vcm-input__icon-clear" 
 				type="close3" 
 				@click="handleInput"
 			/>
-		</vc-transition-fade>
+		</vcm-transition-fade>
+		
 		<!-- 后置 -->
-		<div v-if="search && enterTxt" class="vc-input__search" @click="handleSearch">
-			<vc-icon 
+		<div v-if="search && enterTxt" class="vcm-input__search" @click="handleSearch">
+			<vcm-icon 
 				v-if="enterTxt === true" 
 				type="search"
-				class="vc-input__icon"
+				class="vcm-input__icon"
 			/>
 			<template v-else>{{ enterTxt }}</template>
 		</div>
-		<div v-else-if="$slots.append" class="vc-input__append">
+		<div v-else-if="$slots.append" class="vcm-input__append">
 			<slot name="append" />
 		</div>
 	</div>
 </template>
 
 <script>
-import basicMixin from './basic-mixin';
-import Icon from '../icon/index';
-import Transition from '../transition/index';
+import basicMixin from '../basic-mixin';
+import Icon from '../../icon/index.m';
+import Transition from '../../transition/index.m';
 
 export default {
-	name: 'vc-input',
+	name: 'vcm-input',
 	components: {
-		'vc-icon': Icon,
-		'vc-transition-fade': Transition.Fade
+		'vcm-icon': Icon,
+		'vcm-transition-fade': Transition.Fade
 	},
 	mixins: [basicMixin]
 };
 </script>
 
 <style lang="scss">
-@import '../style/index.scss';
+@import '../../style/index.scss';
 
-$block: vc-input;
+$block: vcm-input;
 
 @include block($block) {
 	position: relative;
-	@include commonBorder1PX(); // 不占边距
 	display: flex;
 	align-items: center;
 	width: 100%;
 	cursor: text;
 	font-size: 12px;
-	border-radius: 4px;
 	height: 28px; // border
 	line-height: 1.5;
-	transition: border .2s ease-in-out, 
-		background .2s ease-in-out, 
-		box-shadow .2s ease-in-out;
+	// overflow: hidden;
 	box-sizing: border-box;
-	overflow: hidden;
-	@include when(focus) {
-		&:after, &:before {
-			border-color: #57a3f3;
-		}
-		z-index: 2;
-		box-shadow: 0 0 1px 1px rgba(45, 140, 240, .2)
-	}
-	&:hover {
-		border-color: #57a3f3
-	}
 	@include element(wrapper) {
 		position: relative;
 		width: 100%;
@@ -108,7 +94,7 @@ $block: vc-input;
 		outline: 0;
 		color: $c51;
 		padding-top: 5px;
-		padding-bottom: 5px; // 18 + 10 = 28
+		padding-bottom: 5px; // 18 + 8 = 26
 		padding-left: 7px;
 		padding-right: 7px;
 		&::placeholder {
@@ -122,12 +108,12 @@ $block: vc-input;
 		}
 	}
 	@include element(icon) {
-		width: 28px;
-		height: 28px;
-		line-height: 28px;
+		width: 26px;
+		height: 26px;
+		line-height: 26px;
 		font-size: 13px;
 		text-align: left;
-		padding-left: 1px; // hack for vc-icon
+		padding-left: 1px; // hack for vcm-icon
 		color: #808695;
 	}
 
@@ -139,7 +125,7 @@ $block: vc-input;
 	}
 	@include pseudo(hover) {
 		@include element(icon-clear){
-			display: inline-block;
+			display: block;
 		}
 	}
 
@@ -150,13 +136,13 @@ $block: vc-input;
 		height: 100%;
 		text-align: center;
 		font-size: 13px;
-		line-height: 28px;
+		line-height: 26px;
 	}
 	@include element(append) {
 		height: 100%;
 		text-align: center;
 		font-size: 13px;
-		line-height: 28px;
+		line-height: 26px;
 	}
 	@include element(search) {
 		cursor: pointer;
