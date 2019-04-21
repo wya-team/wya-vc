@@ -32,12 +32,12 @@ export default {
 		type: {
 			immediate: true,
 			handler(v, old) {
-				IconManager.icons[this.type] 
+				IconManager.icons[v] 
 					? this.getConfig() 
 					: (
 						IconManager
 							.off(old, this.callback)
-							.on(this.type, this.callback)
+							.on(v, this.callback)
 					);
 			}
 		}
