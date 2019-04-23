@@ -7,6 +7,7 @@
 			</div>
 			<input
 				ref="input"
+				:value="currentValue"
 				v-bind="binds"
 				class="vc-input__input"
 				v-on="hooks"

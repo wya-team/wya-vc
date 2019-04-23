@@ -114,7 +114,7 @@ export default {
 				maxlength: this.maxlength,
 				readonly: this.readonly,
 				name: this.name,
-				value: this.currentValue,
+				// value: this.currentValue, // 频率高
 				number: this.number,
 				autofocus: this.autofocus,
 			};
