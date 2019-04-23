@@ -3,6 +3,7 @@
 		<div>
 			<vc-input
 				v-model="value"
+				style="width: 200px;"
 				clearable
 				search
 				enter-txt="搜索"

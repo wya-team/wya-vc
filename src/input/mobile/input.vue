@@ -7,30 +7,9 @@
 			</div>
 			<input
 				ref="input"
-				:id="elementId"
-				:autocomplete="autocomplete"
-				:spellcheck="spellcheck"
-				:type="type"
-				:placeholder="placeholder"
-				:disabled="disabled"
-				:maxlength="maxlength"
-				:readonly="readonly"
-				:name="name"
-				:value="currentValue"
-				:number="number"
-				:autofocus="autofocus"
+				v-bind="binds"
 				class="vcm-input__input"
-				@keyup.enter="handleEnter"
-				@keyup="handleKeyup"
-				@keypress="handleKeypress"
-				@keydown="handleKeydown"
-				@focus="handleFocus"
-				@blur="handleBlur"
-				@compositionstart="handleComposition"
-				@compositionupdate="handleComposition"
-				@compositionend="handleComposition"
-				@input="handleInput"
-				@change="handleChange"
+				v-on="hooks"
 			>
 			<!-- 清除 -->
 			<vcm-transition-fade>
@@ -41,17 +20,7 @@
 					@click="handleInput"
 				/>
 			</vcm-transition-fade>
-			
-			<!-- 后置 -->
-			<div v-if="search && enterTxt" class="vcm-input__search" @click="handleSearch">
-				<vcm-icon 
-					v-if="enterTxt === true" 
-					type="search"
-					class="vcm-input__icon"
-				/>
-				<template v-else>{{ enterTxt }}</template>
-			</div>
-			<div v-else-if="$slots.append" class="vcm-input__append">
+			<div v-if="$slots.append" class="vcm-input__append">
 				<slot name="append" />
 			</div>
 		</div>

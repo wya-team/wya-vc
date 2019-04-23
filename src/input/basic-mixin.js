@@ -65,14 +65,14 @@ export default {
 	},
 	data() {
 		return {
-			currentValue: undefined,
+			currentValue: this.value,
 			isFocus: false,
 			isOnComposition: false
 		};
 	},
 	watch: {
 		value: {
-			immediate: true,
+			immediate: false,
 			handler(v, old) {
 				this.currentValue = v;
 
@@ -88,15 +88,41 @@ export default {
 			return {
 				'is-focus': this.isFocus
 			};
+		},
+		hooks() {
+			return {
+				keyup: this.handleKeyup,
+				keypress: this.handleKeypress,
+				keydown: this.handleKeydown,
+				focus: this.handleFocus,
+				blur: this.handleBlur,
+				compositionstart: this.handleComposition,
+				compositionupdate: this.handleComposition,
+				compositionend: this.handleComposition,
+				input: this.handleInput,
+				change: this.handleChange,
+			};
+		},
+		binds() {
+			return {
+				id: this.elementId,
+				autocomplete: this.autocomplete,
+				spellcheck: this.spellcheck,
+				type: this.type,
+				placeholder: this.placeholder,
+				disabled: this.disabled,
+				maxlength: this.maxlength,
+				readonly: this.readonly,
+				name: this.name,
+				value: this.currentValue,
+				number: this.number,
+				autofocus: this.autofocus,
+			};
 		}
 	},
 	mounted() {
 	},
 	methods: {
-		handleEnter(e) {
-			this.$emit('enter', e);
-			if (this.search) this.$emit('search', this.currentValue);
-		},
 		handleKeydown(e) {
 			this.$emit('keydown', e);
 		},
@@ -104,6 +130,10 @@ export default {
 			this.$emit('keypress', e);
 		},
 		handleKeyup(e) {
+			if (e.keyCode == 13) {
+				this.$emit('enter', e);
+				this.search && this.$emit('search', this.currentValue);
+			}
 			this.$emit('keyup', e);
 		},
 		handleFocus(e) {
@@ -139,7 +169,7 @@ export default {
 			this.$emit('change', e);
 		},
 		handleChange(e) {
-			this.$emit('input-change', e);
+			this.$emit('change', e);
 		},
 		handleClear() {
 			const e = { target: { value: '' } };

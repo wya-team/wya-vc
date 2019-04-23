@@ -7,30 +7,9 @@
 			</div>
 			<input
 				ref="input"
-				:id="elementId"
-				:autocomplete="autocomplete"
-				:spellcheck="spellcheck"
-				:type="type"
-				:placeholder="placeholder"
-				:disabled="disabled"
-				:maxlength="maxlength"
-				:readonly="readonly"
-				:name="name"
-				:value="currentValue"
-				:number="number"
-				:autofocus="autofocus"
+				v-bind="binds"
 				class="vc-input__input"
-				@keyup.enter="handleEnter"
-				@keyup="handleKeyup"
-				@keypress="handleKeypress"
-				@keydown="handleKeydown"
-				@focus="handleFocus"
-				@blur="handleBlur"
-				@compositionstart="handleComposition"
-				@compositionupdate="handleComposition"
-				@compositionend="handleComposition"
-				@input="handleInput"
-				@change="handleChange"
+				v-on="hooks"
 			>
 			<!-- 清除 -->
 			<vc-transition-fade>
