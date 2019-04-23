@@ -1,57 +1,59 @@
 <template>
 	<div :class="classes" class="vcm-input">
-		<!-- 前置 -->
-		<div v-if="$slots.prepend" class="vcm-input__prepend">
-			<slot name="prepend" />
-		</div>
-		<input
-			ref="input"
-			:id="elementId"
-			:autocomplete="autocomplete"
-			:spellcheck="spellcheck"
-			:type="type"
-			:placeholder="placeholder"
-			:disabled="disabled"
-			:maxlength="maxlength"
-			:readonly="readonly"
-			:name="name"
-			:value="currentValue"
-			:number="number"
-			:autofocus="autofocus"
-			class="vcm-input__wrapper"
-			@keyup.enter="handleEnter"
-			@keyup="handleKeyup"
-			@keypress="handleKeypress"
-			@keydown="handleKeydown"
-			@focus="handleFocus"
-			@blur="handleBlur"
-			@compositionstart="handleComposition"
-			@compositionupdate="handleComposition"
-			@compositionend="handleComposition"
-			@input="handleInput"
-			@change="handleChange"
-		>
-		<!-- 清除 -->
-		<vcm-transition-fade>
-			<vcm-icon
-				v-if="clearable && currentValue" 
-				class="vcm-input__icon vcm-input__icon-clear" 
-				type="close3" 
-				@click="handleInput"
-			/>
-		</vcm-transition-fade>
-		
-		<!-- 后置 -->
-		<div v-if="search && enterTxt" class="vcm-input__search" @click="handleSearch">
-			<vcm-icon 
-				v-if="enterTxt === true" 
-				type="search"
-				class="vcm-input__icon"
-			/>
-			<template v-else>{{ enterTxt }}</template>
-		</div>
-		<div v-else-if="$slots.append" class="vcm-input__append">
-			<slot name="append" />
+		<div class="vcm-input__wrapper">
+			<!-- 前置 -->
+			<div v-if="$slots.prepend" class="vcm-input__prepend">
+				<slot name="prepend" />
+			</div>
+			<input
+				ref="input"
+				:id="elementId"
+				:autocomplete="autocomplete"
+				:spellcheck="spellcheck"
+				:type="type"
+				:placeholder="placeholder"
+				:disabled="disabled"
+				:maxlength="maxlength"
+				:readonly="readonly"
+				:name="name"
+				:value="currentValue"
+				:number="number"
+				:autofocus="autofocus"
+				class="vcm-input__input"
+				@keyup.enter="handleEnter"
+				@keyup="handleKeyup"
+				@keypress="handleKeypress"
+				@keydown="handleKeydown"
+				@focus="handleFocus"
+				@blur="handleBlur"
+				@compositionstart="handleComposition"
+				@compositionupdate="handleComposition"
+				@compositionend="handleComposition"
+				@input="handleInput"
+				@change="handleChange"
+			>
+			<!-- 清除 -->
+			<vcm-transition-fade>
+				<vcm-icon
+					v-if="clearable && currentValue" 
+					class="vcm-input__icon vcm-input__icon-clear" 
+					type="close3" 
+					@click="handleInput"
+				/>
+			</vcm-transition-fade>
+			
+			<!-- 后置 -->
+			<div v-if="search && enterTxt" class="vcm-input__search" @click="handleSearch">
+				<vcm-icon 
+					v-if="enterTxt === true" 
+					type="search"
+					class="vcm-input__icon"
+				/>
+				<template v-else>{{ enterTxt }}</template>
+			</div>
+			<div v-else-if="$slots.append" class="vcm-input__append">
+				<slot name="append" />
+			</div>
 		</div>
 	</div>
 </template>
@@ -78,16 +80,18 @@ $block: vcm-input;
 
 @include block($block) {
 	position: relative;
-	display: flex;
-	align-items: center;
 	width: 100%;
 	cursor: text;
 	font-size: 12px;
 	height: 28px;
 	line-height: 1.5;
 	// overflow: hidden;
-	box-sizing: border-box;
 	@include element(wrapper) {
+		display: flex;
+		align-items: center;
+		flex: 1;
+	}
+	@include element(input) {
 		position: relative;
 		width: 100%;
 		background-color: $white;

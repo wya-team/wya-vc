@@ -1,56 +1,58 @@
 <template>
 	<div :class="classes" class="vc-input">
-		<!-- 前置 -->
-		<div v-if="$slots.prepend" class="vc-input__prepend">
-			<slot name="prepend" />
-		</div>
-		<input
-			ref="input"
-			:id="elementId"
-			:autocomplete="autocomplete"
-			:spellcheck="spellcheck"
-			:type="type"
-			:placeholder="placeholder"
-			:disabled="disabled"
-			:maxlength="maxlength"
-			:readonly="readonly"
-			:name="name"
-			:value="currentValue"
-			:number="number"
-			:autofocus="autofocus"
-			class="vc-input__wrapper"
-			@keyup.enter="handleEnter"
-			@keyup="handleKeyup"
-			@keypress="handleKeypress"
-			@keydown="handleKeydown"
-			@focus="handleFocus"
-			@blur="handleBlur"
-			@compositionstart="handleComposition"
-			@compositionupdate="handleComposition"
-			@compositionend="handleComposition"
-			@input="handleInput"
-			@change="handleChange"
-		>
-		<!-- 清除 -->
-		<vc-transition-fade>
-			<vc-icon
-				v-if="clearable && currentValue" 
-				class="vc-input__icon vc-input__icon-clear" 
-				type="close3" 
-				@click="handleInput"
-			/>
-		</vc-transition-fade>
-		<!-- 后置 -->
-		<div v-if="search && enterTxt" class="vc-input__search" @click="handleSearch">
-			<vc-icon 
-				v-if="enterTxt === true" 
-				type="search"
-				class="vc-input__icon"
-			/>
-			<template v-else>{{ enterTxt }}</template>
-		</div>
-		<div v-else-if="$slots.append" class="vc-input__append">
-			<slot name="append" />
+		<div class="vc-input__wrapper">
+			<!-- 前置 -->
+			<div v-if="$slots.prepend" class="vc-input__prepend">
+				<slot name="prepend" />
+			</div>
+			<input
+				ref="input"
+				:id="elementId"
+				:autocomplete="autocomplete"
+				:spellcheck="spellcheck"
+				:type="type"
+				:placeholder="placeholder"
+				:disabled="disabled"
+				:maxlength="maxlength"
+				:readonly="readonly"
+				:name="name"
+				:value="currentValue"
+				:number="number"
+				:autofocus="autofocus"
+				class="vc-input__input"
+				@keyup.enter="handleEnter"
+				@keyup="handleKeyup"
+				@keypress="handleKeypress"
+				@keydown="handleKeydown"
+				@focus="handleFocus"
+				@blur="handleBlur"
+				@compositionstart="handleComposition"
+				@compositionupdate="handleComposition"
+				@compositionend="handleComposition"
+				@input="handleInput"
+				@change="handleChange"
+			>
+			<!-- 清除 -->
+			<vc-transition-fade>
+				<vc-icon
+					v-if="clearable && currentValue" 
+					class="vc-input__icon vc-input__icon-clear" 
+					type="close3" 
+					@click="handleInput"
+				/>
+			</vc-transition-fade>
+			<!-- 后置 -->
+			<div v-if="search && enterTxt" class="vc-input__search" @click="handleSearch">
+				<vc-icon 
+					v-if="enterTxt === true" 
+					type="search"
+					class="vc-input__icon"
+				/>
+				<template v-else>{{ enterTxt }}</template>
+			</div>
+			<div v-else-if="$slots.append" class="vc-input__append">
+				<slot name="append" />
+			</div>
 		</div>
 	</div>
 </template>
@@ -76,21 +78,18 @@ export default {
 $block: vc-input;
 
 @include block($block) {
+	display: inline-block;
 	position: relative;
-	@include commonBorder1PX(); // 不占边距
-	display: flex;
-	align-items: center;
 	width: 100%;
 	cursor: text;
 	font-size: 12px;
 	border-radius: 4px;
-	height: 28px; // border
+	height: 28px;
 	line-height: 1.5;
-	transition: border .2s ease-in-out, 
+	transition: all .2s ease-in-out, 
 		background .2s ease-in-out, 
 		box-shadow .2s ease-in-out;
-	box-sizing: border-box;
-	overflow: hidden;
+	@include commonBorder1PX(); // 不占边距
 	@include when(focus) {
 		&:after, &:before {
 			border-color: #57a3f3;
@@ -102,6 +101,13 @@ $block: vc-input;
 		border-color: #57a3f3
 	}
 	@include element(wrapper) {
+		display: flex;
+		flex: 1;
+		align-items: center;
+		border-radius: 4px;
+		overflow: hidden;
+	}
+	@include element(input) {
 		position: relative;
 		width: 100%;
 		background-color: $white;

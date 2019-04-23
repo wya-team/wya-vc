@@ -3,7 +3,7 @@
 		<div>
 			<vcm-input
 				v-model="value"
-				style="height: 200px"
+				style="width: 200px"
 				clearable
 				search
 				enter-txt="搜索"

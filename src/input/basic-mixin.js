@@ -106,9 +106,6 @@ export default {
 		handleKeyup(e) {
 			this.$emit('keyup', e);
 		},
-		handleIconClick(e) {
-			this.$emit('click', e);
-		},
 		handleFocus(e) {
 			this.isFocus = true;
 
@@ -144,11 +141,10 @@ export default {
 		handleChange(e) {
 			this.$emit('input-change', e);
 		},
-		handleClear(e) {
-			console.log(e);
-			// const e = { target: { value: '' } };
-			// this.$emit('input', '');
-			// this.$emit('change', e);
+		handleClear() {
+			const e = { target: { value: '' } };
+			this.$emit('input', '');
+			this.$emit('change', e);
 		},
 		handleSearch() {
 			if (this.disabled) return false;

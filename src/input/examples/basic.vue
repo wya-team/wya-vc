@@ -1,7 +1,7 @@
 <template>
 	<div>
-		<div style="width: 300px">
-			<vc-input 
+		<div>
+			<vc-input
 				v-model="value"
 				clearable
 				search
@@ -12,6 +12,8 @@
 				@blur="handleBlur"
 				@enter="handleEnter"
 			/>
+			<span>22</span>
+			<br><br><br><br>
 			<div>
 				<vc-input 
 					v-model="value"
