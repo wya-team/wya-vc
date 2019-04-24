@@ -1,6 +1,6 @@
 <template>
 	<div :class="classes" @click="handleLinkTo">
-		<div :style="{ width: typeof labelWidth === 'string' ? labelWidth : labelWidth + 'px' }">
+		<div :style="{ width: labelWidth }">
 			<slot name="label">
 				{{ label }}
 			</slot>
@@ -68,7 +68,8 @@ export default {
 			return classNames;
 		},
 		labelWidth() {
-			return this.width || (this.list && this.list.labelWidth);
+			let width = this.width || (this.list && this.list.labelWidth);
+			return typeof width === 'string' ? width : width + 'px';
 		}
 	},
 	watch: {
