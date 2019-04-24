@@ -1,15 +1,19 @@
 <template>
-	<div :class="classes" @click="handleLinkTo">
-		<div :style="{ width: labelWidth }">
+	<div :class="classes" class="vcm-list-item" @click="handleLinkTo">
+		<div :style="[labelStyle]">
 			<slot name="label">
 				{{ label }}
 			</slot>
 		</div>
-		<div class="vcm-list-item__right">
+		<div class="vcm-list-item__content">
 			<slot >
 				{{ extra }}
 			</slot>
-			<vc-icon v-if="arrow" type="right" class="vcm-list-item__icon" />
+			<vc-icon 
+				v-if="arrow && typeof arrow === 'string'" 
+				:type="arrow" 
+				class="vcm-list-item__icon" 
+			/>
 		</div>
 	</div>
 </template>
@@ -32,26 +36,26 @@ export default {
 	},
 	props: {
 		label: String,
-		width: {
+		labelWidth: {
 			type: Number | String,
 			default: ''
 		},
 		extra: String,
 		// 带不带箭头
 		arrow: {
-			type: Boolean,
-			default: false
+			type: String | Boolean,
+			default: 'right',
 		},
 		// 多行
-		multipleLine: {
+		multiple: {
 			type: Boolean,
 			default: false
 		},
 		to: String | Object,
-		routeMethod: {
+		method: {
 			type: String,
 			default: 'push',
-			validator: (val) => /(push|replace)/.test(val)
+			validator: v => /^(push|replace|go|back|forward)$/.test(v)
 		}
 	},
 	data() {
@@ -60,17 +64,18 @@ export default {
 	},
 	computed: {
 		classes() {
-			let classNames = 'vcm-list-item';
-			if (!this.list) {
-				classNames += ' vcm-list-item--alone';
-			}
-			classNames += this.multipleLine ? ' vcm-list-item--multi' : ' vcm-list-item--line';
-			return classNames;
+			return {
+				'vcm-list-item--alone': !this.list,
+				'vcm-list-item--multi': this.multiple,
+				'vcm-list-item--line': !this.multiple,
+			};
 		},
-		labelWidth() {
-			let width = this.width || (this.list && this.list.labelWidth);
-			return typeof width === 'string' ? width : width + 'px';
-		}
+		labelStyle() {
+			const labelWidth = this.labelWidth === 0 || this.labelWidth ? this.labelWidth : this.list.labelWidth;
+			return {
+				width: labelWidth > 0 ? `${labelWidth}px` : 'auto'
+			};
+		},
 	},
 	watch: {
 		
@@ -79,13 +84,15 @@ export default {
 		
 	},
 	methods: {
-		handleLinkTo() {
+		handleLinkTo(e) {
 			if (this.to) {
 				if (typeof to === 'string' && HTTP_REGEX.test(to)) {
 					window.open(to);
 				} else {
-					this.$router && this.$router[this.routeMethod](to);
+					this.$router && this.$router[this.method](to);
 				}
+			} else {
+				this.$emit('click', e);
 			}
 		}
 	},
@@ -119,7 +126,7 @@ export default {
 		padding-top: unset;
 		padding-bottom: unset;
 	}
-	@include element(right) {
+	@include element(content) {
 	}
 	@include element(icon) {
 		color: #828282;
