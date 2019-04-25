@@ -4,6 +4,7 @@
 		v-model="isActive"
 		:placement="placement"
 		:trigger="trigger"
+		@ready="$emit('ready')"
 	>
 		<slot />
 		<template #content>

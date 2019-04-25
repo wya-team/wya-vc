@@ -1,6 +1,8 @@
 # 历史版本
 ### 1.2.2()
 
+- popover: 新增ready事件
+- popconfirm: 新增ready事件
 - input: slot（prepend， append， 其他不支持）
 - input: 不再支持`icon`,`prefix`,`suffix`
 

@@ -25,6 +25,7 @@ theme | 颜色主体`light` `dark` | `string` | `light`
 ---|---|---|---
 `visible-change` | 弹层显示隐藏的回调 | `visible` | `true | false`
 `close` | 关闭时回调 | - | -
+`ready` | 弹层节点挂载完成回调 | - | -
 
 #### Slot
 

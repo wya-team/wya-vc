@@ -91,6 +91,7 @@ export default {
 					slots: this.$slots,
 					onChange: ::this.handleChange,
 					onClose: () => this.$emit('close'),
+					onReady: () => this.$emit('ready'),
 					isHover: this.isHover,
 					...this.$props,
 				});

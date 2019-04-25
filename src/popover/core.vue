@@ -70,6 +70,7 @@ const popup = {
 		},
 		popupContainer: HTMLElement,
 		onChange: Function,
+		onReady: Function,
 		isHover: Boolean,
 	},
 	data() {
@@ -110,6 +111,8 @@ const popup = {
 
 		// 捕获阶段执行
 		!this.isHover && document.addEventListener('click', this.handleClick, true);
+
+		this.onReady && this.onReady();
 	},
 	destroyed() {
 		!this.isHover && document.removeEventListener('click', this.handleClick, true);

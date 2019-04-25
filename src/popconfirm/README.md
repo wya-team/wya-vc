@@ -24,6 +24,7 @@ ok | 点击确定的回调, 配合Promise触发loading效果 | `(e, callback) =>
 cancel | 点击取消的回调 | `Function` | -
 visible-change | visible改变时回调 | - | - 
 close | 关闭时回调 | - | - 
+ready | 弹层出来时回调 | - | - 
 
 #### Slot
 
