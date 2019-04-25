@@ -6,12 +6,14 @@
 			</slot>
 		</div>
 		<div class="vcm-list-item__content">
-			<slot >
-				{{ extra }}
-			</slot>
+			<div class="vcm-list-item__extra">
+				<slot name="extra">
+					{{ extra }}
+				</slot>
+			</div>
 			<vc-icon 
-				v-if="arrow && typeof arrow === 'string'" 
-				:type="arrow" 
+				v-if="arrow" 
+				:type="icon" 
 				class="vcm-list-item__icon" 
 			/>
 		</div>
@@ -32,6 +34,13 @@ export default {
 		list: {
 			from: 'list',
 			default: undefined
+		},
+		/**
+		 * 表单情况下
+		 */
+		form: {
+			from: 'form',
+			default: undefined
 		}
 	},
 	props: {
@@ -41,7 +50,6 @@ export default {
 			default: ''
 		},
 		extra: String,
-		// 带不带箭头
 		arrow: {
 			type: String | Boolean,
 			default: 'right',
@@ -64,24 +72,32 @@ export default {
 	},
 	computed: {
 		classes() {
+			/**
+			 * form/list特殊处理
+			 */
+			let hasForm = !!this.form;
+			let hasList = !!this.list;
 			return {
-				'vcm-list-item--alone': !this.list,
+				'vcm-list-item--alone': !hasList || hasForm,
 				'vcm-list-item--multi': this.multiple,
 				'vcm-list-item--line': !this.multiple,
 			};
 		},
 		labelStyle() {
-			const labelWidth = this.labelWidth === 0 || this.labelWidth ? this.labelWidth : this.list.labelWidth;
+			const labelWidth = this.labelWidth === 0 || this.labelWidth ? this.labelWidth : (this.list && this.list.labelWidth);
 			return {
 				width: labelWidth > 0 ? `${labelWidth}px` : 'auto'
 			};
 		},
+		icon() {
+			return typeof arrow === 'string' ? arrow : 'right';
+		}
 	},
 	watch: {
 		
 	},
 	created() {
-		
+		console.log(this.form);
 	},
 	methods: {
 		handleLinkTo(e) {
@@ -106,10 +122,12 @@ export default {
 	@include commonBorder1PX(bottom);
 	display: flex;
 	font-size: 16px;
+	line-height: 24px;
+	background: #fff;
 	color: #000;
-	background-color: #fff;
 	padding-top: 12px;
 	padding-bottom: 12px;
+	padding-right: 12px;
 	// 单行
 	@include modifier(line) {
 		align-items: center;
@@ -125,8 +143,14 @@ export default {
 		}
 		padding-top: unset;
 		padding-bottom: unset;
+		padding-right: unset;
 	}
 	@include element(content) {
+		display: flex;
+		align-items: center;
+	}
+	@include element(extra) {
+		color: #828282;
 	}
 	@include element(icon) {
 		color: #828282;

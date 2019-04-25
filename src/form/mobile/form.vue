@@ -1,5 +1,5 @@
 <template>
-	<form :autocomplete="autocomplete" class="vcm-form">
+	<form :autocomplete="autocomplete" :class="{ 'is-border': border }" :style="{ paddingLeft: `${indent}px`}" class="vcm-form">
 		<slot />
 	</form>
 </template>
@@ -16,6 +16,14 @@ export default {
 		showMessage: {
 			type: Boolean,
 			default: false
+		},
+		border: {
+			type: Boolean,
+			default: false
+		},
+		indent: {
+			type: Number,
+			default: 12
 		}
 	}
 };
@@ -25,7 +33,10 @@ export default {
 $block: vcm-form;
 
 @include block($block) {
-	padding-left: 12px; 
+	@include when(border) {
+		@include commonBorder1PX(top);
+		@include commonBorder1PX(bottom);
+	}
 }
 
 </style>
