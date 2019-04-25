@@ -1,21 +1,23 @@
 <template>
-	<div :class="classes" class="vcm-list-item" @click="handleLinkTo">
-		<div :style="[labelStyle]">
-			<slot name="label">
-				{{ label }}
-			</slot>
-		</div>
-		<div class="vcm-list-item__content">
-			<div class="vcm-list-item__extra">
-				<slot name="extra">
-					{{ extra }}
+	<div :style="{ paddingLeft: `${indent}px`}" class="vcm-list-item" @click="handleLinkTo">
+		<div :class="classes" class="vcm-list-item__wrapper">
+			<div :style="[labelStyle]">
+				<slot name="label">
+					{{ label }}
 				</slot>
 			</div>
-			<vc-icon 
-				v-if="arrow" 
-				:type="icon" 
-				class="vcm-list-item__icon" 
-			/>
+			<div class="vcm-list-item__content">
+				<div class="vcm-list-item__extra">
+					<slot name="extra">
+						{{ extra }}
+					</slot>
+				</div>
+				<vc-icon 
+					v-if="arrow" 
+					:type="icon" 
+					class="vcm-list-item__icon" 
+				/>
+			</div>
 		</div>
 	</div>
 </template>
@@ -64,6 +66,10 @@ export default {
 			type: String,
 			default: 'push',
 			validator: v => /^(push|replace|go|back|forward)$/.test(v)
+		},
+		indent: {
+			type: Number,
+			default: 12
 		}
 	},
 	data() {
@@ -78,9 +84,9 @@ export default {
 			let hasForm = !!this.form;
 			let hasList = !!this.list;
 			return {
-				'vcm-list-item--alone': !hasList || hasForm,
-				'vcm-list-item--multi': this.multiple,
-				'vcm-list-item--line': !this.multiple,
+				'is-alone': !hasList || hasForm,
+				'is-multi': this.multiple,
+				'is-line': !this.multiple,
 			};
 		},
 		labelStyle() {
@@ -97,7 +103,6 @@ export default {
 		
 	},
 	created() {
-		console.log(this.form);
 	},
 	methods: {
 		handleLinkTo(e) {
@@ -119,32 +124,35 @@ export default {
 @import '../../style/index.scss';
 
 @include block(vcm-list-item) {
-	@include commonBorder1PX(bottom);
-	display: flex;
-	font-size: 16px;
-	line-height: 24px;
-	background: #fff;
-	color: #000;
-	padding-top: 12px;
-	padding-bottom: 12px;
-	padding-right: 12px;
-	// 单行
-	@include modifier(line) {
-		align-items: center;
-		justify-content: space-between;
-	}
-	// 换行
-	@include modifier(multi) {
-		flex-direction: column;
-	}
-	@include modifier(alone) {
-		@include pseudo(after) {
-			display: none
+	@include element(wrapper) {
+		@include commonBorder1PX(bottom);
+		display: flex;
+		font-size: 16px;
+		line-height: 24px;
+		background: #fff;
+		color: #000;
+		padding-top: 12px;
+		padding-bottom: 12px;
+		padding-right: 12px;
+		// 单行
+		@include when(line) {
+			align-items: center;
+			justify-content: space-between;
 		}
-		padding-top: unset;
-		padding-bottom: unset;
-		padding-right: unset;
+		// 换行
+		@include when(multi) {
+			flex-direction: column;
+		}
+		@include when(alone) {
+			@include pseudo(after) {
+				display: none
+			}
+			padding-top: unset;
+			padding-bottom: unset;
+			padding-right: unset;
+		}
 	}
+
 	@include element(content) {
 		display: flex;
 		align-items: center;

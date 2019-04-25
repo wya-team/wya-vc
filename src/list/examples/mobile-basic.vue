@@ -23,15 +23,15 @@
 		<br>
 		<!-- 鬼畜嵌套 -->
 		<vcm-form>
-			<vcm-list :border="false" :indent="0">
-				<vcm-form-item>
+			<vcm-list :border="false">
+				<vcm-form-item :indent="0">
 					<vcm-list-item :arrow="true" label="姓名">
 						<template #label="">
 							<div>鬼畜嵌套</div>
 						</template>
 					</vcm-list-item>
 				</vcm-form-item>
-				<vcm-form-item>
+				<vcm-form-item :indent="0">
 					<vcm-list-item :arrow="true" label="姓名">
 						<template #label="">
 							<div>鬼畜嵌套</div>
@@ -47,14 +47,14 @@
 		<!-- 鬼畜嵌套 -->
 		<vcm-form>
 			<vcm-form-item>
-				<vcm-list-item :arrow="true" label="姓名">
+				<vcm-list-item :arrow="true" :indent="0" label="姓名">
 					<template #label="">
 						<div>鬼畜嵌套</div>
 					</template>
 				</vcm-list-item>
 			</vcm-form-item>
 			<vcm-form-item>
-				<vcm-list-item :arrow="true" label="姓名">
+				<vcm-list-item :arrow="true" :indent="0" label="姓名">
 					<template #label="">
 						<div>鬼畜嵌套</div>
 					</template>

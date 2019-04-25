@@ -1,10 +1,12 @@
 <template>
-	<div :class="classes" class="vcm-form-item">
-		<label v-if="label || $slots.label" :for="labelFor" :style="labelStyle" class="vcm-form-item__label">
-			<slot name="label">{{ label }}</slot>
-		</label>
-		<div :style="contentStyle" class="vcm-form-item__content">
-			<slot />
+	<div :style="{ paddingLeft: `${indent}px`}" class="vcm-form-item">
+		<div :class="classes" class="vcm-form-item__wrapper">
+			<label v-if="label || $slots.label" :for="labelFor" :style="labelStyle" class="vcm-form-item__label">
+				<slot name="label">{{ label }}</slot>
+			</label>
+			<div :style="contentStyle" class="vcm-form-item__content">
+				<slot />
+			</div>
 		</div>
 	</div>
 </template>
@@ -17,6 +19,12 @@ export default {
 	 * 表单特殊, name由mixin管理
 	 */
 	mixins: [basicFormItemMixin],
+	props: {
+		indent: {
+			type: Number,
+			default: 12
+		}
+	},
 };
 
 </script>
@@ -26,9 +34,11 @@ export default {
 $block: vcm-form-item;
 
 @include block($block) {
-	padding-top: 12px;
-	padding-bottom: 12px;
-	padding-right: 12px;
+	@include element(wrapper) {
+		padding-top: 12px;
+		padding-bottom: 12px;
+		padding-right: 12px;
+	}
 	@include commonBorder1PX(bottom);
 	@include element(content) { 
 		position: relative;

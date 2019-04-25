@@ -1,5 +1,5 @@
 <template>
-	<form :autocomplete="autocomplete" :class="{ 'is-border': border }" :style="{ paddingLeft: `${indent}px`}" class="vcm-form">
+	<form :autocomplete="autocomplete" :class="{ 'is-border': border }" class="vcm-form">
 		<slot />
 	</form>
 </template>
@@ -20,10 +20,6 @@ export default {
 		border: {
 			type: Boolean,
 			default: false
-		},
-		indent: {
-			type: Number,
-			default: 12
 		}
 	}
 };
