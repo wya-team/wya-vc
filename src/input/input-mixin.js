@@ -31,10 +31,6 @@ export default {
 		name: {
 			type: String
 		},
-		number: {
-			type: Boolean,
-			default: false
-		},
 		autofocus: {
 			type: Boolean,
 			default: false
@@ -54,13 +50,11 @@ export default {
 		elementId: {
 			type: String
 		},
-		search: {
-			type: Boolean,
-			default: false
+		prepend: {
+			type: String
 		},
-		enterTxt: {
-			type: [Boolean, String],
-			default: true
+		append: {
+			type: String
 		}
 	},
 	data() {
@@ -77,7 +71,7 @@ export default {
 				this.currentValue = v;
 
 				/**
-				 * TODO: 验证是否会一开始就触发
+				 * TODO: 嵌套时会双dispath如何处理
 				 */
 				this.dispatch('vc-form-item', 'form-change', v);
 			}
@@ -105,7 +99,7 @@ export default {
 		},
 		binds() {
 			return {
-				id: this.elementId,
+				id: this.elementId, // 此id用于input, 不能改为this.id
 				autocomplete: this.autocomplete,
 				spellcheck: this.spellcheck,
 				type: this.type,
@@ -132,7 +126,6 @@ export default {
 		handleKeyup(e) {
 			if (e.keyCode == 13) {
 				this.$emit('enter', e);
-				this.search && this.$emit('search', this.currentValue);
 			}
 			this.$emit('keyup', e);
 		},
@@ -158,15 +151,11 @@ export default {
 		},
 		handleInput(e) {
 			if (this.isOnComposition) return;
-
 			let value = e.target.value;
-			if (this.number && value !== '') {
-				value = Number.isNaN(Number(value)) 
-					? value 
-					: Number(value);
-			}
-			this.$emit('input', value);
+
+			this.$emit('input', value, e);
 			this.$emit('change', e);
+			this.$forceUpdate(); // hack
 		},
 		handleChange(e) {
 			this.$emit('change', e);
@@ -175,12 +164,8 @@ export default {
 			const e = { target: { value: '' } };
 			this.$emit('input', '');
 			this.$emit('change', e);
-		},
-		handleSearch() {
-			if (this.disabled) return false;
 
-			this.$refs.input.focus();
-			this.$emit('search', this.currentValue);
+			this.focus();
 		},
 		/**
 		 * 外部方法扩展

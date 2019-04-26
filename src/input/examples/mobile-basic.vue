@@ -25,26 +25,47 @@
 					<p slot="append">ico2222n</p>
 				</vcm-input>
 			</div>
-			<vcm-input 
-				v-model="value"
-				style="margin-top: 10px;"
-				disabled
-				placeholder="被禁用的input"
+			<br>
+			<br>
+			<br>
+			<br>
+			<vcm-form>
+				<vcm-form-item>
+					<vcm-input-number 
+						v-model="value1"
+						:precision="2" 
+						placeholder="显示placeholder" 
+						clearable
+					/>
+				</vcm-form-item>
+			</vcm-form>
+			<br>
+			<br>
+			<vcm-input-search 
+				v-model="value1"
+				placeholder="搜索" 
+				clearable
 			/>
 		</div>
 	</div>
 </template>
 <script>
-import Input from '../index.m';
+import MInput from '../index.m';
+import MForm from '../../form/index.m';
 
 export default {
 	name: "vcm-tpl-basic",
 	components: {
-		'vcm-input': Input
+		'vcm-input': MInput,
+		'vcm-input-number': MInput.Number,
+		'vcm-input-search': MInput.Search,
+		'vcm-form': MForm,
+		'vcm-form-item': MForm.Item,
 	},
 	data() {
 		return {
 			value: '',
+			value1: '',
 			textvalue: ''
 		};
 	},

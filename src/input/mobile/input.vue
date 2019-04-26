@@ -2,8 +2,17 @@
 	<div :class="classes" class="vcm-input">
 		<div class="vcm-input__wrapper">
 			<!-- 前置 -->
-			<div v-if="$slots.prepend" class="vcm-input__prepend">
-				<slot name="prepend" />
+			<div 
+				v-if="$slots.prepend || prepend" 
+				:class="{ 'is-icon': prepend }" 
+				class="vcm-input__prepend"
+			>
+				<slot name="prepend">
+					<vcm-icon
+						v-if="prepend" 
+						:type="prepend"
+					/>
+				</slot>
 			</div>
 			<input
 				ref="input"
@@ -17,29 +26,38 @@
 				<vcm-icon
 					v-if="clearable && currentValue" 
 					class="vcm-input__icon vcm-input__icon-clear" 
-					type="close3" 
-					@click="handleInput"
+					type="clear" 
+					@click="handleClear"
 				/>
 			</vcm-transition-fade>
-			<div v-if="$slots.append" class="vcm-input__append">
-				<slot name="append" />
+			<div
+				v-if="$slots.append || append" 
+				:class="{ 'is-icon': append }" 
+				class="vcm-input__prepend"
+			>
+				<slot name="append">
+					<vcm-icon 
+						v-if="append" 
+						:type="append"
+					/>
+				</slot>
 			</div>
 		</div>
 	</div>
 </template>
 
 <script>
-import basicMixin from '../basic-mixin';
-import Icon from '../../icon/index.m';
-import Transition from '../../transition/index.m';
+import inputMixin from '../input-mixin';
+import MIcon from '../../icon/index.m';
+import MTransition from '../../transition/index.m';
 
 export default {
 	name: 'vcm-input',
 	components: {
-		'vcm-icon': Icon,
-		'vcm-transition-fade': Transition.Fade
+		'vcm-icon': MIcon,
+		'vcm-transition-fade': MTransition.Fade
 	},
-	mixins: [basicMixin]
+	mixins: [inputMixin]
 };
 </script>
 
@@ -81,7 +99,8 @@ $block: vcm-input;
 			color: #ccc;
 		}
 	}
-	@include element(icon) {
+
+	@include share-rule(icon) {
 		width: 28px;
 		height: 28px;
 		line-height: 28px;
@@ -95,6 +114,7 @@ $block: vcm-input;
 	 * clear
 	 */
 	@include element(icon-clear){
+		@include extend-rule(icon);
 		display: none;
 	}
 	@include pseudo(hover) {
@@ -106,31 +126,30 @@ $block: vcm-input;
 	/**
 	 * prepend/ append
 	 */
-	@include element(prepend) {
+	
+	@include share-rule(pend) {
 		height: 100%;
 		text-align: center;
 		font-size: 13px;
 		line-height: 28px;
-	}
-	@include element(append) {
-		height: 100%;
-		text-align: center;
-		font-size: 13px;
-		line-height: 28px;
-	}
-	@include element(search) {
-		cursor: pointer;
-		font-size: 13px;
-		padding: 0 16px;
-		background: #2d8cf0 !important;
-		color: #fff !important;
-		border-color: #2d8cf0 !important;
-		transition: all .2s ease-in-out;
-		position: relative;
+		white-space: nowrap;
 		z-index: 3;
-		text-align: center;
-		line-height: 28px;
-		white-space:nowrap;
+		@include when(icon) {
+			width: 16px;
+			font-size: 12px;
+			background: rgba(229, 229, 229, 1);
+		}
+	}
+	
+	/**
+	 * prepend / append
+	 */
+	@include element(prepend) {
+		@include extend-rule(pend);
+	}
+
+	@include element(append) {
+		@include extend-rule(pend);
 	}
 }
 </style>

@@ -2,8 +2,17 @@
 	<div :class="classes" class="vc-input">
 		<div class="vc-input__wrapper">
 			<!-- 前置 -->
-			<div v-if="$slots.prepend" class="vc-input__prepend">
-				<slot name="prepend" />
+			<div 
+				v-if="$slots.prepend || prepend" 
+				:class="{ 'is-icon': prepend }" 
+				class="vc-input__prepend"
+			>
+				<slot name="prepend">
+					<vc-icon
+						v-if="prepend" 
+						:type="prepend"
+					/>
+				</slot>
 			</div>
 			<input
 				ref="input"
@@ -16,29 +25,29 @@
 			<vc-transition-fade>
 				<vc-icon
 					v-if="clearable && currentValue" 
-					class="vc-input__icon vc-input__icon-clear" 
-					type="close3" 
-					@click="handleInput"
+					class="vc-input__icon-clear" 
+					type="clear" 
+					@click="handleClear"
 				/>
 			</vc-transition-fade>
-			<!-- 后置 -->
-			<div v-if="search && enterTxt" class="vc-input__search" @click="handleSearch">
-				<vc-icon 
-					v-if="enterTxt === true" 
-					type="search"
-					class="vc-input__icon"
-				/>
-				<template v-else>{{ enterTxt }}</template>
-			</div>
-			<div v-else-if="$slots.append" class="vc-input__append">
-				<slot name="append" />
+			<div
+				v-if="$slots.append || append" 
+				:class="{ 'is-icon': append }" 
+				class="vc-input__prepend"
+			>
+				<slot name="append">
+					<vc-icon 
+						v-if="append" 
+						:type="append"
+					/>
+				</slot>
 			</div>
 		</div>
 	</div>
 </template>
 
 <script>
-import basicMixin from './basic-mixin';
+import inputMixin from './input-mixin';
 import Icon from '../icon/index';
 import Transition from '../transition/index';
 
@@ -48,7 +57,7 @@ export default {
 		'vc-icon': Icon,
 		'vc-transition-fade': Transition.Fade
 	},
-	mixins: [basicMixin]
+	mixins: [inputMixin]
 };
 </script>
 
@@ -66,7 +75,7 @@ $block: vc-input;
 	border-radius: 4px;
 	height: 28px;
 	line-height: 1.5;
-	transition: all .2s ease-in-out, 
+	transition: border .2s ease-in-out, 
 		background .2s ease-in-out, 
 		box-shadow .2s ease-in-out;
 	@include commonBorder1PX(); // 不占边距
@@ -89,7 +98,7 @@ $block: vc-input;
 	}
 	@include element(input) {
 		position: relative;
-		width: 100%;
+		flex: 1;
 		background-color: $white;
 		outline: 0;
 		color: $c51;
@@ -107,7 +116,7 @@ $block: vc-input;
 			color: #ccc;
 		}
 	}
-	@include element(icon) {
+	@include share-rule(icon) {
 		width: 28px;
 		height: 28px;
 		line-height: 28px;
@@ -121,42 +130,56 @@ $block: vc-input;
 	 * clear
 	 */
 	@include element(icon-clear){
+		@include extend-rule(icon);
 		display: none;
 	}
+
+	/**
+	 * prend
+	 */
+	
+	@include element(icon-prepend){
+		// @include extend-rule(icon);
+		
+	}
+
 	@include pseudo(hover) {
 		@include element(icon-clear){
 			display: inline-block;
 		}
 	}
-
+	
+	@include share-rule(pend) {
+		height: 100%;
+		text-align: center;
+		font-size: 13px;
+		line-height: 28px;
+		white-space: nowrap;
+		z-index: 3;
+		@include when(icon) {
+			width: 16px;
+			font-size: 12px;
+			background: rgba(229, 229, 229, 1);
+		}
+	}
 	/**
-	 * prepend/ append
+	 * prepend / append
 	 */
 	@include element(prepend) {
-		height: 100%;
-		text-align: center;
-		font-size: 13px;
-		line-height: 28px;
+		@include extend-rule(pend);
 	}
+
 	@include element(append) {
-		height: 100%;
-		text-align: center;
-		font-size: 13px;
-		line-height: 28px;
+		@include extend-rule(pend);
 	}
-	@include element(search) {
-		cursor: pointer;
-		font-size: 13px;
-		padding: 0 16px;
-		background: #2d8cf0 !important;
-		color: #fff !important;
-		border-color: #2d8cf0 !important;
-		transition: all .2s ease-in-out;
-		position: relative;
-		z-index: 3;
-		text-align: center;
-		line-height: 28px;
-		white-space:nowrap;
+	@include when(focus) {
+		@include element(prepend) {
+			z-index: 1;
+		}
+
+		@include element(append) {
+			z-index: 1;
+		}
 	}
 }
 </style>
