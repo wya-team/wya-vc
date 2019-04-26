@@ -1,5 +1,9 @@
 # 历史版本
-### 1.2.2()
+
+### 1.2.6
+新增: `input-number` `input-search`
+
+### 1.2.2
 
 - popover: 新增ready事件
 - popconfirm: 新增ready事件
