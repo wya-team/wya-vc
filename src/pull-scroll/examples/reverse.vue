@@ -43,7 +43,7 @@ export default {
 							data: {
 								page: {
 									current: page,
-									total: 2,
+									total: 10,
 								},
 								list: this.getFakeData(page)
 							}
@@ -54,7 +54,7 @@ export default {
 						this.total = res.data.page.total;
 						isRefresh 
 							? (this.dataSource = res.data.list)
-							: this.dataSource.splice(this.dataSource.length, 0, ...res.data.list);
+							: this.dataSource.splice(0, 0, ...res.data.list);
 						resolve();
 					}).catch((e) => {
 						console.log(e);
