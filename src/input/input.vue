@@ -17,6 +17,7 @@
 			<input
 				ref="input"
 				:value="currentValue"
+				:style="inputStyle"
 				v-bind="binds"
 				class="vc-input__input"
 				v-on="hooks"
@@ -131,6 +132,7 @@ $block: vc-input;
 	 */
 	@include element(icon-clear){
 		@include extend-rule(icon);
+		cursor: pointer;
 		display: none;
 	}
 

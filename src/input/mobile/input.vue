@@ -17,6 +17,7 @@
 			<input
 				ref="input"
 				:value="currentValue"
+				:style="inputStyle"
 				v-bind="binds"
 				class="vcm-input__input"
 				v-on="hooks"
@@ -69,6 +70,7 @@ $block: vcm-input;
 @include block($block) {
 	position: relative;
 	width: 100%;
+	display: inline-block;
 	cursor: text;
 	font-size: 12px;
 	height: 28px;

@@ -31,12 +31,7 @@
 			<br>
 			<vcm-form>
 				<vcm-form-item>
-					<vcm-input-number 
-						v-model="value1"
-						:precision="2" 
-						placeholder="显示placeholder" 
-						clearable
-					/>
+					<vcm-input-number v-model="value3"/>
 				</vcm-form-item>
 			</vcm-form>
 			<br>
@@ -66,6 +61,7 @@ export default {
 		return {
 			value: '',
 			value1: '',
+			value3: 0,
 			textvalue: ''
 		};
 	},

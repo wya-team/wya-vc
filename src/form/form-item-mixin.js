@@ -165,10 +165,10 @@ export default {
 		getRules() {
 			let formRules = this.form.rules;
 			const selfRules = this.rules;
-
+			
 			// getPropByPath(formRules, this.prop.replace(/\.[0-9]+\./g, '.'));
 			formRules = formRules ? formRules[this.prop] : [];
-			return [].concat(selfRules || formRules || []);
+			return cloneDeep([].concat(selfRules || formRules || []));
 		},
 		getFilteredRule(trigger) {
 			const rules = this.getRules();
@@ -190,6 +190,10 @@ export default {
 			let descriptor = {};
 
 			descriptor[this.prop] = rules;
+			/**
+			 * TODO: bug
+			 * 默认不传校正string
+			 */
 			let validator = new AsyncValidator(descriptor);
 			let model = {};
 			model[this.prop] = filterEmpty(this.fieldValue);

@@ -55,6 +55,9 @@ export default {
 		},
 		append: {
 			type: String
+		},
+		inputStyle: {
+			type: Object | Array
 		}
 	},
 	data() {
@@ -69,7 +72,6 @@ export default {
 			immediate: false,
 			handler(v, old) {
 				this.currentValue = v;
-
 				/**
 				 * TODO: 嵌套时会双dispath如何处理
 				 */
@@ -110,7 +112,7 @@ export default {
 				name: this.name,
 				// value: this.currentValue, // 频率高
 				number: this.number,
-				autofocus: this.autofocus,
+				autofocus: this.autofocus
 			};
 		}
 	},

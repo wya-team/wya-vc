@@ -16,14 +16,14 @@
 			<slot name="append">
 				<div class="vc-input-number__icon">
 					<div 
-						:disabled="max == currentValue" 
+						:disabled="addDisabled" 
 						class="vc-input-number__up"
 						@click="handleStepper(1)"
 					>
 						<vc-icon type="up"/>
 					</div>
 					<div 
-						:disabled="min == currentValue" 
+						:disabled="minusDisabled" 
 						class="vc-input-number__down"
 						@click="handleStepper(-1)" 
 					>
@@ -65,6 +65,10 @@ $block: vc-input-number;
 		width: 20px;
 		height: 28px;
 		display: none;
+		&:hover {
+			color: #57a3f3;
+			cursor: pointer;
+		}
 	}
 	@include share-rule(icon) {
 		height: 14px;
@@ -74,9 +78,6 @@ $block: vc-input-number;
 			background-color: #f3f3f3;
 			cursor: not-allowed;
 			color: #ccc;
-		}
-		&:hover {
-			color: #57a3f3;
 		}
 		> i {
 			transform: scale(0.6);

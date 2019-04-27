@@ -39,14 +39,22 @@
 			<br>
 			<br>
 			<br>
-			<vc-form>
-				<vc-form-item>
+			<vc-form
+				ref="form"
+				:model="formValidate" 
+				:rules="ruleValidate"
+				@submit.native.prevent
+			>
+				<vc-form-item prop="value">
 					<vc-input-number 
-						v-model="value1" 
+						v-model="formValidate.value" 
 						:precision="2" 
 						clearable
 						prepend="rmb"
 					/>
+				</vc-form-item>
+				<vc-form-item>
+					<div @click="handleSubmit">Submit</div>
 				</vc-form-item>
 			</vc-form>
 
@@ -85,13 +93,25 @@ export default {
 		return {
 			value: '',
 			value1: 11,
-			textvalue: ''
+			textvalue: '',
+			formValidate: {
+				value: '',
+			},
+			ruleValidate: {
+				value: [{
+					required: true,
+					trigger: 'change'
+				}]
+			}
 		};
 	},
 	computed: {
 		
 	},
 	created() {
+		setTimeout(() => {
+			this.formValidate.value = 11;
+		}, 11);
 	},
 	methods: {
 		handleChange() {
@@ -105,6 +125,13 @@ export default {
 		},
 		handleEnter() {
 			console.log('回车键的回调');
+		},
+		handleSubmit() {
+			this.$refs.form.validate().then((res) => {
+
+			}).catch((res) => {
+				console.log(res, this.formValidate);
+			});
 		}
 	}
 };

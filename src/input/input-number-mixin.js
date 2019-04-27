@@ -1,10 +1,9 @@
 import inputMixin from './input-mixin';
-// import emitter from '../extends/mixins/emitter'; // 表单验证
+import { VcError } from '../vc/index';
 import Input from './input';
 import Icon from '../icon';
 
 export default {
-	// mixins: [emitter],
 	props: {
 		...inputMixin.props,
 		min: {
@@ -25,7 +24,8 @@ export default {
 		},
 		precision: {
 			type: Number,
-			default: Number.MAX_SAFE_INTEGER,
+			// default: Number.MAX_SAFE_INTEGER,
+			default: 0,
 		}
 	},
 	data() {
@@ -41,6 +41,12 @@ export default {
 				input: this.handleInput,
 				blur: this.handleBlur
 			};
+		},
+		addDisabled() {
+			return this.currentValue >= this.max;
+		},
+		minusDisabled() {
+			return this.currentValue <= this.min;
 		}
 	},
 	watch: {
@@ -48,6 +54,13 @@ export default {
 			immediate: false,
 			handler(v) {
 				this.currentValue = v;
+
+				/**
+				 * TODO: form-item-mixin 默认校正string, 待修复后可删除
+				 */
+				if (typeof v === 'number') {
+					this.$emit('input', this.defaultFormat(v));
+				}
 			}
 		}
 	},
@@ -65,25 +78,7 @@ export default {
 				value = value.charAt(0) === '.' ? `0${value}` : value;
 			}
 
-			if (value > this.max) {
-				value = this.defaultFormat(this.max);
-
-				this.$emit('tip', {
-					type: 'max',
-					msg: `数值不能超过${value}`,
-					value
-				});
-			}
-
-			if (value < this.min) {
-				value = this.defaultFormat(this.min);
-
-				this.$emit('tip', {
-					type: 'min',
-					msg: `数值不能低于${value}`,
-					value
-				});
-			}
+			value = this.compareWithBoundary({ value, format: false });
 
 			this.$emit('input', value);
 		},
@@ -96,19 +91,72 @@ export default {
 
 			this.$emit('input', value);
 		},
-		handleStepper(base) {
+		async handleStepper(base) {
+			let { $listeners: { add, minus, before } } = this;
+
+			if (base === 1 && add) { return add(); }
+			if (base === -1 && minus) { return minus(); }
+
 			let value = +this.currentValue + this.step * base;
+			value = this.compareWithBoundary({ value, format: true });
 
-			this.handleInput(this.defaultFormat(value));
+			let state = true;
+			try {
+				if (before) {
+					state = await before(value);
+				}
+				
+				state && this.$emit('input', value);
+			} catch (e) {
+				throw new VcError('vc-input-number', e);
+			} 
 		},
+		/**
+		 * @param  {String}  options.value
+		 * @param  {Boolean} options.format [是否需要格式化]
+		 * @return {String} 输入的值
+		 */
+		compareWithBoundary({ value, format = false }) {
+
+			if (value > this.max) {
+				format = true;
+				value = this.max;
+
+				this.$emit('tip', {
+					type: 'max',
+					msg: `数值不能超过${value}`,
+					value
+				});
+			}
+
+			if (value < this.min) {
+				format = true;
+				value = this.min;
+
+				this.$emit('tip', {
+					type: 'min',
+					msg: `数值不能低于${value}`,
+					value
+				});
+			}
+
+			value = format ? this.defaultFormat(value) : value;
+
+			return value;
+		},
+
 		defaultFormat(value) {
-			typeof value === 'number' && (value = String(value));
-			if (value === '') return value;
+			try {
+				typeof value === 'number' && (value = String(value));
+				if (value === '' || !this.precision) return value;
 
-			let length = this.precision - (value.split('.')[1] ? value.split('.')[1].length : 0);
-			let suffix = Array.from({ length }, () => '0').join('');
+				let length = this.precision - (value.split('.')[1] ? value.split('.')[1].length : 0);
+				let suffix = Array.from({ length }, () => '0').join('');
 
-			return `${value}${!this.precision || value.includes('.') ? '' : '.'}${suffix}`;
+				return `${value}${!this.precision || value.includes('.') ? '' : '.'}${suffix}`;
+			} catch (e) {
+				return value;
+			}
 		}
 	}
 };
