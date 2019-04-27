@@ -1,5 +1,6 @@
 import Vue from 'vue';
-import { cloneDeep, getUid, eleInRegExp } from '../utils/index';
+import { cloneDeep } from 'lodash';
+import { getUid, eleInRegExp } from '../utils/index';
 import { VcBasic, VcError } from '../vc/index';
 import defaultOptions from './default-options';
 

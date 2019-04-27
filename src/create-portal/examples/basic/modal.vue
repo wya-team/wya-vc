@@ -7,17 +7,20 @@
 		@cancel="handleCancel"
 	>
 		<p> {{ data }} </p>
+		<vc-basic/>
 	</vc-modal>
 </template>
 
 <script>
 import Modal from '../../../modal/modal';
 import CreatePortal from '../../index';
+import Basic from '../../../input/examples/basic.vue';
 
 const config = {
 	name: "vc-tpl-basic",
 	components: {
-		'vc-modal': Modal
+		'vc-modal': Modal,
+		'vc-basic': Basic,
 	},
 	props: {
 		data: Object
