@@ -1,7 +1,16 @@
 <template>
 	<div :style="{ height: h }" class="vc-pull-scroll">
 		<vc-status
-			v-if="pull"
+			v-if="reverse"
+			:style="style"
+			:status="isEnd"
+			:y="y" 
+			:current="currentPage"
+			:data-source="dataSource" 
+			type="scroll"
+		/>
+		<vc-status
+			v-if="!reverse && pull"
 			:style="style" 
 			:status="status" 
 			:y="y" 
@@ -9,9 +18,10 @@
 		/>
 		<!-- TODO: reverse-status -->
 		<vc-core
+			ref="core"
 			:style="style"
 			:show="show"
-			:pull="pull"
+			:pull="!reverse && pull"
 			:scroll="scroll"
 			:reverse="reverse"
 			:current="currentPage"
@@ -37,7 +47,7 @@
 			<slot name="footer" />
 		</vc-core>
 		<vc-status
-			v-if="scroll"
+			v-if="!reverse && scroll"
 			:style="style"
 			:status="isEnd"
 			:y="y" 
@@ -101,6 +111,10 @@ export default {
 				transform: `translate3d(0, ${this.y}px, 0)`
 			};
 		}
+	},
+	mounted() {
+		['scrollTo', 'scrollTop', 'scrollBottom']
+			.forEach(i => this[i] = this.$refs.core[i]);
 	},
 	methods: {
 		reset() {

@@ -269,6 +269,7 @@ export default {
 				this.$emit('load-pending');
 				load.then((res) => {
 					this.$emit('load-success', res, page);
+					this.reverse && this.scrollTo(1);
 					return res;
 				}).catch((res) => {
 					this.$emit('load-fail', res);
@@ -282,6 +283,22 @@ export default {
 				console.error('[vc-pull-scroll]-loadData need return a Promise');
 			}
 		},
+		scrollTo(v) {
+			let isWindow = (this.container === window);
+			let el = (isWindow) ? document.scrollingElement : this.container;
+			// https://stackoverflow.com/questions/12788487/document-scrolltop-always-returns-0
+			el.scrollTop = v;
+		},
+		scrollTop() {
+			this.scrollTo(1);
+		},
+		scrollBottom() {
+			this.scrollTo(Number.MAX_SAFE_INTEGER);
+		},
+		scrollIntoView() {
+			// Todo
+		}
+
 	},
 };
 </script>
