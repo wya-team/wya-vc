@@ -32,13 +32,13 @@ class MessageManager extends CreatePortal.Core {
 	}
 
 	info(...params) {
-		this.run(params, {
+		return this.run(params, {
 			mode: 'info'
 		});
 	}
 
 	loading(...params) {
-		this.run(params, {
+		return this.run(params, {
 			mode: 'loading',
 			duration: 0,
 			maskClosable: false
@@ -46,19 +46,19 @@ class MessageManager extends CreatePortal.Core {
 	}
 
 	success(...params) {
-		this.run(params, {
+		return this.run(params, {
 			mode: 'success'
 		});
 	}
 
 	warning(...params) {
-		this.run(params, {
+		return this.run(params, {
 			mode: 'warning'
 		});
 	}
 
 	error(...params) {
-		this.run(params, {
+		return this.run(params, {
 			mode: 'error'
 		});
 	}
