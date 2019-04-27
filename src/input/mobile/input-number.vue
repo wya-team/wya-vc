@@ -6,9 +6,8 @@
 		:prepend="prepend"
 		:append="append"
 		:type="type"
-		:class="{ 'is-disabled': disabled }"
+		:class="{ 'is-disabled': disabled && step, 'vcm-input-number': step }"
 		:input-style="[currentStyle, inputStyle]"
-		class="vcm-input-number"
 		v-on="hooks"
 	>
 		<template v-if="step" #prepend>
@@ -23,8 +22,8 @@
 		<template v-if="step" #append>
 			<slot name="append">
 				<span 
-					:disabled="addDisabled" 
-					class="vcm-input-number__add" 
+					:disabled="plusDisabled" 
+					class="vcm-input-number__plus" 
 					@click="handleStepper(1)" 
 				/>
 			</slot>
@@ -50,7 +49,7 @@ export default {
 	},
 	computed: {
 		currentStyle() {
-			return { 'text-align': Number(this.currentValue) > 99 ? 'right' : 'center' };
+			return this.step && Number(this.currentValue) > 99 && { 'text-align': 'right' };
 		}
 	}
 };
@@ -90,7 +89,7 @@ $block: vcm-input-number;
 		margin: auto;
 	}
 
-	@include element(add) {
+	@include element(plus) {
 		position: relative;
 		border-radius: 0 2px 2px 0;
 		@include extend-rule(icon);
@@ -133,6 +132,7 @@ $block: vcm-input-number;
 		margin: 0 1px;
 		padding: 0 6px;
 		outline: none;
+		text-align: center;
 		border-radius: 0; // 不加的话ios端默认带圆角
 	}
 }

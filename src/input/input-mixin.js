@@ -3,7 +3,6 @@ import Icon from '../icon/index';
 import Transition from '../transition/index';
 
 export default {
-	name: 'vc-input',
 	mixins: [emitter],
 	props: {
 		type: {

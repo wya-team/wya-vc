@@ -33,6 +33,9 @@
 				<vcm-form-item>
 					<vcm-input-number v-model="value3"/>
 				</vcm-form-item>
+				<vcm-form-item>
+					<vcm-input-number v-model="value3" :step="false"/>
+				</vcm-form-item>
 			</vcm-form>
 			<br>
 			<br>

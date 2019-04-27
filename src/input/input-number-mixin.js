@@ -42,7 +42,7 @@ export default {
 				blur: this.handleBlur
 			};
 		},
-		addDisabled() {
+		plusDisabled() {
 			return this.currentValue >= this.max;
 		},
 		minusDisabled() {
@@ -92,9 +92,9 @@ export default {
 			this.$emit('input', value);
 		},
 		async handleStepper(base) {
-			let { $listeners: { add, minus, before } } = this;
+			let { $listeners: { plus, minus, before } } = this;
 
-			if (base === 1 && add) { return add(); }
+			if (base === 1 && plus) { return plus(); }
 			if (base === -1 && minus) { return minus(); }
 
 			let value = +this.currentValue + this.step * base;

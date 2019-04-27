@@ -16,7 +16,7 @@
 			<slot name="append">
 				<div class="vc-input-number__icon">
 					<div 
-						:disabled="addDisabled" 
+						:disabled="plusDisabled" 
 						class="vc-input-number__up"
 						@click="handleStepper(1)"
 					>
