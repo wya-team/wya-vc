@@ -36,20 +36,19 @@ export default {
 					? this.getConfig() 
 					: (
 						IconManager
-							.off(old, this.callback)
-							.on(v, this.callback)
+							.off(old, this.getConfig)
+							.on(v, this.getConfig)
 					);
 			}
 		}
 	},
-	created() {
-		this.callback = ::this.getConfig;
-	},
-	methods: {
-		getConfig() {
+	beforeCreate() {
+		this.getConfig = () => {
 			this.viewBox = IconManager.icons[this.type].viewBox;
 			this.path = IconManager.icons[this.type].path;
-		},
+		};
+	},
+	methods: {
 		handleClick(e) {
 			this.$emit('click', e);
 		}

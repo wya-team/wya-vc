@@ -90,6 +90,7 @@ export default {
 			);
 
 			this.$emit('input', value);
+			this.$emit('blur', e);
 		},
 		async handleStepper(base) {
 			let { $listeners: { plus, minus, before } } = this;
