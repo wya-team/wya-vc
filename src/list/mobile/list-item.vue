@@ -107,10 +107,10 @@ export default {
 	methods: {
 		handleLinkTo(e) {
 			if (this.to) {
-				if (typeof to === 'string' && HTTP_REGEX.test(to)) {
-					window.open(to);
+				if (typeof this.to === 'string' && HTTP_REGEX.test(this.to)) {
+					window.open(this.to);
 				} else {
-					this.$router && this.$router[this.method](to);
+					this.$router && this.$router[this.method](this.to);
 				}
 			} else {
 				this.$emit('click', e);
