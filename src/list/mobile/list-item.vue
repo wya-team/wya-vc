@@ -70,6 +70,10 @@ export default {
 		indent: {
 			type: Number,
 			default: 12
+		},
+		href: {
+			type: Boolean,
+			default: false
 		}
 	},
 	data() {
@@ -107,11 +111,11 @@ export default {
 	methods: {
 		handleLinkTo(e) {
 			if (this.to) {
-				if (typeof this.to === 'string' && HTTP_REGEX.test(this.to)) {
-					window.open(this.to);
-				} else {
-					this.$router && this.$router[this.method](this.to);
-				}
+				HTTP_REGEX.test(this.to)
+					? window.open(this.to)
+					: this.href
+						? (window.location.href = this.to)
+						: this.$router && this.$router[this.method](this.to);
 			} else {
 				this.$emit('click', e);
 			}

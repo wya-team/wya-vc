@@ -20,8 +20,9 @@ label | label 内容 | `string` | 无
 extra | 右边的内容 | `string` | 无
 arrow | 右边有无箭头 | `boolean` | `false`
 multipleLine | 多行 | `boolean` | `false`
-to | 跳转的地址, 如果是带`http(s)`则采用`window.open`方式打开 | `string` `object` | 无
-routeMethod | 跳转的方式（`push`, `replace`）,只在有`$router`的情况下生效 | `string` | `push`
+to | 跳转的地址, 如果是带`http(s)`则采用`window.open/href`方式打开 | `string` `object` | 无
+href | 跳转的地址, 使用location.href | `boolean` | false
+method | 跳转的方式（`push`, `replace`）,只在有`$router`的情况下生效 | `string` | `push`
 
 
 #### 事件
@@ -35,7 +36,7 @@ routeMethod | 跳转的方式（`push`, `replace`）,只在有`$router`的情况
 属性 | 说明
 ---|---
 label | label 内容
-default | 右边内容（替代`extra`）
+extra | 右边内容（替代`extra`）
 
 
 ## 基础用法
