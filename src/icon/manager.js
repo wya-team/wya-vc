@@ -8,7 +8,7 @@ let pathReg = /<path.*?<\/path>/gi;
 let dReg = /.*d="([^"]+).*/g;
 let fillReg = /.*fill="([^"]+).*/g;
 
-let basicUrl = '//at.alicdn.com/t/font_1119857_vqx0gsn43g.js';
+let basicUrl = '//at.alicdn.com/t/font_1119857_gg31d6ghpsj.js';
 let prefix = '@wya/vc-icon:';
 
 class Manager {
