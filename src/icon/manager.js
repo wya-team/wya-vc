@@ -14,9 +14,8 @@ let prefix = '@wya/vc-icon:';
 class Manager {
 	constructor(basicUrl) {
 		this.icons = {};
-		this.injects = [];
-
 		this.events = {};
+		this.sourceStatus = {};
 		/**
 		 * 初始化加载
 		 */
@@ -28,14 +27,13 @@ class Manager {
 	 * TODO2: 删除老的缓存
 	 */
 	load(url) {
-		return new Promise(async (resolve, reject) => {
+		this.sourceStatus[url] = this.sourceStatus[url] || new Promise(async (resolve, reject) => {
 			try {
-				if (/.js$/.test(url) && !this.injects.includes(url)) { // 避免重复加载
+				if (/.js$/.test(url)) { // 避免重复加载
 					let icons = Storage.get(`${prefix}${url}`);
 					
 					if (!icons) {
 						let res = await fetch(url);
-						this.injects.push(url);
 
 						// 等待解析
 						let svgStr = await res.text();
@@ -63,6 +61,8 @@ class Manager {
 				throw new VcError('icon', e);
 			}
 		});
+
+		return this.sourceStatus[url];
 	}
 
 	/**

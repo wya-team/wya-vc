@@ -48,10 +48,10 @@ export default {
 			IconManager.load('//at.alicdn.com/t/font_1096957_qnepg9rstn.js')
 		]).then(() => {
 			this.items = Object.keys(IconManager.icons);
+			console.log(1);
 		}).catch((e) => {
 			console.log(e);
 		});
-
 	},
 	methods: {
 		handleClick() {
