@@ -1,7 +1,8 @@
 <template>
 	<vc-input
+		ref="input"
 		v-bind="binds"
-		:value="currentValue"
+		:value="formatterValue"
 		:clearable="clearable"
 		:prepend="prepend"
 		:append="append"

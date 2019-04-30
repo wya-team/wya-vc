@@ -26,11 +26,17 @@ export default {
 			type: Number,
 			// default: Number.MAX_SAFE_INTEGER,
 			default: 0,
+		},
+		formatter: {
+			type: Function,
+			default: (v, precision) => (!v ? v : Number(v).toFixed(precision)) 
 		}
 	},
 	data() {
 		return {
-			currentValue: this.defaultFormat(this.value),
+			currentValue: '',
+			isInput: false,
+			isNumber: false
 		};
 	},
 	computed: {
@@ -47,25 +53,28 @@ export default {
 		},
 		minusDisabled() {
 			return this.currentValue <= this.min;
+		},
+		/**
+		 * 确保初始和失焦都是格式化的值
+		 */
+		formatterValue() {
+			return this.isInput 
+				? this.currentValue
+				: this.formatter(this.currentValue, this.precision);
 		}
 	},
 	watch: {
 		value: {
-			immediate: false,
+			immediate: true,
 			handler(v) {
 				this.currentValue = v;
-
-				/**
-				 * TODO: form-item-mixin 默认校正string, 待修复后可删除
-				 */
-				if (typeof v === 'number') {
-					this.$emit('input', this.defaultFormat(v));
-				}
 			}
 		}
 	},
 	methods: {
 		handleInput(value, e) {
+			this.isInput = true;
+
 			value = value.trim();
 			if (/[^-]/.test(value) && Number.isNaN(Number(value))) {
 				value = this.currentValue;
@@ -78,16 +87,15 @@ export default {
 				value = value.charAt(0) === '.' ? `0${value}` : value;
 			}
 
-			value = this.compareWithBoundary({ value, format: false });
+			value = this.compareWithBoundary(value);
 
 			this.$emit('input', value);
 		},
 		handleBlur(e) {
-			let value = this.defaultFormat(
-				this.required && !this.currentValue 
-					? this.min
-					: this.currentValue
-			);
+			this.isInput = false;
+			let value = this.required && !this.currentValue 
+				? this.min
+				: this.currentValue;
 
 			this.$emit('input', value);
 			this.$emit('blur', e);
@@ -99,7 +107,7 @@ export default {
 			if (base === -1 && minus) { return minus(); }
 
 			let value = +this.currentValue + this.step * base;
-			value = this.compareWithBoundary({ value, format: true });
+			value = this.compareWithBoundary(value);
 
 			let state = true;
 			try {
@@ -117,7 +125,7 @@ export default {
 		 * @param  {Boolean} options.format [是否需要格式化]
 		 * @return {String} 输入的值
 		 */
-		compareWithBoundary({ value, format = false }) {
+		compareWithBoundary(value) {
 
 			if (value > this.max) {
 				format = true;
@@ -140,24 +148,7 @@ export default {
 					value
 				});
 			}
-
-			value = format ? this.defaultFormat(value) : value;
-
 			return value;
-		},
-
-		defaultFormat(value) {
-			try {
-				typeof value === 'number' && (value = String(value));
-				if (value === '' || !this.precision) return value;
-
-				let length = this.precision - (value.split('.')[1] ? value.split('.')[1].length : 0);
-				let suffix = Array.from({ length }, () => '0').join('');
-
-				return `${value}${!this.precision || value.includes('.') ? '' : '.'}${suffix}`;
-			} catch (e) {
-				return value;
-			}
 		}
 	}
 };

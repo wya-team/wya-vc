@@ -1,5 +1,6 @@
 import { cloneDeep } from 'lodash';
 import AsyncValidator from 'async-validator';
+import { RegEx } from '@wya/utils';
 import emitter from '../extends/mixins/emitter';
 
 const getPropByPath = (obj, path) => {
@@ -177,6 +178,20 @@ export default {
 		validate(trigger, callback = () => {}) {
 			let rules = this.getFilteredRule(trigger);
 
+			/**
+			 * TODO: bug
+			 * 默认不传校正string
+			 */
+			rules = rules.map((i) => {
+				if (!i.type && i.required) {
+					return {
+						...i,
+						validator: RegEx.validator
+					};
+				} else {
+					return i;
+				}
+			});
 			if (!rules || rules.length === 0) {
 				if (!this.required) {
 					callback();
@@ -190,10 +205,6 @@ export default {
 			let descriptor = {};
 
 			descriptor[this.prop] = rules;
-			/**
-			 * TODO: bug
-			 * 默认不传校正string
-			 */
 			let validator = new AsyncValidator(descriptor);
 			let model = {};
 			model[this.prop] = filterEmpty(this.fieldValue);
