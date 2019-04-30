@@ -179,7 +179,7 @@ export default {
 			let rules = this.getFilteredRule(trigger);
 
 			/**
-			 * TODO: bug
+			 * hack for AsyncValidator
 			 * 默认不传校正string
 			 */
 			rules = rules.map((i) => {
