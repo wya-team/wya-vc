@@ -16,6 +16,7 @@
 			<div>
 				<vcm-input 
 					v-model="value"
+					clearable
 					placeholder="显示placeholder"
 					@change="handleChange"
 					@focus="handleFocus"

@@ -14,14 +14,16 @@
 					/>
 				</slot>
 			</div>
-			<input
-				ref="input"
-				:value="currentValue"
-				:style="inputStyle"
-				v-bind="binds"
-				class="vcm-input__input"
-				v-on="hooks"
-			>
+			<div class="vcm-input__content">
+				<input
+					ref="input"
+					:value="currentValue"
+					:style="inputStyle"
+					v-bind="binds"
+					class="vcm-input__input"
+					v-on="hooks"
+				>
+			</div>
 			<!-- 清除 -->
 			<vcm-transition-fade>
 				<vcm-icon
@@ -81,24 +83,27 @@ $block: vcm-input;
 		align-items: center;
 		flex: 1;
 	}
-	@include element(input) {
-		position: relative;
-		width: 100%;
-		background-color: $white;
-		outline: 0;
-		color: $c51;
-		padding-top: 5px;
-		padding-bottom: 5px; // 18 + 10 = 28
-		padding-left: 7px;
-		padding-right: 7px;
-		&::placeholder {
-			color: #c5c8ce;
-		}
-		&[disabled] {
-			background-color: #f3f3f3;
-			opacity: 1;
-			cursor: not-allowed;
-			color: #ccc;
+	@include element(content) {
+		flex: 1;
+		input {
+			position: relative;
+			width: 100%;
+			background-color: $white;
+			outline: 0;
+			color: $c51;
+			padding-top: 5px;
+			padding-bottom: 5px; // 18 + 10 = 28
+			padding-left: 7px;
+			padding-right: 7px;
+			&::placeholder {
+				color: #c5c8ce;
+			}
+			&[disabled] {
+				background-color: #f3f3f3;
+				opacity: 1;
+				cursor: not-allowed;
+				color: #ccc;
+			}
 		}
 	}
 

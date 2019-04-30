@@ -211,30 +211,40 @@
 			@if $direction == 'top' {
 				&:before {
 					width: 300%;
-					transform: scale(0.333);
+					transform: scale(0.33333333);
 				}
 			} @else if $direction == 'right' {
 				&:after {
 					height: 300%;
-					transform: scale(0.333);
+					transform: scale(0.33333333);
 				}
 			} @else if $direction == 'bottom' {
 				&:after {
 					width: 300%;
-					transform: scale(0.333);
+					transform: scale(0.33333333);
 				}
 			} @else if $direction == 'left' {
 				&:before {
 					height: 300%;
-					transform: scale(0.333);
+					transform: scale(0.33333333);
 				}
 			} @else {
 				&:after {
 					width: 300%;
 					height: 300%;
-					transform: scale(0.333);
+					transform: scale(0.33333333);
 				}
 			}
 		}
+	}
+}
+
+@mixin commonBorderRadius($size: 1) {
+	border-radius: 1px * $size;
+	@media (min-resolution: 2dppx) {
+		border-radius: 2px * $size;
+	}
+	@media (min-resolution: 3dppx) {
+		border-radius: 3px * $size;
 	}
 }

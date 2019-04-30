@@ -73,6 +73,15 @@
 				enter-txt="搜索" 
 				clearable
 			/>
+			<br>
+			<br>
+			<vc-input-number 
+				v-model="formValidate.value" 
+				:precision="2"
+				style="width: 80px" 
+				clearable
+				prepend="rmb"
+			/>
 		</div>
 	</div>
 </template>

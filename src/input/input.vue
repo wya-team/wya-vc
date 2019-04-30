@@ -14,18 +14,19 @@
 					/>
 				</slot>
 			</div>
-			<input
-				ref="input"
-				:value="currentValue"
-				:style="inputStyle"
-				v-bind="binds"
-				class="vc-input__input"
-				v-on="hooks"
-			>
+			<div class="vc-input__content">
+				<input
+					ref="input"
+					:value="currentValue"
+					:style="inputStyle"
+					v-bind="binds"
+					v-on="hooks"
+				>
+			</div>
 			<!-- 清除 -->
 			<vc-transition-fade>
 				<vc-icon
-					v-if="clearable && currentValue" 
+					v-if="disabled && clearable && currentValue" 
 					class="vc-input__icon-clear" 
 					type="clear" 
 					@click="handleClear"
@@ -43,6 +44,8 @@
 					/>
 				</slot>
 			</div>
+			<!-- hack, 莫名的黑点-->
+			<div v-else-if="!disabled" class="vc-input__hack"/>
 		</div>
 	</div>
 </template>
@@ -97,24 +100,27 @@ $block: vc-input;
 		border-radius: 4px;
 		overflow: hidden;
 	}
-	@include element(input) {
-		position: relative;
+	@include element(content){
 		flex: 1;
-		background-color: $white;
-		outline: 0;
-		color: $c51;
-		padding-top: 5px;
-		padding-bottom: 5px; // 18 + 10 = 28
-		padding-left: 7px;
-		padding-right: 7px;
-		&::placeholder {
-			color: #c5c8ce;
-		}
-		&[disabled] {
-			background-color: #f3f3f3;
-			opacity: 1;
-			cursor: not-allowed;
-			color: #ccc;
+		input {
+			position: relative;
+			width: 100%;
+			background-color: $white;
+			outline: 0;
+			color: $c51;
+			padding-top: 5px;
+			padding-bottom: 5px; // 18 + 10 = 28
+			padding-left: 7px;
+			padding-right: 7px;
+			&::placeholder {
+				color: #c5c8ce;
+			}
+			&[disabled] {
+				background-color: #f3f3f3;
+				opacity: 1;
+				cursor: not-allowed;
+				color: #ccc;
+			}
 		}
 	}
 	@include share-rule(icon) {
@@ -183,5 +189,13 @@ $block: vc-input;
 			z-index: 1;
 		}
 	}
+
+	/**
+	 * hack
+	 */
+	@include element(hack) {
+		padding-right: 1px;
+	}
+
 }
 </style>
