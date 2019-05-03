@@ -7,7 +7,7 @@
 		<vc-popover 
 			v-model="visible" 
 			:arrow="false" 
-			trigger="click"
+			:trigger="trigger"
 			placement="bottom-left"
 			portal-classes="is-padding-none"
 			@ready="handleReady"
@@ -81,15 +81,16 @@ export default {
 			'disabled', 
 			'value', 
 			'size', 
-			'placeholder'
+			'placeholder',
+			'clearable'
 		]),
+		trigger: {
+			type: String,
+			default: 'click'
+		},
 		dataSource: {
 			type: Array,
 			default: () => ([])
-		},
-		clearable: {
-			type: Boolean,
-			default: false
 		},
 		extra: {
 			type: String,
@@ -134,7 +135,7 @@ export default {
 			return label.filter(i => i);
 		},
 		formatLabel() {
-			return this.formatter(this.currentLabel) || this.extra;
+			return this.formatter(this.label) || this.extra;
 		}
 
 	},

@@ -1,6 +1,6 @@
 <template>
 	<div style="margin: 40px">
-		<vc-button @click="handleTestingStart">压力测试</vc-button>
+		<vc-button @click="handleTestingStart">内存测试</vc-button>
 		<vc-button @click="handleTestingEnd">取消测试</vc-button>
 		<div style="margin: 40px 0 ">
 			<vc-cascader :data-source="dataSource" v-model="value1"/>

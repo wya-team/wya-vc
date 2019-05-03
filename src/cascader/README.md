@@ -15,21 +15,23 @@ disabled | 是否禁用选择器 | Boolean | false
 clearable | 是否支持清除 | Boolean | true
 placeholder | 输入框占位符 | String | 请选择
 trigger | 次级菜单展开方式，可选值为 click 或 hover | String | click
-change-on-select | 当此项为 true 时，点选每级菜单选项值都会发生变化，具体见上面的示例 | Boolean | false
-size | 输入框大小，可选值为large和small或者不填 | String | -
 load-data | 动态获取数据，数据源需标识 loading | Function | -
-filterable | 是否支持搜索 | Boolean | false
-not-found-text | 当搜索列表为空时显示的内容 | String | 无匹配数据
 element-id | 给表单元素设置 id，详见`vc-form`用法 | String | -
 extra | 占位符 | `String` | -
 
-> data -> data-source
+#### TODO
+
+属性 | 说明 | 类型 | 默认值
+---|---|---|---
+size | 输入框大小，可选值为large和small或者不填 | String | -
+search | 是否支持搜索 | Boolean | false
+not-found-text | 当搜索列表为空时显示的内容 | `String,Function` | 无匹配数据
 
 #### 事件
 
 属性 | 说明 | 参数 | 返回值
 ---|---|---|---
-change | 选择完成后的回调，返回值 value 即已选值 value，selectedData 为已选项的具体数据 | (value: Boolean, selected: Array) | -
+change | 选择完成后的回调 | (value: Array, label: Array) | -
 
 ## 基础用法
 
