@@ -126,7 +126,6 @@ export default {
 			if (v != this.isActive) {
 				let callback = () => {
 					this.$emit('visible-change', v);
-					this.isActive = v;
 					this.refresh();
 				};
 				this.isHover && v === false 
