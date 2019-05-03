@@ -298,10 +298,10 @@ export const getSelectedData = (value = [], source = [], opts = {}) => {
 	let data = [];
 	if (source.some(item => !!item.children)) { // 联动
 		value.reduce((data, item) => {
-			let itemData = data.find(it => it.value === item);
+			let itemData = data.find(it => it.value === item) || {};
 			data.push(itemData);
 			label.push(itemData.label);
-			return itemData.children;
+			return itemData.children || [];
 		}, source);
 	} else if (source.length !== 0) {
 		value.forEach((item, index) => {
