@@ -32,7 +32,9 @@ export default {
 			'content', 
 			'getPopupContainer', 
 			'transfer', 
-			'arrow'
+			'arrow',
+			'portalClasses',
+			'portalStyle'
 		]),
 		trigger: {
 			type: String,

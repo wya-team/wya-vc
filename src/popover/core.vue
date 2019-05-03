@@ -7,8 +7,8 @@
 	>
 		<div 
 			v-show="isActive"
-			:style="wrapperStyle"
-			:class="wrapperClasses"
+			:style="[wrapperStyle, portalStyle]"
+			:class="[wrapperClasses, portalClasses]"
 			class="vc-popover-core" 
 			@mouseenter="isHover && onChange($event, true)"
 			@mouseleave="isHover && onChange($event, false)"
@@ -31,6 +31,7 @@
 import posMixin from './pos-mixin';
 import CreateProtal from '../create-portal/index';
 import Transition from '../transition/index';
+import { VcError } from '../vc/index';
 
 const popup = {
 	name: 'vc-popover-core',
@@ -72,6 +73,8 @@ const popup = {
 		onChange: Function,
 		onReady: Function,
 		isHover: Boolean,
+		portalClasses: Object | String,
+		portalStyle: Object
 	},
 	data() {
 		return {
@@ -123,12 +126,17 @@ const popup = {
 		 * 外层高度没有撑开时
 		 */
 		getHackContainer() {
-			let slotHeight = this.$slots.default[0].elm.getBoundingClientRect().height;
-			let parentHeight = this.popupContainer.getBoundingClientRect().height;
-			if (slotHeight > parentHeight) {
-				return this.$slots.default[0].elm;
+			try {
+				let slotHeight = this.$slots.default[0].elm.getBoundingClientRect().height;
+				let parentHeight = this.popupContainer.getBoundingClientRect().height;
+				if (slotHeight > parentHeight) {
+					return this.$slots.default[0].elm;
+				}
+				return this.popupContainer;
+
+			} catch (e) {
+				throw new VcError('vc-popover-core', '不要使用<template #default></template>');
 			}
-			return this.popupContainer;
 		},
 
 		// set
@@ -215,6 +223,11 @@ export const Func = CreateProtal({
 		}
 		@include when(light) {
 			background-color: $white;
+		}
+	}
+	@include when(padding-none) {
+		@include element(container) {
+			padding: 0;
 		}
 	}
 	@include element(arrow) {
