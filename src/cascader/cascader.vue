@@ -95,6 +95,10 @@ export default {
 			type: String,
 			default: ''
 		},
+		formatter: {
+			type: Function,
+			default: v => (v && v.join(' / '))
+		},
 		/**
 		 * 需要优化
 		 */
@@ -108,6 +112,7 @@ export default {
 			isHover: false,
 			visible: false,
 			currentValue: [],
+			currentLabel: [],
 			rebuildData: []
 		};
 	},
@@ -121,12 +126,15 @@ export default {
 		cols() {
 			return this.currentValue.length + 1;
 		},
+		/**
+		 * TODO: 初始化时，存在查找耗时
+		 */
 		label() {
 			const { label = [] } = getSelectedData(this.currentValue, this.dataSource);
 			return label.filter(i => i);
 		},
 		formatLabel() {
-			return (this.label && this.label.join(' / ')) || this.extra;
+			return this.formatter(this.currentLabel) || this.extra;
 		}
 
 	},
@@ -158,6 +166,11 @@ export default {
 			this.currentValue.splice(0, this.currentValue.length);
 			this.resetValue();
 		},
+
+		/**
+		 * 单列数据
+		 * @param  {Array} source 数据源
+		 */
 		makeData(source) {
 			let data = source && source.map(i => ({
 				value: i.value,
@@ -167,8 +180,10 @@ export default {
 			}));
 			return data;
 		},
+
 		/**
 		 * 调整数据
+		 * @return {Array} 每列的数据
 		 */
 		makeRebuildData() {
 			if (!this.dataSource.length) return;
@@ -183,6 +198,13 @@ export default {
 
 			return data;
 		},
+
+		/**
+		 * 改变后的回调
+		 * @param  {String} value    改变后的值
+		 * @param  {Number} index    索引
+		 * @param  {Number} colIndex 列
+		 */
 		async handleChange(value, index, colIndex) {
 			try {
 				const len = this.currentValue.slice(colIndex).length;
