@@ -35,7 +35,7 @@
 			<div
 				v-if="$slots.append || append" 
 				:class="{ 'is-icon': append }" 
-				class="vc-input__prepend"
+				class="vc-input__append"
 			>
 				<slot name="append">
 					<vc-icon 
