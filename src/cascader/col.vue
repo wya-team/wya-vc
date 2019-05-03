@@ -1,18 +1,20 @@
 <template>
 	<div class="vc-cascader-col">
-		<div
-			v-for="(item, index) in dataSource"
-			:key="index"
-			:class="{ 'is-select': value == item.value }"
-			class="vc-cascader-col__item"
-			@click="handleClick(item.value, index)"
-		>
-			<span>
-				{{ item.label }}
-			</span>
-			<vc-icon v-if="item.hasChild && !item.loading" type="right"/>
-			<!-- TODO loading -->
-			<img v-else-if="item.loading" src="../toast/spin.svg" class="vc-cascader-col__loading">
+		<div class="vc-cascader-col__wrapper">
+			<div
+				v-for="(item, index) in dataSource"
+				:key="index"
+				:class="{ 'is-select': value == item.value }"
+				class="vc-cascader-col__item"
+				@click="handleClick(item.value, index)"
+			>
+				<span>
+					{{ item.label }}
+				</span>
+				<vc-icon v-if="item.hasChild && !item.loading" type="right"/>
+				<!-- TODO loading -->
+				<img v-else-if="item.loading" src="../toast/spin.svg" class="vc-cascader-col__loading">
+			</div>
 		</div>
 	</div>
 </template>
@@ -66,18 +68,18 @@ $block: vc-cascader-col;
 
 @include block($block) {
 	display: inline-block;
-	min-width: 100px;
-	height: 180px;
-	margin: 0;
 	padding: 5px 0!important;
-	vertical-align: top;
-	list-style: none;
-	overflow: auto;
+	margin: 0;
 	@include commonBorder1PX(right);
 	&:last-child {
 		&:before, &:after {
 			display: none;
 		}
+	}
+	@include element(wrapper) {
+		min-width: 100px;
+		height: 180px;
+		overflow: auto;
 	}
 	@include element(item) {
 		display: flex;

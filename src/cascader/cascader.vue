@@ -19,15 +19,18 @@
 				:disabled="disabled"
 				:value="formatLabel"
 				:placeholder="placeholder || '请选择'"
+				class="vc-cascader__input"
 				@click="visible = true"
 			>
 				<template #append>
 					<!-- down, up, clear -->
-					<vc-icon
-						:type="showClear ? 'clear' : icon"
-						class="vc-cascader__icon"
-						@click="handleClear"
-					/>
+					<div class="vc-cascader__append">
+						<vc-icon
+							:type="showClear ? 'clear' : icon"
+							class="vc-cascader__icon"
+							@click="handleClear"
+						/>
+					</div>
 				</template>
 			</vc-input>
 			<template #content>
@@ -144,7 +147,6 @@ export default {
 	methods: {
 		/**
 		 * 初始化完成后格式化数据
-		 * @return {[type]} [description]
 		 */
 		handleReady() {
 			this.rebuildData = this.makeRebuildData();
@@ -173,7 +175,7 @@ export default {
 			let temp = this.dataSource;
 			let data = this.currentValue.slice(0).reduce((pre, cur, index) => {
 				pre[index] = this.makeData(temp);
-				temp = (temp ? temp.find(i => i.value == cur) : {}).children;
+				temp = ((temp && temp.find(i => i.value == cur)) || {}).children;
 				return pre; 
 			}, []);
 
@@ -186,6 +188,9 @@ export default {
 				const len = this.currentValue.slice(colIndex).length;
 				this.currentValue.splice(colIndex, len, value);
 
+				/**
+				 * TODO: 提前缓存index
+				 */
 				let children = this.currentValue.reduce((pre, cur) => {
 					let target = pre.find(i => i.value == cur) || {};
 
@@ -233,10 +238,23 @@ export default {
 $block: vc-cascader;
 
 @include block($block) {
-	@include element(icon) {
-		padding: 0 8px;
-		font-size: 12px;
+	@include element(input) {
+		.vc-input__append {
+			z-index: 0;
+		}
+	}
+	@include element(append) {
+		cursor: pointer;
 		color: #808695;
+		padding: 0 16px;
+		background: white !important;
+		position: relative;
+		text-align: center;
+		line-height: 26px;
+		font-size: 12px;
+		white-space: nowrap;
+	}
+	@include element(icon) {
 		transform: scale(0.8);
 	}
 }
