@@ -1,47 +1,244 @@
 <template>
-	<i-cascader 
-		:data="dataSource"
-		:value="value	"
-		:render-format="renderFormat"
-		:disabled="disabled"
-		:clearable="clearable"
-		:placeholder="placeholder"
-		:trigger="trigger"
-		:change-on-select="changeOnSelect"
-		:size="size"
-		:load-data="loadData"
-		:filterable="filterable"
-		:not-found-text="notFoundText"
-		:transfer="transfer"
-		:element-id="elementId"
-		@on-change="$emit('change', arguments[0])"
-		@on-visible-change="$emit('visible-change', arguments[0])"
-		@input="$emit('input', arguments[0])"
-	/>
+	<div 
+		class="vc-cascader"
+		@mouseenter="isHover = true"
+		@mouseleave="isHover = false"
+	>
+		<vc-popover 
+			v-model="visible" 
+			:arrow="false" 
+			trigger="click"
+			placement="bottom-left"
+			portal-classes="is-padding-none"
+			@ready="handleReady"
+		>
+			<vc-input
+				ref="input"
+				:element-id="elementId"
+				:readonly="true"
+				:disabled="disabled"
+				:value="formatLabel"
+				:placeholder="placeholder || '请选择'"
+				@click="visible = true"
+			>
+				<template #append>
+					<!-- down, up, clear -->
+					<vc-icon
+						:type="showClear ? 'clear' : icon"
+						class="vc-cascader__icon"
+						@click="handleClear"
+					/>
+				</template>
+			</vc-input>
+			<template #content>
+				<div>
+					<vc-cascader-col
+						v-for="(item, index) in cols"
+						v-if="rebuildData[index] && rebuildData[index].length"
+						ref="col"
+						:value="currentValue[index]"
+						:key="index"
+						:index="index"
+						:data-source="rebuildData[index]"
+						@change="handleChange"
+					/>
+				</div>
+			</template>
+		</vc-popover>
+	</div>
 </template>
-<script>
-import Cascader from 'iview/src/components/cascader';
-import formHack from '../extends/mixins/form-hack';
 
+<script>
+import { pick, cloneDeep } from 'lodash';
+import { getSelectedData } from '../utils/index';
+import emitter from '../extends/mixins/emitter'; // 表单验证
+import Input from '../input/index';
+import Popover from '../popover/index';
+import Icon from '../icon/index';
+import InputMixin from '../input/input-mixin';
+import Col from './col';
+	
 export default {
-	// name: 'vc-cascader',//
+	name: 'vc-cascader',
 	components: {
-		'i-cascader': Cascader
+		'vc-input': Input,
+		'vc-icon': Icon,
+		'vc-popover': Popover,
+		'vc-cascader-col': Col,
 	},
-	mixins: [formHack],
+	mixins: [emitter],
+	model: {
+		prop: 'value',
+		event: 'change'
+	},
 	props: {
-		...Cascader.props,
-		dataSource: Cascader.props.data 
+		...pick(InputMixin.props, [
+			'elementId', 
+			'readonly', 
+			'disabled', 
+			'value', 
+			'size', 
+			'placeholder'
+		]),
+		dataSource: {
+			type: Array,
+			default: () => ([])
+		},
+		clearable: {
+			type: Boolean,
+			default: false
+		},
+		extra: {
+			type: String,
+			default: ''
+		},
+		/**
+		 * 需要优化
+		 */
+		loadData: {
+			type: Function,
+			default: () => ([])
+		}
 	},
 	data() {
 		return {
+			isHover: false,
+			visible: false,
+			currentValue: [],
+			rebuildData: []
 		};
 	},
 	computed: {
-		
+		icon() {
+			return this.visible ? 'up' : 'down';
+		},
+		showClear() {
+			return this.currentValue && this.currentValue.length && this.clearable && !this.disabled && this.isHover;
+		},
+		cols() {
+			return this.currentValue.length + 1;
+		},
+		label() {
+			const { label = [] } = getSelectedData(this.currentValue, this.dataSource);
+			return label.filter(i => i);
+		},
+		formatLabel() {
+			return (this.label && this.label.join(' / ')) || this.extra;
+		}
+
+	},
+	watch: {
+		dataSource: {
+			immediate: false,
+			handler() {
+				this.rebuildData = this.makeRebuildData();
+			}
+		},
+		value: {
+			immediate: true,
+			handler(v) {
+				this.currentValue = v && v.length > 0 ? [...v] : [];
+			}
+		}
 	},
 	methods: {
-	}
+		/**
+		 * 初始化完成后格式化数据
+		 * @return {[type]} [description]
+		 */
+		handleReady() {
+			this.rebuildData = this.makeRebuildData();
+		},
+		handleClear(e) {
+			if (!this.showClear) return;
+			e.stopPropagation();
+
+			this.currentValue.splice(0, this.currentValue.length);
+			this.resetValue();
+		},
+		makeData(source) {
+			let data = source && source.map(i => ({
+				value: i.value,
+				label: i.label,
+				hasChild: !!(i.children && i.children.length >= 0),
+				loading: false
+			}));
+			return data;
+		},
+		/**
+		 * 调整数据
+		 */
+		makeRebuildData() {
+			if (!this.dataSource.length) return;
+			let temp = this.dataSource;
+			let data = this.currentValue.slice(0).reduce((pre, cur, index) => {
+				pre[index] = this.makeData(temp);
+				temp = (temp ? temp.find(i => i.value == cur) : {}).children;
+				return pre; 
+			}, []);
+
+			temp && data.push(this.makeData(temp));
+
+			return data;
+		},
+		async handleChange(value, index, colIndex) {
+			try {
+				const len = this.currentValue.slice(colIndex).length;
+				this.currentValue.splice(colIndex, len, value);
+
+				let children = this.currentValue.reduce((pre, cur) => {
+					let target = pre.find(i => i.value == cur) || {};
+
+					return target.children ? target.children : undefined;
+				}, this.dataSource);
+
+				if (children && children.length === 0) {
+
+					this.rebuildData[colIndex][index].loading = true;
+
+					let res = await this.loadData();
+					/**
+					 * TODO: 优化，dataSource -> cloneData?
+					 */
+					children.splice(0, 0, ...res);
+				}
+				children && this.rebuildData.splice(colIndex + 1, len, this.makeData(children));
+
+				this.resetValue();
+			} catch (e) {
+				console.log(e);
+			} finally {
+				this.rebuildData[colIndex][index].loading = false;
+			}
+			
+		},
+		resetValue() {
+			/**
+			 * v-model
+			 */
+			this.$emit('change', this.currentValue, this.label);
+
+			this.dispatch && this.dispatch('vc-form-item', 'form-change', {
+				value: this.currentValue,
+				label: this.label
+			});
+		}
+	},
 };
 </script>
-<style></style>
+
+<style lang='scss'>
+@import '../style/index.scss';
+
+$block: vc-cascader;
+
+@include block($block) {
+	@include element(icon) {
+		padding: 0 8px;
+		font-size: 12px;
+		color: #808695;
+		transform: scale(0.8);
+	}
+}
+
+</style>
