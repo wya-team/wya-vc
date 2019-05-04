@@ -7,7 +7,7 @@
 	>
 		<div 
 			v-show="isActive"
-			:style="[wrapperStyle, portalStyle]"
+			:style="[wrapperStyle, wrapperW, portalStyle]"
 			:class="[wrapperClasses, portalClasses]"
 			class="vc-popover-core" 
 			@mouseenter="isHover && onChange($event, true)"
@@ -69,12 +69,16 @@ const popup = {
 			type: Boolean,
 			default: true
 		},
+		autoWidth: { // 同宽
+			type: Boolean,
+			default: false
+		},
 		popupContainer: HTMLElement,
 		onChange: Function,
 		onReady: Function,
 		isHover: Boolean,
 		portalClasses: Object | String,
-		portalStyle: Object
+		portalStyle: Object,
 	},
 	data() {
 		return {
@@ -82,6 +86,7 @@ const popup = {
 			wrapperStyle: {},
 			arrowStyle: {},
 			fitPos: this.placement,
+			wrapperW: { width: 'auto' }
 		};
 	},
 	computed: {
@@ -93,10 +98,10 @@ const popup = {
 		},
 		wrapperClasses() {
 			return {
-				'is-top': /top/.test(this.fitPos),
-				'is-right': /right/.test(this.fitPos),
-				'is-bottom': /bottom/.test(this.fitPos),
-				'is-left': /left/.test(this.fitPos),
+				'is-top': this.arrow && /top/.test(this.fitPos),
+				'is-right': this.arrow && /right/.test(this.fitPos),
+				'is-bottom': this.arrow && /bottom/.test(this.fitPos),
+				'is-left': this.arrow && /left/.test(this.fitPos),
 			};
 		},
 		posClasses() {
@@ -172,6 +177,14 @@ const popup = {
 			this.fitPos = result;
 			this.wrapperStyle = wrapperStyle;
 			this.arrowStyle = arrowStyle;
+
+			/**
+			 * 自适应高度
+			 */
+			if (!this.autoWidth) return;
+			this.wrapperW = {
+				width: `${popupContainer.getBoundingClientRect().width}px`
+			};
 		},
 		handleClick(e) {
 			this.onChange(e);

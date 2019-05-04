@@ -34,7 +34,8 @@ export default {
 			'transfer', 
 			'arrow',
 			'portalClasses',
-			'portalStyle'
+			'portalStyle',
+			'autoWidth'
 		]),
 		trigger: {
 			type: String,
@@ -68,7 +69,6 @@ export default {
 			immediate: true,
 			handler(v, old) {
 				this.isActive = v;
-
 				this._isMounted && this.refresh();
 			}
 		}
@@ -126,7 +126,6 @@ export default {
 			if (v != this.isActive) {
 				let callback = () => {
 					this.$emit('visible-change', v);
-					this.refresh();
 				};
 				this.isHover && v === false 
 					? (this.timer = setTimeout(callback, 200))

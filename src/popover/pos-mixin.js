@@ -73,7 +73,6 @@ export default {
 		getPopupStyle({ rect, placement, popupContainer, el }) {
 			let wrapperStyle;
 			let arrowStyle;
-
 			switch (placement) {
 				case 'bottom':
 					wrapperStyle = {
