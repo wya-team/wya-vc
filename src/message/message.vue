@@ -153,8 +153,11 @@ export default {
 			@include when(error) {
 				color: $error;
 			}
-			@include when(warn) {
+			@include when(warning) {
 				color: $warning;
+			}
+			@include when(info) {
+				color: $info;
 			}
 		}
 	}
