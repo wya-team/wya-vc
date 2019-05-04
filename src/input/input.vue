@@ -15,13 +15,15 @@
 				</slot>
 			</div>
 			<div class="vc-input__content">
-				<input
-					ref="input"
-					:value="currentValue"
-					:style="inputStyle"
-					v-bind="binds"
-					v-on="hooks"
-				>
+				<slot name="content">
+					<input
+						ref="input"
+						:value="currentValue"
+						:style="inputStyle"
+						v-bind="binds"
+						v-on="hooks"
+					>
+				</slot>
 			</div>
 			<!-- 清除 -->
 			<vc-transition-fade>
