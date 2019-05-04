@@ -3,7 +3,7 @@
 		<vc-button @click="handleTestingStart">内存测试</vc-button>
 		<vc-button @click="handleTestingEnd">取消测试</vc-button>
 		<div style="margin: 40px 0 ">
-			<vc-cascader :data-source="dataSource" v-model="value1"/>
+			<vc-cascader :data-source="bigData" v-model="value1"/>
 		</div>
 		<div style="margin: 40px 0 ">
 			<vc-cascader :data-source="dataSource" v-model="value2" clearable/>
@@ -18,6 +18,7 @@
 </template>
 <script>
 import Cascader from '../cascader';
+import bigData from './basic/big-data';
 import Button from '../../button';
 
 export default {
@@ -32,6 +33,7 @@ export default {
 			value2: ['beijing'],
 			value3: ['jiangsu', 'nanjing'],
 			value4: [],
+			bigData,
 			dataSource: [
 				{
 					value: 'beijing',

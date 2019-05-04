@@ -11,7 +11,7 @@
 				<span>
 					{{ item.label }}
 				</span>
-				<vc-icon v-if="item.hasChild && !item.loading" type="right"/>
+				<vc-icon v-if="item.hasChild && !item.loading" type="right" class="vc-cascader-col__icon"/>
 				<!-- TODO loading -->
 				<img v-else-if="item.loading" src="../toast/spin.svg" class="vc-cascader-col__loading">
 			</div>
@@ -95,6 +95,9 @@ $block: vc-cascader-col;
 			background-color: #f3f3f3;
 			color: #2d8cf0;
 		}
+	}
+	@include element(icon) {
+		transform: scale(0.7);
 	}
 	@include element(loading) {
 		margin-right: 5px;

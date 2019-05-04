@@ -54,6 +54,7 @@
 <script>
 import { pick, cloneDeep } from 'lodash';
 import { getSelectedData } from '../utils/index';
+import { VcError } from '../vc/index';
 import emitter from '../extends/mixins/emitter'; // 表单验证
 import Input from '../input/index';
 import Popover from '../popover/index';
@@ -105,7 +106,6 @@ export default {
 		 */
 		loadData: {
 			type: Function,
-			default: () => ([])
 		}
 	},
 	data() {
@@ -176,7 +176,7 @@ export default {
 			let data = source && source.map(i => ({
 				value: i.value,
 				label: i.label,
-				hasChild: !!(i.children && i.children.length >= 0),
+				hasChild: !!(i.children && (i.children.length > 0 || this.loadData)),
 				loading: false
 			}));
 			return data;
@@ -220,7 +220,10 @@ export default {
 					return target.children ? target.children : undefined;
 				}, this.dataSource);
 
-				if (children && children.length === 0) {
+				/**
+				 * 异步加载数据
+				 */
+				if (this.loadData && children && children.length === 0) {
 
 					this.rebuildData[colIndex][index].loading = true;
 
@@ -230,11 +233,12 @@ export default {
 					 */
 					children.splice(0, 0, ...res);
 				}
+
 				children && this.rebuildData.splice(colIndex + 1, len, this.makeData(children));
 
 				this.resetValue();
 			} catch (e) {
-				console.log(e);
+				throw new VcError('vc-cascader', e);
 			} finally {
 				this.rebuildData[colIndex][index].loading = false;
 			}
@@ -269,7 +273,7 @@ $block: vc-cascader;
 	@include element(append) {
 		cursor: pointer;
 		color: #808695;
-		padding: 0 16px;
+		padding: 0 10px;
 		background: white !important;
 		position: relative;
 		text-align: center;
@@ -278,7 +282,7 @@ $block: vc-cascader;
 		white-space: nowrap;
 	}
 	@include element(icon) {
-		transform: scale(0.8);
+		transform: scale(0.7);
 	}
 }
 

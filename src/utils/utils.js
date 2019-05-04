@@ -286,6 +286,9 @@ let baseClone = (target, source) => {
 	return target;
 };
 export const cloneDeep = (source) => baseClone(Array.isArray(source) ? [] : {}, source);
+/**
+ * 耗时操作
+ */
 export const cloneDeepEasier = (source) => JSON.parse(JSON.stringify(source));
 
 /**
@@ -293,21 +296,20 @@ export const cloneDeepEasier = (source) => JSON.parse(JSON.stringify(source));
  * [value, label, children]
  */
 export const getSelectedData = (value = [], source = [], opts = {}) => {
-	source = cloneDeepEasier(source);
 	let label = [];
 	let data = [];
-	if (source.some(item => !!item.children)) { // 联动
-		value.reduce((data, item) => {
-			let itemData = data.find(it => it.value === item) || {};
-			data.push(itemData);
-			label.push(itemData.label);
-			return itemData.children || [];
+	if (source.some(i => !!i.children)) { // 联动
+		value.reduce((pre, cur) => {
+			let target = pre.find(it => it.value === cur) || {};
+			data.push(target);
+			label.push(target.label);
+			return target.children || [];
 		}, source);
 	} else if (source.length !== 0) {
 		value.forEach((item, index) => {
-			let itemData = source[index].find(it => it.value === item);
-			data.push(itemData);
-			label.push(itemData.label);
+			let target = source[index].find(it => it.value === item);
+			data.push(target);
+			label.push(target.label);
 		});
 	}
 	return cloneDeep({
