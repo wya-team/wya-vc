@@ -5,19 +5,6 @@
 		<vc-tag color="success">success</vc-tag>
 		<vc-tag color="error">error</vc-tag>
 		<vc-tag color="warning">warning</vc-tag>
-		<vc-tag color="magenta">magenta</vc-tag>
-		<vc-tag color="red">red</vc-tag>
-		<vc-tag color="volcano">volcano</vc-tag>
-		<vc-tag color="orange">orange</vc-tag>
-		<vc-tag color="gold">gold</vc-tag>
-		<vc-tag color="yellow">yellow</vc-tag>
-		<vc-tag color="lime">lime</vc-tag>
-		<vc-tag color="green">green</vc-tag>
-		<vc-tag color="cyan">cyan</vc-tag>
-		<vc-tag color="blue">blue</vc-tag>
-		<vc-tag color="geekblue">geekblue</vc-tag>
-		<vc-tag color="purple">purple</vc-tag>
-		<vc-tag color="#FFA2D3">Custom Color</vc-tag>
 		<br><br>
 		<vc-tag type="border" closable color="primary">标签一</vc-tag>
 		<vc-tag type="border" closable color="success">标签二</vc-tag>
@@ -39,8 +26,9 @@
 			:key="item" 
 			:name="item" 
 			closable 
-			@close="handleClose">标签{{ item + 1 }}</vc-tag>
-		<button @click="handleAdd">添加标签</button>
+			@close="handleClose"
+		>标签{{ item + 1 }}</vc-tag>
+		<span @click="handleAdd">添加标签</span>
 	</div>
 </template>
 <script>
@@ -69,6 +57,7 @@ export default {
 		},
 		handleClose(event, name) {
 			const index = this.count.indexOf(name);
+			console.log(index);
 			this.count.splice(index, 1);
 		}
 	}
