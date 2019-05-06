@@ -8,19 +8,26 @@
 		@click="handleClick"
 	>
 		<vc-icon v-if="!!icon" :type="icon"/>
-		<img v-if="loading" src="../toast/spin.svg" class="vc-btn__loading">
+		<vc-spin 
+			v-if="loading" 
+			:size="12" 
+			:foreground="type === 'default' ? '#ccc' : '#fff'" 
+			class="vc-btn__loading"
+		/>
 		<span v-if="hasSlot" ref="slot"><slot/></span>
 	</vc-debounce-click>
 </template>
 <script>
 import Icon from "../icon";
+import Spin from "../spin";
 import DebounceClick from '../debounce-click';
 
 export default {
 	name: "vc-button",
 	components: {
 		"vc-icon": Icon,
-		'vc-debounce-click': DebounceClick
+		'vc-debounce-click': DebounceClick,
+		'vc-spin': Spin,
 	},
 	props: {
 		tag: {
@@ -123,7 +130,7 @@ $warning-hover-color: #ebb563;
 
 @include block(vc-btn) {
 	padding: 7px 16px;
-	line-height: 1;
+	line-height: 12px;
 	font-size: 12px;
 	border-radius: 4px;
 	border: 1px solid transparent;
@@ -131,7 +138,9 @@ $warning-hover-color: #ebb563;
 	background: $white;
 	user-select: none;
 	cursor: pointer;
-	outline:0 none !important;
+	outline: 0 none !important;
+	display: flex;
+	align-items: center;
 	/**
 	 * 外部v-show控制
 	 */
@@ -141,9 +150,6 @@ $warning-hover-color: #ebb563;
 		box-shadow .2s linear;
 	@include element(loading) {
 		vertical-align: middle;
-		width: 10px;
-		height: 10px;
-		animation: vc-button-circle 1s linear infinite;
 	}
 	@include when(circle) {
 		border-radius: 32px;
@@ -255,9 +261,4 @@ $warning-hover-color: #ebb563;
 	}
 }
 
-@keyframes vc-button-circle {
-	to {
-		transform: rotate(1turn);
-	}
-}
 </style>

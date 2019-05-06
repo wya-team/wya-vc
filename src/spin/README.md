@@ -8,8 +8,8 @@
 
 属性 | 说明 | 类型 | 默认值
 ---|---|---|---
-size | Spin尺寸，可选值为large和small或者不设置 | `String` | -
-fix | 是否固定，需要父级有relative或absolute	 | `Boolean` | false
+size | Spin尺寸 | `Number` | 28
+fixed | 是否固定，需要父级有relative或absolute | `Boolean` | false
 
 #### Slot
 

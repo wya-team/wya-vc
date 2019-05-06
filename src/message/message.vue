@@ -14,7 +14,11 @@
 			>
 				<div class="vc-message__container">
 					<!-- icon -->
-					<img v-if="mode === 'loading'" src="../toast/spin.svg" class="vc-message__loading">
+					<vc-spin 
+						v-if="mode === 'loading'"
+						:size="14"
+						class="vc-message__loading" 
+					/>
 					<vc-icon v-else :type="mode" :class="`is-${mode}`" class="vc-message__icon"/>
 					<!-- content -->
 					<p 
@@ -40,6 +44,7 @@
 
 <script>
 import Icon from "../icon";
+import Spin from "../spin";
 import Transition from '../transition';
 import CreateCustomer from "../create-customer/index";
 
@@ -51,6 +56,7 @@ export default {
 		'vc-icon': Icon,
 		'vc-row': CustomerRow,
 		'vc-transition-slide': Transition.Slide,
+		'vc-spin': Spin,
 	},
 	props: {
 		content: [String, Function],
@@ -163,15 +169,7 @@ export default {
 	}
 	@include element(loading) {
 		margin-right: 5px;
-		width: 14px;
-		height: 14px;
-		animation: vc-message-circle 1s linear infinite;
 	}
 }
 
-@keyframes vc-message-circle {
-	to {
-		transform: rotate(1turn);
-	}
-}
 </style>

@@ -13,7 +13,11 @@
 				</span>
 				<vc-icon v-if="item.hasChild && !item.loading" type="right" class="vc-cascader-col__icon"/>
 				<!-- TODO loading -->
-				<img v-else-if="item.loading" src="../toast/spin.svg" class="vc-cascader-col__loading">
+				<vc-spin
+					v-else-if="item.loading" 
+					:size="14"
+					class="vc-cascader-col__loading"
+				/>
 			</div>
 		</div>
 	</div>
@@ -21,11 +25,13 @@
 
 <script>
 import Icon from '../icon/index';
+import Spin from '../spin/index';
 
 export default {
 	name: 'vcm-picker-col',
 	components: {
-		'vc-icon': Icon
+		'vc-icon': Icon,
+		'vc-spin': Spin,
 	},
 	props: {
 		dataSource: {
@@ -101,14 +107,7 @@ $block: vc-cascader-col;
 	}
 	@include element(loading) {
 		margin-right: 5px;
-		width: 14px;
-		height: 14px;
-		animation: vc-loading-circle 1s linear infinite;
 	}
 }
-@keyframes vc-loading-circle {
-	to {
-		transform: rotate(1turn);
-	}
-}
+
 </style>

@@ -4,30 +4,32 @@
 			class="vcm-toast__bg" 
 			@click="handleClose" 
 		/>
-		<vc-transition-fade 
+		<vcm-transition-fade 
 			:duration="{ enter: 0.3, leave: 0.15 }"
 			@after-leave="handleRemove"
 		>
 			<div v-show="visible" class="vcm-toast__wrapper">
-				<img v-if="mode === 'loading'" src="../spin.svg" class="vcm-toast__loading">
+				<vcm-spin v-if="mode === 'loading'" class="vcm-toast__loading"/>
 				<p v-if="content">{{ content }}</p>
-				<vc-row v-else :render="content" />
+				<vcm-row v-else :render="content" />
 			</div>
-		</vc-transition-fade>
+		</vcm-transition-fade>
 	</div>
 </template>
 
 <script>
-import CreateCustomer from "../../create-customer/index";
-import Transition from "../../transition/index";
+import CreateCustomer from "../../create-customer/index.m";
+import Spin from "../../spin/index.m";
+import Transition from "../../transition/index.m";
 
 const CustomerRow = CreateCustomer({});
 
 export default {
 	name: 'vcm-toast',
 	components: {
-		'vc-row': CustomerRow,
-		'vc-transition-fade': Transition.Fade
+		'vcm-row': CustomerRow,
+		'vcm-transition-fade': Transition.Fade,
+		'vcm-spin': Spin
 	},
 	props: {
 		content: [String, Function],
@@ -110,15 +112,7 @@ export default {
 		text-align: center;
 	}
 	@include element(loading) {
-		width: 30px;
-		height: 30px;
-		animation: vcm-toast-circle 1s linear infinite;
+		line-height: 24px;
 	}
 }
-@keyframes vcm-toast-circle {
-	to {
-		transform: rotate(1turn);
-	}
-}
-
 </style>

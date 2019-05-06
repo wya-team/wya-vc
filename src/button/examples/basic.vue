@@ -82,7 +82,7 @@
 		</div>
 		<div>
 			<br>
-			<vc-button-group size="small">
+			<vc-button-group>
 				<vc-button type="primary" @click="handlePromise1">Promise1</vc-button>
 				<vc-button type="success" @click="handlePromise2">Promise2</vc-button>
 			</vc-button-group>
@@ -117,7 +117,7 @@ export default {
 			return new Promise((resolve, reject) => {
 				setTimeout(() => {
 					resolve();
-				}, 3000);	
+				}, 300000);	
 			});
 		},
 		handlePromise2(e, callback) {
