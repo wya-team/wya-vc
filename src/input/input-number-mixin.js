@@ -128,7 +128,6 @@ export default {
 		compareWithBoundary(value) {
 
 			if (value > this.max) {
-				format = true;
 				value = this.max;
 
 				this.$emit('tip', {
@@ -139,7 +138,6 @@ export default {
 			}
 
 			if (value < this.min) {
-				format = true;
 				value = this.min;
 
 				this.$emit('tip', {

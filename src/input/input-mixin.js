@@ -70,10 +70,10 @@ export default {
 		value: {
 			immediate: false,
 			handler(v, old) {
-				this.currentValue = v;
 				/**
-				 * TODO: 嵌套时会双dispath如何处理
+				 * 强制必须使用v-model，所以不需要判断一次
 				 */
+				this.currentValue = v;
 				this.dispatch('vc-form-item', 'form-change', v);
 			}
 		}

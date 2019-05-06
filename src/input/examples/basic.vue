@@ -1,6 +1,12 @@
 <template>
 	<div style="padding: 20px">
 		<div>
+			<vc-input-number 
+				v-model="formValidate.value" 
+				:precision="0" 
+				clearable
+			/>
+			<br>
 			<vc-input
 				v-model="value"
 				style="width: 200px;"
