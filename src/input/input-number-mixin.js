@@ -87,7 +87,7 @@ export default {
 				value = value.charAt(0) === '.' ? `0${value}` : value;
 			}
 
-			value = this.compareWithBoundary(value);
+			value = value === '' ? value : this.compareWithBoundary(value);
 
 			this.$emit('input', value);
 		},

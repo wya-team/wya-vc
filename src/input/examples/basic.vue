@@ -4,6 +4,7 @@
 			<vc-input-number 
 				v-model="formValidate.value" 
 				:precision="0" 
+				:min="1"
 				clearable
 			/>
 			<br>
