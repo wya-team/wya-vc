@@ -130,7 +130,7 @@ $warning-hover-color: #ebb563;
 
 @include block(vc-btn) {
 	padding: 7px 16px;
-	line-height: 12px;
+	line-height: 1;
 	font-size: 12px;
 	border-radius: 4px;
 	border: 1px solid transparent;
@@ -139,8 +139,6 @@ $warning-hover-color: #ebb563;
 	user-select: none;
 	cursor: pointer;
 	outline: 0 none !important;
-	display: flex;
-	align-items: center;
 	/**
 	 * 外部v-show控制
 	 */
