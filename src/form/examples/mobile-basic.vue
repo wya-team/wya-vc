@@ -85,7 +85,6 @@ export default {
 			this.$refs[name].validate().then((res) => {
 
 			}).catch((res) => {
-				MToast.info(res[0].msg);
 				console.log(res, this.formValidate);
 			});
 		},

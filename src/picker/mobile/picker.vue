@@ -4,22 +4,22 @@
 			v-if="$slots.default || $scopedSlots.default" 
 			:label="label" 
 		/>
-		<!-- 内容待自定义，todo, 默认使用list -->
-		<div v-else>
-			{{ label }}
-		</div>
+		<vcm-list-item v-else :extra="label" />
 	</div>
 </template>
 
 <script>
 import Core, { Func } from './core';
+import List from '../../list/index.m';
 import { getSelectedData } from '../../utils/index';
 import emitter from '../../extends/mixins/emitter'; // 表单验证
 
 
 export default {
 	name: "vcm-picker",
-	components: {},
+	components: {
+		'vcm-list-item': List.Item
+	},
 	mixins: [emitter],
 	model: {
 		prop: 'value',

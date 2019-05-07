@@ -7,14 +7,22 @@
 			/>
 			<vcm-date-picker 
 				v-model="value"
+				:arrow="false"
 				mode="time"
 			>
-				<h2 slot-scope="it">
-					{{ it.label }}
-				</h2>
+				<template #default="it">
+					<h2>
+						{{ it.label }}
+					</h2>
+				</template>
 			</vcm-date-picker>
-			<h3 @click="handleClick">点击直接调用</h3>
 		</div>
+		<br>
+		<br>
+		<br>
+		<h3 @click="handleClick">点击直接调用</h3>
+		<br>
+		<br>
 		<h2>表单</h2>
 		<vcm-form
 			ref="form"
@@ -26,6 +34,7 @@
 			<vcm-form-item prop="timeV" label="日期选择" @form-change="handleChange">
 				<vcm-date-picker
 					v-model="formValidate.timeV"
+					:min-date="value"
 					mode="datetime"
 				/>
 			</vcm-form-item>

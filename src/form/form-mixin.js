@@ -67,6 +67,9 @@ export default {
 							// 全部校验完成
 							if (errorsList.length !== 0) {
 								reject(errorsList);
+								this.showMessage 
+									&& this.throwToast 
+									&& this.throwToast(errorsList[0].msg || errorsList[0].message);
 							} else {
 								resolve();
 							}

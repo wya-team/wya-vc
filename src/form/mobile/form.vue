@@ -6,6 +6,7 @@
 
 <script>
 import basicFormMixin from '../form-mixin';
+import MToast from '../../toast/index.m';
 
 export default {
 	/**
@@ -15,11 +16,16 @@ export default {
 	props: {
 		showMessage: {
 			type: Boolean,
-			default: false
+			default: true
 		},
 		border: {
 			type: Boolean,
 			default: false
+		}
+	},
+	methods: {
+		throwToast(msg) {
+			MToast.info(msg);
 		}
 	}
 };

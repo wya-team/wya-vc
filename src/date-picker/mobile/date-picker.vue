@@ -4,8 +4,7 @@
 			v-if="$slots.default || $scopedSlots.default" 
 			:label="label" 
 		/>
-		<!-- 内容待自定义，todo, 默认使用list -->
-		<vcm-list-item v-else :extra="label"/>
+		<vcm-list-item v-else :extra="label" />
 	</div>
 </template>
 
