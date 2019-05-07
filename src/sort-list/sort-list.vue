@@ -74,6 +74,7 @@ export default {
 	},
 	methods: {
 		getDraggable(item) {
+			if(!this.draggable) return false;
 			let value = item[this.draggableKey];
 			return !!(typeof value === 'undefined' || value);
 		},
