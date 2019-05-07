@@ -28,6 +28,7 @@
 			</div>
 			<br>
 			<br>
+			<vcm-input-number :value="value2" :max="10" @input="handleInput"/>
 			<br>
 			<br>
 			<vcm-form>
@@ -65,6 +66,7 @@ export default {
 		return {
 			value: '',
 			value1: '',
+			value2: 0,
 			value3: 0,
 			textvalue: ''
 		};
@@ -73,6 +75,10 @@ export default {
 		
 	},
 	methods: {
+		handleInput(e) {
+			this.value2 = e;
+			console.log(e);
+		},
 		handleChange() {
 			console.log(this.value);
 		},

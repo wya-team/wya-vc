@@ -78,6 +78,7 @@ $block: vc-input-number;
 		&[disabled] {
 			background-color: #f3f3f3;
 			cursor: not-allowed;
+			pointer-events: none;
 			color: #ccc;
 		}
 		> i {
