@@ -1,39 +1,46 @@
 <template>
-	<div class="vcm-date-picker-basic">
-		<vcm-date-picker 
-			v-model="value"
-			mode="datetime"
-		/>
-		<vcm-date-picker 
-			v-model="value"
-			mode="time"
-		>
-			<h2 slot-scope="it">
-				{{ it.label }}
-			</h2>
-		</vcm-date-picker>
-		<h3 @click="handleClick">点击直接调用</h3>
-
+	<div>
+		<div class="vcm-date-picker-basic">
+			<vcm-date-picker 
+				v-model="value"
+				mode="datetime"
+			/>
+			<vcm-date-picker 
+				v-model="value"
+				mode="time"
+			>
+				<h2 slot-scope="it">
+					{{ it.label }}
+				</h2>
+			</vcm-date-picker>
+			<h3 @click="handleClick">点击直接调用</h3>
+		</div>
 		<h2>表单</h2>
-		<vc-form
+		<vcm-form
 			ref="form"
 			:show-message="false"
 			:model="formValidate" 
-			:rules="ruleValidate" 
+			:rules="ruleValidate"
+			@submit.native.prevent
 		>
-			<vc-form-item prop="timeV" @on-form-change="handleChange">
+			<vcm-form-item prop="timeV" label="日期选择" @form-change="handleChange">
 				<vcm-date-picker
 					v-model="formValidate.timeV"
 					mode="datetime"
 				/>
-			</vc-form-item>
-			<div @click="handleSubmit">提交表单</div>
-		</vc-form >
+			</vcm-form-item>
+			<vcm-form-item>
+				<vcm-button @click="handleSubmit">
+					提交表单
+				</vcm-button>
+			</vcm-form-item>
+		</vcm-form >
 	</div>
 </template>
 <script>
-import Form from '../../form';
-import Input from '../../input';
+import Form from '../../form/index.m';
+import Input from '../../input/index.m';
+import Button from '../../button/index.m';
 import Message from '../../message';
 import Toast from '../../toast/index';
 import MDatePicker from '../index.m';
@@ -43,8 +50,9 @@ export default {
 	name: "vcm-date-picker-basic",
 	components: {
 		'vcm-date-picker': MDatePicker,
-		'vc-form': Form,
-		'vc-form-item': Form.Item
+		'vcm-form': Form,
+		'vcm-form-item': Form.Item,
+		'vcm-button': Button
 	},
 	data() {
 		return {

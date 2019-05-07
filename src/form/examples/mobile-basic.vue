@@ -5,7 +5,6 @@
 		:rules="ruleValidate"
 		:label-width="96"
 		label-position="left"
-		style="padding-left: 15px"
 		@submit.native.prevent 
 	>	
 		<vcm-form-item prop="input" label="input">

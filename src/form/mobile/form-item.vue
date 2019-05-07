@@ -38,8 +38,15 @@ $block: vcm-form-item;
 		padding-top: 12px;
 		padding-bottom: 12px;
 		padding-right: 12px;
+		@include commonBorder1PX(bottom);
 	}
-	@include commonBorder1PX(bottom);
+	@include pseudo(last-child) {
+		@include element(wrapper) {
+			&:after {
+				display: none
+			}
+		}
+	}
 	@include element(content) { 
 		position: relative;
 		font-size: 16px;
@@ -83,9 +90,6 @@ $block: vcm-form-item;
 				padding: 0 0 10px 0
 			}
 		}
-	}
-	&:last-child:after {
-		display: none
 	}
 }
 
