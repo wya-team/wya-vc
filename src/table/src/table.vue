@@ -213,7 +213,7 @@
 	</div>
 </template>
 
-<script type="text/babel">
+<script>
 import { debounce } from 'lodash';
 import ElCheckbox from './ui/checkbox';
 import { addResizeListener, removeResizeListener } from './utils/resize-event';

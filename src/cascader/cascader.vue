@@ -27,6 +27,7 @@
 					<div class="vc-cascader__append">
 						<vc-icon
 							:type="showClear ? 'clear' : icon"
+							:class="{ 'is-arrow': !showClear }"
 							class="vc-cascader__icon"
 							@click="handleClear"
 						/>
@@ -282,7 +283,9 @@ $block: vc-cascader;
 		white-space: nowrap;
 	}
 	@include element(icon) {
-		transform: scale(0.7);
+		@include when(arrow) {
+			transform: scale(0.7);
+		}
 	}
 }
 

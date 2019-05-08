@@ -6,19 +6,20 @@
 			style="width: 200px"
 		>
 			<!-- vc-loader处理该bug -->
-			<i-option 
-				v-for="item in cityList" 
+			<vc-option 
+				v-for="(item, index) in cityList" 
 				:value="item.value" 
 				:key="item.value"
-			>{{ item.label }}</i-option>
+				:disabled="index == 1"
+			>{{ item.label }}</vc-option>
 		</vc-select>
 
 		<vc-select v-model="model7" style="width:200px">
 			<vc-option-group label="Hot Cities">
-				<i-option v-for="item in cityList1" :value="item.value" :key="item.value">{{ item.label }}</i-option>
+				<vc-option v-for="item in cityList1" :value="item.value" :key="item.value">{{ item.label }}</vc-option>
 			</vc-option-group>
 			<vc-option-group label="Other Cities">
-				<i-option v-for="item in cityList2" :value="item.value" :key="item.value">{{ item.label }}</i-option>
+				<vc-option v-for="item in cityList2" :value="item.value" :key="item.value">{{ item.label }}</vc-option>
 			</vc-option-group>
 		</vc-select>
 	</div>
@@ -33,7 +34,7 @@ export default {
 	components: {
 		'vc-select': Select,
 		'vc-option-group': OptionGroup,
-		'i-option': Option,
+		'vc-option': Option,
 	},
 	data() {
 		return {

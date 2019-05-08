@@ -68,11 +68,11 @@ export default {
 		visible: {
 			immediate: true,
 			handler(v, old) {
-				/**
-				 * 可以不使用v-model，所以需要判断一次
-				 */
-				this.isActive !== v && this.resetValue(v);
+				this.isActive = v;
 			}
+		},
+		isActive(v) {
+			this._isMounted && this.refresh();
 		}
 	},
 	mounted() {
@@ -128,16 +128,12 @@ export default {
 			if (v != this.isActive) {
 				let callback = () => {
 					this.$emit('visible-change', v);
-					this.resetValue(v);
+					this.isActive = v;
 				};
 				this.isHover && v === false 
 					? (this.timer = setTimeout(callback, 200))
 					: callback();
 			} 
-		},
-		resetValue(v) {
-			this.isActive = v;
-			this._isMounted && this.refresh();
 		}
 	}
 };
