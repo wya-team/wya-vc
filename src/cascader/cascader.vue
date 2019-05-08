@@ -152,7 +152,8 @@ export default {
 			handler(v) {
 				this.currentValue = v && v.length > 0 ? [...v] : [];
 			}
-		}
+		},
+		// currentValue() {}
 	},
 	methods: {
 		/**
@@ -255,6 +256,12 @@ export default {
 				value: this.currentValue,
 				label: this.label
 			});
+
+			let lastData = this.rebuildData[this.currentValue.length];
+			let isLast = !lastData || lastData.length === 0;
+			if (isLast) {
+				this.visible = false;
+			}
 		}
 	},
 };
