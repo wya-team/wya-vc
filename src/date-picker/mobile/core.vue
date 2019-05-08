@@ -12,10 +12,11 @@
 </template>
 
 <script>
+import { Utils } from '@wya/utils';
 import MPickerCore from '../../picker/mobile/core.vue';
 import CreatePortal from '../../create-portal/index';
-import { getSelectedData, value2date, date2value, prefixZero } from '../../utils/index';
-
+import { getSelectedData } from '../../utils/index';
+import { value2date, date2value, parseMode } from '../utils';
 
 const config = {
 	name: "vcm-date-picker-core",
@@ -47,10 +48,6 @@ const config = {
 			type: Number,
 			default: 23
 		},
-		format: {
-			type: String,
-			default: 'YYYY-MM-dd HH:mm'
-		},
 		value: {
 			type: Date,
 			default: () => new Date()
@@ -65,31 +62,7 @@ const config = {
 	},
 	computed: {
 		modeArr() {
-			let result;
-			switch (this.mode) {
-				case 'datetime':
-					result = 'YMDHm';
-					break;
-				case 'date':
-					result = 'YMD';
-					break;
-				case 'time':
-					result = 'Hm';
-					break;
-				case 'yearmonth':
-					result = 'YM';
-					break;
-				case 'year':
-					result = 'Y';
-					break;
-				case 'month':
-					result = 'M';
-					break;
-				default:
-					result = this.mode;
-					break;
-			}
-			return result.split('');
+			return parseMode(this.mode).split('');
 		},
 		cols() {
 			return this.modeArr.length;
@@ -186,7 +159,7 @@ const config = {
 			};
 			let arr = Array.from({ length: end - start + 1 }, (no, x) => {
 				let afterNum = x + start;
-				let finallyStr = String(prefixZero(afterNum));
+				let finallyStr = String(Utils.preZero(afterNum));
 				return {
 					value: finallyStr,
 					label: finallyStr + INTERVAL_MAP[type]

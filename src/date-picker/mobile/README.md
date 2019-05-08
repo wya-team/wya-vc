@@ -50,7 +50,7 @@ change | 组件关闭时候触发出来的一个事件，返回值为当前选�
 </template>
 <script>
 import { MDatePicker, MToast } from '@wya/vc';
-import { cloneDeep } from '../../utils/index';
+import { cloneDeep } from 'lodash';
 
 export default {
 	name: "vcm-date-picker-basic",

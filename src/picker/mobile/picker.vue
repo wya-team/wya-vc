@@ -2,9 +2,9 @@
 	<div class="vcm-picker" @click="handleClick">
 		<slot 
 			v-if="$slots.default || $scopedSlots.default" 
-			:label="label" 
+			:label="formatterValue" 
 		/>
-		<vcm-list-item v-else :extra="label" />
+		<vcm-list-item v-else :extra="formatterValue" />
 	</div>
 </template>
 
@@ -32,17 +32,40 @@ export default {
 			type: String,
 			default: '请选择'
 		},
-	},
-	data() {
-		return {};
-	},
-	computed: {
-		label() {
-			const { label = [] } = getSelectedData(this.value, this.dataSource);
-			return label.join(',') || this.extra;
+		formatter: {
+			type: Function,
+			default: (v) => (!v ? v : v.join(',')) 
 		}
 	},
-	mounted() {
+	data() {
+		return {
+			currentValue: []
+		};
+	},
+	computed: {
+		formatterValue() {
+			const { label = [] } = getSelectedData(this.currentValue, this.dataSource);
+			return this.formatter(label) || this.extra;
+		}
+	},
+	watch: {
+		value: {
+			immediate: true,
+			handler(v, old) {
+				/**
+				 * 强制必须使用v-model，所以不需要判断一次
+				 */
+				this.currentValue = v;
+			}
+		},
+		currentValue(v) {
+			this.$emit('change', v);
+			// form表单
+			this.dispatch('vc-form-item', 'form-change', v);
+		}
+	},
+	created() {
+		this.current = null;
 	},
 	destoryed() {
 		this.pickerInstance && this.pickerInstance.$emit('destroy');
@@ -71,10 +94,7 @@ export default {
 					value,
 					getInstance: vm => this.pickerInstance = vm
 				}).then(res => {
-					this.$emit('change', res.value, res);
-
-					// form表单
-					this.dispatch('vc-form-item', 'form-change', res.value);
+					this.currentValue = res.value;
 				}).catch(err => {
 					console.log(err);
 				});
@@ -86,6 +106,3 @@ export default {
 };
 
 </script>
-
-<style scoped lang='scss'>
-</style>

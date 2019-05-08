@@ -2,6 +2,7 @@ import { debounce } from 'lodash';
 
 export default {
 	name: "vc-debounce-click",
+	inheritAttrs: false,
 	props: {
 		wait: {
 			type: Number,
@@ -31,6 +32,7 @@ export default {
 	},
 	render(h) {
 		return h(this.tag, {
+			attrs: this.$attrs,
 			on: {
 				click: this.handleClick(this.$listeners.click)
 			},

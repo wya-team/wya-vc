@@ -1,4 +1,5 @@
-import { getCroppedImg, retrieveImageURL, isTouchDevice, isFileAPISupported } from '../utils/utils';
+import { Utils } from '@wya/utils';
+import { retrieveImageURL, isTouchDevice, isFileAPISupported } from '../utils/utils';
 
 export const draggableEvents = {
 	start: ['touchstart', 'mousedown'],
@@ -413,7 +414,10 @@ export default {
 		},
 
 		getImage(isNormal = true, fileName = '____fileName', getFile = false) {
-			return getCroppedImg(isNormal ? this.getImageToCanvas() : this.getImageScaledToCanvas(), fileName, getFile);
+			return Utils.canvas2file(
+				isNormal ? this.getImageToCanvas() : this.getImageScaledToCanvas(), 
+				{ fileName, getFile }
+			);
 		},
 		/**
 		 * x轴默认缩放

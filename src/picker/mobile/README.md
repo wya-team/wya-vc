@@ -66,9 +66,9 @@ change | 组件关闭时候触发出来的一个事件，返回值为当前选�
 	</div>
 </template>
 <script>
+import { cloneDeep } from 'lodash';
 import MToast from '../../m-toast/index';
 import MPicker from '../m-picker.vue';
-import { cloneDeep } from '../../utils/index';
 import { cascadeData, seasons } from './basic/mock';
 
 export default {

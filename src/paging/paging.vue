@@ -74,10 +74,11 @@
 </template>
 
 <script>
+import { URL } from '@wya/utils';
+import { cloneDeep } from 'lodash';
+
 import Page from 'iview/src/components/page';
 import Table from '../table';
-
-import { getConstructUrl, getParseUrl, cloneDeep, cloneDeepEasier } from '../utils/utils';
 import { VcInstance } from '../vc/index';
 
 let localPageSize = 0;
@@ -197,7 +198,7 @@ export default {
 		}
 	},
 	data() {
-		let { query: { page = 1, pageSize } } = getParseUrl();
+		let { query: { page = 1, pageSize } } = URL.parse();
 		let { pageSizeOpts } = this.pageOpts;
 		this.defaultPageSize = Number(
 			pageSize
@@ -224,7 +225,7 @@ export default {
 		show(v) {
 			if (v) {
 				// tabs切换时保持pageSize不变
-				let { query: { pageSize } } = getParseUrl();
+				let { query: { pageSize } } = URL.parse();
 				if (this.pageSize != pageSize) {
 					this.pageSize = Number(
 						pageSize 
@@ -275,7 +276,7 @@ export default {
 		// }
 	},
 	created() {
-		let { query: { page = 1 } } = getParseUrl();
+		let { query: { page = 1 } } = URL.parse();
 		this.show && this._loadData(page);
 
 		// 有数据的情况下，初始化， todo: 是否需要判断其他分页
@@ -380,8 +381,8 @@ export default {
 			// this.$emit('page-change', page);
 			page = page || 1;
 			if (this.history) {
-				let { path, query } = getParseUrl();
-				let config = getConstructUrl({
+				let { path, query } = URL.parse();
+				let config = URL.merge({
 					path,
 					query: {
 						...query,
@@ -515,7 +516,7 @@ export default {
 
 			this.$emit('expand', { 
 				...opts, 
-				row: cloneDeepEasier(targetArr[index] || []), 
+				row: cloneDeep(targetArr[index] || []), 
 				maxLevel,
 				callback: (opts = {}) => {
 					const { selected, all = false } = opts;

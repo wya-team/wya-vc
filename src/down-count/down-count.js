@@ -1,6 +1,6 @@
+import { Utils } from "@wya/utils";
 import { debounce } from 'lodash';
 import CreateCustomer from "../create-customer/index";
-import { prefixZero } from "../utils/utils";
 
 const Row = CreateCustomer({
 	days: [String, Number],
@@ -167,11 +167,11 @@ export default {
 			const _hour = _minute * 60;
 			const _day = _hour * 24;
 
-			this.days = prefixZero(Math.floor(timestamp / _day));
-			this.hours = prefixZero(Math.floor((timestamp % _day) / _hour));
-			this.minutes = prefixZero(Math.floor((timestamp % _hour) / _minute));
-			this.seconds = prefixZero(Math.floor((timestamp % _minute) / _second));
-			this.ms = prefixZero(Math.floor(timestamp % this.msDividend));
+			this.days = Utils.preZero(Math.floor(timestamp / _day));
+			this.hours = Utils.preZero(Math.floor((timestamp % _day) / _hour));
+			this.minutes = Utils.preZero(Math.floor((timestamp % _hour) / _minute));
+			this.seconds = Utils.preZero(Math.floor((timestamp % _minute) / _second));
+			this.ms = Utils.preZero(Math.floor(timestamp % this.msDividend));
 
 			if (timestamp <= 0) {
 				this.stop();

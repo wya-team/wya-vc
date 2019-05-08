@@ -1,10 +1,9 @@
 <template>
-	<vc-debounce-click :tag="Button" type="primary" @click="handleClick">
+	<vc-debounce-click tag="div" type="primary" @click="handleClick">
 		点击
 	</vc-debounce-click>
 </template>
 <script>
-import Button from '../../button';
 import DebounceClick from '../debounce-click';
 
 export default {
@@ -20,10 +19,7 @@ export default {
 		
 	},
 	beforeCreate() {
-		/**
-		 * 这样不会被注册监听
-		 */
-		this.Button = Button;
+		
 	},
 	methods: {
 		handleClick(e) {

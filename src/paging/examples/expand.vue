@@ -44,13 +44,13 @@
 </template>
 <script>
 import { ajax } from '@wya/http';
+import { URL } from '@wya/utils';
 import Tabs from '../../tabs';
 import Input from '../../input';
 import Message from '../../message';
 
 import Paging from '../paging';
 import { initPage } from './utils/utils';
-import { getConstructUrl, getParseUrl } from '../../utils/utils';
 
 let count = 0;
 const initialState = {
@@ -68,7 +68,7 @@ export default {
 		'vc-input': Input
 	},
 	data() {
-		const { query = {} } = getParseUrl();
+		const { query = {} } = URL.parse();
 
 		return {
 			show: true,
@@ -222,8 +222,8 @@ export default {
 		 * 
 		 */
 		setHistory(values) {
-			let { path, query } = getParseUrl();
-			window.history.replaceState(null, null, getConstructUrl({
+			let { path, query } = URL.parse();
+			window.history.replaceState(null, null, URL.merge({
 				path,
 				query: {
 					...query,

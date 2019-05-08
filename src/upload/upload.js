@@ -1,5 +1,6 @@
 import { ajax } from '@wya/http';
-import { getUid, attrAccept, initItem } from '../utils/utils';
+import { attrAccept, initItem } from './utils';
+import { getUid } from '../utils/utils';
 import { VcInstance, VcError } from '../vc/index';
 import { Tips } from './tips';
 

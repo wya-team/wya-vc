@@ -23,7 +23,7 @@
 </template>
 
 <script>
-import { cloneDeep } from '../../utils/utils';
+import { cloneDeep } from 'lodash';
 
 export default {
 	name: 'vcm-picker-col',
