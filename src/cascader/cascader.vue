@@ -257,6 +257,7 @@ export default {
 				label: this.label
 			});
 
+			// 最后一项，自动关闭
 			let lastData = this.rebuildData[this.currentValue.length];
 			let isLast = !lastData || lastData.length === 0;
 			if (isLast) {
