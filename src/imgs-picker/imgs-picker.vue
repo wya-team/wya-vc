@@ -3,7 +3,7 @@
 		<div 
 			v-for="(item, index) in data" 
 			:key="typeof item === 'object' ? item.uid : item"
-			:class="item.retcode == 0 && '__error'"
+			:class="item.status == 0 && '__error'"
 			class="__item __normal"
 		>
 			<div
@@ -29,7 +29,7 @@
 				<p v-else-if="!item.url && item.percent == 100" class="g-pd-10" style="line-height: 1">
 					服务器正在接收...
 				</p>
-				<div v-else-if="item.retcode == 0" class="g-pd-10 __flex-cc">
+				<div v-else-if="item.status == 0" class="g-pd-10 __flex-cc">
 					上传失败
 					<div class="__mask">
 						<div>
@@ -215,6 +215,7 @@ export default {
 				console.log(e);
 			}
 
+			this.$emit('open');
 			ImgsPreview.popup({
 				visible: true,
 				dataSource: this.dataSource,
@@ -227,7 +228,9 @@ export default {
 
 			}).catch(() => {
 
-			});
+			}).finally(() => {
+				this.$emit('close');
+			});	
 		},
 		getUrl(res) {
 			return this.format ? this.format(res) : res.data.url;
