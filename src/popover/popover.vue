@@ -92,11 +92,15 @@ export default {
 				this.popperInstance = Func.popup({
 					el,
 					popupContainer: this.$el,
-					slots: this.$slots,
 					onChange: ::this.handleChange,
 					onClose: () => this.$emit('close'),
 					onReady: () => this.$emit('ready'),
 					isHover: this.isHover,
+					/**
+					 * 传送门通信控制
+					 */
+					$slots: this.$slots,
+					$parent: this.$parent,
 					...this.$props,
 				});
 			} else if (this.popperInstance) {

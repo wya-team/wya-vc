@@ -127,7 +127,9 @@ class PortalCore extends VcBasic {
 			data,
 			components,
 			multiple,
-			slots,
+			// 可以不推荐使用
+			$slots,
+			$parent,
 			...rest
 		} = options;
 
@@ -205,7 +207,8 @@ class PortalCore extends VcBasic {
 		}
 
 		// slots 2.6.0+ 的slotx写法会同步更新
-		vm.$slots = slots;
+		vm.$slots = $slots;
+		vm.$parent = $parent;
 
 		// tag
 		vm.__AUTO_DESTROY__ = autoDestroy;
