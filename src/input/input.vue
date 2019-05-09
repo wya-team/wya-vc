@@ -79,7 +79,7 @@ $block: vc-input;
 	cursor: text;
 	font-size: 12px;
 	border-radius: 4px;
-	height: 28px;
+	min-height: 28px;
 	line-height: 1.5;
 	transition: border .2s ease-in-out, 
 		background .2s ease-in-out, 
