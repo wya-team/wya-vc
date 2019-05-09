@@ -211,6 +211,7 @@ export default {
 				console.log(e);
 			}
 
+			this.$emit('open');
 			ImgsPreview.popup({
 				visible: true,
 				dataSource: this.dataSource,
@@ -223,6 +224,8 @@ export default {
 
 			}).catch(() => {
 
+			}).finally(() => {
+				this.$emit('close');
 			});
 		},
 		getUrl(res) {

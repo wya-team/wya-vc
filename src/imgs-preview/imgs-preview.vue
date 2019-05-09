@@ -85,6 +85,8 @@ export default {
 			} catch (e) {
 				console.log(e);
 			}
+
+			this.$emit('open');
 			Func.popup({
 				id,
 				dataSource,
@@ -100,6 +102,8 @@ export default {
 
 			}).catch(() => {
 
+			}).finally(() => {
+				this.$emit('close');
 			});
 		}
 	}
