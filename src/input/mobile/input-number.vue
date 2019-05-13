@@ -73,7 +73,6 @@ $block: vcm-input-number;
 		&[disabled] {
 			background-color: #F5F5F5!important;
 			cursor: not-allowed;
-			pointer-events: none;
 			color: #ccc;
 		}
 		&:active {

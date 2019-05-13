@@ -67,6 +67,10 @@ export default {
 		value: {
 			immediate: true,
 			handler(v) {
+				// hookValue有值后将不再在此处赋值
+				if (!this.timer && !this.hookValue && !this.isInput) {
+					this.hookValue = v;
+				}
 				this.currentValue = v;
 			}
 		}
@@ -82,12 +86,10 @@ export default {
 				let regex = this.precision
 					? new RegExp(`(.*\\.[\\d]{${this.precision}})[\\d]+`)
 					: new RegExp(`(.*)\\.`);
-				
+					
 				value = value.replace(regex, '$1');
 				value = value.charAt(0) === '.' ? `0${value}` : value;
 			}
-
-			value = value === '' ? value : this.compareWithBoundary(value);
 
 			this.$emit('input', value);
 		},
@@ -96,18 +98,38 @@ export default {
 			let value = this.required && !this.currentValue 
 				? this.min
 				: this.currentValue;
+			
+			try {
+				value = value === '' ? value : this.compareWithBoundary({ value, type: 'input' });
 
-			this.$emit('input', value);
-			this.$emit('blur', e);
+				let state = this.afterHook(value);
+				state && this.$emit('input', value);
+				this.$emit('blur', e);
+			} catch (e) {
+				throw new VcError('vc-input-number', e);
+			} 
 		},
 		async handleStepper(base) {
-			let { $listeners: { plus, minus, before } } = this;
+			let { $listeners: { plus, minus, before, after } } = this;
+			if (base === 1 && this.plusDisabled) {
+				this.$emit('tip', {
+					type: 'max',
+					msg: '不能再多了',
+				});
+				return; 
+			} else if (base === -1 && this.minusDisabled) {
+				this.$emit('tip', {
+					type: 'min',
+					msg: '不能再少了',
+				});
+				return; 
+			}
 
 			if (base === 1 && plus) { return plus(); }
 			if (base === -1 && minus) { return minus(); }
 
 			let value = +this.currentValue + this.step * base;
-			value = this.compareWithBoundary(value);
+			value = this.compareWithBoundary({ value, type: 'button' });
 
 			let state = true;
 			try {
@@ -116,16 +138,39 @@ export default {
 				}
 				
 				state && this.$emit('input', value);
+				this.afterHook(value);
 			} catch (e) {
 				throw new VcError('vc-input-number', e);
 			} 
 		},
 		/**
+		 * 为防止在有after的时候多次触发input事件，返回state
+		 * 没有after时，返回true，有外面自己发射input
+		 * 有after时，根据after的返回值，如果是false，则由内部发射input事件，重新赋值value；
+		 * 如果是true，也由外部发射
+		 */
+		afterHook(value) {
+			let { $listeners: { after } } = this;
+			let state = !after;
+			if (!after) return state;
+			this.timer && clearTimeout(this.timer);
+			this.timer = setTimeout(async () => {
+				state = await after(value);
+				if (state) {
+					this.hookValue = value;
+				} else {
+					this.$emit('input', this.hookValue);
+				}
+				this.timer = null;
+			}, 300);
+			return state;
+		},
+		/**
 		 * @param  {String}  options.value
-		 * @param  {Boolean} options.format [是否需要格式化]
+		 * @param  {Boolean} options.tag 类型（input | button）
 		 * @return {String} 输入的值
 		 */
-		compareWithBoundary(value) {
+		compareWithBoundary({ value, tag }) {
 
 			if (value > this.max) {
 				value = this.max;
@@ -133,7 +178,8 @@ export default {
 				this.$emit('tip', {
 					type: 'max',
 					msg: `数值不能超过${value}`,
-					value
+					value,
+					tag
 				});
 			}
 
@@ -143,7 +189,8 @@ export default {
 				this.$emit('tip', {
 					type: 'min',
 					msg: `数值不能低于${value}`,
-					value
+					value,
+					tag
 				});
 			}
 			return value;

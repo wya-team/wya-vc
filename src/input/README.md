@@ -25,6 +25,10 @@ change | 数据改变时触发 | `any` | -
 focus | 输入框聚焦是触发 | - | -
 blur | 输入框失焦时 | - | -
 enter | 按下回车键是触发 | - | -
+before | 点击加减按钮改变value前执行 | `function` | -
+after | 点击加减按钮改变value后或者失焦后执行 | `function` | -
+
+> 注：after事件与before的区别，before是成功之后才会改变value，after只会在失败之后重新修改值
 
 #### Slot
 

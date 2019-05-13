@@ -33,7 +33,12 @@
 			<br>
 			<vcm-form>
 				<vcm-form-item>
-					<vcm-input-number v-model="value3"/>
+					<vcm-input-number 
+						v-model="value3"
+						:max="100"
+						@tip="handleTip"
+						@after="handleChangeAfter"
+					/>
 				</vcm-form-item>
 				<vcm-form-item>
 					<vcm-input-number v-model="value3" :step="false"/>
@@ -67,7 +72,7 @@ export default {
 			value: '',
 			value1: '',
 			value2: 0,
-			value3: 0,
+			value3: 10,
 			textvalue: ''
 		};
 	},
@@ -90,6 +95,18 @@ export default {
 		},
 		handleEnter() {
 			console.log('回车键的回调');
+		},
+		handleTip({ value }) {
+			console.log(value, '超出的提示');
+		},
+		handleChangeAfter(value) {
+			return new Promise((resolve, rejcet) => {
+				setTimeout(() => {
+					resolve();
+				}, 1000);
+			}).then((res) => {
+				return false;
+			});
 		}
 	}
 };
