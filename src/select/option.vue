@@ -62,11 +62,11 @@ export default {
 		}
 	},
 	watch: {
-		selected: {
-			immediate: true,
-			handler(v) {
-			}
-		}
+		// selected: {
+		// 	immediate: true,
+		// 	handler(v) {
+		// 	}
+		// }
 	},
 	methods: {
 		handleSelect() {
@@ -77,10 +77,10 @@ export default {
 				this.owner.visible = false;
 				return;
 			} else if (this.selected) {
-				this.owner.removeValue(this.value, this.formatterLabel);
+				this.owner.reemove(this.value, this.formatterLabel);
 				return;
 			}
-			this.owner.addValue(this.value, this.formatterLabel);
+			this.owner.add(this.value, this.formatterLabel);
 		}
 	},
 };

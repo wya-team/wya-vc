@@ -55,7 +55,7 @@
 					<div class="vc-select__options">
 						<slot />
 					</div>
-					<!-- hack for slot, 异步数据弹层已打开是未刷新 -->
+					<!-- hack for slot, 异步数据弹层已打开时未刷新 -->
 					<span v-show="false" v-text="currentLabel" />
 				</div>
 			</template>
@@ -224,24 +224,14 @@ export default {
 			if (!this.showClear) return;
 			e.stopPropagation();
 
+			this.$emit('clear', '');
 			this.$emit('change', '');
 		},
 
 		handleClose(v) {
-			this.removeValue(v);
+			this.remove(v);
 		},
 
-		addValue(v, label) {
-			!this.multiple
-				? (this.currentValue = v, this.currentLabel = label)
-				: (this.currentValue.push(v), this.currentLabel.push(label));
-		},
-		removeValue(v, label) {
-			let index = this.currentValue.findIndex(i => i == v);
-
-			this.currentValue.splice(index, 1);
-			this.currentLabel.splice(index, 1);
-		},
 		handleSearch(v) {
 			this.searchValue = v;
 			this.searchRegex = new RegExp(v, 'i');
@@ -256,7 +246,19 @@ export default {
 					this.loading = false;
 				});
 			}
-		}
+		},
+
+		add(v, label) {
+			!this.multiple
+				? (this.currentValue = v, this.currentLabel = label)
+				: (this.currentValue.push(v), this.currentLabel.push(label));
+		},
+		remove(v, label) {
+			let index = this.currentValue.findIndex(i => i == v);
+
+			this.currentValue.splice(index, 1);
+			this.currentLabel.splice(index, 1);
+		},
 	},
 };
 </script>

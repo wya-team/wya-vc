@@ -1,5 +1,9 @@
 # 历史版本
 
+### 1.3.0
+- select: `filter -> search`, `remote-method -> load-data`, `clearSingleSelect -> remove`
+- select: 删除`remote`, `loading`, `loading-text`, `setQuery`
+
 ### 1.2.6
 新增: `input-number` `input-search`
 
