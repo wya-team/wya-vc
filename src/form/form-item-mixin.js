@@ -183,7 +183,7 @@ export default {
 			 * 默认不传校正string
 			 */
 			rules = rules.map((i) => {
-				if (!i.type && i.required) {
+				if (!i.validator && !i.type && i.required) {
 					return {
 						...i,
 						validator: RegEx.validator
