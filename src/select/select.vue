@@ -18,19 +18,29 @@
 				:element-id="elementId"
 				:readonly="true"
 				:disabled="disabled"
-				:value="formatLabel"
+				:value="currentLabel"
 				:placeholder="placeholder || '请选择'"
 				class="vc-select__input"
 				@click="visible = true"
 			>
-				<template v-if="max > 1 && (currentValue && currentValue.length > 0)" #content>
-					<div>ss</div>
+				<template v-if="multiple && (currentValue && currentValue.length > 0)" #content>
+					<div class="vc-select__tags">
+						<vc-tag 
+							v-for="(item, index) in currentValue" 
+							:key="item" 
+							closable 
+							@close="handleClose(item)"
+						>
+							{{ currentLabel[index] || '' }}
+						</vc-tag>
+					</div>
 				</template>
 				<template #append>
 					<!-- down, up, clear -->
 					<div class="vc-select__append">
 						<vc-icon
 							:type="showClear ? 'clear' : icon"
+							:class="{ 'is-arrow': !showClear }"
 							class="vc-select__icon"
 							@click="handleClear"
 						/>
@@ -38,26 +48,36 @@
 				</template>
 			</vc-input>
 			<template #content>
-				<slot />
+				<div class="vc-select__content">
+					<div v-if="search" class="vc-select__search">
+						<vc-input-search v-model="searchValue" @input="handleSearch" />
+					</div>
+					<div class="vc-select__options">
+						<slot />
+					</div>
+					<!-- hack for slot, 异步数据弹层已打开是未刷新 -->
+					<span v-show="false" v-text="currentLabel" />
+				</div>
 			</template>
 		</vc-popover>
 	</div>
 </template>
 
 <script>
-import { pick, cloneDeep } from 'lodash';
-import { getSelectedData } from '../utils/index';
+import { pick, cloneDeep, isEqualWith } from 'lodash';
+import { getSelectedData, getUid } from '../utils/index';
 import emitter from '../extends/mixins/emitter'; // 表单验证
 import Input from '../input/index';
 import Popover from '../popover/index';
 import Tag from '../tag/index';
 import Icon from '../icon/index';
 import InputMixin from '../input/input-mixin';
-	
+
 export default {
 	name: 'vc-select',
 	components: {
 		'vc-input': Input,
+		'vc-input-search': Input.Search,
 		'vc-icon': Icon,
 		'vc-popover': Popover,
 		'vc-tag': Tag,
@@ -82,27 +102,30 @@ export default {
 			default: 'click'
 		},
 		extra: {
-			type: String,
-			default: ''
-		},
-		formatter: {
-			type: Function,
-			default: v => (v && v.join(''))
+			type: String | Array
 		},
 		max: {
 			type: Number,
 			default: 1,
 			validator: v => v >= 1,
+		},
+		search: {
+			type: Boolean,
+			default: false
+		},
+		loadData: {
+			type: Function,
 		}
-	},
-	provide() {
-		return { select: this };
 	},
 	data() {
 		return {
 			isHover: false,
 			visible: false,
-			currentValue: [],
+			loading: false,
+			searchValue: '',
+			searchRegex: new RegExp(),
+			currentValue: this.max > 1 ? [] : '',
+			currentLabel: this.max > 1 ? [] : '',
 			rebuildData: []
 		};
 	},
@@ -113,19 +136,84 @@ export default {
 		showClear() {
 			return this.currentValue && this.currentValue.length && this.clearable && !this.disabled && this.isHover;
 		},
-		formatLabel() {
-			return this.formatter(this.currentValue);
+		multiple() {
+			return this.max > 1;
 		}
 	},
 	watch: {
 		value: {
 			immediate: true,
 			handler(v) {
-				this.currentValue = v instanceof Array ? [...v] : [v];
+				this.currentValue = v;
 			}
+		},
+		currentValue(v) {
+			this.$emit('change', v);
+			// form表单
+			this.dispatch('vc-form-item', 'form-change', v);
 		}
 	},
+	created() {
+		this.selectId = getUid('select');
+
+		this.hasInit = !(this.currentValue || this.currentValue.length > 0);
+
+		this.dataSource = []; 
+		this.updateLable();
+	},
+	beforeUpdate() {
+		/**
+		 * 容易造成内存溢出
+		 */
+		this.updateLable();
+	},
 	methods: {
+		updateLable() {
+			if (
+				this.hasInit 
+				|| !this.$slots.default 
+				|| this.extra
+			) return;
+
+			/**
+			 * 可能存在耗时操作
+			 */
+			this.$nextTick(() => {
+				let vnodes = [];
+				this.$slots.default.forEach((vnode) => {
+					if (!vnode.tag) return;
+					if (vnode && /option-group$/.test(vnode.tag)) {
+						vnodes.push(...vnode.componentOptions.children);
+					} else {
+						vnodes.push(vnode);
+					}
+				});
+
+				let data = [];
+				vnodes.forEach((vnode) => {
+					const { value, label, disabled } = vnode.componentOptions.propsData;
+					data.push({
+						disabled,
+						value,
+						label: label || vnode.componentOptions.children[0].text || value
+					});
+				});
+				if (isEqualWith(this.dataSource, data)) return;
+
+				this.currentLabel = this.multiple 
+					? this.currentValue.map(this.getLabel.bind(null, data))
+					: this.getLabel(data, this.currentValue);
+
+				this.hasInit = true;
+				this.dataSource = data;
+			});
+		},
+		getLabel(data, v) {
+			let { label = i } = data.find(i => i.value == v) || {};
+
+			return label;
+		},
+
 		/**
 		 * 初始化完成后格式化数据
 		 */
@@ -139,15 +227,35 @@ export default {
 			this.$emit('change', '');
 		},
 
-		resetValue() {
-			
+		handleClose(v) {
+			this.removeValue(v);
 		},
 
-		/**
-		 * 给子元素
-		 */
-		add(v) {
-			this.$emit('change', this.max === 1 ? v : [this.currentValue, v]);
+		addValue(v, label) {
+			!this.multiple
+				? (this.currentValue = v, this.currentLabel = label)
+				: (this.currentValue.push(v), this.currentLabel.push(label));
+		},
+		removeValue(v, label) {
+			let index = this.currentValue.findIndex(i => i == v);
+
+			this.currentValue.splice(index, 1);
+			this.currentLabel.splice(index, 1);
+		},
+		handleSearch(v) {
+			this.searchValue = v;
+			this.searchRegex = new RegExp(v, 'i');
+
+			let remote = this.loadData && this.loadData();
+			
+			if (remote && remote.then) {
+				this.loading = true;
+				remote.then({
+
+				}).finally(() => {
+					this.loading = false;
+				});
+			}
 		}
 	},
 };
@@ -176,7 +284,23 @@ $block: vc-select;
 		white-space: nowrap;
 	}
 	@include element(icon) {
-		transform: scale(0.8);
+		@include when(arrow) {
+			transform: scale(0.8);
+		}
+	}
+	@include element(tags) {
+		padding-left: 4px;
+		.vc-tag {
+			margin: 3px 4px 3px 0;
+		}
+	}
+
+	@include element(search) {
+		padding: 10px;
+	}
+	@include element(options) {
+		max-height: 220px;
+		overflow: auto;
 	}
 }
 

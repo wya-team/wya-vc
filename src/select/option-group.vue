@@ -32,7 +32,6 @@ $block: vc-select-option-group;
 		height: 30px;
 		line-height: 30px;
 	}
-
 }
 
 </style>

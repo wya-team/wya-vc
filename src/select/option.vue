@@ -1,14 +1,15 @@
 <template>
 	<div
+		v-if="visible"
 		:disabled="disabled"
-		:class="classes"
+		:class="{ 'is-select': selected }"
 		class="vc-select-option"
 		@click.stop="handleSelect"
 		@touchend.stop="handleSelect"
 		@mousedown.prevent
 		@touchstart.prevent
 	>
-		<slot>{{ formatLabel }}</slot>
+		<slot>{{ formatterLabel }}</slot>
 	</div>
 </template>
 
@@ -29,10 +30,6 @@ export default {
 		disabled: {
 			type: Boolean,
 			default: false
-		},
-		selected: {
-			type: Boolean,
-			default: false
 		}
 	},
 	inject: {
@@ -46,37 +43,44 @@ export default {
 		};
 	},
 	computed: {
-		formatLabel() {
-			return (this.label) ? this.label : this.value;
+		owner() {
+			let parent = this.$parent;
+			while (parent && !parent.selectId) {
+				parent = parent.$parent;
+			}
+			return parent;
 		},
-		optionLabel() {
-			return this.label || (this.$el && this.$el.textContent);
+		formatterLabel() {
+			let v = this.$slots.default[0].text || this.label || this.value;
+			return v;
 		},
-		classes() {
-			return {
-				'is-select': false
-			};
+		selected() {
+			return this.owner.value == this.value || this.owner.value.includes(this.value);
+		},
+		visible() {
+			return this.owner.searchRegex.test(this.formatterLabel);
 		}
 	},
 	watch: {
-		
-	},
-	created() {
-		console.log(this);
+		selected: {
+			immediate: true,
+			handler(v) {
+			}
+		}
 	},
 	methods: {
 		handleSelect() {
-			if (this.disabled) return false;
-
-			// this.dispatch('iSelect', 'on-select-selected', {
-			// 	value: this.value,
-			// 	label: this.optionLabel,
-			// });
-			// 暂不使用
-			this.$emit('select', {
-				value: this.value,
-				label: this.optionLabel,
-			});
+			// 禁止操作
+			if (this.disabled) return;
+			// 已选中，弹层关闭
+			if (!this.owner.multiple && this.selected) {
+				this.owner.visible = false;
+				return;
+			} else if (this.selected) {
+				this.owner.removeValue(this.value, this.formatterLabel);
+				return;
+			}
+			this.owner.addValue(this.value, this.formatterLabel);
 		}
 	},
 };
@@ -104,6 +108,7 @@ $block: vc-select-option;
 	&[disabled] {
 		color: #c5c8ce;
 		cursor: not-allowed;
+		pointer-events: none;
 	}
 }
 </style>

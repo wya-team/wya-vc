@@ -3,8 +3,8 @@ import { cloneDeep } from 'lodash';
 const now = +(new Date());
 let index = 0;
 
-export const getUid = () => {
-	return `vc-${now}-${++index}`;
+export const getUid = (comp) => {
+	return `vc${`-${comp}` || ''}-${now}-${++index}`;
 };
 
 
