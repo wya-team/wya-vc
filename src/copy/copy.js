@@ -30,11 +30,10 @@ export default {
 				if (success) {
 					after && after(value);
 					!after && Message.success({
-						content: `复制成功：${value}`
+						content: `复制成功`
 					});
 				}
 			} catch (error) {
-				console.error(`copy fail: ${error}`);
 				this.$emit('error', error);
 			}
 		}
