@@ -9,6 +9,8 @@ import MToast from '../index.m';
 
 window.MToast = MToast;
 
+const sleep = delay => new Promise(_ => setTimeout(_, delay * 1000 || 0));
+
 export default {
 	name: "vc-tpl-basic",
 	components: {
@@ -20,11 +22,17 @@ export default {
 	computed: {
 
 	},
-	mounted() {
-		MToast.info('测试1', 3);
-		MToast.info('测试2', 3);
-		MToast.info('测试3', 3);
-		setTimeout(MToast.destroy, 1000);
+	async mounted() {
+		MToast.info('测试1', 1);
+		await sleep(1);
+
+		MToast.info(`测试2: 换行 <br> tt <br> zz`, 1);
+		await sleep(1);
+
+		MToast.info('测试3: 销毁', 10);
+		await sleep(1);
+
+		MToast.destroy();
 	},
 	methods: {
 		handleClick(v) {

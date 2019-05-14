@@ -24,7 +24,8 @@
 					<p 
 						v-if="typeof content === 'string'"
 						class="vc-message__content"
-					>{{ content }}</p>
+						v-html="content"
+					/>
 					<vc-row 
 						v-else-if="typeof content === 'function'" 
 						:render="content" 

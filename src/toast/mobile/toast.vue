@@ -10,7 +10,7 @@
 		>
 			<div v-show="visible" class="vcm-toast__wrapper">
 				<vcm-spin v-if="mode === 'loading'" class="vcm-toast__loading"/>
-				<p v-if="content">{{ content }}</p>
+				<p v-if="content" v-html="content" />
 				<vcm-row v-else :render="content" />
 			</div>
 		</vcm-transition-fade>
