@@ -20,6 +20,7 @@
 				:disabled="disabled"
 				:value="currentLabel"
 				:placeholder="placeholder || '请选择'"
+				:allow-dispatch="false"
 				class="vc-select__input"
 				@click="visible = true"
 			>
@@ -144,6 +145,9 @@ export default {
 		value: {
 			immediate: true,
 			handler(v) {
+				if (isEqualWith(v, this.currentValue)) {
+					return;
+				}
 				this.currentValue = v;
 			}
 		},
@@ -209,7 +213,7 @@ export default {
 			});
 		},
 		getLabel(data, v) {
-			let { label = i } = data.find(i => i.value == v) || {};
+			let { label = '' } = data.find(i => i.value == v) || {};
 
 			return label;
 		},
@@ -224,8 +228,10 @@ export default {
 			if (!this.showClear) return;
 			e.stopPropagation();
 
-			this.$emit('clear', '');
-			this.$emit('change', '');
+			this.$emit('clear');
+
+			this.currentValue = this.multiple ? [] : '';
+			this.currentLabel = this.multiple ? [] : '';
 		},
 
 		handleClose(v) {
@@ -249,9 +255,14 @@ export default {
 		},
 
 		add(v, label) {
-			!this.multiple
-				? (this.currentValue = v, this.currentLabel = label)
-				: (this.currentValue.push(v), this.currentLabel.push(label));
+			if (!this.multiple) {
+				this.currentValue = v;
+				this.currentLabel = label;
+				this.visible = false;
+			} else {
+				this.currentValue.push(v); 
+				this.currentLabel.push(label);
+			}
 		},
 		remove(v, label) {
 			let index = this.currentValue.findIndex(i => i == v);

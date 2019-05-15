@@ -55,18 +55,16 @@ export default {
 			return v;
 		},
 		selected() {
-			return this.owner.value == this.value || this.owner.value.includes(this.value);
+			return !this.owner.multiple 
+				? this.owner.value == this.value
+				: this.owner.value.includes(this.value);
 		},
 		visible() {
 			return this.owner.searchRegex.test(this.formatterLabel);
 		}
 	},
 	watch: {
-		// selected: {
-		// 	immediate: true,
-		// 	handler(v) {
-		// 	}
-		// }
+		
 	},
 	methods: {
 		handleSelect() {
@@ -77,7 +75,7 @@ export default {
 				this.owner.visible = false;
 				return;
 			} else if (this.selected) {
-				this.owner.reemove(this.value, this.formatterLabel);
+				this.owner.remove(this.value, this.formatterLabel);
 				return;
 			}
 			this.owner.add(this.value, this.formatterLabel);

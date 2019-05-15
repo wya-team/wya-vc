@@ -19,6 +19,7 @@
 				:disabled="disabled"
 				:value="formatLabel"
 				:placeholder="placeholder || '请选择'"
+				:allow-dispatch="false"
 				class="vc-cascader__input"
 				@click="visible = true"
 			>

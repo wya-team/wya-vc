@@ -99,6 +99,46 @@
 				>{{ item.label }}</vc-option>
 			</vc-select>
 		</div>
+
+
+		<!-- form -->
+
+		<vc-form 
+			ref="form" 
+			:model="formValidate" 
+			:rules="ruleValidate" 
+			:label-width="196"
+			position="left"
+			@submit.native.prevent
+		>
+			<vc-form-item label="设置单选：" prop="value">
+				<vc-select
+					v-model="formValidate.value"
+					clearable
+					style="width: 300px;"
+				>
+					<vc-option
+						v-for="(item, index) in cityList"
+						:value="item.value"
+						:key="index"
+					>{{ item.label }}</vc-option>
+				</vc-select>
+			</vc-form-item>
+			<vc-form-item label="设置多选：" prop="value1">
+				<vc-select
+					v-model="formValidate.value1"
+					:max="5"
+					clearable
+					style="width: 300px;"
+				>
+					<vc-option
+						v-for="(item, index) in cityList"
+						:value="item.value"
+						:key="index"
+					>{{ item.label }}</vc-option>
+				</vc-select>
+			</vc-form-item>
+		</vc-form>
 	</div>
 </template>
 <script>
@@ -106,6 +146,8 @@ import Select from '..';
 import Button from '../../button';
 import Option from '../option';
 import OptionGroup from '../option-group';
+import Form from '../../Form';
+
 import { cityList, cityList1, cityList2, searchData } from './basic/data';
 
 export default {
@@ -114,7 +156,9 @@ export default {
 		'vc-select': Select,
 		'vc-option-group': OptionGroup,
 		'vc-option': Option,
-		'vc-button': Button
+		'vc-button': Button,
+		'vc-form': Form,
+		'vc-form-item': Form.Item
 	},
 	data() {
 		let value1 = '1';
@@ -140,7 +184,26 @@ export default {
 
 			value5,
 			extra5: '',
-			cityListAsync: []
+			cityListAsync: [],
+
+			formValidate: {
+				value: '',
+				value1: []
+			},
+			ruleValidate: {
+				value: [
+					{
+						required: true,
+						trigger: 'change',
+					}
+				],
+				value1: [
+					{
+						required: true,
+						trigger: 'change'
+					}
+				]
+			}
 		};
 	},
 	computed: {

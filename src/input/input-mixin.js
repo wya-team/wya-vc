@@ -57,6 +57,10 @@ export default {
 		},
 		inputStyle: {
 			type: Object | Array
+		},
+		allowDispatch: {
+			type: Boolean,
+			default: true
 		}
 	},
 	data() {
@@ -74,7 +78,7 @@ export default {
 				 * 强制必须使用v-model，所以不需要判断一次
 				 */
 				this.currentValue = v;
-				this.dispatch('vc-form-item', 'form-change', v);
+				this.allowDispatch && this.dispatch('vc-form-item', 'form-change', v);
 			}
 		}
 	},
@@ -139,7 +143,7 @@ export default {
 			this.isFocus = false;
 
 			this.$emit('blur', e);
-			this.dispatch('vc-form-item', 'form-blur', this.currentValue);
+			this.allowDispatch && this.dispatch('vc-form-item', 'form-blur', this.currentValue);
 		},
 		handleComposition(e) {
 			if (e.type === 'compositionstart') {

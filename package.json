@@ -1,6 +1,6 @@
 {
     "name": "@wya/vc",
-    "version": "1.3.0",
+    "version": "1.3.1",
     "description": "wya for vue components",
     "main": "lib/index.js",
     "files": [
@@ -65,9 +65,9 @@
         "@babel/plugin-transform-runtime": "^7.3.4",
         "@babel/preset-env": "^7.3.1",
         "@babel/runtime": "^7.3.4",
-        "@wya/http": "^1.0.0",
+        "@wya/http": "^1.1.3",
         "@wya/ps": "^1.0.2",
-        "@wya/utils": "^1.0.0",
+        "@wya/utils": "^1.2.0",
         "autoprefixer": "^8.3.0",
         "babel-core": "^7.0.0-bridge.0",
         "babel-eslint": "^8.2.3",
