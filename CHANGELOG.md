@@ -5,7 +5,9 @@
 
 ### 1.3.0
 - select: `filter -> search`, `remote-method -> load-data`, `clearSingleSelect -> remove`, `not-found-text` -> `not-found` 
-- select: 删除`remote`, `loading`, `loading-text`, `setQuery`, `label-in-value`
+- select: 删除`remote`, `loading`, `loading-text`, `setQuery`方法, `label-in-value`
+- select: 事件暂时只有`clear`, `change`
+- input-number: 新增`after`, `before`事件
 
 ### 1.2.6
 新增: `input-number` `input-search`
