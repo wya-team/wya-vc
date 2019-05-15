@@ -7,8 +7,8 @@
 	>
 		<div 
 			v-show="isActive"
-			:style="[wrapperStyle, wrapperW, transferStyle]"
-			:class="[wrapperClasses, transferClassName]"
+			:style="[wrapperStyle, wrapperW, portalStyle]"
+			:class="[wrapperClasses, portalClassName]"
 			class="vc-popover-core" 
 			@mouseenter="isHover && onChange($event, true)"
 			@mouseleave="isHover && onChange($event, false)"
@@ -61,7 +61,7 @@ const popup = {
 		},
 		content: String,
 		getPopupContainer: Function,
-		transfer: {
+		portal: {
 			type: Boolean,
 			default: true
 		},
@@ -77,8 +77,8 @@ const popup = {
 		onChange: Function,
 		onReady: Function,
 		isHover: Boolean,
-		transferClassName: Object | String,
-		transferStyle: Object,
+		portalClassName: Object | String,
+		portalStyle: Object,
 	},
 	data() {
 		return {
@@ -150,10 +150,10 @@ const popup = {
 
 			const popupContainer = this.getHackContainer();
 
-			const { transfer, getPopupContainer } = this;
+			const { portal, getPopupContainer } = this;
 
 			let rect = this.getRect({
-				transfer,
+				portal,
 				popupContainer,
 				el: this.$el,
 				hasContainer: !!getPopupContainer

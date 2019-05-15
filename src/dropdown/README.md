@@ -11,8 +11,8 @@
 trigger | 触发方式，可选值为 `hover`（悬停）`click`（点击）`contextMenu`（右键）`custom`（自定义），使用 custom 时，需配合 visible 一起使用 | String | hover
 visible | 手动控制下拉框的显示，在 trigger = 'custom' 时使用 | Boolean | false
 placement |  下拉菜单出现的位置，可选值为`top` `top-start` `top-end` `bottom` `bottom-start` `bottom-end` `left` `left-start` `left-end` `right` `right-start` `right-end` |  String  |  bottom 
-transfer | 是否将弹层放置于 body 内，在 Tabs、带有 fixed 的 Table 列内使用时，建议添加此属性，它将不受父级样式影响，从而达到更好的效果 | Boolean | false
-transfer-class-name  | 开启 transfer 时，给浮层添加额外的 class 名称 | String | -
+portal | 是否将弹层放置于 body 内，在 Tabs、带有 fixed 的 Table 列内使用时，建议添加此属性，它将不受父级样式影响，从而达到更好的效果 | Boolean | true
+portal-class-name  | 开启 portal 时，给浮层添加额外的 class 名称 | String | -
 
 
 #### 事件

@@ -9,7 +9,7 @@
 			:arrow="false" 
 			:trigger="trigger"
 			placement="bottom-left"
-			transfer-class-name="is-padding-none"
+			portal-class-name="is-padding-none"
 			@ready="handleReady"
 		>
 			<vc-input

@@ -1,8 +1,11 @@
 # 历史版本
 
+### 1.3.8
+- 弹层属性一律将 `transfer` -> `portal`， 默认都为`true`
+
 ### 1.3.0
-- select: `filter -> search`, `remote-method -> load-data`, `clearSingleSelect -> remove`
-- select: 删除`remote`, `loading`, `loading-text`, `setQuery`
+- select: `filter -> search`, `remote-method -> load-data`, `clearSingleSelect -> remove`, `not-found-text` -> `not-found` 
+- select: 删除`remote`, `loading`, `loading-text`, `setQuery`, `label-in-value`
 
 ### 1.2.6
 新增: `input-number` `input-search`

@@ -14,7 +14,7 @@ placement | 弹层的位置(`top` `left` `right` `bottom` `bottom-left` `bottom-
 trigger | 触发的行为`hover` `click` `focus` | `string` | `hover`
 content | 显示的内容 | `string` | 无
 getPopupContainer | 浮层渲染父节点 | `func` | 无
-transfer | 是否渲染到body上，默认body | `boolean` | 无
+portal | 是否渲染到body上，默认body | `boolean` | 无
 arrow | 浮层有无箭头 | `boolean` | `true`
 theme | 颜色主体`light` `dark` | `string` | `light`
 
@@ -61,7 +61,7 @@ content | 弹层内容
 			</vc-popover>
 			<vc-popover 
 				v-model="visible"
-				:transfer="false"
+				:portal="false"
 				trigger="click" 
 				placement="left" 
 				content="Left"
@@ -105,7 +105,7 @@ content | 弹层内容
 					</template>
 				</vc-popover>
 				<vc-popover 
-					:transfer="false"
+					:portal="false"
 					trigger="click" 
 					placement="top" 
 					content="Top"
@@ -115,7 +115,7 @@ content | 弹层内容
 					</vc-button>
 					<template #content>
 						<div style="height: 100px; width: 200px">
-							transfer="false"
+							portal="false"
 						</div>
 					</template>
 				</vc-popover>
@@ -151,7 +151,7 @@ content | 弹层内容
 					</template>
 				</vc-popover>
 				<vc-popover 
-					:transfer="false"
+					:portal="false"
 					trigger="click" 
 					placement="bottom" 
 					content="Bottom"
@@ -161,7 +161,7 @@ content | 弹层内容
 					</vc-button>
 					<template #content>
 						<div style="height: 100px; width: 200px">
-							transfer="false"
+							portal="false"
 						</div>
 					</template>
 				</vc-popover>
@@ -198,7 +198,7 @@ content | 弹层内容
 				</template>
 			</vc-popover>
 			<vc-popover 
-				:transfer="false"
+				:portal="false"
 				trigger="click" 
 				placement="right" 
 				content="Right"
@@ -208,7 +208,7 @@ content | 弹层内容
 				</vc-button>
 				<template #content>
 					<div style="height: 100px; width: 200px">
-						transfer="false"
+						portal="false"
 					</div>
 				</template>
 			</vc-popover>

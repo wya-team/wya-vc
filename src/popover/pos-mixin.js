@@ -4,7 +4,7 @@ const EXTRA_DISTANCE = 4; // 额外的距离
 const HALF_ARROW = 12.73 / 2; // 箭头一半的高度
 export default {
 	methods: {
-		getRect({ transfer, hasContainer, popupContainer, el }) {
+		getRect({ portal, hasContainer, popupContainer, el }) {
 			let rect;
 			if (hasContainer) { // 基于传入的容器节点
 				let elRect = popupContainer.getBoundingClientRect();
@@ -20,7 +20,7 @@ export default {
 					height: elRect.height,
 					width: elRect.width
 				};
-			} else if (!transfer) { // 基于父节点
+			} else if (!portal) { // 基于父节点
 				rect = {
 					y: 0,
 					x: 0,

@@ -20,7 +20,7 @@ show-elevator | 显示电梯，可以快速切换到某一页 | Boolean | false
 show-sizer | 显示分页，用来改变`page-size` | Boolean | false
 class-name | 自定义 class 名称 | String | -
 styles | 自定义 style 样式 | Object | -
-transfer | 是否将弹层放置于 body 内，在 Tabs、带有 fixed 的 Table 列内使用时，建议添加此属性，它将不受父级样式影响，从而达到更好的效果 | Boolean | false
+portal | 是否将弹层放置于 body 内，在 Tabs、带有 fixed 的 Table 列内使用时，建议添加此属性，它将不受父级样式影响，从而达到更好的效果 | Boolean | true
 prev-text | 替代图标显示的上一页文字 | String | -
 next-text | 替代图标显示的下一页文字 | String | -
 

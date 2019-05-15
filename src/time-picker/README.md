@@ -21,7 +21,7 @@ disabled | 是否禁用选择器 | Boolean | false
 clearable | 是否显示清除按钮 | Boolean | true
 readonly | 完全只读，开启后不会弹出选择器，只在没有设置 open 属性下生效 | Boolean | false
 editable | 文本框是否可以输入，只在没有使用 slot 时有效 | Boolean | true
-transfer | 是否将弹层放置于 body 内，在 Tabs、带有 fixed 的 Table 列内使用时，建议添加此属性，它将不受父级样式影响，从而达到更好的效果 | Boolean | false
+portal | 是否将弹层放置于 body 内，在 Tabs、带有 fixed 的 Table 列内使用时，建议添加此属性，它将不受父级样式影响，从而达到更好的效果 | Boolean | true
 element-id | 给表单元素设置 `id`，详见 Form 用法。 | String | -
 separator | 两个日期间的分隔符 | String |  - 
 

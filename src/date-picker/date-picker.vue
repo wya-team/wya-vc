@@ -16,7 +16,7 @@
 		:clearable="clearable"
 		:readonly="readonly"
 		:editable="editable"
-		:transfer="transfer"
+		:transfer="portal"
 		:element-id="elementId"
 		:time-picker-options="timePickerOptions"
 		@on-change="$emit('change', arguments[0])"
@@ -45,6 +45,10 @@ export default {
 		mode: {
 			type: String,
 			default: 'date'
+		},
+		portal: {
+			type: Boolean,
+			default: true
 		}
 	},
 	data() {

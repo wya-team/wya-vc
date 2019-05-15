@@ -25,7 +25,7 @@
 				</vc-popover>
 				<vc-popover 
 					v-model="visible"
-					:transfer="false"
+					:portal="false"
 					:trigger="trigger" 
 					placement="left" 
 					content="Left"
@@ -69,7 +69,7 @@
 						</template>
 					</vc-popover>
 					<vc-popover 
-						:transfer="false"
+						:portal="false"
 						:trigger="trigger" 
 						placement="top" 
 						content="Top"
@@ -79,7 +79,7 @@
 						</vc-button>
 						<template #content>
 							<div style="height: 100px; width: 200px">
-								transfer="false"
+								portal="false"
 							</div>
 						</template>
 					</vc-popover>
@@ -115,7 +115,7 @@
 						</template>
 					</vc-popover>
 					<vc-popover 
-						:transfer="false"
+						:portal="false"
 						:trigger="trigger" 
 						placement="bottom" 
 						content="Bottom"
@@ -125,7 +125,7 @@
 						</vc-button>
 						<template #content>
 							<div style="height: 100px; width: 200px">
-								transfer="false"
+								portal="false"
 							</div>
 						</template>
 					</vc-popover>
@@ -162,7 +162,7 @@
 					</template>
 				</vc-popover>
 				<vc-popover 
-					:transfer="false"
+					:portal="false"
 					:trigger="trigger" 
 					placement="right" 
 					content="Right"
@@ -172,7 +172,7 @@
 					</vc-button>
 					<template #content>
 						<div style="height: 100px; width: 200px">
-							transfer="false"
+							portal="false"
 						</div>
 					</template>
 				</vc-popover>

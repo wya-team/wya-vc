@@ -31,7 +31,7 @@ export default {
 			'theme', 
 			'content', 
 			'getPopupContainer', 
-			'transfer', 
+			'portal', 
 			'arrow',
 			'portalClasses',
 			'portalStyle',
@@ -86,7 +86,7 @@ export default {
 			if (this.isActive) {
 				let el = this.getPopupContainer 
 					? this.getPopupContainer()
-					: this.transfer 
+					: this.portal 
 						? document.body 
 						: this.$el;
 				this.popperInstance = Func.popup({
@@ -108,7 +108,7 @@ export default {
 			}
 		},
 		/**
-		 * transfer: false
+		 * portal: false
 		 * 是直接挂在父节点上的，
 		 * 点击pop内容区域时click事件冒泡，导致执行了该toggle方法
 		 * v: true, false, undefined(处理 doc click)
@@ -118,7 +118,7 @@ export default {
 			let path = e.path || (e.composedPath && e.composedPath()) || [];
 			let isPopArea = path.some(item => /vc-popover-core/.test(item.className));
 
-			if (!this.transfer && isPopArea) return;
+			if (!this.portal && isPopArea) return;
 
 			// doc click
 			if (v === undefined) {

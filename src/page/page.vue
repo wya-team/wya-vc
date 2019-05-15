@@ -12,7 +12,7 @@
 		:show-sizer="showSizer"
 		:class-name="className"
 		:styles="styles"
-		:transfer="transfer"
+		:transfer="portal"
 		:prev-text="prevText"
 		:next-text="nextText"
 		@on-change="$emit('change', arguments[0])"
@@ -39,7 +39,11 @@ export default {
 		showCount: {
 			type: Boolean, // iview为show-total
 			default: true
-		}
+		},
+		portal: {
+			type: Boolean,
+			default: true
+		},
 	},
 	data() {
 		return {

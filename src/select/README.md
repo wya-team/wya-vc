@@ -9,7 +9,7 @@ Select 选择器
 属性 | 说明 | 类型 | 默认值
 ---|---|---|---
 value | 指定选中项目的 value 值，可以使用 v-model 双向绑定数据。单选时只接受 String 或 Number，多选时只接受 Array | String, Number, Array | 空
-multiple | 是否支持多选 | Boolean | false
+max | 是否支持多选 | Number | 1
 disabled | 是否禁用 | Boolean | false
 clearable | 是否可以清空选项，只在单选时有效 | Boolean | false
 search | 是否支持搜索 | Boolean | false
@@ -17,10 +17,9 @@ load-data | 远程搜索的方法 | Function | -
 label | 仅在 remote 模式下，初始化时使用。因为仅通过 value 无法得知选项的 label，需手动设置。 | String, Number, Array | 空
 size | 选择框大小，可选值为`large`、`small`、`default`或者不填 | String | -
 placeholder | 选择框默认文字 | String | 请选择
-not-found-text | 当下拉列表为空时显示的内容 | String | 无匹配数据
-label-in-value | 在返回选项时，是否将 label 和 value 一并返回，默认只返回 value | Boolean | false
+not-found | 当下拉列表为空时显示的内容 | String | 无匹配数据
 placement | 弹窗的展开方向，可选值为 `top`、`bottom`、`top-start`、`bottom-start`、`top-end`、`bottom-end` | String | bottom-start
-transfer | 是否将弹层放置于 body 内，在 Tabs、带有 fixed 的 Table 列内使用时，建议添加此属性，它将不受父级样式影响，从而达到更好的效果 | Boolean | false
+portal | 是否将弹层放置于 body 内，在 Tabs、带有 fixed 的 Table 列内使用时，建议添加此属性，它将不受父级样式影响，从而达到更好的效果 | Boolean | true
 element-id | 给表单元素设置 `id`，详见 Form 用法。 | String | -
 
 #### 事件

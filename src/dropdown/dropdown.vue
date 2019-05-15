@@ -3,8 +3,8 @@
 		:trigger="trigger"
 		:visible="visible"
 		:placement="placement"
-		:transfer="transfer"
-		:transfer-class-name ="transferClassName "
+		:transfer="portal"
+		:transfer-class-name="portalClassName "
 		@on-click="$emit('click', arguments[0])"
 		@on-visible-change="$emit('visible-change', arguments[0])"
 		@on-clickoutside="$emit('clickoutside', arguments[0])"
@@ -22,7 +22,12 @@ export default {
 		'i-dropdown': Dropdown
 	},
 	props: {
-		...Dropdown.props
+		...Dropdown.props,
+		portal: {
+			type: Boolean,
+			default: true
+		},
+		portalClassName: String,
 	},
 	data() {
 		return {

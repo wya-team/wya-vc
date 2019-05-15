@@ -60,7 +60,7 @@ export default {
 		// 	'theme', 
 		// 	'content', 
 		// 	'getPopupContainer', 
-		// 	'transfer', 
+		// 	'portal', 
 		// 	'arrow'
 		// ]),
 		title: String,

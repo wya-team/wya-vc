@@ -13,7 +13,7 @@
 		:clearable="clearable"
 		:readonly="readonly"
 		:editable="editable"
-		:transfer="transfer"
+		:transfer="portal"
 		:element-id="elementId"
 		@on-change="$emit('change', arguments[0])"
 		@on-open-change="$emit('open-change', arguments[0])"
@@ -40,7 +40,11 @@ export default {
 		mode: {
 			type: String,
 			default: 'time'
-		}
+		},
+		portal: {
+			type: Boolean,
+			default: true
+		},
 	},
 	data() {
 		return {
