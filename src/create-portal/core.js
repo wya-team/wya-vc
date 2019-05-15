@@ -127,7 +127,7 @@ class PortalCore extends VcBasic {
 			data,
 			components,
 			multiple,
-			// 可以不推荐使用
+			// 不推荐使用
 			$slots,
 			$parent,
 			...rest

@@ -13,6 +13,7 @@ export default {
 	onBefore: null, 
 	parent: {}, // 依赖注入使用 like store, router, Life cycle，methods, mixins, ....
 	components: {}, // 可以动态注入组件
-	slots: {},
 	data: null,
+	// 不推荐使用
+	$slots: {},
 };
