@@ -161,7 +161,7 @@ export default {
 		'vc-form-item': Form.Item
 	},
 	data() {
-		let value1 = '1';
+		let value1 = 1;
 		let value2 = ['1', '4'];
 
 		let value3 = '';

@@ -280,6 +280,10 @@ export default {
 $block: vc-select;
 
 @include block($block) {
+	display: inline-block;
+	position: relative;
+	width: 100%;
+	cursor: text;
 	@include element(input) {
 		.vc-input__append {
 			z-index: 0;
