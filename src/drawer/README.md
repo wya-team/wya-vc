@@ -8,7 +8,7 @@
 
 属性 | 说明 | 类型 | 默认值
 ---|---|---|---
-value | 抽屉是否显示，可使用 v-model 双向绑定数据 | `Boolean` | false
+visable | 抽屉是否显示，可使用 v-model 双向绑定数据 | `Boolean` | false
 title | 抽屉的标题 | `String` | -
 width | 抽屉的宽度（placement为`left`和`right`可设置）| `Number` | 300
 height | 抽屉的高度(placement为`top`和`bottom`可设置) | `Number` | 300
@@ -23,7 +23,8 @@ placement | 抽屉的方向，可选`top` `right` `bottom` `left` | `String` | r
 
 属性 | 说明 | 类型 | 默认值
 ---|---|---|---
-cancel | 关闭时的回调 | - | -
+close | 关闭时的回调 | - | -
+visable-change | 关闭时的回调 | - | -
 
 #### Drawer slot
 

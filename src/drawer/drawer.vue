@@ -2,7 +2,7 @@
 	<div class="vc-drawer">
 		<transition name="mask">
 			<div 
-				v-if="mask && value"
+				v-if="mask && visible"
 				:style="maskStyle"
 				class="__drawer-mask"
 				@click="handleMaskClose"
@@ -10,7 +10,7 @@
 		</transition>
 		<transition :name="drawerAnimation">
 			<div 
-				v-if="value" 
+				v-if="visible" 
 				:style="style"
 				:class="drawerClass"
 				class="__drawer"
@@ -39,9 +39,13 @@ export default {
 		'vc-icon': Icon,
 		'vc-button': Button
 	},
+	model: {
+		prop: 'visible',
+		event: 'visible-change'
+	},
 	props: {
 		title: String,
-		value: {
+		visible: {
 			type: Boolean,
 			default: false
 		},
@@ -82,7 +86,7 @@ export default {
 	computed: {
 	},
 	watch: {
-		value(val) {
+		visible(val) {
 			if (!this.scrollable && val) {
 				document.querySelector('body').style.overflow = 'hidden';
 			} else {
@@ -117,8 +121,8 @@ export default {
 	},
 	methods: {
 		handleClose() {
-			this.$emit('cancel');
-			this.$emit('input', false);
+			this.$emit('close');
+			this.$emit('visible-change', false);
 		},
 		handleMaskClose() {
 			if (this.maskClosable) {

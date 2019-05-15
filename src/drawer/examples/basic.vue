@@ -7,7 +7,6 @@
 			v-model="visible"
 			:height="500"
 			placement="bottom"
-			@cancel="handleCancel"
 		>
 			我是content1
 		</vc-drawer>
@@ -48,9 +47,6 @@ export default {
 		},
 		handleDrawer2() {
 			this.visible2 = true;
-		},
-		handleCancel() {
-			console.log('关闭回调1');
 		}
 	}
 };
