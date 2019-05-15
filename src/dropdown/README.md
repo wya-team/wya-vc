@@ -21,7 +21,6 @@ portal-class-name  | 开启 portal 时，给浮层添加额外的 class 名称 |
 ---|---|---|---
 click | 点击菜单项时触发 | name: String | -
 visible-change | 菜单显示状态改变时调用 | visible: Boolean | -
-clickoutside | 点击外部关闭下拉菜单时触发 | event | -
 
 #### Slot
 
@@ -48,7 +47,6 @@ selected | 标记该项为选中状态 | Boolean | false
 		placement="bottom-end"
 		@click="handleClick"
 		@visible-change="handleChange"
-		@clickoutside="handleClickoutside"
 	>
 		<a href="javascript:void(0)">
 			菜单(右)∨

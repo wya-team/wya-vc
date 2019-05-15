@@ -1,43 +1,85 @@
 <template>
-	<i-dropdown 
-		:trigger="trigger"
-		:visible="visible"
+	<vc-popover
+		v-bind="$attrs"
+		v-model="isActive"
 		:placement="placement"
-		:transfer="portal"
-		:transfer-class-name="portalClassName "
-		@on-click="$emit('click', arguments[0])"
-		@on-visible-change="$emit('visible-change', arguments[0])"
-		@on-clickoutside="$emit('clickoutside', arguments[0])"
+		:trigger="trigger"
+		:arrow="arrow"
+		:portal-class-name="['is-padding-none', portalClassName]"
+		class="vc-dropdown"
+		@ready="$emit('ready')"
 	>
-		<slot slot="list" name="list" />
 		<slot />
-	</i-dropdown>
+		<template #content>
+			<slot name="list" />
+		</template>
+	</vc-popover>
 </template>
 <script>
-import Dropdown from 'iview/src/components/dropdown';
+import { pick } from 'lodash';
+import Popover from "../popover/index";
+import { getUid } from '../utils/index';
 
 export default {
 	name: "vc-dropdown",
 	components: {
-		'i-dropdown': Dropdown
+		'vc-popover': Popover
+	},
+	inheritAttrs: false,
+	model: {
+		prop: 'visible',
+		event: 'visible-change'
 	},
 	props: {
-		...Dropdown.props,
-		portal: {
-			type: Boolean,
-			default: true
+		...pick(Popover.props, [
+			'visible',
+			'portalClassName'
+		]),
+		placement: {
+			type: String,
+			default: 'bottom'
 		},
-		portalClassName: String,
+		trigger: {
+			type: String,
+			default: 'hover'
+		},
+		arrow: {
+			type: Boolean,
+			default: false
+		}
 	},
 	data() {
 		return {
+			isActive: false
 		};
 	},
 	computed: {
 		
 	},
+	watch: {
+		visible: {
+			immediate: true,
+			handler(v, old) {
+				this.isActive = v;
+			}
+		}
+	},
+	created() {
+		this.dropdownId = getUid('dropdown');
+	},
 	methods: {
+		handleClose() {
+			this.$emit('visible-change', false);
+			this.$emit('close');
+		}
 	}
 };
 </script>
-<style></style>
+<style lang="scss">
+@import '../style/index.scss';
+$block: vc-dropdown;
+
+@include block($block) {
+	display: inline-block;
+}
+</style>

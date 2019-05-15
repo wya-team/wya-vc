@@ -1,5 +1,5 @@
-import Item from 'iview/src/components/dropdown-item';
-import Menu from 'iview/src/components/dropdown-menu';
+import Item from './dropdown-item.vue';
+import Menu from './dropdown-menu.vue';
 import Dropdown from './dropdown.vue';
 
 Dropdown.Item = Item;

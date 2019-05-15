@@ -61,6 +61,8 @@ export default {
 		// 	'content', 
 		// 	'getPopupContainer', 
 		// 	'portal', 
+		// 	'portalStyle',
+		// 	'portalClassName',
 		// 	'arrow'
 		// ]),
 		title: String,
