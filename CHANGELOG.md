@@ -4,7 +4,7 @@
 - 弹层属性一律将 `transfer` -> `portal`， 默认都为`true`
 
 ### 1.3.0
-- select: `filter -> search`, `remote-method -> load-data`, `clearSingleSelect -> remove`, `not-found-text` -> `not-found` 
+- select: `filterable -> search`, `remote-method -> load-data`, `clearSingleSelect -> remove`, `not-found-text` -> `not-found` 
 - select: 删除`remote`, `loading`, `loading-text`, `setQuery`方法, `label-in-value`
 - select: 事件暂时只有`clear`, `change`
 - input-number: 新增`after`, `before`事件
