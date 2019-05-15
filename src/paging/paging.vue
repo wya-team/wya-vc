@@ -74,7 +74,7 @@
 </template>
 
 <script>
-import { URL } from '@wya/utils';
+import { URL, Storage } from '@wya/utils';
 import { cloneDeep } from 'lodash';
 
 import Page from 'iview/src/components/page';
@@ -83,12 +83,8 @@ import { VcInstance } from '../vc/index';
 
 let localPageSize = 0;
 let localPageSizeKey = '@wya/vc.paging.localPageSize';
-try {
-	localPageSize = localStorage.getItem(localPageSizeKey);
-} catch (e) {
-	console.error('[vc-paging:error]', e);
-}
 
+Storage.get(localPageSizeKey);
 
 export default {
 	name: "vc-paging",
@@ -368,12 +364,7 @@ export default {
 
 			localPageSize = pageSize;
 
-			try {
-				localStorage.setItem(localPageSizeKey, pageSize);
-			} catch (e) {
-				console.error('[vc-paging:error]', e);
-			}
-
+			Storage.set(localPageSizeKey, pageSize);
 
 			this.handleChange(1, pageSize);
 		},
