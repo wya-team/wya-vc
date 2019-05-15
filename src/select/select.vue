@@ -7,7 +7,7 @@
 		<vc-popover 
 			v-model="visible" 
 			:arrow="false" 
-			:auto-width="true"
+			:auto-width="autoWidth"
 			:trigger="trigger"
 			placement="bottom-left"
 			portal-classes="is-padding-none"
@@ -74,6 +74,12 @@ import Tag from '../tag/index';
 import Icon from '../icon/index';
 import InputMixin from '../input/input-mixin';
 
+const getLabel = (data, v) => {
+	let { label = '' } = data.find(i => i.value == v) || {};
+
+	return label;
+};
+
 export default {
 	name: 'vc-select',
 	components: {
@@ -116,7 +122,11 @@ export default {
 		},
 		loadData: {
 			type: Function,
-		}
+		},
+		autoWidth: {
+			type: Boolean,
+			default: true
+		},
 	},
 	data() {
 		return {
@@ -135,7 +145,9 @@ export default {
 			return this.visible ? 'up' : 'down';
 		},
 		showClear() {
-			return this.currentValue && this.currentValue.length && this.clearable && !this.disabled && this.isHover;
+			let value = !this.multiple ? this.currentValue : this.currentValue.length > 0;
+			let basic = this.clearable && !this.disabled && this.isHover;
+			return value && basic;
 		},
 		multiple() {
 			return this.max > 1;
@@ -149,10 +161,20 @@ export default {
 					return;
 				}
 				this.currentValue = v;
+				/**
+				 * 强制更新
+				 * 外部连续刷新时，需要用户自行处理updateLabel
+				 */
+				if (
+					(!this.currentLabel || (this.currentLabel && !this.currentLabel.length))
+				) {
+					this.update(true);
+				}
 			}
 		},
-		currentValue(v) {
-			this.$emit('change', v);
+		currentValue(v, old) {
+			this.$emit('change', v, this.currentLabel);
+
 			// form表单
 			this.dispatch('vc-form-item', 'form-change', v);
 		}
@@ -163,61 +185,15 @@ export default {
 		this.hasInit = !(this.currentValue || this.currentValue.length > 0);
 
 		this.dataSource = []; 
-		this.updateLable();
+		this.update();
 	},
 	beforeUpdate() {
 		/**
 		 * 容易造成内存溢出
 		 */
-		this.updateLable();
+		this.update();
 	},
 	methods: {
-		updateLable() {
-			if (
-				this.hasInit 
-				|| !this.$slots.default 
-				|| this.extra
-			) return;
-
-			/**
-			 * 可能存在耗时操作
-			 */
-			this.$nextTick(() => {
-				let vnodes = [];
-				this.$slots.default.forEach((vnode) => {
-					if (!vnode.tag) return;
-					if (vnode && /option-group$/.test(vnode.tag)) {
-						vnodes.push(...vnode.componentOptions.children);
-					} else {
-						vnodes.push(vnode);
-					}
-				});
-
-				let data = [];
-				vnodes.forEach((vnode) => {
-					const { value, label, disabled } = vnode.componentOptions.propsData;
-					data.push({
-						disabled,
-						value,
-						label: label || vnode.componentOptions.children[0].text || value
-					});
-				});
-				if (isEqualWith(this.dataSource, data)) return;
-
-				this.currentLabel = this.multiple 
-					? this.currentValue.map(this.getLabel.bind(null, data))
-					: this.getLabel(data, this.currentValue);
-
-				this.hasInit = true;
-				this.dataSource = data;
-			});
-		},
-		getLabel(data, v) {
-			let { label = '' } = data.find(i => i.value == v) || {};
-
-			return label;
-		},
-
 		/**
 		 * 初始化完成后格式化数据
 		 */
@@ -242,7 +218,7 @@ export default {
 			this.searchValue = v;
 			this.searchRegex = new RegExp(v, 'i');
 
-			let remote = this.loadData && this.loadData();
+			let remote = this.loadData && this.loadData(v, this);
 			
 			if (remote && remote.then) {
 				this.loading = true;
@@ -269,6 +245,44 @@ export default {
 
 			this.currentValue.splice(index, 1);
 			this.currentLabel.splice(index, 1);
+		},
+		update(force = false) {
+			if (force === false && (this.hasInit || this.extra)) return;
+
+			if (!this.$slots.default) return;
+			/**
+			 * 可能存在耗时操作
+			 */
+			this.$nextTick(() => {
+				let vnodes = [];
+				this.$slots.default.forEach((vnode) => {
+					if (!vnode.tag) return;
+					if (vnode && /option-group$/.test(vnode.tag)) {
+						vnodes.push(...vnode.componentOptions.children);
+					} else {
+						vnodes.push(vnode);
+					}
+				});
+
+				let data = [];
+				vnodes.forEach((vnode) => {
+					let { value, label, disabled } = vnode.componentOptions.propsData;
+					label = String(label || vnode.componentOptions.children[0].text || value);
+					data.push({
+						disabled,
+						value,
+						label: label.trim()
+					});
+				});
+				if (isEqualWith(this.dataSource, data)) return;
+
+				this.currentLabel = this.multiple 
+					? this.currentValue.map(getLabel.bind(null, data))
+					: getLabel(data, this.currentValue);
+
+				this.hasInit = true;
+				this.dataSource = data;
+			});
 		},
 	},
 };

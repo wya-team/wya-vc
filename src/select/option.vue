@@ -51,8 +51,8 @@ export default {
 			return parent;
 		},
 		formatterLabel() {
-			let v = this.$slots.default[0].text || this.label || this.value;
-			return v;
+			let v = String(this.$slots.default[0].text || this.label || this.value);
+			return v.trim();
 		},
 		selected() {
 			return !this.owner.multiple 

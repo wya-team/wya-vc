@@ -1,5 +1,6 @@
 import { Storage } from '@wya/utils';
-import { VcError, VcInstance } from '../vc/index';
+import VcBasic from '../vc/basic';
+import VcError from '../vc/error';
 
 let svgReg = /.*<svg>(.*)<\/svg>.*/g;
 let basicReg = /.*id="icon-([^"]+).*viewBox="([^"]+)(.*)/g;
@@ -11,8 +12,9 @@ let fillReg = /.*fill="([^"]+).*/g;
 let basicUrl = '//at.alicdn.com/t/font_1119857_0y9ir79nnkhp.js';
 let prefix = '@wya/vc-icon:';
 
-class Manager {
+class Manager extends VcBasic {
 	constructor(basicUrl) {
+		super();
 		this.icons = {};
 		this.events = {};
 		this.sourceStatus = {};
@@ -73,7 +75,7 @@ class Manager {
 			let icons = {};
 			try {
 				setTimeout(() => {
-					VcInstance.config.debug && console.time(url);
+					this.config.debug && console.time(url);
 					svgStr.replace(svgReg, '$1').match(symbolReg).forEach( 
 						i => i.replace(basicReg, (_, $1, $2, $3) => {
 							icons[`${$1}`] = {
@@ -85,7 +87,7 @@ class Manager {
 							};
 						})
 					);
-					VcInstance.config.debug && console.timeEnd(url);
+					this.config.debug && console.timeEnd(url);
 					resolve(icons);
 				}, 0);
 			} catch (e) {

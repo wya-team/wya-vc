@@ -253,5 +253,9 @@ export const searchData = [
 	{
 		"value": "49",
 		"label": "Wyoming"
+	},
+	{
+		"value": "50",
+		"label": "中文"
 	}
 ];

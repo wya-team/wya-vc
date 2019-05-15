@@ -10,6 +10,7 @@
 				clearable 
 				search
 				style="width: 200px"
+				@change="handleChange"
 			>
 				<vc-option 
 					v-for="(item, index) in cityList" 
@@ -90,7 +91,6 @@
 				search
 				style="width: 200px"
 			>
-				<!-- vc-loader处理该bug -->
 				<vc-option 
 					v-for="(item, index) in cityListAsync" 
 					:value="item.value" 
@@ -100,6 +100,22 @@
 			</vc-select>
 		</div>
 
+		<!-- 基本异步value -->
+		<div style="margin: 40px 0 ">
+			<vc-select 
+				v-model="valueAsync"
+				clearable 
+				search
+				style="width: 200px"
+			>
+				<vc-option 
+					v-for="(item, index) in cityList" 
+					:value="item.value" 
+					:key="item.value"
+					:disabled="index == 1"
+				>{{ item.label }}</vc-option>
+			</vc-select>
+		</div>
 
 		<!-- form -->
 
@@ -138,6 +154,22 @@
 					>{{ item.label }}</vc-option>
 				</vc-select>
 			</vc-form-item>
+
+			<vc-form-item label="搜索设置单选：" prop="value1">
+				<vc-select 
+					v-model="value2" 
+					:load-data="handleSearch" 
+					style="width: 200px"
+					search
+				>
+					<vc-option 
+						v-for="(item, index) in searchData" 
+						:value="item.value" 
+						:key="index"
+					>{{ item.label }}</vc-option>
+				</vc-select>
+			</vc-form-item>
+
 		</vc-form>
 	</div>
 </template>
@@ -186,9 +218,12 @@ export default {
 			extra5: '',
 			cityListAsync: [],
 
+			valueAsync: '',
+
 			formValidate: {
 				value: '',
-				value1: []
+				value1: [],
+				value2: ''
 			},
 			ruleValidate: {
 				value: [
@@ -211,7 +246,9 @@ export default {
 	mounted() {
 		setTimeout(() => {
 			this.cityListAsync = this.cityList;
-		}, 5000);
+
+			this.valueAsync = '1';
+		}, 2000);
 	},
 	methods: {
 		handleTestingStart() {
@@ -226,6 +263,9 @@ export default {
 		},
 		handleSearch() {
 			this.searchData = searchData; 
+		},
+		handleChange(v) {
+			console.log(v);
 		}
 	}
 };
