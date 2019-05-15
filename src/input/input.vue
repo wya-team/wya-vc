@@ -28,7 +28,7 @@
 			<!-- 清除 -->
 			<vc-transition-fade>
 				<vc-icon
-					v-if="disabled && clearable && currentValue" 
+					v-if="!disabled && clearable && currentValue" 
 					class="vc-input__icon-clear" 
 					type="clear" 
 					@click="handleClear"

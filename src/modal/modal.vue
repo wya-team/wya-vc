@@ -34,7 +34,7 @@
 						/>
 						<!-- 用户可以自定义，但也有默认 -->
 						<slot name="header">
-							<p class="vc-modal__title">{{ title }}</p>
+							<p class="vc-modal__title" v-html="title" />
 							<div v-if="closable && !mode" class="vc-modal__close" @click="handleClose($event, true)">
 								<vc-icon type="close"/>
 							</div>
