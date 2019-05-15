@@ -57,6 +57,11 @@ export default {
 $block: vc-input-number;
 
 @include block($block) {
+	@include pseudo(hover) {
+		.vc-input__append{
+			z-index: 1;
+		}
+	}
 	@include element(icon) {
 		display: flex;
 		flex-direction: column;
@@ -74,6 +79,7 @@ $block: vc-input-number;
 	@include share-rule(icon) {
 		height: 14px;
 		line-height: 14px;
+		background-color: #fff;
 		@include commonBorder1PX(left); // 不占边距
 		&[disabled] {
 			background-color: #f3f3f3;

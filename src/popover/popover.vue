@@ -33,7 +33,7 @@ export default {
 			'getPopupContainer', 
 			'portal', 
 			'arrow',
-			'portalClasses',
+			'portalClassName',
 			'portalStyle',
 			'autoWidth'
 		]),

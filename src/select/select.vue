@@ -53,6 +53,9 @@
 					<div v-if="search" class="vc-select__search">
 						<vc-input-search v-model="searchValue" @input="handleSearch" />
 					</div>
+					<div v-if="loading" class="vc-select__loading">
+						<vc-spin :size="16" />
+					</div>
 					<div class="vc-select__options">
 						<slot />
 					</div>
@@ -65,11 +68,13 @@
 </template>
 
 <script>
-import { pick, cloneDeep, isEqualWith } from 'lodash';
+import { pick, cloneDeep, debounce, isEqualWith } from 'lodash';
 import { getSelectedData, getUid } from '../utils/index';
+import { VcError } from '../vc/index';
 import emitter from '../extends/mixins/emitter'; // 表单验证
 import Input from '../input/index';
 import Popover from '../popover/index';
+import Spin from '../spin/index';
 import Tag from '../tag/index';
 import Icon from '../icon/index';
 import InputMixin from '../input/input-mixin';
@@ -88,6 +93,7 @@ export default {
 		'vc-icon': Icon,
 		'vc-popover': Popover,
 		'vc-tag': Tag,
+		'vc-spin': Spin,
 	},
 	mixins: [emitter],
 	model: {
@@ -217,17 +223,7 @@ export default {
 		handleSearch(v) {
 			this.searchValue = v;
 			this.searchRegex = new RegExp(v, 'i');
-
-			let remote = this.loadData && this.loadData(v, this);
-			
-			if (remote && remote.then) {
-				this.loading = true;
-				remote.then({
-
-				}).finally(() => {
-					this.loading = false;
-				});
-			}
+			this.loadData && this._loadData();
 		},
 
 		add(v, label) {
@@ -266,8 +262,14 @@ export default {
 
 				let data = [];
 				vnodes.forEach((vnode) => {
-					let { value, label, disabled } = vnode.componentOptions.propsData;
-					label = String(label || vnode.componentOptions.children[0].text || value);
+					let { value, label = '', disabled } = vnode.componentOptions.propsData;
+
+					label = String(
+						label 
+						|| (vnode.componentOptions.children && vnode.componentOptions.children[0].text) 
+						|| value
+					);
+
 					data.push({
 						disabled,
 						value,
@@ -284,6 +286,24 @@ export default {
 				this.dataSource = data;
 			});
 		},
+
+		/**
+		 * 默认防抖
+		 */
+		_loadData: debounce(function () {
+			let remote = this.loadData(this.searchValue, this);
+			
+			if (remote && remote.then) {
+				this.loading = true;
+				remote.then(() => {
+
+				}).finally(() => {
+					this.loading = false;
+				});
+			} else {
+				throw new VcError('select', 'loadData 返回值需要Promise');
+			}
+		}, 250, { leading: false })
 	},
 };
 </script>
@@ -332,6 +352,10 @@ $block: vc-select;
 	@include element(options) {
 		max-height: 220px;
 		overflow: auto;
+	}
+	@include element(loading) {
+		text-align: center;
+		padding-bottom: 8px;
 	}
 }
 

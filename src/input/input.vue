@@ -140,6 +140,7 @@ $block: vc-input;
 	 */
 	@include element(icon-clear){
 		@include extend-rule(icon);
+		background-color: #fff;
 		cursor: pointer;
 		display: none;
 	}

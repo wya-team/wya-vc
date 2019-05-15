@@ -262,7 +262,12 @@ export default {
 			clearInterval(this.timer);
 		},
 		handleSearch() {
-			this.searchData = searchData; 
+			return new Promise((resolve) => {
+				setTimeout(() => {
+					this.searchData = searchData; 
+					resolve();
+				}, 1000);
+			});
 		},
 		handleChange(v) {
 			console.log(v);
