@@ -7,8 +7,8 @@
 	>
 		<div 
 			v-show="isActive"
-			:style="[wrapperStyle, wrapperW, portalStyle]"
-			:class="[wrapperClasses, portalClasses]"
+			:style="[wrapperStyle, wrapperW, transferStyle]"
+			:class="[wrapperClasses, transferClassName]"
 			class="vc-popover-core" 
 			@mouseenter="isHover && onChange($event, true)"
 			@mouseleave="isHover && onChange($event, false)"
@@ -77,8 +77,8 @@ const popup = {
 		onChange: Function,
 		onReady: Function,
 		isHover: Boolean,
-		portalClasses: Object | String,
-		portalStyle: Object,
+		transferClassName: Object | String,
+		transferStyle: Object,
 	},
 	data() {
 		return {
