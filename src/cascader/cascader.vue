@@ -1,56 +1,55 @@
 <template>
-	<div 
+	<vc-popover 
+		v-bind="$attrs"
+		v-model="visible" 
+		:arrow="arrow" 
+		:trigger="trigger"
+		:tag="tag"
+		:placement="placement"
+		:portal-class-name="['is-padding-none', portalClassName]"
 		class="vc-cascader"
-		@mouseenter="isHover = true"
-		@mouseleave="isHover = false"
+		@mouseenter.native="isHover = true"
+		@mouseleave.native="isHover = false"
+		@ready="handleReady"
 	>
-		<vc-popover 
-			v-model="visible" 
-			:arrow="false" 
-			:trigger="trigger"
-			placement="bottom-left"
-			portal-class-name="is-padding-none"
-			@ready="handleReady"
+		<vc-input
+			ref="input"
+			:element-id="elementId"
+			:readonly="true"
+			:disabled="disabled"
+			:value="formatLabel"
+			:placeholder="placeholder || '请选择'"
+			:allow-dispatch="false"
+			class="vc-cascader__input"
+			@click="visible = true"
 		>
-			<vc-input
-				ref="input"
-				:element-id="elementId"
-				:readonly="true"
-				:disabled="disabled"
-				:value="formatLabel"
-				:placeholder="placeholder || '请选择'"
-				:allow-dispatch="false"
-				class="vc-cascader__input"
-				@click="visible = true"
-			>
-				<template #append>
-					<!-- down, up, clear -->
-					<div class="vc-cascader__append">
-						<vc-icon
-							:type="showClear ? 'clear' : icon"
-							:class="{ 'is-arrow': !showClear }"
-							class="vc-cascader__icon"
-							@click="handleClear"
-						/>
-					</div>
-				</template>
-			</vc-input>
-			<template #content>
-				<div>
-					<vc-cascader-col
-						v-for="(item, index) in cols"
-						v-if="rebuildData[index] && rebuildData[index].length"
-						ref="col"
-						:value="currentValue[index]"
-						:key="index"
-						:index="index"
-						:data-source="rebuildData[index]"
-						@change="handleChange"
+			<template #append>
+				<!-- down, up, clear -->
+				<div class="vc-cascader__append">
+					<vc-icon
+						:type="showClear ? 'clear' : icon"
+						:class="{ 'is-arrow': !showClear }"
+						class="vc-cascader__icon"
+						@click="handleClear"
 					/>
 				</div>
 			</template>
-		</vc-popover>
-	</div>
+		</vc-input>
+		<template #content>
+			<div>
+				<vc-cascader-col
+					v-for="(item, index) in cols"
+					v-if="rebuildData[index] && rebuildData[index].length"
+					ref="col"
+					:value="currentValue[index]"
+					:key="index"
+					:index="index"
+					:data-source="rebuildData[index]"
+					@change="handleChange"
+				/>
+			</div>
+		</template>
+	</vc-popover>
 </template>
 
 <script>
@@ -73,11 +72,15 @@ export default {
 		'vc-cascader-col': Col,
 	},
 	mixins: [emitter],
+	inheritAttrs: false,
 	model: {
 		prop: 'value',
 		event: 'change'
 	},
 	props: {
+		...pick(Popover.props, [
+			'portalClassName'
+		]),
 		...pick(InputMixin.props, [
 			'elementId', 
 			'readonly', 
@@ -91,6 +94,18 @@ export default {
 			type: String,
 			default: 'click'
 		},
+		tag: {
+			type: String,
+			default: 'div'
+		},
+		placement: {
+			type: String,
+			default: 'bottom-left'
+		},
+		arrow: {
+			type: Boolean,
+			default: false
+		},
 		dataSource: {
 			type: Array,
 			default: () => ([])
@@ -103,9 +118,6 @@ export default {
 			type: Function,
 			default: v => (v && v.join(' / '))
 		},
-		/**
-		 * 需要优化
-		 */
 		loadData: {
 			type: Function,
 		}

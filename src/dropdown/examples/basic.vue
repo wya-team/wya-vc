@@ -1,7 +1,8 @@
 <template>
 	<vc-dropdown 
-		placement="bottom-left"
-		trigger="hover"
+		:portal="false"
+		placement="bottom"
+		trigger="click"
 		@click="handleClick"
 		@visible-change="handleChange"
 	>
