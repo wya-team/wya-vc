@@ -28,6 +28,9 @@ element-id | 给表单元素设置 `id`，详见 Form 用法。 | String | -
 ---|---|---|---
 change | 选中的`Option`变化时触发，默认返回 value，如需返回 label，详见 label-in-value 属性	 | (value: String) | ---
 clear | 点击清空按钮时触发	 | - | -
+visible-change | visible改变时回调 | - | - 
+close | 关闭时回调 | - | - 
+ready | 弹层出来时回调 | -
 
 #### 方法
 

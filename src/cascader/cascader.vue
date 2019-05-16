@@ -11,6 +11,8 @@
 		@mouseenter.native="isHover = true"
 		@mouseleave.native="isHover = false"
 		@ready="handleReady"
+		@close="$emit('close')"
+		@visible-change="$emit('visible-change', visible)"
 	>
 		<vc-input
 			ref="input"
@@ -174,6 +176,8 @@ export default {
 		 */
 		handleReady() {
 			this.rebuildData = this.makeRebuildData();
+
+			this.$emit('ready');
 		},
 		handleClear(e) {
 			if (!this.showClear) return;

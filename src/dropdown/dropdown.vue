@@ -1,13 +1,15 @@
 <template>
 	<vc-popover
 		v-bind="$attrs"
-		v-model="isActive"
+		:visible="isActive"
 		:placement="placement"
 		:trigger="trigger"
 		:arrow="arrow"
 		:portal-class-name="['is-padding-none', portalClassName]"
 		class="vc-dropdown"
 		@ready="$emit('ready')"
+		@close="$emit('close')"
+		@visible-change="handleChange"
 	>
 		<slot />
 		<template #content>
@@ -62,15 +64,20 @@ export default {
 			handler(v, old) {
 				this.isActive = v;
 			}
+		},
+		isActive(v) {
+			this.$emit('visible-change', v);
 		}
 	},
 	created() {
 		this.dropdownId = getUid('dropdown');
 	},
 	methods: {
-		handleClose() {
-			this.$emit('visible-change', false);
-			this.$emit('close');
+		handleChange(v) {
+			this.isActive = v;
+		},
+		close() {
+			this.isActive = false;
 		}
 	}
 };

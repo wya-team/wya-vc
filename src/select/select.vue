@@ -11,7 +11,9 @@
 		class="vc-select"
 		@mouseenter.native="isHover = true"
 		@mouseleave.native="isHover = false"
-		@ready="handleReady"
+		@ready="$emit('ready')"
+		@close="$emit('close')"
+		@visible-change="$emit('visible-change', visible)"
 	>
 		<vc-input
 			ref="input"
@@ -208,12 +210,6 @@ export default {
 		this.update();
 	},
 	methods: {
-		/**
-		 * 初始化完成后格式化数据
-		 */
-		handleReady() {
-
-		},
 		handleClear(e) {
 			if (!this.showClear) return;
 			e.stopPropagation();

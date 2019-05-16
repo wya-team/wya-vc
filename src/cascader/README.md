@@ -25,13 +25,17 @@ extra | 占位符 | `String` | -
 ---|---|---|---
 size | 输入框大小，可选值为large和small或者不填 | String | -
 search | 是否支持搜索 | Boolean | false
-not-found-text | 当搜索列表为空时显示的内容 | `String,Function` | 无匹配数据
+not-found | 当搜索列表为空时显示的内容 | `String,Function` | 无匹配数据
 
 #### 事件
 
 属性 | 说明 | 参数 | 返回值
 ---|---|---|---
 change | 选择完成后的回调 | (value: Array, label: Array) | -
+clear | 点击清空按钮时触发	 | - | -
+visible-change | visible改变时回调 | - | - 
+close | 关闭时回调 | - | - 
+ready | 弹层出来时回调 | -
 
 ## 基础用法
 

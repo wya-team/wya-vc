@@ -1,10 +1,12 @@
 <template>
 	<vc-popover
 		v-bind="$attrs"
-		v-model="isActive"
+		:visible="isActive"
 		:placement="placement"
 		:trigger="trigger"
 		@ready="$emit('ready')"
+		@close="$emit('close')"
+		@visible-change="handleChange"
 	>
 		<slot />
 		<template #content>
@@ -114,13 +116,12 @@ export default {
 			handler(v, old) {
 				this.isActive = v;
 			}
+		},
+		isActive(v) {
+			this.$emit('visible-change', v);
 		}
 	},
 	methods: {
-		handleClose() {
-			this.$emit('visible-change', false);
-			this.$emit('close');
-		},
 		handleOk(e) {
 			let { $listeners: { ok } } = this;
 			let callback = () => {
@@ -142,6 +143,9 @@ export default {
 		handleCancel(e) {
 			this.isActive = false;
 			this.$emit('cancel', e);
+		},
+		handleChange(v) {
+			this.isActive = v;
 		}
 	}
 };

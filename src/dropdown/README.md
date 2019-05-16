@@ -20,7 +20,9 @@ portal-class-name  | 开启 portal 时，给浮层添加额外的 class 名称 |
 属性 | 说明 | 参数 | 返回值
 ---|---|---|---
 click | 点击菜单项时触发 | name: String | -
-visible-change | 菜单显示状态改变时调用 | visible: Boolean | -
+visible-change | visible改变时回调 | - | - 
+close | 关闭时回调 | - | - 
+ready | 弹层出来时回调 | -
 
 #### Slot
 

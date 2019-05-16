@@ -6,6 +6,7 @@
 			title="Are you sure to delete this task?"
 			type="info"
 			@close="handleClose"
+			@visible-change="handleChange"
 			@cancel="handleCancel"
 			@ok="handleOk"
 		>
@@ -57,6 +58,9 @@ export default {
 		},
 		handleTrigger() {
 			this.trigger = this.trigger === 'hover' ? 'click' : 'hover'; 
+		},
+		handleChange(v) {
+			console.log('visible-change', v);
 		}
 	}
 };

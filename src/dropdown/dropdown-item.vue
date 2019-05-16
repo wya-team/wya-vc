@@ -45,6 +45,8 @@ export default {
 			if (this.disabled) return;
 			this.$emit('click', this.name);
 			this.owner.$emit('click', this.name);
+
+			this.owner.close();
 		}
 	}
 };

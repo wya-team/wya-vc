@@ -11,6 +11,9 @@
 				search
 				style="width: 200px"
 				@change="handleChange"
+				@ready="handleReady"
+				@close="handleClose"
+				@visible-change="handleVisibleChange"
 			>
 				<vc-option 
 					v-for="(item, index) in cityList" 
@@ -290,6 +293,15 @@ export default {
 		},
 		handleChange(v) {
 			console.log(v);
+		},
+		handleReady() {
+			console.log('ready');
+		},
+		handleClose() {
+			console.log('close');
+		},
+		handleVisibleChange(v) {
+			console.log('visible-change', v);
 		}
 	}
 };
