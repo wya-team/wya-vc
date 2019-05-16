@@ -8,8 +8,7 @@
 
 属性 | 说明 | 类型 | 默认值
 ---|---|---|---
-bordered | 是否显示边框，建议在灰色背景下使用 | Boolean | true
-dis-hover | 禁用鼠标悬停显示阴影 | Boolean | false
+border | 是否显示边框，建议在灰色背景下使用 | Boolean | true
 shadow | 卡片阴影，建议在灰色背景下使用 | Boolean | false
 padding | 卡片内部间距，单位 px | Number | 16
 title | 标题 | String | -
