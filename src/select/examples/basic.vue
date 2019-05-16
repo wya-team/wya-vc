@@ -75,11 +75,20 @@
 				style="width: 200px"
 				search
 			>
-				<vc-option 
-					v-for="(item, index) in searchData" 
-					:value="item.value" 
-					:key="index"
-				>{{ item.label }}</vc-option>
+				<vc-option-group v-if="searchData1.length" label="Hot Cities">
+					<vc-option 
+						v-for="(item, index) in searchData1" 
+						:value="item.value" 
+						:key="index"
+					>{{ item.label }}</vc-option>
+				</vc-option-group>
+				<vc-option-group v-if="searchData1.length" label="Other Cities">
+					<vc-option 
+						v-for="(item, index) in searchData2" 
+						:value="item.value" 
+						:key="index"
+					>{{ item.label }}</vc-option>
+				</vc-option-group>
 			</vc-select>
 		</div>
 		
@@ -213,6 +222,8 @@ export default {
 			value3: '',
 			value4: [],
 			searchData: [],
+			searchData1: [],
+			searchData2: [],
 
 			value5,
 			extra5: '',
@@ -265,6 +276,9 @@ export default {
 			return new Promise((resolve) => {
 				setTimeout(() => {
 					this.searchData = searchData; 
+
+					this.searchData1 = cityList1; 
+					this.searchData2 = cityList2; 
 					resolve();
 				}, 1000);
 			});

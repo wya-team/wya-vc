@@ -1,70 +1,69 @@
 <template>
-	<div 
+	<vc-popover 
+		v-bind="$attrs"
+		v-model="visible" 
+		:arrow="arrow" 
+		:trigger="trigger"
+		:tag="tag"
+		:placement="placement"
+		:auto-width="autoWidth"
+		:portal-class-name="['is-padding-none', portalClassName]"
 		class="vc-select"
-		@mouseenter="isHover = true"
-		@mouseleave="isHover = false"
+		@mouseenter.native="isHover = true"
+		@mouseleave.native="isHover = false"
+		@ready="handleReady"
 	>
-		<vc-popover 
-			v-model="visible" 
-			:arrow="false" 
-			:auto-width="autoWidth"
-			:trigger="trigger"
-			placement="bottom-left"
-			portal-class-name="is-padding-none"
-			@ready="handleReady"
+		<vc-input
+			ref="input"
+			:element-id="elementId"
+			:readonly="true"
+			:disabled="disabled"
+			:value="currentLabel"
+			:placeholder="placeholder || '请选择'"
+			:allow-dispatch="false"
+			class="vc-select__input"
+			@click="visible = true"
 		>
-			<vc-input
-				ref="input"
-				:element-id="elementId"
-				:readonly="true"
-				:disabled="disabled"
-				:value="currentLabel"
-				:placeholder="placeholder || '请选择'"
-				:allow-dispatch="false"
-				class="vc-select__input"
-				@click="visible = true"
-			>
-				<template v-if="multiple && (currentValue && currentValue.length > 0)" #content>
-					<div class="vc-select__tags">
-						<vc-tag 
-							v-for="(item, index) in currentValue" 
-							:key="item" 
-							closable 
-							@close="handleClose(item)"
-						>
-							{{ currentLabel[index] || '' }}
-						</vc-tag>
-					</div>
-				</template>
-				<template #append>
-					<!-- down, up, clear -->
-					<div class="vc-select__append">
-						<vc-icon
-							:type="showClear ? 'clear' : icon"
-							:class="{ 'is-arrow': !showClear }"
-							class="vc-select__icon"
-							@click="handleClear"
-						/>
-					</div>
-				</template>
-			</vc-input>
-			<template #content>
-				<div class="vc-select__content">
-					<div v-if="search" class="vc-select__search">
-						<vc-input-search v-model="searchValue" @input="handleSearch" />
-					</div>
-					<div v-if="loading" class="vc-select__loading">
-						<vc-spin :size="16" />
-					</div>
-					<div class="vc-select__options">
-						<slot />
-					</div>
-					<!-- hack for slot, 异步数据弹层已打开时未刷新 -->
-					<span v-show="false" v-text="currentLabel" />
+			<template v-if="multiple && (currentValue && currentValue.length > 0)" #content>
+				<div class="vc-select__tags">
+					<vc-tag 
+						v-for="(item, index) in currentValue" 
+						:key="item" 
+						closable 
+						@close="handleClose(item)"
+					>
+						{{ currentLabel[index] || '' }}
+					</vc-tag>
 				</div>
 			</template>
-		</vc-popover>
-	</div>
+			<template #append>
+				<!-- down, up, clear -->
+				<div class="vc-select__append">
+					<vc-icon
+						:type="showClear ? 'clear' : icon"
+						:class="{ 'is-arrow': !showClear }"
+						class="vc-select__icon"
+						@click="handleClear"
+					/>
+				</div>
+			</template>
+		</vc-input>
+		<template #content>
+			<div class="vc-select__content">
+				<div v-if="search" class="vc-select__search">
+					<vc-input-search v-model="searchValue" @input="handleSearch" />
+				</div>
+				<div v-if="loading" class="vc-select__loading">
+					<vc-spin :size="16" />
+				</div>
+				<div class="vc-select__options">
+					<slot />
+				</div>
+				<!-- hack for slot, 异步数据弹层已打开时未刷新 -->
+				<span v-show="false" v-text="currentLabel" />
+			</div>
+		</template>
+	</vc-popover>
 </template>
 
 <script>
@@ -96,11 +95,15 @@ export default {
 		'vc-spin': Spin,
 	},
 	mixins: [emitter],
+	inheritAttrs: false,
 	model: {
 		prop: 'value',
 		event: 'change'
 	},
 	props: {
+		...pick(Popover.props, [
+			'portalClassName'
+		]),
 		...pick(InputMixin.props, [
 			'elementId', 
 			'readonly', 
@@ -113,6 +116,22 @@ export default {
 		trigger: {
 			type: String,
 			default: 'click'
+		},
+		tag: {
+			type: String,
+			default: 'div'
+		},
+		placement: {
+			type: String,
+			default: 'bottom-left'
+		},
+		arrow: {
+			type: Boolean,
+			default: false
+		},
+		autoWidth: {
+			type: Boolean,
+			default: true
 		},
 		extra: {
 			type: String | Array
@@ -128,11 +147,7 @@ export default {
 		},
 		loadData: {
 			type: Function,
-		},
-		autoWidth: {
-			type: Boolean,
-			default: true
-		},
+		}
 	},
 	data() {
 		return {
@@ -167,15 +182,8 @@ export default {
 					return;
 				}
 				this.currentValue = v;
-				/**
-				 * 强制更新
-				 * 外部连续刷新时，需要用户自行处理updateLabel
-				 */
-				if (
-					(!this.currentLabel || (this.currentLabel && !this.currentLabel.length))
-				) {
-					this.update(true);
-				}
+
+				this.update(true);
 			}
 		},
 		currentValue(v, old) {
@@ -244,7 +252,6 @@ export default {
 		},
 		update(force = false) {
 			if (force === false && (this.hasInit || this.extra)) return;
-
 			if (!this.$slots.default) return;
 			/**
 			 * 可能存在耗时操作
@@ -276,7 +283,7 @@ export default {
 						label: label.trim()
 					});
 				});
-				if (isEqualWith(this.dataSource, data)) return;
+				if (!force && isEqualWith(this.dataSource, data)) return;
 
 				this.currentLabel = this.multiple 
 					? this.currentValue.map(getLabel.bind(null, data))
