@@ -47,7 +47,7 @@ export default {
 	},
 	data() {
 		return {
-			single: false,
+			single: true,
 			social: ['facebook', 'github'],
 			fruit: ['苹果'],
 

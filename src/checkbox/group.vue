@@ -1,35 +1,57 @@
 <template>
-	<i-checkbox-group 
-		:value="value"
-		:size="size"
-		@on-change="$emit('change', arguments[0])"
-		@input="$emit('input', arguments[0])"
-	>
+	<div class="vc-checkbox-group">
 		<slot />
-	</i-checkbox-group> 
+	</div>
 </template>
 <script>
-import CheckboxGroup from 'iview/src/components/checkbox-group';
-import formHack from '../extends/mixins/form-hack';
+import Emitter from '../extends/mixins/emitter';
 
 export default {
-	// name: 'vc-checkbox-group',
-	components: {
-		'i-checkbox-group': CheckboxGroup
-	},
-	mixins: [formHack],
+	name: 'vc-checkbox-group',
+	mixins: [Emitter],
 	props: {
-		...CheckboxGroup.props
+		value: {
+			type: Array,
+			default: () => ([])
+		}
+	},
+	provide() {
+		return { group: this };
 	},
 	data() {
 		return {
+			currentValue: [],
 		};
 	},
-	computed: {
-		
+	watch: {
+		value: {
+			immediate: true,
+			handler(v) {
+				this.currentValue = v;
+			}
+		},
+		currentValue(v, old) {
+			this.$emit('input', v);
+			this.$emit('change', v);
+			this.dispatch('vc-form-item', 'form-change', v);
+		}
+	},
+	mounted() {
 	},
 	methods: {
+		reset(v) {
+			let index = this.currentValue.findIndex(i => i == v);
+			index == -1 
+				? this.currentValue.push(v)
+				: this.currentValue.splice(index, 1);
+		}
 	}
 };
 </script>
-<style></style>
+<style lang="scss">
+@import '../style/index.scss';
+
+@include block(vc-checkbox-group) {
+	font-size: 14px;
+}
+</style>
