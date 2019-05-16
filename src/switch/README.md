@@ -8,19 +8,18 @@
 
 属性 | 说明 | 类型 | 默认值
 ---|---|---|---
-value | 指定当前是否选中，可以使用 v-model 双向绑定数据 | Boolean | false
-size | 开关的尺寸，可选值为`large`、`small`、`default`或者不写。建议开关如果使用了2个汉字的文字，使用 large。 | String | -
+value | 指定当前是否选中，可以使用 v-model 双向绑定数据 | String, Number, Boolean | false
 disabled | 禁用开关 | Boolean | false
 true-value | 选中时的值，当使用类似 1 和 0 来判断是否选中时会很有用 | String, Number, Boolean | true
 false-value | 没有选中时的值，当使用类似 1 和 0 来判断是否选中时会很有用 | String, Number, Boolean | false
-loading | 加载中的开关 | Boolean | false
 
 
 #### 事件
 
 属性 | 说明 | 参数 | 返回值
 ---|---|---|---
-change | 开关变化时触发，返回当前的状态	 | `value: Boolean` | ---
+change | 开关变化时触发，返回当前的状态	 | `(value) => value` | ---
+click | ->Promise可触发loading	 | `(value) => Promise` | ---
 
 #### Slot
 
