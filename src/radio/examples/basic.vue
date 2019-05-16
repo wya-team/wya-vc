@@ -24,7 +24,7 @@
 		<vc-radio-group v-model="city" type="button" @change="handleChange">
 			<vc-radio label="北京"/>
 			<vc-radio label="上海" disabled/>
-			<vc-radio label="深圳"/>
+			<vc-radio label="深圳" />
 			<vc-radio label="杭州"/>
 		</vc-radio-group>
 	</div>

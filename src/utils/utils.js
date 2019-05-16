@@ -4,7 +4,7 @@ const now = +(new Date());
 let index = 0;
 
 export const getUid = (comp) => {
-	return `vc${`-${comp}` || ''}-${now}-${++index}`;
+	return `vc${`${comp ? `-${comp}` : ''}`}-${now}-${++index}`;
 };
 
 
