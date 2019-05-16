@@ -170,7 +170,7 @@ export default {
 		},
 		showCount: {
 			type: Boolean,
-			default: false
+			default: true
 		},
 		showElevator: {
 			type: Boolean,
