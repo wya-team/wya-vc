@@ -91,6 +91,8 @@ export default {
 				value = value.charAt(0) === '.' ? `0${value}` : value;
 			}
 
+			value = value === '' ? value : this.compareWithBoundary({ value, type: 'input' });
+
 			this.$emit('input', value);
 		},
 		handleBlur(e) {
@@ -100,8 +102,6 @@ export default {
 				: this.currentValue;
 			
 			try {
-				value = value === '' ? value : this.compareWithBoundary({ value, type: 'input' });
-
 				let state = this.afterHook(value);
 				state && this.$emit('input', value);
 				this.$emit('blur', e);
