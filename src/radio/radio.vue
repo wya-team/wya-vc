@@ -156,16 +156,16 @@ export default {
 		top: 0;
 		left: 0;
 		background-color: #fff;
-		border: 1px solid #dcdee2;
 		border-radius: 50%;
 		transition: all .2s ease-in-out;
+		@include commonBorder1PX('', #dcdee2);
 	}
 	@include element(inner) {
 		position: absolute;
 		width: 8px;
 		height: 8px;
-		left: 2px;
-		top: 2px;
+		left: 3px;
+		top: 3px;
 		border-radius: 6px;
 		display: table;
 		border-top: 0;
@@ -178,7 +178,9 @@ export default {
 	}
 	@include when(checked) {
 		@include element(border) {
-			border-color: #2d8cf0;
+			&:before, &:after{
+				border-color: #2d8cf0;
+			}
 		}
 		@include element(inner) {
 			opacity: 1;
@@ -189,7 +191,9 @@ export default {
 	@include when(disabled) {
 		cursor: not-allowed;
 		@include element(border){
-			border-color: #dcdee2;
+			&:before, &:after{
+				border-color: #dcdee2;
+			}
 			background-color: #f3f3f3;
 		}
 		@include element(inner) {
@@ -199,7 +203,9 @@ export default {
 		@include when(checked) {
 			@include element(inner) {
 				animation-name: none;
-				border-color: #ccc;
+				&:before, &:after{
+					border-color: #ccc;
+				}
 			}
 		}
 	}
