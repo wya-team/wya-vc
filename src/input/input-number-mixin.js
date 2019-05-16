@@ -29,7 +29,7 @@ export default {
 		},
 		formatter: {
 			type: Function,
-			default: (v, precision) => (!v ? v : Number(v).toFixed(precision)) 
+			default: (v, precision) => (!v ? v : Number(v).toFixed(precision))
 		}
 	},
 	data() {
@@ -58,7 +58,7 @@ export default {
 		 * 确保初始和失焦都是格式化的值
 		 */
 		formatterValue() {
-			return this.isInput 
+			return this.isInput
 				? this.currentValue
 				: this.formatter(this.currentValue, this.precision);
 		}
@@ -86,7 +86,7 @@ export default {
 				let regex = this.precision
 					? new RegExp(`(.*\\.[\\d]{${this.precision}})[\\d]+`)
 					: new RegExp(`(.*)\\.`);
-					
+
 				value = value.replace(regex, '$1');
 				value = value.charAt(0) === '.' ? `0${value}` : value;
 			}
@@ -95,34 +95,36 @@ export default {
 
 			this.$emit('input', value);
 		},
-		handleBlur(e) {
+		async handleBlur(e) {
 			this.isInput = false;
-			let value = this.required && !this.currentValue 
+			let value = this.required && !this.currentValue
 				? this.min
 				: this.currentValue;
-			
+
 			try {
-				let state = this.afterHook(value);
+				let state = await this.afterHook(value);
 				state && this.$emit('input', value);
 				this.$emit('blur', e);
 			} catch (e) {
 				throw new VcError('vc-input-number', e);
-			} 
+			}
 		},
 		async handleStepper(base) {
-			let { $listeners: { plus, minus, before, after } } = this;
+			let { $listeners: { plus, minus, before } } = this;
 			if (base === 1 && this.plusDisabled) {
 				this.$emit('tip', {
 					type: 'max',
 					msg: '不能再多了',
+					tag: 'button'
 				});
-				return; 
+				return;
 			} else if (base === -1 && this.minusDisabled) {
 				this.$emit('tip', {
 					type: 'min',
 					msg: '不能再少了',
+					tag: 'button'
 				});
-				return; 
+				return;
 			}
 
 			if (base === 1 && plus) { return plus(); }
@@ -136,12 +138,12 @@ export default {
 				if (before) {
 					state = await before(value);
 				}
-				
+
 				state && this.$emit('input', value);
-				this.afterHook(value);
+				this.afterDebounce(value);
 			} catch (e) {
 				throw new VcError('vc-input-number', e);
-			} 
+			}
 		},
 		/**
 		 * 为防止在有after的时候多次触发input事件，返回state
@@ -149,20 +151,22 @@ export default {
 		 * 有after时，根据after的返回值，如果是false，则由内部发射input事件，重新赋值value；
 		 * 如果是true，也由外部发射
 		 */
-		afterHook(value) {
-			let { $listeners: { after } } = this;
-			let state = !after;
-			if (!after) return state;
+		afterDebounce(value) {
 			this.timer && clearTimeout(this.timer);
-			this.timer = setTimeout(async () => {
-				state = await after(value);
-				if (state) {
-					this.hookValue = value;
-				} else {
-					this.$emit('input', this.hookValue);
-				}
+			this.timer = setTimeout(() => {
+				this.afterHook(value);
 				this.timer = null;
 			}, 300);
+		},
+		async afterHook(value) {
+			let { $listeners: { after } } = this;
+			if (!after) return false;
+			let state = await after(value);
+			if (state) {
+				this.hookValue = value;
+			} else {
+				this.$emit('input', this.hookValue);
+			}
 			return state;
 		},
 		/**
