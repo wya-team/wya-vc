@@ -81,6 +81,11 @@
 						:value="item.value" 
 						:key="index"
 					>{{ item.label }}</vc-option>
+					<vc-option
+						:filterable="false"
+						value="不会被过滤"
+						label="不会被过滤"
+					/>
 				</vc-option-group>
 				<vc-option-group v-if="searchData1.length" label="Other Cities">
 					<vc-option 

@@ -30,6 +30,13 @@ export default {
 		disabled: {
 			type: Boolean,
 			default: false
+		},
+		/**
+		 * 是否可过滤
+		 */
+		filterable: {
+			type: Boolean,
+			default: true
 		}
 	},
 	inject: {
@@ -51,7 +58,7 @@ export default {
 			return parent;
 		},
 		formatterLabel() {
-			let v = String(this.$slots.default[0].text || this.label || this.value);
+			let v = String((this.$slots.default && this.$slots.default[0].text) || this.label || this.value);
 			return v.trim();
 		},
 		selected() {
@@ -60,7 +67,7 @@ export default {
 				: this.owner.value.includes(this.value);
 		},
 		visible() {
-			return this.owner.searchRegex.test(this.formatterLabel);
+			return this.owner.searchRegex.test(this.formatterLabel) || !this.filterable;
 		}
 	},
 	watch: {
@@ -72,7 +79,7 @@ export default {
 			if (this.disabled) return;
 			// 已选中，弹层关闭
 			if (!this.owner.multiple && this.selected) {
-				this.owner.visible = false;
+				this.owner.close();
 				return;
 			} else if (this.selected) {
 				this.owner.remove(this.value, this.formatterLabel);

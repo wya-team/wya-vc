@@ -244,12 +244,18 @@ export default {
 				this.currentLabel.push(label);
 			}
 		},
+
 		remove(v, label) {
 			let index = this.currentValue.findIndex(i => i == v);
 
 			this.currentValue.splice(index, 1);
 			this.currentLabel.splice(index, 1);
 		},
+
+		close() {
+			this.visible = false;
+		},
+
 		update(force = false) {
 			if (force === false && (this.hasInit || this.extra)) return;
 			if (!this.$slots.default) return;
@@ -261,7 +267,8 @@ export default {
 				this.$slots.default.forEach((vnode) => {
 					if (!vnode.tag) return;
 					if (vnode && /option-group$/.test(vnode.tag)) {
-						vnodes.push(...vnode.componentOptions.children);
+						let child = vnode.componentOptions.children.filter(i => i.tag);
+						vnodes.push(...child);
 					} else {
 						vnodes.push(vnode);
 					}
