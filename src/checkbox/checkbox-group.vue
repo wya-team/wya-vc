@@ -9,6 +9,10 @@ import Emitter from '../extends/mixins/emitter';
 export default {
 	name: 'vc-checkbox-group',
 	mixins: [Emitter],
+	model: {
+		prop: 'value',
+		event: 'change'
+	},
 	props: {
 		value: {
 			type: Array,
@@ -31,7 +35,6 @@ export default {
 			}
 		},
 		currentValue(v, old) {
-			this.$emit('input', v);
 			this.$emit('change', v);
 			this.dispatch('vc-form-item', 'form-change', v);
 		}

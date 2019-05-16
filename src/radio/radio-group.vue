@@ -10,6 +10,10 @@ import { getUid } from '../utils/index';
 export default {
 	name: 'vc-radio-group',
 	mixins: [Emitter],
+	model: {
+		prop: 'value',
+		event: 'change'
+	},
 	props: {
 		value: {
 			type: [String, Number],
@@ -52,7 +56,6 @@ export default {
 			}
 		},
 		currentValue(v, old) {
-			this.$emit('input', v);
 			this.$emit('change', v);
 			this.dispatch('vc-form-item', 'form-change', v);
 		}

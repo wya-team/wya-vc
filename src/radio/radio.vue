@@ -25,6 +25,10 @@ import Emitter from '../extends/mixins/emitter';
 export default {
 	name: 'vc-radio',
 	mixins: [Emitter],
+	model: {
+		prop: 'value',
+		event: 'change'
+	},
 	props: {
 		disabled: {
 			type: Boolean,
@@ -91,7 +95,6 @@ export default {
 			}
 		},
 		currentValue(v, old) {
-			this.$emit('input', v);
 			this.$emit('change', v);
 			this.dispatch('vc-form-item', 'form-change', v);
 		}
