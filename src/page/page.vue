@@ -221,7 +221,7 @@ export default {
 			if (this.currentPage != page) {
 				this.currentPage = page;
 				this.$emit('update:current', page);
-				this.$emit('on-change', page);
+				this.$emit('change', page);
 			}
 		},
 		handlePrev() {
@@ -254,8 +254,8 @@ export default {
 				this.resetPage(page);
 			}
 		},
-		handleChangePageSize() {
-			
+		handleChangePageSize(pageSize) {
+			this.$emit('page-size-change', this.currentPageSize);
 		},
 		handleEnter(v) {
 			this.resetPage(Number(this.inputPage));

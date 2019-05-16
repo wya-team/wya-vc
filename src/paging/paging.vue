@@ -61,12 +61,12 @@
 				<vc-page
 					v-else
 					ref="pageTarget"  
-					:total="Number(count)" 
+					:count="Number(count)" 
 					:current="currentPage"
 					:page-size="pageSize"
 					v-bind="pageOpts"
-					@on-change="handleChange"
-					@on-page-size-change="handleChangePageSize"
+					@change="handleChange"
+					@page-size-change="handleChangePageSize"
 				/>
 			</div>
 		</div>
@@ -77,7 +77,7 @@
 import { URL, Storage } from '@wya/utils';
 import { cloneDeep } from 'lodash';
 
-import Page from 'iview/src/components/page';
+import Page from '../page/index';
 import Table from '../table';
 import { VcInstance } from '../vc/index';
 
