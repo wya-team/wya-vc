@@ -2,10 +2,10 @@
 	<component 
 		:is="componentType"
 		:tag="tag"
+		:enter-active-class="`${prefix} ${classes} is-in`"
+		:leave-active-class="`${prefix} ${classes} is-out`"
+		:move-class="`${prefix} ${classes} is-move`"
 		v-bind="$attrs"
-		:enter-active-class="`vc-transition__slide-${mode}--in`"
-		:move-class="`vc-transition__slide-${mode}--move`"
-		:leave-active-class="`vc-transition__slide-${mode}--out`"
 		v-on="hooks"
 	>
 		<slot />
@@ -21,7 +21,7 @@ export default {
 		mode: {
 			type: String,
 			default: 'left',
-			validator: v => /(left|right|down|up)/.test(v)
+			validator: v => /(left|right|down|up|none)/.test(v)
 		},
 		styles: {
 			type: Object,
@@ -29,6 +29,15 @@ export default {
 				animationFillMode: 'both',
 				animationTimingFunction: undefined,
 			})
+		},
+		prefix: {
+			type: String,
+			default: 'vc-transition-slide'
+		}
+	},
+	computed: {
+		classes() {
+			return this.mode !== 'none' ? `is-${this.mode}` : '';
 		}
 	}
 };
@@ -36,25 +45,36 @@ export default {
 </script>
 <style lang="scss">
 @import '../style/index.scss';
+$block: vc-transition-slide;
 
+@include block($block) {
+	@include when(in) {
+		will-change: transform, opacity;
+		animation-timing-function: ease-out;
+	}
+	@include when(out) {
+		will-change: transform, opacity;
+		animation-timing-function: ease-out;
+	}
+	/**
+	 * transition-group下删除元素, 其他元素位置变化动画
+	 */
+	@include when(move) {
+		transition: transform .3s $ease-out-quint;
+	}
+}
+
+/**
+ * 动画名称
+ */
 @mixin slide($mode) {
-	@include block(vc-transition) {
-		@include element(slide-#{$mode}) {
-			@include modifier(in) {
-				will-change: transform, opacity;
+	@include block($block) {
+		@include when(#{$mode}) {
+			@include when(in) {
 				animation-name: vc-slide-#{$mode}-in;
-				animation-timing-function: ease-out;
 			}
-			@include modifier(out) {
-				will-change: transform, opacity;
+			@include when(out) {
 				animation-name: vc-slide-#{$mode}-out;
-				animation-timing-function: ease-out;
-			}
-			/**
-			 * transition-group下删除元素, 其他元素位置变化动画
-			 */
-			@include modifier(move) {
-				transition: transform .3s $ease-out-quint;
 			}
 		}
 	}

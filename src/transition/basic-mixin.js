@@ -48,6 +48,9 @@ export default {
 					animationTimingFunction: 'ease-out'
 				};
 			}
+		},
+		prefix: {
+			type: String
 		}
 	},
 	computed: {

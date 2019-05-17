@@ -2,10 +2,10 @@
 	<component 
 		:is="componentType"
 		:tag="tag"
+		:enter-active-class="`${prefix}--in`"
+		:move-class="`${prefix}--move`"
+		:leave-active-class="`${prefix}--out`"
 		v-bind="$attrs"
-		enter-active-class="vc-transition__fade--in"
-		move-class="vc-transition__fade--move"
-		leave-active-class="vc-transition__fade--out"
 		v-on="hooks"
 	>
 		<slot />
@@ -24,6 +24,10 @@ export default {
 				animationFillMode: 'both',
 				animationTimingFunction: undefined,
 			})
+		},
+		prefix: {
+			type: String,
+			default: 'vc-transition-fade'
 		}
 	}
 };
@@ -31,25 +35,24 @@ export default {
 </script>
 <style lang="scss">
 @import '../style/index.scss';
+$block: vc-transition-fade;
 
-@include block(vc-transition) {
-	@include element(fade) {
-		@include modifier(in) {
-			will-change: opacity;
-			animation-name: vc-fade-in;
-			animation-timing-function: linear;
-		}
-		@include modifier(out) {
-			will-change: opacity;
-			animation-name: vc-fade-out;
-			animation-timing-function: linear;
-		}
-		/**
-		 * transition-group下删除元素, 其他元素位置变化动画
-		 */
-		@include modifier(move) {
-			transition: transform .3s $ease-out-quint;
-		}
+@include block($block) {
+	@include modifier(in) {
+		will-change: opacity;
+		animation-name: vc-fade-in;
+		animation-timing-function: linear;
+	}
+	@include modifier(out) {
+		will-change: opacity;
+		animation-name: vc-fade-out;
+		animation-timing-function: linear;
+	}
+	/**
+	 * transition-group下删除元素, 其他元素位置变化动画
+	 */
+	@include modifier(move) {
+		transition: transform .3s $ease-out-quint;
 	}
 }
 

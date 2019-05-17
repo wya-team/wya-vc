@@ -2,10 +2,10 @@
 	<component 
 		:is="componentType"
 		:tag="tag"
+		:enter-active-class="`${prefix} ${classes} is-in`"
+		:leave-active-class="`${prefix} ${classes} is-out`"
+		:move-class="`${prefix} ${classes} is-move`"
 		v-bind="$attrs"
-		:enter-active-class="`vc-transition__scale-${mode}--in`"
-		:leave-active-class="`vc-transition__scale-${mode}--out`"
-		move-class="vc-transition__scale--move"
 		v-on="hooks"
 	>
 		<slot />
@@ -21,7 +21,7 @@ export default {
 		mode: {
 			type: String,
 			default: 'both',
-			validator: v => /(part|both)/.test(v)
+			validator: v => /(part|both|none)/.test(v)
 		},
 		styles: {
 			type: Object,
@@ -29,6 +29,15 @@ export default {
 				animationFillMode: 'both',
 				animationTimingFunction: undefined,
 			})
+		},
+		prefix: {
+			type: String,
+			default: 'vc-transition-scale'
+		}
+	},
+	computed: {
+		classes() {
+			return this.mode !== 'none' ? `is-${this.mode}` : '';
 		}
 	}
 };
@@ -36,25 +45,32 @@ export default {
 </script>
 <style lang="scss">
 @import '../style/index.scss';
+$block: vc-transition-scale;
 
-@mixin scale($direction) {
-	@include block(vc-transition) {
-		@include element(scale-#{$direction}) {
-			@include modifier(in) {
-				will-change: transform, opacity;
-				animation-name: vc-scale-#{$direction}-in;
-				animation-timing-function: cubic-bezier(.43, .84, .61, .99);
+@include block($block) {
+	@include when(in) {
+		will-change: transform, opacity;
+		animation-timing-function: cubic-bezier(.43, .84, .61, .99);
+	}
+	@include when(out) {
+		will-change: transform, opacity;
+		animation-timing-function: cubic-bezier(.43, .84, .61, .99);
+	}
+	/**
+	 * transition-group下删除元素, 其他元素位置变化动画
+	 */
+	@include when(move) {
+		transition: transform .3s $ease-out-quint;
+	}
+}
+@mixin scale($mode) {
+	@include block($block) {
+		@include when(#{$mode}) {
+			@include when(in) {
+				animation-name: vc-scale-#{$mode}-in;
 			}
-			@include modifier(out) {
-				will-change: transform, opacity;
-				animation-name: vc-scale-#{$direction}-out;
-				animation-timing-function: cubic-bezier(.43, .84, .61, .99);
-			}
-			/**
-			 * transition-group下删除元素, 其他元素位置变化动画
-			 */
-			@include modifier(move) {
-				transition: transform .3s $ease-out-quint;
+			@include when(out) {
+				animation-name: vc-scale-#{$mode}-out;
 			}
 		}
 	}

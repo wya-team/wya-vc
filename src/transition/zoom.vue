@@ -2,10 +2,10 @@
 	<component 
 		:is="componentType"
 		:tag="tag"
+		:enter-active-class="`${prefix} ${classes} is-in`"
+		:leave-active-class="`${prefix} ${classes} is-out`"
+		:move-class="`${prefix} ${classes} is-move`"
 		v-bind="$attrs"
-		:enter-active-class="`vc-transition__zoom-${mode}--in`"
-		:move-class="`vc-transition__zoom-${mode}--move`"
-		:leave-active-class="`vc-transition__zoom-${mode}--out`"
 		v-on="hooks"
 	>
 		<slot />
@@ -21,7 +21,7 @@ export default {
 		mode: {
 			type: String,
 			default: 'x',
-			validator: v => /(x|y|center)/.test(v)
+			validator: v => /(x|y|center|none)/.test(v)
 		},
 		styles: {
 			type: Object,
@@ -29,6 +29,15 @@ export default {
 				animationFillMode: 'both',
 				animationTimingFunction: undefined,
 			})
+		},
+		prefix: {
+			type: String,
+			default: 'vc-transition-zoom'
+		}
+	},
+	computed: {
+		classes() {
+			return this.mode !== 'none' ? `is-${this.mode}` : '';
 		}
 	}
 };
@@ -36,27 +45,39 @@ export default {
 </script>
 <style lang="scss">
 @import '../style/index.scss';
+$block: vc-transition-zoom;
 
+@include block($block) {
+	@include when(in) {
+		animation-timing-function: $ease-out-circ;
+	}
+	@include when(out) {
+		animation-timing-function: $ease-in-out-circ;
+	}
+	/**
+	 * transition-group下删除元素, 其他元素位置变化动画
+	 */
+	@include when(move) {
+		transition: transform .3s $ease-out-quint;
+	}
+}
+
+/**
+ * 动画名称
+ */
 @mixin zoom($mode) {
-	@include block(vc-transition) {
-		@include element(zoom-#{$mode}) {
-			@include modifier(in) {
+	@include block($block) {
+		@include when(#{$mode}) {
+			@include when(in) {
 				animation-name: vc-zoom-#{$mode}-in;
-				animation-timing-function: $ease-out-circ;
 			}
-			@include modifier(out) {
+			@include when(out) {
 				animation-name: vc-zoom-#{$mode}-out;
-				animation-timing-function: $ease-in-out-circ;
-			}
-			/**
-			 * transition-group下删除元素, 其他元素位置变化动画
-			 */
-			@include modifier(move) {
-				transition: transform .3s $ease-out-quint;
 			}
 		}
 	}
 }
+
 @include zoom(x);
 @include zoom(y);
 @include zoom(center);

@@ -94,7 +94,7 @@ export default {
 		return {
 			visible: true,
 			isGroup: false,
-			transitionName: 'fade',
+			transitionName: 'slide',
 			transitionOptions: [
 				'fade',
 				'scale',
