@@ -50,7 +50,8 @@ export default {
 			}
 		},
 		prefix: {
-			type: String
+			type: String,
+			default: ''
 		}
 	},
 	computed: {

@@ -2,9 +2,9 @@
 	<component 
 		:is="componentType"
 		:tag="tag"
-		:enter-active-class="`${prefix}--in`"
-		:move-class="`${prefix}--move`"
-		:leave-active-class="`${prefix}--out`"
+		:enter-active-class="`${prefix} is-in`"
+		:move-class="`${prefix} is-move`"
+		:leave-active-class="`${prefix} is-out`"
 		v-bind="$attrs"
 		v-on="hooks"
 	>
@@ -38,12 +38,12 @@ export default {
 $block: vc-transition-fade;
 
 @include block($block) {
-	@include modifier(in) {
+	@include when(in) {
 		will-change: opacity;
 		animation-name: vc-fade-in;
 		animation-timing-function: linear;
 	}
-	@include modifier(out) {
+	@include when(out) {
 		will-change: opacity;
 		animation-name: vc-fade-out;
 		animation-timing-function: linear;
@@ -51,7 +51,7 @@ $block: vc-transition-fade;
 	/**
 	 * transition-group下删除元素, 其他元素位置变化动画
 	 */
-	@include modifier(move) {
+	@include when(move) {
 		transition: transform .3s $ease-out-quint;
 	}
 }

@@ -1,9 +1,9 @@
 import BasicMixin from './basic-mixin';
-import Fade from './fade';
-import Scale from './scale';
-import Slide from './slide';
-import Zoom from './zoom';
-import Collapse from './collapse';
+import Fade from './transition-fade';
+import Scale from './transition-scale';
+import Slide from './transition-slide';
+import Zoom from './transition-zoom';
+import Collapse from './transition-collapse';
 
 const Transition = {
 	Fade,
