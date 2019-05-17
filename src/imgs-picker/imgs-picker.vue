@@ -15,7 +15,7 @@
 					<div v-if="!$slots.operate && !$scopedSlots.operate">
 						<vc-icon v-if="!disabled" type="delete" @click="handleDel(item)" />
 						<vc-icon v-if="!disabled" type="divider" />
-						<vc-icon type="visible" @click="handlePreview($event, index)" />
+						<vc-icon type="preview" @click="handlePreview($event, index)" />
 					</div>
 					<div v-else>
 						<slot v-bind="{src: item, index}" name="operate" />
