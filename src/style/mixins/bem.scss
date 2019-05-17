@@ -93,8 +93,16 @@ $state-prefix: 'is-';
 
 @mixin modifier($modifier, $root: true) {
 	$selector: &;
-	
-	@if $root {
+	// TODO: 待验证第一个判断;
+	@if hitAllSpecialNestRule($selector) {
+		@at-root {
+			#{$selector} {
+				.#{$B + $modifier-separator + $modifier} {
+					@content;
+				}
+			}
+		}
+	} @else if $root {
 		@at-root {
 			#{& + $modifier-separator + $modifier} {
 				@content;
