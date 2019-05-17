@@ -9,6 +9,9 @@ module.exports = {
 		require('precss')({
 			/* ...options */ 
 		}),
+		require('cssnano')({
+			preset: 'default',
+		}),
 		require('autoprefixer')({
 			/* ...options */
 			// 不删除老式写法
