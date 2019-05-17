@@ -137,7 +137,7 @@ $size: 28px;
 				z-index: 1;
 			}
 			&.is-focus {
-				box-shadow: -1px 0 0 0 #2d8cf0,0 0 0 2px rgba(45,140,240,.2);
+				box-shadow: -1px 0 0 0 #2d8cf0, 0 0 0 2px rgba(45,140,240,.2);
 				transition: all .2s ease-in-out;
 			}
 		}
