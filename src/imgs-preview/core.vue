@@ -276,7 +276,7 @@ export const Func = CreatePortal({}, config);
 		color: white;
 		line-height: 44px;
 		text-align: center;
-		font-size: 20px
+		font-size: 16px
 	}
 }
 </style>

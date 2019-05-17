@@ -22,7 +22,7 @@
 			/>
 			<div class="vc-imgs-preview__mask">
 				<div v-if="!$slots.operate && !$scopedSlots.operate">
-					<vc-icon type="up" @click.stop="handleShow($event, index)" />
+					<vc-icon type="visible" @click.stop="handleShow($event, index)" />
 				</div>
 				<div v-else>
 					<slot 
