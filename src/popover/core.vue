@@ -57,7 +57,7 @@ const popup = {
 		theme: {
 			type: String,
 			default: 'light',
-			validator: v => /(light|dark)/.test(v)
+			validator: v => /(light|dark|none)/.test(v)
 		},
 		content: String,
 		getPopupContainer: Function,

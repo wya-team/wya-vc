@@ -10,7 +10,8 @@
 ---|---|---|---
 fixed | 是否使用fixed布局 | `Boolean` | false
 show | 是否显示 | `Boolean` | false
-position | 从哪个方向弹出（top/bottom） | `String` | bottom
+placement | 从哪个方向弹出（top/bottom/left/right/center） | `String` | bottom
+theme | 背景（dark/light/none） | `String` | light
 mask | 是否显示遮罩（只有在position为bottom的时候才有用） | `Boolean` | true
 maskClosable | 是否允许通过点击遮罩关闭弹窗 | `Boolean` | true
 

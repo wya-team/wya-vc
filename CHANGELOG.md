@@ -1,6 +1,8 @@
 # 历史版本
 
 ### 1.3.8
+- popup: `position` -> `placement`, 新增theme(light/dark/none)
+- popover: `theme`(light/dark/none)
 - 弹层属性一律将 `transfer` -> `portal`， 默认都为`true`
 
 ### 1.3.0
