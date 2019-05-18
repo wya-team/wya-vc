@@ -1,5 +1,10 @@
 <template>
-	<vcm-popup v-model="show" :position="param.position" @change="handleChange">
+	<vcm-popup 
+		v-model="visible" 
+		:placement="param.placement" 
+		@visible-change="handleChange"
+	>
+		<div @click="handleClose">点击关闭</div>
 		tip <br>
 		tip <br>
 		tip <br>
@@ -43,7 +48,7 @@ const config = {
 	},
 	data() {
 		return {
-			show: false
+			visible: false
 		};
 	},
 	computed: {
@@ -52,14 +57,15 @@ const config = {
 	watch: {
 
 	},
-	created() {
-	},
 	mounted() {
-		this.show = true;
+		this.visible = true;
 	},
 	methods: {
-		handleChange() {
-			this.$emit('sure');
+		handleClose() {
+			this.visible = false;
+		},
+		handleChange(v) {
+			this.$emit('close');
 		}
 	},
 };

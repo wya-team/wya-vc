@@ -1,27 +1,38 @@
 <template>
-	<div>
-		<transition name="am-fade">
+	<div :class="classes" class="vcm-popup">
+		<vcm-transtion-fade>
 			<div
-				v-show="mask && isActive && position !== 'top'"
-				class="__mask"
+				v-show="mask && isActive"
+				class="vcm-popup__mask"
 				@click="handleClose(maskClosable)"
 			/>
-		</transition>
-		<transition :name="position" @after-leave="handleRemove">
+		</vcm-transtion-fade>
+		<components :is="animateComponent" :mode="mode" @after-leave="handleRemove">
 			<div
 				v-show="isActive"
-				:class="[{ '__dark': position === 'top' }, position]"
-				:style="{position:fixed?'fixed':'absolute'}"
-				class="__wrap"
+				class="vcm-popup__wrapper"
 			>
 				<slot />
 			</div>
-		</transition>
+		</components>
 	</div>
 </template>
 <script>
+import MTransition from '../../transition/index.m';
+
+const placement2mode = {
+	left: 'left',
+	right: 'right',
+	bottom: 'up',
+	top: 'down',
+	center: '',
+};
 export default {
 	name: "vcm-popup",
+	components: {
+		'vcm-transtion-fade': MTransition.Fade,
+		'vcm-transtion-slide': MTransition.Slide,
+	},
 	model: {
 		prop: 'visible',
 		event: 'visible-change'
@@ -35,10 +46,6 @@ export default {
 			type: Boolean,
 			default: false
 		},
-		position: {
-			type: String,
-			default: 'bottom'
-		},
 		mask: {
 			type: Boolean,
 			default: true
@@ -46,23 +53,44 @@ export default {
 		maskClosable: {
 			type: Boolean,
 			default: true
-		}
+		},
+		placement: {
+			type: String,
+			default: 'bottom',
+			validator: v => /(bottom|top|left|right|center)/.test(v)
+		},
+		theme: {
+			type: String,
+			default: 'light',
+			validator: v => /(light|dark|none)/.test(v)
+		},
 	},
 	data() {
 		return {
 			isActive: false
 		};
 	},
-	computed: {},
+	computed: {
+		classes() {
+			return {
+				[`is-${this.placement}`]: true,
+				[`is-${this.theme}`]: true,
+			};
+		},
+		mode() {
+			return placement2mode[this.placement];
+		},
+		animateComponent() {
+			return this.placement === 'center' 
+				? 'vcm-transtion-fade' 
+				: 'vcm-transtion-slide';
+		}
+	},
 	watch: {
 		visible: {
 			immediate: true,
 			handler(v) {
 				this.isActive = v;
-				if (v && this.position == 'top') {
-					this.clearTimer();
-					this.timer = setTimeout(this.handleClose, 3000);
-				}
 			}
 		}
 	},
@@ -77,9 +105,7 @@ export default {
 		 * 立即执行关闭操作，内部主动触发
 		 */
 		handleClose(maskClosable = true) {
-			if (maskClosable || this.position == 'top') {
-				this.isActive = false;
-			}
+			this.isActive = false;
 		},
 		/**
 		 * 动画执行后关闭
@@ -96,41 +122,11 @@ export default {
 };
 
 </script>
-<style lang="scss" scoped>
-	.bottom {
-		right: 0;
-		bottom: 0;
-		left: 0;
-		padding-bottom: env(safe-area-inset-bottom);
-	}
+<style lang="scss">
+@import '../../style/index.scss';
 
-	.top {
-		top: 0;
-		right: 0;
-		left: 0;
-		padding-top: env(safe-area-inset-bottom);
-	}
-
-	.__wrap {
-		position: absolute;
-		z-index: 1000;
-		background-color: #fff;
-		transition: transform .2s;
-		width: 100%;
-	}
-
-	.__dark {
-		display: flex;
-		justify-content: center;
-		align-items: center;
-		background: rgba(0, 0, 0, .3);
-		color: #fff;
-		height: 50px;
-		font-size: 16px;
-		min-height: 50px;
-	}
-
-	.__mask {
+@include block(vcm-popup) {
+	@include element(mask) {
 		position: fixed;
 		top: 0;
 		right: 0;
@@ -139,21 +135,71 @@ export default {
 		background-color: rgba(0, 0, 0, .4);
 		height: 100%;
 		z-index: 1000;
-		transition: opacity 0.2s ease;
 	}
-	// 动画
-	.top-enter,
-	.top-leave-to {
-		transform: translate(0, -100%);
+	@include element(wrapper) {
+		position: absolute;
+		z-index: 1000;
+	}
+	@include when(bottom) {
+		@include element(wrapper) {
+			right: 0;
+			left: 0;
+			bottom: 0;
+			padding-bottom: env(safe-area-inset-bottom);
+		}
 	}
 
-	.bottom-enter,
-	.bottom-leave-to {
-		transform: translate(0, 100%);
+	@include when(top) {
+		@include element(wrapper) {
+			right: 0;
+			left: 0;
+			top: 0;
+			padding-top: env(safe-area-inset-bottom);
+		}
+	}
+	@include when(left) {
+		@include element(wrapper) {
+			top: 0;
+			bottom: 0;
+			left: 0;
+		}
 	}
 
-	// fade存在bug, am-前缀处理，原因未知
-	.am-fade-enter, .am-fade-leave-to {
-		opacity: 0;
+	@include when(right) {
+		@include element(wrapper) {
+			top: 0;
+			bottom: 0;
+			right: 0;
+		}
 	}
+
+	@include when(center) {
+		@include element(wrapper) {
+			top: 50%;
+			left: 50%;
+			transform: translate3d(-50%, -50%, 0);
+		}
+	}
+
+	@include when(fixed) {
+		@include element(wrapper) {
+			position: fixed;
+		}
+	}
+	@include when(dark) {
+		@include element(wrapper) {
+			background: rgba(0, 0, 0, .3);
+			color: #fff;
+		}
+	}
+	@include when(light) {
+		@include element(wrapper) {
+			background-color: #fff;
+		}
+	}
+		
+}
+
+
+	
 </style>

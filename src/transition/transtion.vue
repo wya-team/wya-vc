@@ -21,3 +21,9 @@ export default {
 };
 
 </script>
+<style lang="scss">
+
+@import '../style/index.scss';
+$block: vc-transition;
+
+</style>

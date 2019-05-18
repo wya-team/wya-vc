@@ -21,7 +21,7 @@ export default {
 		mode: {
 			type: String,
 			default: 'left',
-			validator: v => /(left|right|down|up|none)/.test(v)
+			validator: v => /^(left|right|down|up|none)(|-part)$/.test(v)
 		},
 		styles: {
 			type: Object,
@@ -37,7 +37,7 @@ export default {
 	},
 	computed: {
 		classes() {
-			return this.mode !== 'none' ? `is-${this.mode}` : '';
+			return this.mode !== 'none' ? `-${this.mode}`.split('-').join(' is-') : '';
 		}
 	}
 };
@@ -67,7 +67,7 @@ $block: vc-transition-slide;
 /**
  * 动画名称
  */
-@mixin slide($mode) {
+@mixin slideByMode($mode) {
 	@include block($block) {
 		@include when(#{$mode}) {
 			@include when(in) {
@@ -79,49 +79,97 @@ $block: vc-transition-slide;
 		}
 	}
 }
-@include slide(left);
-@include slide(right);
-@include slide(up);
-@include slide(down);
+@include slideByMode(left);
+@include slideByMode(right);
+@include slideByMode(up);
+@include slideByMode(down);
 
 /**
- * left
+ * 动画名称
  */
+@mixin slideBySize($mode, $size) {
+	@include block($block) {
+		@include when(#{$mode}) {
+			@include when(#{$size}) {
+				@include when(in) {
+					animation-name: vc-slide-#{$mode}-#{$size}-in;
+				}
+				@include when(out) {
+					animation-name: vc-slide-#{$mode}-#{$size}-out;
+				}
+			}
+		}
+	}
+}
+@include slideBySize(left, part);
+@include slideBySize(right, part);
+@include slideBySize(up, part);
+@include slideBySize(down, part);
+
+
+
+// left
 @keyframes vc-slide-left-in {
 	from {
-		opacity: 0;
-		transform: translateX(-15px);
+		visibility: visible;
+		transform: translate3d(-100%, 0, 0);
 	}
 
 	to {
-		opacity: 1;
+		transform: translate3d(0, 0, 0);
 	}
 }
 
 @keyframes vc-slide-left-out {
 	from {
-		opacity: 1;
+		transform: translate3d(0, 0, 0);
 	}
 
 	to {
-		opacity: 0;
-		transform: translateX(-15px);
+		visibility: visible;
+		transform: translate3d(-100%, 0, 0);
 	}
 }
 
 /**
- * right
+ * left-part
  */
-@keyframes vc-slide-right-in {
+@keyframes vc-slide-left-part-in {
 	from {
 		opacity: 0;
-		transform: translateX(15px);
+		transform: translate3d(-15px, 0, 0);
 	}
 
 	to {
-		opacity: 1;
+		transform: translate3d(0, 0, 0);
 	}
 }
+
+@keyframes vc-slide-left-part-out {
+	from {
+		transform: translate3d(0, 0, 0);
+	}
+
+	to {
+		opacity: 0;
+		transform: translate3d(-15px, 0, 0);
+	}
+}
+
+
+// right
+@keyframes vc-slide-right-in {
+	from {
+		visibility: visible;
+		transform: translate3d(100%, 0, 0);
+	}
+
+	to {
+		transform: translate3d(0, 0, 0);
+	}
+}
+
+
 
 @keyframes vc-slide-right-out {
 	from {
@@ -135,54 +183,125 @@ $block: vc-transition-slide;
 }
 
 /**
- * down
+ * right-part
  */
-@keyframes vc-slide-down-in {
+@keyframes vc-slide-right-part-in {
 	from {
 		opacity: 0;
-		transform: translateY(15px);
+		transform: translate3d(15px, 0, 0);
 	}
 
 	to {
-		opacity: 1;
+		transform: translate3d(0, 0, 0);
+	}
+}
+
+@keyframes vc-slide-right-part-out {
+	from {
+		transform: translate3d(0, 0, 0);
+	}
+
+	to {
+		opacity: 0;
+		transform: translate3d(15px, 0, 0);
+	}
+}
+
+/**
+ * down-part
+ */
+@keyframes vc-slide-down-part-in {
+	from {
+		opacity: 0;
+		transform: translate3d(0, -15px, 0);
+	}
+
+	to {
+		transform: translate3d(0, 0, 0);
+	}
+}
+
+@keyframes vc-slide-down-part-out {
+	from {
+		transform: translate3d(0, 0, 0);
+	}
+
+	to {
+		opacity: 0;
+		transform: translate3d(0, -15px, 0);
+	}
+}
+
+// down
+@keyframes vc-slide-down-in {
+	from {
+		visibility: visible;
+		transform: translate3d(0, -100%, 0);
+	}
+
+	to {
+		transform: translate3d(0, 0, 0);
 	}
 }
 
 @keyframes vc-slide-down-out {
 	from {
-		opacity: 1;
+		transform: translate3d(0, 0, 0);
 	}
 
 	to {
-		opacity: 0;
-		transform: translateY(15px);
+		visibility: visible;
+		transform: translate3d(0, -100%, 0);
 	}
 }
 
 
 
 /**
- * up
+ * up-part
  */
-@keyframes vc-slide-up-in {
+@keyframes vc-slide-up-part-in {
 	from {
 		opacity: 0;
-		transform: translateY(-15px);
+		transform: translate3d(0, 15px, 0);
 	}
 
 	to {
-		opacity: 1;
+		transform: translate3d(0, 0, 0);
+	}
+}
+
+@keyframes vc-slide-up-part-out {
+	from {
+		transform: translate3d(0, 0, 0);
+	}
+
+	to {
+		opacity: 0;
+		transform: translate3d(0, 15px, 0);
+	}
+}
+
+// up
+@keyframes vc-slide-up-in {
+	from {
+		visibility: visible;
+		transform: translate3d(0, 100%, 0);
+	}
+
+	to {
+		transform: translate3d(0, 0, 0);
 	}
 }
 
 @keyframes vc-slide-up-out {
 	from {
-		opacity: 1;
+		transform: translate3d(0, 0, 0);
 	}
 
 	to {
-		opacity: 0;
-		transform: translateY(-15px);
+		visibility: visible;
+		transform: translate3d(0, 100%, 0);
 	}
 }
 
