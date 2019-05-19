@@ -11,7 +11,6 @@
 			ref="wrapper"
 			:style="[styles, draggable && { top: 0 }]"
 			class="vc-modal__wrapper"
-			@resize="handleClose($event, maskClosable)"
 		>
 			<vc-transition-scale 
 				mode="part" 
@@ -462,7 +461,7 @@ export default {
 		border-top: 1px solid $border-line-color;
 		padding: 17px 24px;
 		text-align: right;
-		font-size: 0;
+		// font-size: 0;
 		@include when(confirm) {
 			border-top: none;
 			button {

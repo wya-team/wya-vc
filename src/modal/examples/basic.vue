@@ -14,6 +14,7 @@
 			@ok="handleOk"
 		>
 			啦啦啦啦
+			<template #footer>222</template>
 		</vc-modal>
 		<vc-modal 
 			v-model="visible2"

@@ -1,12 +1,17 @@
 <template>
 	<div style="padding: 100px">
-		<vc-button @click="handleModal">点击出现对话框</vc-button>
-		<vc-button @click="handleModal2">点击出现对话框,点击遮罩不能关闭</vc-button>
-		<vc-button @click="handleModal3">create-portal</vc-button>
-		<vc-button type="primary" @click="handleModal4">Modal.methods</vc-button>
-		<div style="width: 100%; height: 2000px"/>
-		<vc-modal 
+		<vcm-modal 
 			v-model="visible1"
+			:mask-closable="true"
+			title="标题1"
+			content="啦啦啦啦"
+			@close="handleClose"
+			@cancel="handleCancel"
+			@ok="handleOk"
+		/>
+		<vcm-modal 
+			v-model="visible2"
+			:mode="mode"
 			:mask-closable="true"
 			title="标题1"
 			@close="handleClose"
@@ -14,90 +19,40 @@
 			@ok="handleOk"
 		>
 			啦啦啦啦
-		</vc-modal>
-		<vc-modal 
-			v-model="visible2"
-			:mask="false"
-			:mask-closable="false"
-			:esc-closable="false"
-			scrollable
-			draggable
-			title="标题2"
-			ok-text="保存2"
-			cancel-text="关闭2"
-			@close="handleClose"
-			@cancel="handleCancel"
-			@ok="handleOk"
-		>
-			可以拖拽
-		</vc-modal>
+		</vcm-modal>
+		<div @click="handleClick1">normal: 基本</div>		
+		<div @click="handleClick2">normal: 自定义slot content</div>
+		<div @click="handleClick3">portal: 确定，取消</div>
+		<div @click="handleClick4">portal: 多个按钮</div>
+		<div @click="handleClick5">portal: operation</div>
 	</div>
 </template>
 <script>
-import Button from '../../button';
-import Modal from '../index';
-import { Portal } from './basic/portal';
+import MModal from '../index.m';
 import { VcInstance } from '../../vc/index';
 
 window.vc = VcInstance;
 export default {
 	name: "vc-tpl-basic",
 	components: {
-		'vc-modal': Modal,
-		'vc-button': Button
+		'vcm-modal': MModal,
 	},
 	data() {
 		return {
-			visible1: true,
+			mode: 'alert',
+			visible1: false,			
 			visible2: false,
-			visible3: false,
-			event: {},
 		};
 	},
 	computed: {
 		
 	},
 	methods: {
-		handleModal(e) {
+		handleClick1() {
 			this.visible1 = !this.visible1;
 		},
-		handleModal2(e) {
+		handleClick2() {
 			this.visible2 = !this.visible2;
-		},
-		handleModal3(e) {
-			Portal.popup({
-
-			}).then(() => {
-
-			}).catch(() => {
-
-			});
-		},
-		handleModal4() {
-			Modal.warning({
-				title: 'warning',
-				content: (h) => {
-					return h('input', {
-						type: 'textarea',
-					});
-				},
-				okText: '啦啦啦啦',
-				mask: true,
-				closeWithCancel: true,
-				// draggable: true,
-				onOk: (e, callback) => {
-					console.log('ok');
-					return new Promise((resolve, reject) => {
-						setTimeout(() => {
-							callback();
-							resolve();
-						}, 1000);
-					});
-				},
-				onCancel: () => {
-					console.log('cancel');
-				}
-			});
 		},
 		handleClose() {
 			console.log('关闭后都会触发');
@@ -105,14 +60,60 @@ export default {
 		handleCancel() {
 			console.log('点击取消这个按钮时回调');
 		},
-		handleOk(e, callback) {
-			return new Promise((resolve, reject) => {
-				setTimeout(() => {
-					callback();
-					resolve();
-				}, 1000);
-			}).catch((res) => {
-				console.log(res);
+		handleOk() {
+			console.log('点击确定这个按钮时回调');
+		},
+		handleClick3() {
+			MModal.alert({
+				title: '标题1',
+				content: '啦啦',
+				onOk: () => {
+					console.log('点击确定这个按钮时回调');
+				},
+				onCancel: () => {
+					console.log('点击确定这个按钮时回调');
+				},
+				onClose: () => {
+					console.log('关闭后都会触发');
+				}
+			});
+		},
+		handleClick4() {
+			MModal.alert({
+				title: '标题1',
+				content: '啦啦',
+				actions: [
+					{
+						text: '1',
+						onPress: () => console.log(`点击了第1个按钮`)
+					},
+					{
+						text: '2',
+						onPress: () => console.log(`点击了第2个按钮`)
+					},
+					{
+						text: '3',
+						onPress: () => console.log(`点击了第3个按钮`)
+					}
+				]
+			});
+		},
+		handleClick5() {
+			MModal.operation({
+				actions: [
+					{
+						text: '1',
+						onPress: () => console.log(`点击了第1个按钮`)
+					},
+					{
+						text: '2',
+						onPress: () => console.log(`点击了第2个按钮`)
+					},
+					{
+						text: '3',
+						onPress: () => console.log(`点击了第3个按钮`)
+					}
+				]
 			});
 		}
 	}
