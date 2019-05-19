@@ -34,7 +34,11 @@
 						</div>
 
 						<!-- confirm -->
-						<div v-if="footer || $slots.footer" :class="{'is-column': curentActions.length >= 3}" class="vcm-modal__footer">
+						<div 
+							v-if="footer || $slots.footer" 
+							:class="footerClasses" 
+							class="vcm-modal__footer"
+						>
 							<slot name="footer">
 								<div 
 									v-for="(item, index) in curentActions"
@@ -123,11 +127,11 @@ export default {
 		},
 		title: String,
 		okText: {
-			type: String,
+			type: String | Boolean,
 			default: '确定'
 		},
 		cancelText: {
-			type: String,
+			type: String | Boolean,
 			default: '取消'
 		},
 		styles: {
@@ -166,6 +170,13 @@ export default {
 					onPress: this.handleOk
 				}
 			];
+		},
+		footerClasses() {
+			let len = this.curentActions.filter(i => i.text).length;
+			return { 
+				'is-column': len >= 3,	
+				'is-alone': len === 1,
+			};
 		}
 	},
 	watch: {
@@ -323,6 +334,16 @@ export default {
 				}
 				&:not(:first-child) {
 					@include commonBorder1PX(top, #ddd);
+				}
+			}
+		}
+		@include when(alone) {
+			@include element(button) { 
+				color: #108ee9;
+				&:first-child {
+					&:before, &:after {
+						border: none;
+					}
 				}
 			}
 		}

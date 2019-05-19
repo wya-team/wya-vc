@@ -20,11 +20,23 @@
 		>
 			啦啦啦啦
 		</vcm-modal>
+		<vcm-modal 
+			v-model="visible3"
+			:mode="mode"
+			:mask-closable="true"
+			:cancel-text="false"
+			title="标题1"
+			content="啦啦啦啦"
+			@close="handleClose"
+			@cancel="handleCancel"
+			@ok="handleOk"
+		/>
 		<div @click="handleClick1">normal: 基本</div>		
 		<div @click="handleClick2">normal: 自定义slot content</div>
-		<div @click="handleClick3">portal: 确定，取消</div>
-		<div @click="handleClick4">portal: 多个按钮</div>
-		<div @click="handleClick5">portal: operation</div>
+		<div @click="handleClick3">normal: 1个按钮</div>
+		<div @click="handleClick4">portal: 确定，取消</div>
+		<div @click="handleClick5">portal: 多个按钮</div>
+		<div @click="handleClick6">portal: operation</div>
 	</div>
 </template>
 <script>
@@ -42,18 +54,13 @@ export default {
 			mode: 'alert',
 			visible1: false,			
 			visible2: false,
+			visible3: false,
 		};
 	},
 	computed: {
 		
 	},
 	methods: {
-		handleClick1() {
-			this.visible1 = !this.visible1;
-		},
-		handleClick2() {
-			this.visible2 = !this.visible2;
-		},
 		handleClose() {
 			console.log('关闭后都会触发');
 		},
@@ -63,7 +70,16 @@ export default {
 		handleOk() {
 			console.log('点击确定这个按钮时回调');
 		},
+		handleClick1() {
+			this.visible1 = !this.visible1;
+		},
+		handleClick2() {
+			this.visible2 = !this.visible2;
+		},
 		handleClick3() {
+			this.visible3 = !this.visible3;
+		},
+		handleClick4() {
 			MModal.alert({
 				title: '标题1',
 				content: '啦啦',
@@ -78,7 +94,7 @@ export default {
 				}
 			});
 		},
-		handleClick4() {
+		handleClick5() {
 			MModal.alert({
 				title: '标题1',
 				content: '啦啦',
@@ -98,7 +114,7 @@ export default {
 				]
 			});
 		},
-		handleClick5() {
+		handleClick6() {
 			MModal.operation({
 				actions: [
 					{
