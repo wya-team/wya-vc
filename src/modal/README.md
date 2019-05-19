@@ -52,7 +52,8 @@ footer | 自定义页脚内容
 ---|---|---|---
 resetOrgin | 重新设置原始坐标, 关系到动画 | `Function` | -
 
-```js
+```javascript
+
 Modal.info({});
 
 Modal.success({});
@@ -61,7 +62,12 @@ Modal.error({});
 
 Modal.warning({});
 
+MModal.alert({});
+
+MModal.operation({});
+
 ```
+
 > 方法同上属性值, 事件使用`onOk`, `onCancel`
 
 ## TODO
@@ -69,10 +75,10 @@ Modal.warning({});
 
 ## 基础用法
 
-```html
+```vue
 <template>
 	<div>
-		<div @click="showModal">点击触发</div>
+		<div @click="handleShow">点击触发</div>
 		<vc-modal 
 			v-model="visible"
 			title="标题2"
@@ -99,7 +105,7 @@ Modal.warning({});
 			}
 		},
 		methods: {
-			showModal(e) {
+			handleShow(e) {
 				this.visible = true;
 			},
 			handleConfirm() {
@@ -133,7 +139,7 @@ Modal.warning({});
 </script>
 
 <!--自定义header和footer -->
- <vc-modal>
+<vc-modal>
 	<div slot="header">我是标题</div>
 	<div slot="footer">
 		<button>取消</button>

@@ -90,7 +90,7 @@ export default {
 	},
 	props: {
 		/**
-		 * 计划
+		 * TODO
 		 */
 		mode: {
 			type: String,
@@ -110,10 +110,6 @@ export default {
 			default: false
 		},
 		mask: {
-			type: Boolean,
-			default: true,
-		},
-		closable: {
 			type: Boolean,
 			default: true,
 		},
