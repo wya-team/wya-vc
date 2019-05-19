@@ -98,9 +98,6 @@ export default {
 			validator: v => /(info|success|error|warning)/.test(v),
 		},
 		content: [String, Function],
-		render: {
-			type: Function
-		},
 		size: {
 			type: String,
 			validator: v => /(small|medium|large)/.test(v),

@@ -101,10 +101,7 @@ export default {
 			validator: v => /(alert|operation)/.test(v),
 			default: 'alert'
 		},
-		content: [String, Function],
-		render: {
-			type: Function
-		},
+		content: [String, Function, Boolean], // false 不显示头部
 		width: {
 			type: Number,
 			default: 275
@@ -125,7 +122,7 @@ export default {
 			type: Boolean,
 			default: true // 如果关闭, cancel只能是取消的按钮
 		},
-		title: String,
+		title: String | Boolean, // false 不显示头部
 		okText: {
 			type: String | Boolean,
 			default: '确定'
