@@ -158,17 +158,17 @@ $block: vc-transition-zoom;
 @keyframes vc-zoom-center-in {
 	from {
 		opacity: 0;
-		transform: scale3d(0, 0, 0);
+		transform: scale(0, 0);
 	}
 
 	to {
-		transform: scale3d(1, 1, 1);
+		transform: scale(1, 1);
 	}
 }
 
 @keyframes vc-zoom-center-out {
 	from {
-		transform: scale3d(1, 1, 1);
+		transform: scale(1, 1);
 	}
 
 	to {
