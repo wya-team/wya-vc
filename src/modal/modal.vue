@@ -41,9 +41,7 @@
 						</slot>
 					</div>
 					<div :class="{ 'is-confirm' : mode }" class="vc-modal__content">
-						<p 
-							v-if="typeof content === 'string'"
-						>{{ content }}</p>
+						<p v-if="typeof content === 'string'" v-html="content" />
 						<vc-row 
 							v-else-if="typeof content === 'function'" 
 							:render="content" 
