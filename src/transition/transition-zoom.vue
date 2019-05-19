@@ -21,7 +21,7 @@ export default {
 		mode: {
 			type: String,
 			default: 'x',
-			validator: v => /(x|y|center|none)/.test(v)
+			validator: v => /^(x|y|center|none)$/.test(v)
 		},
 		styles: {
 			type: Object,
@@ -49,10 +49,10 @@ $block: vc-transition-zoom;
 
 @include block($block) {
 	@include when(in) {
-		animation-timing-function: $ease-out-circ;
+		animation-timing-function: $ease-out-quint; // 弹性
 	}
 	@include when(out) {
-		animation-timing-function: $ease-in-out-circ;
+		animation-timing-function: $ease-in-quint; // 弹性
 	}
 	/**
 	 * transition-group下删除元素, 其他元素位置变化动画
@@ -81,6 +81,17 @@ $block: vc-transition-zoom;
 @include zoom(x);
 @include zoom(y);
 @include zoom(center);
+
+@include block($block) {
+	@include when(center) {
+		@include when(in) {
+			animation-timing-function: cubic-bezier(.18, .89, .32, 1.28); // 弹性
+		}
+		@include when(out) {
+			animation-timing-function: cubic-bezier(.55, 0, .55, .2); // 弹性
+		}
+	}
+}
 
 /**
  * x
@@ -147,26 +158,23 @@ $block: vc-transition-zoom;
 @keyframes vc-zoom-center-in {
 	from {
 		opacity: 0;
-		transform: scale3d(.3, .3, .3);
+		transform: scale3d(0, 0, 0);
 	}
 
-	50% {
-		opacity: 1;
+	to {
+		transform: scale3d(1, 1, 1);
 	}
 }
 
 @keyframes vc-zoom-center-out {
 	from {
-		opacity: 1;
-	}
-
-	50% {
-		opacity: 0;
-		transform: scale3d(.3, .3, .3);
+		transform: scale3d(1, 1, 1);
 	}
 
 	to {
+		transform: scale(0, 0);
 		opacity: 0;
 	}
 }
+
 </style>

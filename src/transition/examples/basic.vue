@@ -102,8 +102,8 @@ export default {
 				'zoom',
 				'collapse'
 			],
-			slideModeName: 'left',
-			slideModeOptions: ['left', 'right', 'down', 'up'],
+			slideModeName: 'left-part',
+			slideModeOptions: ['left-part', 'right-part', 'down-part', 'up-part', 'left', 'right', 'down', 'up'],
 			zoomModeName: 'x',
 			zoomModeOptions: ['x', 'y', 'center'],
 
