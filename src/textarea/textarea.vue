@@ -16,6 +16,7 @@
 		:rows="rows"
 		:number="number"
 		:autofocus="autofocus"
+		:autosize="autosize"
 		:autocomplete="autocomplete"
 		:element-id="elementId"
 		:spellcheck="spellcheck"
