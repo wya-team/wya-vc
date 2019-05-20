@@ -13,6 +13,7 @@
 				:disabled="disabled"
 			/>
 		</vc-form-item>
+		<vc-editor-view :content="formValidate.value" />
 		<vc-button @click="handleSubmit">提交</vc-button>
 	</vc-form >
 </template>
@@ -20,7 +21,7 @@
 import Form from '../../form';
 import Input from '../../input';
 import Button from '../../button';
-import Editor from '../editor';
+import Editor from '../index';
 import { VcInstance } from '../../vc/index';
 
 VcInstance.init({
@@ -35,6 +36,7 @@ export default {
 	name: "vc-editor-basic",
 	components: {
 		"vc-editor": Editor,
+		"vc-editor-view": Editor.View,
 		'vc-button': Button,
 		'vc-form': Form,
 		'vc-form-item': Form.Item,

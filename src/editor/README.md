@@ -2,6 +2,8 @@
 ## 功能
 富文本
 
+- Editor.View: 富文本预览组件
+
 ## API
 
 #### 属性
@@ -29,11 +31,11 @@ disabled | 富文本是否不可编辑 | `Boolean` | false
 <template>
 	<vc-editor 
 		ref="editor"
+		v-model="value"
 		:options="options"
 		:disabled="disabled"
-		value="我是富文本的内容，可以是text，也可以是html"
-		@change="handleChange"
 	/>
+	<vc-editor-view :content="value" />
 </template>
 <script>
 import Editor from '../editor';
@@ -41,18 +43,16 @@ import Editor from '../editor';
 export default {
 	name: "vc-editor-basic",
 	components: {
-		"vc-editor": Editor
+		"vc-editor": Editor,
+		"vc-editor-view": Editor.View,
 	},
 	data() {
 		return {
 			options: {
-				// modules: {
-				// 	toolbar: [
-				// 		['link', 'image', 'video']
-				// 	],
-				// },
+				toolbar: '#toolbar',
 			},
-			disabled: false
+			disabled: false,
+			value: ''
 		};
 	},
 	computed: {
@@ -62,9 +62,7 @@ export default {
 		console.log(this.$refs.editor);
 	},
 	methods: {
-		handleChange(arg) {
-			console.log(arg);
-		}
+		
 	}
 };
 </script>
