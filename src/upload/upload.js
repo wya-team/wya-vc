@@ -1,4 +1,5 @@
 import { ajax } from '@wya/http';
+import { Device } from '@wya/utils';
 import { attrAccept, initItem } from './utils';
 import { getUid } from '../utils/utils';
 import { VcInstance, VcError } from '../vc/index';
@@ -391,7 +392,7 @@ export default {
 		};
 
 		// 上传
-		const ele = h('input', {
+		let inputProps = {
 			attrs: {
 				type: 'file',
 				accept,
@@ -406,6 +407,13 @@ export default {
 			},
 			key: this.uid,
 			ref: 'input'
+		};
+		// 解决安卓手机上传图片没有拍照选项
+		if (Device.android) {
+			inputProps.capture = true;
+		}
+		const ele = h('input', {
+			...inputProps
 		});
 
 		return h(this.tag, {
