@@ -13,7 +13,7 @@
 			<vc-button type="primary">点我</vc-button>
 		</vc-popconfirm>
 
-		<vc-button @click="handleClick">外部点击</vc-button>
+		<vc-button @click="handleVisible">外部点击</vc-button>
 		<vc-button @click="handleTrigger">{{ trigger }}</vc-button>
 	</div>
 </template>
@@ -37,11 +37,23 @@ export default {
 		
 	},
 	methods: {
-		handleClick() {
-			this.visible = !this.visible;
+		/**
+		 * 事件冒泡上来了
+		 */
+		handleVisible() {
+			/**
+			 * click模式下，this.visible会一直拿到false
+			 */
+			if (!this.wait) {
+				this.visible = !this.visible;
+			}
 		},
 		handleClose() {
 			console.log('关闭后都会触发');
+			this.wait = 1;
+			this.timer = setTimeout(() => {
+				this.wait = 0;
+			}, 200);
 		},
 		handleCancel() {
 			console.log('点击取消这个按钮时回调');
