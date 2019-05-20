@@ -1,7 +1,7 @@
 <template>	
 	<div class="vc-progress">
-		<div v-if="type === 'line'" :class="currentStatus" class="__line">
-			<div class="__wrapper">
+		<div v-if="type === 'line'" :class="currentStatus" class="vc-progress__line">
+			<div :class="{'__info': showInfo}" class="__wrapper">
 				<div class="__box round">
 					<div 
 						:style="innerStyle"
@@ -10,7 +10,11 @@
 				</div>
 			</div>
 			<div v-if="showInfo" class="__percent">
-				<vc-icon v-if="isStatus" :type="currentStatus"/>
+				<vc-icon 
+					v-if="isStatus" 
+					:type="currentStatus"
+					:class="`__${currentStatus}`"
+				/>
 				<span v-else>{{ percent }}%</span>
 			</div>
 		</div>
@@ -145,15 +149,19 @@ export default {
 	}
 };
 </script>
-<style lang="scss" scoped>
-.vc-progress{
-	.__line{
+<style lang="scss">
+@import '../style/index.scss';
+
+@include block(vc-progress) {
+	@include element(line) {
 		.__wrapper{
 			width: 100%;
-			margin-right: -30px;
-			padding-right: 33px;
 			display: inline-block;
 			vertical-align: middle;
+			&.__info {
+				margin-right: -30px;
+				padding-right: 33px;
+			}
 			.__box{
 				width: 100%;
 				background-color: #f3f3f3;
@@ -165,26 +173,27 @@ export default {
 					position: relative;
 					transition: width .5s cubic-bezier(.075,.82,.165,1);
 					border-radius: 8px;
-					background-color: #1890ff; 
+					background-color: #5495f6; 
 				}
 			}
 		}
 		.__percent{
 			display: inline-block;
 			vertical-align: middle;
+			line-height: 1;
 		}
 		&.success{
 			.__wrapper{
 				.__box{
 					.__inner{
-						background-color: #19be6b;
+						background-color: #52c41a;
 					}
 				}
 			}
 			.__percent{
-				.wyaicon{
+				.__success{
 					font-size: 12px;
-					color: #19be6b;
+					color: #52c41a;
 				}
 			}
 		}
@@ -192,14 +201,14 @@ export default {
 			.__wrapper{
 				.__box{
 					.__inner{
-						background-color: #ed4014;
+						background-color: #f5222d;
 					}
 				}
 			}
 			.__percent{
-				.wyaicon{
+				.__error{
 					font-size: 12px;
-					color: #ed4014;
+					color: #f5222d;
 				}
 			}
 		}
