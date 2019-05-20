@@ -1,25 +1,29 @@
 <template>	
 	<div class="vc-progress">
-		<div v-if="type === 'line'" :class="currentStatus" class="vc-progress__line">
-			<div :class="{'__info': showInfo}" class="__wrapper">
-				<div class="__box round">
+		<div 
+			v-if="type === 'line'" 
+			class="vc-progress-line"
+		>
+			<div :class="{'vc-progress-line__info': showInfo}" class="vc-progress-line__wrapper">
+				<div class="vc-progress-line__box round">
 					<div 
 						:style="innerStyle"
-						class="__inner"
+						:class="`vc-progress-line__inner--${currentStatus}`" 
+						class="vc-progress-line__inner"
 					/>
 				</div>
 			</div>
-			<div v-if="showInfo" class="__percent">
+			<div v-if="showInfo" class="vc-progress-line__percent">
 				<vc-icon 
 					v-if="isStatus" 
 					:type="currentStatus"
-					:class="`__${currentStatus}`"
+					:class="`vc-progress-line__icon--${currentStatus}`"
 				/>
 				<span v-else>{{ percent }}%</span>
 			</div>
 		</div>
-		<div v-else class="__circle">
-			<div :style="circleBoxSize" class="__box">
+		<div v-else class="vc-progress-circle">
+			<div :style="circleBoxSize" class="vc-progress-circle__box">
 				<svg viewBox="0 0 100 100">
 					<path 
 						:d="pathString"
@@ -36,7 +40,7 @@
 						fill-opacity="0" 
 					/>
 				</svg>
-				<div class="__inner">
+				<div class="vc-progress-circles__inner">
 					<slot>
 						<span>{{ percent }}%</span>
 					</slot>
@@ -153,69 +157,32 @@ export default {
 @import '../style/index.scss';
 
 @include block(vc-progress) {
-	@include element(line) {
-		.__wrapper{
+	@include block(vc-progress-line) {
+		@include element(wrapper) {
 			width: 100%;
 			display: inline-block;
 			vertical-align: middle;
-			&.__info {
-				margin-right: -30px;
-				padding-right: 33px;
-			}
-			.__box{
+			@include element(box) {
 				width: 100%;
 				background-color: #f3f3f3;
 				overflow: hidden;
 				&.round{
 					border-radius: 8px;	
 				}
-				.__inner{
+				@include element(inner) {
 					position: relative;
 					transition: width .5s cubic-bezier(.075,.82,.165,1);
 					border-radius: 8px;
 					background-color: #5495f6; 
-				}
-			}
-		}
-		.__percent{
-			display: inline-block;
-			vertical-align: middle;
-			line-height: 1;
-		}
-		&.success{
-			.__wrapper{
-				.__box{
-					.__inner{
+					@include modifier(success) {
 						background-color: #52c41a;
+						
 					}
-				}
-			}
-			.__percent{
-				.__success{
-					font-size: 12px;
-					color: #52c41a;
-				}
-			}
-		}
-		&.error{
-			.__wrapper{
-				.__box{
-					.__inner{
+					@include modifier(error) {
 						background-color: #f5222d;
+						
 					}
-				}
-			}
-			.__percent{
-				.__error{
-					font-size: 12px;
-					color: #f5222d;
-				}
-			}
-		}
-		&.active{
-			.__wrapper{
-				.__box{
-					.__inner{
+					@include modifier(active) {
 						&::before{
 							content: '';
 							position: absolute;
@@ -230,12 +197,31 @@ export default {
 				}
 			}
 		}
+		@include element(info) {
+			margin-right: -30px;
+			padding-right: 33px;
+		}
+		@include element(percent) {
+			display: inline-block;
+			vertical-align: middle;
+			line-height: 1;
+			@include element(icon) {
+				@include modifier(success) {
+					font-size: 12px;
+					color: #52c41a;
+				}
+				@include modifier(error) {
+					font-size: 12px;
+					color: #f5222d;
+				}
+			}
+		}
 	}
-	.__circle{
-		.__box{
+	@include block(vc-progress-circle) {
+		@include element(box) {
 			width: 120px;
 			height: 120px;
-			.__inner{
+			@include element(inner){
 				position: absolute;
 				top: 50%;
 				left: 50%;
@@ -244,22 +230,22 @@ export default {
 		}
 	}
 
-@keyframes handleWidth{
-	0%{
-		width: 0;
-		opacity: 0;
+	@keyframes handleWidth{
+		0%{
+			width: 0;
+			opacity: 0;
+		}
+		40%{
+			opacity: .2;
+		}
+		80%{
+			width: 100%;
+			opacity: 0;
+		}
+		100%{
+			width: 100%;
+			opacity: 0;
+		}
 	}
-	40%{
-		opacity: .2;
-	}
-	80%{
-		width: 100%;
-		opacity: 0;
-	}
-	100%{
-		width: 100%;
-		opacity: 0;
-	}
-}
 }
 </style>
