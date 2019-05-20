@@ -26,10 +26,10 @@ import BasicMixin from './basic-mixin';
 
 export default {
 	name: 'vc-switch',
-	minins: [BasicMixin],
 	components: {
 		'vc-spin': Spin
-	}
+	},
+	mixins: [BasicMixin],
 };
 </script>
 <style lang="scss">
