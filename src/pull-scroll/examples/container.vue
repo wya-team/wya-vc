@@ -5,6 +5,7 @@
 		:data-source="dataSource"
 		:current="current"
 		:total="total"
+		wrapper
 	>
 		<template #header>
 			<div>这是一个容器下的滚动</div>
