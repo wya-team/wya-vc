@@ -1,5 +1,5 @@
 <template>
-	<div :style="{ height: h }" class="vc-pull-scroll">
+	<div :style="[basicStyle]" class="vc-pull-scroll">
 		<vc-status
 			v-if="reverse"
 			:style="style"
@@ -71,7 +71,7 @@ export default {
 	props: {
 		height: {
 			type: Number | String,
-			default: 'auto',
+			default: window.innerHeight,
 		},
 		pull: {
 			type: Boolean,
@@ -80,6 +80,10 @@ export default {
 		scroll: {
 			type: Boolean,
 			default: true
+		},
+		wrapper: {
+			type: Boolean,
+			default: false,
 		},
 		...pick(Core.props, ['scaleY', 'pauseY', 'reverse', 'dataSource', 'show', 'loadData', 'current', 'total']),
 		...pick(Status.props, ['scrollText', 'pullText'])
@@ -97,13 +101,14 @@ export default {
 		};
 	},
 	computed: {
-		h() {
-			return typeof this.height === 'number' 
-				? `${this.height}px` 
-				: this.height;
+		basicStyle() {
+			return { 
+				minHeight: `${this.height}px`, 
+				height: (this.wrapper && this.height) ? `${this.height}px` : "auto" 
+			};
 		},
 		auto() {
-			return this.height === 'auto';
+			return this.basicStyle.height === 'auto';
 		},
 		style() {
 			return {
