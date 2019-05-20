@@ -142,7 +142,13 @@ export default {
 		/**
 		 * 兼容portal设计, 实现Promise方式
 		 */
-		actions: Array
+		actions: Array,
+		onOk: {
+			type: Function
+		},
+		onCancel: {
+			type: Function
+		}
 	},
 	data() {
 		return {
