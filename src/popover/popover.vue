@@ -130,10 +130,12 @@ export default {
 		handleChange(e = {}, v) {
 			this.isHover && this.timer && clearTimeout(this.timer);
 			let path = e.path || (e.composedPath && e.composedPath()) || [];
+
 			let isPopArea = path.some(item => new RegExp(this.popoverId).test(item.className));
 
 			if (!this.portal && isPopArea) return;
-			// doc click
+
+			// document click
 			if (v === undefined) {
 				if (!isPopArea && !this.$el.contains(e.target)) {
 					v = false;

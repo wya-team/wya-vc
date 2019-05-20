@@ -18,6 +18,7 @@
 
 					<!-- 高级嵌套 -->
 					<vc-dropdown 
+						:portal="false"
 						tag="li" 
 						class="vc-dropdown-item" 
 						placement="right" 
@@ -38,6 +39,7 @@
 					<!-- 高级嵌套需要v-model -->
 					<vc-popover
 						v-model="visiblePopover"
+						:portal="false"
 						trigger="hover" 
 						tag="li" 
 						class="vc-dropdown-item"
@@ -62,8 +64,8 @@
 			</template>
 		</vc-dropdown>
 
-		<vc-button style="margin-left: 100px" @click="handleVisible">点我</vc-button>
-		<vc-button style="margin-left: 100px" @click="handleTrigger">{{ trigger }}</vc-button>
+		<vc-button style="margin-left: 100px" @click="handleVisible">visible: {{ visible }}</vc-button>
+		<vc-button style="margin-left: 100px" @click="handleTrigger">trigger {{ trigger }}</vc-button>
 	</div>
 </template>
 <script>
@@ -84,7 +86,7 @@ export default {
 		return {
 			visible: false,
 			visiblePopover: false,
-			trigger: 'click'
+			trigger: 'hover'
 		};
 	},
 	computed: {
@@ -105,17 +107,28 @@ export default {
 			console.log('visible-change', arguments[0]);
 		},
 
+		/**
+		 * 事件冒泡上来了
+		 */
 		handleVisible() {
-			this.visible = !this.visible;
+			/**
+			 * click模式下，this.visible会一直拿到false
+			 */
+			if (!this.wait) {
+				this.visible = !this.visible;
+			}
 		},
 
 		handleClose() {
 			this.visible = false;
-			console.log(this.visible);
 		},
 
 		handleCloseCb() {
 			console.log('cb');
+			this.wait = 1;
+			this.timer = setTimeout(() => {
+				this.wait = 0;
+			}, 200);
 		},
 		handleTrigger() {
 			this.trigger = this.trigger === 'click' ? 'hover' : 'click';

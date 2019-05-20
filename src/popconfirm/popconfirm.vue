@@ -114,11 +114,11 @@ export default {
 		visible: {
 			immediate: true,
 			handler(v, old) {
-				v != this.isActive && (this.isActive = v);
+				this.isActive = v;
 			}
 		},
 		isActive(v) {
-			v != this.isActive && this.$emit('visible-change', v);
+			this.$emit('visible-change', v);
 		}
 	},
 	methods: {
