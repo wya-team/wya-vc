@@ -9,7 +9,13 @@
 			:type="type"
 			class="vcm-input-search__content"
 			v-on="hooks"
-		/>
+		>
+			<template #prepend>
+				<slot name="prepend" >
+					<vcm-icon type="search" class="vcm-input-search__icon"/>
+				</slot>
+			</template>
+		</vcm-input>
 		<!-- TODO, 待优化, isFocus隐藏，造成点击事件无效 -->
 		<div 
 			v-if="$refs.input && $refs.input.isFocus" 
@@ -62,11 +68,17 @@ $block: vcm-input-search;
 	padding: 0 8px;
 	background: #efeff4;
 	@include element(content) {
-		border-radius: 3px;
+		border-radius: 32px;
+		height: 32px;
+		line-height: 2;
 		background: white;
 		overflow: hidden;
 		input {
-			text-align: center;
+			// text-align: center;
+		}
+		@include element(icon){
+			font-size: 15px;
+			margin-left: 14px;
 		}
 		@include when(focus) {
 			input {
@@ -78,8 +90,8 @@ $block: vcm-input-search;
 		padding-left: 8px;
 		height: 44px;
 		line-height: 44px;
-		font-size: 16px;
-		color: #108ee9;
+		font-size: 15px;
+		color: #333;
 		text-align: right;
 		white-space: nowrap;
 	}
