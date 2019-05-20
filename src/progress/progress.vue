@@ -2,28 +2,29 @@
 	<div class="vc-progress">
 		<div 
 			v-if="type === 'line'" 
-			class="vc-progress-line"
+			class="vc-progress__line is-line"
 		>
-			<div :class="{'vc-progress-line__info': showInfo}" class="vc-progress-line__wrapper">
-				<div class="vc-progress-line__box round">
+			<div :class="{'vc-progress__info': showInfo}" class="vc-progress__wrapper">
+				<div class="vc-progress__box">
 					<div 
 						:style="innerStyle"
-						:class="`vc-progress-line__inner--${currentStatus}`" 
-						class="vc-progress-line__inner"
+						:class="`is-${currentStatus}`" 
+						class="vc-progress__inner"
 					/>
 				</div>
 			</div>
-			<div v-if="showInfo" class="vc-progress-line__percent">
+			<div v-if="showInfo" class="vc-progress__percent">
 				<vc-icon 
-					v-if="isStatus" 
-					:type="currentStatus"
-					:class="`vc-progress-line__icon--${currentStatus}`"
+					v-if="isStatus"
+					:type="currentStatus" 
+					:class="`is-${currentStatus}`"
+					class="vc-progress__icon"
 				/>
 				<span v-else>{{ percent }}%</span>
 			</div>
 		</div>
-		<div v-else class="vc-progress-circle">
-			<div :style="circleBoxSize" class="vc-progress-circle__box">
+		<div v-else class="vc-progress__circle is-circle">
+			<div :style="circleBoxSize" class="vc-progress__box">
 				<svg viewBox="0 0 100 100">
 					<path 
 						:d="pathString"
@@ -40,7 +41,7 @@
 						fill-opacity="0" 
 					/>
 				</svg>
-				<div class="vc-progress-circles__inner">
+				<div class="vc-progress__inner">
 					<slot>
 						<span>{{ percent }}%</span>
 					</slot>
@@ -157,78 +158,81 @@ export default {
 @import '../style/index.scss';
 
 @include block(vc-progress) {
-	@include block(vc-progress-line) {
-		@include element(wrapper) {
-			width: 100%;
-			display: inline-block;
-			vertical-align: middle;
-			@include element(box) {
+	@include element(line) {
+		@include when(line) {
+			@include element(wrapper) {
 				width: 100%;
-				background-color: #f3f3f3;
-				overflow: hidden;
-				&.round{
+				display: inline-block;
+				vertical-align: middle;
+				@include element(box) {
+					width: 100%;
+					background-color: #f3f3f3;
+					overflow: hidden;
 					border-radius: 8px;	
-				}
-				@include element(inner) {
-					position: relative;
-					transition: width .5s cubic-bezier(.075,.82,.165,1);
-					border-radius: 8px;
-					background-color: #5495f6; 
-					@include modifier(success) {
-						background-color: #52c41a;
-						
-					}
-					@include modifier(error) {
-						background-color: #f5222d;
-						
-					}
-					@include modifier(active) {
-						&::before{
-							content: '';
-							position: absolute;
-							left: 0;
-							top: 0;
-							height: 100%;
-							background-color: #fff;
-							animation: handleWidth 2s infinite;
-							border-radius: 8px;
+					@include element(inner) {
+						position: relative;
+						transition: width .5s cubic-bezier(.075,.82,.165,1);
+						border-radius: 8px;
+						background-color: #5495f6; 
+						@include when(success) {
+							background-color: #52c41a;
+							
+						}
+						@include when(error) {
+							background-color: #f5222d;
+							
+						}
+						@include when(active) {
+							&::before{
+								content: '';
+								position: absolute;
+								left: 0;
+								top: 0;
+								height: 100%;
+								background-color: #fff;
+								animation: handleWidth 2s infinite;
+								border-radius: 8px;
+							}
 						}
 					}
 				}
 			}
-		}
-		@include element(info) {
-			margin-right: -30px;
-			padding-right: 33px;
-		}
-		@include element(percent) {
-			display: inline-block;
-			vertical-align: middle;
-			line-height: 1;
-			@include element(icon) {
-				@include modifier(success) {
-					font-size: 12px;
-					color: #52c41a;
-				}
-				@include modifier(error) {
-					font-size: 12px;
-					color: #f5222d;
+			@include element(info) {
+				margin-right: -30px;
+				padding-right: 33px;
+			}
+			@include element(percent) {
+				display: inline-block;
+				vertical-align: middle;
+				line-height: 1;
+				@include element(icon) {
+					@include when(success) {
+						font-size: 12px;
+						color: #52c41a;
+					}
+					@include when(error) {
+						font-size: 12px;
+						color: #f5222d;
+					}
 				}
 			}
 		}
 	}
-	@include block(vc-progress-circle) {
-		@include element(box) {
-			width: 120px;
-			height: 120px;
-			@include element(inner){
-				position: absolute;
-				top: 50%;
-				left: 50%;
-				transform: translate(-50%, -50%);
+	@include element(circle) {
+		@include when(circle) {
+			@include element(box) {
+				width: 120px;
+				height: 120px;
+				@include element(inner){
+					position: absolute;
+					top: 50%;
+					left: 50%;
+					transform: translate(-50%, -50%);
+				}
 			}
 		}
 	}
+	
 
 	@keyframes handleWidth{
 		0%{
