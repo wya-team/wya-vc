@@ -1,10 +1,10 @@
 <template>
-	<component :is="tag" class="vcp-imgs-picker">
+	<component :is="tag" class="vcm-imgs-picker">
 		<div 
 			v-for="(item, index) in data" 
 			:key="typeof item === 'object' ? item.uid : item"
-			:class="{'vcp-imgs-picker__error': item.status == 0, imgClassName, boxClassName}"
-			class="vcp-imgs-picker__item vcp-imgs-picker__box"
+			:class="{'vcm-imgs-picker__error': item.status == 0, imgClassName, boxClassName}"
+			class="vcm-imgs-picker__item vcm-imgs-picker__box"
 		>
 			<div
 				v-if="typeof item !== 'object'"
@@ -13,35 +13,26 @@
 				@click="handlePreview($event, index)"
 			/>
 			<div v-else :class="imgClasses">
-				<vc-progress
-					v-if="item.percent && item.percent != 100" 
-					:percent="item.percent"
-					:show-info="false"
-					status="normal"
-					style="width: 100%;padding: 0 5px"
-				/>
-				<p v-else-if="!item.url && item.percent == 100" style="line-height: 1; padding: 5px">
-					服务器正在接收...
-				</p>
+				<div v-if="typeof item.status === 'undefined'">xx</div>
 				<div v-else-if="item.status == 0" style="padding: 5px">
 					上传失败
 				</div>
 			</div>
 			<!-- 上传失败或者成功后显示 -->
-			<vc-icon 
-				v-if="!disabled && (typeof item !== 'object' || item.status == 0)" 
-				type="clear" 
-				class="vcp-imgs-picker__delete"
-				@click="handleDel(item)" 
-			/>
-			<div class="vcp-imgs-picker__delete--bg"/>
+			<div class="vcm-imgs-picker__delete">
+				<vc-icon 
+					v-if="!disabled && (typeof item !== 'object' || item.status == 0)" 
+					type="close" 
+					@click="handleDel(item)" 
+				/>
+			</div>
 		</div>
 		<vc-upload 
 			v-show="!disabled && (data.length < max || max === 0)"
 			v-bind="uploadOpts"
 			:accept="accept"
 			:class="{uploadClassName: true, boxClassName: true}"
-			class="vcp-imgs-picker__upload vcp-imgs-picker__box"
+			class="vcm-imgs-picker__upload vcm-imgs-picker__box"
 			@file-start="handleFileStart"
 			@file-progress="handleFileProgress"
 			@file-success="handleFileSuccess"
@@ -49,17 +40,16 @@
 			@error="$emit('error', arguments[0])"
 			@complete="handleFileComplete"
 		>
-			<vc-icon type="plus" style="font-size: 14px; margin-bottom: 8px" />
-			<span>上传</span>
+			<vc-icon type="plus" style="font-size: 30px" />
 		</vc-upload>
 	</component>
 </template>
 
 <script>
-import BasicMixin from './basic-mixin';
-import Upload from '../upload/index';
-import Icon from '../icon/index';
-import Progress from '../progress/index';
+import BasicMixin from '../basic-mixin';
+import Upload from '../../upload/index';
+import Icon from '../../icon/index';
+import Progress from '../../progress/index';
 
 export default {
 	name: "vc-imgs-picker",
@@ -71,33 +61,33 @@ export default {
 	mixins: [BasicMixin],
 	props: {
 		/**
-		 * 允许的图片类型
+		 * 允许的图片类型, imgage/* 避免Android端失败
 		 */
 		accept: {
 			type: String,
-			default: 'image/gif,image/jpeg,image/jpg,image/png' // 不默认为image/*是因为在Webkit浏览器下回响应很慢
+			default: 'image/*'
 		},
 	},
 	computed: {
 		imgClasses() {
-			return `vcp-imgs-picker__img ${this.imgClassName || ''}`;
+			return `vcm-imgs-picker__img ${this.imgClassName || ''}`;
 		}
 	},
 };
 </script>
 
 <style lang="scss">
-@import '../style/index.scss';
-@include block(vcp-imgs-picker) {
+@import '../../style/index.scss';
+@include block(vcm-imgs-picker) {
 	display: flex;
 	box-sizing: border-box;
 	flex-wrap: wrap;
 	@include element(box) {
-		width: 64px;
-		height: 64px;
-		margin-right: 12px;
-		margin-bottom: 12px;
-		border-radius: 4px;
+		width: 78px;
+		height: 78px;
+		margin-right: 13px;
+		margin-bottom: 13px;
+		border-radius: 2px;
 		background-color: #fafafa;
 		cursor: pointer;
 	}
@@ -108,8 +98,8 @@ export default {
 		@include commonFlexCc();
 		width: 100%;
 		height: 100%;
-		border-radius: 4px;
 		background-size: cover;
+		border-radius: 2px;
 		overflow: hidden;
 		background-color: #F5F5F6;
 	}
@@ -120,7 +110,6 @@ export default {
 	}
 	@include element(upload) {
 		background-color: #F5F5F6;
-		border: 1px dashed #D9D9D9;
 		display: flex;
 		align-items: center;
 		justify-content: center;
@@ -129,29 +118,17 @@ export default {
 		line-height: 1;
 	}
 	@include element(delete) {
+		@include commonFlexCc();
 		position: absolute;
-		top: -6px;
-		right: -6px;
-		color: #5495F6;
-		font-size: 16px;
-		z-index: 1;
-		@include modifier(bg) {
-			position: absolute;
-			top: -5px;
-			right: -5px;
-			background: #ffffff;
-			width: 14px;
-			height: 14px;
-			border-radius: 7px;
-		}
-	}
-	@include element(progressbar) {
-		flex: 1;
-		background-color: #cdcdcd;
-		height: 8px;
-		border-radius: 5px;
-		overflow: hidden;
-		margin: 0 4px;
+		top: 0px;
+		right: 0px;
+		width: 15px;
+		height: 15px;
+		font-size: 7px;
+		background: #000;
+		opacity: 0.3;
+		border-radius: 2px;
+		z-index: 10;
 	}
 }
 </style>

@@ -22,8 +22,8 @@ import Form from '../../form';
 import Input from '../../input';
 import Message from '../../message';
 
-import ImgsPicker from '../imgs-picker';
-import { VcInstance } from '../../vc/index';
+import ImgsPicker from '../index.m';
+import { VcInstance, VcError } from '../../vc/index';
 
 const IMAGE_LEGAL_REGEX = /[@#￥%&+ ]/;
 const FILE_LEGAL_REGEX = /[@#￥%&+]/;
