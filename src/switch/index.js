@@ -1,1 +1,1 @@
-export { default } from './mobile/switch';
+export { default } from './index';
