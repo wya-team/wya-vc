@@ -2,40 +2,40 @@
 	<!-- tabindex="0" -->
 	<span
 		:class="classes"
-		class="vc-switch"
+		class="vcm-switch"
 		@click="handdleToggle"
 		@keydown.space="handdleToggle"
 	>
 		<input :name="name" :value="currentValue" type="hidden">
-		<span class="vc-switch__content">
+		<span class="vcm-switch__content">
 			<slot v-if="currentValue === trueValue" name="open" />
 			<slot v-if="currentValue === falseValue" name="close" />
 		</span>
-		<span class="vc-switch__inner"/>
-		<vc-spin 
+		<span class="vcm-switch__inner"/>
+		<vcm-spin 
 			v-if="loading" 
 			:size="14"
 			foreground="#fff"
-			class="vc-switch__loading"
+			class="vcm-switch__loading"
 		/>
 	</span>
 </template>
 <script>
-import Spin from '../spin/index';
-import BasicMixin from './basic-mixin';
+import MSpin from '../../spin/index.m';
+import BasicMixin from '../basic-mixin';
 
 export default {
-	name: 'vc-switch',
+	name: 'vcm-switch',
 	minins: [BasicMixin],
 	components: {
-		'vc-spin': Spin
+		'vcm-spin': MSpin
 	}
 };
 </script>
 <style lang="scss">
-@import '../style/index.scss';
+@import '../../style/index.scss';
 
-@include block(vc-switch) {
+@include block(vcm-switch) {
 	display: inline-block;
 	width: 44px;
 	height: 22px;
