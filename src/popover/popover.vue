@@ -15,6 +15,7 @@
 
 <script>
 import { pick } from 'lodash';
+import { getUid } from '../utils/index';
 import Core, { Func } from './core';
 
 export default {
@@ -75,6 +76,9 @@ export default {
 			this._isMounted && this.refresh();
 		}
 	},
+	created() {
+		this.popoverId = getUid('popover');
+	},
 	mounted() {
 		this.isActive && this.refresh();
 	},
@@ -89,8 +93,17 @@ export default {
 					: this.portal 
 						? document.body 
 						: this.$el;
+				let { portalClassName } = this;
+
+				typeof portalClassName === 'object' 
+					? portalClassName instanceof Array 
+						? portalClassName.push(this.popoverId)
+						: (portalClassName[this.popoverId] = true)
+					: (portalClassName += ` ${this.popoverId}`);
+
 				this.popperInstance = Func.popup({
 					el,
+					cName: this.popoverId,
 					popupContainer: this.$el,
 					onChange: ::this.handleChange,
 					onClose: () => this.$emit('close'),
@@ -102,6 +115,7 @@ export default {
 					$slots: this.$slots,
 					$parent: this.$parent,
 					...this.$props,
+					portalClassName
 				});
 			} else if (this.popperInstance) {
 				this.popperInstance.isActive = false;
@@ -116,10 +130,9 @@ export default {
 		handleChange(e = {}, v) {
 			this.isHover && this.timer && clearTimeout(this.timer);
 			let path = e.path || (e.composedPath && e.composedPath()) || [];
-			let isPopArea = path.some(item => /vc-popover-core/.test(item.className));
+			let isPopArea = path.some(item => new RegExp(this.popoverId).test(item.className));
 
 			if (!this.portal && isPopArea) return;
-
 			// doc click
 			if (v === undefined) {
 				if (!isPopArea && !this.$el.contains(e.target)) {

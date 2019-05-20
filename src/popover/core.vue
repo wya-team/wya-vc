@@ -204,6 +204,7 @@ const popup = {
 export default popup;
 export const Func = CreateProtal({
 	promise: false,
+	// multiple: true
 }, popup);
 </script>
 
