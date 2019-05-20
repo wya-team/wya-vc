@@ -70,15 +70,17 @@ $block: vcm-input-search;
 	@include element(content) {
 		border-radius: 32px;
 		height: 32px;
-		line-height: 2;
+		line-height: 1.6;
 		background: white;
 		overflow: hidden;
 		input {
 			// text-align: center;
+			font-size: 14px;
 		}
 		@include element(icon){
 			font-size: 15px;
 			margin-left: 14px;
+			color: #999;
 		}
 		@include when(focus) {
 			input {
@@ -90,7 +92,7 @@ $block: vcm-input-search;
 		padding-left: 8px;
 		height: 44px;
 		line-height: 44px;
-		font-size: 15px;
+		font-size: 14px;
 		color: #333;
 		text-align: right;
 		white-space: nowrap;
