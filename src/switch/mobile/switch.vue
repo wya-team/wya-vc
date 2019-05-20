@@ -7,10 +7,10 @@
 		@keydown.space="handdleToggle"
 	>
 		<input :name="name" :value="currentValue" type="hidden">
-		<span class="vcm-switch__content">
+		<!-- <span class="vcm-switch__content">
 			<slot v-if="currentValue === trueValue" name="open" />
 			<slot v-if="currentValue === falseValue" name="close" />
-		</span>
+		</span> -->
 		<span class="vcm-switch__inner"/>
 		<vcm-spin 
 			v-if="loading" 
@@ -78,8 +78,8 @@ export default {
 		opacity: .4;
 	}
 	@include when(checked) {
-		border-color: #26be76;
-		background-color: #26be76;
+		border-color: #53d769;
+		background-color: #53d769;
 		@include element(content) {
 			left: 7px;
 		}
