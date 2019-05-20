@@ -56,7 +56,7 @@ const webpackConfig = {
 	entry: Object.assign({}, entry),
 	output: {
 		path: path.resolve(APP_ROOT, 'dist'),
-		filename: '[name].[hash:8].js',
+		filename: '[name].js',
 		libraryTarget: 'umd',
 		/**
 		 * html引用路径,github展示用
@@ -180,6 +180,13 @@ const defaultConfig = {
 	// 启用编译缓存
 	cache: true,
 };
+
+if (!ENV_IS_DEV) {
+	webpackConfig.externals = {
+		vue: 'Vue',
+		lodash: '_'
+	};
+}
 
 module.exports = {
 	APP_ROOT,
