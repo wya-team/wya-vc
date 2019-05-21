@@ -14,12 +14,6 @@ export default {
 			default: 'span'
 		},
 
-		// 样式前缀
-		prefixCls: {
-			type: String,
-			default: 'c-upload'
-		},
-
 		// 是否禁用
 		disabled: {
 			type: Boolean,
@@ -372,7 +366,6 @@ export default {
 	},
 	render(h) {
 		const {
-			prefixCls,
 			disabled,
 			accept,
 			multiple,
@@ -381,8 +374,8 @@ export default {
 
 		// class
 		const classes = {
-			[prefixCls]: true,
-			[`${prefixCls}-disabled`]: disabled,
+			'vc-upload': true,
+			'vc-upload-disabled': disabled,
 		};
 		const events = disabled ? {} : {
 			click: this.handleClick,

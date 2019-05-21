@@ -6,42 +6,45 @@
 			:class="{'vcp-imgs-picker__error': item.status == 0, imgClassName, boxClassName}"
 			class="vcp-imgs-picker__item vcp-imgs-picker__box"
 		>
-			<div
-				v-if="typeof item !== 'object'"
-				:style="{backgroundImage: `url('${item}')`}"
-				:class="imgClasses"
-				@click="handlePreview($event, index)"
-			/>
-			<div v-else :class="imgClasses">
-				<vc-progress
-					v-if="item.percent && item.percent != 100" 
-					:percent="item.percent"
-					:show-info="false"
-					status="normal"
-					style="width: 100%;padding: 0 5px"
+			<slot 
+				:it="item" 
+				name="image"
+			>
+				<div
+					v-if="typeof item !== 'object'"
+					:style="{backgroundImage: `url('${item}')`}"
+					:class="imgClasses"
+					@click="handlePreview($event, index)"
 				/>
-				<p v-else-if="!item.url && item.percent == 100" style="line-height: 1; padding: 5px">
-					服务器正在接收...
-				</p>
-				<div v-else-if="item.status == 0" style="padding: 5px">
-					上传失败
+				<div v-else :class="imgClasses">
+					<vc-progress
+						v-if="item.percent && item.percent != 100" 
+						:percent="item.percent"
+						:show-info="false"
+						status="normal"
+						style="width: 100%;padding: 0 5px"
+					/>
+					<p v-else-if="!item.url && item.percent == 100" style="line-height: 1; padding: 5px">
+						服务器正在接收...
+					</p>
+					<div v-else-if="item.status == 0" style="padding: 5px">
+						上传失败
+					</div>
 				</div>
-			</div>
-			<!-- 上传失败或者成功后显示 -->
-			<vc-icon 
-				v-if="!disabled && (typeof item !== 'object' || item.status == 0)" 
-				type="clear" 
-				class="vcp-imgs-picker__delete"
-				@click="handleDel(item)" 
-			/>
-			<div class="vcp-imgs-picker__delete--bg"/>
+				<!-- 上传失败或者成功后显示 -->
+				<vc-icon 
+					v-if="!disabled && (typeof item !== 'object' || item.status == 0)" 
+					type="clear" 
+					class="vcp-imgs-picker__delete"
+					@click="handleDel(item)" 
+				/>
+				<div class="vcp-imgs-picker__delete--bg"/>
+			</slot>
 		</div>
 		<vc-upload 
 			v-show="!disabled && (data.length < max || max === 0)"
 			v-bind="uploadOpts"
 			:accept="accept"
-			:class="{uploadClassName: true, boxClassName: true}"
-			class="vcp-imgs-picker__upload vcp-imgs-picker__box"
 			@file-start="handleFileStart"
 			@file-progress="handleFileProgress"
 			@file-success="handleFileSuccess"
@@ -49,8 +52,15 @@
 			@error="$emit('error', arguments[0])"
 			@complete="handleFileComplete"
 		>
-			<vc-icon type="plus" style="font-size: 14px; margin-bottom: 8px" />
-			<span>上传</span>
+			<slot name="upload">
+				<div 
+					:class="{uploadClassName: true, boxClassName: true}"
+					class="vcp-imgs-picker__upload vcp-imgs-picker__box"
+				>
+					<vc-icon type="plus" style="font-size: 14px; margin-bottom: 8px" />
+					<span>上传</span>
+				</div>
+			</slot>
 		</vc-upload>
 	</component>
 </template>

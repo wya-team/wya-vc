@@ -6,33 +6,36 @@
 			:class="{'vcm-imgs-picker__error': item.status == 0, imgClassName, boxClassName}"
 			class="vcm-imgs-picker__item vcm-imgs-picker__box"
 		>
-			<div
-				v-if="typeof item !== 'object'"
-				:style="{backgroundImage: `url('${item}')`}"
-				:class="imgClasses"
-				@click="handlePreview($event, index)"
-			/>
-			<div v-else :class="imgClasses">
-				<div v-if="typeof item.status === 'undefined'">xx</div>
-				<div v-else-if="item.status == 0" style="padding: 5px">
-					上传失败
-				</div>
-			</div>
-			<!-- 上传失败或者成功后显示 -->
-			<div class="vcm-imgs-picker__delete">
-				<vc-icon 
-					v-if="!disabled && (typeof item !== 'object' || item.status == 0)" 
-					type="close" 
-					@click="handleDel(item)" 
+			<slot 
+				:it="item"
+				name="image"
+			>
+				<div
+					v-if="typeof item !== 'object'"
+					:style="{backgroundImage: `url('${item}')`}"
+					:class="imgClasses"
+					@click="handlePreview($event, index)"
 				/>
-			</div>
+				<div v-else :class="imgClasses">
+					<div v-if="typeof item.status === 'undefined'">xx</div>
+					<div v-else-if="item.status == 0" style="padding: 5px">
+						上传失败
+					</div>
+				</div>
+				<!-- 上传失败或者成功后显示 -->
+				<div class="vcm-imgs-picker__delete">
+					<vc-icon 
+						v-if="!disabled && (typeof item !== 'object' || item.status == 0)" 
+						type="close" 
+						@click="handleDel(item)" 
+					/>
+				</div>
+			</slot>
 		</div>
 		<vc-upload 
 			v-show="!disabled && (data.length < max || max === 0)"
 			v-bind="uploadOpts"
 			:accept="accept"
-			:class="{uploadClassName: true, boxClassName: true}"
-			class="vcm-imgs-picker__upload vcm-imgs-picker__box"
 			@file-start="handleFileStart"
 			@file-progress="handleFileProgress"
 			@file-success="handleFileSuccess"
@@ -40,7 +43,14 @@
 			@error="$emit('error', arguments[0])"
 			@complete="handleFileComplete"
 		>
-			<vc-icon type="plus" style="font-size: 30px" />
+			<slot name="upload">
+				<div 
+					:class="{uploadClassName: true, boxClassName: true}"
+					class="vcm-imgs-picker__upload vcm-imgs-picker__box"
+				>
+					<vc-icon type="plus" style="font-size: 30px" />
+				</div>
+			</slot>
 		</vc-upload>
 	</component>
 </template>
