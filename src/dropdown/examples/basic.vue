@@ -54,9 +54,21 @@
 							<vc-dropdown-item name="4">冰糖葫芦</vc-dropdown-item>
 						</template>
 					</vc-popover>
-					
 				</vc-dropdown-menu>	
-
+				
+				<!-- indeterminate 测试slot同步 -->
+				<div style="border-bottom: 1px solid #e9e9e9;padding-bottom:6px;margin-bottom:6px;">
+					<vc-checkbox
+						:indeterminate="indeterminate"
+						:value="checkAll"
+						@click.prevent.native="handleCheckAll"
+					>全选</vc-checkbox>
+				</div>
+				<vc-checkbox-group v-model="checkAllGroup" @change="handleCheckChange">
+					<vc-checkbox label="香蕉"/>
+					<vc-checkbox label="苹果"/>
+					<vc-checkbox label="西瓜"/>
+				</vc-checkbox-group>
 				<vc-button 
 					style="margin-left: 100px" 
 					@click="handleClose"
@@ -72,6 +84,7 @@
 import Dropdown from '..';
 import Popover from '../../popover';
 import Button from '../../button';
+import Checkbox from '../../checkbox';
 
 export default {
 	name: "vc-tpl-basic",
@@ -81,12 +94,18 @@ export default {
 		'vc-dropdown-item': Dropdown.Item,
 		'vc-button': Button,
 		'vc-popover': Popover,
+		'vc-checkbox': Checkbox,
+		'vc-checkbox-group': Checkbox.Group,
 	},
 	data() {
 		return {
 			visible: false,
 			visiblePopover: false,
-			trigger: 'hover'
+			trigger: 'hover',
+
+			indeterminate: true,
+			checkAll: false,
+			checkAllGroup: ['香蕉', '西瓜']
 		};
 	},
 	computed: {
@@ -132,6 +151,33 @@ export default {
 		},
 		handleTrigger() {
 			this.trigger = this.trigger === 'click' ? 'hover' : 'click';
+		},
+
+		handleCheckAll() {
+			if (this.indeterminate) {
+				this.checkAll = false;
+			} else {
+				this.checkAll = !this.checkAll;
+			}
+			this.indeterminate = false;
+
+			if (this.checkAll) {
+				this.checkAllGroup = ['香蕉', '苹果', '西瓜'];
+			} else {
+				this.checkAllGroup = [];
+			}
+		},
+		handleCheckChange(data) {
+			if (data.length === 3) {
+				this.indeterminate = false;
+				this.checkAll = true;
+			} else if (data.length > 0) {
+				this.indeterminate = true;
+				this.checkAll = false;
+			} else {
+				this.indeterminate = false;
+				this.checkAll = false;
+			}
 		}
 	}
 };

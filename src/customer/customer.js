@@ -1,3 +1,5 @@
+const d2c = v => v.replace(/-(\w)/g, (_, $1) => $1.toUpperCase());
+
 export default {
 	name: 'vc-customer',
 	functional: true,
@@ -5,29 +7,43 @@ export default {
 	props: {
 		render: Function
 	},
-	render(h, ctx) {
-		 let attrs = ctx.data.attrs || {};
-		 attrs = Object.keys(attrs).reduce((pre, curKey) => {
-			 let attrKey = curKey;
-			 if (curKey.includes('-')) {
-				attrKey = curKey.split('-').reduce((pre, item, index) => {
-					pre += index === 0 ? item : item.charAt(0).toUpperCase() + item.slice(1);
-					return pre;
-				}, '');
-			 }
-			 pre[attrKey] = attrs[curKey];
-			 return pre;
-		}, {});
-		let className = ctx.data.staticClass || '';
-		className = `${(className ? `${className} ` : '')}${ctx.data.class || ''}`;
-		let style = Object.assign({}, ctx.data.staticStyle, ctx.data.style);
-		
-		const params = {
-			...attrs,
-			className,
+	render(h, ctx = {}) {
+		let { 
+			attrs = {},
 			style,
-		};
-		return ctx.props.render(h, params);
+			staticStyle,
+			staticClass = '',
+			class: className = '',
+			on = {},
+			directives = []
+		} = ctx.data;
+
+		let params = {};
+		
+		// dash -> camelcase
+		for (let dash in attrs) {
+			let camelcase = d2c(dash);
+			params[camelcase] = attrs[dash];
+		}
+
+		// className and style
+		let vShow = directives.find(i => i.rawName === 'v-show') || {};
+		vShow.value === false && (vShow = { display: 'none' });
+
+		className = `${(staticClass ? `${staticClass} ` : '')}${className}`;
+		style = Object.assign({}, staticStyle, style, vShow);
+		
+		params.className = className;
+		params.style = style;
+
+		// event
+		for (let dash in on) {
+			let camelcase = d2c(`on-${dash}`);
+			params[camelcase] = on[dash];
+		}
+
+		// 其余有很多东西，使用parent吧
+		return ctx.props.render(h, params, ctx);
 	}
 };
 
