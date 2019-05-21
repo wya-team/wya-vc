@@ -136,14 +136,15 @@ export default {
 			});
 		},
 		initFontSize() {
+			const fontSize = ['12px', '14px', '16px', '18px', '20px', '22px', '24px'];
 			let Parchment = Quill.import('parchment');
 			let SizeClass = new Parchment.Attributor.Class('size', 'ql-size', {
 				scope: Parchment.Scope.INLINE,
-				whitelist: ['12px', '14px', '16px', '18px', '20px', '22px', '24px']
+				whitelist: fontSize
 			});
 			let SizeStyle = new Parchment.Attributor.Style('size', 'font-size', {
 				scope: Parchment.Scope.INLINE,
-				whitelist: ['12px', '14px', '16px', '18px', '20px', '22px', '24px']
+				whitelist: fontSize
 			});
 			Quill.register({
 				'attributors/class/size': SizeClass,
