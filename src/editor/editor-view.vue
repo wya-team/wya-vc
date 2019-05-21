@@ -5,8 +5,7 @@
 </template>
 
 <script>
-import './style.scss';
-
+	
 export default {
 	name: 'vc-editor-view',
 	props: {

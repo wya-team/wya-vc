@@ -195,7 +195,7 @@ import Select from '..';
 import Button from '../../button';
 import Option from '../option';
 import OptionGroup from '../option-group';
-import Form from '../../Form';
+import Form from '../../form';
 
 import { cityList, cityList1, cityList2, searchData } from './basic/data';
 

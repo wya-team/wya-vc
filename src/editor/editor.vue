@@ -20,14 +20,12 @@
 
 <script>
 import Quill from 'quill';
-import './style.scss';
 import emitter from '../extends/mixins/emitter'; // 表单验证
 import EditorToolbar from './toolbar';
 import Upload from '../upload/index';
 import Icon from '../icon/index';
 import ImgsPreview from '../imgs-preview/index';
-import { getUid } from '../utils/utils';
-import defaultOptinos from './options';
+import defaultOptinos from './default-options';
 
 export default {
 	// name: "vc-editor",
