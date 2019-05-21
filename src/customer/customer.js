@@ -1,15 +1,17 @@
-export default (propsType = {}, opts = {}) => ({
+export default {
 	name: 'vc-customer',
 	functional: true,
+	inheritAttrs: false,
 	props: {
-		...propsType,
 		render: Function
 	},
 	render(h, ctx) {
 		const params = {
-			...ctx.props
+			...ctx.data.attrs,
+			className: ctx.data.staticClass,
+			style: ctx.data.staticStyle,
 		};
 		return ctx.props.render(h, params);
 	}
-});
+};
 
