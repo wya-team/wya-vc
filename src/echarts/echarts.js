@@ -56,9 +56,12 @@ export default {
 		});
 	},
 	async mounted() {
-	// auto init if `options` is already provided
+		// auto init if `options` is already provided
 		if (this.options) {
-			this.echartsInstance = await import('node_modules/echarts');
+			let echarts = await import('node_modules/echarts');
+			// 兼容webpack 3.0/4.0 写法
+			this.echartsInstance = echarts.default ? echarts.default : echarts;
+
 			this.init();
 		}
 	},
@@ -174,7 +177,7 @@ export default {
 				this.lastArea = this.getArea();
 				this.__resizeHandler = debounce(() => {
 					if (this.lastArea === 0) {
-					// emulate initial render for initially hidden charts
+						// emulate initial render for initially hidden charts
 						this.mergeOptions({}, true);
 						this.resize();
 						this.mergeOptions(this.options || this.manualOptions || {}, true);

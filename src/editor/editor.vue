@@ -19,7 +19,8 @@
 </template>
 
 <script>
-import Quill from 'quill';
+// import Quill from 'quill';
+import './style.scss';
 import emitter from '../extends/mixins/emitter'; // 表单验证
 import EditorToolbar from './toolbar';
 import Upload from '../upload/index';
@@ -95,7 +96,11 @@ export default {
 			}
 		},
 	},
-	mounted() {
+	async mounted() {
+		let Quill = await import('node_modules/quill');
+		// 兼容webpack 3.0/4.0 写法
+		this.Quill = Quill.default ? Quill.default : Quill;
+
 		this.init();
 		this.initListener();
 	},
@@ -106,7 +111,7 @@ export default {
 	methods: {
 		init() {
 			this.initFontSize();
-			this.editor = new Quill(this.$refs.editor, { ...defaultOptinos, ...this.options });
+			this.editor = new this.Quill(this.$refs.editor, { ...defaultOptinos, ...this.options });
 			this.editor.enable(!this.disabled);
 			if (this.value) {
 				this.editor.setText('zhellll');
@@ -135,7 +140,7 @@ export default {
 		},
 		initFontSize() {
 			const fontSize = ['12px', '14px', '16px', '18px', '20px', '22px', '24px'];
-			let Parchment = Quill.import('parchment');
+			let Parchment = this.Quill.import('parchment');
 			let SizeClass = new Parchment.Attributor.Class('size', 'ql-size', {
 				scope: Parchment.Scope.INLINE,
 				whitelist: fontSize
@@ -144,18 +149,18 @@ export default {
 				scope: Parchment.Scope.INLINE,
 				whitelist: fontSize
 			});
-			Quill.register({
+			this.Quill.register({
 				'attributors/class/size': SizeClass,
 				'attributors/style/size': SizeStyle
 			}, true); // true 表示要覆盖已有的配置
-			Quill.register({
+			this.Quill.register({
 				'formats/size': SizeClass,
 			}, true);
 		
 		},
 		initListener() {
-			const ImageBlot = Quill.import('formats/image');
-			const Parchment = Quill.import('parchment');
+			const ImageBlot = this.Quill.import('formats/image');
+			const Parchment = this.Quill.import('parchment');
 			this.editor.root.addEventListener('click', (ev) => {
 				let image = Parchment.find(ev.target);
 				if (image instanceof ImageBlot) {

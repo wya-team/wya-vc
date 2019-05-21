@@ -74,7 +74,7 @@ export default {
 		
 	},
 	mounted() {
-		console.log(this.$refs.editor);
+		// console.log(this.$refs.editor);
 	},
 	methods: {
 		handleChange(arg) {
