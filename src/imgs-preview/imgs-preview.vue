@@ -8,7 +8,7 @@
 			:key="index"
 			class="vc-imgs-preview__item"
 		>
-			<vc-customer-row
+			<vc-customer
 				v-if="!$slots.row && !$scopedSlots.row" 
 				:src="item | getImage"
 				:index="index"
@@ -38,18 +38,13 @@
 </template>
 <script>
 import Core, { Func } from './core';
-import CreateCustomer from '../create-customer/index';
+import Customer from '../customer/index';
 import Icon from '../icon/index';
 
-const Row = CreateCustomer({
-	src: [Object, String],
-	index: Number,
-	
-});
 export default {
 	name: "vc-imgs-preview-row",
 	components: {
-		'vc-customer-row': Row,
+		'vc-customer': Customer,
 		'vc-icon': Icon
 	},
 	filters: {

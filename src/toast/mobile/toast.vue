@@ -11,23 +11,21 @@
 			<div v-show="visible" class="vcm-toast__wrapper">
 				<vcm-spin v-if="mode === 'loading'" class="vcm-toast__loading"/>
 				<p v-if="content" v-html="content" />
-				<vcm-row v-else :render="content" />
+				<vcm-customer v-else :render="content" />
 			</div>
 		</vcm-transition-fade>
 	</div>
 </template>
 
 <script>
-import CreateCustomer from "../../create-customer/index.m";
+import Customer from "../../customer/index.m";
 import Spin from "../../spin/index.m";
 import Transition from "../../transition/index.m";
-
-const CustomerRow = CreateCustomer({});
 
 export default {
 	name: 'vcm-toast',
 	components: {
-		'vcm-row': CustomerRow,
+		'vcm-customer': Customer,
 		'vcm-transition-fade': Transition.Fade,
 		'vcm-spin': Spin
 	},

@@ -95,7 +95,7 @@ export default {
 					okText,
 					value,
 					onOk: res => {
-						this.currentValue = res.value;
+						this.currentValue = res;
 						this.$emit('ok');
 					},
 					onCancel: res => {

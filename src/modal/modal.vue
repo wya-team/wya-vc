@@ -41,7 +41,7 @@
 					</div>
 					<div :class="{ 'is-confirm' : mode }" class="vc-modal__content">
 						<p v-if="typeof content === 'string'" v-html="content" />
-						<vc-row 
+						<vc-customer 
 							v-else-if="typeof content === 'function'" 
 							:render="content" 
 						/>
@@ -72,18 +72,17 @@ import scrollbarMixin from './scrollbar-mixin';
 import Icon from '../icon';
 import Button from '../button';
 import Transition from '../transition';
-import CreateCustomer from "../create-customer/index";
+import Customer from "../customer/index";
 import { VcInstance } from "../vc/index";
 
 
 let zIndexNumber = 1002;
-const CustomerRow = CreateCustomer({});
 export default {
 	name: "vc-modal",
 	components: {
 		'vc-icon': Icon,
 		'vc-button': Button,
-		'vc-row': CustomerRow,
+		'vc-customer': Customer,
 		'vc-transition-fade': Transition.Fade,
 		'vc-transition-scale': Transition.Scale,
 	},

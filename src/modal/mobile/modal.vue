@@ -26,7 +26,7 @@
 								class="vcm-modal__html" 
 								v-html="content"
 							/>
-							<vcm-row 
+							<vcm-customer 
 								v-else-if="typeof content === 'function'" 
 								:render="content" 
 							/>
@@ -75,15 +75,14 @@
 import { debounce } from 'lodash';
 import scrollbarMixin from '../scrollbar-mixin';
 import MTransition from '../../transition/index.m';
-import CreateCustomer from "../../create-customer/index";
+import Customer from "../../customer/index";
 import { VcInstance } from "../../vc/index";
 
 let zIndexNumber = 1002;
-const CustomerRow = CreateCustomer({});
 export default {
 	name: "vcm-modal",
 	components: {
-		'vcm-row': CustomerRow,
+		'vcm-customer': Customer,
 		'vcm-transition-fade': MTransition.Fade,
 		'vcm-transition-zoom': MTransition.Zoom,
 	},

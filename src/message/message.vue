@@ -26,7 +26,7 @@
 						class="vc-message__content"
 						v-html="content"
 					/>
-					<vc-row 
+					<vc-customer
 						v-else-if="typeof content === 'function'" 
 						:render="content" 
 					/>
@@ -47,15 +47,13 @@
 import Icon from "../icon";
 import Spin from "../spin";
 import Transition from '../transition';
-import CreateCustomer from "../create-customer/index";
-
-const CustomerRow = CreateCustomer({});
+import Customer from "../customer/index";
 
 export default {
 	name: 'vc-message',
 	components: {
 		'vc-icon': Icon,
-		'vc-row': CustomerRow,
+		'vc-customer': Customer,
 		'vc-transition-slide': Transition.Slide,
 		'vc-spin': Spin,
 	},

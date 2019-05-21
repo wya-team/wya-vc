@@ -100,8 +100,6 @@ const config = {
 			this.ok(this.currentValue);
 			// 普通组件
 			this.$emit('change', this.currentValue, it.label, it.data);
-
-			
 		},
 		handleCancel(v) {
 			this.isActive = false;
