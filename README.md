@@ -73,7 +73,6 @@ import { Copy } from 'wya-vc';
 ---|---|---|---
 [Button][Button] | 按钮 | 1 | -
 [Icon][Icon] | 图标 | 1 | -
-~~[DebounceClick][DebounceClick]~~ | ~~防抖~~ | ~~1~~ | ~~即将废除~~
 [Dropdown][Dropdown] | 下拉菜单 | 1 | -
 
 - 导航
@@ -97,8 +96,6 @@ import { Copy } from 'wya-vc';
 [Form][Form] | 表单管理 | 1 | -
 [ImgsPicker][ImgsPicker] | 图片上传 | 1 | -
 [Input][Input] | 输入框 | 1 | -
-[InputNumber][InputNumber] | 数字输入框 | 1 | -
-[Option][Option] | 配合`Select` | 1 | -
 [Radio][Radio] | 单选框 | 1 | -
 [Select][Select] | 选择器 | 1 | -
 [Slider][Slider] | 滑动输入条 | 1 | -
@@ -112,8 +109,7 @@ import { Copy } from 'wya-vc';
 
 名称 | 说明 | 开发 | 计划
 ---|---|---|---
-~~[MForm][MForm]~~ | ~~表单管理~~ | ~~1~~ | ~~合并Form~~
-[MPicker][MPicker] | 联动选择弹框 | 1 | -
+[Picker][Picker] | 联动选择弹框 | 1 | -
 
 - 数据展示
 
@@ -137,7 +133,7 @@ import { Copy } from 'wya-vc';
 
 名称 | 说明 | 开发 | 计划
 ---|---|---|---
-[MPopup][MPopup] | 弹窗 | 1 | -
+[Popup][Popup] | 弹窗 | 1 | -
 
 - 组合
 
@@ -179,7 +175,7 @@ import { Copy } from 'wya-vc';
 
 名称 | 说明 | 开发 | 计划
 ---|---|---|---
-[MToast][MToast] | 轻提示 | 1 | -
+[Toast][Toast] | 轻提示 | 1 | -
 
 
 <details>
@@ -223,16 +219,14 @@ import { Copy } from 'wya-vc';
 [ImgsPicker]: https://github.com/wya-team/wya-vc/tree/master/src/imgs-picker/
 [ImgsPreview]: https://github.com/wya-team/wya-vc/tree/master/src/imgs-preview/
 [Input]: https://github.com/wya-team/wya-vc/tree/master/src/input/
-[InputNumber]: https://github.com/wya-team/wya-vc/tree/master/src/input-number/
-[MDatePicker]: https://github.com/wya-team/wya-vc/tree/master/src/mobile/date-picker/
-[MForm]: https://github.com/wya-team/wya-vc/tree/master/src/mobile/form/
-[MPicker]: https://github.com/wya-team/wya-vc/tree/master/src/mobile/picker/
-[MPopup]: https://github.com/wya-team/wya-vc/tree/master/src/mobile/popup/
-[MToast]: https://github.com/wya-team/wya-vc/tree/master/src/mobile/toast/
-[MTouch]: https://github.com/wya-team/wya-vc/tree/master/src/mobile/touch/
+[DatePicker]: https://github.com/wya-team/wya-vc/tree/master/src/mobile/date-picker/
+[Form]: https://github.com/wya-team/wya-vc/tree/master/src/mobile/form/
+[Picker]: https://github.com/wya-team/wya-vc/tree/master/src/mobile/picker/
+[Popup]: https://github.com/wya-team/wya-vc/tree/master/src/mobile/popup/
+[Toast]: https://github.com/wya-team/wya-vc/tree/master/src/mobile/toast/
+[Touch]: https://github.com/wya-team/wya-vc/tree/master/src/mobile/touch/
 [Message]: https://github.com/wya-team/wya-vc/tree/master/src/message/
 [Modal]: https://github.com/wya-team/wya-vc/tree/master/src/modal/
-[Option]: https://github.com/wya-team/wya-vc/tree/master/src/option/
 [Page]: https://github.com/wya-team/wya-vc/tree/master/src/page/
 [Paging]: https://github.com/wya-team/wya-vc/tree/master/src/paging/
 [Popover]: https://github.com/wya-team/wya-vc/tree/master/src/popover/
