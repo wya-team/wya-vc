@@ -212,8 +212,6 @@ export default {
 					minutes: this.minutes,
 					seconds: this.seconds,
 					ms: this.ms,
-					beforeText: this.beforeText,
-					afterText: this.afterText,
 					format: this.format,
 					tag: this.tag,
 					showZero: this.showZer,
@@ -229,8 +227,6 @@ export default {
 					minutes={this.minutes} 
 					seconds={this.seconds} 
 					ms={this.ms} 
-					beforeText={this.beforeText} 
-					afterText={this.afterText} 
 					format={this.format}
 					tag={this.tag} 
 					showZero={this.showZero}

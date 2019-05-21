@@ -1,4 +1,6 @@
 # 历史版本
+### 1.3.18
+- down-count: 废弃原有format格式，默认值`DD天HH小时mm分ss秒ms`, 移除`before-text`, `after-text`
 
 ### 1.3.16
 - picker: 新增组件picker-view, picker-popup(用于自定义, date-picker-core也是基于此开发的)
