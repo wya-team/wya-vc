@@ -79,8 +79,8 @@ export default {
 				{
 					title: 'Name',
 					key: 'name',
-					render: (h, params) => {
-						const { row: { __level__, __expand__, name }, index } = params;
+					render: (h, props, parent) => {
+						const { row: { __level__, __expand__, name }, index } = props;
 
 						const { type } = this;
 						const page = this.current[type];
@@ -100,7 +100,7 @@ export default {
 				{
 					title: 'Status',
 					key: 'status',
-					render: (h, params) => {
+					render: (h, props, parent) => {
 						return h('div', {
 							style: {
 								marginRight: '5px'
@@ -114,7 +114,7 @@ export default {
 				{
 					title: 'Opt',
 					key: 'opt',
-					render: (h, params) => {
+					render: (h, props, parent) => {
 						return h('div', {
 							style: {
 								marginRight: '5px'

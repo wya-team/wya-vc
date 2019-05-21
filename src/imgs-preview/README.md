@@ -18,7 +18,7 @@ id | 外层标识 | `String` | -
 属性 | 说明 | 类型 | 默认值
 ---|---|---|---
 getInstance | 获取photoSwipe实例 | `() => {}` | -
-renderRow | 自定义组件 | `(h, params) => jsx` | -
+renderRow | 自定义组件 | `(h, props, parent) => jsx` | -
 
 
 #### 插槽
@@ -32,8 +32,8 @@ row | 同方法renderRow | `{src, index}`
 #### 自定义组件
 
 ```
-renderRow(h, params) {
-	const { src, index } = params; 
+renderRow(h, props, parent) {
+	const { src, index } = props; 
 	return h('img', {
 		attrs: {
 			src,

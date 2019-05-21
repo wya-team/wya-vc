@@ -75,8 +75,8 @@ export default {
 		
 	},
 	methods: {
-		renderRow(h, params) {
-			const { src, index } = params; 
+		renderRow(h, props, parent) {
+			const { src, index } = props; 
 			return (
 				<img 
 					src={src} 

@@ -97,8 +97,8 @@ export default {
 				{
 					title: '22',
 					width: 60,
-					render: (h, params) => {
-						const { row: { __level__, __expand__, children }, index } = params;
+					render: (h, props, parent) => {
+						const { row: { __level__, __expand__, children }, index } = props;
 
 						// 点击展开事件
 						const handleClick = (e) => {
@@ -129,7 +129,7 @@ export default {
 				{
 					title: 'Status',
 					key: 'status',
-					render: (h, params) => {
+					render: (h, props, parent) => {
 						return h('div', {
 							style: {
 								marginRight: '5px'
@@ -143,7 +143,7 @@ export default {
 				{
 					title: 'Opt',
 					key: 'opt',
-					render: (h, params) => {
+					render: (h, props, parent) => {
 						return h('div', {
 							style: {
 								marginRight: '5px'

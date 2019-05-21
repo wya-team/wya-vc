@@ -58,8 +58,8 @@ export default {
 		...Core.props,
 		renderRow: {
 			type: Function,
-			default: (h, params) => {
-				const { src, index } = params;
+			default: (h, props, parent) => {
+				const { src, index } = props;
 				return h('img', {
 					attrs: {
 						src,

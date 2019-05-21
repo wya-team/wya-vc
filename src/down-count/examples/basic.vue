@@ -100,8 +100,8 @@ export default {
 		handleEnd(id) {
 			console.log('end', id);
 		},
-		renderRow(h, params) {
-			const { days, hours, minutes, seconds, ms, beforeText, afterText, format, tag, className } = params;
+		renderRow(h, props, parent) {
+			const { days, hours, minutes, seconds, ms, beforeText, afterText, format, tag, className } = props;
 			const num = Number(ms);
 			const r = num % 255;
 			const g = (num + 100) % 255;

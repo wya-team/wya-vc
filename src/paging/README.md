@@ -106,7 +106,7 @@ export default {
 				{
 					title: 'Status',
 					key: 'status',
-					render: (h, params) => {
+					render: (h, props, parent) => {
 						return h('div', {
 							style: {
 								marginRight: '5px'
@@ -120,7 +120,7 @@ export default {
 				{
 					title: 'Opt',
 					key: 'opt',
-					render: (h, params) => {
+					render: (h, props, parent) => {
 						return h('div', {
 							style: {
 								marginRight: '5px'
