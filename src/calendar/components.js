@@ -1,21 +1,3 @@
-import CreateCustomer from "../create-customer/index";
-
-export const MonthHeader = CreateCustomer({
-	month: Number,
-	year: Number,
-	monthNames: Array,
-	lang: String
-});
-export const WeekHeader = CreateCustomer({
-	weekNames: Array,
-	lang: String
-});
-export const DateItem = CreateCustomer({
-	date: Object,
-	curDateStr: String
-});
-
-
 export const defaultRenderDate = (h, { date, curDateStr }) => {
 	return <span class={date.date === curDateStr ? "is-selected" : ""}>{date.day}</span>;
 };

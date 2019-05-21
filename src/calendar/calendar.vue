@@ -4,7 +4,7 @@
 			:data="{month: monthNames[showMonth][lang], year: showYear}" 
 			name="month" 
 		>
-			<month-header
+			<vc-customer
 				:render="renderMonth"
 				:month="showMonth"
 				:year="showYear"
@@ -18,7 +18,7 @@
 					:data="weekNames.map((item) => item[lang])" 
 					name="week" 
 				>
-					<week-header
+					<vc-customer
 						:render="renderWeek"
 						:week-names="weekNames"
 						:lang="lang"
@@ -36,7 +36,7 @@
 								:curDate="curDateStr"
 								:holiday="date2holiday(item.date)"
 							>
-								<date-item
+								<vc-customer
 									:date="item"
 									:cur-date-str="curDateStr"
 									:render="renderDate"
@@ -52,21 +52,17 @@
 
 <script>
 import { Utils } from "@wya/utils";
+import Customer from "../customer";
 import date2holiday from "./date2holiday";
 import { monthNames, weekNames } from './constants';
-import {
-	MonthHeader, WeekHeader, DateItem,
-	defaultRenderDate, defaultRenderMonth, defaultRenderWeek
-} from './components';
+import { defaultRenderDate, defaultRenderMonth, defaultRenderWeek } from './components';
 
 const curDate = new Date();
 
 export default {
 	name: "vc-calendar",
 	components: {
-		"date-item": DateItem,
-		"month-header": MonthHeader,
-		"week-header": WeekHeader,
+		'vc-customer': Customer
 	},
 	props: {
 		renderMonth: {

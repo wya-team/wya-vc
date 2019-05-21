@@ -1,20 +1,6 @@
 import { Utils } from "@wya/utils";
 import { debounce } from 'lodash';
-import CreateCustomer from "../create-customer/index";
-
-const Row = CreateCustomer({
-	days: [String, Number],
-	hours: [String, Number],
-	minutes: [String, Number],
-	seconds: [String, Number],
-	ms: [String, Number],
-	format: String,
-	beforeText: String,
-	afterText: String,
-	tag: String,
-	className: String,
-	showZero: Boolean
-});
+import Customer from "../customer";
 
 export default {
 	name: "vc-down-count",
@@ -229,8 +215,8 @@ export default {
 			]);
 		} else if (this.renderRow) {
 			return (
-				<Row
-					className="vc-down-count"
+				<Customer
+					class="vc-down-count"
 					render={this.renderRow} 
 					days={this.days} 
 					hours={this.hours} 
