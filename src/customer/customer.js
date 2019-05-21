@@ -6,10 +6,14 @@ export default {
 		render: Function
 	},
 	render(h, ctx) {
+		let className = ctx.data.staticClass || '';
+		className = `${(className ? `${className} ` : '')}${ctx.data.class || ''}`;
+		let style = Object.assign({}, ctx.data.staticStyle, ctx.data.style);
+		
 		const params = {
 			...ctx.data.attrs,
-			className: ctx.data.staticClass,
-			style: ctx.data.staticStyle,
+			className,
+			style,
 		};
 		return ctx.props.render(h, params);
 	}

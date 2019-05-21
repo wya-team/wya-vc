@@ -1,4 +1,4 @@
-## [Demo Basic](https://wya-team.github.io/wya-vc/dist/create-customer/basic.html)
+## [Demo Basic](https://wya-team.github.io/wya-vc/dist/customer/basic.html)
 ## 功能
 自定义渲染组件，以参数形式传递
 

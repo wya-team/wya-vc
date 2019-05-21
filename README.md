@@ -118,6 +118,7 @@ import { Copy } from 'wya-vc';
 [Calendar][Calendar] | 日历 | - | -
 [Card][Card] | 卡片 | - | -
 [Collapse][Collapse] | 折叠面板 | - | -
+[Customer][Customer] | 折叠面板 | - | -
 [DownCount][DownCount] | 倒计时 | - | -
 [Echarts][Echarts] | 图表 | - | -
 [Expand][Expand] | 展开 | - | -
@@ -198,6 +199,7 @@ import { Copy } from 'wya-vc';
 [Card]: https://github.com/wya-team/wya-vc/tree/master/src/card/
 [Cascader]: https://github.com/wya-team/wya-vc/tree/master/src/cascader/
 [Checkbox]: https://github.com/wya-team/wya-vc/tree/master/src/checkbox/
+[Customer]: https://github.com/wya-team/wya-vc/tree/master/src/customer/
 [Collapse]: https://github.com/wya-team/wya-vc/tree/master/src/collapse/
 [ColorPicker]: https://github.com/wya-team/wya-vc/tree/master/src/color-picker/
 [Copy]: https://github.com/wya-team/wya-vc/tree/master/src/copy/
