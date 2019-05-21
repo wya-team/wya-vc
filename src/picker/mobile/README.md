@@ -6,29 +6,71 @@
 
 #### 属性
 
+- `vcm-picker`
+
 属性 | 说明 | 类型 | 默认值
 ---|---|---|---
+loadData | 异步加载数据函数 | `Function` | -
+extra | 占位符 | `String` | -
+formatter | 格式化 | `Function` | -
+
+- `vcm-picke-view`
+
+属性 | 说明 | 类型 | 默认值
+---|---|---|---
+value | 返回值(v-model) | `Array` | -
 dataSource | 数据源 | `Array` | -
 cols | 列数 | `Number` | -
 itemStyle | 列的样式 | `Object` | -
+cascade | 是否为联动选中 | `Boolean` | true
+
+- `vcm-picke-popup`
+
+visible | 控制，可以使用v-model | `Boolean` | false
+title | 标题 | `String` | -
 title | 标题 | `String` | -
 cancelText | 取消文本 | `String` | 取消
 okText | 确定文本 | `String` |  确定
 showToolbar | 是否显示toolbar | `Boolean` | true
-cascade | 是否为联动选中 | `Boolean` | true
-value | 返回值 | `Array` | -
-loadData | 异步加载数据函数 | `Function` | -
-extra | 占位符 | `String` | -
-
-
 
 #### 事件
+
+- `vcm-picker`
 
 属性 | 说明 | 类型 | 默认值
 ---|---|---|---
 change | 组件关闭时候触发出来的一个事件，返回值为当前选中的值以及每一列的数据 | `function` | -
+ok | - | `function` | -
+cancel | - | `function` | -
 
+- `vcm-picke-popup`
 
+属性 | 说明 | 类型 | 默认值
+---|---|---|---
+ok | - | `function` | -
+cancel | - | `function` | -
+close | - | `function` | -
+
+- `vcm-picke-view`
+
+属性 | 说明 | 类型 | 默认值
+---|---|---|---
+change | - | `function` | -
+picker-change | - | `function` | -
+
+```
+// 方法
+MPicker.open({
+	...,
+	onOk: () => {},
+	onCancel: () => {},
+});
+
+// 组件
+`vcm-picker`
+`vcm-picker-popup`
+`vcm-picker-view`
+```
 
 ## 基础用法
 

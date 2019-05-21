@@ -32,7 +32,7 @@
 			:rules="ruleValidate"
 			@submit.native.prevent
 		>
-			<vcm-form-item prop="timeV" label="日期选择" @form-change="handleChange">
+			<vcm-form-item prop="timeV" label="日期选择">
 				<vcm-date-picker
 					v-model="formValidate.timeV"
 					:min-date="value"
@@ -45,6 +45,7 @@
 				</vcm-button>
 			</vcm-form-item>
 		</vcm-form >
+		<vcm-date-picker-view v-model="valueView" @change="handleChange"/>
 	</div>
 </template>
 <script>
@@ -60,6 +61,7 @@ export default {
 	name: "vcm-date-picker-basic",
 	components: {
 		'vcm-date-picker': MDatePicker,
+		'vcm-date-picker-view': MDatePicker.View,
 		'vcm-form': Form,
 		'vcm-form-item': Form.Item,
 		'vcm-button': Button
@@ -68,6 +70,7 @@ export default {
 		return {
 			show: false,
 			value: new Date(),
+			valueView: new Date(),
 			formValidate: {
 				timeV: undefined,
 			},
@@ -97,7 +100,7 @@ export default {
 			}).catch(() => {
 			});
 		},
-		handleChange(...value) {
+		handleChange(value) {
 			console.log(value);
 		},
 		handleSubmit(name) {

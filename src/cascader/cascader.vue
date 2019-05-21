@@ -165,6 +165,10 @@ export default {
 		value: {
 			immediate: true,
 			handler(v) {
+				/**
+				 * 不使用this.currentValue = v; 避免同步修改源数据，这里有取消操作
+				 * @type {[type]}
+				 */
 				this.currentValue = v && v.length > 0 ? [...v] : [];
 			}
 		},

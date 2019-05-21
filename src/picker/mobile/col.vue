@@ -8,15 +8,16 @@
 		@mousemove.stop.prevent="handleMove($event.screenY)"
 		@mouseup.stop.prevent="handleEnd($event.screenY)"
 	>
-		<div class="__mask" />
-		<div :style="styleH" class="__indicator" />
-		<div :style="[transform, transition]" class="__items">
+		<div class="vcm-picker-col__mask" />
+		<div :style="styleH" class="vcm-picker-col__indicator" />
+		<div :style="[transform, transition]" class="vcm-picker-col__wrapper">
 			<div
 				v-for="(item, index) in dataSource"
 				:key="index"
 				:style="[styleH, itemStyle]"
-				class="__item">
-				{{ typeof item === 'object' && item['label'] ? item['label'] : item }}
+				class="vcm-picker-col__item"
+			>
+				{{ typeof item === 'object' && item.label ? item.label : item }}
 			</div>
 		</div>
 	</div>
@@ -128,14 +129,15 @@ export default {
 
 </script>
 
-<style scoped lang='scss'>
-.vcm-picker-col {
+<style lang='scss'>
+@import '../../style/index.scss';
+
+@include block(vcm-picker-col) {
 	position: relative;
 	height: 238px;
 	overflow: hidden;
 	width: 100%;
-
-	.__mask {
+	@include element(mask) {
 		position: absolute;
 		left: 0;
 		z-index: 3;
@@ -154,50 +156,18 @@ export default {
 		background-size: 100% 102px;
 		background-repeat: no-repeat;
 	}
-
-	.__indicator {
-		position: absolute;
+	@include element(indicator) {
+		position: absolute!important;
 		top: 102px;
 		left: 0;
-		box-sizing: border-box;
 		width: 100%;
 		z-index: 3;
-		&::before {
-			content: '';
-			position: absolute;
-			background-color: #ddd;
-			display: block;
-			z-index: 1;
-			top: 0;
-			right: auto;
-			bottom: auto;
-			left: 0;
-			width: 100%;
-			height: 1px;
-			transform-origin: 50% 50%;
-			transform: scaleY(0.5);
-		}
-
-		&::after {
-			content: '';
-			position: absolute;
-			background-color: #ddd;
-			display: block;
-			z-index: 1;
-			top: auto;
-			right: auto;
-			bottom: 0;
-			left: 0;
-			width: 100%;
-			height: 1px;
-			transform-origin: 50% 100%;
-			transform: scaleY(0.5);
-		}
+		@include commonBorder1PX(bottom, #ddd);
+		@include commonBorder1PX(top, #ddd);
 	}
-
-	.__items {
+	@include element(wrapper) {
 		padding: 102px 0;
-		.__item {
+		@include element(item) {
 			color: #000;
 			padding: 0;
 			margin: 0 10px;

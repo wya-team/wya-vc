@@ -1,5 +1,9 @@
 # 历史版本
 
+### 1.3.16
+- picker: 新增组件picker-view, picker-popup(用于自定义, date-picker-core也是基于此开发的)
+- date-picker: 新增组件date-picker-view
+
 ### 1.3.8
 - popup: `position` -> `placement`, 新增theme(light/dark/none)
 - popover: `theme`(light/dark/none)

@@ -6,23 +6,52 @@
 
 #### 属性
 
+
+- `vcm-date-picker`
+
 属性 | 说明 | 类型 | 默认值
 ---|---|---|---
-mode -> type? | 日期选择器类型['datetime', 'date', 'time'] | `String` | -
-minDate | 最小日期 | `Date` | new Date('1990')
-maxDate | 最大日期 | `Date` | new Date('2020')
-value | 返回值 | `Date` | -
 loadData | 异步加载数据函数 | `Function` | -
 extra | 占位符 | `String` | -
+formatter | 格式化 | `Function` | -
 
-
-#### 事件
+- `vcm-date-picke-view`
 
 属性 | 说明 | 类型 | 默认值
 ---|---|---|---
-change | 组件关闭时候触发出来的一个事件，返回值为当前选中的日期以及每一列的数据 | `function` | -
+value | 返回值(v-model) | `Date` | -
+mode | 日期选择器类型['datetime', 'date', 'time'] | `String` | -
+minDate | 最小日期 | `Date` | new Date('1990')
+maxDate | 最大日期 | `Date` | new Date('2020')
+
+- `vcm-date-picker`
+
+属性 | 说明 | 类型 | 默认值
+---|---|---|---
+change | 组件关闭时候触发出来的一个事件，返回值为当前选中的值以及每一列的数据 | `function` | -
+ok | - | `function` | -
+cancel | - | `function` | -
 
 
+- `vcm-date-picke-view`
+
+属性 | 说明 | 类型 | 默认值
+---|---|---|---
+change | - | `function` | -
+picker-change | - | `function` | -
+
+```
+// 方法
+MDatePicker.open({
+	...,
+	onOk: () => {},
+	onCancel: () => {},
+});
+
+// 组件
+`vcm-date-picker`
+`vcm-date-picker-view` // api同picker
+```
 
 ## 基础用法
 

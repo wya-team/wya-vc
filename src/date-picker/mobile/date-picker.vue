@@ -35,7 +35,6 @@ export default {
 			'endHour',
 			'format',
 			'value'
-
 		]),
 		loadData: Function,
 		extra: {
@@ -49,6 +48,7 @@ export default {
 		formatter: {
 			type: Function,
 			default: (v, format) => {
+				if (!v) return v;
 				let arr = date2value(v);
 				/**
 				 * TODO
@@ -88,9 +88,6 @@ export default {
 			this.dispatch('vc-form-item', 'form-change', v);
 		}
 	},
-	created() {
-		this.current = null;
-	},
 	destoryed() {
 		this.pickerInstance && this.pickerInstance.$emit('destroy');
 	},
@@ -103,13 +100,14 @@ export default {
 				maxDate,
 				format,
 				value,
+				onOk: res => {
+					this.currentValue = res;
+					this.$emit('ok', this.currentValue);
+				},
+				onCancel: res => {
+					this.$emit('cancel');
+				},
 				getInstance: vm => this.pickerInstance = vm
-			}).then(res => {
-				this.currentValue = res.date;
-
-				this.current = res;
-			}).catch(err => {
-				console.log(err);
 			});
 		}
 	}

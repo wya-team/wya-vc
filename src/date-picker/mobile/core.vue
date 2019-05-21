@@ -1,202 +1,132 @@
 <template>
-	<vcm-picker-core
-		:show-toolbar="true"
-		:data-source="dataSource"
-		:cols="cols"
-		:value="currentValue"
-		@picker-change="handleChange"
-		@destory="handleDestroy"
+	<vcm-picker-popup
+		v-bind="$attrs"
+		v-model="isActive"
+		@ok="handleOk"
+		@cancel="handleCancel"
 		@close="handleClose"
-		@sure="handleSure"
-	/>
+	>
+		<vcm-date-picker-view 
+			ref="target"
+			v-model="currentValue"
+			:mode="mode"
+			:min-date="minDate"
+			:start-hour="startHour"	
+			:end-hour="endHour"	
+			:allow-dispatch="false"
+			@picker-change="$emit('picker-change', arguments[0], arguments[1])"
+		/>
+	</vcm-picker-popup>
 </template>
 
 <script>
-import { Utils } from '@wya/utils';
-import MPickerCore from '../../picker/mobile/core.vue';
+import { pick } from 'lodash';
+import MPicker from '../../picker/index.m';	
+import MDatePickerView from './date-picker-view';	
 import CreatePortal from '../../create-portal/index';
-import { getSelectedData } from '../../utils/index';
-import { value2date, date2value, parseMode } from '../utils';
 
 const config = {
-	name: "vcm-date-picker-core",
-	components: { 
-		'vcm-picker-core': MPickerCore 
+	name: 'vcm-picker-core',
+	components: {
+		'vcm-picker-popup': MPicker.Popup,
+		'vcm-date-picker-view': MDatePickerView
 	},
+	inheritAttrs: false,
 	model: {
 		prop: 'value',
 		event: 'change'
 	},
 	props: {
-		mode: {
-			type: String,
-			default: 'datetime',
+		...pick(MDatePickerView.props, [
+			'mode',
+			'minDate',
+			'maxDate',
+			'startHour',
+			'endHour',
+			'value'
+		]),
+		visible: { // sync
+			type: Boolean,
+			default: true
 		},
-		minDate: {
-			type: Date,
-			default: () => new Date('1990')
+		/**
+		 * 兼容portal设计, 实现Promise方式
+		 */
+		onOk: {
+			type: Function
 		},
-		maxDate: {
-			type: Date,
-			default: () => new Date('2020')
-		},
-		startHour: {
-			type: Number,
-			default: 0
-		},
-		endHour: {
-			type: Number,
-			default: 23
-		},
-		value: {
-			type: Date,
-			default: () => new Date()
+		onCancel: {
+			type: Function
 		}
 	},
 	data() {
 		return {
-			show: true,
-			currentValue: [],
-			dataSource: []
+			isActive: false
 		};
 	},
 	computed: {
-		modeArr() {
-			return parseMode(this.mode).split('');
-		},
-		cols() {
-			return this.modeArr.length;
-		},
-		ranges() {
-			switch (this.mode) {
-				case 'date':
-					return {
-						year: [this.minDate.getFullYear(), this.maxDate.getFullYear()],
-						month: [1, 12],
-						date: [1, this.getMonthEndDay(this.currentValue[0] * 1, this.currentValue[1] * 1)],
-					};
-				case 'time':
-					return {
-						hour: [this.startHour, this.endHour],
-						min: [0, 59]
-					};
-				default:
-					return {
-						year: [this.minDate.getFullYear(), this.maxDate.getFullYear()],
-						month: [1, 12],
-						date: [1, this.getMonthEndDay(this.currentValue[0] * 1, this.currentValue[1] * 1)],
-						hour: [0, 23],
-						min: [0, 59]
-					};
-			}
-		}
+
 	},
 	watch: {
 		value: {
 			immediate: true,
 			handler(v) {
-				if (v && new Date(v) == 'Invalid Date') {
-					console.error('Invalid Date');
-					return;
-				}
-				if (+new Date(v) !== +value2date(this.currentValue) && v) {
-					this.currentValue = date2value(v, this.modeArr);
-				}
+				this.currentValue = v;
 			}
+		},
+		isActive(v) {
+			this.$emit('visible-change', v);
 		}
 	},
 	mounted() {
-		this.dataSource = this.makeData();
+		this.isActive = true;
 	},
 	methods: {
-		getMonthEndDay(year, month) {
-			if (this.isShortMonth(month)) {
-				return 30;
-			} else if (month === 2) {
-				return this.isLeapYear(year) ? 29 : 28;
-			} else {
-				return 31;
-			}
-		},
-		isShortMonth(month) {
-			return [4, 6, 9, 11].indexOf(month) > -1;
-		},
-		isLeapYear(year) {
-			return (year % 400 === 0) || (year % 100 !== 0 && year % 4 === 0);
-		},
-		/**
-		 * todo, 存在副作用，使用函数式编程
-		 */
-		makeData() {
-			let result = [];
-			const INTERVAL_MAP = {
-				Y: this.ranges.year,
-				M: this.ranges.month,
-				D: this.ranges.date,
-				H: this.ranges.hour,
-				m: this.ranges.min
-			};
-			this.modeArr.forEach(type => {
-				if (INTERVAL_MAP[type]) {
-					this.pushSlots(result, type, ...INTERVAL_MAP[type]);
-				}
-			});
-			for (let i = 0; i < result.length; i++) {
-				let eq = result[i].find(item => item.value === this.currentValue[i]);
-				if (!eq) {
-					this.currentValue.splice(i, 1, result[i][0].value);
-				}
-			}
-			return result;
-		},
-		fillValues(type, start, end) {
-			const INTERVAL_MAP = {
-				Y: '年',
-				M: '月',
-				D: '日',
-				H: '时',
-				m: '分',
-			};
-			let arr = Array.from({ length: end - start + 1 }, (no, x) => {
-				let afterNum = x + start;
-				let finallyStr = String(Utils.preZero(afterNum));
-				return {
-					value: finallyStr,
-					label: finallyStr + INTERVAL_MAP[type]
-				};
-			});
-			return arr;
-		},
-		pushSlots(slots, type, start, end) {
-			slots.push(this.fillValues(type, start, end));
-		},
-		handleChange(val, index) {
-			this.currentValue.splice(index, 1, val.value);
-			this.dataSource = this.makeData();
-		},
-		/**
-		 * CreatePortal事件或模拟其事件
-		 */
-		handleDestroy() {
-			this.$emit('destroy');
-		},
 		handleClose() {
-			this.$emit('close', []);
+			this.isActive = false;
+
+			// 普通组件
+			this.$emit('update:visible', false);
 		},
-		handleSure() {
-			let selected = {
-				...getSelectedData(this.currentValue, this.dataSource),
-				date: value2date(this.currentValue)
-			};
-			this.$emit('sure', selected);
-		}
-	}
+		handleOk() {
+
+			this.isActive = false;
+
+			this.ok(this.currentValue);
+			// 普通组件
+			this.$emit('change', this.currentValue);
+		},
+		handleCancel(v) {
+			this.isActive = false;
+			this.cancel();
+		},
+		/**
+		 * ok兼容
+		 */
+		ok(it) {
+			// 强制设置默认时间为当前时间
+			if (!it) {
+				it = new Date();
+				this.currentValue = it;
+			}
+			const { onOk } = this;
+			onOk ? onOk(it) : this.$emit('ok', it);
+		},
+		/**
+		 * 取消兼容
+		 */
+		cancel() {
+			const { onCancel } = this;
+			onCancel ? onCancel() : this.$emit('cancel');
+		},
+	},
 };
+
 export default config;
-
-export const Func = CreatePortal({}, config);
-
+export const Func = CreatePortal({
+	promise: false
+}, config);
 </script>
 
-<style scoped lang='scss'>
+<style lang="scss">
 </style>

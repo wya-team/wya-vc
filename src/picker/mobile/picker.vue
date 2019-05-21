@@ -10,6 +10,7 @@
 
 <script>
 import Core, { Func } from './core';
+import MPickerPopup from './picker-popup';
 import List from '../../list/index.m';
 import { getSelectedData } from '../../utils/index';
 import emitter from '../../extends/mixins/emitter'; // 表单验证
@@ -27,6 +28,7 @@ export default {
 	},
 	props: {
 		...Core.props,
+		...MPickerPopup.props,
 		loadData: Function,
 		extra: {
 			type: String,
@@ -92,11 +94,14 @@ export default {
 					show,
 					okText,
 					value,
+					onOk: res => {
+						this.currentValue = res.value;
+						this.$emit('ok');
+					},
+					onCancel: res => {
+						this.$emit('cancel');
+					},
 					getInstance: vm => this.pickerInstance = vm
-				}).then(res => {
-					this.currentValue = res.value;
-				}).catch(err => {
-					console.log(err);
 				});
 			} catch (e) {
 				console.log('[vcm-picker]', e);

@@ -3,10 +3,11 @@
 	
 		<!-- 使用v-model -->
 		<vcm-picker
+			v-model="value"
 			:data-source="dataSource" 
 			:cascade="true" 
-			:cols="3" 
-			v-model="value"
+			:cols="3"
+			@change="handleChange" 
 		/>
 		<br>
 		<br>
@@ -61,7 +62,7 @@
 			:rules="ruleValidate"
 			@submit.native.prevent
 		>
-			<vcm-form-item prop="addr" label="选择" @on-form-change="handleChange">
+			<vcm-form-item prop="addr" label="选择">
 				<vcm-picker
 					:data-source="dataSource" 
 					:cascade="true" 
@@ -72,8 +73,14 @@
 			<vcm-form-item>
 				<vcm-button @click="handleSubmit">提交表单</vcm-button>
 			</vcm-form-item>
-			
 		</vcm-form>
+
+		<vcm-picker-view 
+			:data-source="dataSource" 
+			:cascade="true" 
+			:cols="3" 
+			v-model="formValidate.addr"
+		/>
 	</div>
 </template>
 <script>
@@ -88,6 +95,7 @@ export default {
 	name: "vcm-picker-basic",
 	components: {
 		'vcm-picker': MPicker,
+		'vcm-picker-view': MPicker.View,
 		'vcm-form': Form,
 		'vcm-form-item': Form.Item,
 		'vcm-button': Button,
@@ -97,8 +105,9 @@ export default {
 			show: false,
 			dataSource: cloneDeep(cascadeData),
 			dataAsyncSource: [],
-			value: ["140000", "140100", "140101"],
-			valueAsync: ["140000", "140100", "140101"],
+			value: ["330000", "330100", "330105"],
+			valueAsync: ["330000", "330100", "330105"],
+			valueView: ["330000", "330100", "330105"],
 			valueSeasons: [],
 			dataSeasons: cloneDeep(seasons),
 
@@ -143,7 +152,7 @@ export default {
 				MToast.info(res);
 			});
 		},
-		handleChange(...value) {
+		handleChange(value) {
 			console.log(value);
 		},
 		handleSubmit(name) {
