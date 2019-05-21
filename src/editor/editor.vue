@@ -210,7 +210,7 @@ export default {
 				// console.log(e);
 			}
 
-			ImgsPreview.popup({
+			ImgsPreview.open({
 				visible: true,
 				dataSource: [e.target.currentSrc],
 				opts: {
@@ -218,10 +218,6 @@ export default {
 					history: false,
 					getThumbBoundsFn: (index) => pos
 				}
-			}).then(() => {
-
-			}).catch(() => {
-
 			});
 		}
 	}

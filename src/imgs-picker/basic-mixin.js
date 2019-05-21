@@ -190,14 +190,10 @@ export default {
 					index: idx,
 					history: false,
 					getThumbBoundsFn: (index) => pos
-				}
-			}).then(() => {
-
-			}).catch(() => {
-
-			}).finally(() => {
-				this.$emit('close');
-			});	
+				},
+				onSure: () => this.$emit('close'),
+				onClose: () => this.$emit('close'),
+			});
 		},
 		getUrl(res) {
 			return this.format ? this.format(res) : res.data.url;

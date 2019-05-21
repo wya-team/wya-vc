@@ -84,18 +84,16 @@ handleClick(e) {
 	} catch (e) {
 		console.log(e);
 	}
-	ImgsPreview.popup({
+	ImgsPreview.open({
 		visible: true,
 		dataSource: this.dataSource,
 		opts: {
 			index: 2,
 			history: false,
 			getThumbBoundsFn: (index) => pos
-		}
-	}).then(() => {
-
-	}).catch(() => {
-
-	});
+		},
+		onSure: () => this.$emit('close'),
+		onClose: () => this.$emit('close')
+	})
 }
 ```

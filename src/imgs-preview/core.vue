@@ -250,7 +250,9 @@ const config = {
 };
 export default config;
 
-export const Func = CreatePortal({}, config);
+export const Func = CreatePortal({
+	promise: false
+}, config);
 
 </script>
 <style lang='scss'>

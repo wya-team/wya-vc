@@ -108,14 +108,10 @@ export default {
 					index,
 					history: false,
 					getThumbBoundsFn: (index) => pos,
-				}
-			}).then(() => {
-
-			}).catch((e) => {
-				console.log(e);
-			}).finally(() => {
-				this.$emit('close');
-			});	
+				},
+				onSure: () => this.$emit('close'),
+				onClose: () => this.$emit('close'),
+			});
 		}
 	}
 };

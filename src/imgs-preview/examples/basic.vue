@@ -97,7 +97,7 @@ export default {
 			} catch (e) {
 				console.log(e);
 			}
-			ImgsPreview.popup({
+			ImgsPreview.open({
 				visible: true,
 				dataSource: this.dataSource,
 				opts: {
@@ -105,10 +105,6 @@ export default {
 					history: false,
 					getThumbBoundsFn: (index) => pos
 				}
-			}).then(() => {
-
-			}).catch(() => {
-
 			});
 		}
 	}
