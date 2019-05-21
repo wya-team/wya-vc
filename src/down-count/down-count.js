@@ -29,7 +29,7 @@ export default {
 		},
 		format: {
 			type: [String, Function],
-			default: ""
+			default: "DD天HH小时mm分ss秒ms"
 		},
 		t: {
 			type: Number,
@@ -91,30 +91,24 @@ export default {
 				return;
 			}
 			let v;
-			let day = this.days + '天';
-			let hour = this.hours + '小时';
-			let minute = this.minutes + '分';
-			let second = this.seconds + '秒';
+			let day = this.days;
+			let hour = this.hours;
+			let minute = this.minutes;
+			let second = this.seconds;
 			let ms = this.ms;
+			let { format } = this;
 
-			switch (this.format) {
-				case "DD":
-					v = `${this.beforeText}${day}${this.afterText}`;
-					break;
-				case "DD:HH":
-					v = `${this.beforeText}${day}${hour}${this.afterText}`;
-					break;
-				case "DD:HH:MM":
-					v = `${this.beforeText}${day}${hour}${minute}${this.afterText}`;
-					break;
-				case "DD:HH:MM:SS:mm":
-					v = `${this.beforeText}${day}${hour}${minute}${second}${ms}${this.afterText}`;
-					break;
-				default:
-					v = `${this.beforeText}${day}${hour}${minute}${second}${this.afterText}`;
-					break;
+			v = this.formatter(format, [day, hour, minute, second, ms]);
+			
+
+			// 过来00*
+			if (!this.showZero) {
+				let regex = new RegExp(
+					`00(${this.formatter(format, Array.from({ length: 5 }, () => '|'))})?`, 
+					'g'
+				);
+				v = v.replace(regex, '');
 			}
-			!this.showZero && (v = v.replace(/00(天|小时|分|秒)?/g, ''));
 
 			return v;
 		}
@@ -145,6 +139,15 @@ export default {
 		this.stop();
 	},
 	methods: {
+		formatter(format, arr) {
+			// YYYY,MM
+			return format
+				.replace('DD', arr[0])
+				.replace('HH', arr[1])
+				.replace('mm', arr[2])
+				.replace('ss', arr[3])
+				.replace('ms', arr[4]);
+		},
 		start() {
 			if (this.targetTimestamp) {
 				this.timer && clearInterval(this.timer);
@@ -211,7 +214,7 @@ export default {
 					ms: this.ms,
 					beforeText: this.beforeText,
 					afterText: this.afterText,
-					format: this.forma,
+					format: this.format,
 					tag: this.tag,
 					showZero: this.showZer,
 				})

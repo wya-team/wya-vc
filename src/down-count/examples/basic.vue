@@ -5,7 +5,7 @@
 			:server-time="serverTime"
 			:t="0.01" 
 			style="color:blue"
-			format="DD:HH:MM:SS:mm"
+			format="DD:HH:mm:ss:ms"
 			@end="handleEnd(1)"
 		/> 
 		<br>
@@ -15,26 +15,22 @@
 			:t="0.01" 
 			:show-zero="false"
 			style="color:blue"
-			format="DD:HH:MM:SS:mm"
+			format="DD:HH:mm:ss:ms"
 			@end="handleEnd(1)"
 		/> 
 		<br>
 		<vc-down-count
 			:render-row="renderRow"
-			target-time="2018-10-15 10:10:10"
+			target-time="2020-10-15 10:10:10"
 			server-time="2018-10-15 10:10:5"
-			before-text="---beforeText---"
-			after-text="---afterText---"
 			@error="handleError"
 			@change="handleChange(arguments[0], 2)"
 			@end="handleEnd(2)"
 		/> 
 		<br>
 		<vc-down-count
-			target-time="2018-10-15 10:10:10"
+			target-time="2020-10-15 10:10:10"
 			server-time="2018-10-15 10:10:5"
-			before-text="---beforeText---"
-			after-text="---afterText---"
 			@error="handleError"
 			@change="handleChange(arguments[0], 2)"
 			@end="handleEnd(2)"
@@ -42,10 +38,8 @@
 			<template #default="it">{{ it.seconds }}</template>
 		</vc-down-count>
 		<vc-down-count
-			target-time="2018-10-15 10:10:10"
+			target-time="2020-10-15 10:10:10"
 			server-time="2018-10-15 10:10:5"
-			before-text="---beforeText---"
-			after-text="---afterText---"
 			@error="handleError"
 			@change="handleChange(arguments[0], 2)"
 			@end="handleEnd(2)"
@@ -90,7 +84,6 @@ export default {
 		},
 		renderRow(h, params) {
 			const { days, hours, minutes, seconds, ms, beforeText, afterText, format, tag, className } = params;
-			console.log(className);
 			const num = Number(ms);
 			const r = num % 255;
 			const g = (num + 100) % 255;
