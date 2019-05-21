@@ -44,11 +44,11 @@ export default {
 			default: ""
 		},
 		targetTime: {
-			type: [String, Number],
+			type: [String, Number, Date],
 			default: ""
 		},
 		serverTime: {
-			type: [String, Number],
+			type: [String, Number, Date],
 			default: ""
 		},
 		renderRow: Function
@@ -74,17 +74,17 @@ export default {
 		// 偏移值
 		serverOffset() {
 			return this.serverTime 
-				? (Date.parse(this.serverTime.replace(/-/g, "/")) - (new Date()).getTime()) 
+				? (this.getTimestamp(this.serverTime) - (new Date()).getTime()) 
 				: 0;
 		},
 		// 目标时间
 		targetTimestamp() {
-			if (!this.targetTime && Date.parse(this.targetTime.replace(/-/g, "/"))) {
+			if (!this.targetTime && this.getTimestamp(this.targetTime)) {
 				this.$emit("error", '请设定时间以及格式');
 				return null;
 			}
 
-			return new Date(this.targetTime.replace(/-/g, "/"));
+			return this.getTimestamp(this.targetTime);
 		},
 		result() {
 			if (this.renderRow) {
@@ -201,6 +201,16 @@ export default {
 				});
 
 			}
+		},
+		getTimestamp(date) {
+			if (date instanceof Date) {
+				return date.getTime();
+			} else if (typeof date === 'string') {
+				return Date.parse(date.replace(/-/g, "/"));
+			} else if (date.toString().length === 10) {
+				return date * 1000;
+			}
+			return date;
 		}
 	},
 	render(h) {

@@ -2,6 +2,24 @@
 	<div>
 		<vc-down-count 
 			:target-time="targetTime" 
+			:server-time="new Date()"
+			:t="1" 
+			style="color:blue"
+			format="DD:HH:mm:ss"
+			@end="handleEnd(1)"
+		/> 
+		<br>
+		<vc-down-count 
+			:server-time="serverTime" 
+			:t="1"
+			target-time="2019-05-22 15:00:00" 
+			style="color:blue"
+			format="DD:HH:mm:ss"
+			@end="handleEnd(1)"
+		/> 
+		<br>
+		<vc-down-count 
+			:target-time="targetTime" 
 			:server-time="serverTime"
 			:t="0.01" 
 			style="color:blue"

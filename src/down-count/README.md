@@ -10,11 +10,11 @@
 ---|---|---|---
 t | 刷新周期，单位秒 | `Number`	| 1		
 render-row | 自定义渲染 | `Function` | -
-target-time	| 目标时间 | `String`, `Number` |	-
-server-time	| 服务器时间 | `String`, `Number` | -	
-before-text	| 前缀 | `String` |	-
-after-text	| 后缀 | `String` | -
-format | 格式(DD:HH:MM:SS:mm) | `String` | 'DD:HH:MM:SS'
+target-time	| 目标时间 | `String`, `Number`, `Date` |	-
+server-time	| 服务器时间 | `String`, `Number`, `Date` | -	
+before-text	| 前缀(v1.3.18被废除) | `String` |	-
+after-text	| 后缀(v1.3.18被废除) | `String` | -
+format | 格式(DD:HH:MM:SS:mm) | `String` | 'DD天HH小时mm分ss秒ms'
 tag | 标签 | `String` | 'span'
 
 
