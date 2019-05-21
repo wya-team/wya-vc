@@ -1,32 +1,28 @@
 <template>
 	<div class="vc-quill-editor">
-		<slot v-if="$slots.toolbar" name="toolbar"/>
-		<template v-else>
-			<toolbar>
-				<button id="img" style="outline: none" >
+		<slot name="toolbar">
+			<vc-editor-toolbar v-if="options.modules && options.modules.toolbar === '#toolbar'">
+				<button id="img" style="outline: none; line-height: 1;" >
 					<vc-upload
 						v-bind="upload"
-						accept="image/gif,image/jpeg,image/jpg,image/png" 
-						style="outline: none"
+						:accept="accept" 
 						@file-success="handleImgSuccess"
 					>
-						<vc-icon type="image" />
+						<vc-icon type="image" style="font-size: 15px" />
 					</vc-upload>
 				</button>
 				<slot name="extend" />
-			</toolbar>
-		</template>
+			</vc-editor-toolbar>
+		</slot>
 		<div ref="editor"/>
 	</div>
 </template>
 
 <script>
 import Quill from 'quill';
-import 'quill/dist/quill.core.css';
-import 'quill/dist/quill.snow.css';
-import 'quill/dist/quill.bubble.css';
+import './style.scss';
 import emitter from '../extends/mixins/emitter'; // 表单验证
-import Toolbar from './toolbar';
+import EditorToolbar from './toolbar';
 import Upload from '../upload/index';
 import Icon from '../icon/index';
 import ImgsPreview from '../imgs-preview/index';
@@ -36,7 +32,7 @@ import defaultOptinos from './options';
 export default {
 	// name: "vc-editor",
 	components: {
-		'toolbar': Toolbar,
+		'vc-editor-toolbar': EditorToolbar,
 		'vc-upload': Upload,
 		'vc-icon': Icon
 	},
@@ -53,7 +49,11 @@ export default {
 		options: {
 			type: Object,
 			default() {
-				return {};
+				return {
+					modules: {
+						toolbar: "#toolbar",
+					}
+				};
 			}
 		},
 		disabled: {
@@ -64,6 +64,13 @@ export default {
 			type: Object,
 			default: () => ({})
 		},
+		/**
+		 * 手机端建议用image/*，避免Android端选不了
+		 */
+		accept: {
+			type: String,
+			default: 'image/gif,image/jpeg,image/jpg,image/png'
+		}
 	},
 	data() {
 		return {
@@ -100,9 +107,9 @@ export default {
 	},
 	methods: {
 		init() {
+			this.initFontSize();
 			this.editor = new Quill(this.$refs.editor, { ...defaultOptinos, ...this.options });
 			this.editor.enable(!this.disabled);
-
 			if (this.value) {
 				this.editor.setText('zhellll');
 				this.editor.clipboard.dangerouslyPasteHTML(this.value);
@@ -128,6 +135,25 @@ export default {
 				this.dispatch('vc-form-item', 'form-change', this.content);
 			});
 		},
+		initFontSize() {
+			let Parchment = Quill.import('parchment');
+			let SizeClass = new Parchment.Attributor.Class('size', 'ql-size', {
+				scope: Parchment.Scope.INLINE,
+				whitelist: ['12px', '14px', '16px', '18px', '20px', '22px', '24px']
+			});
+			let SizeStyle = new Parchment.Attributor.Style('size', 'font-size', {
+				scope: Parchment.Scope.INLINE,
+				whitelist: ['12px', '14px', '16px', '18px', '20px', '22px', '24px']
+			});
+			Quill.register({
+				'attributors/class/size': SizeClass,
+				'attributors/style/size': SizeStyle
+			}, true); // true 表示要覆盖已有的配置
+			Quill.register({
+				'formats/size': SizeClass,
+			}, true);
+		
+		},
 		initListener() {
 			const ImageBlot = Quill.import('formats/image');
 			const Parchment = Quill.import('parchment');
@@ -143,7 +169,6 @@ export default {
 		getImgs() {
 			let imgs = [];
 			let deltas = this.editor.getContents().ops || [];
-			console.log(deltas);
 
 			for (let i = 0; i < deltas.length; i++) {
 				if (deltas[i].insert.image) {
@@ -205,6 +230,9 @@ export default {
 <style lang="scss">
 .vc-quill-editor {
 	color: #333 !important;
+	.vc-editor-size {
+		width: 78px;
+	}
 	.ql-editor{
 		height:500px;
 	}

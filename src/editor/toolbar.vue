@@ -31,10 +31,13 @@
 		</span>
 		<span class="ql-formats">
 			<select class="ql-size">
-				<option value="small"/>
-				<option selected/>
-				<option value="large"/>
-				<option value="huge"/>
+				<option selected value="12px"/>
+				<option value="14px"/>
+				<option value="16px"/>
+				<option value="18px"/>
+				<option value="20px"/>
+				<option value="22px"/>
+				<option value="24px"/>
 			</select>
 		</span>
 		<span class="ql-formats">
@@ -67,9 +70,6 @@
 				<option value="right"/>
 				<option value="justify"/>
 			</select>
-		</span>
-		<span class="ql-formats">
-			<button class="ql-clean"/>
 		</span>
 		<span class="ql-formats">
 			<button class="ql-link"/>

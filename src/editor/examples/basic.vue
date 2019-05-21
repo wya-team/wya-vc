@@ -6,10 +6,10 @@
 		@submit.native.prevent
 	>
 		<vc-form-item prop="value" @on-form-change="handleChange">
+			<!-- :options="options" -->
 			<vc-editor 
 				ref="editor"
 				v-model="formValidate.value"
-				:options="options"
 				:disabled="disabled"
 			/>
 		</vc-form-item>
@@ -22,6 +22,7 @@ import Form from '../../form';
 import Input from '../../input';
 import Button from '../../button';
 import Editor from '../index';
+import Toolbar from '../toolbar';
 import { VcInstance } from '../../vc/index';
 
 VcInstance.init({
@@ -35,18 +36,28 @@ VcInstance.init({
 export default {
 	name: "vc-editor-basic",
 	components: {
+		"toolbar": Toolbar,
 		"vc-editor": Editor,
 		"vc-editor-view": Editor.View,
 		'vc-button': Button,
 		'vc-form': Form,
 		'vc-form-item': Form.Item,
 	},
+	
 	data() {
 		return {
 			options: {
 				modules: {
-					toolbar: '#toolbar',
-				},
+					toolbar: {
+						container: [
+							['bold', 'italic', 'underline', 'strike'],
+							[{ 'header': [1, 2, 3, 4, 5, 6, false] }],
+							['link'],
+							[{ 'color': [] }, { 'background': [] }],
+							[{ 'align': [] }]
+						],
+					},
+				}
 			},
 			disabled: false,
 			formValidate: {
