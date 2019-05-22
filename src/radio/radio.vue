@@ -193,6 +193,9 @@ export default {
 	}
 	@include when(disabled) {
 		cursor: not-allowed;
+		input {
+			cursor: not-allowed;
+		}
 		@include element(border){
 			&:before, &:after{
 				border-color: #dcdee2;

@@ -14,7 +14,7 @@
 					/>
 				</slot>
 			</div>
-			<div class="vc-input__content">
+			<div :class="classes" class="vc-input__content">
 				<slot name="content">
 					<input
 						ref="input"
@@ -36,7 +36,7 @@
 			</vc-transition-fade>
 			<div
 				v-if="$slots.append || append" 
-				:class="{ 'is-icon': append }" 
+				:class="[{ 'is-icon': append }, classes]" 
 				class="vc-input__append"
 			>
 				<slot name="append">
@@ -104,10 +104,10 @@ $block: vc-input;
 	}
 	@include element(content){
 		flex: 1;
+		background-color: $white;
 		input {
 			position: relative;
 			width: 100%;
-			background-color: $white;
 			outline: 0;
 			color: $c51;
 			padding-top: 5px;
@@ -117,11 +117,16 @@ $block: vc-input;
 			&::placeholder {
 				color: #c5c8ce;
 			}
-			&[disabled] {
+		}
+		@include when(disabled) {
+			background-color: #f3f3f3;
+			opacity: 1;
+			cursor: not-allowed;
+			color: #ccc;
+			// hack需要设置
+			input {
 				background-color: #f3f3f3;
-				opacity: 1;
 				cursor: not-allowed;
-				color: #ccc;
 			}
 		}
 	}
@@ -165,12 +170,18 @@ $block: vc-input;
 		text-align: center;
 		font-size: 13px;
 		line-height: 28px;
+		height: 28px;
 		white-space: nowrap;
 		z-index: 3;
+		background: #fff;
 		@include when(icon) {
 			width: 16px;
 			font-size: 12px;
 			background: rgba(229, 229, 229, 1);
+		}
+		@include when(disabled) {
+			cursor: not-allowed;
+			background-color: #f3f3f3;
 		}
 	}
 	/**

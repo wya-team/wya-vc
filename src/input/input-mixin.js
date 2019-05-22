@@ -85,7 +85,8 @@ export default {
 	computed: {
 		classes() {
 			return {
-				'is-focus': this.isFocus
+				'is-focus': this.isFocus,
+				'is-disabled': this.disabled
 			};
 		},
 		hooks() {

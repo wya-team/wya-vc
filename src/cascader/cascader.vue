@@ -6,6 +6,7 @@
 		:trigger="trigger"
 		:tag="tag"
 		:placement="placement"
+		:disabled="disabled"
 		:portal-class-name="['is-padding-none', portalClassName]"
 		class="vc-cascader"
 		@mouseenter.native="isHover = true"
@@ -23,7 +24,6 @@
 			:placeholder="placeholder || '请选择'"
 			:allow-dispatch="false"
 			class="vc-cascader__input"
-			@click="visible = true"
 		>
 			<template #append>
 				<!-- down, up, clear -->

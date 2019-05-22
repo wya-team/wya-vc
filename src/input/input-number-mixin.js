@@ -29,7 +29,7 @@ export default {
 		},
 		formatter: {
 			type: Function,
-			default: (v, precision) => (!v ? v : Number(v).toFixed(precision))
+			default: (v, precision) => (!v || v === '-' ? '' : Number(v).toFixed(precision))
 		}
 	},
 	data() {
@@ -97,7 +97,8 @@ export default {
 		},
 		async handleBlur(e) {
 			this.isInput = false;
-			let value = this.required && !this.currentValue
+			let value = this.currentValue === '-' ? '' : this.currentValue;
+			value = this.required && !this.currentValue
 				? this.min
 				: this.currentValue;
 

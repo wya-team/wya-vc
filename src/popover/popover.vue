@@ -47,6 +47,10 @@ export default {
 			type: String,
 			default: 'span'
 		},
+		disabled: {
+			type: Boolean,
+			default: true
+		}
 	},
 	data() {
 		return {
@@ -128,6 +132,8 @@ export default {
 		 * v: true, false, undefined(处理 doc click)
 		 */
 		handleChange(e = {}, v) {
+			if (this.disabled) return;
+
 			this.isHover && this.timer && clearTimeout(this.timer);
 			let path = e.path || (e.composedPath && e.composedPath()) || [];
 

@@ -1,12 +1,14 @@
 <template>
-	<div style="margin: 40px">
+	<div style="margin: 40px;">
 		<vc-button @click="handleTestingStart">内存测试</vc-button>
 		<vc-button @click="handleTestingEnd">取消测试</vc-button>
+		<vc-button @click="disabled = !disabled">disabled: {{ disabled }}</vc-button>
 
 		<!-- 基本 -->
 		<div style="margin: 40px 0 ">
 			<vc-select 
 				v-model="value1"
+				:disabled="disabled"
 				clearable 
 				search
 				style="width: 200px"
@@ -41,6 +43,7 @@
 			<vc-select 
 				v-model="value2" 
 				:max="5" 
+				:disabled="disabled"
 				style="width: 200px" 
 				search
 			>
@@ -219,6 +222,8 @@ export default {
 		let value5 = '1';
 
 		return {
+			disabled: false,
+
 			cityList,
 			cityList1,
 			cityList2,

@@ -7,7 +7,9 @@
 		:tag="tag"
 		:placement="placement"
 		:auto-width="autoWidth"
+		:disabled="disabled"
 		:portal-class-name="['is-padding-none', portalClassName]"
+		:class="classes"
 		class="vc-select"
 		@mouseenter.native="isHover = true"
 		@mouseleave.native="isHover = false"
@@ -24,14 +26,13 @@
 			:placeholder="placeholder || '请选择'"
 			:allow-dispatch="false"
 			class="vc-select__input"
-			@click="visible = true"
 		>
 			<template v-if="multiple && (currentValue && currentValue.length > 0)" #content>
-				<div class="vc-select__tags">
+				<div :class="disabledClasses" class="vc-select__tags">
 					<vc-tag 
 						v-for="(item, index) in currentValue" 
 						:key="item" 
-						closable 
+						:closable="!disabled"
 						@close="handleClose(item)"
 					>
 						{{ currentLabel[index] || '' }}
@@ -174,7 +175,12 @@ export default {
 		},
 		multiple() {
 			return this.max > 1;
-		}
+		},
+		classes() {
+			return {
+				'is-disabled': this.disabled
+			};
+		},
 	},
 	watch: {
 		value: {
@@ -334,13 +340,11 @@ $block: vc-select;
 		}
 	}
 	@include element(append) {
-		cursor: pointer;
 		color: #808695;
 		padding: 0 10px;
-		background: white !important;
 		position: relative;
 		text-align: center;
-		line-height: 26px;
+		line-height: 28px;
 		font-size: 12px;
 		white-space: nowrap;
 	}
