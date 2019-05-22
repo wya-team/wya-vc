@@ -481,6 +481,7 @@ export default {
 		top: 17px;
 		right: 16px;
 		color: $c999;
+		cursor: pointer;
 	}
 	@include element(icon) {
 		margin-right: 8px;
