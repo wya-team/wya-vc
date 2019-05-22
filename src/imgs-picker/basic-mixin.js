@@ -183,7 +183,7 @@ export default {
 			}
 
 			this.$emit('open');
-			ImgsPreview.popup({
+			ImgsPreview.open({
 				visible: true,
 				dataSource: this.dataSource,
 				opts: {
