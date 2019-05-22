@@ -51,10 +51,12 @@
 					<div v-if="footer" :class="{ 'is-confirm': mode }" class="vc-modal__footer">
 						<slot name="footer">
 							<vc-button
+								v-if="cancelText"
 								style="margin-right: 12px;"
 								@click="handleCancel"
 							>{{ cancelText }}</vc-button>
 							<vc-button 
+								v-if="okText"
 								type="primary"
 								@click="handleOk"
 							>{{ okText }}</vc-button>
@@ -139,11 +141,11 @@ export default {
 			default: false
 		},
 		okText: {
-			type: String,
+			type: String | Boolean,
 			default: '确定'
 		},
 		cancelText: {
-			type: String,
+			type: String | Boolean,
 			default: '取消'
 		},
 		styles: {
