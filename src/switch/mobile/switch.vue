@@ -9,10 +9,10 @@
 		<input :name="name" :value="currentValue" type="hidden">
 		<span class="vcm-switch__content">
 			<slot v-if="currentValue === trueValue" name="open">
-				{{ open }}
+				{{ openText }}
 			</slot>
 			<slot v-if="currentValue === falseValue" name="close">
-				{{ close }}
+				{{ closeText }}
 			</slot>	
 		</span>
 		<span class="vcm-switch__inner"/>

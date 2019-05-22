@@ -19,6 +19,7 @@
 </template>
 <script>
 import MTransition from '../../transition/index.m';
+import scrollbarMixin from '../scrollbar-mixin';
 
 const placement2mode = {
 	left: 'left',
@@ -33,6 +34,7 @@ export default {
 		'vcm-transtion-fade': MTransition.Fade,
 		'vcm-transtion-slide': MTransition.Slide,
 	},
+	mixins: [scrollbarMixin],
 	model: {
 		prop: 'visible',
 		event: 'visible-change'

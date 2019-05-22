@@ -28,11 +28,11 @@ export default {
 		name: {
 			type: String
 		},
-		open: {
+		openText: {
 			type: String,
 			default: ''
 		},
-		close: {
+		closeText: {
 			type: String,
 			default: ''
 		}
