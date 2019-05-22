@@ -7,10 +7,14 @@
 		@keydown.space="handdleToggle"
 	>
 		<input :name="name" :value="currentValue" type="hidden">
-		<!-- <span class="vcm-switch__content">
-			<slot v-if="currentValue === trueValue" name="open" />
-			<slot v-if="currentValue === falseValue" name="close" />
-		</span> -->
+		<span class="vcm-switch__content">
+			<slot v-if="currentValue === trueValue" name="open">
+				{{ open }}
+			</slot>
+			<slot v-if="currentValue === falseValue" name="close">
+				{{ close }}
+			</slot>	
+		</span>
 		<span class="vcm-switch__inner"/>
 		<vcm-spin 
 			v-if="loading" 
@@ -49,10 +53,11 @@ export default {
 	user-select: none;
 	transition: all .2s ease-in-out;
 	@include element(content) {
-		color: #fff;
-		font-size: 12px;
+		color: #53d769;
+		font-size: 14px;
 		position: absolute;
-		left: 23px;
+		left: 30px;
+		line-height: 28px;
 	}
 	@include element(inner) {
 		content: '';
@@ -81,7 +86,8 @@ export default {
 		border-color: #53d769;
 		background-color: #53d769;
 		@include element(content) {
-			left: 7px;
+			left: 3px;
+			color: #fff;
 		}
 		@include element(inner) {
 			left: 20px;

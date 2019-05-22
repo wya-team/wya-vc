@@ -8,8 +8,12 @@
 	>
 		<input :name="name" :value="currentValue" type="hidden">
 		<span class="vc-switch__content">
-			<slot v-if="currentValue === trueValue" name="open" />
-			<slot v-if="currentValue === falseValue" name="close" />
+			<slot v-if="currentValue === trueValue" name="open">
+				{{ open }}
+			</slot>
+			<slot v-if="currentValue === falseValue" name="close">
+				{{ close }}
+			</slot>	
 		</span>
 		<span class="vc-switch__inner"/>
 		<vc-spin 

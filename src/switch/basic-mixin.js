@@ -27,6 +27,14 @@ export default {
 		},
 		name: {
 			type: String
+		},
+		open: {
+			type: String,
+			default: ''
+		},
+		close: {
+			type: String,
+			default: ''
 		}
 	},
 	data() {
