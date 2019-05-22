@@ -18,6 +18,7 @@
 					v-if="isStatus"
 					:type="currentStatus" 
 					:class="`is-${currentStatus}`"
+					:style="colorStyle"
 					class="vc-progress__icon"
 				/>
 				<span v-else>{{ percent }}%</span>
@@ -88,14 +89,32 @@ export default {
 		size: {
 			type: Number,
 			default: 120
+		},
+		normalColor: {
+			type: String,
+			default: '#5495f6'
+		},
+		successColor: {
+			type: String,
+			default: '#52c41a'
+		},
+		errorColor: {
+			type: String,
+			default: '#f5222d'
 		}
 	},
 	data() {
 		return {
-			currentStatus: this.status
+			currentStatus: '',
+			oColor: ''
 		};
 	},
 	computed: {
+		colorStyle() {
+			return {
+				color: this.oColor
+			};
+		},
 		circleBoxSize() {
 			return {
 				width: `${this.size}px`, 
@@ -106,7 +125,8 @@ export default {
 		innerStyle() {
 			let style = {
 				height: this.strokeWidth + 'px',
-				width: this.percent + '%'
+				width: this.percent + '%',
+				backgroundColor: this.oColor
 			};
 			return style;
 		},
@@ -138,8 +158,20 @@ export default {
 		percent(val) {
 			console.log(val);
 		},
-		status(val) {
-			this.currentStatus = val;
+		currentStatus(val) {
+			if (this.currentStatus === 'normal' || this.currentStatus === 'active') {
+				this.oColor = this.normalColor;
+			} else if (this.currentStatus === 'success') {
+				this.oColor = this.successColor;
+			} else if (this.currentStatus === 'error') {
+				this.oColor = this.errorColor;
+			}
+		},
+		status: {
+			immediate: true,
+			handler(val) {
+				this.currentStatus = val;
+			}
 		}
 	},
 	created() {
