@@ -15,9 +15,8 @@ size | 环形进度条画布宽度（只有type为`circle`时可用） | `Number
 stroke-width | 进度条宽度 | `Number` | 6
 stroke-color | 环形进度条颜色 | `String` | #2d8cf0 
 show-info | 是否显示进度数值或者状态图标 | `Boolean` | true
-error-color| error的颜色 | `String` | #f5222d
-success-color| success | `String` | #52c41a
-normal-color| normal | `String` | #5495f6
+line-theme| line的颜色 | `Object` | {normal: '#5495f6', success: '#52c41a', error: '#f5222d'}
+
 
 #### 事件
 

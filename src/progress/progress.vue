@@ -90,17 +90,13 @@ export default {
 			type: Number,
 			default: 120
 		},
-		normalColor: {
-			type: String,
-			default: '#5495f6'
-		},
-		successColor: {
-			type: String,
-			default: '#52c41a'
-		},
-		errorColor: {
-			type: String,
-			default: '#f5222d'
+		lineTheme: {
+			type: Object,
+			default: () => ({
+				normal: '#5495f6',
+				success: '#52c41a',
+				error: '#f5222d'
+			})
 		}
 	},
 	data() {
@@ -159,13 +155,7 @@ export default {
 			console.log(val);
 		},
 		currentStatus(val) {
-			if (this.currentStatus === 'normal' || this.currentStatus === 'active') {
-				this.oColor = this.normalColor;
-			} else if (this.currentStatus === 'success') {
-				this.oColor = this.successColor;
-			} else if (this.currentStatus === 'error') {
-				this.oColor = this.errorColor;
-			}
+			this.oColor = this.lineTheme[val];
 		},
 		status: {
 			immediate: true,
