@@ -5,7 +5,7 @@
 
 		<!-- group -->
 		<vc-radio-group v-model="phone">
-			<vc-radio label="apple">
+			<vc-radio label="apple" disabled>
 				<span>Apple</span>
 			</vc-radio>
 			<vc-radio label="android">

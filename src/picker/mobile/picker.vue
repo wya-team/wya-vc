@@ -9,6 +9,7 @@
 </template>
 
 <script>
+import { isEqualWith } from 'lodash';
 import Core, { Func } from './core';
 import MPickerPopup from './picker-popup';
 import List from '../../list/index.m';
@@ -54,9 +55,11 @@ export default {
 		value: {
 			immediate: true,
 			handler(v, old) {
-				/**
-				 * 强制必须使用v-model，所以不需要判断一次
-				 */
+				// 数组情况下同值会重新set
+				if (isEqualWith(v, this.currentValue)) {
+					return;
+				}
+
 				this.currentValue = v;
 			}
 		},

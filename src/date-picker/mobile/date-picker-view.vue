@@ -102,7 +102,7 @@ export default {
 				}
 
 				/**
-				 * 容易导致无限循环
+				 * 事件对象情况下同值会重新set
 				 */
 				if (+new Date(v) !== +value2date(this.currentValue) && v) {
 					this.currentValue = date2value(v, this.modeArr);

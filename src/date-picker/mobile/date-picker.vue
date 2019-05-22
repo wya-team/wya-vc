@@ -77,9 +77,11 @@ export default {
 			immediate: true,
 			handler(v, old) {
 				/**
-				 * 强制必须使用v-model，所以不需要判断一次
+				 * 事件对象情况下同值会重新set
 				 */
-				this.currentValue = v;
+				if (+new Date(v) !== +value2date(this.currentValue) && v) {
+					this.currentValue = v;
+				}
 			}
 		},
 		currentValue(v) {

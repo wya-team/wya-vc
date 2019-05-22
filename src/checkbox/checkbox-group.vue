@@ -4,6 +4,7 @@
 	</div>
 </template>
 <script>
+import { isEqualWith } from 'lodash';
 import Emitter from '../extends/mixins/emitter';
 
 export default {
@@ -31,6 +32,9 @@ export default {
 		value: {
 			immediate: true,
 			handler(v) {
+				if (isEqualWith(v, this.currentValue)) {
+					return;
+				}
 				this.currentValue = v;
 			}
 		},
