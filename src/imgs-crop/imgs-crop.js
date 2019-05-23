@@ -108,10 +108,12 @@ export default {
 			default: () => [0, 0, 0, 0.5]
 		},
 
+		// useCORS
 		crossOrigin: {
 			type: String,
 			// ''. 'anonymous', 'use-credentials'
-			default: ''
+			default: 'anonymous',
+			validator: v => /^(|anonymous|use-credentials)$/.test(v),
 		},
 
 		// 是否支持拖拽图片进来编辑
@@ -413,7 +415,7 @@ export default {
 			return canvas;
 		},
 
-		getImage(isNormal = true, fileName = '____fileName', getFile = false) {
+		getImage({ isNormal = true, fileName = '____fileName', getFile = false }) {
 			return Utils.canvas2file(
 				isNormal ? this.getImageToCanvas() : this.getImageScaledToCanvas(), 
 				{ fileName, getFile }

@@ -5,6 +5,7 @@
 			:src="src" 
 			:scale="scale" 
 			:rotate="rotate" 
+			cross-origin="anonymous"
 			@drop-file="handleFn"
 			@load-failure="handleFn"
 			@load-success="handleFn"
@@ -35,7 +36,9 @@ export default {
 	},
 	data() {
 		return {
-			src: 'https://oss.ruishan666.com/image/xcx/180313/942996157518/10053669,2880,1800.jpg',
+			// src: 'https://wyatest.oss-cn-hangzhou.aliyuncs.com/image/1/20190522/212240/CEB)AY7L){07$XT$DU8B}Y7.jpg',
+			// src: 'https://oss.ruishan666.com/image/xcx/180313/942996157518/10053669,2880,1800.jpg',
+			// src: 'https://avatars3.githubusercontent.com/u/34465004?s=200&v=4',
 			scale: 1,
 			rotate: 0,
 			result: null
