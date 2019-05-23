@@ -79,6 +79,11 @@ export default {
 	computed: {
 		
 	},
+	created() {
+		setTimeout(() => {
+			this.value3 = 0;
+		}, 3000);
+	},
 	methods: {
 		handleInput(e) {
 			this.value2 = e;

@@ -124,10 +124,11 @@ export default {
 	computed: {
 		
 	},
-	created() {
+	mounted() {
 		setTimeout(() => {
 			this.formValidate.value = 0;
-		}, 11);
+			this.value1 = 0;
+		}, 3000);
 	},
 	methods: {
 		handleChange() {

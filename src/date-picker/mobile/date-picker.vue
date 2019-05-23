@@ -12,6 +12,7 @@
 import { pick } from 'lodash';
 import Core, { Func } from './core';
 import List from '../../list/index.m';
+import { VcError } from '../../vc/index';
 import { getSelectedData } from '../../utils/index';
 import emitter from '../../extends/mixins/emitter'; // 表单验证
 import { value2date, date2value, parseMode } from '../utils';
@@ -60,7 +61,8 @@ export default {
 					.replace('HH', arr[3])
 					.replace('mm', arr[4]);
 			}
-		}
+		},
+		title: String
 	},
 	data() {
 		return {
@@ -76,15 +78,24 @@ export default {
 		value: {
 			immediate: true,
 			handler(v, old) {
+
+				if (v && new Date(v) == 'Invalid Date') {
+					throw new VcError('m-data-picker', 'Invalid Date');
+				}
+
 				/**
 				 * 事件对象情况下同值会重新set
+				 * 如果v为undefined，this.currentValue也undefined
+				 * NaN !== NaN true -> this.currentValue = undefined;
 				 */
-				if (+new Date(v) !== +value2date(this.currentValue) && v) {
+				if (+new Date(v) !== +this.currentValue) {
 					this.currentValue = v;
 				}
+
 			}
 		},
 		currentValue(v) {
+			console.log(v);
 			this.$emit('change', v, this.current);
 			// form表单
 			this.dispatch('vc-form-item', 'form-change', v);

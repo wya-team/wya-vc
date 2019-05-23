@@ -1,7 +1,10 @@
 <template>
 	<vcm-picker-popup
-		v-bind="$attrs"
 		v-model="isActive"
+		:title="title"
+		:cancel-text="cancelText"
+		:ok-text="okText"
+		:show-toolbar="showToolbar"	
 		@ok="handleOk"
 		@cancel="handleCancel"
 		@close="handleClose"
@@ -31,12 +34,18 @@ const config = {
 		'vcm-picker-popup': MPicker.Popup,
 		'vcm-date-picker-view': MDatePickerView
 	},
-	inheritAttrs: false,
+	// inheritAttrs: false, Portal暂时无法使用
 	model: {
 		prop: 'value',
 		event: 'change'
 	},
 	props: {
+		...pick(MPicker.Popup.props, [
+			'title',
+			'cancelText',
+			'okText',
+			'showToolbar'
+		]),
 		...pick(MDatePickerView.props, [
 			'mode',
 			'minDate',

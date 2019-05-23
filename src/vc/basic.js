@@ -85,7 +85,7 @@ VcBasic.prototype.config = {
 	/**
 	 * 用于过时的缓存, 如icon的缓存解析
 	 */
-	version: '1.0.0',
+	version: '1.4.0',
 	/**
 	 * vuex + vue-router
 	 */

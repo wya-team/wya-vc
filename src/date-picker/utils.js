@@ -19,7 +19,7 @@ export const date2value = (v, format = 'YMDHm') => {
 	return result;
 };
 
-export const value2date = (v) => {
+export const value2date = (v = []) => {
 	let result = [];
 	for (let i = 0; i < 5 - v.length; i++) {
 		result.push(false);

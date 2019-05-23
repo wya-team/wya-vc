@@ -147,6 +147,7 @@ export default {
 				dataSource: cloneDeep(cascadeData),
 				value: [],
 				cols: 3,
+				title: '222',
 				onOk: () => {
 					MToast.info(res.label.join(','));
 				},

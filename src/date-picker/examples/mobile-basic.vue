@@ -6,6 +6,12 @@
 				mode="datetime"
 			/>
 			<vcm-date-picker 
+				v-model="valueEmpty"
+				mode="datetime"
+				extra="空值测试"
+				title="2"
+			/>
+			<vcm-date-picker 
 				v-model="value"
 				:arrow="false"
 				mode="time"
@@ -70,6 +76,7 @@ export default {
 		return {
 			show: false,
 			value: new Date(),
+			valueEmpty: undefined,
 			valueView: new Date(),
 			formValidate: {
 				timeV: undefined,
@@ -89,7 +96,17 @@ export default {
 	computed: {
 	},
 	mounted() {
-		
+		setTimeout(() => {
+			this.valueEmpty = new Date('2020');
+		}, 3000);
+
+		setTimeout(() => {
+			this.valueEmpty = new Date('2020');
+		}, 6000);
+
+		setTimeout(() => {
+			this.valueEmpty = undefined;
+		}, 9000);
 	},
 	methods: {
 		handleClick() {

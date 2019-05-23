@@ -103,14 +103,11 @@ export default {
 
 				/**
 				 * 事件对象情况下同值会重新set
+				 * 如果v为undefined，this.currentValue也undefined
+				 * NaN !== NaN true -> this.currentValue = undefined;
 				 */
-				if (+new Date(v) !== +value2date(this.currentValue) && v) {
-					this.currentValue = date2value(v, this.modeArr);
-					this.rebuildData = this.makeRebuildData();
-				}
-
-				if (!v) {
-					this.currentValue = date2value(new Date(), this.modeArr);
+				if (+new Date(v) !== +value2date(this.currentValue)) {
+					this.currentValue = date2value(v || new Date(), this.modeArr);
 					this.rebuildData = this.makeRebuildData();
 				}
 			}

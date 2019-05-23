@@ -1,7 +1,10 @@
 <template>
 	<vcm-picker-popup
-		v-bind="$attrs"
 		v-model="isActive"
+		:title="title"
+		:cancel-text="cancelText"
+		:ok-text="okText"
+		:show-toolbar="showToolbar"	
 		@ok="handleOk"
 		@cancel="handleCancel"
 		@close="handleClose"
@@ -32,12 +35,18 @@ const config = {
 		'vcm-picker-popup': MPickerPopup,
 		'vcm-picker-view': MPickerView
 	},
-	inheritAttrs: false,
+	// inheritAttrs: false, Portal暂时无法使用
 	model: {
 		prop: 'value',
 		event: 'change'
 	},
 	props: {
+		...pick(MPickerPopup.props, [
+			'title',
+			'cancelText',
+			'okText',
+			'showToolbar'
+		]),
 		...pick(MPickerView.props, [
 			'value',
 			'dataSource',
