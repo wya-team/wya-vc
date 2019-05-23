@@ -139,7 +139,6 @@ export default {
 				}
 				return item;
 			});
-			console.log(res);
 			this.$emit('error', res);
 		},
 		handleFileComplete(res) {
