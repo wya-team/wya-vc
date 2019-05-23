@@ -151,7 +151,10 @@ export default {
 		 * TODO: 初始化时，存在查找耗时
 		 */
 		label() {
-			const { label = [] } = getSelectedData(this.currentValue, this.dataSource);
+			const { label = [] } = getSelectedData(
+				this.changeOnSelect ? this.currentValue : this.value,
+				this.dataSource
+			);
 			return label.filter(i => i);
 		},
 		formatLabel() {
