@@ -65,7 +65,10 @@ export default {
 			handler(v) {
 				// 数组情况下同值会重新set
 				if (isEqualWith(v, this.currentValue)) {
-					return;
+					/**
+					 * 空数组的情况需要重新rebuildData
+					 */
+					v.length === 0 && this.makeRebuildData();
 				}
 				
 				this.currentValue = v;
