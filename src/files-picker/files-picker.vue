@@ -8,12 +8,12 @@
 			@file-progress="handleFileProgress"
 			@file-success="handleFileSuccess"
 			@file-error="handleFileError"
-			@error="$emit('error', arguments[0])"
+			@error="handleError"
 			@complete="handleFileComplete"
 		>
-			<slot name="trigger" />
+			<slot name="upload" />
 		</vc-upload>
-		<template v-if="!$scopedSlots.default">
+		<slot :it="data" name="file">
 			<div 
 				v-for="(item, index) in data" 
 				:key="index"
@@ -37,13 +37,15 @@
 					<vc-icon type="close" />
 				</span>
 			</div>
-		</template>
-		<slot :files="data" />
+		</slot>
 	</div>
 </template>
 
 <script>
+import { Device } from '@wya/utils';
 import emitter from '../extends/mixins/emitter'; // 表单验证
+import Message from '../message/index';
+import Toast from '../toast/index';
 import Upload from '../upload/index';
 import Icon from '../icon';
 
@@ -166,7 +168,13 @@ export default {
 				}
 				return item;
 			});
-			this.$emit('error', res);
+			this.handleError(res);
+		},
+		handleError(err) {
+			console.log(err);
+			let { $listeners: { error } } = this;
+			!error && (Device.touch ? Toast.info(err.msg, 2) : Message.error(err.msg, 2));
+			this.$emit('error', err);
 		},
 		handleFileComplete(res) {
 			this.$emit('complete', res);

@@ -12,12 +12,12 @@
 				class="v-files-picker"
 				@error="handleError"
 			>
-				<!-- <template slot-scope="slotProps">
-						<div v-for="(item, index) in slotProps.files" :key="index">
-							{{ item }}
-						</div>
-					</template> -->
-				<div slot="trigger" class="_upload">
+				<!-- <template #file="{ it }">
+					<div v-for="(item, index) in it" :key="index">
+						{{ item }}
+					</div>
+				</template> -->
+				<div slot="upload" class="_upload">
 					上传
 				</div>
 			</vc-files-picker>
