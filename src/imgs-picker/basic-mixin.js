@@ -1,6 +1,9 @@
 /**
  * imgs-picker的核心js
  */
+import { Device } from '@wya/utils';
+import Message from '../message/index';
+import Toast from '../toast/index';
 import emitter from '../extends/mixins/emitter'; // 表单验证
 import ImgsPreview from '../imgs-preview/index';
 
@@ -139,7 +142,12 @@ export default {
 				}
 				return item;
 			});
-			this.$emit('error', res);
+			this.handleError(res);
+		},
+		handleError(err) {
+			let { $listeners: { error } } = this;
+			!error && (Device.touch ? Toast.info(err.msg, 2) : Message.error(err.msg, 2));
+			this.$emit('error', err);
 		},
 		handleFileComplete(res) {
 			this.$emit('complete', res);

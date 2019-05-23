@@ -35,17 +35,17 @@ VcInstance.init({
 			let regex = /image/.test(file.type) ? IMAGE_LEGAL_REGEX : FILE_LEGAL_REGEX;
 
 			if (regex.test(file.name)) {
-				throw new Error({ msg: '文件名称不合法, 不能包含@#￥%&+和空格' });
+				throw { msg: '文件名称不合法, 不能包含@#￥%&+和空格' } /* eslint-disable-line */;
 			}
 
 			if (/image/.test(file.type) && file.size > 20971520) {
 					
-				throw new Error({ msg: '图片大小不能超过20M' });
+				throw { msg: '图片大小不能超过20M' } /* eslint-disable-line */;
 			}
 			/**
-				 * @param  {[type]} res [description]
-				 * @return {[type]}     [description]
-				 */
+			 * @param  {[type]} res [description]
+			 * @return {[type]}     [description]
+			 */
 			return ajax({
 				url: 'https://gateway.wyawds.com/base/upload/get-sign.json',
 				type: "POST",

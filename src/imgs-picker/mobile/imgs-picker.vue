@@ -40,7 +40,7 @@
 			@file-progress="handleFileProgress"
 			@file-success="handleFileSuccess"
 			@file-error="handleFileError"
-			@error="$emit('error', arguments[0])"
+			@error="handleError"
 			@complete="handleFileComplete"
 		>
 			<slot name="upload">
