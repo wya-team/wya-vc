@@ -182,6 +182,7 @@ export default {
 		border-left: 0;
 		transform: rotate(45deg) scale(0);
 		transition: all .2s ease-in-out;
+		border-collapse: initial;
 	}
 	@include when(checked) {
 		@include element(border){
