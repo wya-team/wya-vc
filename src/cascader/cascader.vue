@@ -122,6 +122,10 @@ export default {
 		},
 		loadData: {
 			type: Function,
+		},
+		changeOnSelect: {
+			type: Boolean,
+			default: false
 		}
 	},
 	data() {
@@ -271,7 +275,7 @@ export default {
 			/**
 			 * v-model
 			 */
-			this.$emit('change', this.currentValue, this.label);
+			this.changeOnSelect && this.$emit('change', this.currentValue, this.label);
 
 			this.dispatch && this.dispatch('vc-form-item', 'form-change', {
 				value: this.currentValue,
@@ -283,6 +287,7 @@ export default {
 			let isLast = !lastData || lastData.length === 0;
 			if (isLast) {
 				this.visible = false;
+				!this.changeOnSelect && this.$emit('change', this.currentValue, this.label);
 			}
 		}
 	},

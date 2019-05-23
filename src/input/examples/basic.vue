@@ -126,7 +126,7 @@ export default {
 	},
 	created() {
 		setTimeout(() => {
-			this.formValidate.value = 11;
+			this.formValidate.value = 0;
 		}, 11);
 	},
 	methods: {

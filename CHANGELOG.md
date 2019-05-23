@@ -4,6 +4,7 @@
 - popover: 新增`disabled`
 - progress: 新增`line-theme`, { 'normal' ,success, 'error'}
 - imgs-picker: 新增`image`, `upload`插槽，用于自定义
+- imgs-crop: `getImage(...rest)` -> `getImage({})`
 
 ### 1.3.18
 - down-count: 废弃原有format格式，默认值`DD天HH小时mm分ss秒ms`, 移除`before-text`, `after-text`

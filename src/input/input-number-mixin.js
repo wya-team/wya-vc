@@ -29,7 +29,7 @@ export default {
 		},
 		formatter: {
 			type: Function,
-			default: (v, precision) => (!v || v === '-' ? '' : Number(v).toFixed(precision))
+			default: (v, precision) => (v === '' || v === '-' ? '' : Number(v).toFixed(precision))
 		}
 	},
 	data() {

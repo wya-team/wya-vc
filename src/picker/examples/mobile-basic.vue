@@ -49,7 +49,8 @@
 		<br>
 		<br>
 		<br>
-		<h3 @click="handleClick">点击直接调用</h3>
+		<h3 @click="handleClick">点击直接调用(空数据)</h3>
+		<h3 @click="handleClick1">点击直接调用（默认数据）</h3>
 		<br>
 		<br>
 		<br>
@@ -142,14 +143,29 @@ export default {
 			});
 		},
 		handleClick() {
-			MPicker.popup({
+			MPicker.open({
+				dataSource: cloneDeep(cascadeData),
+				value: [],
+				cols: 3,
+				onOk: () => {
+					MToast.info(res.label.join(','));
+				},
+				onCancel: () => {
+					MToast.info(res);
+				}
+			});
+		},
+		handleClick1() {
+			MPicker.open({
 				dataSource: cloneDeep(cascadeData),
 				value: ["140000", "140100", "140101"],
-				cols: 3
-			}).then((res) => {
-				MToast.info(res.label.join(','));
-			}).catch(() => {
-				MToast.info(res);
+				cols: 3,
+				onOk: () => {
+					MToast.info(res.label.join(','));
+				},
+				onCancel: () => {
+					MToast.info(res);
+				}
 			});
 		},
 		handleChange(value) {
