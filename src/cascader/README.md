@@ -18,6 +18,7 @@ trigger | 次级菜单展开方式，可选值为 click 或 hover | String | cli
 load-data | 动态获取数据，数据源需标识 loading | Function | -
 element-id | 给表单元素设置 id，详见`vc-form`用法 | String | -
 extra | 占位符 | `String` | -
+changeOnSelect | 每次都触发change事件还是最后一次 | `Boolean` | false
 
 #### TODO
 
