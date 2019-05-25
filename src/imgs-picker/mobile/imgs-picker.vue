@@ -17,7 +17,7 @@
 					@click="handlePreview($event, index)"
 				/>
 				<div v-else :class="imgClasses">
-					<div v-if="typeof item.status === 'undefined'">xx</div>
+					<vc-spin v-if="typeof item.status === 'undefined'"/>
 					<div v-else-if="item.status == 0" style="padding: 5px">
 						上传失败
 					</div>
@@ -60,6 +60,7 @@ import BasicMixin from '../basic-mixin';
 import Upload from '../../upload/index';
 import Icon from '../../icon/index';
 import Progress from '../../progress/index';
+import Spin from '../../spin/index';
 
 export default {
 	name: "vc-imgs-picker",
@@ -67,6 +68,7 @@ export default {
 		'vc-upload': Upload,
 		'vc-icon': Icon,
 		'vc-progress': Progress,
+		'vc-spin': Spin
 	},
 	mixins: [BasicMixin],
 	props: {
