@@ -161,7 +161,7 @@ export default {
 		},
 		async afterHook(value) {
 			let { $listeners: { after } } = this;
-			if (!after) return false;
+			if (!after) return true;
 			let state = await after(value);
 			if (state) {
 				this.hookValue = value;
