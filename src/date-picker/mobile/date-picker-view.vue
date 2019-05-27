@@ -161,11 +161,6 @@ export default {
 					this.rebuildData = this.makeRebuildData();
 				}
 			}
-		},
-		currentValue(v) {
-			let formaterValue = value2date(v);
-			this.$emit('change', formaterValue);
-			this.allowDispatch && this.dispatch('vc-form-item', 'form-change', formaterValue);
 		}
 	},
 	methods: {
@@ -246,10 +241,18 @@ export default {
 			this.checkValue();
 
 			this.$emit('picker-change');
+
+			this.sync();
 		},
 
-		getValue() {
-
+		/**
+		 * v-model 同步, 外部的数据改变时不会触发
+		 */
+		sync() {
+			let v = this.currentValue;
+			let formaterValue = value2date(v);
+			this.allowDispatch && this.dispatch('vc-form-item', 'form-change', formaterValue);
+			this.$emit('change', formaterValue);
 		}
 	}
 };

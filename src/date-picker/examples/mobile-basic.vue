@@ -3,6 +3,7 @@
 		<div class="vcm-date-picker-basic">
 			<vcm-date-picker 
 				v-model="value"
+				label="默认值：当前时间"
 				mode="datetime"
 			/>
 			<vcm-date-picker 

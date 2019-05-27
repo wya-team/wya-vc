@@ -128,7 +128,7 @@ const config = {
 		cancel() {
 			const { onCancel } = this;
 			onCancel ? onCancel() : this.$emit('cancel');
-		},
+		}
 	},
 };
 

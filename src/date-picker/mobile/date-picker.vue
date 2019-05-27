@@ -4,7 +4,12 @@
 			v-if="$slots.default || $scopedSlots.default" 
 			:label="formatterValue" 
 		/>
-		<vcm-list-item v-else :extra="formatterValue" />
+		<vcm-list-item 
+			v-else 
+			:label="label" 
+			:label-width="labelWidth" 
+			:extra="formatterValue" 
+		/>
 	</div>
 </template>
 
@@ -28,6 +33,10 @@ export default {
 		event: 'change'
 	},
 	props: {
+		...pick(List.Item.props, [
+			'label',
+			'labelWidth'
+		]),
 		...pick(Core.props, [
 			'mode',
 			'minDate',
@@ -95,10 +104,7 @@ export default {
 			}
 		},
 		currentValue(v) {
-			console.log(v);
-			this.$emit('change', v, this.current);
-			// form表单
-			this.dispatch('vc-form-item', 'form-change', v);
+			// ...
 		}
 	},
 	destoryed() {
@@ -116,12 +122,22 @@ export default {
 				onOk: res => {
 					this.currentValue = res;
 					this.$emit('ok', this.currentValue);
+
+					this.sync();
 				},
 				onCancel: res => {
 					this.$emit('cancel');
 				},
 				getInstance: vm => this.pickerInstance = vm
 			});
+		},
+		/**
+		 * v-model 同步, 外部的数据改变时不会触发
+		 */
+		sync() {
+			this.$emit('change', this.currentValue);
+			// form表单
+			this.dispatch('vc-form-item', 'form-change', this.currentValue);
 		}
 	}
 };
