@@ -110,11 +110,11 @@ export default {
 	},
 	methods: {
 		handleClick() {
-			MDatePicker.popup({
-				mode: 'datetime'
-			}).then((res) => {
-				Toast.info(res.label.join('-'));
-			}).catch(() => {
+			MDatePicker.open({
+				mode: 'datetime',
+				onOk: () => {
+					Toast.info(res.label.join('-'));
+				}
 			});
 		},
 		handleChange(value) {

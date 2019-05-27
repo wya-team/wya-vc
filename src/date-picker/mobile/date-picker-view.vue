@@ -37,11 +37,11 @@ export default {
 		},
 		minDate: {
 			type: Date,
-			default: () => new Date('1990')
+			default: () => new Date('1990-01-01 00:00')
 		},
 		maxDate: {
 			type: Date,
-			default: () => new Date('2030')
+			default: () => new Date('2030-12-31 23:59')
 		},
 		startHour: {
 			type: Number,
@@ -69,13 +69,63 @@ export default {
 		cols() {
 			return this.modeArr.length;
 		},
+		/**
+		 * TODO: 最优算法
+		 */
 		ranges() {
+
+			let min = date2value(this.minDate);
+			let max = date2value(this.maxDate);
+
+			// year
+			let minYear = Number(min[0]);
+			let maxYear = Number(max[0]);
+			let year = [minYear, maxYear];
+
+			// month
+			let minMonth = this.compareWithBoundary(min, this.currentValue, 1) 
+				? Number(min[1])
+				: 1;
+			let maxMonth = this.compareWithBoundary(max, this.currentValue, 1) 
+				? Number(max[1])
+				: 12;
+			let month = [minMonth, maxMonth];
+
+			// date
+			let minDate = this.compareWithBoundary(min, this.currentValue, 2)
+				? Number(min[2])
+				: 1;
+			let maxDate = this.compareWithBoundary(max, this.currentValue, 2)
+				? Number(max[2])
+				: this.getMonthEndDay(this.currentValue[0], this.currentValue[1]);
+			let date = [minDate, maxDate];
+
+			// hour
+			let minHour = this.compareWithBoundary(min, this.currentValue, 3)
+				? Number(min[3])
+				: 0;
+
+			let maxHour = this.compareWithBoundary(max, this.currentValue, 3)
+				? Number(max[3])
+				: 23;
+			let hour = [minHour, maxHour];
+
+			// minute
+			let minMinute = this.compareWithBoundary(min, this.currentValue, 4)
+				? Number(min[4])
+				: 0;
+
+			let maxMinute = this.compareWithBoundary(max, this.currentValue, 4)
+				? Number(max[4])
+				: 59;
+			let minute = [minMinute, maxMinute];
+
 			switch (this.mode) {
 				case 'date':
 					return {
-						year: [this.minDate.getFullYear(), this.maxDate.getFullYear()],
-						month: [1, 12],
-						date: [1, this.getMonthEndDay(this.currentValue[0] * 1, this.currentValue[1] * 1)],
+						year,
+						month,
+						date,
 					};
 				case 'time':
 					return {
@@ -84,11 +134,11 @@ export default {
 					};
 				default:
 					return {
-						year: [this.minDate.getFullYear(), this.maxDate.getFullYear()],
-						month: [1, 12],
-						date: [1, this.getMonthEndDay(this.currentValue[0] * 1, this.currentValue[1] * 1)],
-						hour: [0, 23],
-						min: [0, 59]
+						year,
+						month,
+						date,
+						hour,
+						min: minute
 					};
 			}
 		}
@@ -119,6 +169,9 @@ export default {
 		}
 	},
 	methods: {
+		compareWithBoundary(arg1 = [], arg2 = [], len = 0) {
+			return arg1.slice(0, len).join('') == arg2.slice(0, len).join('');
+		},
 		getMonthEndDay(year, month) {
 			if (this.isShortMonth(month)) {
 				return 30;
