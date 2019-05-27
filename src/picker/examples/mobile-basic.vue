@@ -1,5 +1,5 @@
 <template>
-	<div class="vcm-picker-basic">
+	<div class="vcm-picker-basic" style="height: 100%; overflow: auto;">
 	
 		<!-- 使用v-model -->
 		<vcm-picker
@@ -82,6 +82,15 @@
 			:cols="3" 
 			v-model="formValidate.addr"
 		/>
+		<br>
+		<br>
+		<br>
+		<br>
+		<br>
+		<br>
+		<br>
+		<br>
+		<br>
 	</div>
 </template>
 <script>

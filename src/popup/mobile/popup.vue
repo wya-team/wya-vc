@@ -10,6 +10,7 @@
 		<components :is="animateComponent" :mode="mode" @after-leave="handleRemove">
 			<div
 				v-show="isActive"
+				:style="{ position: fixed ? 'fixed' : 'absolute' }"
 				class="vcm-popup__wrapper"
 			>
 				<slot />
@@ -19,7 +20,7 @@
 </template>
 <script>
 import MTransition from '../../transition/index.m';
-import scrollbarMixin from '../scrollbar-mixin';
+import ScrollbarMixin from '../../extends/mixins/scrollbar';
 
 const placement2mode = {
 	left: 'left',
@@ -34,7 +35,7 @@ export default {
 		'vcm-transtion-fade': MTransition.Fade,
 		'vcm-transtion-slide': MTransition.Slide,
 	},
-	mixins: [scrollbarMixin],
+	mixins: [ScrollbarMixin],
 	model: {
 		prop: 'visible',
 		event: 'visible-change'
@@ -147,7 +148,7 @@ export default {
 			right: 0;
 			left: 0;
 			bottom: 0;
-			padding-bottom: env(safe-area-inset-bottom);
+			// padding-bottom: env(safe-area-inset-bottom);
 		}
 	}
 
@@ -156,7 +157,7 @@ export default {
 			right: 0;
 			left: 0;
 			top: 0;
-			padding-top: env(safe-area-inset-bottom);
+			// padding-top: env(safe-area-inset-bottom);
 		}
 	}
 	@include when(left) {

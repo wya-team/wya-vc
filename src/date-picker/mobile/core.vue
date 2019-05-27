@@ -94,6 +94,7 @@ const config = {
 		handleClose() {
 			this.isActive = false;
 
+			this.$emit('close'); // 兼容portal关闭
 			// 普通组件
 			this.$emit('update:visible', false);
 		},
