@@ -21,7 +21,7 @@ export default {
 	methods: {
 		async getImg(fileName = 'image', getFile = true) {
 			try {
-				let html2canvas = await import('node_modules/html2canvas');
+				let html2canvas = await import('html2canvas');
 				// 兼容webpack 3.0/4.0 写法
 				html2canvas = html2canvas.default ? html2canvas.default : html2canvas;
 
