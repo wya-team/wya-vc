@@ -1,16 +1,12 @@
 <template>
-	<transition-group 
-		tag="div" 
-		class="vc-sort-list" 
-		name="flip-list" 
-	>
+	<vc-transtion-fade tag="div" class="vc-sort-list" group>
 		<component 
 			v-for="(item, index) in dataSource" 
 			:key="typeof item === 'object' ? item[valueKey] : item"
 			:is="tag"
 			:draggable="getDraggable(item)"
-			:class="[getDraggable(item) ? '__item-active' : '__item-forbid']"
-			class="__item"
+			:class="[getDraggable(item) ? 'is-active' : 'is-forbid']"
+			class="vc-sort-list__item"
 			@dragstart="handleDragStart($event, item)"
 			@dragenter="getDraggable(item) && handleDragEnter($event, index, item)"
 			@dragover.prevent="getDraggable(item) && handleDragOver($event, index, item)"
@@ -18,7 +14,7 @@
 		>
 			<!-- 项目中统一使用it, key由slot决定 -->
 			<slot :it="item" :index="index" />
-			<div v-if="mask" class="__mask">
+			<div v-if="mask" class="vc-sort-list__mask">
 				<span 
 					:style="{visibility: index !== 0 ? 'unset' : 'hidden'}"
 					@click="handleClick($event, { item, index, type: 'left' })"
@@ -30,13 +26,17 @@
 				>&#10095;</span>
 			</div>
 		</component>
-	</transition-group>
+	</vc-transtion-fade>
 </template>
 <script>
 import emitter from '../extends/mixins/emitter'; // 表单验证
+import Transition from '../transition'; // 表单验证
 
 export default {
 	name: "vc-tpl",
+	components: {
+		'vc-transtion-fade': Transition.Fade
+	},
 	mixins: [emitter],
 	model: {
 		prop: 'dataSource',
@@ -111,11 +111,7 @@ export default {
 		},
 
 		handleClick(e, current) {
-			let newValue = this.getSortList(current);
-
-			this.$emit('change', newValue);
-			// for iview
-			this.dispatch('vc-form-item', 'form-change', newValue);
+			this.sync(this.getSortList(current));
 		},
 
 		/**
@@ -147,17 +143,12 @@ export default {
 
 			if (this.timer) return;
 
-			const newValue = this.getSortList({ item, index, type: 'drag' });
-			this.$emit('change', newValue);
-			// for iview
-			this.dispatch('vc-form-item', 'form-change', newValue);
-
 			clearTimeout(this.timer);
 			this.timer = setTimeout(() => {
 				this.timer = null;
 			}, 500);
 
-			
+			this.sync(this.getSortList({ item, index, type: 'drag' }));
 		},
 
 		handleDragOver(e, index, _item) {
@@ -171,37 +162,47 @@ export default {
 
 			e.target.style.opacity = 1;
 			this.eleDrag = null;
+		},
+
+		/**
+		 * v-model 同步, 外部的数据改变时不会触发
+		 */
+		sync(v) {
+			this.$emit('change', v);
+			this.dispatch('vc-form-item', 'form-change', v);
 		}
 	}
 };
 </script>
-<style lang="scss" scoped>
+<style lang="scss">
 @import '../style/index.scss';
-.vc-sort-list {
+
+@include block(vc-sort-list) {
 	@include commonFlex();
 	flex-wrap: wrap;
-	.__item {
-		transition: all .5s;
-	}
-	.__item-active {
-		cursor: move;
-	}
-	.__item-forbid {
-		cursor: no-drop;
+	@include element(item) {
+		transition: opacity .5s; // 目的是让拖拽的那个元素保持不透明， 文档流里透明
+		@include when(active) {
+			cursor: move;
+		}
+		@include when(forbid) {
+			cursor: no-drop;
+		}
+		/**
+		 * 重置移除时动画
+		 */
+		@include when(move) {
+			transition: all .5s;
+		}
 	}
 	& > div {
 		margin: 10px;
 		text-align: center;
 		position: relative;
-		
 	}
-	& > div:hover .__mask {
-		transition: opacity .5s;
-		opacity: 1;
-	}
-	.__mask {
-		opacity: 0;
+	@include element(mask) {
 		position: absolute;
+		opacity: 0;
 		top: 0;
 		left: 0;
 		width: 100%;
@@ -217,22 +218,11 @@ export default {
 			font-size: 18px;
 		}
 	}
-}
-
-// group下其他元素，位置变换时触发
-// .flip-list-move {
-// 	transition: all .5s;
-// }
-
-// 开始消失/进入的元素
-.flip-list-enter, 
-.flip-list-leave-to{
-	opacity: 0;
-	// transform: translateY(30px);
-}
-// 开始消失，在变化过程中，使其宽高变化，其他元素会被添加flip-list-move
-.flip-list-leave-active {
-	// position: absolute !important;
-	display: none;
+	& > div:hover {
+		@include element(mask) {
+			transition: opacity .5s;
+			opacity: 1;
+		}
+	}
 }
 </style>
