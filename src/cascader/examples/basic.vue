@@ -3,7 +3,11 @@
 		<vc-button @click="handleTestingStart">内存测试</vc-button>
 		<vc-button @click="handleTestingEnd">取消测试</vc-button>
 		<div style="margin: 40px 0 ">
-			<vc-cascader :data-source="bigData" v-model="value1"/>
+			<vc-cascader 
+				:data-source="bigData" 
+				v-model="value1"
+				@change="handleChange"
+			/>
 		</div>
 		<div style="margin: 40px 0 ">
 			<vc-cascader :data-source="dataSource" v-model="value2" clearable/>
@@ -132,6 +136,9 @@ export default {
 					]);
 				}, 2000);
 			});
+		},
+		handleChange(v, l) {
+			console.log(v, l);
 		}
 	}
 };

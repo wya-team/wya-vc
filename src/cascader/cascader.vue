@@ -151,10 +151,7 @@ export default {
 		 * TODO: 初始化时，存在查找耗时
 		 */
 		label() {
-			const { label = [] } = getSelectedData(
-				this.changeOnSelect ? this.currentValue : this.value,
-				this.dataSource
-			);
+			const { label = [] } = this.getInfo(this.changeOnSelect ? this.currentValue : this.value);
 			return label.filter(i => i);
 		},
 		formatLabel() {
@@ -230,6 +227,9 @@ export default {
 			return data;
 		},
 
+		getInfo(v) {
+			return getSelectedData(v, this.dataSource) || {};
+		},
 		/**
 		 * 改变后的回调
 		 * @param  {String} value    改变后的值
@@ -237,6 +237,8 @@ export default {
 		 * @param  {Number} colIndex 列
 		 */
 		async handleChange(value, index, colIndex) {
+			this.isLast = false;
+
 			try {
 				const len = this.currentValue.slice(colIndex).length;
 				this.currentValue.splice(colIndex, len, value);
@@ -287,10 +289,18 @@ export default {
 
 			// 最后一项，自动关闭
 			let lastData = this.rebuildData[this.currentValue.length];
+
 			let isLast = !lastData || lastData.length === 0;
+
 			if (isLast) {
 				this.visible = false;
-				!this.changeOnSelect && this.$emit('change', this.currentValue, this.label);
+
+				// 该模式下，label会变为上一个值，这里重新获取一次
+				if (!this.changeOnSelect) {
+					const { label } = this.getInfo(this.currentValue);
+					this.$emit('change', this.currentValue, label);
+				}
+				
 			}
 		}
 	},
