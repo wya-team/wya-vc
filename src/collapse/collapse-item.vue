@@ -43,7 +43,7 @@ export default {
 	},
 	methods: {
 		handleToggle() {
-			this.$parent.handleToggle({
+			this.$parent.toggle({
 				name: this.name || this.index,
 				isActive: this.isActive
 			});

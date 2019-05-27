@@ -7,6 +7,10 @@
 
 export default {
 	name: "vc-collapse",
+	model: {
+		prop: 'value',
+		event: 'change'
+	},
 	props: {
 		tag: {
 			type: String,
@@ -62,12 +66,12 @@ export default {
 			}
 			return activeKey;
 		},
-		handleToggle(data) {
-			 const name = data.name.toString();
-			let newActiveKey = [];
+		toggle(data) {
+			const name = data.name.toString();
+			let result = [];
 			if (this.accordion) {
 				if (!data.isActive) {
-					newActiveKey.push(name);
+					result.push(name);
 				}
 			} else {
 				let activeKey = this.getActiveKey();
@@ -79,11 +83,18 @@ export default {
 				} else if (nameIndex < 0) {
 					activeKey.push(name);
 				}
-				newActiveKey = activeKey;
+				result = activeKey;
 			}
-			this.currentValue = newActiveKey;
-			this.$emit('input', newActiveKey);
-			this.$emit('change', newActiveKey);
+			this.currentValue = result;
+
+			this.sync();
+		},
+
+		/**
+		 * v-model 同步, 外部的数据改变时不会触发
+		 */
+		sync() {
+			this.$emit('change', this.currentValue);
 		}
 	}
 };
