@@ -44,7 +44,11 @@ export default {
 			'startHour',
 			'endHour',
 			'format',
-			'value'
+			'value',
+			'title',
+			'cancelText',
+			'okText',
+			'showToolbar'
 		]),
 		loadData: Function,
 		extra: {
@@ -112,13 +116,18 @@ export default {
 	},
 	methods: {
 		handleClick() {
-			let { mode, minDate, maxDate, format, value } = this;
+			let { mode, minDate, maxDate, format, value, title, cancelText, okText, showToolbar, show } = this;
 			Func.popup({
 				mode,
 				minDate,
 				maxDate,
 				format,
 				value,
+				title,
+				cancelText,
+				showToolbar,
+				show,
+				okText,
 				onOk: res => {
 					this.currentValue = res;
 					this.$emit('ok', this.currentValue);

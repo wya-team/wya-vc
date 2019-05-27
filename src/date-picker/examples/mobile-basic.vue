@@ -5,6 +5,7 @@
 				v-model="value"
 				label="默认值：当前时间"
 				mode="datetime"
+				title="test"
 			/>
 			<vcm-date-picker 
 				v-model="valueEmpty"
@@ -113,6 +114,7 @@ export default {
 		handleClick() {
 			MDatePicker.open({
 				mode: 'datetime',
+				title: 'yes',
 				onOk: () => {
 					Toast.info(res.label.join('-'));
 				}

@@ -19,6 +19,7 @@ import Core, { Func } from './core';
 import MPickerPopup from './picker-popup';
 import List from '../../list/index.m';
 import { getSelectedData } from '../../utils/index';
+import { VcError } from '../../vc/index';
 import emitter from '../../extends/mixins/emitter'; // 表单验证
 
 
@@ -104,9 +105,9 @@ export default {
 					show,
 					okText,
 					value,
-					onOk: (value, label, data) => {
-						this.currentValue = value;
-						this.$emit('ok', value, label, data);
+					onOk: (v, label, data) => {
+						this.currentValue = v;
+						this.$emit('ok', v, label, data);
 
 						this.sync(label);
 					},
@@ -116,7 +117,7 @@ export default {
 					getInstance: vm => this.pickerInstance = vm
 				});
 			} catch (e) {
-				console.log('[vcm-picker]', e);
+				throw new VcError('m-picker', e);
 			}
 		},
 		/**
