@@ -7,12 +7,20 @@
 		label-position="left"
 		@submit.native.prevent 
 	>	
+		<!-- 1. 控制嵌套， 2. 开启时提示是否变成第一项  -->
+		<vcm-form-item v-if="visible" class="hack">
+			<vcm-form-item prop="input2" label="input2">
+				<vcm-input v-model="formValidate.input2" type="text" placeholder="嵌套" clearable />
+			</vcm-form-item>
+		</vcm-form-item>
+
 		<vcm-form-item prop="input" label="input">
 			<vcm-input v-model="formValidate.input" type="text" placeholder="Enter something..." clearable />
 		</vcm-form-item>
 		<vcm-form-item prop="array" label="array">
 			<vcm-array v-model="formValidate.array" />
 		</vcm-form-item>
+
 		<vcm-form-item
 			v-for="(item, index) in formValidate.items"
 			v-if="item.status"
@@ -31,6 +39,7 @@
 		<vcm-form-item>
 			<vcm-button type="primary" @click="handleSubmit('formValidate')">Submit</vcm-button>
 			<vcm-button style="margin-left: 8px" @click="handleReset('formValidate')">Reset</vcm-button>
+			<vcm-button style="margin-left: 8px" @click="visible = !visible">显示/隐藏</vcm-button>
 		</vcm-form-item>
 	</vcm-form>
 </template>
@@ -56,8 +65,10 @@ export default {
 	data() {
 		return {
 			index: 1,
+			visible: false,
 			formValidate: {
 				input: '',
+				input2: '',
 				array: [],
 				items: [
 					{
@@ -68,12 +79,27 @@ export default {
 				]
 			},
 			ruleValidate: {
+				input: [
+					{
+						required: true,
+						name: '~~input项~~'
+					}
+				],
+				input2: [
+					{
+						required: true,
+						name: '~~input嵌套项~~'
+					}
+				],
+				array: [
+					{
+						required: true,
+						name: '~~array项~~'
+					}
+				],
 				items: {
 
-				},
-				array: [{
-					required: true
-				}]
+				}
 			}
 		};
 	},
@@ -105,3 +131,15 @@ export default {
 	}
 };
 </script>
+
+<style>
+.hack.vcm-form-item {
+	padding: 0!important;
+}
+.hack.vcm-form-item > .vcm-form-item__wrapper {
+	padding: 0!important;
+}
+.hack.vcm-form-item > .vcm-form-item__wrapper > .vcm-form-item__content {
+	margin: 0!important;
+}
+</style>
