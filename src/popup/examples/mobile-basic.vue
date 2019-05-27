@@ -6,7 +6,20 @@
 			:placement="item"
 			:key="`popup__${item}`"
 		>
-			<vcm-input v-model="value" type="text" clearable />
+			<vcm-form>
+				<vcm-form-item>
+					<vcm-input v-model="value" type="text" clearable />
+				</vcm-form-item>
+				<vcm-form-item>
+					<vcm-input v-model="value" type="text" clearable />
+				</vcm-form-item>
+				<vcm-form-item>
+					<vcm-input v-model="value" type="text" clearable />
+				</vcm-form-item>
+				<vcm-form-item>
+					<vcm-input v-model="value" type="text" clearable />
+				</vcm-form-item>
+			</vcm-form>
 			{{ item }}
 		</vcm-popup>
 		
@@ -30,10 +43,12 @@
 	</div>
 </template>
 <script>
+import { Device } from '@wya/utils';
 import { Tip } from './tip/tip.vue';
 import MPopup from '../index.m';
 import MButton from '../../button/index.m';
 import MInput from '../../input/index.m';
+import MForm from '../../form/index.m';
 
 export default {
 	name: "vcm-popup-basic",
@@ -41,6 +56,8 @@ export default {
 		'vcm-popup': MPopup,
 		'vcm-button': MButton,
 		'vcm-input': MInput,
+		'vcm-form': MForm,
+		'vcm-form-item': MForm.Item,
 	},
 	data() {
 		return {
@@ -54,6 +71,23 @@ export default {
 	},
 	mounted() {
 		this.visible = true;
+
+		// hack for wechat, 测试碳层下输入框
+		if (!Device.ios 
+			|| !Device.wechat 
+			|| !Device.wechatVersion >= '6.7.4'
+		) return;
+
+		let handleFn = (e) => {
+			document.body.scrollTop = document.body.scrollTop + 0; // eslint-disable-line
+			e.target.removeEventListener('blur', handleFn);
+		};
+
+		document.addEventListener('click', (e) => {
+			let tag = e.target.nodeName.toLowerCase();
+			if (!/^(input|textarea)$/.test(tag)) return;
+			e.target.addEventListener('blur', handleFn);
+		}, true);
 	},
 	methods: {
 		handleNormal(placement, index) {
