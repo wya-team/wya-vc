@@ -152,14 +152,22 @@ export default {
 
 			if (v != this.isActive) {
 				let callback = () => {
-					this.$emit('visible-change', v);
 					this.isActive = v;
+
+					this.sync();
 				};
 				this.isHover && v === false 
 					? (this.timer = setTimeout(callback, 200))
 					: callback();
 			} 
+		},
+		/**
+		 * v-model 同步, 外部的数据改变时不会触发
+		 */
+		sync() {
+			this.$emit('visible-change', this.isActive);
 		}
 	}
+
 };
 </script>

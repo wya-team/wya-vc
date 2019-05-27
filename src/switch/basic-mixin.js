@@ -62,8 +62,7 @@ export default {
 			}
 		},
 		currentValue(v) {
-			this.$emit('change', v);
-			this.dispatch('vc-form-item', 'form-change', v);
+			// ..
 		}
 	},
 	methods: {
@@ -88,9 +87,19 @@ export default {
 				});
 			}
 
-			const checked = this.currentValue === this.trueValue ? this.falseValue : this.trueValue;
-			this.currentValue = checked;
-			
+
+			this.currentValue = this.currentValue === this.trueValue 
+				? this.falseValue 
+				: this.trueValue;
+
+			this.sync();
+		},
+		/**
+		 * v-model 同步, 外部的数据改变时不会触发
+		 */
+		sync() {
+			this.$emit('change', this.currentValue);
+			this.dispatch('vc-form-item', 'form-change', this.currentValue);
 		}
 	}
 };

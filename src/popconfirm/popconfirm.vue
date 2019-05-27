@@ -118,7 +118,7 @@ export default {
 			}
 		},
 		isActive(v) {
-			this.$emit('visible-change', v);
+			// ..
 		}
 	},
 	methods: {
@@ -126,6 +126,8 @@ export default {
 			let { $listeners: { ok } } = this;
 			let callback = () => {
 				this.isActive = false;
+
+				this.sync();
 			};
 			let fn = ok && ok(e, callback);
 
@@ -143,9 +145,19 @@ export default {
 		handleCancel(e) {
 			this.isActive = false;
 			this.$emit('cancel', e);
+
+			this.sync();
 		},
 		handleChange(v) {
 			this.isActive = v;
+
+			this.sync();
+		},
+		/**
+		 * v-model 同步, 外部的数据改变时不会触发
+		 */
+		sync() {
+			this.$emit('visible-change', this.isActive);
 		}
 	}
 };

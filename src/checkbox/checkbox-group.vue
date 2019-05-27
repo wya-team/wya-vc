@@ -39,8 +39,7 @@ export default {
 			}
 		},
 		currentValue(v, old) {
-			this.$emit('change', v);
-			this.dispatch('vc-form-item', 'form-change', v);
+			// ..
 		}
 	},
 	mounted() {
@@ -51,6 +50,15 @@ export default {
 			index == -1 
 				? this.currentValue.push(v)
 				: this.currentValue.splice(index, 1);
+
+			this.sync();
+		},
+		/**
+		 * v-model 同步, 外部的数据改变时不会触发
+		 */
+		sync() {
+			this.$emit('change', this.currentValue);
+			this.dispatch('vc-form-item', 'form-change', this.currentValue);
 		}
 	}
 };

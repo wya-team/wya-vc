@@ -195,10 +195,7 @@ export default {
 			}
 		},
 		currentValue(v, old) {
-			this.$emit('change', v, this.currentLabel);
-
-			// form表单
-			this.dispatch('vc-form-item', 'form-change', v);
+			// ..
 		}
 	},
 	created() {
@@ -224,6 +221,8 @@ export default {
 
 			this.currentValue = this.multiple ? [] : '';
 			this.currentLabel = this.multiple ? [] : '';
+
+			this.sync();
 		},
 
 		handleClose(v) {
@@ -245,6 +244,8 @@ export default {
 				this.currentValue.push(v); 
 				this.currentLabel.push(label);
 			}
+
+			this.sync();
 		},
 
 		remove(v, label) {
@@ -252,6 +253,8 @@ export default {
 
 			this.currentValue.splice(index, 1);
 			this.currentLabel.splice(index, 1);
+
+			this.sync();
 		},
 
 		close() {
@@ -303,6 +306,15 @@ export default {
 			});
 		},
 
+		/**
+		 * v-model 同步, 外部的数据改变时不会触发
+		 */
+		sync() {
+			this.$emit('change', this.currentValue, this.currentLabel);
+
+			// form表单
+			this.dispatch('vc-form-item', 'form-change', this.currentValue);
+		},
 		/**
 		 * 默认防抖
 		 */

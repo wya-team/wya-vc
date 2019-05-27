@@ -192,7 +192,8 @@ export default {
 			e.stopPropagation();
 
 			this.currentValue.splice(0, this.currentValue.length);
-			this.resetValue();
+
+			this.sync();
 		},
 
 		/**
@@ -268,7 +269,7 @@ export default {
 
 				children && this.rebuildData.splice(colIndex + 1, len, this.makeData(children));
 
-				this.resetValue();
+				this.sync();
 			} catch (e) {
 				throw new VcError('vc-cascader', e);
 			} finally {
@@ -276,10 +277,11 @@ export default {
 			}
 			
 		},
-		resetValue() {
-			/**
-			 * v-model
-			 */
+
+		/**
+		 * v-model 同步, 外部的数据改变时不会触发
+		 */
+		sync() {
 			this.changeOnSelect && this.$emit('change', this.currentValue, this.label);
 
 			this.dispatch && this.dispatch('vc-form-item', 'form-change', {

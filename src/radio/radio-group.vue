@@ -56,8 +56,7 @@ export default {
 			}
 		},
 		currentValue(v, old) {
-			this.$emit('change', v);
-			this.dispatch('vc-form-item', 'form-change', v);
+			// ..
 		}
 	},
 	mounted() {
@@ -65,6 +64,16 @@ export default {
 	methods: {
 		reset(v) {
 			this.currentValue = v;
+
+			this.sync();
+		},
+
+		/**
+		 * v-model 同步, 外部的数据改变时不会触发
+		 */
+		sync() {
+			this.$emit('change', this.currentValue);
+			this.dispatch('vc-form-item', 'form-change', this.currentValue);
 		}
 	}
 };

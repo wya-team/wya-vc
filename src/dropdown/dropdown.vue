@@ -66,7 +66,7 @@ export default {
 			}
 		},
 		isActive(v) {
-			this.$emit('visible-change', v);
+			// ..
 		}
 	},
 	created() {
@@ -75,9 +75,19 @@ export default {
 	methods: {
 		handleChange(v) {
 			this.isActive = v;
+
+			this.sync();
 		},
 		close() {
 			this.isActive = false;
+
+			this.sync();
+		},
+		/**
+		 * v-model 同步, 外部的数据改变时不会触发
+		 */
+		sync() {
+			this.$emit('visible-change', this.isActive);
 		}
 	}
 };
