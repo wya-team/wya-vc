@@ -104,12 +104,13 @@ const config = {
 		},
 		handleOk() {
 
-			let it = this.$refs.target.getValue();
+			let { label, data } = getSelectedData(this.currentValue, this.dataSource);
+
 			this.isActive = false;
 
-			this.ok(this.currentValue);
+			this.ok(this.currentValue, label, data);
 			// 普通组件
-			this.$emit('change', this.currentValue, it.label, it.data);
+			this.$emit('change', this.currentValue, label, data);
 		},
 		handleCancel(v) {
 			this.isActive = false;
@@ -118,9 +119,9 @@ const config = {
 		/**
 		 * 取消兼容
 		 */
-		ok(it) {
+		ok(value, label, data) {
 			const { onOk } = this;
-			onOk ? onOk(it) : this.$emit('ok', it);
+			onOk ? onOk(value, label, data) : this.$emit('ok', value, label, data);
 		},
 		/**
 		 * 取消兼容

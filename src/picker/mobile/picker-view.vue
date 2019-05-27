@@ -57,28 +57,30 @@ export default {
 	},
 	computed: {},
 	watch: {
-		dataSource(v) {
-			this.makeRebuildData();
+		dataSource: {
+			immediate: false,
+			handler() {
+				this.rebuildData = this.makeRebuildData();
+
+				this.resetDefault();
+			}
 		},
 		value: {
 			immediate: true,
 			handler(v) {
 				// 数组情况下同值会重新set
-				if (isEqualWith(v, this.currentValue)) {
-					/**
-					 * 空数组的情况需要重新rebuildData
-					 */
-					v.length === 0 && this.makeRebuildData();
+				if ((v && v.length !== 0) && isEqualWith(v, this.currentValue)) {
+					return;
 				}
 				
 				this.currentValue = v;
-				this.makeRebuildData();
+				this.rebuildData = this.makeRebuildData();
+
+				this.resetDefault();
 			}
 		},
 		currentValue(v) {
-			this.$emit('change', v);
-
-			this.allowDispatch && this.dispatch('vc-form-item', 'form-change', v);
+			// ..
 		}
 	},
 	methods: {
@@ -88,56 +90,65 @@ export default {
 		 */
 		handleColChange(v, index) {
 			this.currentValue.splice(index, 1, v.value);
+
 			if (index < this.cols && this.cascade) {
-				this.currentValue.splice(index + 1, this.cols - index);
-				this.makeRebuildData(index + 1);
+				this.currentValue.splice(index + 1, this.cols - index); // 需要清理，用于resetDefault
+				this.rebuildData.splice(index + 1, this.cols - index, ...this.makeRebuildData(index + 1));
+				this.resetDefault(index + 1);
 			}
 
 			// 普通组件
 			this.$emit('picker-change', v, index);
-		},
-		makeData(data, i) {
-			let tag = 0;
-			if (this.currentValue[i - 1]) {
-				tag = data.findIndex(item => item.value == this.currentValue[i - 1]);
-				tag = tag < 0 ? 0 : tag;
-			}
-			return {
-				value: i == 0 ? data[tag].value : data[tag].children[0].value,
-				children: i == 0 ? data : data[tag].children
-			};
-		},
-		/**
-		 * todo, 存在副作用，使用函数式编程
-		 */
-		makeRebuildData(index = 0) {
-			if (!this.dataSource.length) return;
-			if (this.cascade && this.dataSource.some(item => !!item.children)) {
-				
-				// 默认选择
-				for (let i = index; i < this.cols; i++) {
-					let { value, children } = this.makeData(this.rebuildData[i - 1] || this.dataSource, i);
-					this.rebuildData.splice(i, 1, children);
-					if (!this.currentValue[i]) {
-						this.currentValue.splice(i, 1, value);
-					}
-				}
-			} else if (this.dataSource.length !== 0) {
-				this.rebuildData = this.dataSource;
 
-				// 默认选择
-				for (let i = index; i < this.cols; i++) {
-					if (!this.currentValue[i] && this.rebuildData[i]) {
-						this.currentValue.splice(i, 1, this.rebuildData[i][0].value);
-					}
-				}
-			}
+			this.sync();
+		},
+
+		/**
+		 * 单列数据
+		 * @param  {Array} source 数据源
+		 */
+		makeData(source) {
+			let data = source && source.map(i => ({
+				value: i.value,
+				label: i.label,
+				hasChild: !!(i.children && (i.children.length > 0 || this.loadData)),
+				loading: false
+			}));
+			return data;
 		},
 		/**
-		 * 外部调取
+		 * index 之后的数据
 		 */
-		getValue() {
-			return getSelectedData(this.currentValue, this.dataSource);
+		makeRebuildData(colIndex = 0) {
+			if (!this.dataSource.length) return [];
+			if (!this.cascade) return this.dataSource;
+
+			let temp = this.dataSource;
+			let data = Array.from({ length: this.cols }).reduce((pre, cur, index) => {
+				pre[index] = this.makeData(temp) || [];
+				temp = ((temp && temp.find(i => i.value == this.currentValue[index])) || temp[0] || {}).children;
+				return pre; 
+			}, []);
+
+			return data.slice(colIndex);
+		},
+
+		resetDefault(colIndex = 0) {
+			this.rebuildData.slice(0).forEach((item, index) => {
+				if (index >= colIndex) {
+					this.currentValue.splice(index, 1, this.currentValue[index] || item[0].value);
+				}
+			});
+		},
+
+		/**
+		 * v-model 同步, 外部的数据改变时不会触发
+		 */
+		sync() {
+			const { label, data } = getSelectedData(this.currentValue, this.dataSource);
+			this.$emit('change', this.currentValue, label, data);
+
+			this.allowDispatch && this.dispatch('vc-form-item', 'form-change', this.currentValue);
 		}
 		
 	}

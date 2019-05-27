@@ -37,6 +37,12 @@
 		</vcm-picker>
 		<br>
 		<br>
+		<vcm-picker
+			v-model="value"
+			:data-source="dataAsyncSource1" 
+			:cascade="true" 
+			:cols="3" 
+		/>
 		<br>
 		<!-- 非联动选择 -->
 		<vcm-picker
@@ -115,6 +121,7 @@ export default {
 			show: false,
 			dataSource: cloneDeep(cascadeData),
 			dataAsyncSource: [],
+			dataAsyncSource1: [],
 			value: ["330000", "330100", "330105"],
 			valueAsync: ["330000", "330100", "330105"],
 			valueView: ["330000", "330100", "330105"],
@@ -139,7 +146,9 @@ export default {
 	computed: {
 	},
 	mounted() {
-		
+		setTimeout(() => {
+			this.dataAsyncSource1 = cloneDeep(cascadeData);
+		}, 3000);
 	},
 	methods: {
 		loadData() {
@@ -157,29 +166,29 @@ export default {
 				value: [],
 				cols: 3,
 				title: '222',
-				onOk: () => {
-					MToast.info(res.label.join(','));
+				onOk: (value, label) => {
+					MToast.info(label.join(','));
 				},
 				onCancel: () => {
-					MToast.info(res);
+					MToast.info('value');
 				}
 			});
 		},
 		handleClick1() {
 			MPicker.open({
 				dataSource: cloneDeep(cascadeData),
-				value: ["140000", "140100", "140101"],
+				value: ["330000", "330100", "330105"],
 				cols: 3,
-				onOk: () => {
-					MToast.info(res.label.join(','));
+				onOk: (value, label) => {
+					MToast.info(label.join(','));
 				},
 				onCancel: () => {
-					MToast.info(res);
+					MToast.info('value');
 				}
 			});
 		},
-		handleChange(value) {
-			console.log(value);
+		handleChange(value, label, selectData) {
+			console.log(value, label, selectData);
 		},
 		handleSubmit(name) {
 			this.$refs.form.validate()

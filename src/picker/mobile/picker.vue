@@ -4,12 +4,17 @@
 			v-if="$slots.default || $scopedSlots.default" 
 			:label="formatterValue" 
 		/>
-		<vcm-list-item v-else :extra="formatterValue" />
+		<vcm-list-item 
+			v-else 
+			:label="label" 
+			:label-width="labelWidth" 
+			:extra="formatterValue"
+		/>
 	</div>
 </template>
 
 <script>
-import { isEqualWith } from 'lodash';
+import { isEqualWith, pick } from 'lodash';
 import Core, { Func } from './core';
 import MPickerPopup from './picker-popup';
 import List from '../../list/index.m';
@@ -28,6 +33,10 @@ export default {
 		event: 'change'
 	},
 	props: {
+		...pick(List.Item.props, [
+			'label',
+			'labelWidth'
+		]),
 		...Core.props,
 		...MPickerPopup.props,
 		loadData: Function,
@@ -63,10 +72,8 @@ export default {
 				this.currentValue = v;
 			}
 		},
-		currentValue(v) {
-			this.$emit('change', v);
-			// form表单
-			this.dispatch('vc-form-item', 'form-change', v);
+		currentValue() {
+			// ...
 		}
 	},
 	created() {
@@ -97,9 +104,11 @@ export default {
 					show,
 					okText,
 					value,
-					onOk: res => {
-						this.currentValue = res;
-						this.$emit('ok');
+					onOk: (value, label, data) => {
+						this.currentValue = value;
+						this.$emit('ok', value, label, data);
+
+						this.sync(label);
 					},
 					onCancel: res => {
 						this.$emit('cancel');
@@ -109,6 +118,14 @@ export default {
 			} catch (e) {
 				console.log('[vcm-picker]', e);
 			}
+		},
+		/**
+		 * v-model 同步, 外部的数据改变时不会触发
+		 */
+		sync(label) {
+			this.$emit('change', this.currentValue, label);
+			// form表单
+			this.dispatch('vc-form-item', 'form-change', this.currentValue);
 		}
 	}
 };
