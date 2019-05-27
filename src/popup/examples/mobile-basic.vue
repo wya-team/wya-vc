@@ -6,6 +6,7 @@
 			:placement="item"
 			:key="`popup__${item}`"
 		>
+			<vcm-input v-model="value" type="text" clearable />
 			{{ item }}
 		</vcm-popup>
 		
@@ -32,15 +33,18 @@
 import { Tip } from './tip/tip.vue';
 import MPopup from '../index.m';
 import MButton from '../../button/index.m';
+import MInput from '../../input/index.m';
 
 export default {
 	name: "vcm-popup-basic",
 	components: {
 		'vcm-popup': MPopup,
-		'vcm-button': MButton
+		'vcm-button': MButton,
+		'vcm-input': MInput,
 	},
 	data() {
 		return {
+			value: '',
 			placements: ['top', 'bottom', 'center', 'left', 'right'],
 			visibles: [false, false, false, false, false]
 		};
