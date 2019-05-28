@@ -91,7 +91,7 @@ export default {
 		handleColChange(v, index) {
 			this.currentValue.splice(index, 1, v.value);
 
-			if (index < this.cols && this.cascade) {
+			if (this.cascade && index < this.cols) {
 				this.currentValue.splice(index + 1, this.cols - index); // 需要清理，用于resetDefault
 				this.rebuildData.splice(index + 1, this.cols - index, ...this.makeRebuildData(index + 1));
 				this.resetDefault(index + 1);
@@ -121,7 +121,7 @@ export default {
 		 */
 		makeRebuildData(colIndex = 0) {
 			if (!this.dataSource.length) return [];
-			if (!this.cascade) return this.dataSource;
+			if (!this.cascade || this.cols === 1) return this.dataSource;
 
 			let temp = this.dataSource;
 			let data = Array.from({ length: this.cols }).reduce((pre, cur, index) => {
