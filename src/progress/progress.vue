@@ -65,7 +65,7 @@ export default {
 			default: 'line'
 		},
 		percent: {
-			type: Number,
+			type: Number || String,
 			default: 0
 		},
 		status: {
@@ -121,7 +121,7 @@ export default {
 		innerStyle() {
 			let style = {
 				height: this.strokeWidth + 'px',
-				width: this.percent + '%',
+				width: Number(this.percent) + '%',
 				backgroundColor: this.oColor
 			};
 			return style;
@@ -144,7 +144,7 @@ export default {
 			let style = {};
 			style = {
 				'stroke-dasharray': `${this.len}px ${this.len}px`,
-				'stroke-dashoffset': `${((100 - this.percent) / 100 * this.len)}px`,
+				'stroke-dashoffset': `${((100 - Number(this.percent)) / 100 * this.len)}px`,
 				'transition': 'stroke-dashoffset 0.6s ease 0s, stroke 0.6s ease'
 			};
 			return style;
