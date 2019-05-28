@@ -16,6 +16,7 @@ clearable | 显示清空按钮 | `Boolean` | false
 readonly | 输入框只读 | `Boolean` | false
 maxlength | 最大输入长度 | `Number` | -
 autofocus | 自动获取焦点 | `Boolean` | false
+afloat | append,prepend置顶显示，盖住虚线 | `Boolean` | false
 
 #### 事件
 

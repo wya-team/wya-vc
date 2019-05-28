@@ -6,6 +6,7 @@
 		:clearable="clearable"
 		:prepend="prepend"
 		:type="type"
+		:afloat="true"
 		class="vc-input-search"
 		v-on="hooks"
 	>
@@ -14,7 +15,7 @@
 		</template>
 		<template #append>
 			<slot name="append">
-				<div class="vc-input-search__content" >
+				<div :class="{ 'is-disabled': binds.disabled }" class="vc-input-search__content">
 					<vc-icon 
 						v-if="enterTxt === true" 
 						:type="append || 'search'"
@@ -51,15 +52,19 @@ $block: vc-input-search;
 		cursor: pointer;
 		font-size: 13px;
 		padding: 0 16px;
-		background: #2d8cf0 !important;
-		color: #fff !important;
-		border-color: #2d8cf0 !important;
+		background: #2d8cf0;
+		color: #fff;
+		border-color: #2d8cf0;
 		transition: all .2s ease-in-out;
 		position: relative;
 		z-index: 3;
 		text-align: center;
 		line-height: 28px;
 		white-space:nowrap;
+		@include when(disabled) {
+			cursor: not-allowed;
+			opacity: .4;
+		}
 	}
 }
 </style>

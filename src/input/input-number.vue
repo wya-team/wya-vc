@@ -87,9 +87,13 @@ $block: vc-input-number;
 			pointer-events: none;
 			color: #ccc;
 		}
+		@include when(disabled) {
+			display: none;	
+		}
 		> i {
 			transform: scale(0.6);
 		}
+
 	}
 
 	@include element(up) {
@@ -105,6 +109,11 @@ $block: vc-input-number;
 			display: block;
 		}
 	}
+
+	.vc-input__append.is-disabled {
+		display: none;
+	}
+
 }
 </style>
 

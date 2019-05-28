@@ -55,6 +55,10 @@ export default {
 		append: {
 			type: String
 		},
+		afloat: {
+			type: Boolean,
+			default: false
+		},	
 		inputStyle: {
 			type: Object | Array
 		},

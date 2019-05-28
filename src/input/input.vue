@@ -4,7 +4,7 @@
 			<!-- 前置 -->
 			<div 
 				v-if="$slots.prepend || prepend" 
-				:class="{ 'is-icon': prepend }" 
+				:class="[{ 'is-icon': prepend, 'is-afloat': afloat }, classes]" 
 				class="vc-input__prepend"
 			>
 				<slot name="prepend">
@@ -36,7 +36,7 @@
 			</vc-transition-fade>
 			<div
 				v-if="$slots.append || append" 
-				:class="[{ 'is-icon': append }, classes]" 
+				:class="[{ 'is-icon': append, 'is-afloat': afloat }, classes]" 
 				class="vc-input__append"
 			>
 				<slot name="append">
@@ -172,7 +172,7 @@ $block: vc-input;
 		line-height: 28px;
 		height: 28px;
 		white-space: nowrap;
-		z-index: 3;
+		z-index: 0; // 让虚线在下方
 		background: #fff;
 		@include when(icon) {
 			width: 16px;
@@ -182,6 +182,10 @@ $block: vc-input;
 		@include when(disabled) {
 			cursor: not-allowed;
 			background-color: #f3f3f3;
+		}
+		// 让虚线在下方
+		@include when(afloat) {
+			z-index: 3;
 		}
 	}
 	/**

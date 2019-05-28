@@ -28,7 +28,7 @@
 			class="vc-select__input"
 		>
 			<template v-if="multiple && (currentValue && currentValue.length > 0)" #content>
-				<div :class="disabledClasses" class="vc-select__tags">
+				<div :class="classes" class="vc-select__tags">
 					<vc-tag 
 						v-for="(item, index) in currentValue" 
 						:key="item" 

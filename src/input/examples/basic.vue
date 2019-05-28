@@ -5,11 +5,13 @@
 				v-model="formValidate.value" 
 				:precision="0" 
 				:min="1"
+				:disabled="disabled"
 				clearable
 			/>
 			<br>
 			<vc-input
 				v-model="value"
+				:disabled="disabled"
 				style="width: 200px;"
 				clearable
 				search
@@ -26,6 +28,8 @@
 				<vc-input 
 					v-model="value"
 					:precision="2"
+					:disabled="disabled"
+					afloat
 					style="width: 200px;"
 					placeholder="显示placeholder"
 					@change="handleChange"
@@ -38,8 +42,8 @@
 			</div>
 			<vc-input 
 				v-model="value1"
+				:disabled="disabled"
 				style="margin-top: 10px;"
-				disabled
 				placeholder="被禁用的input"
 			/>
 			<br>
@@ -53,9 +57,17 @@
 				@submit.native.prevent
 			>
 				<vc-form-item prop="value">
+					<vc-input 
+						v-model="formValidate.value" 
+						:disabled="disabled"
+						clearable
+						append="rmb"
+					/>
+				</vc-form-item>
+				<vc-form-item prop="value">
 					<vc-input-number 
 						v-model="formValidate.value" 
-						:precision="2" 
+						:disabled="disabled"
 						clearable
 						prepend="rmb"
 					/>
@@ -71,30 +83,39 @@
 			<br>
 			<vc-input-search 
 				v-model="value1" 
+				:disabled="disabled"
 				clearable
 			/>
 			<br>
 			<br>
 			<vc-input-search 
 				v-model="value1" 
+				:disabled="disabled"
 				enter-txt="搜索" 
 				clearable
 			/>
 			<br>
 			<br>
 			<vc-input-number 
-				v-model="formValidate.value" 
+				v-model="formValidate.value"
+				:disabled="disabled" 
 				:precision="2"
 				style="width: 80px" 
 				clearable
 				prepend="rmb"
 			/>
 		</div>
+		<br>
+		<br>
+		<br>
+		<br>
+		<vc-button @click="disabled = !disabled">切换disabled: {{ disabled }}</vc-button>
 	</div>
 </template>
 <script>
 import Input from '..';
 import Form from '../../form';
+import Button from '../../button';
 
 export default {
 	name: "vc-tpl-basic",
@@ -104,9 +125,11 @@ export default {
 		'vc-input-search': Input.Search,
 		'vc-form': Form,
 		'vc-form-item': Form.Item,
+		'vc-button': Button,
 	},
 	data() {
 		return {
+			disabled: false,
 			value: '',
 			value1: 11,
 			textvalue: '',
