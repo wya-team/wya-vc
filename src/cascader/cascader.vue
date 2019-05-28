@@ -215,7 +215,7 @@ export default {
 		 * @return {Array} 每列的数据
 		 */
 		makeRebuildData() {
-			if (!this.dataSource.length) return;
+			if (!this.dataSource.length) return [];
 			let temp = this.dataSource;
 			let data = this.currentValue.slice(0).reduce((pre, cur, index) => {
 				pre[index] = this.makeData(temp);
