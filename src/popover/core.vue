@@ -41,7 +41,7 @@ const popup = {
 	},
 	props: {
 		visible: Boolean,
-		animate: String,
+		animate: Transition.Scale.props.mode,
 		placement: {
 			type: String,
 			default: 'bottom',

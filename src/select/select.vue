@@ -11,6 +11,7 @@
 		:portal-class-name="['is-padding-none', portalClassName]"
 		:class="classes"
 		class="vc-select"
+		animate="y"
 		@mouseenter.native="isHover = true"
 		@mouseleave.native="isHover = false"
 		@ready="$emit('ready')"

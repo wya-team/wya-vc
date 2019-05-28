@@ -21,7 +21,7 @@ export default {
 		mode: {
 			type: String,
 			default: 'both',
-			validator: v => /(part|both|none)/.test(v)
+			validator: v => /(part|both|y|x|none)/.test(v)
 		},
 		styles: {
 			type: Object,
@@ -78,6 +78,8 @@ $block: vc-transition-scale;
 
 @include scale(part);
 @include scale(both);
+@include scale(y);
+@include scale(x);
 
 /**
  * both
@@ -90,12 +92,14 @@ $block: vc-transition-scale;
 
 	to {
 		opacity: 1;
+		transform: scale(1);
 	}
 }
 
 @keyframes vc-scale-both-out {
 	from {
 		opacity: 1;
+		transform: scale(1);
 	}
 
 	to {
@@ -122,6 +126,7 @@ $block: vc-transition-scale;
 @keyframes vc-scale-part-out {
 	from {
 		opacity: 1;
+		transform: scale(1);
 	}
 
 	to {
@@ -129,4 +134,55 @@ $block: vc-transition-scale;
 		transform: scale(0.3);
 	}
 }
+
+/**
+ * y
+ */
+@keyframes vc-scale-y-in {
+	0% {
+		opacity: 0;
+		transform: scaleY(0.8);
+	}
+	100% {
+		opacity: 1;
+		transform: scaleY(1);
+	}
+}
+
+@keyframes vc-scale-y-out {
+	0% {
+		opacity: 1;
+		transform: scaleY(1);
+	}
+	100% {
+		opacity: 0;
+		transform: scaleY(0.8);
+	}
+}
+
+/**
+ * x
+ */
+@keyframes vc-scale-x-in {
+	0% {
+		opacity: 0;
+		transform: scaleX(0.8);
+	}
+	100% {
+		opacity: 1;
+		transform: scaleX(1);
+	}
+}
+
+@keyframes vc-scale-x-out {
+	0% {
+		opacity: 1;
+		transform: scaleX(1);
+	}
+	100% {
+		opacity: 0;
+		transform: scaleX(0.8);
+	}
+}
+
 </style>

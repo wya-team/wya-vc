@@ -8,6 +8,7 @@
 		:placement="placement"
 		:disabled="disabled"
 		:portal-class-name="['is-padding-none', portalClassName]"
+		animate="y"
 		class="vc-cascader"
 		@mouseenter.native="isHover = true"
 		@mouseleave.native="isHover = false"
@@ -83,6 +84,7 @@ export default {
 		...pick(Popover.props, [
 			'portalClassName'
 		]),
+
 		...pick(InputMixin.props, [
 			'elementId', 
 			'readonly', 
