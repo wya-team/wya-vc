@@ -40,10 +40,17 @@
 			:rules="ruleValidate"
 			@submit.native.prevent
 		>
-			<vcm-form-item prop="timeV" label="日期选择">
+			<vcm-form-item prop="start" label="开始时间">
 				<vcm-date-picker
-					v-model="formValidate.timeV"
-					:min-date="value"
+					v-model="formValidate.start"
+					:max-date="formValidate.end"
+					mode="datetime"
+				/>
+			</vcm-form-item>
+			<vcm-form-item prop="start" label="结束时间">
+				<vcm-date-picker
+					v-model="formValidate.end"
+					:min-date="formValidate.start"
 					mode="datetime"
 				/>
 			</vcm-form-item>
@@ -81,14 +88,23 @@ export default {
 			valueEmpty: undefined,
 			valueView: new Date(),
 			formValidate: {
-				timeV: undefined,
+				start: undefined,
+				end: undefined
 			},
 			ruleValidate: {
-				timeV: [
+				start: [
 					{ 
 						required: true, 
 						type: 'object',
-						message: '请选择时间', 
+						message: '请选择开始时间', 
+						trigger: 'change' 
+					}
+				],
+				end: [
+					{ 
+						required: true, 
+						type: 'object',
+						message: '请选择结束时间', 
 						trigger: 'change' 
 					}
 				],

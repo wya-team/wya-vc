@@ -81,7 +81,6 @@ export default {
 			let minYear = Number(min[0]);
 			let maxYear = Number(max[0]);
 			let year = [minYear, maxYear];
-
 			// month
 			let minMonth = this.compareWithBoundary(min, this.currentValue, 1) 
 				? Number(min[1])
@@ -141,6 +140,10 @@ export default {
 						min: minute
 					};
 			}
+		},
+		defaultValue() {
+			let now = new Date();
+			return this.minDate > now ? this.minDate : now;
 		}
 	},
 	watch: {
@@ -157,7 +160,7 @@ export default {
 				 * NaN !== NaN true -> this.currentValue = undefined;
 				 */
 				if (+new Date(v) !== +value2date(this.currentValue)) {
-					this.currentValue = date2value(v || new Date(), this.modeArr);
+					this.currentValue = date2value(v || this.defaultValue, this.modeArr);
 					this.rebuildData = this.makeRebuildData();
 				}
 			}

@@ -14,6 +14,7 @@
 			v-model="currentValue"
 			:mode="mode"
 			:min-date="minDate"
+			:max-date="maxDate"
 			:start-hour="startHour"	
 			:end-hour="endHour"	
 			:allow-dispatch="false"
