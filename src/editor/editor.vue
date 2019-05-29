@@ -103,6 +103,7 @@ export default {
 
 		this.init();
 		this.initListener();
+		this.$emit('ready');
 	},
 	beforeDestroy() {
 		this.editor = null;

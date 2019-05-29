@@ -23,9 +23,10 @@ content | 富文本内容（html形式） | `String` | -
 ##### Editor
 属性 | 说明 | 类型 | 默认值
 ---|---|---|---
-@blur | 富文本失去焦点 | `editor` | -
-@focus | 富文本获取焦点 | `editor` | -
-@change | 富文本内容变化 | `{ html, text, editor }` | -
+@blur | 富文本失去焦点 | `function` | `editor`
+@focus | 富文本获取焦点 | `function` | `editor`
+@change | 富文本内容变化 | `function` | `{ html, text, editor }`
+@ready | quill对象已经实例化 | `function` | -
 
 #### Slot
 属性 | 说明
