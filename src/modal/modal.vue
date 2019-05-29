@@ -52,7 +52,7 @@
 						<slot name="footer">
 							<vc-button
 								v-if="cancelText"
-								style="margin-right: 12px;"
+								style="margin-right: 8px;"
 								@click="handleCancel"
 							>{{ cancelText }}</vc-button>
 							<vc-button 
@@ -443,6 +443,7 @@ export default {
 		// padding: 14px 16px;
 		@include when(confirm) {
 			border-bottom: none;
+			padding: 14px 16px;
 		}
 	}
 	@include element(content) { 
@@ -450,6 +451,7 @@ export default {
 		padding: 16px 24px;
 		@include when(confirm) {
 			padding: 0;
+			padding-left: 46px;
 		}
 	}
 	@include element(footer) {
@@ -487,7 +489,7 @@ export default {
 	}
 	@include element(icon) {
 		margin-right: 8px;
-		font-size: 28px;
+		font-size: 20px;
 		@include when(success) {
 			color: $success;
 		}
