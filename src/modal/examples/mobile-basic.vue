@@ -18,7 +18,7 @@
 			@cancel="handleCancel"
 			@ok="handleOk"
 		>
-			啦啦啦啦
+			<div @click="handleClick4">portal: 确定，取消</div>
 		</vcm-modal>
 		<vcm-modal 
 			v-model="visible3"

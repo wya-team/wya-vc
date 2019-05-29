@@ -13,7 +13,7 @@
 			@cancel="handleCancel"
 			@ok="handleOk"
 		>
-			啦啦啦啦
+			<vc-button type="primary" @click="handleModal4">Modal.methods</vc-button>
 			<template #footer>222</template>
 		</vc-modal>
 		<vc-modal 

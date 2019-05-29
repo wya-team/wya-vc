@@ -402,7 +402,7 @@ export default {
 		right: 0;
 		background-color: $mask-bg-color;
 		height: 100%;
-		z-index: $mask-zindex;
+		z-index: $popup-zindex; // 与wrapper相同，两个modal同时出现时可以盖上去
 	}
 	@include element(wrapper) {
 		position: fixed;
