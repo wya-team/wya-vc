@@ -415,10 +415,10 @@ export default {
 			return canvas;
 		},
 
-		getImage({ isNormal = true, fileName = '____fileName', getFile = false }) {
+		getImage({ isNormal = true, filename = 'image', getFile = false }) {
 			return Utils.canvas2file(
 				isNormal ? this.getImageToCanvas() : this.getImageScaledToCanvas(), 
-				{ fileName, getFile }
+				{ filename, getFile }
 			);
 		},
 		/**

@@ -8,8 +8,8 @@ html转图片
 
 属性 | 说明 | 参数 | 返回值
 ---|---|---|---
-getImg | - | (fileName = 'image', getFile = true) | -
-download | - | (fileName = 'image', getFile = true) | -
+getImage | - | ({ filename = 'image', getFile = true }) | -
+download | - | ({ filename = 'image', getFile = true }) | -
 
 ## 基础用法
 

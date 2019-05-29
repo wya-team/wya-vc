@@ -19,7 +19,7 @@ export default {
 		
 	},
 	methods: {
-		async getImg(fileName = 'image', getFile = true) {
+		async getImage({ filename = 'image', getFile = true }) {
 			try {
 				let html2canvas = await import('html2canvas');
 				// 兼容webpack 3.0/4.0 写法
@@ -27,7 +27,7 @@ export default {
 
 				const canvas = await html2canvas(this.$refs.target, { allowTaint: false, useCORS: true });
 
-				const { file, base64Image } = await Utils.canvas2file(canvas, { fileName, getFile });
+				const { file, base64Image } = await Utils.canvas2file(canvas, { filename, getFile });
 
 				return {
 					file,
@@ -38,16 +38,16 @@ export default {
 			}
 		},
 
-		async download(fileName = 'image', getFile = true) {
+		async download({ filename = 'image', getFile = true }) {
 			try {
-				const { file, base64Image } = await this.getImg(fileName, getFile);
+				const { file, base64Image } = await this.getImg(filename, getFile);
 
 				let $this = document.createElement('a');
 				// initEvent 不加后两个参数在FF下会报错  事件类型，是否冒泡，是否阻止浏览器的默认行为
 				let evt = document.createEvent("HTMLEvents");
 				evt.initEvent("click", true, true);
 				// load
-				$this.download = fileName;
+				$this.download = filename;
 				$this.href = URL.createObjectURL(file);
 				$this.click();
 				return {
