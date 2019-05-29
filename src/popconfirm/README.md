@@ -14,6 +14,8 @@ cancelText | 取消按钮的文字 | `string` | `取消`
 okType | 确定按钮的样式类型（其他值参考`button`的`type`） | `string` | `primary`
 cancelType | 确定按钮的样式类型（其他值参考`button`的`type`） | `string` | `default`
 type | 类型`warn` `success` `info` `error` | `string` | `warn`
+width | 弹宽的宽度，最小`218px`, 只需传数字，`px`已在内部添加 | `string` | `number` | -
+renderTitle | `title` 自定义 | `function` | `(h, props, parent) => (<div>{props.title}</div>)`
 其他属性请参考Popover
 
 #### 事件

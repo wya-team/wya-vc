@@ -4,18 +4,27 @@
 		:visible="isActive"
 		:placement="placement"
 		:trigger="trigger"
+		:portal-class-name="['is-padding-none', 'vc-popconfirm']"
 		@ready="$emit('ready')"
 		@close="$emit('close')"
 		@visible-change="handleChange"
 	>
 		<slot />
 		<template #content>
-			<div class="vc-popconfirm__content">
+			<div 
+				:style="{ width: `${width}px` }" 
+				class="vc-popconfirm__content"
+			>
 				<div class="vc-popconfirm__title">
 					<slot name="icon">
 						<vc-icon :type="type" :class="`is-${type}`" class="vc-popconfirm__icon" />
 					</slot>
-					<slot name="title">{{ title }}</slot>
+					<slot name="title">
+						<vc-customer 
+							:title="title"
+							:render="renderTitle"
+						/>
+					</slot>
 				</div>
 				<div class="vc-popconfirm__footer">
 					<vc-button 
@@ -43,6 +52,7 @@ import { pick } from 'lodash';
 import Popover from "../popover/index";
 import Button from '../button/index';
 import Icon from '../icon/index';
+import Customer from '../customer/index';
 
 export default {
 	name: "vc-popconfirm",
@@ -50,6 +60,7 @@ export default {
 		'vc-popover': Popover,
 		'vc-button': Button,
 		'vc-icon': Icon,
+		'vc-customer': Customer
 	},
 	inheritAttrs: false,
 	model: {
@@ -100,6 +111,15 @@ export default {
 			type: String,
 			default: 'warning',
 			validator: v => /(warning|info|success|error)/.test(v),
+		},
+		width: String | Number,
+		renderTitle: {
+			type: Function,
+			default: (h, props, parent) => {
+				return (
+					<div>{props.title}</div>
+				);
+			}
 		}
 	},
 	data() {
@@ -166,16 +186,21 @@ export default {
 @import '../style/index.scss';
 
 @include block(vc-popconfirm) {
-	padding: 7px 4px;
+	@include element(content) {
+		padding: 16px;
+		min-width: 218px;
+	}
 	@include element(title) {
 		padding-left: 20px;
-		padding-bottom: 12px;
+		margin-bottom: 15px;
 		position: relative;
+		color: #333;
 	}
 	@include element(icon) {
 		position: absolute;
 		top: 0px;
 		left: 0px;
+		font-size: 16px;
 		@include when(warning) {
 			color: $warning;
 		}
@@ -191,7 +216,6 @@ export default {
 	}
 	@include element(footer) {
 		text-align: right;
-		margin-bottom: 6px;
 	}
 }
 </style>
