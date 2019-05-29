@@ -6,6 +6,7 @@
 			<vc-cascader 
 				:data-source="bigData" 
 				v-model="value1"
+				clearable
 				@change="handleChange"
 			/>
 		</div>
@@ -13,10 +14,10 @@
 			<vc-cascader :data-source="dataSource" v-model="value2" clearable/>
 		</div>
 		<div style="margin: 40px 0 ">
-			<vc-cascader :data-source="dataAsyncSource1" v-model="value3"/>
+			<vc-cascader :data-source="dataAsyncSource1" v-model="value3" clearable/>
 		</div>
 		<div style="margin: 40px 0 ">
-			<vc-cascader :data-source="dataAsyncSource2" v-model="value4" :load-data="loadData"/>
+			<vc-cascader :data-source="dataAsyncSource2" v-model="value4" :load-data="loadData" clearable/>
 		</div>
 	</div>
 </template>

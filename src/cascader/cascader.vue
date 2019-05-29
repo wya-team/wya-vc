@@ -195,7 +195,7 @@ export default {
 
 			this.currentValue.splice(0, this.currentValue.length);
 
-			this.sync();
+			this.sync(true);
 		},
 
 		/**
@@ -283,28 +283,22 @@ export default {
 		/**
 		 * v-model 同步, 外部的数据改变时不会触发
 		 */
-		sync() {
-			this.changeOnSelect && this.$emit('change', this.currentValue, this.label);
+		sync(force) {
+			(this.changeOnSelect) && this.$emit('change', this.currentValue, this.label);
 
-			this.dispatch && this.dispatch('vc-form-item', 'form-change', {
-				value: this.currentValue,
-				label: this.label
-			});
+			this.dispatch && this.dispatch('vc-form-item', 'form-change', this.currentValue);
 
 			// 最后一项，自动关闭
 			let lastData = this.rebuildData[this.currentValue.length];
 
 			let isLast = !lastData || lastData.length === 0;
 
-			if (isLast) {
-				this.visible = false;
+			isLast && (this.visible = false);
 
-				// 该模式下，label会变为上一个值，这里重新获取一次
-				if (!this.changeOnSelect) {
-					const { label } = this.getInfo(this.currentValue);
-					this.$emit('change', this.currentValue, label);
-				}
-				
+			// 该模式下，label会变为上一个值，这里重新获取一次
+			if ((force || isLast) && !this.changeOnSelect) {
+				const { label } = this.getInfo(this.currentValue);
+				this.$emit('change', this.currentValue, label);
 			}
 		}
 	},
