@@ -109,6 +109,7 @@
 				v-model="value5"
 				clearable 
 				search
+				search-placeholder="请输入"
 				style="width: 200px"
 			>
 				<vc-option 

@@ -55,7 +55,11 @@
 		<template #content>
 			<div class="vc-select__content">
 				<div v-if="search" class="vc-select__search">
-					<vc-input-search v-model="searchValue" @input="handleSearch" />
+					<vc-input-search 
+						v-model="searchValue" 
+						:placeholder="searchPlaceholder"
+						@input="handleSearch" 
+					/>
 				</div>
 				<div v-if="loading" class="vc-select__loading">
 					<vc-spin :size="16" />
@@ -117,6 +121,10 @@ export default {
 			'placeholder',
 			'clearable'
 		]),
+		searchPlaceholder: {
+			type: String,
+			default: ''
+		},
 		trigger: {
 			type: String,
 			default: 'click'
