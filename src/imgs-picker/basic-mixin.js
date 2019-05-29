@@ -38,6 +38,11 @@ export default {
 			type: Boolean,
 			default: false
 		},
+		// 拖拽排序
+		sort: {
+			type: Boolean,
+			default: false
+		},
 		/**
 		 * vc-upload组件的属性
 		 */

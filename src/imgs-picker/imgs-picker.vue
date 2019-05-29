@@ -1,46 +1,47 @@
 <template>
 	<component :is="tag" class="vcp-imgs-picker">
-		<div 
-			v-for="(item, index) in data" 
-			:key="typeof item === 'object' ? item.uid : item"
-			:class="{'vcp-imgs-picker__error': item.status == 0, imgClassName, boxClassName}"
-			class="vcp-imgs-picker__item vcp-imgs-picker__box"
-		>
-			<slot 
-				:it="item" 
-				name="image"
+		<template v-if="!sort">
+			<vc-imgs-picker-item 
+				v-for="(item, index) in data" 
+				:key="typeof item === 'object' ? item.uid : item"
+				:img-class-name="imgClassName"
+				:img-classes="imgClasses"
+				:box-class-name="boxClassName"
+				:disabled="disabled"
+				:it="item"
+				@delete="handleDel(arguments[0])"
+				@preview="handlePreview(arguments[0], index)"
 			>
-				<div
-					v-if="typeof item !== 'object'"
-					:style="{backgroundImage: `url('${item}')`}"
-					:class="imgClasses"
-					@click="handlePreview($event, index)"
-				/>
-				<div v-else :class="imgClasses">
-					<vc-progress
-						v-if="item.percent && item.percent != 100" 
-						:percent="item.percent"
-						:show-info="false"
-						status="normal"
-						style="width: 100%;padding: 0 5px"
-					/>
-					<p v-else-if="!item.url && item.percent == 100" style="line-height: 1; padding: 5px">
-						服务器正在接收...
-					</p>
-					<div v-else-if="item.status == 0" style="padding: 5px">
-						上传失败
-					</div>
-				</div>
-				<!-- 上传失败或者成功后显示 -->
-				<vc-icon 
-					v-if="!disabled && (typeof item !== 'object' || item.status == 0)" 
-					type="clear" 
-					class="vcp-imgs-picker__delete"
-					@click="handleDel(item)" 
-				/>
-				<div class="vcp-imgs-picker__delete--bg"/>
-			</slot>
-		</div>
+				
+				<template #default="{ it }">
+					<slot :it="it" name="image"/>
+				</template>
+			</vc-imgs-picker-item>
+		</template>
+		<vc-sort-list 
+			v-else 
+			v-model="data" 
+			:mask="sortMask" 
+			value-key="uid" 
+			class="is-sort"
+		>
+			<template #default="{ it, index }">
+				<vc-imgs-picker-item 
+					:img-class-name="imgClassName"
+					:img-classes="imgClasses"
+					:box-class-name="boxClassName"
+					:disabled="disabled"
+					:it="it"
+					style="margin-right: 0; margin-bottom: 0"
+					@delete="handleDel(arguments[0])"
+					@preview="handlePreview(arguments[0], index)"
+				>
+					<template #default="{ it }">
+						<slot :it="it" name="image"/>
+					</template>
+				</vc-imgs-picker-item>
+			</template>
+		</vc-sort-list>
 		<vc-upload 
 			v-show="!disabled && (data.length < max || max === 0)"
 			v-bind="uploadOpts"
@@ -70,6 +71,8 @@ import BasicMixin from './basic-mixin';
 import Upload from '../upload/index';
 import Icon from '../icon/index';
 import Progress from '../progress/index';
+import SortList from '../sort-list/index';
+import Item from "./item";
 
 export default {
 	name: "vc-imgs-picker",
@@ -77,6 +80,8 @@ export default {
 		'vc-upload': Upload,
 		'vc-icon': Icon,
 		'vc-progress': Progress,
+		'vc-sort-list': SortList,
+		'vc-imgs-picker-item': Item
 	},
 	mixins: [BasicMixin],
 	props: {
@@ -87,6 +92,10 @@ export default {
 			type: String,
 			default: 'image/gif,image/jpeg,image/jpg,image/png' // 不默认为image/*是因为在Webkit浏览器下回响应很慢
 		},
+		sortMask: {
+			type: Boolean,
+			default: false
+		}
 	},
 	computed: {
 		imgClasses() {
@@ -162,6 +171,12 @@ export default {
 		border-radius: 5px;
 		overflow: hidden;
 		margin: 0 4px;
+	}
+	.vc-sort-list>div {
+		margin-right: 12px;
+		margin-bottom: 12px;
+		margin-top: 0;
+		margin-left: 0;
 	}
 }
 </style>

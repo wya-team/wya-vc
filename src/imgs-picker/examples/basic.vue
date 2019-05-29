@@ -10,6 +10,7 @@
 				v-model="formValidate.imgs" 
 				:max="3"
 				:upload="{multiple: true, max: 3}"
+				sort
 				@error="handleError"
 			/>
 		</vc-form-item>
@@ -73,15 +74,13 @@ VcInstance.init({
 				title: options.param.file.name,
 				size: options.param.file.size
 			};
-			if (response.httpStatus === 200) {
-				return {
-					status: 1,
-					data: {
-						url: `${options.url}/${options.param.key}`,
-						...fileInfo
-					}
-				};
-			}
+			return {
+				status: 1,
+				data: {
+					url: `https://wya-oa.oss-cn-hangzhou.aliyuncs.com/common/file-download.png?v=${new Date().getTime()}`,
+					...fileInfo
+				}
+			};
 		}
 	}
 });
@@ -113,6 +112,13 @@ export default {
 		setTimeout(() => {
 			this.formValidate.imgs = ["https://wyatest.oss-cn-hangzhou.aliyuncs.com/oa2/20190117/1547696227226/222.jpg"];
 		}, 0);
+		setTimeout(() => {
+			console.log(111);
+			this.formValidate.imgs = [
+				...this.formValidate.imgs,
+				`https://wya-oa.oss-cn-hangzhou.aliyuncs.com/common/file-download.png?v=${new Date().getTime()}`
+			];
+		}, 5000);
 	},
 	methods: {
 		handleChange(value) {
