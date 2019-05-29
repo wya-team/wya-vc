@@ -4,7 +4,7 @@
 			<vc-input-number 
 				v-model="formValidate.value" 
 				:precision="0" 
-				:min="1"
+				:min="-10"
 				:disabled="disabled"
 				clearable
 			/>
@@ -101,7 +101,6 @@
 				:disabled="disabled" 
 				:precision="2"
 				style="width: 80px" 
-				clearable
 				prepend="rmb"
 			/>
 		</div>

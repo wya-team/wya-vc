@@ -80,15 +80,18 @@ export default {
 			this.isInput = true;
 
 			value = value.trim();
-			if (/[^-]/.test(value) && Number.isNaN(Number(value))) {
+
+			if (/[^-]/.test(value) && Number.isNaN(Number(value))) { // `[A-Za-z]` -> ''
 				value = this.currentValue;
+			} else if (/[-]{2,}/.test(value)) { // `--` -> `-`
+				value = '-';
 			} else if (value !== '') {
 				let regex = this.precision
 					? new RegExp(`(.*\\.[\\d]{${this.precision}})[\\d]+`)
 					: new RegExp(`(.*)\\.`);
 
 				value = value.replace(regex, '$1');
-				value = value.charAt(0) === '.' ? `0${value}` : value;
+				value = value.charAt(0) === '.' ? `0${value}` : value; // '0.' -> '.' -> '0.'
 			}
 
 			value = value === '' ? value : this.compareWithBoundary({ value, type: 'input' });
@@ -97,6 +100,7 @@ export default {
 		},
 		async handleBlur(e) {
 			this.isInput = false;
+			// 失焦时，只留一个'-'
 			let value = this.currentValue === '-' ? '' : this.currentValue;
 			value = this.required && !this.currentValue
 				? this.min
