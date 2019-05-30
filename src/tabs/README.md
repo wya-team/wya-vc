@@ -13,8 +13,6 @@ type | 页签的基本样式，可选值为 `line` 和 `card` | String | line
 size | 尺寸，可选值为 `default` 和 `small`，仅在 `type="line"` 时有效 | String | default
 closable | 是否可以关闭页签，仅在 `type="card"` 时有效 | Boolean | false
 animated | 是否使用 CSS3 动画 | Boolean | true
-capture-focus | Tabs 内的表单类组件是否自动获得焦点 | Boolean | false
-before-remove | 关闭前的函数，返回 Promise 可阻止标签关闭 | Function | -
 name 当嵌套使用 Tabs，指定 name 区分层级 | String | -
 
 
@@ -23,7 +21,6 @@ name 当嵌套使用 Tabs，指定 name 区分层级 | String | -
 属性 | 说明 | 参数 | 返回值
 ---|---|---|---
 click | tab 被点击时触发	 | `name`|---
-tab-remove | tab 被关闭时触发	 | `name`|---
 
 #### Slot
 
@@ -49,3 +46,8 @@ index | 在 TabPane 使用 v-if 时，并不会按照预先的顺序渲染，这
 ```jsx
 
 ```
+
+## TODO
+
+1. 移动端使用touch处理滚动
+2. 初始话带动画时，第一次不设置动画
