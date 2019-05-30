@@ -39,7 +39,7 @@
 			</template>
 		</vc-input>
 		<template #content>
-			<div>
+			<div class="vc-cascader__content">
 				<vc-cascader-col
 					v-for="(item, index) in cols"
 					v-if="rebuildData[index] && rebuildData[index].length"
@@ -335,6 +335,11 @@ $block: vc-cascader;
 		@include when(arrow) {
 			transform: scale(0.7);
 		}
+	}
+	// 默认不换行
+	@include element(content) {
+		display: flex;
+		flex-wrap: nowrap;
 	}
 }
 
