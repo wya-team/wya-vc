@@ -29,6 +29,7 @@ export default {
 			type: String,
 			default: ""
 		},
+		// iOS时间不要使用xxxx-xx -> xxxx/xx
 		targetTime: {
 			type: [String, Number, Date],
 			default: ""

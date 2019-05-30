@@ -35,13 +35,14 @@ export default {
 			type: String,
 			default: 'datetime',
 		},
+		// iOS时间不要使用xxxx-xx -> xxxx/xx
 		minDate: {
 			type: Date,
-			default: () => new Date('1990-01-01 00:00')
+			default: () => new Date('1990/01/01 00:00')
 		},
 		maxDate: {
 			type: Date,
-			default: () => new Date('2030-12-31 23:59')
+			default: () => new Date('2030/12/31 23:59')
 		},
 		startHour: {
 			type: Number,
@@ -81,6 +82,7 @@ export default {
 			let minYear = Number(min[0]);
 			let maxYear = Number(max[0]);
 			let year = [minYear, maxYear];
+
 			// month
 			let minMonth = this.compareWithBoundary(min, this.currentValue, 1) 
 				? Number(min[1])
