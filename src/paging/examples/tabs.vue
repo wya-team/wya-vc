@@ -10,8 +10,9 @@
 		/>
 		<vc-tabs 
 			:value="type" 
-			:animated="false" 
-			@on-click="handleChange"
+			:animated="true" 
+			type="card"
+			@click="handleChange"
 		>
 			<vc-tab-pane 
 				v-for="(item) in tabs"
