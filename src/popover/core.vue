@@ -73,7 +73,7 @@ const popup = {
 			type: Boolean,
 			default: false
 		},
-		popupContainer: HTMLElement,
+		triggerEl: HTMLElement,
 		onChange: Function,
 		onReady: Function,
 		isHover: Boolean,
@@ -133,11 +133,11 @@ const popup = {
 		getHackContainer() {
 			try {
 				let slotHeight = this.$slots.default[0].elm.getBoundingClientRect().height;
-				let parentHeight = this.popupContainer.getBoundingClientRect().height;
+				let parentHeight = this.triggerEl.getBoundingClientRect().height;
 				if (slotHeight > parentHeight) {
 					return this.$slots.default[0].elm;
 				}
-				return this.popupContainer;
+				return this.triggerEl;
 
 			} catch (e) {
 				throw new VcError('vc-popover-core', '不要使用<template #default></template>');
@@ -148,20 +148,20 @@ const popup = {
 		setPopupStyle() {
 			if (!this.$el) return;
 
-			const popupContainer = this.getHackContainer();
+			const triggerEl = this.getHackContainer();
 
 			const { portal, getPopupContainer } = this;
 
 			let rect = this.getRect({
 				portal,
-				popupContainer,
+				triggerEl,
 				el: this.$el,
 				hasContainer: !!getPopupContainer
 			});
 
 			let result = this.getFitPos({
 				rect,
-				popupContainer,
+				triggerEl,
 				el: this.$el,
 				placement: this.placement
 			});
@@ -169,7 +169,7 @@ const popup = {
 
 			let { wrapperStyle, arrowStyle } = this.getPopupStyle({
 				rect,
-				popupContainer,
+				triggerEl,
 				el: this.$el,
 				placement: result
 			});
@@ -183,7 +183,7 @@ const popup = {
 			 */
 			if (!this.autoWidth) return;
 			this.wrapperW = {
-				width: `${popupContainer.getBoundingClientRect().width}px`
+				width: `${triggerEl.getBoundingClientRect().width}px`
 			};
 		},
 		handleClick(e) {

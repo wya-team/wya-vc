@@ -108,7 +108,7 @@ export default {
 				this.popperInstance = Func.popup({
 					el,
 					cName: this.popoverId,
-					popupContainer: this.$el,
+					triggerEl: this.$el,
 					onChange: ::this.handleChange,
 					onClose: () => this.$emit('close'),
 					onReady: () => this.$emit('ready'),

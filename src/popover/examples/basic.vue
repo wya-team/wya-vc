@@ -58,8 +58,9 @@
 						:trigger="trigger" 
 						placement="top-left" 
 						content="TopLeft"
+						class=" g-m-lr-10"
 					>
-						<vc-button class="g-btn g-m-lr-10">
+						<vc-button class="g-btn">
 							TL
 						</vc-button>
 						<template #content>
@@ -73,8 +74,9 @@
 						:trigger="trigger" 
 						placement="top" 
 						content="Top"
+						class=" g-m-lr-10"
 					>
-						<vc-button class="g-btn g-m-lr-10">
+						<vc-button class="g-btn">
 							Top
 						</vc-button>
 						<template #content>
@@ -87,8 +89,9 @@
 						:trigger="trigger" 
 						placement="top-right" 
 						content="TopRight"
+						class=" g-m-lr-10"
 					>
-						<vc-button class="g-btn g-m-lr-10">
+						<vc-button class="g-btn">
 							TR
 						</vc-button>
 						<template #content>
@@ -104,8 +107,9 @@
 						:trigger="trigger" 
 						placement="bottom-left"
 						content="BottomLeft"
+						class=" g-m-lr-10"
 					>
-						<vc-button class="g-btn g-m-lr-10">
+						<vc-button class="g-btn">
 							BL
 						</vc-button>
 						<template #content>
@@ -119,8 +123,9 @@
 						:trigger="trigger" 
 						placement="bottom" 
 						content="Bottom"
+						class=" g-m-lr-10"
 					>
-						<vc-button class="g-btn g-m-lr-10">
+						<vc-button class="g-btn">
 							Bottom
 						</vc-button>
 						<template #content>
@@ -133,8 +138,9 @@
 						:trigger="trigger" 
 						placement="bottom-right"
 						content="BottomRight"
+						class=" g-m-lr-10"
 					>
-						<vc-button class="g-btn g-m-lr-10">
+						<vc-button class="g-btn">
 							BR
 						</vc-button>
 						<template #content>
