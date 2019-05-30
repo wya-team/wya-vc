@@ -1,13 +1,13 @@
 <template>
 	<div style="background: #f7f6f6">
-		<vc-button @click="animated = !animated"> animated: {{ animated }}</vc-button>
-		<vc-button @click="type = type === 'line' ? 'card' : 'line'"> type: {{ type }}</vc-button>
+		<vcm-button @click="animated = !animated"> animated: {{ animated }}</vcm-button>
+		<vcm-button @click="theme = theme === 'light' ? 'dark' : 'light'"> theme: {{ theme }}</vcm-button>
 		<br>
 		<br>
-		<vc-tabs 
+		<vcm-tabs 
 			v-model="value"
 			:animated="animated" 
-			:type="type"
+			:theme="theme"
 			closable 
 			@click="handleClick"
 			@tab-remove="handleRemove"
@@ -15,81 +15,81 @@
 			<template #extra>
 				<div>extra</div>
 			</template>
-			<vc-tabs-pane label="标签一">
+			<vcm-tabs-pane label="标签一">
 				<div v-for="item in list" :key="item">
 					<div>标签一的内容</div>
 					<div>标签一的内容</div>
 				</div>
-			</vc-tabs-pane>
-			<vc-tabs-pane label="标签二">
+			</vcm-tabs-pane>
+			<vcm-tabs-pane label="标签二">
 				<div v-for="item in list" :key="item">
 					<div>标签二的内容</div>
 					<div>标签二的内容</div>
 				</div>
-			</vc-tabs-pane>
-			<vc-tabs-pane label="标签三">
+			</vcm-tabs-pane>
+			<vcm-tabs-pane label="标签三">
 				<div v-for="item in list" :key="item">
 					<div>标签三的内容</div>
 					<div>标签三的内容</div>
 					<div>标签三的内容</div>
 				</div>
-			</vc-tabs-pane>
-			<vc-tabs-pane label="标签四">
+			</vcm-tabs-pane>
+			<vcm-tabs-pane label="标签四">
 				<div v-for="item in list" :key="item">
 					<div>标签四的内容</div>
 					<div>标签四的内容</div>
 				</div>
-			</vc-tabs-pane>
-			<vc-tabs-pane label="标签五">
+			</vcm-tabs-pane>
+			<vcm-tabs-pane label="标签五">
 				<div v-for="item in list" :key="item">
 					<div>标签五的内容</div>
 					<div>标签五的内容</div>
 				</div>
-			</vc-tabs-pane>
-			<vc-tabs-pane label="标签六">
+			</vcm-tabs-pane>
+			<vcm-tabs-pane label="标签六">
 				<div v-for="item in list" :key="item">
 					<div>标签六的内容</div>
 					<div>标签六的内容</div>
 					<div>标签六的内容</div>
 				</div>
-			</vc-tabs-pane>
-			<vc-tabs-pane label="标签七">
+			</vcm-tabs-pane>
+			<vcm-tabs-pane label="标签七">
 				<div v-for="item in list" :key="item">
 					<div>标签七的内容</div>
 				</div>
-			</vc-tabs-pane>
-			<vc-tabs-pane label="标签八">
+			</vcm-tabs-pane>
+			<vcm-tabs-pane label="标签八">
 				<div v-for="item in list" :key="item">
 					<div>标签八的内容</div>
 					<div>标签八的内容</div>
 				</div>
-			</vc-tabs-pane>
-			<vc-tabs-pane label="标签九">
+			</vcm-tabs-pane>
+			<vcm-tabs-pane label="标签九">
 				<div v-for="item in list" :key="item">
 					<div>标签九的内容</div>
 					<div>标签九的内容</div>
 					<div>标签九的内容</div>
 				</div>
-			</vc-tabs-pane>
-		</vc-tabs>
+			</vcm-tabs-pane>
+		</vcm-tabs>
 	</div>
 </template>
 <script>
-import Tabs from '..';
-import Button from '../../button';
+import MTabs from '../index.m';
+import MButton from '../../button/index.m';
 
 export default {
-	name: "vc-tpl-basic",
+	name: "vcm-tpl-basic",
 	components: {
-		'vc-tabs': Tabs,
-		'vc-tabs-pane': Tabs.Pane,
-		'vc-button': Button
+		'vcm-tabs': MTabs,
+		'vcm-tabs-pane': MTabs.Pane,
+		'vcm-button': MButton
 	},
 	data() {
 		return {
 			value: 6,
 			animated: false,
-			type: 'line',
+			theme: 'light',
 			list: Array.from({ length: 200 }, (_, i) => i)
 		};
 	},

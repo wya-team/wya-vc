@@ -37,8 +37,7 @@
 	</div>
 </template>
 <script>
-import Emitter from '../extends/mixins/emitter';
-import { Resize } from '../utils/index';
+import TabsMixin from './tabs-mixin';
 import Icon from '../icon';
 
 export default {
@@ -46,76 +45,25 @@ export default {
 	components: {
 		'vc-icon': Icon
 	},
-	mixins: [Emitter],
-	model: {
-		prop: 'value',
-		event: 'change'
-	},
+	mixins: [TabsMixin],
 	props: {
-		value: {
-			type: [String, Number]
-		},
 		type: {
 			type: String,
 			validator: v => /^(line|card)$/.test(v),
 			default: 'line'
 		},
-		animated: {
-			type: Boolean,
-			default: false
-		},
 		closable: {
 			type: Boolean,
 			default: false
 		},
-
-		// TODO: 考虑tabs有且只有一个存在或者让用户自行处理
-		alone: {
-			type: Boolean,
-			default: false
-		}
 	},
 	data() {
 		return {
-			// tabs-children数据
-			list: [],
-
-			// tabs-nav-item底部宽度，偏移值
-			afloatWidth: 0,
-			afloatOffset: 0,
-
-			// tabs-nav滚动偏移值
-			scrollOffset: 0,
-
-			// 当前的active
-			currentName: undefined,
-
-			// 可滚动
-			scrollable: false
 		};
 	},
 	computed: {
 		isCard() {
 			return this.type === 'card';
-		},
-		afloatStyle() {
-			let style = {
-				width: `${this.afloatWidth}px`
-			};
-
-			style.transform = `translate3d(${this.afloatOffset}px, 0px, 0px)`;
-
-			return style;
-		},
-		contentStyle() {
-			const index = this.getTabIndex(this.currentName);
-			const precent = index === 0 ? '0%' : `-${index}00%`;
-
-			let style = {};
-			if (index > -1) {
-				style.transform = `translate3d(${precent}, 0px, 0px)`;
-			}
-			return style;
 		},
 		scrollStyle() {
 			let style = {};
@@ -123,78 +71,10 @@ export default {
 			style.transform = `translate3d(${-this.scrollOffset}px, 0px, 0px)`;
 
 			return style;
-		},
-		classes() {
-			return { 
-				'is-animated': this.animated, 
-				[`is-${this.type}`]: true 
-			};
 		}
-	},
-	watch: {
-		value: {
-			immediate: true,
-			handler(v) {
-				this.currentName = v;
-			}
-		},
-		currentName(val) {
-			this.refreshAfloat();
-			this.scrollToActive();
-		}
-	},
-	created() {
-		// 正在切换
-		this.timer = false;
-	},
-	mounted() {
-		Resize.on(this.$refs.wrapper, this.handleResize);
-	},
-	destoryed() {
-		Resize.off(this.$refs.wrapper, this.handleResize);
-		clearTimeout(this.timer);
 	},
 
 	methods: {
-		/**
-		 * TODO: this.$children 可能会存在排序问题
-		 */
-		getTabs() {
-			return this.$children.filter(item => item.$options.name === 'vc-tabs-pane');
-		},
-
-		getTabIndex(name) {
-			return this.list.findIndex(nav => nav.name === name);
-		},
-
-		/**
-		 * 下层值变化：刷新tabs
-		 */
-		refresh() {
-			const tabs = this.getTabs();
-
-			this.list = [];
-			tabs.forEach((item, index) => {
-				const data = {
-					label: item.label,
-					icon: item.icon || '',
-					name: item.name || index,
-					disabled: item.disabled,
-					closable: item.closable
-				};
-				this.list.push(data);
-
-				!item.currentName && (
-					item.currentName = index
-				);
-				index === 0 && !this.currentName && (
-					this.currentName = item.currentName || index
-				);
-			});
-
-			this.refreshAfloat();
-		},
-
 		/**
 		 * 刷新当前标签底下的滑块位置
 		 */
@@ -208,18 +88,15 @@ export default {
 
 				this.afloatWidth = $ ? parseFloat($.offsetWidth) : 0;
 
+				let offset = 0;
 				if (index > 0) {
-					let offset = 0;
 					const gutter = 16; // margin-right -> 16px
 					for (let i = 0; i < index; i++) {
 						offset += parseFloat(items[i].offsetWidth) + gutter;
 					}
-
-					this.afloatOffset = offset;
-				} else {
-					this.afloatOffset = 0;
 				}
 
+				this.afloatOffset = offset;
 				this.refreshScroll();
 			});
 		},
@@ -273,20 +150,6 @@ export default {
 				this.scrollOffset = offset;
 			}
 		},
-
-
-		handleChange(index) {
-			if (this.timer) return;
-
-			this.timer = setTimeout(() => this.timer = null, 300);
-
-			const nav = this.list[index];
-			if (nav.disabled) return;
-			this.currentName = nav.name;
-			this.$emit('change', nav.name);
-			this.$emit('click', nav.name);
-		},
-
 		/**
 		 * 上一个
 		 */
@@ -313,11 +176,6 @@ export default {
 				? this.scrollOffset + boxWidth
 				: (totalWidth - boxWidth);
 		},
-
-		handleResize() {
-			if (this._isDestroyed) return;
-			this.refreshScroll();
-		}
 	},
 };
 </script>
@@ -331,6 +189,7 @@ export default {
 		display: flex;
 		align-items: center;
 		position: relative;
+		// 不用添加背景色
 	}
 	@include element(extra) {
 		float: right;
@@ -385,7 +244,7 @@ export default {
 	@include when(line) {
 		@include element(bar){
 			@include commonBorder1PX(bottom);
-		};
+		}
 		@include element(item) {
 			display: inline-block;
 			padding: 8px 16px;

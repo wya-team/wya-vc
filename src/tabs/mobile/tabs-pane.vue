@@ -1,24 +1,24 @@
 <template>
 	<!-- 用于占位，默认使用一个div, 利于动画 -->
-	<div :style="style" :name="currentName" class="vc-tabs-pane">
+	<div :style="style" :name="currentName" class="vcm-tabs-pane">
 		<slot v-if="isReady"/>
 	</div>
 </template>
 <script>
-import TabsPaneMixin from './tabs-pane-mixin';
+import TabsPaneMixin from '../tabs-pane-mixin';
 
 export default {
-	name: 'vc-tabs-pane',
+	name: 'vcm-tabs-pane',
 	mixins: [TabsPaneMixin]
 };
 </script>
 
 <style>
-.vc-tabs-pane {
+.vcm-tabs-pane {
 	flex-shrink: 0;
 	width: 100%;
 }
-.vc-tabs.is-animated .vc-tabs-pane{
+.vcm-tabs.is-animated .vcm-tabs-pane{
 	transition: opacity .3s cubic-bezier(.35, 0, .25, 1);
 	opacity: 1;
 }
