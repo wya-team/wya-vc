@@ -155,6 +155,7 @@ export default {
 	}
 	@include when(animated) {
 		@include element(afloat) {
+			transition: transform .3s ease-in-out;
 			transform-origin: 0 0;
 		}
 		@include element(content) {
