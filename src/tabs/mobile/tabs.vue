@@ -94,11 +94,15 @@ export default {
 
 		/**
 		 * 刷新是否需要滚动条
+		 * TODO
 		 */
 		refreshScroll() {
 			
 		},
 
+		/**
+		 * TODO
+		 */
 		scrollToActive() {
 			
 		},
