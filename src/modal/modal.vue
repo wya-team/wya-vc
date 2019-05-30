@@ -39,7 +39,7 @@
 							</div>
 						</slot>
 					</div>
-					<div :class="{ 'is-confirm' : mode }" class="vc-modal__content">
+					<div :class="[{ 'is-confirm' : mode}, portalClassName]" class="vc-modal__content">
 						<p v-if="typeof content === 'string'" v-html="content" />
 						<vc-customer 
 							v-else-if="typeof content === 'function'" 
@@ -104,6 +104,7 @@ export default {
 			validator: v => /(small|medium|large)/.test(v),
 			default: 'small'
 		},
+		portalClassName: Object | String,
 		width: {
 			type: Number
 		},
@@ -453,6 +454,10 @@ export default {
 			padding: 0;
 			padding-left: 46px;
 		}
+		@include when(padding-none) {
+			padding: 0;
+			padding-left: 0;
+		}
 	}
 	@include element(footer) {
 		position: absolute;
@@ -464,6 +469,7 @@ export default {
 		// font-size: 0;
 		@include when(confirm) {
 			border-top: none;
+			padding: 14px 16px;
 			button {
 				display: inline-block;
 				vertical-align: middle;

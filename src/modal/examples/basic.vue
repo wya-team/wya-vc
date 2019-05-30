@@ -85,6 +85,7 @@ export default {
 				okText: '啦啦啦啦',
 				mask: true,
 				closeWithCancel: true,
+				portalClassName: 'is-padding-none',
 				// draggable: true,
 				onOk: (e, callback) => {
 					console.log('ok');
