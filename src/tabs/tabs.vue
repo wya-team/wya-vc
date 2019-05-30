@@ -257,11 +257,15 @@ export default {
 			@include when(active) {
 				color: #2d8cf0;
 			}
+			&:hover {
+				color: #2d8cf0;
+			};
 		};
 	}
 	@include when(card) {
 		@include element(item) {
 			display: inline-block;
+			cursor: pointer;
 			height: 32px;
 			line-height: 32px;
 			padding: 0 16px;
@@ -283,6 +287,9 @@ export default {
 				color: #2d8cf0;
 				border: 1px solid #2d8cf0;
 				z-index: 2;
+			}
+			&:hover {
+				color: #2d8cf0;
 			}
 		}
 	}
