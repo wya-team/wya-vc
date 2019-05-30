@@ -40,7 +40,7 @@ export default {
 
 		async download({ filename = 'image', getFile = true }) {
 			try {
-				const { file, base64Image } = await this.getImg(filename, getFile);
+				const { file, base64Image } = await this.getImage({ filename, getFile });
 
 				let $this = document.createElement('a');
 				// initEvent 不加后两个参数在FF下会报错  事件类型，是否冒泡，是否阻止浏览器的默认行为
