@@ -122,6 +122,10 @@ export default {
 		align-items: center;
 		position: relative;
 	}
+	/**
+	 * 这里的设计，存在问题，要做到少时自动撑开，多是滚动
+	 * TODO: 用js方式实现;
+	 */
 	@include element(scroll) {
 		white-space: nowrap;
 		overflow: auto;
@@ -130,7 +134,6 @@ export default {
 	}
 	@include element(nav) {
 		position: relative;
-		display: inline-block;
 		transition: transform .5s ease-in-out;
 		display: flex;
 	}
