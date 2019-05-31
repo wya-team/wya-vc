@@ -24,7 +24,12 @@
 					:style="[basicStyle, draggableStyle]"
 					class="vc-modal__container"
 				>
-					<div ref="header" :class="{ 'is-confirm': mode }" class="vc-modal__header" @mousedown="handleMouseDown">
+					<div 
+						ref="header" 
+						:class="[{ 'is-confirm': mode, 'is-center' : content === '' && mode}]" 
+						class="vc-modal__header" 
+						@mousedown="handleMouseDown"
+					>
 						<vc-icon
 							v-if="mode"
 							:type="mode" 
@@ -34,7 +39,10 @@
 						<!-- 用户可以自定义，但也有默认 -->
 						<slot name="header">
 							<p class="vc-modal__title" v-html="title" />
-							<div v-if="closable && !mode" class="vc-modal__close" @click="handleClose($event, true)">
+							<div 
+								v-if="closable && !mode" 
+								class="vc-modal__close" 
+								@click="handleClose($event, true)">
 								<vc-icon type="close"/>
 							</div>
 						</slot>
@@ -98,7 +106,10 @@ export default {
 			type: String,
 			validator: v => /(info|success|error|warning)/.test(v),
 		},
-		content: [String, Function],
+		content: {
+			type: [String, Function],
+			default: ''
+		},
 		size: {
 			type: String,
 			validator: v => /(small|medium|large)/.test(v),
@@ -440,11 +451,15 @@ export default {
 		font-size: 14px;
 		font-weight: 400;
 		display: flex;
-		align-items: center;
-		// padding: 14px 16px;
 		@include when(confirm) {
 			border-bottom: none;
-			padding: 14px 16px;
+			padding: 24px 16px;
+		}
+		@include when(center) {
+			width: 100%;
+			position: absolute;
+			top: 50%;
+			transform: translateY(-75%);
 		}
 	}
 	@include element(content) { 
@@ -466,7 +481,6 @@ export default {
 		border-top: 1px solid $border-line-color;
 		padding: 17px 24px;
 		text-align: right;
-		// font-size: 0;
 		@include when(confirm) {
 			border-top: none;
 			padding: 14px 16px;
@@ -477,9 +491,7 @@ export default {
 		}
 	}
 	@include element(title) {
-		display: inline-block;
 		width: 100%;
-		height: 20px;
 		line-height: 20px;
 		font-size: 14px;
 		color: $c333;
