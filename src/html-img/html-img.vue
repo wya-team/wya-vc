@@ -19,7 +19,8 @@ export default {
 		
 	},
 	methods: {
-		async getImage({ filename = 'image', getFile = true }) {
+		async getImage(opts = {}) {
+			const { filename = 'image', getFile = true } = opts;
 			try {
 				let html2canvas = await import('html2canvas');
 				// 兼容webpack 3.0/4.0 写法
@@ -38,7 +39,8 @@ export default {
 			}
 		},
 
-		async download({ filename = 'image', getFile = true }) {
+		async download(opts = {}) {
+			const { filename = 'image', getFile = true } = opts;
 			try {
 				const { file, base64Image } = await this.getImage({ filename, getFile });
 
