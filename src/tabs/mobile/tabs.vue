@@ -11,7 +11,15 @@
 						class="vcm-tabs__item"
 						@click="handleChange(index)"
 					>
-						<span>{{ item.label }}</span>
+						<slot :it="item" :index="index" name="label">
+							<span v-if="typeof item.label === 'string'" v-html="item.label" />
+							<vc-customer 
+								v-else-if="typeof item.label === 'function'" 
+								:render="item.label" 
+								:it="item"
+								:index="index"
+							/>
+						</slot>
 					</div>
 				</div>
 			</div>
@@ -26,11 +34,13 @@
 import TabsMixin from '../tabs-mixin';
 import { Resize } from '../../utils/index';
 import MIcon from '../../icon/index.m';
+import Customer from '../../customer';
 
 export default {
 	name: 'vcm-tabs',
 	components: {
-		'vcm-icon': MIcon
+		'vcm-icon': MIcon,
+		'vc-customer': Customer,
 	},
 	mixins: [TabsMixin],
 	props: {
@@ -145,7 +155,6 @@ export default {
 		font-size: 14px;
 		line-height: 1;
 		padding: 15px 10px;
-		min-width: 60px;
 	}
 	
 	@include element(afloat) {

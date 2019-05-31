@@ -15,6 +15,9 @@
 			<template #extra>
 				<div>extra</div>
 			</template>
+			<template #label="{ it, index }">
+				<span>{{ it.label }} - {{ index }}</span>
+			</template>
 			<vcm-tabs-pane label="标签一">
 				<div v-for="item in list" :key="item">
 					<div>标签一的内容</div>

@@ -21,9 +21,17 @@
 						:class="[{ 'is-active': item.name == currentName }]"
 						class="vc-tabs__item"
 						@click="handleChange(index)"
-					>
-						<vc-icon v-if="item.icon" :type="item.icon" />
-						<span>{{ item.label }}</span>
+					>	
+
+						<slot :it="item" :index="index" name="label">
+							<span v-if="typeof item.label === 'string'" v-html="item.label" />
+							<vc-customer 
+								v-else-if="typeof item.label === 'function'" 
+								:render="item.label" 
+								:it="item"
+								:index="index"
+							/>
+						</slot>
 						<!-- TODO -->
 						<vc-icon v-if="closable && item.closable" type="close" />
 					</div>
@@ -39,11 +47,13 @@
 <script>
 import TabsMixin from './tabs-mixin';
 import Icon from '../icon';
+import Customer from '../customer';
 
 export default {
 	name: 'vc-tabs',
 	components: {
-		'vc-icon': Icon
+		'vc-icon': Icon,
+		'vc-customer': Customer,
 	},
 	mixins: [TabsMixin],
 	props: {

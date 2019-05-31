@@ -15,7 +15,7 @@
 			<template #extra>
 				<div>extra</div>
 			</template>
-			<vc-tabs-pane label="标签一">
+			<vc-tabs-pane :label="renderLabel">
 				<div v-for="item in list" :key="item">
 					<div>标签一的内容</div>
 					<div>标签一的内容</div>
@@ -102,6 +102,11 @@ export default {
 		},
 		handleRemove() {
 			console.log('remove');
+		},
+		renderLabel(h, { it, index }) {
+			return (
+				<span>{ it.label } { index }</span>
+			);
 		}
 	}
 };
