@@ -26,7 +26,7 @@
 				>
 					<div 
 						ref="header" 
-						:class="[{ 'is-confirm': mode, 'is-center' : content === '' && mode}]" 
+						:class="[{ 'is-confirm': mode }]" 
 						class="vc-modal__header" 
 						@mousedown="handleMouseDown"
 					>
@@ -454,12 +454,6 @@ export default {
 		@include when(confirm) {
 			border-bottom: none;
 			padding: 24px 16px;
-		}
-		@include when(center) {
-			width: 100%;
-			position: absolute;
-			top: 50%;
-			transform: translateY(-75%);
 		}
 	}
 	@include element(content) { 
