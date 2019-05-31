@@ -35,6 +35,7 @@ export default {
 			return this.isActive ? {} : { 
 				opacity: 0,
 				height: 0, // 避免重用高度
+				overflow: 'hidden', // 避免内层的高度影响
 			};
 		}
 	},
