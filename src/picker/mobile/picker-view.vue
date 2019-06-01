@@ -111,7 +111,7 @@ export default {
 			let data = source && source.map(i => ({
 				value: i.value,
 				label: i.label,
-				hasChild: !!(i.children && (i.children.length > 0 || this.loadData)),
+				hasChildren: !!(i.children && (i.children.length > 0 || this.loadData)),
 				loading: false
 			}));
 			return data;

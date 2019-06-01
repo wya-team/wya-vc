@@ -5,8 +5,7 @@ import CreatePortal from '../../create-portal/index';
 
 const registerOptions = {
 	multiple: true,
-	promise: false, 
-	autoDestroy: false
+	promise: false 
 };
 
 class ModalManager extends CreatePortal.Core {

@@ -53,6 +53,8 @@ export default {
 			this.show = false;
 		},
 		renderRow(h, props, parent) {
+			console.log(parent, props);
+
 			const { style, className, name, value, date, afterText, onClickShow } = props;
 			/**
 			 * 与React类似

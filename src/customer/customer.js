@@ -1,11 +1,14 @@
-const d2c = v => v.replace(/-(\w)/g, (_, $1) => $1.toUpperCase());
+import { camelCase } from 'lodash';
 
 export default {
 	name: 'vc-customer',
 	functional: true,
 	inheritAttrs: false,
 	props: {
-		render: Function
+		render: {
+			type: Function,
+			default: () => (h) => <div />
+		}
 	},
 	render(h, ctx = {}) {
 		let { 
@@ -22,7 +25,7 @@ export default {
 		
 		// dash -> camelcase
 		for (let dash in attrs) {
-			let camelcase = d2c(dash);
+			let camelcase = camelCase(dash);
 			params[camelcase] = attrs[dash];
 		}
 
@@ -38,7 +41,7 @@ export default {
 
 		// event
 		for (let dash in on) {
-			let camelcase = d2c(`on-${dash}`);
+			let camelcase = camelCase(`on-${dash}`);
 			params[camelcase] = on[dash];
 		}
 

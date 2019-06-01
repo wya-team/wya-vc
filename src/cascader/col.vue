@@ -11,7 +11,7 @@
 				<span>
 					{{ item.label }}
 				</span>
-				<vc-icon v-if="item.hasChild && !item.loading" type="right" class="vc-cascader-col__icon"/>
+				<vc-icon v-if="item.hasChildren && !item.loading" type="right" class="vc-cascader-col__icon"/>
 				<!-- TODO loading -->
 				<vc-spin
 					v-else-if="item.loading" 
