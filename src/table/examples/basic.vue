@@ -1,4 +1,5 @@
 <template>
+	<!-- :tree-props="{children: 'children', hasChildren: 'hasChildren'}" -->
 	<div>
 		<div style="padding: 20px">
 			<div @click="handleClearDate">清除日期过滤器</div>
@@ -6,10 +7,17 @@
 			<vc-table
 				ref="filterTable"
 				:data-source="dataSource"
+				:load-expand="loadExpand"
+				:tree-props="{children: 'children', hasChildren: 'hasChildren'}"
+				lazy
 				style="width: 100%"
 				row-key="id"
 			>
 				<vc-table-item>
+					<vc-table-column
+						type="selection"
+						width="55"
+					/>
 					<vc-table-column
 						prop="date"
 						label="日期"
@@ -34,7 +42,8 @@
 		<vc-table
 			:data-source="dataSource"
 			border
-			row-key="id">
+			row-key="id"
+		>
 			<vc-table-column
 				prop="date"
 				label="日期"
@@ -69,29 +78,32 @@ export default {
 					id: 1,
 					date: '2016-05-02',
 					name: '王小虎',
-					address: '上海市普陀区金沙江路 1518 弄'
+					address: '上海市普陀区金沙江路 1518 弄',
+					hasChildren: true
 				}, 
 				{
 					id: 2,
 					date: '2016-05-04',
 					name: '王小虎',
-					address: '上海市普陀区金沙江路 1517 弄'
+					address: '上海市普陀区金沙江路 1517 弄',
+					hasChildren: true
 				}, 
 				{
 					id: 3,
-					date: '2016-05-012016-05-012016-05-01',
+					date: '2016-05-01',
 					name: '王小虎',
 					address: '上海市普陀区金沙江路 1519 弄',
+					loaded: true,
 					children: [
 						{
 							id: 31,
-							date: '2016-05-012016-05-012016-05-01',
+							date: '2016-05-01',
 							name: '王小虎',
 							address: '上海市普陀区金沙江路 1519 弄'
 						}, 
 						{
 							id: 32,
-							date: '2016-05-012016-05-012016-05-01',
+							date: '2016-05-01',
 							name: '王小虎',
 							address: '上海市普陀区金沙江路 1519 弄'
 						}
@@ -119,6 +131,26 @@ export default {
 
 		},
 		handleResetCur() {
+			
+		},
+		loadExpand(tree, treeNode) {
+			return new Promise((resolve, reject) => {
+				setTimeout(() => {
+					resolve([
+						{
+							id: Math.random(),
+							date: '2016-05-01',
+							name: '王小虎',
+							address: '上海市普陀区金沙江路 1519 弄'
+						}, {
+							id: Math.random(),
+							date: '2016-05-01',
+							name: '王小虎',
+							address: '上海市普陀区金沙江路 1519 弄'
+						}
+					]);
+				}, 1000);
+			});
 			
 		}
 	}

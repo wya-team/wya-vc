@@ -98,13 +98,13 @@ sortable | 对应列是否可以排序，如果设置为 'custom'，则代表用
 sort-method | 对数据进行排序的时候使用的方法，仅当 sortable 设置为 true 的时候有效，需返回一个数字，和 Array.sort 表现一致 | Function(a, b) | — 
 sort-by | 指定数据按照哪个属性进行排序，仅当 sortable 设置为 true 且没有设置 sort-method 的时候有效。如果 sort-by 为数组，则先按照第 1 个属性排序，如果第 1 个相等，再按照第 2 个排序，以此类推 | String/Array/Function(row, index) | — 
 sort-orders | 数据在排序时所使用排序策略的轮转顺序，仅当 sortable 为 true 时有效。需传入一个数组，随着用户点击表头，该列依次按照数组中元素的顺序进行排序 | array | 数组中的元素需为以下三者之一：`ascending` 表示升序，`descending` 表示降序，`null` 表示还原为原始顺序 ['ascending', 'descending', null]
-resizable | 对应列是否可以通过拖动改变宽度（需要在 el-table 上设置 border 属性为真） | boolean | true
+resizable | 对应列是否可以通过拖动改变宽度（需要在 vc-table 上设置 border 属性为真） | boolean | true
 formatter | 用来格式化内容 | Function(row, column, cellValue, index) | — 
 show-overflow-tooltip | 当内容过长被隐藏时显示 tooltip | Boolean | false
 align | 对齐方式 | String | left/center/right | left
 header-align | 表头对齐方式，若不设置该项，则使用表格的对齐方式 | String | left/center/right | —
 class-name | 列的 className | string | — 
-label-class-name | 当前列标题的自定义类名 | string | — 
+labvc-class-name | 当前列标题的自定义类名 | string | — 
 selectable | 仅对 type=selection 的列有效，类型为 Function，Function 的返回值用来决定这一行的 CheckBox 是否可以勾选 | Function(row, index) | — 
 reserve-selection | 仅对 type=selection 的列有效，类型为 Boolean，为 true 则会在数据更新之后保留之前选中的数据（需指定 `row-key`） | Boolean | false
 filters | 数据过滤的选项，数组格式，数组中的元素需要有 text 和 value 属性。 | Array[{ text, value }] | — 

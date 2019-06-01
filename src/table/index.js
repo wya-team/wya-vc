@@ -1,8 +1,7 @@
-import './src/css/elm.css';
-import './src/css/reset.scss';
-import Table from './src/table.vue';
-import TableColumn from './src/table-column';
-import TableItem from './src/table-item';
+import './table.scss';
+import Table from './table.vue';
+import TableColumn from './table-column';
+import TableItem from './table-item';
 
 Table.Column = TableColumn;
 Table.Item = TableItem;
