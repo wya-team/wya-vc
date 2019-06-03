@@ -69,7 +69,8 @@ $block: vc-dropdown-item;
 	cursor: pointer;
 	transition: background .2s ease-in-out;
 	&:hover {
-		background: #f3f3f3
+		background: $info;
+		color: #fff;
 	}
 	@include when(disabled) {
 		color: #c5c8ce;
