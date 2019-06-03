@@ -88,7 +88,7 @@ export default {
 					: 0;
 
 				let offset = 0;
-				let basicOffset = ($.offsetWidth - this.afloatWidth) / 2;
+				let basicOffset = $ ? ($.offsetWidth - this.afloatWidth) / 2 : 0;
 
 				if (index > 0) {
 					for (let i = 0; i < index; i++) {
