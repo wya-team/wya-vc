@@ -23,23 +23,7 @@
 			ref="tableTarget" 
 			:data-source="data" 
 			v-bind="tableOpts"
-			@select="$emit('select', arguments[0], arguments[1])"
-			@select-all="$emit('select-all', arguments[0])"
-			@selection-change="$emit('selection-change', arguments[0])"
-			@cell-mouse-enter="$emit('cell-mouse-enter', arguments[0], arguments[1], arguments[2], arguments[3])"
-			@cell-mouse-leave="$emit('cell-mouse-leave', arguments[0], arguments[1], arguments[2], arguments[3])"
-			@cell-click="$emit('cell-click', arguments[0], arguments[1], arguments[2], arguments[3])"
-			@cell-dblclick="$emit('cell-dblclick', arguments[0], arguments[1], arguments[2], arguments[3])"
-			@row-click="$emit('row-click', arguments[0], arguments[1], arguments[2])"
-			@row-contextmenu="$emit('row-contextmenu', arguments[0], arguments[1], arguments[2])"
-			@row-dblclick="$emit('row-dblclick',arguments[0], arguments[1], arguments[2])"
-			@header-click="$emit('header-click', arguments[0], arguments[1])"
-			@header-contextmenu="$emit('header-contextmenu', arguments[0], arguments[1])"
-			@sort-change="$emit('sort-change', arguments[0])"
-			@filter-change="$emit('filter-change', arguments[0])"
-			@current-change="$emit('current-change', arguments[0], arguments[1])"
-			@header-dragend="$emit('header-dragend', arguments[0], arguments[1], arguments[2], arguments[3])"
-			@expand-change="$emit('expand-change', arguments[0], arguments[1])"
+			v-on="tableHooks"
 		>
 			<slot/>
 			<slot slot="append" name="append" />
@@ -92,59 +76,39 @@ export default {
 		'vc-table': Table,
 		'vc-page': Page,
 	},
+	// 不考虑使用
+	// inheritAttrs: false,
 	props: {
-		// table组件属性
-		tableOpts: {
-			type: Object,
-			default: () => (VcInstance.config.Paging.tableOpts || {})
-		},
-		stripe: {
-			type: Boolean,
-			// 默认为true
-			default: () => {
-				return typeof VcInstance.config.Paging.stripe === 'boolean'
-					? VcInstance.config.Paging.stripe
-					: true;
-			}
-		},
+		// ---- table 组件属性 start, 其他属性使用$attrs
 		dataSource: {
 			type: Object,
 			default() {
 				return {};
 			}
 		},
-		columns: {
-			type: Array,
-			default() {
-				return [];
-			}
-		},
-		// page 组件属性
-		pageOpts: {
+		tableOpts: {
 			type: Object,
 			default: () => (VcInstance.config.Paging.pageOpts || {
-				showTotal: true,
+				showCount: true,
 				showSizer: true,
 				showElevator: true,
 				placement: 'top',
 				pageSizeOpts: [10, 20, 30, 50, 100]
 			})
 		},
-		// expand 不针对iview中columns中的 expand
-		expandOpts: {
+		// ---- end
+		// ---- page 组件属性 start
+		pageOpts: {
 			type: Object,
-			default: () => {
-				return {
-					all: false,
-					key: 'id', 
-					keys: [] 
-				};
-			}
+			default: () => (VcInstance.config.Paging.pageOpts || {
+				showCount: true,
+				showSizer: true,
+				showElevator: true,
+				placement: 'top',
+				pageSizeOpts: [10, 20, 30, 50, 100]
+			})
 		},
-		total: {
-			type: Number,
-			default: 0
-		},
+		// ---- end
 		// 是否从url中获取page
 		history: {
 			type: Boolean,
@@ -154,19 +118,7 @@ export default {
 			type: Boolean,
 			default: false
 		},
-		show: {
-			type: Boolean,
-			default: true
-		},
-		// 数据加载
-		loadData: {
-			type: Function,
-			required: true
-		},
-		loadExpandData: Function,
-		reset: Boolean,
 		// current: [Number, String], // .sync可以不声明；需要使用this.current, 必须声明
-		type: [Number, String], // 待开发，tabs情况下
 		mode: {
 			type: String,
 			validator(value) {
@@ -174,9 +126,23 @@ export default {
 			},
 			default: 'table'
 		},
-		pieceClass: {
-			type: String,
-			default: ''
+		show: {
+			type: Boolean,
+			default: true
+		},
+		reset: Boolean,
+		total: {
+			type: Number,
+			default: 0
+		},
+		count: {
+			type: String | Number,
+			default: 0
+		},
+		// 数据加载
+		loadData: {
+			type: Function,
+			required: true
 		},
 		footer: {
 			type: Boolean,
@@ -187,10 +153,6 @@ export default {
 			default: () => ({
 				pageSize: true
 			})
-		},
-		count: {
-			type: String | Number, // iview为total
-			default: 0
 		}
 	},
 	data() {
@@ -206,15 +168,19 @@ export default {
 			loading: false,
 			currentPage: this.show ? Number(page) : 1,
 			pageSize: this.defaultPageSize,
-
-			// 内部不直接修改外部的值
-			rebuildData: {}
 		};
 	},
 	computed: {
 		data() {
-			let result = this.rebuildData[this.currentPage];
+			let result = this.dataSource[this.currentPage];
 			return result || [];
+		},
+		tableHooks() {
+			return {
+				...this.$listeners,
+				change: () => {},
+				pageSizeChange: () => {}
+			};
 		}
 	},
 	watch: {
@@ -247,117 +213,13 @@ export default {
 			} else if (this.count === 0) {
 				this.currentPage = 0;
 			}
-
-			// 页数不为0，赋值新的数据
-			if (this.currentPage != 0) {
-				this.rebuildData = this.makeRebuildData('dataSource');
-			}
-			
-		},
-		currentPage(v, old) {
-			// 清空数据
-			if (v === 0) {
-				this.rebuildData = {};
-			} else if (old === 0 && !this.rebuildData[v]) {
-				// 老页数为0，代表清理数据了，新数据赋值，主要处理已加载数据后被清理，this.rebuildData需要重写
-				this.rebuildData = this.makeRebuildData('currentPage');
-			}
-
-		},
-		// rebuildData: {
-		// 	deep: process.env.NODE_ENV !== 'production',
-		// 	handler() {
-		// 		console.log('[vc-paging] - rebuild');
-		// 	}
-		// }
+		}
 	},
 	created() {
 		let { query: { page = 1 } } = URL.parse();
 		this.show && this._loadData(page);
-
-		// 有数据的情况下，初始化， todo: 是否需要判断其他分页
-		if (this.dataSource[page]) {
-			this.rebuildData = this.makeRebuildData('created');
-		}
 	},
 	methods: {
-		/**
-		 * type: 判断是由谁触发的，用于优化性能
-		 */
-		makeRebuildData(type) {
-			let data = {};
-
-			if (type === 'created') { // 初始化的时候，可能会有默认数据
-				for (let page in this.dataSource) {
-					data[page] = this.makeRebuildDataWithPage(page);
-				}	
-			} else {
-				data = {
-					...this.rebuildData,
-					[this.currentPage]: this.makeRebuildDataWithPage()
-				};
-			}
-			return data;
-		},
-		/**
-		 * 不影响外部的值 
-		 */
-		makeRebuildDataWithPage(page = this.currentPage) {
-			if (!this.dataSource[page]) return;
-
-			let data = cloneDeep(this.dataSource[page]);
-			// 初始化结构数据
-			if (this.show 
-				&& this.count !== 0 
-				&& data 
-				&& data.__expand__ === undefined 
-				&& data.some(item => item.children instanceof Array)
-			) {
-				data = this.makeRebuildDataForExpand(1, data);
-
-				const { all, keys, key } = this.expandOpts; 
-				if (all || keys.length > 0) {
-					data = this.getLinearArray(data);
-					this.emitExpand({ type: 'init', expandData: data });
-				}
-
-				data.__expand__ = true;
-			}
-			return data;
-		},
-		/**
-		 * 设备默认值, todo: 浅拷贝是否提高性能
-		 */
-		makeRebuildDataForExpand(level, treeArray) {
-			treeArray = cloneDeep(treeArray);
-			const { all, key, keys = [] } = this.expandOpts;
-
-			let fn = (item) => {
-				item.__level__ = level;
-				if (item.children && item.children.length > 0) {
-					item.__expand__ = all || (keys.length !== 0 && keys.includes(item[key])); 
-					item.children = this.makeRebuildDataForExpand(level + 1, item.children);
-				}
-				return item;
-			};
-			return treeArray.map(fn);
-		},
-		/**
-		 * 根据需要获取线性的数组
-		 */
-		getLinearArray(treeArray) {
-			let fn = (pre, cur) => {
-				pre = [...pre, cur];
-				if (cur.children && cur.__expand__ === true) {
-					pre = [...pre, ...cur.children.reduce(fn, [])];
-				}
-				return pre;
-			};
-
-			let result = treeArray.reduce(fn, []);
-
-			return result;
-		},
 		handleChangePageSize(pageSize) {
 			this.$emit('page-size-change', pageSize); // 清理数据
 			this.pageSize = pageSize;
@@ -432,88 +294,6 @@ export default {
 		 */
 		go(page) {
 			this.handleChange(page);
-		},
-		/**
-		 * 扩展功能
-		 */
-		expand(opts = {}) {
-
-			let targetArr = this.rebuildData[this.currentPage];
-
-			let { e, index } = opts;
-			const { children, __level__, __expand__ } = targetArr[index] || {};
-
-			// 没有扩展功能
-			if (!children || !__level__ || this.loadingExpand) return;
-
-			if (children.length === 0 && this.loadExpandData) {
-				const load = this.loadExpandData({ ...opts, row: targetArr[index] });
-				
-				if (!this.loadingExpand && load && load.then) {
-					this.loadingExpand = true;
-					load.then((children) => {
-						if (children instanceof Array) {
-							children = this.makeRebuildDataForExpand(__level__ + 1, children);
-
-							// 同步到data中	
-							targetArr[index].__expand__ = true;
-							targetArr[index].children = children;
-							targetArr.splice(index + 1, 0, ...this.getLinearArray(children));
-
-							this.emitExpand(opts);
-						}
-						return children;
-					}).catch((res) => {
-						return Promise.reject(res);
-					}).finally(() => {
-						this.loadingExpand = false;
-					});
-				} else {
-					console.error('[vc-paging] - loadExpandData need return a Promise');
-				}
-
-			} else if (children.length > 0) {
-
-				const { data } = this;
-				if (__expand__) {
-					targetArr[index].__expand__ = false;
-					// 计算要移除的元素数量
-					let count = 0;
-					for (let i = index + 1; i < data.length; i++) {
-						if (__level__ == data[i].__level__ || __level__ > data[i].__level__) {
-							break;
-						}
-						count++;
-					}
-					targetArr.splice(index + 1, count);
-				} else {
-					targetArr[index].__expand__ = true;
-					targetArr.splice(index + 1, 0, ...this.getLinearArray(children));
-				}
-				this.emitExpand(opts);
-			}
-		},
-		emitExpand(opts = {}) {
-			const { index, type, expandData } = opts; 
-			let targetArr = type === 'init' ? expandData : this.rebuildData[this.currentPage];
-			// todo: 优化，目前是每次都计算
-			let maxLevel = 0;
-
-			targetArr.forEach((item) => {
-				if (maxLevel < item.__level__) {
-					maxLevel = item.__level__;
-				}
-			});
-
-			this.$emit('expand', { 
-				...opts, 
-				row: cloneDeep(targetArr[index] || []), 
-				maxLevel,
-				callback: (opts = {}) => {
-					const { selected, all = false } = opts;
-					// todo: 重新选择已选中的，设置_checked
-				} 
-			});
 		}
 	}
 };

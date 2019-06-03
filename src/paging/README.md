@@ -16,24 +16,9 @@ columns | item | `arr` | -
 total | 总页数 | `number` | 0
 count | **总条数** | `number` | 0
 reset | 刷新时候使用，当前页刷新（true）,首页刷新（false） | `boolean` | -
-tableOpts | 表格额外参数 | `obj` | -
-pageOpts | 分页额外参数 | `obj` | -
-expandOpts | 展开的属性参数 | `obj` | -
+tableOpts | 表格额外参数, 参考table组件 | `obj` | -
+pageOpts | 分页额外参数, 参考page组件 | `obj` | -
 `current.sync` | 分页参数同步 | `str/num` | -
-
-额外属性同`iView`的 [table](https://www.iviewui.com/components/table) 和 [page](https://www.iviewui.com/components/page)
-
-- `expandOpts`
-
-属性 | 说明 | 类型 | 默认值
----|---|---|---
-all | 全部展开 | `Boolean` | false
-index | 插入的索引位置 |  | 0
-key | 唯一标识 | `String` | 'id'
-keys | 默认展开的项目 | `Array` | []
-width | 宽度 | `Number` | 60
-indentSize | 缩进单位 | `Number` | 20
-render | 自定义展示 | `Function` | `(h, { row, index }, handleClick)`
 
 #### 事件
 
@@ -43,17 +28,12 @@ render | 自定义展示 | `Function` | `(h, { row, index }, handleClick)`
 @load-success | 加载成功 | - | -
 @load-error | 加载失败 | - | -
 @load-finish | 加载结束（都会触发） | - | -
-@expand | 点击展开(异步则结束后触发) | - | -
-
-`iView`中的 `table` 和 `page` 的事件代`on`
-
 
 #### 方法
 
 属性 | 说明 | 参数 | 返回值
 ---|---|---|---
 `load-data` | 数据加载请求 | `page, PageSize` | `Promise`
-`load-expand-data` | 展开异步加载 | `-` | `Promise`(resolve(children))
 
 ## 基础用法
 
@@ -61,141 +41,33 @@ render | 自定义展示 | `Function` | `(h, { row, index }, handleClick)`
 <template>
 	<vc-paging
 		:data-source="listInfo.data"
-		:columns="columns" 
+		:load-data="loadData"
 		:total="listInfo.total"
+		:count="listInfo.count"
 		:reset="listInfo.reset"
 		:page-opts="page"
 		:table-opts="table"
 		:history="true"
-		:load-data="loadData"
 		:show="show"
-	/>
+		style="width: 100%"
+		@page-size-change="handleResetFirst"
+	>
+		<vc-table-item>
+			<vc-table-column
+				prop="date"
+				label="日期"
+				width="180"
+			/>
+			<vc-table-column
+				prop="name"
+				label="姓名"
+				width="180"
+			/>
+			<vc-table-column
+				prop="address"
+				label="地址"
+			/>
+		</vc-table-item>
+	</vc-paging>
 </template>
-<script>
-import { ajax } from '@wya/http';
-import { Paging } from '@wya/vc';
-
-const initPage = {
-	total: 0,
-	reset: false,
-	data: {}
-};
-
-export default {
-	name: "vc-paging-basic",
-	components: {
-		'vc-paging': Paging
-	},
-	data() {
-		return {
-			show: true,
-			listInfo: {
-				...initPage
-			},
-			page: {
-				'show-total': false
-			},
-			table: {
-
-			},
-			columns: [
-				{
-					title: 'Name',
-					key: 'name'
-				},
-				{
-					title: 'Status',
-					key: 'status',
-					render: (h, props, parent) => {
-						return h('div', {
-							style: {
-								marginRight: '5px'
-							},
-							on: {
-								click: this.handleResetFirst
-							}
-						}, '回到首页刷新');
-					}
-				},
-				{
-					title: 'Opt',
-					key: 'opt',
-					render: (h, props, parent) => {
-						return h('div', {
-							style: {
-								marginRight: '5px'
-							},
-							on: {
-								click: this.handleResetCur
-							}
-						}, '当前页刷新');
-					}
-				}
-			],
-		};
-	},
-	computed: {
-		
-	},
-	methods: {
-		loadData(page) {
-			return ajax({
-				url: 'test.json',
-				localData: {
-					status: 1,
-					data: {
-						currentPage: page,
-						total: 100,
-						list: this.getFakeData(page)
-					}
-
-				}
-			}).then((res) => {
-				console.log(`page: ${page}@success`);
-				const { currentPage, total, list } = res.data;
-				this.listInfo = {
-					...this.listInfo,
-					total,
-					data: {
-						...this.listInfo.data,
-						[currentPage]: list
-					}
-				};
-			}).catch((e) => {
-				console.log(e);
-			});
-		},
-		getFakeData(page) {
-			let fakeData = [];
-			for (let i = 0; i < 10; i++) {
-				fakeData.push({
-					id: `${page}_${i}`,
-					name: page + '-Business' + Math.floor(Math.random() * 100 + 1),
-					status: Math.floor(Math.random() * 3 + 1),
-					opt: Math.floor(Math.random() * 3 + 1)
-				});
-			}
-			return fakeData;
-		},
-		/**
-		 * 回到首页刷新
-		 */
-		handleResetFirst() {
-			this.listInfo = {
-				...initPage
-			};
-		},
-		/**
-		 * 当前页刷新
-		 */
-		handleResetCur() {
-			this.listInfo = {
-				...initPage,
-				reset: true,
-			};
-		}
-	}
-};
-</script>
-
 ```

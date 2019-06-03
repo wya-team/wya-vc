@@ -12,20 +12,22 @@
 		style="width: 100%"
 		@page-size-change="handleResetFirst"
 	>
-		<vc-table-column
-			prop="date"
-			label="日期"
-			width="180"
-		/>
-		<vc-table-column
-			prop="name"
-			label="姓名"
-			width="180"
-		/>
-		<vc-table-column
-			prop="address"
-			label="地址"
-		/>
+		<vc-table-item>
+			<vc-table-column
+				prop="date"
+				label="日期"
+				width="180"
+			/>
+			<vc-table-column
+				prop="name"
+				label="姓名"
+				width="180"
+			/>
+			<vc-table-column
+				prop="address"
+				label="地址"
+			/>
+		</vc-table-item>
 	</vc-paging>
 </template>
 <script>
@@ -38,7 +40,8 @@ export default {
 	name: "vc-paging-basic",
 	components: {
 		'vc-paging': Paging,
-		'vc-table-column': Table.Column
+		'vc-table-item': Table.Item,
+		'vc-table-column': Table.Column,
 	},
 	data() {
 		return {

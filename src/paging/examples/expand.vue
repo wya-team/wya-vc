@@ -1,160 +1,60 @@
 <template>
-	<div>
-		<vc-input 
-			v-model="keyword" 
-			search 
-			enter-button="搜索" 
-			placeholder="请输入关键字搜索"
-			style="margin: 20px; width: 300px"
-			@on-search="handleSearch"
-		/>
-		<vc-tabs 
-			:value="type" 
-			:animated="false" 
-			@on-click="handleChange"
-		>
-			<vc-tab-pane 
-				v-for="(item) in tabs"
-				:key="item.value"
-				:label="item.label" 
-				:name="item.value"
-			>
-				<vc-paging
-					:ref="item.value"
-					:key="item.value"
-					:show="item.value == type" 
-					:type="item.value"
-					:columns="columns" 
-					:data-source="listInfo[item.value].data"
-					:total="listInfo[item.value].total"
-					:reset="listInfo[item.value].reset"
-					:current.sync="current[item.value]"
-					:history="true"
-					:load-data="loadData"
-					:load-expand-data="loadExpandData"
-					:page-opts="page"
-					:expand-opts="expand"
-					@page-size-change="handleResetFirst"
-					@selection-change="handleSelect"
-					@expand="handleExpand"
-				/>
-			</vc-tab-pane>
-		</vc-tabs>
-	</div>
+	<vc-paging
+		:data-source="listInfo.data"
+		:load-data="loadData"
+		:total="listInfo.total"
+		:count="listInfo.count"
+		:reset="listInfo.reset"
+		:page-opts="page"
+		:table-opts="table"
+		:history="true"
+		:show="show"
+		style="width: 100%"
+		@page-size-change="handleResetFirst"
+	>
+		<vc-table-item>
+			<vc-table-column
+				prop="date"
+				label="日期"
+				width="180"
+			/>
+			<vc-table-column
+				prop="name"
+				label="姓名"
+				width="180"
+			/>
+			<vc-table-column
+				prop="address"
+				label="地址"
+			/>
+		</vc-table-item>
+	</vc-paging>
 </template>
 <script>
 import { ajax } from '@wya/http';
-import { URL } from '@wya/utils';
-import Tabs from '../../tabs';
-import Input from '../../input';
-import Message from '../../message';
-
 import Paging from '../paging';
+import Table from '../../table';
 import { initPage } from './utils/utils';
-
-let count = 0;
-const initialState = {
-	1: { ...initPage },
-	2: { ...initPage },
-	3: { ...initPage }
-};
 
 export default {
 	name: "vc-paging-basic",
 	components: {
 		'vc-paging': Paging,
-		'vc-tabs': Tabs,
-		'vc-tab-pane': Tabs.Pane,
-		'vc-input': Input
+		'vc-table-item': Table.Item,
+		'vc-table-column': Table.Column,
 	},
 	data() {
-		const { query = {} } = URL.parse();
-
 		return {
 			show: true,
-			loading: null,
-			type: String(query.type || 1), // 同tabs下的value
-			keyword: String(query.keyword || ''),
-			listInfo: initialState,
-			current: {},
-			page: undefined,
-			table: undefined,
-			expand: {
-				all: false,
-				key: 'id', 
-				keys: []
+			listInfo: {
+				...initPage
 			},
-			tabs: [
-				{ label: '标签一', value: '1' }, 
-				{ label: '标签二', value: '2' }, 
-				{ label: '标签三', value: '3' }
-			],
-			columns: [
-				{
-					type: 'selection',
-					width: 60
-				},
-				{
-					title: '22',
-					width: 60,
-					render: (h, props, parent) => {
-						const { row: { __level__, __expand__, children }, index } = props;
-
-						// 点击展开事件
-						const handleClick = (e) => {
-							this.$refs[this.type][0].expand({ index });
-						};
-
-						return h('div', {
-							style: {
-								marginLeft: `${(__level__ - 1) * 20}px`,
-								width: `20px`,
-								boxSizing: `content-box`
-							},
-							on: {
-								click: handleClick 
-							}
-						}, children ? !__expand__ ? this.loading === index ? '...' : '+' : '-' : '');
-						
-					}
-				},
-				{
-					title: 'Name',
-					key: 'name',
-				},
-				{
-					title: 'Id',
-					key: 'id',
-				},
-				{
-					title: 'Status',
-					key: 'status',
-					render: (h, props, parent) => {
-						return h('div', {
-							style: {
-								marginRight: '5px'
-							},
-							on: {
-								click: this.handleResetFirst
-							}
-						}, `回到首页刷新${this.type}`);
-					}
-				},
-				{
-					title: 'Opt',
-					key: 'opt',
-					render: (h, props, parent) => {
-						return h('div', {
-							style: {
-								marginRight: '5px'
-							},
-							on: {
-								click: this.handleResetCur
-							}
-						}, '当前页刷新');
-					}
-				}
-			],
+			page: undefined,
+			table: {
+				lazy: true,
+				rowKey: 'id',
+				loadExpand: this.loadExpand
+			},
 		};
 	},
 	computed: {
@@ -162,131 +62,90 @@ export default {
 	},
 	methods: {
 		loadData(page, pageSize) {
-			const { type } = this;
-			// 真实场景为ajax
-			return new Promise((resolve, reject) => {
-				// 模拟loading
-				setTimeout(() => {
-					console.log(`page: ${page}-type: ${type}@success`);
-					// 模拟后端的数据
-					const res = {
-						status: 1,
-						data: {
-							currentPage: page,
+			return ajax({
+				url: 'test.json',
+				localData: {
+					status: 1,
+					data: {
+						page: {
+							current: page,
 							total: 100,
-							list: this.getFakeData(page, pageSize, 3)
-						}
-					};
-					const { currentPage, total, list } = res.data;
-					this.listInfo = {
-						...this.listInfo,
-						[type]: {
-							total,
-							data: {
-								...this.listInfo[type].data,
-								[currentPage]: list
-							}
-						}
-						
-					};
-					resolve();
-				}, 150);
+							count: pageSize * 100,
+						},
+						list: this.getFakeData(page, pageSize)
+					}
+
+				}
+			}).then((res) => {
+				console.log(`page: ${page}@success`);
+				this.listInfo = {
+					...this.listInfo,
+					...res.data.page,
+					data: {
+						...this.listInfo.data,
+						[page]: res.data.list
+					}
+				};
+			}).catch((e) => {
+				console.log(e);
 			});
 		},
-		getFakeData(page, pageSize, totalLevel) {
-			let fn = (level, parent) => {
-				if (level > totalLevel) {
-					return;
-				} else {
-					level++;
-				}
-				let length = level === 1 ? pageSize : Math.floor(Math.random() * 4 + 1);
-				let fakeData = [];
-				for (let i = 0; i < length; i++) {
-					fakeData.push({
-						// id: Math.random(),
-						id: `${this.type}_${count++}`,
-						name: `level: ${level} page: ${page} type: ${this.type}`,
-						status: Math.floor(Math.random() * 3 + 1),
-						opt: Math.floor(Math.random() * 3 + 1),
-						// __level__: level,
-						children: Math.floor(Math.random() * 2) ? fn(level) : []
-						// children: fn(level)
-					});
-				}
-				return fakeData;
-			};
-			return fn(0, 0);
-		},
-		/**
-		 * 
-		 */
-		setHistory(values) {
-			let { path, query } = URL.parse();
-			window.history.replaceState(null, null, URL.merge({
-				path,
-				query: {
-					...query,
-					...values
-				}
-			}));
+		getFakeData(page, pageSize) {
+			let fakeData = [];
+			for (let i = 0; i < pageSize; i++) {
+				fakeData.push({
+					id: `${page}_${i}`,
+					name: page + '-Business' + Math.floor(Math.random() * 100 + 1),
+					status: Math.floor(Math.random() * 3 + 1),
+					opt: Math.floor(Math.random() * 3 + 1),
+					date: '2016-05-02',
+					address: '上海市普陀区金沙江路 1518 弄',
+					hasChildren: true
+				});
+			}
+			return fakeData;
 		},
 		/**
 		 * 回到首页刷新
 		 */
 		handleResetFirst() {
 			this.listInfo = {
-				...initialState
+				...initPage
 			};
 		},
 		/**
 		 * 当前页刷新
 		 */
 		handleResetCur() {
-			const { type } = this;
 			this.listInfo = {
-				...initialState,
-				[type]: {
-					...initialState[type],
-					reset: true
-				}
+				...initPage,
+				reset: true,
 			};
 		},
-		handleChange(type) {
-			this.type = type;
 
-			this.setHistory({
-				type
-			});
-		},
-		handleSearch(keyword) {
-			this.listInfo = {
-				...initialState
-			};
-
-			this.setHistory({
-				keyword
-			});
-		},
-		loadExpandData(opts = {}) {
-			const { index } = opts; 
-			this.loading = index;
+		loadExpand(tree, treeNode) {
+			console.log(tree, treeNode, /loadExpand/);
 			return new Promise((resolve, reject) => {
-				const { type, current } = this;
-				const page = current[type];
-
-				let children = this.getFakeData(current[type], 3, 5);
 				setTimeout(() => {
-					resolve(children);
-					this.loading = null;
-				}, 2000);
+					resolve([
+						{
+							id: Math.random(),
+							date: '2016-05-01',
+							name: '王小虎',
+							address: '上海市普陀区金沙江路 1519 弄',
+							children: []
+						}, 
+						{
+							id: Math.random(),
+							date: '2016-05-01',
+							name: '王小虎',
+							address: '上海市普陀区金沙江路 1519 弄',
+							hasChildren: []
+						}
+					]);
+				}, 1000);
 			});
-		},
-		handleExpand({ maxLevel, children, }) {
-			this.columns[1].width = 60 + (maxLevel - 1) * 20;
-		},
-		handleSelect(row) {
-			console.log(row);
+			
 		}
 	}
 };

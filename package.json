@@ -1,6 +1,6 @@
 {
     "name": "@wya/vc",
-    "version": "1.4.1",
+    "version": "1.4.5",
     "description": "wya for vue components",
     "main": "lib/index.js",
     "files": [
@@ -40,7 +40,6 @@
     },
     "dependencies": {
         "async-validator": "~1.10.0",
-        "deepmerge": "^1.2.0",
         "echarts": "^4.2.0-rc.2",
         "html2canvas": "^1.0.0-alpha.12",
         "iview": "^3.3.0",
