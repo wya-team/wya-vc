@@ -19,12 +19,14 @@
 					<slot name="icon">
 						<vc-icon :type="type" :class="`is-${type}`" class="vc-popconfirm__icon" />
 					</slot>
-					<slot name="title">
-						<vc-customer 
-							:title="title"
-							:render="renderTitle"
-						/>
-					</slot>
+					<div>
+						<slot name="title">
+							<vc-customer 
+								:title="title"
+								:render="renderTitle"
+							/>
+						</slot>
+					</div>
 				</div>
 				<div class="vc-popconfirm__footer">
 					<vc-button 
@@ -191,16 +193,16 @@ export default {
 		min-width: 218px;
 	}
 	@include element(title) {
-		padding-left: 20px;
+		padding-left: 23px;
 		margin-bottom: 15px;
 		position: relative;
 		color: #333;
 	}
 	@include element(icon) {
 		position: absolute;
-		top: 0px;
+		top: 1px;
 		left: 0px;
-		font-size: 16px;
+		font-size: 15px;
 		@include when(warning) {
 			color: $warning;
 		}
