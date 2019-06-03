@@ -355,6 +355,7 @@ $block: vc-select;
 	position: relative;
 	width: 100%;
 	cursor: text;
+	line-height: 1;
 	@include element(input) {
 		.vc-input__append {
 			z-index: 0;
