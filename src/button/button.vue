@@ -211,6 +211,10 @@ $warning-hover-color: #ebb563;
 		background-color: $cf4;
 		border-color: $cd9;
 		cursor: not-allowed;
+		&:hover {
+			background: $cf4;
+			border-color: $cd9;
+		}
 	}
 	@include when(large) {
 		padding: 8px 16px;
