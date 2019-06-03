@@ -46,8 +46,8 @@ export default {
 	line-height: 20px;
 	border-radius: 22px;
 	vertical-align: middle;
-	border: 1px solid #ccc;
-	background-color: #ccc;
+	border: 1px solid #C0C0C0;
+	background-color: #C0C0C0;
 	position: relative;
 	cursor: pointer;
 	user-select: none;
@@ -80,8 +80,8 @@ export default {
 		opacity: .4;
 	}
 	@include when(checked) {
-		border-color: #2d8cf0;
-		background-color: #2d8cf0;
+		border-color: #5495F6;
+		background-color: #5495F6;
 		@include element(content) {
 			left: 7px;
 		}
