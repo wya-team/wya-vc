@@ -453,7 +453,7 @@ export default {
 		display: flex;
 		@include when(confirm) {
 			border-bottom: none;
-			padding: 24px 16px;
+			padding: 24px 16px 16px 16px;
 		}
 	}
 	@include element(content) { 
