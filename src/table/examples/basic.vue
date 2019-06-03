@@ -38,7 +38,7 @@ export default {
 					id: 1,
 					date: '2016-05-02',
 					name: '王小虎',
-					address: '上海市普陀区金沙江路 1518 弄',
+					address: '浙江省杭州市拱墅区祥符街道',
 				}, 
 				{
 					id: 2,

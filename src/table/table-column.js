@@ -32,8 +32,7 @@ export default {
 		columnKey: String,
 		align: String,
 		headerAlign: String,
-		showTooltipWhenOverflow: Boolean,
-		showOverflowTooltip: Boolean,
+		showPopover: Boolean,
 		fixed: [Boolean, String],
 		formatter: Function,
 		selectable: Function,
@@ -116,7 +115,7 @@ export default {
 			property: this.prop || this.property,
 			align: this.realAlign,
 			headerAlign: this.realHeaderAlign,
-			showOverflowTooltip: this.showOverflowTooltip || this.showTooltipWhenOverflow,
+			showPopover: this.showPopover,
 			// filter 相关属性
 			filterable: this.filters || this.filterMethod,
 			filteredValue: [],
@@ -244,8 +243,8 @@ export default {
 						class: 'cell',
 						style: {}
 					};
-					if (column.showOverflowTooltip) {
-						props.class += ' vc-tooltip';
+					if (column.showPopover) {
+						props.class += ' vc-popover';
 						props.style = { width: (data.column.realWidth || data.column.width) - 1 + 'px' };
 					}
 					return (

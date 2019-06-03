@@ -69,12 +69,11 @@ export default {
 
 	data() {
 		return {
-			tooltipContent: ''
 		};
 	},
 
 	created() {
-		this.activateTooltip = debounce(tooltip => tooltip.handleShowPopper(), 50);
+		this.timer = null;
 	},
 
 	methods: {
@@ -212,34 +211,40 @@ export default {
 
 			// 判断是否text-overflow, 如果是就显示tooltip
 			const cellChild = event.target.querySelector('.cell');
-			if (!(Dom.hasClass(cellChild, 'vc-tooltip') && cellChild.childNodes.length)) {
+			if (!(Dom.hasClass(cellChild, 'vc-popover') && cellChild.childNodes.length)) {
 				return;
 			}
-			// use range width instead of scrollWidth to determine whether the text is overflowing
-			// to address a potential FireFox bug: https://bugzilla.mozilla.org/show_bug.cgi?id=1074543#c3
+			// 使用范围宽度而不是滚动宽度来确定文本是否溢出，以解决潜在的FireFox bug
+			// https://bugzilla.mozilla.org/show_bug.cgi?id=1074543#c3
 			const range = document.createRange();
 			range.setStart(cellChild, 0);
 			range.setEnd(cellChild, cellChild.childNodes.length);
 			const rangeWidth = range.getBoundingClientRect().width;
 			const padding = (parseInt(cellChild.style.paddingLeft, 10) || 0) + (parseInt(cellChild.style.paddingRight, 10) || 0);
-			if ((rangeWidth + padding > cellChild.offsetWidth || cellChild.scrollWidth > cellChild.offsetWidth) && this.$refs.tooltip) {
-				const tooltip = this.$refs.tooltip;
-				// TODO 会引起整个 Table 的重新渲染，需要优化
-				this.tooltipContent = cell.innerText || cell.textContent;
-				tooltip.referenceElm = cell;
-				tooltip.$refs.popper && (tooltip.$refs.popper.style.display = 'none');
-				tooltip.doDestroy();
-				tooltip.setExpectedState(true);
-				this.activateTooltip(tooltip);
+			if ((rangeWidth + padding > cellChild.offsetWidth || cellChild.scrollWidth > cellChild.offsetWidth)) {
+				this.timer && clearTimeout(this.timer);
+				this.popperInstance = null;
+				this.popperInstance = Popover.open({
+					el: document.body,
+					cName: 'vc-table-popover',
+					triggerEl: cell,
+					hover: true,
+					theme: 'dark',
+					placement: "top",
+					content: cell.innerText || cell.textContent,
+					onChange: (e, isActive) => {
+						this.timer && clearTimeout(this.timer);
+						this.popperInstance.isActive = isActive;
+					}
+				});
 			}
 		},
 
 		handleCellMouseLeave(event) {
-			const tooltip = this.$refs.tooltip;
-			if (tooltip) {
-				tooltip.setExpectedState(false);
-				tooltip.handleClosePopper();
-			}
+			this.timer = setTimeout(() => {
+				this.popperInstance && (this.popperInstance.isActive = false, this.popperInstance = null);
+			}, 300);
+
 			const cell = getCell(event);
 			if (!cell) return;
 
@@ -465,9 +470,6 @@ export default {
 						data.reduce((acc, row) => {
 							return acc.concat(this.renderRowWrapper(row, acc.length));
 						}, [])
-					}
-					{
-						/* <Popover effect={ this.table.tooltipEffect } placement="top" ref="tooltip" content={ this.tooltipContent } />*/
 					}
 				</tbody>
 			</table>

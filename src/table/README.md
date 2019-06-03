@@ -31,7 +31,6 @@ empty-text | 空数据时显示的文本内容，也可以通过 `slot="empty"` 
 default-expand-all | 是否默认展开所有行，当 Table 中存在 type="expand" 的 Column 的时候有效 | Boolean | false 
 expand-row-keys | 可以通过该属性设置 Table 目前的展开行，需要设置 row-key 属性才能使用，该属性为展开行的 keys 数组。 | Array | - 
 default-sort | 默认的排序列的 prop 和顺序。它的`prop`属性指定默认的排序的列，`order`指定默认排序的顺序 | Object | `order`: ascending, descending(如果只指定了`prop`, 没有指定`order`, 则默认顺序是ascending) 
-tooltip-effect | tooltip `effect` 属性 | String | dark/light
 show-summary | 是否在表尾显示合计行 | Boolean | false 
 sum-text | 合计行第一列的文本 | String | 合计 
 get-summary | 自定义的合计计算方法 | Function({ columns, data }) | - 
@@ -100,7 +99,7 @@ sort-by | 指定数据按照哪个属性进行排序，仅当 sortable 设置为
 sort-orders | 数据在排序时所使用排序策略的轮转顺序，仅当 sortable 为 true 时有效。需传入一个数组，随着用户点击表头，该列依次按照数组中元素的顺序进行排序 | array | 数组中的元素需为以下三者之一：`ascending` 表示升序，`descending` 表示降序，`null` 表示还原为原始顺序 ['ascending', 'descending', null]
 resizable | 对应列是否可以通过拖动改变宽度（需要在 vc-table 上设置 border 属性为真） | boolean | true
 formatter | 用来格式化内容 | Function(row, column, cellValue, index) | — 
-show-overflow-tooltip | 当内容过长被隐藏时显示 tooltip | Boolean | false
+show-popover | 当内容过长被隐藏时显示 popover | Boolean | false
 align | 对齐方式 | String | left/center/right | left
 header-align | 表头对齐方式，若不设置该项，则使用表格的对齐方式 | String | left/center/right | —
 class-name | 列的 className | string | — 

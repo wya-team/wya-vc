@@ -5,7 +5,7 @@
 		<vc-table ref="table" :data-source="dataSource" v-bind="attrs" v-on="hooks">
 			<vc-table-item>
 				<vc-table-column
-					:fixed="fixed"
+					:fixed="columnAttrs.fixed"
 					prop="date"
 					label="日期"
 					min-width="180"
@@ -16,6 +16,7 @@
 					width="180"
 				/>
 				<vc-table-column
+					:show-popover="columnAttrs.showPopover"
 					prop="address"
 					label="地址"
 				/>
@@ -25,7 +26,7 @@
 					v-for="(item, index) in dynamicColumns"
 					:key="item"
 					:label="`${dynamicText}-header: ${index}`"
-					:fixed="dynamicColumns.length === index + 1 && fixed && 'right'"
+					:fixed="dynamicColumns.length === index + 1 && columnAttrs.fixed && 'right'"
 				>
 					<template #default="{ row, $index }">
 						{{ dynamicText }}-item: {{ $index }}
@@ -36,17 +37,21 @@
 		<br>
 		<!-- 控制区域 -->
 		<div>
-			<vc-button @click="handleBasic('border')">border: {{ attrs.border }}</vc-button>
-			<vc-button @click="handleBasic('stripe')">stripe: {{ attrs.stripe }}</vc-button>
-			<vc-button @click="handleBasic('maxHeight')">maxHeight: {{ attrs.maxHeight }}</vc-button>
-			<vc-button @click="handleBasic('rowClassName')">rowClassName: {{ typeof attrs.rowClassName }}</vc-button>
-			<vc-button @click="handleBasic('fixed')">fixed: {{ fixed }}(需要多个columns)</vc-button>
+			<vc-button @click="handleTableAttr('border')">border: {{ attrs.border }}</vc-button>
+			<vc-button @click="handleTableAttr('stripe')">stripe: {{ attrs.stripe }}</vc-button>
+			<vc-button @click="handleTableAttr('maxHeight')">maxHeight: {{ attrs.maxHeight }}</vc-button>
+			<vc-button @click="handleTableAttr('rowClassName')">rowClassName: {{ typeof attrs.rowClassName }}</vc-button>
 			<br>	
 			<br>
 			<vc-button @click="handleCloumn('add')">Add Columns</vc-button>
 			<vc-button @click="handleCloumn('remove')">Remove Columns</vc-button>
 			<vc-button @click="handleCloumn('update')">Update Columns</vc-button>
-
+			<vc-button @click="handleCloumnAttr('fixed')">fixed: {{ columnAttrs.fixed }}(需要多个columns)</vc-button>
+			<vc-button 
+				@click="handleCloumnAttr('showPopover')"
+			>
+				showPopover: {{ columnAttrs.showPopover }}(需要更多的文字)
+			</vc-button>
 			<br>
 			<br>
 			<vc-button @click="handleRow('add')">Add Row</vc-button>
@@ -78,21 +83,31 @@ export default {
 			hooks: {
 
 			},
+			columnAttrs: {
+				fixed: false,
+				showPopover: true,
+			},
+			cloumnHooks: {
+
+			},
 			dynamicColumns: [],
 			dynamicText: 'dynamic',
-			fixed: false,
 			dataSource: [
 				{
 					id: 1,
 					date: '2016-05-02',
 					name: '王小虎',
-					address: '上海市普陀区金沙江路 1518 弄',
+					address: `浙江省杭州市拱墅区祥符街道 
+						showPopover showPopover showPopover showPopover showPopover
+					`,
 				}, 
 				{
 					id: 2,
 					date: '2016-05-04',
 					name: '王小虎',
-					address: '上海市普陀区金沙江路 1517 弄',
+					address: `浙江省杭州市拱墅区祥符街道 
+						showPopover showPopover showPopover showPopover showPopover
+					`,
 				}, 
 				{
 					id: 3,
@@ -113,13 +128,12 @@ export default {
 		
 	},
 	methods: {
-		handleBasic(type) {
+		handleTableAttr(type) {
 			switch (type) {
 				case 'rowClassName':
 					this.attrs.rowClassName = this.attrs.rowClassName
 						? ''
 						: ({ row, rowIndex }) => {
-							console.log(rowIndex);
 							if (rowIndex === 0) {
 								return 'warning';
 							} else if (rowIndex === 2) {
@@ -131,11 +145,15 @@ export default {
 				case 'maxHeight':
 					this.attrs.maxHeight = !this.attrs.maxHeight ? 250 : '';
 					break;
-				case 'fixed':
-					this.fixed = !this.fixed;
-					break;
 				default: 
 					this.attrs[type] = !this.attrs[type];
+					break;
+			}
+		},
+		handleCloumnAttr(type) {
+			switch (type) {
+				default: 
+					this.columnAttrs[type] = !this.columnAttrs[type];
 					break;
 			}
 		},
