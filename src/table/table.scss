@@ -182,25 +182,20 @@
 	}
 }
 
+// border 下去掉边框
+.vc-table.vc-table--border th {
+	border-top: none;
+	&:first-child {
+		border-left: none;
+	}
+}
+
 .vc-table td {
 	border-bottom: 1px solid #e8e8e8;
 	&:first-child {
 		padding-left: 12px;
 	}
 	&:last-child {
-		padding-right: 12px;
-	}
-}
-
-.el-table th.is-leaf {
-	border-top: 1px solid #e8e8e8;
-	border-bottom: 1px solid #e8e8e8;
-	&:first-child {
-		border-left: 1px solid #e8e8e8;
-		padding-left: 12px;
-	}
-	&:last-child {
-		border-right: 1px solid #e8e8e8;
 		padding-right: 12px;
 	}
 }
@@ -420,9 +415,6 @@
 	border-collapse: separate;
 }
 
-.vc-table__header thead tr {
-	border: 1px solid #d9d9d9;
-}
 .vc-table__header thead tr th {
 	background-color: #f4f4f4;
 	color: #000;
