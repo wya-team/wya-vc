@@ -309,7 +309,7 @@ export default {
 		display: flex; 
 		justify-content: space-between; 
 		align-items: center; 
-		padding: 10px; 
+		padding: 32px 0 0 0; 
 		width: 100%;
 	}
 }
