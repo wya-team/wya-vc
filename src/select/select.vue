@@ -383,7 +383,7 @@ $block: vc-select;
 	}
 
 	@include element(search) {
-		padding: 10px;
+		padding: 12px 8px;
 	}
 	@include element(options) {
 		max-height: 220px;

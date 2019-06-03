@@ -111,7 +111,7 @@ $block: vcm-input;
 		width: 28px;
 		height: 28px;
 		line-height: 28px;
-		font-size: 13px;
+		font-size: 16px;
 		text-align: left;
 		padding-left: 1px; // hack for vcm-icon
 		color: #808695;

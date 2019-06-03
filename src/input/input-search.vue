@@ -6,7 +6,7 @@
 		:clearable="clearable"
 		:prepend="prepend"
 		:type="type"
-		:afloat="true"
+		:afloat="false"
 		class="vc-input-search"
 		v-on="hooks"
 	>
@@ -50,17 +50,14 @@ $block: vc-input-search;
 @include block($block) {
 	@include element(content) {
 		cursor: pointer;
-		font-size: 13px;
-		padding: 0 16px;
-		background: #2d8cf0;
-		color: #fff;
-		border-color: #2d8cf0;
+		font-size: 14px;
+		padding: 0 8px;
+		color: #b2b2b2;
 		transition: all .2s ease-in-out;
 		position: relative;
-		z-index: 3;
 		text-align: center;
 		line-height: 28px;
-		white-space:nowrap;
+		white-space: nowrap;
 		@include when(disabled) {
 			cursor: not-allowed;
 			opacity: .4;

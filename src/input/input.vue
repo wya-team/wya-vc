@@ -84,7 +84,7 @@ $block: vc-input;
 	transition: border .2s ease-in-out, 
 		background .2s ease-in-out, 
 		box-shadow .2s ease-in-out;
-	@include commonBorder1PX(); // 不占边距
+	@include commonBorder1PX('', $cd9); // 不占边距
 	@include when(focus) {
 		&:after, &:before {
 			border-color: #57a3f3;
@@ -177,7 +177,8 @@ $block: vc-input;
 		@include when(icon) {
 			width: 16px;
 			font-size: 12px;
-			background: rgba(229, 229, 229, 1);
+			background: #e5e5e5;
+			color: #515151;
 		}
 		@include when(disabled) {
 			cursor: not-allowed;

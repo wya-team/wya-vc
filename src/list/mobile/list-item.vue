@@ -162,10 +162,10 @@ export default {
 		align-items: center;
 	}
 	@include element(extra) {
-		color: #000000;
+		color: #999;
 	}
 	@include element(icon) {
-		color: #828282;
+		color: #999;
 		font-size: 13px;
 		margin-left: 5px;
 	}

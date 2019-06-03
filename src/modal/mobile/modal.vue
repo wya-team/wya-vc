@@ -311,7 +311,7 @@ export default {
 		position: relative;
 		flex: 1;
 		text-align: center;
-		color: #108ee9;
+		color: #108de7;
 		font-size: 18px;
 		height: 50px;
 		line-height: 50px;
@@ -329,7 +329,7 @@ export default {
 			flex-direction: column;
 			@include element(button) { 
 				&:first-child {
-					color: #108ee9;
+					color: #108de7;
 					&:before, &:after {
 						border: none;
 					}
@@ -341,7 +341,7 @@ export default {
 		}
 		@include when(alone) {
 			@include element(button) { 
-				color: #108ee9;
+				color: #108de7;
 				&:first-child {
 					&:before, &:after {
 						border: none;

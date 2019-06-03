@@ -116,10 +116,11 @@ export default {
 		@include commonBorder1PX(bottom, #e7e7e7);
 	}
 	@include element(item) {
-		padding: 9px 15px;
+		padding: 0 15px;
 		color: #108ee9;
-		height: 42px;
+		height: 48px;
 		font-size: 17px;
+		line-height: 48px;
 		@include when(title) {
 			flex: 1;
 			text-align: center;

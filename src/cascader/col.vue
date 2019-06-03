@@ -93,13 +93,13 @@ $block: vc-cascader-col;
 		align-items: center;
 		line-height: normal;
 		padding: 7px 16px;
-		color: #515a6e;
+		color: #666;
 		font-size: 12px!important;
 		white-space: nowrap;
 		cursor: pointer;
 		@include when(select) {
-			background-color: #f3f3f3;
-			color: #2d8cf0;
+			background-color: #e6f7ff;
+			color: #5495f6;
 		}
 	}
 	@include element(icon) {
