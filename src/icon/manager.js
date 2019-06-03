@@ -9,7 +9,7 @@ let pathReg = /<path.*?<\/path>/gi;
 let dReg = /.*d="([^"]+).*/g;
 let fillReg = /.*fill="([^"]+).*/g;
 
-let basicUrl = '//at.alicdn.com/t/font_1119857_s9p062k318.js';
+let basicUrl = '//at.alicdn.com/t/font_1119857_8actm31jiha.js';
 let prefix = '@wya/vc-icon:';
 
 class Manager extends VcBasic {
