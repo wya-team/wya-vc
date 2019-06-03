@@ -388,7 +388,13 @@ export default {
 														? column.renderHeader.call(
 															this._renderProxy, 
 															h, 
-															{ column, $index: cellIndex, store: this.store, _self: this.$parent.$vnode.context }
+															{ 
+																column, 
+																$index: cellIndex, 
+																// index: cellIndex, 
+																store: this.store, 
+																_self: this.$parent.$vnode.context 
+															}
 														)
 														: column.label
 												}

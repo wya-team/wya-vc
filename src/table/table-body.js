@@ -99,7 +99,7 @@ export default {
 		getSpan(row, column, rowIndex, columnIndex) {
 			let rowspan = 1;
 			let colspan = 1;
-			const fn = this.table.spanMethod;
+			const fn = this.table.getSpan;
 			if (typeof fn === 'function') {
 				const result = fn({
 					row,

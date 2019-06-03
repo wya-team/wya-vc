@@ -5,7 +5,7 @@ export default {
 		return {
 			states: {
 				// defaultExpandAll 存在于 expand.js 中，这里不重复添加
-				// TODO: 拆分为独立的 TreeTale，在 expand 中，展开行的记录是放在 expandRows 中，统一用法
+				// TODO: 拆分为独立的 TreeTable，在 expand 中，展开行的记录是放在 expandRows 中，统一用法
 				expandRowKeys: [],
 				treeData: {},
 				indent: 16,
@@ -29,7 +29,7 @@ export default {
 		// @return { id: { children } }
 		// 针对懒加载的情形，不处理嵌套数据
 		normalizedLazyNode() {
-			const { rowKey, lazyTreeNodeMap, lazyColumnIdentifier } = this.states;
+			const { rowKey, lazyTreeNodeMap, lazyColumnIdentifier, childrenColumnName } = this.states;
 			const keys = Object.keys(lazyTreeNodeMap);
 			const res = {};
 			if (!keys.length) return res;
@@ -39,7 +39,9 @@ export default {
 					lazyTreeNodeMap[key].forEach(row => {
 						const currentRowKey = getRowIdentity(row, rowKey);
 						item.children.push(currentRowKey);
-						if (row[lazyColumnIdentifier] && !res[currentRowKey]) {
+
+						let hasChildren = row[lazyColumnIdentifier] || (row[childrenColumnName] && row[childrenColumnName].length === 0);
+						if (hasChildren && !res[currentRowKey]) {
 							res[currentRowKey] = { children: [] };
 						}
 					});

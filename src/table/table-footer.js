@@ -9,7 +9,7 @@ export default {
 		store: {
 			required: true
 		},
-		summaryMethod: Function,
+		getSummary: Function,
 		sumText: String,
 		border: Boolean,
 		defaultSort: {
@@ -74,8 +74,8 @@ export default {
 	},
 	render(h) {
 		let sums = [];
-		if (this.summaryMethod) {
-			sums = this.summaryMethod({ columns: this.columns, data: this.store.states.data });
+		if (this.getSummary) {
+			sums = this.getSummary({ columns: this.columns, data: this.store.states.data });
 		} else {
 			this.columns.forEach((column, index) => {
 				if (index === 0) {

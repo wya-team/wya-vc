@@ -68,7 +68,7 @@
 				:store="store"
 				:border="border"
 				:sum-text="sumText || '合计'"
-				:summary-method="summaryMethod"
+				:get-summary="getSummary"
 				:default-sort="defaultSort"
 				:style="{ width: layout.bodyWidth ? layout.bodyWidth + 'px' : ''}"
 			/>
@@ -122,7 +122,7 @@
 				<vc-table-footer
 					:border="border"
 					:sum-text="sumText || '合计'"
-					:summary-method="summaryMethod"
+					:get-summary="getSummary"
 					:store="store"
 					:style="{ width: bodyWidth}" 
 					fixed="left"
@@ -187,7 +187,7 @@
 				<vc-table-footer
 					:border="border"
 					:sum-text="sumText || '合计'"
-					:summary-method="summaryMethod"
+					:get-summary="getSummary"
 					:store="store"
 					:style="{ width: bodyWidth }" 
 					fixed="right"
@@ -273,7 +273,7 @@ export default {
 		},
 		showSummary: Boolean,
 		sumText: String,
-		summaryMethod: Function,
+		getSummary: Function,
 		// 行的 style 的回调方法，也可以使用一个固定的 Object 为所有行设置一样的 Style。
 		rowClassName: String | Function,
 		rowStyle: Object | Function,
@@ -300,7 +300,6 @@ export default {
 		// 如果只指定了prop, 没有指定order, 则默认顺序是 ascending, descending
 		defaultSort: Object,
 		tooltipEffect: String,
-		spanMethod: Function,
 		/**
 		 * 在多选表格中，当仅有部分行被选中时，点击表头的多选框时的行为。若为 true，则选中所有行；若为 false，则取消选择所有行
 		 */
@@ -323,7 +322,8 @@ export default {
 			}
 		},
 		lazy: Boolean,
-		loadExpand: Function
+		loadExpand: Function,
+		getSpan: Function
 	},
 
 	data() {

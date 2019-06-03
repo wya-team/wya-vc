@@ -24,7 +24,7 @@
 		<div style="flex: 0 0 75%">
 			<vc-table
 				:data-source="dataSource"
-				:span-method="getSpan"
+				:get-span="getSpan"
 				style="width: 100%"
 				row-key="id"	
 			>

@@ -1,63 +1,23 @@
 <template>
-	<!-- :tree-props="{children: 'children', hasChildren: 'hasChildren'}" -->
-	<div>
-		<div style="padding: 20px">
-			<div @click="handleClearDate">清除日期过滤器</div>
-			<div @click="handleClear">清除所有过滤器</div>
-			<vc-table
-				ref="filterTable"
-				:data-source="dataSource"
-				:load-expand="loadExpand"
-				:tree-props="{children: 'children', hasChildren: 'hasChildren'}"
-				lazy
-				style="width: 100%"
-				row-key="id"
-			>
-				<vc-table-item>
-					<vc-table-column
-						type="selection"
-						width="55"
-					/>
-					<vc-table-column
-						prop="date"
-						label="日期"
-						width="180"
-					/>
-					<vc-table-column
-						prop="name"
-						label="姓名"
-						width="180"
-					/>
-					<vc-table-column
-						:formatter="formatter"
-						prop="address"
-						label="地址"
-					>
-						<div @click="handleResetFirst">回到首页刷新</div>
-						<div @click="handleResetCur">当前页刷新</div>
-					</vc-table-column>
-				</vc-table-item>
-			</vc-table>
-		</div>
-		<vc-table
-			:data-source="dataSource"
-			border
-			row-key="id"
-		>
-			<vc-table-column
-				prop="date"
-				label="日期"
-				min-width="180"
-			/>
-			<vc-table-column
-				prop="name"
-				label="姓名"
-				width="180"/>
-			<vc-table-column
-				prop="address"
-				label="地址"
-				width="880"
-			/>
+	<div style="padding: 30px">
+		<h1>Basic</h1>
+		<vc-table :data-source="dataSource">
+			<vc-table-item>
+				<vc-table-column
+					prop="date"
+					label="日期"
+					min-width="180"
+				/>
+				<vc-table-column
+					prop="name"
+					label="姓名"
+					width="180"/>
+				<vc-table-column
+					prop="address"
+					label="地址"
+					width="880"
+				/>
+			</vc-table-item>
 		</vc-table>
 	</div>
 </template>
@@ -79,80 +39,28 @@ export default {
 					date: '2016-05-02',
 					name: '王小虎',
 					address: '上海市普陀区金沙江路 1518 弄',
-					hasChildren: true
 				}, 
 				{
 					id: 2,
 					date: '2016-05-04',
 					name: '王小虎',
 					address: '上海市普陀区金沙江路 1517 弄',
-					hasChildren: true
 				}, 
 				{
 					id: 3,
 					date: '2016-05-01',
 					name: '王小虎',
-					address: '上海市普陀区金沙江路 1519 弄',
-					loaded: true,
-					children: [
-						{
-							id: 31,
-							date: '2016-05-01',
-							name: '王小虎',
-							address: '上海市普陀区金沙江路 1519 弄'
-						}, 
-						{
-							id: 32,
-							date: '2016-05-01',
-							name: '王小虎',
-							address: '上海市普陀区金沙江路 1519 弄'
-						}
-					]
+					address: '上海市普陀区金沙江路 1519 弄'
 				},
 				{
 					id: 4,
 					date: '2016-05-03',
 					name: '王小虎',
 					address: '上海市普陀区金沙江路 1516 弄'
-				}]
+				}
+			]
 		};
 	},
-	methods: {
-		handleClearDate() {
-			this.$refs.filterTable.clearFilter('date');
-		},
-		handleClear() {
-			this.$refs.filterTable.clearFilter();
-		},
-		formatter(row, column) {
-			return row.address;
-		},
-		handleResetFirst() {
-
-		},
-		handleResetCur() {
-			
-		},
-		loadExpand(tree, treeNode) {
-			return new Promise((resolve, reject) => {
-				setTimeout(() => {
-					resolve([
-						{
-							id: Math.random(),
-							date: '2016-05-01',
-							name: '王小虎',
-							address: '上海市普陀区金沙江路 1519 弄'
-						}, {
-							id: Math.random(),
-							date: '2016-05-01',
-							name: '王小虎',
-							address: '上海市普陀区金沙江路 1519 弄'
-						}
-					]);
-				}, 1000);
-			});
-			
-		}
-	}
+	methods: {}
 };
 </script>
