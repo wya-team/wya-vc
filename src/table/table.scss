@@ -88,7 +88,6 @@
 }
 
 .vc-table thead {
-	color: #909399;
 	font-weight: 500;
 }
 
@@ -171,11 +170,15 @@
 	user-select: none;
 	background-color: #fff;
 	padding: 7px 0;
+	border-top: 1px solid #d9d9d9;
+	border-bottom: 1px solid #d9d9d9;
 	&:first-child {
 		padding-left: 12px;
+		border-left: 1px solid #d9d9d9;
 	}
 	&:last-child {
 		padding-right: 12px;
+		border-right: 1px solid #d9d9d9;
 	}
 }
 
@@ -417,8 +420,12 @@
 	border-collapse: separate;
 }
 
+.vc-table__header thead tr {
+	border: 1px solid #d9d9d9;
+}
 .vc-table__header thead tr th {
 	background-color: #f4f4f4;
+	color: #000;
 }
 
 .vc-table__footer-wrapper,
