@@ -140,6 +140,7 @@ export default {
 	position: relative;
 	white-space: nowrap;
 	margin-right: 8px;
+	line-height: 1;
 	cursor: pointer;
 	@include element(wrapper) {
 		display: inline-block;

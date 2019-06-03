@@ -1,13 +1,17 @@
 <template>
 	<div :class="classes" class="vc-form-item">
-		<label v-if="label || $slots.label" :for="labelFor" :style="labelStyle" class="vc-form-item__label">
-			<slot name="label">{{ label }}</slot>
-		</label>
-		<div :style="contentStyle" class="vc-form-item__content">
-			<slot />
-			<vc-transition-fade>
-				<div v-if="showError" class="vc-form-item__tip">{{ validateMessage }}</div>
-			</vc-transition-fade>
+		<div v-if="label || $slots.label" :for="labelFor" :style="labelStyle" class="vc-form-item__label">
+			<label>
+				<slot name="label">{{ label }}</slot>
+			</label>
+		</div>
+		<div :style="contentStyle" class="vc-form-item__wrapper">
+			<div class="vc-form-item__content">
+				<slot />
+				<vc-transition-fade>
+					<div v-if="showError" class="vc-form-item__tip">{{ validateMessage }}</div>
+				</vc-transition-fade>
+			</div>
 		</div>
 	</div>
 </template>
@@ -35,6 +39,7 @@ $block: vc-form-item;
 
 @include block($block) {
 	margin-bottom: 24px;
+	line-height: 1.5;
 	@include commonClearfix();
 	@include element(content) { 
 		position: relative;

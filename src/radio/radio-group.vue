@@ -86,7 +86,7 @@ $size: 28px;
 @include block(vc-radio-group) {
 	display: inline-block;
 	font-size: 12px;
-	vertical-align: middle;
+	line-height: unset;
 	@include when(vertical) {
 		.vc-radio {
 			display: block;
