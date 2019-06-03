@@ -1,6 +1,7 @@
 <template>
 	<div class="vc-popover-basic">
 		<div @click="isHover=!isHover">{{ trigger }}</div>
+		<div @click="handleDynamic">无需插槽，动态创建</div>
 		<div ref="parent" class="vc-popover-basic__container">
 			<div class="vc-popover-basic__left" style="margin-top: 32px; margin-bottom: 32px">
 				<vc-popover 
@@ -202,7 +203,7 @@
 </template>
 
 <script>
-import Popover from '../popover'; 
+import Popover from '..'; 
 import Button from '../../button/button';
 
 export default {
@@ -237,6 +238,15 @@ export default {
 		},
 		handleClose() {
 			console.log('close');
+		},
+		handleDynamic(e) {
+			this.popperInstance = Popover.open({
+				el: document.body,
+				cName: this.popoverId,
+				triggerEl: e.target,
+				onChange: () => {},
+				content: '动态创建'
+			});
 		}
 	}
 };

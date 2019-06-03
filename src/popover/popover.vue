@@ -112,7 +112,7 @@ export default {
 					onChange: ::this.handleChange,
 					onClose: () => this.$emit('close'),
 					onReady: () => this.$emit('ready'),
-					isHover: this.isHover,
+					hover: this.isHover,
 					/**
 					 * 传送门通信控制
 					 */

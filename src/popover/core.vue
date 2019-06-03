@@ -10,8 +10,8 @@
 			:style="[wrapperStyle, wrapperW, portalStyle]"
 			:class="[wrapperClasses, portalClassName]"
 			class="vc-popover-core" 
-			@mouseenter="isHover && onChange($event, true)"
-			@mouseleave="isHover && onChange($event, false)"
+			@mouseenter="hover && onChange($event, true)"
+			@mouseleave="hover && onChange($event, false)"
 		>
 			<div :class="themeClasses" class="vc-popover-core__container">
 				<div 
@@ -74,9 +74,12 @@ const popup = {
 			default: false
 		},
 		triggerEl: HTMLElement,
-		onChange: Function,
+		onChange: {
+			type: Function,
+			default: () => () => {}
+		},
 		onReady: Function,
-		isHover: Boolean,
+		hover: Boolean,
 		portalClassName: Object | String,
 		portalStyle: Object,
 	},
@@ -118,12 +121,12 @@ const popup = {
 		});
 
 		// 捕获阶段执行
-		!this.isHover && document.addEventListener('click', this.handleClick, true);
+		!this.hover && document.addEventListener('click', this.handleClick, true);
 
 		this.onReady && this.onReady();
 	},
 	destroyed() {
-		!this.isHover && document.removeEventListener('click', this.handleClick, true);
+		!this.hover && document.removeEventListener('click', this.handleClick, true);
 	}, 
 	methods: {
 		/**
@@ -132,12 +135,17 @@ const popup = {
 		 */
 		getHackContainer() {
 			try {
-				let slotHeight = this.$slots.default[0].elm.getBoundingClientRect().height;
-				let parentHeight = this.triggerEl.getBoundingClientRect().height;
-				if (slotHeight > parentHeight) {
-					return this.$slots.default[0].elm;
+				let container = this.triggerEl;
+
+				if (this.$slots.content) {
+					let slotHeight = this.$slots.default[0].elm.getBoundingClientRect().height;
+					let parentHeight = this.triggerEl.getBoundingClientRect().height;
+					if (slotHeight > parentHeight) {
+						container = this.$slots.default[0].elm;
+					}
+					
 				}
-				return this.triggerEl;
+				return container;
 
 			} catch (e) {
 				throw new VcError('vc-popover-core', '不要使用<template #default></template>');
