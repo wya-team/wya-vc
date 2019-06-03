@@ -124,7 +124,7 @@ $block: vcm-input-number;
 		opacity: 0.4;
 	}
 	input {
-		width: 34px;
+		width: 40px;
 		height: 25px;
 		font-size: 13px;
 		color: #000;
