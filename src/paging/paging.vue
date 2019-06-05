@@ -44,7 +44,7 @@
 				/>
 				<vc-page
 					v-else
-					ref="pageTarget"  
+					ref="page"  
 					:count="Number(count)" 
 					:current="currentPage"
 					:page-size="pageSize"
@@ -218,7 +218,8 @@ export default {
 	created() {
 		let { query: { page = 1 } } = URL.parse();
 		this.show && this._loadData(page);
-
+	},
+	mounted() {
 		if (this.mode === 'table') {
 			// 方法映射
 			this.clearSelection = this.$refs.table.clearSelection;
