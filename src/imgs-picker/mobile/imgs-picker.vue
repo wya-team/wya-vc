@@ -137,8 +137,8 @@ export default {
 		width: 15px;
 		height: 15px;
 		font-size: 7px;
-		background: #000;
-		opacity: 0.3;
+		background: rgba($color: #000000, $alpha: .3);
+		color: #fff;
 		border-radius: 2px;
 		z-index: 10;
 	}
