@@ -157,7 +157,7 @@ export default {
 		handleFileComplete(res) {
 			this.$emit('complete', res);
 		},
-		handleDel(item, index) {
+		handleDel(item) {
 			// 删除时，最大值加1
 			if (this.uploadOpts.multiple) {
 				this.uploadOpts.max = this.uploadOpts.max + 1;
@@ -166,7 +166,7 @@ export default {
 				this.data = this.data.filter(it => it.uid != item.uid);
 				return;
 			}
-			// this.data.splice(index, 1);
+			
 			this.data = this.data.filter(it => it != item);
 			let dataSource = this.data.filter(it => !it.errorFlag);
 			this.$emit('change', dataSource);
@@ -209,6 +209,14 @@ export default {
 		},
 		getUrl(res) {
 			return this.format ? this.format(res) : res.data.url;
+		},
+
+		/**
+		 * 对外暴露
+		 * TODO: 可能会被废弃
+		 */
+		delete(index) {
+			this.data[index] && this.handleDel(this.data[index]);
 		}
 	}
 };
