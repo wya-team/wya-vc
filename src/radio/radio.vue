@@ -58,7 +58,7 @@ export default {
 	},
 	inject: {
 		group: {
-			from: 'group',
+			from: 'radioGroup',
 			default: () => undefined
 		}
 	},

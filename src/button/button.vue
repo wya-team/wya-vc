@@ -56,7 +56,7 @@ export default {
 	},
 	inject: {
 		group: {
-			from: 'group',
+			from: 'buttonGroup',
 			default: () => ({
 				size: 'medium',
 				vertical: false,

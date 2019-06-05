@@ -21,7 +21,7 @@ export default {
 		}
 	},
 	provide() {
-		return { group: this };
+		return { checkboxGroup: this };
 	},
 	data() {
 		return {

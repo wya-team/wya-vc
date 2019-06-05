@@ -21,7 +21,7 @@ export default {
 		}
 	},
 	provide() {
-		return { group: this };
+		return { buttonGroup: this };
 	},
 	data() {
 		return {

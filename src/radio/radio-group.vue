@@ -33,7 +33,7 @@ export default {
 		}
 	},
 	provide() {
-		return { group: this };
+		return { radioGroup: this };
 	},
 	data() {
 		return {

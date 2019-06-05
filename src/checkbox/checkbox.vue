@@ -62,7 +62,7 @@ export default {
 	},
 	inject: {
 		group: {
-			from: 'group',
+			from: 'checkboxGroup',
 			default: () => undefined
 		}
 	},
