@@ -1,5 +1,5 @@
 <template>
-	<div>
+	<div style="background: #f2f2f2">
 		<div>
 			<vcm-input
 				v-model="value"

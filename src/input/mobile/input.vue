@@ -14,7 +14,7 @@
 					/>
 				</slot>
 			</div>
-			<div class="vcm-input__content">
+			<div :class="{ 'is-right': right }" class="vcm-input__content">
 				<input
 					ref="input"
 					:value="currentValue"
@@ -60,7 +60,13 @@ export default {
 		'vcm-icon': MIcon,
 		'vcm-transition-fade': MTransition.Fade
 	},
-	mixins: [inputMixin]
+	mixins: [inputMixin],
+	props: {
+		right: {
+			type: Boolean,
+			default: false
+		}
+	}
 };
 </script>
 
@@ -74,8 +80,7 @@ $block: vcm-input;
 	width: 100%;
 	display: inline-block;
 	cursor: text;
-	font-size: 12px;
-	height: 28px;
+	height: 24px;
 	line-height: 1.5;
 	// overflow: hidden;
 	@include element(wrapper) {
@@ -90,13 +95,12 @@ $block: vcm-input;
 			width: 100%;
 			background-color: $white;
 			outline: 0;
-			color: $c51;
-			padding-top: 5px;
-			padding-bottom: 5px; // 18 + 10 = 28
+			color: #000;
+			font-size: 16px;
 			padding-left: 7px;
 			padding-right: 7px;
 			&::placeholder {
-				color: #c5c8ce;
+				color: #999;
 			}
 			&[disabled] {
 				background-color: #f3f3f3;
@@ -105,12 +109,15 @@ $block: vcm-input;
 				color: #ccc;
 			}
 		}
+		@include when(right) {
+			input {
+				text-align: right;
+				color: #999;
+			}
+		}
 	}
 
 	@include share-rule(icon) {
-		width: 28px;
-		height: 28px;
-		line-height: 28px;
 		font-size: 16px;
 		text-align: left;
 		padding-left: 1px; // hack for vcm-icon
@@ -138,7 +145,6 @@ $block: vcm-input;
 		height: 100%;
 		text-align: center;
 		font-size: 13px;
-		line-height: 28px;
 		white-space: nowrap;
 		z-index: 3;
 		@include when(icon) {

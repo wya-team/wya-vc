@@ -112,10 +112,6 @@ export default {
 @import '../style/index.scss';
 // 定义默认属性
 
-$default-color: #57a3f3;
-$default-border-color: #dcdee2;
-$default-hover-color: #57a3f3;
-
 $primary-color: #5495f6;
 $primary-hover-color: #67a4ff;
 
@@ -134,7 +130,7 @@ $warning-hover-color: #ebb563;
 	font-size: 12px;
 	border-radius: 4px;
 	border: 1px solid transparent;
-	border-color: $default-border-color;
+	border-color: #d9d9d9;
 	background: $white;
 	user-select: none;
 	cursor: pointer;
@@ -156,10 +152,12 @@ $warning-hover-color: #ebb563;
 		width: 100%;
 	}
 	@include when(default) {
+		color: #999;
+		border-color: #d9d9d9;
 		&:hover {
-			color: $default-hover-color;
-			background-color: $white;
-			border-color: $default-hover-color;
+			color: #5495f6;
+			background-color: white;
+			border-color: #5495f6;
 		}
 	}
 	@include when(primary) {
@@ -172,7 +170,7 @@ $warning-hover-color: #ebb563;
 		}
 	}
 	@include when(text) {
-		color: $c51;
+		color: #999;
 		background-color: transparent;
 		border-color: transparent;
 		&:hover {

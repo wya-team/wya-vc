@@ -62,15 +62,15 @@ $block: vc-dropdown-item;
 	line-height: normal;
 	padding: 7px 16px;
 	clear: both;
-	color: #515a6e;
+	color: #666;
 	font-size: 12px !important;
 	white-space: nowrap;
 	list-style: none;
 	cursor: pointer;
 	transition: background .2s ease-in-out;
 	&:hover {
-		background: $info;
-		color: #fff;
+		background-color: #e6f7ff;
+		color: #5495f6;
 	}
 	@include when(disabled) {
 		color: #c5c8ce;
@@ -80,7 +80,7 @@ $block: vc-dropdown-item;
 		}
 	}
 	@include when(selected) {
-		color: #2d8cf0
+		color: #5495f6;
 	}
 	@include when(divided) {
 		margin-top: 5px;

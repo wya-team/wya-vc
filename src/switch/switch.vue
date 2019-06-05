@@ -46,8 +46,8 @@ export default {
 	line-height: 20px;
 	border-radius: 22px;
 	vertical-align: middle;
-	border: 1px solid #C0C0C0;
-	background-color: #C0C0C0;
+	border: 1px solid #d9d9d9;
+	background-color: #d9d9d9;
 	position: relative;
 	cursor: pointer;
 	user-select: none;

@@ -118,9 +118,9 @@ export default {
 	@include element(item) {
 		padding: 0 15px;
 		color: #108ee9;
-		height: 48px;
+		height: 44px;
 		font-size: 17px;
-		line-height: 48px;
+		line-height: 44px;
 		@include when(title) {
 			flex: 1;
 			text-align: center;

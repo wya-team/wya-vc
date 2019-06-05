@@ -56,7 +56,7 @@ $block: vcm-form-item;
 		text-align: right;
 		vertical-align: middle;
 		float: left;
-		color: $c333;
+		color: #000;
 		font-size: 16px;
 		line-height: 24px;
 		box-sizing: border-box;

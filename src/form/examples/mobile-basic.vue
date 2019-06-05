@@ -14,8 +14,13 @@
 			</vcm-form-item>
 		</vcm-form-item>
 
+
+
 		<vcm-form-item prop="input" label="input">
 			<vcm-input v-model="formValidate.input" type="text" placeholder="Enter something..." clearable />
+		</vcm-form-item>
+		<vcm-form-item prop="input" label="input">
+			<vcm-input v-model="formValidate.input" type="text" placeholder="Enter something..." right/>
 		</vcm-form-item>
 		<vcm-form-item prop="array" label="array">
 			<vcm-array v-model="formValidate.array" />

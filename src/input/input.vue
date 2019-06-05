@@ -87,13 +87,13 @@ $block: vc-input;
 	@include commonBorder1PX('', $cd9); // 不占边距
 	@include when(focus) {
 		&:after, &:before {
-			border-color: #57a3f3;
+			border-color: #5495f6;
 		}
 		z-index: 2;
 		box-shadow: 0 0 1px 1px rgba(45, 140, 240, .2)
 	}
 	&:hover {
-		border-color: #57a3f3
+		border-color: #5495f6
 	}
 	@include element(wrapper) {
 		display: flex;
@@ -115,17 +115,17 @@ $block: vc-input;
 			padding-left: 7px;
 			padding-right: 7px;
 			&::placeholder {
-				color: #c5c8ce;
+				color: #aaa;
 			}
 		}
 		@include when(disabled) {
-			background-color: #f3f3f3;
+			background-color: #f4f4f4;
 			opacity: 1;
 			cursor: not-allowed;
 			color: #ccc;
 			// hack需要设置
 			input {
-				background-color: #f3f3f3;
+				background-color: #f4f4f4;
 				cursor: not-allowed;
 			}
 		}
@@ -182,7 +182,7 @@ $block: vc-input;
 		}
 		@include when(disabled) {
 			cursor: not-allowed;
-			background-color: #f3f3f3;
+			background-color: #f4f4f4;
 		}
 		// 让虚线在下方
 		@include when(afloat) {

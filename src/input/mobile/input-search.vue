@@ -60,22 +60,28 @@ export default {
  * TODO
  */
 $block: vcm-input-search;
+$size: 56px;
 
 @include block($block) {
 	display: flex;
 	align-items: center;
-	height: 44px;
-	padding: 0 8px;
-	background: #efeff4;
-	@include element(content) {
-		border-radius: 32px;
+	height: $size;
+	padding: 12px 12px;
+	.vcm-input {
 		height: 32px;
-		line-height: 1.6;
+	}
+	@include element(content) {
 		background: white;
+		border-radius: 16px;
 		overflow: hidden;
+		padding-right: 14px;
 		input {
-			// text-align: center;
+			padding-top: 6px ;
+			padding-bottom: 5px;
 			font-size: 14px;
+			&::placeholder {
+				
+			}
 		}
 		@include element(icon){
 			font-size: 15px;
@@ -90,8 +96,8 @@ $block: vcm-input-search;
 	}
 	@include element(btn){
 		padding-left: 8px;
-		height: 44px;
-		line-height: 44px;
+		height: $size;
+		line-height: $size;
 		font-size: 14px;
 		color: #333;
 		text-align: right;

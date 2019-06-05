@@ -218,7 +218,7 @@ export default {
 	@include element(afloat) {
 		height: 2px;
 		box-sizing: border-box;
-		background-color: #2d8cf0;
+		background-color: #5495f6;
 		position: absolute;
 		left: 0;
 		bottom: 0;
@@ -265,10 +265,10 @@ export default {
 			position: relative;
 			transition: color .3s ease-in-out;
 			@include when(active) {
-				color: #2d8cf0;
+				color: #5495f6;
 			}
 			&:hover {
-				color: #2d8cf0;
+				color: #5495f6;
 			};
 		};
 	}
@@ -282,7 +282,7 @@ export default {
 			border-bottom: 0;
 			transition: all .3s ease-in-out;
 			background: #fff;
-			border: 1px solid #dcdee2;
+			border: 1px solid #d9d9d9;
 			margin-right: -1px; 
 			position: relative;
 			z-index: 1;
@@ -294,12 +294,12 @@ export default {
 				margin-right: 0; 
 			}
 			@include when(active) {
-				color: #2d8cf0;
-				border: 1px solid #2d8cf0;
+				color: #5495f6;
+				border: 1px solid #5495f6;
 				z-index: 2;
 			}
 			&:hover {
-				color: #2d8cf0;
+				color: #5495f6;
 			}
 		}
 	}

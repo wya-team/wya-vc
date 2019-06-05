@@ -171,7 +171,7 @@ export default {
 		background-color: #fff;
 		border-radius: 50%;
 		transition: all .2s ease-in-out;
-		@include commonBorder1PX('', #dcdee2);
+		@include commonBorder1PX('', #d4d7db);
 	}
 	@include element(inner) {
 		position: absolute;
@@ -184,7 +184,7 @@ export default {
 		border-top: 0;
 		border-left: 0;
 		content: ' ';
-		background-color: #2d8cf0;
+		background-color: #5495f6;
 		opacity: 0;
 		transition: all .2s ease-in-out;
 		transform: scale(0);
@@ -192,7 +192,7 @@ export default {
 	@include when(checked) {
 		@include element(border) {
 			&:before, &:after{
-				border-color: #2d8cf0;
+				border-color: #5495f6;
 			}
 		}
 		@include element(inner) {
@@ -208,9 +208,9 @@ export default {
 		}
 		@include element(border){
 			&:before, &:after{
-				border-color: #dcdee2;
+				border-color: #d4d7db;
 			}
-			background-color: #f3f3f3;
+			background-color: #f4f5f4;
 		}
 		@include element(inner) {
 			animation-name: none;
