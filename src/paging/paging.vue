@@ -20,7 +20,7 @@
 		
 		<vc-table
 			v-else
-			ref="tableTarget" 
+			ref="table" 
 			:data-source="data" 
 			v-bind="tableOpts"
 			v-on="tableHooks"
@@ -218,6 +218,16 @@ export default {
 	created() {
 		let { query: { page = 1 } } = URL.parse();
 		this.show && this._loadData(page);
+
+		if (this.mode === 'table') {
+			// 方法映射
+			this.clearSelection = this.$refs.table.clearSelection;
+			this.toggleRowSelection = this.$refs.table.toggleRowSelection;
+			this.toggleAllSelection = this.$refs.table.toggleAllSelection;
+			this.toggleRowExpansion = this.$refs.table.toggleRowExpansion;
+			this.setCurrentRow = this.$refs.table.setCurrentRow;
+			this.doLayout = this.$refs.table.doLayout;
+		}
 	},
 	methods: {
 		handleChangePageSize(pageSize) {

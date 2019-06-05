@@ -5,6 +5,10 @@
 		<vc-table ref="table" :data-source="dataSource" v-bind="attrs" v-on="hooks">
 			<vc-table-item>
 				<vc-table-column
+					v-if="selection"
+					type="selection"
+				/>
+				<vc-table-column
 					:fixed="columnAttrs.fixed"
 					prop="date"
 					label="日期"
@@ -57,6 +61,12 @@
 			<vc-button @click="handleRow('add')">Add Row</vc-button>
 			<vc-button @click="handleRow('remove')">Remove Row</vc-button>
 			<vc-button @click="handleRow('update')">Update Row</vc-button>
+
+			<br>
+			<br>
+			<vc-button @click="selection = !selection">selection: {{ selection }}</vc-button>
+			<vc-button @click="$refs.table.toggleAllSelection()">Select All</vc-button>
+			<vc-button @click="$refs.table.toggleRowSelection(dataSource[1])">Select One</vc-button>
 		</div>
 	</div>
 </template>
@@ -92,6 +102,7 @@ export default {
 			},
 			dynamicColumns: [],
 			dynamicText: 'dynamic',
+			selection: false,
 			dataSource: [
 				{
 					id: 1,
