@@ -48,6 +48,10 @@ export default {
 			type: String,
 			default: 'light',
 			validator: v => /(light|dark)/.test(v)
+		},
+		autoAfloatWidth: {
+			type: Boolean,
+			default: true,
 		}
 	},
 	data() {
@@ -84,7 +88,11 @@ export default {
 
 				// 暂时写死42
 				this.afloatWidth = $ 
-					? this.isDark ? 20 : 42 
+					? this.isDark 
+						? 20 
+						: this.autoAfloatWidth
+							? $.querySelector('span').offsetWidth 
+							: $.offsetWidth 
 					: 0;
 
 				let offset = 0;
