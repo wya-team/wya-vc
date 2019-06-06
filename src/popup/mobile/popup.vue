@@ -107,8 +107,10 @@ export default {
 		/**
 		 * 立即执行关闭操作，内部主动触发
 		 */
-		handleClose(maskClosable = true) {
-			this.isActive = false;
+		handleClose(allow = true) {
+			if (allow) {
+				this.isActive = false;
+			}
 		},
 		/**
 		 * 动画执行后关闭

@@ -294,8 +294,6 @@ export default {
 			}
 			
 			this.$emit('close');
-
-			
 		},
 
 		// 可能存在强制关闭的情况
