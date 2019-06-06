@@ -13,7 +13,8 @@
 		@mouseenter.native="isHover = true"
 		@mouseleave.native="isHover = false"
 		@ready="handleReady"
-		@close="$emit('close')"
+		@close="handleClose"
+		@destory="handleDestory"
 		@visible-change="$emit('visible-change', visible)"
 	>
 		<vc-input
@@ -48,7 +49,8 @@
 					:key="index"
 					:index="index"
 					:data-source="rebuildData[index]"
-					@change="handleChange"
+					@change="handleCellChange"
+					@click="handleCellClick"
 				/>
 			</div>
 		</template>
@@ -56,7 +58,7 @@
 </template>
 
 <script>
-import { pick, cloneDeep } from 'lodash';
+import { pick, cloneDeep, isEqualWith } from 'lodash';
 import { getSelectedData } from '../utils/index';
 import { VcError } from '../vc/index';
 import emitter from '../extends/mixins/emitter'; // 表单验证
@@ -236,10 +238,11 @@ export default {
 		/**
 		 * 改变后的回调
 		 * @param  {String} value    改变后的值
-		 * @param  {Number} index    索引
+		 * @param  {Number} rowIndex 索引
 		 * @param  {Number} colIndex 列
+		 * @param  {Number} isHover 是否是xx
 		 */
-		async handleChange(value, index, colIndex) {
+		async handleCellChange({ value, rowIndex, colIndex }) {
 			this.isLast = false;
 
 			try {
@@ -260,7 +263,7 @@ export default {
 				 */
 				if (this.loadData && children && children.length === 0) {
 
-					this.rebuildData[colIndex][index].loading = true;
+					this.rebuildData[colIndex][rowIndex].loading = true;
 
 					let res = await this.loadData();
 					/**
@@ -270,16 +273,35 @@ export default {
 				}
 
 				children && this.rebuildData.splice(colIndex + 1, len, this.makeData(children));
-
-				this.sync();
 			} catch (e) {
 				throw new VcError('vc-cascader', e);
 			} finally {
-				this.rebuildData[colIndex][index].loading = false;
+				this.rebuildData[colIndex][rowIndex].loading && (
+					this.rebuildData[colIndex][rowIndex].loading = false
+				);
 			}
 			
 		},
 
+		handleCellClick() {
+			this.sync();
+		},
+
+		handleClose() {
+			if (!isEqualWith(this.currentValue, this.value)) {
+				// 暂时不用this.rebuildData, ready时会再次触发
+				this.currentValue = this.value;
+			}
+			
+			this.$emit('close');
+
+			
+		},
+
+		// 可能存在强制关闭的情况
+		handleDestory() {
+			this.visible && (this.visible = false);
+		},
 		/**
 		 * v-model 同步, 外部的数据改变时不会触发
 		 */

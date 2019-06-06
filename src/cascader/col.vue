@@ -6,7 +6,8 @@
 				:key="index"
 				:class="{ 'is-select': value == item.value }"
 				class="vc-cascader-col__item"
-				@click="handleClick(item.value, index)"
+				@click="handleClick"
+				@mouseenter="handleEnter(item.value, index)"
 			>
 				<span>
 					{{ item.label }}
@@ -58,9 +59,13 @@ export default {
 	mounted() {
 	},
 	methods: {
-		handleClick(value, index) {
+		handleClick() {
+			this.$emit('click');
+		},
+
+		handleEnter(value, rowIndex) {
 			const { index: colIndex } = this;
-			this.$emit('change', value, index, colIndex);
+			this.$emit('change', { value, rowIndex, colIndex });
 		}
 	}
 };
