@@ -152,7 +152,7 @@ $warning-hover-color: #ebb563;
 		width: 100%;
 	}
 	@include when(default) {
-		color: #999;
+		color: #515151;
 		border-color: #d9d9d9;
 		&:hover {
 			color: #5495f6;
@@ -170,7 +170,7 @@ $warning-hover-color: #ebb563;
 		}
 	}
 	@include when(text) {
-		color: #999;
+		color: #515151;
 		background-color: transparent;
 		border-color: transparent;
 		&:hover {
