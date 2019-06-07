@@ -27,6 +27,7 @@
 					<vc-icon 
 						v-if="!disabled && (typeof item !== 'object' || item.status == 0)" 
 						type="close" 
+						style="color: white"
 						@click="handleDel(item)" 
 					/>
 				</div>
