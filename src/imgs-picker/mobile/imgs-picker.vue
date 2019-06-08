@@ -98,8 +98,8 @@ export default {
 	@include element(box) {
 		width: 78px;
 		height: 78px;
-		margin-right: 13px;
-		margin-bottom: 13px;
+		margin-right: 8px;
+		margin-bottom: 8px;
 		border-radius: 2px;
 		background-color: #fafafa;
 		cursor: pointer;
