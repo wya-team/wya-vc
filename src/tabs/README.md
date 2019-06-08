@@ -13,7 +13,8 @@ type | 页签的基本样式，可选值为 `line` 和 `card` | String | line
 size | 尺寸，可选值为 `default` 和 `small`，仅在 `type="line"` 时有效 | String | default
 closable | 是否可以关闭页签，仅在 `type="card"` 时有效 | Boolean | false
 animated | 是否使用 CSS3 动画 | Boolean | true
-name 当嵌套使用 Tabs，指定 name 区分层级 | String | -
+name | 当嵌套使用 Tabs，指定 name 区分层级 | String | -
+average | navbar 是否均分 | Boolean | true
 
 
 #### 事件

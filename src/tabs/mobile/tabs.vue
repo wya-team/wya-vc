@@ -7,7 +7,7 @@
 					<div 
 						v-for="(item, index) in list"
 						:key="index"
-						:class="[{ 'is-active': item.name == currentName }]"
+						:class="[{ 'is-active': item.name == currentName, 'is-average': average }]"
 						class="vcm-tabs__item"
 						@click="handleChange(index)"
 					>
@@ -52,6 +52,10 @@ export default {
 		autoAfloatWidth: {
 			type: Boolean,
 			default: true,
+		},
+		average: {
+			type: Boolean,
+			default: true
 		}
 	},
 	data() {
@@ -61,10 +65,13 @@ export default {
 	computed: {
 		isDark() {
 			return this.theme === 'dark';
-		}
+		},
 	},
 	watch: {
 		theme() {
+			this.refreshAfloat();
+		},
+		average() {
 			this.refreshAfloat();
 		}
 	},
@@ -157,12 +164,14 @@ export default {
 	}
 	@include element(item) {
 		position: relative;
-		flex: 1;
 		text-align: center;
 		transition: color .3s ease-in-out;
 		font-size: 14px;
 		line-height: 1;
 		padding: 15px 10px;
+		@include when(average) {
+			flex: 1;
+		}
 	}
 	
 	@include element(afloat) {

@@ -8,6 +8,7 @@
 			v-model="value"
 			:animated="animated" 
 			:theme="theme"
+			:average="false"
 			closable 
 			@click="handleClick"
 			@tab-remove="handleRemove"
@@ -90,7 +91,7 @@ export default {
 	},
 	data() {
 		return {
-			value: 6,
+			value: 0,
 			animated: false,
 			theme: 'light',
 			list: Array.from({ length: 200 }, (_, i) => i)
