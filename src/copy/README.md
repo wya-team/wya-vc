@@ -18,6 +18,10 @@ tag | 外层标签`span / div / **` | `str obj func` | div
 @before | 复制前的操作 | `(value: String)` |  Promise
 @after | 复制后的操作 | `(value: String)` | -
 
+#### API方法调用
+
+- Copy.set(v)
+
 ## 基础用法
 
 ```vue
