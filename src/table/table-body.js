@@ -222,29 +222,21 @@ export default {
 			const rangeWidth = range.getBoundingClientRect().width;
 			const padding = (parseInt(cellChild.style.paddingLeft, 10) || 0) + (parseInt(cellChild.style.paddingRight, 10) || 0);
 			if ((rangeWidth + padding > cellChild.offsetWidth || cellChild.scrollWidth > cellChild.offsetWidth)) {
-				this.timer && clearTimeout(this.timer);
 				this.popperInstance = null;
 				this.popperInstance = Popover.open({
 					el: document.body,
-					cName: 'vc-table-popover',
+					cName: 'vc-table-popover', // 确保不重复创建
 					triggerEl: cell,
 					hover: true,
 					theme: 'dark',
 					placement: "top",
 					content: cell.innerText || cell.textContent,
-					onChange: (e, isActive) => {
-						this.timer && clearTimeout(this.timer);
-						this.popperInstance.isActive = isActive;
-					}
+					alone: true
 				});
 			}
 		},
 
 		handleCellMouseLeave(event) {
-			this.timer = setTimeout(() => {
-				this.popperInstance && (this.popperInstance.isActive = false, this.popperInstance = null);
-			}, 300);
-
 			const cell = getCell(event);
 			if (!cell) return;
 

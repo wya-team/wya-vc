@@ -10,8 +10,8 @@
 			:style="[wrapperStyle, wrapperW, portalStyle]"
 			:class="[wrapperClasses, portalClassName]"
 			class="vc-popover-core" 
-			@mouseenter="hover && onChange($event, true)"
-			@mouseleave="hover && onChange($event, false)"
+			@mouseenter="hover && handleChange($event, { visible: true })"
+			@mouseleave="hover && handleChange($event, { visible: false })"
 		>
 			<div :class="themeClasses" class="vc-popover-core__container">
 				<div 
@@ -73,12 +73,20 @@ const popup = {
 			type: Boolean,
 			default: false
 		},
-		triggerEl: HTMLElement,
+		triggerEl: {
+			type: HTMLElement,
+			required: true
+		},
 		onChange: {
 			type: Function,
-			default: () => () => {}
+			default: () => {}
 		},
 		onReady: Function,
+		// 直接发放调用时，hover需要绑定事件
+		alone: {
+			type: Boolean,
+			default: false
+		},
 		hover: Boolean,
 		portalClassName: Object | String,
 		portalStyle: Object,
@@ -114,6 +122,9 @@ const popup = {
 			};
 		}
 	},
+	created() {
+		this.alone && this.hover && this.bindEvents();
+	},
 	mounted() {
 		this.isActive = true;
 		this.$nextTick(() => {
@@ -127,6 +138,8 @@ const popup = {
 	},
 	destroyed() {
 		!this.hover && document.removeEventListener('click', this.handleClick, true);
+
+		this.alone && this.hover && this.removeEvents();
 	}, 
 	methods: {
 		/**
@@ -195,7 +208,12 @@ const popup = {
 			};
 		},
 		handleClick(e) {
-			this.onChange(e);
+			this.alone && (this.isActive = false);
+			this.onChange(e, { context: this });
+		},
+		handleChange(e, { visible }) {
+			this.alone && this.handleTriggerChange(e);
+			!this.alone && this.onChange(e, { visible, context: this });
 		},
 		/**
 		 * 动画执行后关闭
@@ -205,6 +223,26 @@ const popup = {
 			!this._isDestroyed && (
 				this.$emit('close')
 			);
+		},
+		/**
+		 * for alone, 方法直接调用
+		 */
+		bindEvents() {
+			this.triggerEl.addEventListener('mouseenter', this.handleTriggerChange);
+			this.triggerEl.addEventListener('mouseleave', this.handleTriggerChange);
+		},
+		removeEvents() {
+			this.triggerEl.removeEventListener('mouseenter', this.handleTriggerChange);
+			this.triggerEl.removeEventListener('mouseleave', this.handleTriggerChange);
+		},
+		handleTriggerChange(e) {
+			let visible = e.type === 'mouseenter';
+
+			this.timer && clearTimeout(this.timer);
+			this.timer = setTimeout(() => {
+				this.isActive = visible;
+				this.onChange(e, { visible, context: this });
+			}, 200);
 		}
 	},
 };

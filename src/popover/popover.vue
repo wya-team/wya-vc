@@ -3,11 +3,11 @@
 	<component 
 		:is="tag" 
 		style="position: relative;"
-		@focus="isFocus && handleChange($event, true)"
-		@blur="isFocus && handleChange($event, false)"
-		@mouseenter="isHover && handleChange($event, true)"
-		@mouseleave="isHover && handleChange($event, false)"
-		@click="isClick && handleChange($event, !isActive)"
+		@focus="isFocus && handleChange($event, { visible: true })"
+		@blur="isFocus && handleChange($event, { visible: false })"
+		@mouseenter="isHover && handleChange($event, { visible: true })"
+		@mouseleave="isHover && handleChange($event, { visible: false })"
+		@click="isClick && handleChange($event, { visible: !isActive })"
 	>
 		<slot />
 	</component>
@@ -129,9 +129,9 @@ export default {
 		 * portal: false
 		 * 是直接挂在父节点上的，
 		 * 点击pop内容区域时click事件冒泡，导致执行了该toggle方法
-		 * v: true, false, undefined(处理 doc click)
+		 * visible: true, false, undefined(处理 doc click)
 		 */
-		handleChange(e = {}, v) {
+		handleChange(e = {}, { visible, context }) {
 			if (this.disabled) return;
 
 			this.isHover && this.timer && clearTimeout(this.timer);
@@ -142,21 +142,21 @@ export default {
 			if (!this.portal && isPopArea) return;
 
 			// document click
-			if (v === undefined) {
+			if (visible === undefined) {
 				if (!isPopArea && !this.$el.contains(e.target)) {
-					v = false;
+					visible = false;
 				} else {
 					return;
 				}
 			}
 
-			if (v != this.isActive) {
+			if (visible != this.isActive) {
 				let callback = () => {
-					this.isActive = v;
+					this.isActive = visible;
 
 					this.sync();
 				};
-				this.isHover && v === false 
+				this.isHover && visible === false 
 					? (this.timer = setTimeout(callback, 200))
 					: callback();
 			} 

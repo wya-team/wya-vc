@@ -1,6 +1,6 @@
 <template>
 	<div class="vc-popover-basic">
-		<div @click="isHover=!isHover">{{ trigger }}</div>
+		<div @click="isHover = !isHover">{{ trigger }}</div>
 		<div @click="handleDynamic">无需插槽，动态创建</div>
 		<div ref="parent" class="vc-popover-basic__container">
 			<div class="vc-popover-basic__left" style="margin-top: 32px; margin-bottom: 32px">
@@ -240,11 +240,13 @@ export default {
 			console.log('close');
 		},
 		handleDynamic(e) {
-			this.popperInstance = Popover.open({
+			if (this.poper && this.poper.isActive) return;
+			this.poper = Popover.open({
 				el: document.body,
-				cName: this.popoverId,
+				cName: 'only',
 				triggerEl: e.target,
-				onChange: () => {},
+				hover: this.isHover,
+				alone: true,
 				content: '动态创建'
 			});
 		}
