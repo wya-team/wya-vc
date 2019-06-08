@@ -21,7 +21,8 @@
 					class="vc-popover-core__arrow"
 				/>
 				<slot v-if="$slots.content || $scopedSlots.content" name="content" />
-				<div v-else>{{ content }}</div>
+				<vc-customer v-else-if="typeof content === 'function'" :render="content"/>
+				<div v-else v-html="content" />
 			</div>
 		</div>
 	</vc-transition-scale>
@@ -31,13 +32,15 @@
 import posMixin from './pos-mixin';
 import CreateProtal from '../create-portal/index';
 import Transition from '../transition/index';
+import Customer from '../customer/index';
 import { VcError } from '../vc/index';
 
 const popup = {
 	name: 'vc-popover-core',
 	mixins: [posMixin],
 	components: {
-		'vc-transition-scale': Transition.Scale
+		'vc-transition-scale': Transition.Scale,
+		'vc-customer': Customer
 	},
 	props: {
 		visible: Boolean,
@@ -59,7 +62,7 @@ const popup = {
 			default: 'light',
 			validator: v => /(light|dark|none)/.test(v)
 		},
-		content: String,
+		content: String | Function,
 		getPopupContainer: Function,
 		portal: {
 			type: Boolean,

@@ -247,7 +247,12 @@ export default {
 				triggerEl: e.target,
 				hover: this.isHover,
 				alone: true,
-				content: '动态创建'
+				// string, function 
+				content: () => {
+					return (
+						<div>222</div>
+					);
+				}
 			});
 		}
 	}
