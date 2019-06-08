@@ -34,7 +34,20 @@ theme | 颜色主体`light` `dark` | `string` | `light`
 default | 触发器
 content | 弹层内容
 
+### API方法调用
 
+```
+Popover.open({
+	el: document.body,
+	cName: 'vc-table-popover',
+	triggerEl: el,
+	hover: true,
+	alone: true, // 需要开启
+	theme: 'dark',
+	placement: "top",
+	content: '222',
+});
+```
 
 ## 基础用法
 
