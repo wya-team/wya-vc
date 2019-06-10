@@ -111,10 +111,14 @@ export default {
 			return this.basicStyle.height === 'auto';
 		},
 		style() {
-			return {
-				transition: `transform ${!this.pulling && (this.status === 0 || this.status === 3) ? '300' : '0'}ms ease-out`,
-				transform: `translate3d(0, ${this.y}px, 0)`
-			};
+			// 影响内部fixed的为组织
+			// TODO： 写对应的demo, 避免重构时出问题
+			return this.y !== 0 
+				? {
+					transition: `transform ${!this.pulling && (this.status === 0 || this.status === 3) ? '300' : '0'}ms ease-out`,
+					transform: `translate3d(0, ${this.y}px, 0)`
+				}
+				: {};
 		}
 	},
 	mounted() {
