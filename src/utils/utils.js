@@ -45,20 +45,21 @@ export const isFileAPISupported = typeof File !== 'undefined';
 /**
  * 获取源数据
  * [value, label, children]
+ * value: Number or String -> '11' == 11
  */
 export const getSelectedData = (value = [], source = [], opts = {}) => {
 	let label = [];
 	let data = [];
 	if (source.some(i => !!i.children)) { // 联动
 		value.reduce((pre, cur) => {
-			let target = pre.find(it => it.value === cur) || {};
+			let target = pre.find(it => it.value == cur) || {};
 			data.push(target);
 			label.push(target.label);
 			return target.children || [];
 		}, source);
 	} else if (source.length !== 0) {
 		value.forEach((item, index) => {
-			let target = source[index].find(it => it.value === item);
+			let target = source[index].find(it => it.value == item);
 			data.push(target);
 			label.push(target.label);
 		});
