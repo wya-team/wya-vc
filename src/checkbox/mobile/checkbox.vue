@@ -1,8 +1,8 @@
 <template>
-	<label :class="classes" class="vc-checkbox">
-		<span class="vc-checkbox__wrapper">
-			<span class="vc-checkbox__border">
-				<span class="vc-checkbox__inner"/>
+	<label :class="classes" class="vcm-checkbox">
+		<span class="vcm-checkbox__wrapper">
+			<span class="vcm-checkbox__border">
+				<span class="vcm-checkbox__inner"/>
 			</span>
 			<input
 				:checked="checked"
@@ -20,21 +20,21 @@
 	</label>
 </template>
 <script>
-import CheckboxMixin from './checkbox-mixin';
+import CheckboxMixin from '../checkbox-mixin';
 
 export default {
-	name: 'vc-checkbox',
+	name: 'vcm-checkbox',
 	mixins: [CheckboxMixin],
 };
 </script>
 <style lang="scss">
-@import '../style/index.scss';
+@import '../../style/index.scss';
 
-@include block(vc-checkbox) {
+@include block(vcm-checkbox) {
 	cursor: pointer;
-	font-size: 12px;
+	font-size: 16px;
 	display: inline-block;
-	margin-right: 8px;
+	margin-right: 12px;
 	@include element(wrapper) {
 		display: inline-block;
 		vertical-align: middle;
@@ -60,8 +60,8 @@ export default {
 	}
 	@include element(border) {
 		display: inline-block;
-		width: 14px;
-		height: 14px;
+		width: 16px;
+		height: 16px;
 		position: relative;
 		top: 0;
 		left: 0;
@@ -75,11 +75,11 @@ export default {
 	@include element(inner) {
 		content: '';
 		display: table;
-		width: 4px;
-		height: 8px;
+		width: 6px;
+		height: 10px;
 		position: absolute;
 		top: 2px;
-		left: 5px;
+		left: 5px; // 有效
 		border: 2px solid #fff;
 		border-top: 0;
 		border-left: 0;
@@ -89,9 +89,9 @@ export default {
 	}
 	@include when(checked) {
 		@include element(border){
-			background-color: #5495f6;
+			background-color: #26be76;
 			&:after, &:before {
-				border-color: #5495f6;
+				border-color: #26be76;
 			}
 		}
 		@include element(inner) {
@@ -119,22 +119,22 @@ export default {
 	}
 	@include when(focus) {
 		@include element(border){
-			box-shadow: 0 0 0 2px rgba(45,140,240,.2);
+			box-shadow: 0 0 0 2px rgba(38, 190, 118, .2);
 			z-index: 1
 		}
 	}
 	@include when(indeterminate) {
 		@include element(border){
-			background-color: #2d8cf0;
+			background-color: #26be76;
 			&:after, &:before {
-				border-color: #2d8cf0;
+				border-color: #26be76;
 			}
 		}
 		@include element(inner) {
-			width: 8px;
-			height: 1px;
+			width: 10px;
+			height: 2px;
 			left: 3px;
-			top: 6px;
+			top: 7px;
 			transform: scale(1);
 		}
 	}
