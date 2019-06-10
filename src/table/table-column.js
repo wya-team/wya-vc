@@ -219,7 +219,7 @@ export default {
 			if (column.type === 'expand') {
 				// 对于展开行，renderCell 不允许配置的。在上一步中已经设置过，这里需要简单封装一下。
 				column.renderCell = (h, data) => (
-					<div class="cell">
+					<div class="vc-table__cell">
 						{ originRenderCell(h, data) }
 					</div>
 				);
@@ -240,7 +240,7 @@ export default {
 					}
 					const prefix = treeCellPrefix(h, data);
 					const props = {
-						class: 'cell',
+						class: 'vc-table__cell',
 						style: {}
 					};
 					if (column.showPopover) {

@@ -379,7 +379,7 @@ export default {
 											key={column.id}>
 											<div 
 												class={[
-													'cell', 
+													'vc-table__cell', 
 													column.filteredValue && column.filteredValue.length > 0 ? 'highlight' : '', column.labelClassName
 												]}
 											>

@@ -129,7 +129,7 @@ export const treeCellPrefix = (h, { row, treeNode, store }) => {
 		
 		ele.push(
 			<span class={expandClasses} onClick={handleClick}>
-				{ treeNode.loading ? <Spin size={12} /> : <Icon type={'right'} /> }
+				{ treeNode.loading ? <Spin size={12} /> : <Icon type={'triangle-up'} /> }
 			</span>
 		);
 	} else {

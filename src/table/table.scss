@@ -26,7 +26,7 @@
 	color: #909399;
 }
 
-.vc-table__expand-column .cell {
+.vc-table__expand-column .vc-table__cell {
 	padding: 0;
 	text-align: center;
 }
@@ -35,21 +35,22 @@
 	display: inline-block;
 	color: #666;
 	font-size: 12px;
-	height: 20px;
+	line-height: 23px;
+	height: 23px;
 	width: 20px;
-	transition: transform 0.2s ease-in-out;
 }
 .vc-table__expand-icon .vc-icon {
-	margin-top: -3px;
+	transform: rotate(90deg);
+	transition: transform 0.2s ease-in-out;
 }
 
-.vc-table__expand-icon.is-expand {
-	transform: rotate(90deg);
+.vc-table__expand-icon.is-expand .vc-icon {
+	transform: rotate(180deg);
 }
 .vc-table__expand-icon.is-expand .vc-icon, 
 .vc-table__expand-icon.is-expand .vc-spin {
-	margin-top: 0;
-	margin-left: 3px;
+	// margin-top: 0;
+	// margin-left: 3px;
 }
 
 .vc-table__expanded-cell {
@@ -212,14 +213,14 @@
 	white-space: nowrap;
 }
 
-.vc-table th > .cell,
+.vc-table th > .vc-table__cell,
 .vc-table th div {
 	display: inline-block;
 	box-sizing: border-box;
 	text-overflow: ellipsis;
 }
 
-.vc-table th > .cell {
+.vc-table th > .vc-table__cell {
 	position: relative;
 	word-wrap: normal;
 	vertical-align: middle;
@@ -227,7 +228,7 @@
 	// white-space: nowrap;
 }
 
-.vc-table th > .cell.highlight {
+.vc-table th > .vc-table__cell.highlight {
 	color: #409eff;
 }
 
@@ -250,7 +251,7 @@
 	width: 0;
 }
 
-.vc-table .cell {
+.vc-table .vc-table__cell {
 	box-sizing: border-box;
 	overflow: hidden;
 	text-overflow: ellipsis;
@@ -261,7 +262,7 @@
 	padding-right: 10px;
 }
 
-.vc-table .cell.vc-popover {
+.vc-table .vc-table__cell.vc-popover {
 	white-space: nowrap;
 	min-width: 50px;
 }
@@ -309,8 +310,8 @@
 	border-right: 1px solid #ebeef5;
 }
 
-.vc-table--border td:first-child .cell,
-.vc-table--border th:first-child .cell {
+.vc-table--border td:first-child .vc-table__cell,
+.vc-table--border th:first-child .vc-table__cell {
 	padding-left: 10px;
 }
 
@@ -553,7 +554,7 @@
 	margin-right: 3px;
 }
 
-.vc-table-column--selection .cell {
+.vc-table-column--selection .vc-table__cell {
 	padding-left: 14px;
 	padding-right: 14px;
 }
