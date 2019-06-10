@@ -306,8 +306,6 @@ export default {
 		sync(force) {
 			(this.changeOnSelect) && this.$emit('change', this.currentValue, this.label);
 
-			this.dispatch && this.dispatch('vc-form-item', 'form-change', this.currentValue);
-
 			// 最后一项，自动关闭
 			let lastData = this.rebuildData[this.currentValue.length];
 
@@ -320,6 +318,8 @@ export default {
 				const { label } = this.getInfo(this.currentValue);
 				this.$emit('change', this.currentValue, label);
 			}
+
+			this.dispatch && this.dispatch('vc-form-item', 'form-change', this.currentValue);
 		}
 	},
 };

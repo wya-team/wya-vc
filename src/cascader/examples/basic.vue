@@ -19,23 +19,44 @@
 		<div style="margin: 40px 0 ">
 			<vc-cascader :data-source="dataAsyncSource2" v-model="value4" :load-data="loadData" clearable/>
 		</div>
+		<!-- form -->
+		<div style="margin: 40px 0 ">
+			<vc-form 
+				ref="form" 
+				:model="formValidate" 
+				:rules="ruleValidate" 
+				:label-width="196"
+				position="left"
+				@submit.native.prevent
+			>
+				<vc-form-item label="设置1：" prop="value">
+					<vc-cascader :data-source="dataSource" v-model="formValidate.value" clearable/>
+				</vc-form-item>
+				<vc-form-item label="设置2：" prop="value1">
+					<vc-cascader :data-source="dataSource" v-model="formValidate.value1" clearable/>
+				</vc-form-item>
+			</vc-form>
+		</div>
 	</div>
 </template>
 <script>
 import Cascader from '../cascader';
 import bigData from './basic/big-data';
 import Button from '../../button';
+import Form from '../../form';
 
 export default {
 	name: "vc-cascader-basic",
 	components: {
 		"vc-cascader": Cascader,
-		'vc-button': Button
+		'vc-button': Button,
+		'vc-form': Form,
+		'vc-form-item': Form.Item,
 	},
 	data() {
 		return {
-			value1: [],
-			value2: ['beijing'],
+			value1: [1, 110000, 110100, 110101],
+			value2: [],
 			value3: ['jiangsu', 'nanjing'],
 			value4: [],
 			bigData,
@@ -96,7 +117,26 @@ export default {
 					label: '北京',
 					children: []
 				}
-			]
+			],
+			formValidate: {
+				value: ['beijing', 'gugong'],
+				value1: [],
+				value2: []
+			},
+			ruleValidate: {
+				value: [
+					{
+						required: true,
+						trigger: 'change',
+					}
+				],
+				value1: [
+					{
+						required: true,
+						trigger: 'change'
+					}
+				]
+			}
 		};
 	},
 	computed: {
