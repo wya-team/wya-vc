@@ -1,8 +1,8 @@
 <template>
-	<label :class="classes" class="vc-radio">
-		<span class="vc-radio__wrapper">
-			<span class="vc-radio__border">
-				<span class="vc-radio__inner"/>
+	<label :class="classes" class="vcm-radio">
+		<span class="vcm-radio__wrapper">
+			<span class="vcm-radio__border">
+				<span class="vcm-radio__inner" />
 			</span>
 			<input
 				:checked="checked"
@@ -20,29 +20,29 @@
 	</label>
 </template>
 <script>
-import RadioMixin from './radio-mixin';
+import RadioMixin from '../radio-mixin';
 
 export default {
-	name: 'vc-radio',
+	name: 'vcm-radio',
 	mixins: [RadioMixin]
 };
 
 </script>
 <style lang="scss">
-@import '../style/index.scss';
+@import '../../style/index.scss';
 
-@include block(vc-radio) {
-	font-size: 12px;
+@include block(vcm-radio) {
+	font-size: 16px;
 	vertical-align: middle;
 	display: inline-block;
 	position: relative;
 	white-space: nowrap;
-	margin-right: 8px;
+	margin-right: 12px;
 	line-height: 1;
 	cursor: pointer;
 	@include element(wrapper) {
 		display: inline-block;
-		margin-right: 4px;
+		margin-right: 12px;
 		white-space: nowrap;
 		position: relative;
 		line-height: 1;
@@ -54,6 +54,8 @@ export default {
 			bottom: 0;
 			left: 0;
 			right: 0;
+			width: 16px;
+			height: 16px;
 			z-index: 1;
 			opacity: 0;
 			cursor: pointer;
@@ -61,42 +63,41 @@ export default {
 	}
 	@include element(border) {
 		display: inline-block;
-		width: 14px;
-		height: 14px;
+		width: 16px;
+		height: 16px;
 		position: relative;
 		top: 0;
 		left: 0;
 		background-color: #fff;
 		border-radius: 50%;
 		transition: all .2s ease-in-out;
-		@include commonBorder1PX('', #d4d7db);
+		@include commonBorder1PX('', #999);
 	}
 	@include element(inner) {
-		position: absolute;
-		width: 8px;
-		height: 8px;
-		left: 3px;
-		top: 3px;
-		border-radius: 6px;
+		content: '';
 		display: table;
+		width: 6px;
+		height: 10px;
+		position: absolute;
+		top: 2px;
+		left: 5px; // 有效
+		border: 2px solid #fff;
 		border-top: 0;
 		border-left: 0;
-		content: ' ';
-		background-color: #5495f6;
-		opacity: 0;
+		transform: rotate(45deg) scale(0);
 		transition: all .2s ease-in-out;
-		transform: scale(0);
+		border-collapse: initial;
 	}
+
 	@include when(checked) {
 		@include element(border) {
+			background-color: #26be76;
 			&:before, &:after{
-				border-color: #5495f6;
+				border-color: #26be76;
 			}
 		}
 		@include element(inner) {
-			opacity: 1;
-			transform: scale(1);
-			transition: all .2s ease-in-out;
+			transform: rotate(45deg) scale(1);
 		}
 	}
 	@include when(disabled) {
@@ -115,7 +116,7 @@ export default {
 			background-color: #ccc;
 		}
 		@include when(checked) {
-			@include element(inner) {
+			@include element(border) {
 				animation-name: none;
 				&:before, &:after{
 					border-color: #ccc;
@@ -125,7 +126,7 @@ export default {
 	}
 	@include when(focus) {
 		@include element(border){
-			box-shadow: 0 0 0 2px rgba(45,140,240,.2);
+			box-shadow: 0 0 0 2px rgba(38, 190, 118, .2);
 			z-index: 1
 		}
 	}
