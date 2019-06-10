@@ -102,7 +102,7 @@ export default {
 		z-index: 4001;
 		max-width: 50%;
 		height: auto;
-		background: rgba(58, 58, 58, 0.9);
+		background: rgba(58, 58, 58, .75);
 		padding: 9px 15px;
 		border-radius: 3px;
 		line-height: 1.5;
