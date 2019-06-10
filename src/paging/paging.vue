@@ -25,9 +25,15 @@
 			v-bind="tableOpts"
 			v-on="tableHooks"
 		>
-			<slot/>
-			<slot slot="append" name="append" />
-			<slot slot="empty" name="empty"/>
+			<template #default>
+				<slot />
+			</template>
+			<template #append>
+				<slot name="append" />
+			</template>
+			<template #empty>
+				<slot name="empty" />
+			</template>
 		</vc-table>
 		
 		<div v-if="footer" class="vc-paging__footer">

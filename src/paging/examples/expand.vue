@@ -14,6 +14,10 @@
 	>
 		<vc-table-item>
 			<vc-table-column
+				type="selection"
+				width="55"
+			/>
+			<vc-table-column
 				prop="date"
 				label="日期"
 				width="180"
@@ -27,6 +31,16 @@
 				prop="address"
 				label="地址"
 			/>
+			<vc-table-column
+				label="操作"
+			>
+				<template #default="{ it }" >
+					<div>
+						<div @click="handleResetFirst">回到首页刷新</div>
+						<div @click="handleResetCur">当前页刷新</div>
+					</div>
+				</template>
+			</vc-table-column>
 		</vc-table-item>
 	</vc-paging>
 </template>
