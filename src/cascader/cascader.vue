@@ -311,7 +311,7 @@ export default {
 
 			let isLast = !lastData || lastData.length === 0;
 
-			isLast && (this.visible = false);
+			(isLast || this.changeOnSelect) && (this.visible = false);
 
 			// 该模式下，label会变为上一个值，这里重新获取一次
 			if ((force || isLast) && !this.changeOnSelect) {
@@ -337,6 +337,10 @@ $block: vc-cascader;
 	cursor: text;
 	line-height: 1;
 	@include element(input) {
+		cursor: pointer;
+		input {
+			cursor: pointer;
+		}
 		.vc-input__append {
 			z-index: 0;
 		}

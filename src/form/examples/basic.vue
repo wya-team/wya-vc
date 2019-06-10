@@ -24,6 +24,16 @@
 			<vc-checkbox label="香蕉"/>
 		</vc-form-item>
 		<vc-form-item prop="animal" label="动物：">
+			<vc-checkbox label="香蕉"/>
+			<vc-form-item>
+				<vc-radio-group v-model="formValidate.animal" vertical>
+					<vc-radio label="金斑蝶"/>
+					<vc-radio label="爪哇犀牛"/>
+					<vc-radio label="印度黑羚"/>
+				</vc-radio-group>
+			</vc-form-item>
+		</vc-form-item>
+		<vc-form-item prop="animal" label="动物：">
 			<vc-radio-group v-model="formValidate.animal" vertical>
 				<vc-radio label="金斑蝶"/>
 				<vc-radio label="爪哇犀牛"/>

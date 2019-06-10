@@ -111,7 +111,7 @@ $block: vc-form-item;
 	 */
 	@include block(vc-form-item) {
 		margin-bottom: 0;
-		@include element(content, false) {
+		@include element(wrapper, false) {
 			margin-left: 0 !important;
 		}
 	}

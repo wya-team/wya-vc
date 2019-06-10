@@ -32,6 +32,7 @@
 					</div>	
 				</div>
 			</slot>
+			<div class="vc-input-number__hack"/>
 		</template>
 	</vc-input>
 </template>
@@ -57,9 +58,18 @@ export default {
 $block: vc-input-number;
 
 @include block($block) {
+	@include element(hack) {
+		padding-right: 1px;
+	}
 	@include pseudo(hover) {
 		.vc-input__append{
 			z-index: 1;
+		}
+		@include element(icon){
+			display: block;
+		}
+		@include element(hack) {
+			padding-right: 0;
 		}
 	}
 	@include element(icon) {
@@ -102,12 +112,6 @@ $block: vc-input-number;
 	}
 	@include element(down) {
 		@include extend-rule(icon);
-	}
-
-	@include pseudo(hover) {
-		@include element(icon){
-			display: block;
-		}
 	}
 
 	.vc-input__append.is-disabled {

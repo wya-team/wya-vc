@@ -210,7 +210,7 @@ $block: vc-input;
 	}
 
 	/**
-	 * hack
+	 * hack, 1px处理黑边
 	 */
 	@include element(hack) {
 		padding-right: 1px;

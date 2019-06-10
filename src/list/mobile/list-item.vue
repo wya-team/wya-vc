@@ -169,7 +169,7 @@ export default {
 		font-size: 13px;
 		margin-left: 5px;
 	}
-	&:last-child:after {
+	&:last-child .vcm-list-item__wrapper:after {
 		display: none
 	}
 }
