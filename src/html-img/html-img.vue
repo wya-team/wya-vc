@@ -10,7 +10,7 @@ import { isDataURL } from '../utils/utils';
 import VcError from '../vc/error';
 
 export default {
-	name: "vc-tpl",
+	name: "vc-html-img",
 	props: {
 		// useCORS
 		crossOrigin: {
