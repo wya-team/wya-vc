@@ -1,3 +1,5 @@
+@import '../style/index.scss';
+
 .vc-table {
 	position: relative;
 	overflow: hidden;
@@ -490,7 +492,7 @@
 	border-top-color: #409eff;
 }
 
-.vc-table .hidden-columns {
+.vc-table .vc-table__hidden {
 	visibility: hidden;
 	position: absolute;
 	z-index: -1;

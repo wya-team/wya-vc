@@ -5,7 +5,7 @@
 		@mouseleave="handleMouseLeave" 
 	>
 		<!-- 依赖收集 -->
-		<div ref="hiddenColumns" class="hidden-columns"><slot /></div>
+		<div ref="hiddenColumns" class="vc-table__hidden"><slot /></div>
 		<div
 			v-mousewheel="handleHeaderFooterMousewheel"
 			v-if="showHeader"

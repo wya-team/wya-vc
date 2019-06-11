@@ -210,7 +210,8 @@ export default {
 			}
 
 			// 判断是否text-overflow, 如果是就显示tooltip
-			const cellChild = event.target.querySelector('.cell');
+			const cellChild = event.target.querySelector('.vc-table__cell');
+
 			if (!(Dom.hasClass(cellChild, 'vc-popover') && cellChild.childNodes.length)) {
 				return;
 			}
@@ -335,8 +336,8 @@ export default {
 								class={ this.getCellClass($index, cellIndex, row, column) }
 								rowspan={ rowspan }
 								colspan={ colspan }
-								on-mouseenter={ ($event) => this.handleCellMouseEnter($event, row) }
-								on-mouseleave={ this.handleCellMouseLeave }>
+								onMouseenter={ ($event) => this.handleCellMouseEnter($event, row) }
+								onMouseleave={ this.handleCellMouseLeave }>
 								{
 									column.renderCell.call(
 										this._renderProxy,
@@ -364,13 +365,16 @@ export default {
 					return tr;
 				}
 				// 使用二维数组，避免修改 $index
-				return [[
-					tr,
-					<tr key={'expanded-row__' + tr.key}>
-						<td colspan={ this.columnsCount } class="vc-table__expanded-cell">
-							{ renderExpanded(this.$createElement, { row, $index, store: this.store }) }
-						</td>
-					</tr>]];
+				return [
+					[
+						tr,
+						<tr key={'expanded-row__' + tr.key}>
+							<td colspan={ this.columnsCount } class="vc-table__expanded-cell">
+								{ renderExpanded(this.$createElement, { row, $index, store: this.store }) }
+							</td>
+						</tr>
+					]
+				];
 			} else if (Object.keys(treeData).length) {
 				assertRowKey();
 				// TreeTable 时，rowKey 必须由用户设定，不使用 getKeyOfRow 计算
