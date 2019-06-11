@@ -1,5 +1,5 @@
 <template>
-	<div>
+	<vc-modal :visible="true" size="large" title="2">
 		<vc-input 
 			v-model="keyword" 
 			search 
@@ -28,11 +28,10 @@
 					:reset="listInfo[item.value].reset"
 					:current.sync="current[item.value]"
 					:page-opts="page"
-					:history="true"
+					:history="false"
 					:load-data="loadData"
 					style="width: 100%"
 					@page-size-change="handleResetFirst"
-					@row-click="handleClick"
 				>
 					<vc-table-column
 						prop="id"
@@ -51,18 +50,19 @@
 				</vc-paging>
 			</vc-tab-pane>
 		</vc-tabs>
-	</div>
+	</vc-modal>
 </template>
 <script>
 import { ajax } from '@wya/http';
 import { URL } from '@wya/utils';
-import Tabs from '../../tabs';
-import Input from '../../input';
-import Message from '../../message';
-import Paging from '../paging';
-import Table from '../../table';
-import { initPage } from './utils/utils';
-import { TabsModal } from './modal/tabs';
+import Tabs from '../../../tabs';
+import Input from '../../../input';
+import Message from '../../../message';
+import Modal from '../../../modal';
+import CreatePortal from '../../../create-portal';
+import Paging from '../../paging';
+import Table from '../../../table';
+import { initPage } from '../utils/utils';
 
 const initialState = {
 	1: { ...initPage },
@@ -70,14 +70,15 @@ const initialState = {
 	3: { ...initPage }
 };
 
-export default {
+const config = {
 	name: "vc-paging-basic",
 	components: {
 		'vc-paging': Paging,
 		'vc-tabs': Tabs,
 		'vc-tab-pane': Tabs.Pane,
 		'vc-input': Input,
-		'vc-table-column': Table.Column
+		'vc-table-column': Table.Column,
+		'vc-modal': Modal
 	},
 	data() {
 		const { query = {} } = URL.parse();
@@ -196,10 +197,10 @@ export default {
 			this.setHistory({
 				keyword
 			});
-		},
-		handleClick() {
-			TabsModal.popup({});
 		}
 	}
 };
+export default config;
+
+export const TabsModal = CreatePortal({ promise: false }, config);
 </script>

@@ -225,7 +225,12 @@ export default {
 	},
 	created() {
 		let { query: { page = 1 } } = URL.parse();
-		this.show && this._loadData(!this.hasTabsClick ? page : 1);
+		/**
+		 * 首次加载的时候特殊处理
+		 * this.show的情况下才去加载
+		 * 页数history -> true 且未点击过tabs时为当前的page
+		 */
+		this.show && this._loadData(this.history && !this.hasTabsClick ? page : 1);
 	},
 	mounted() {
 		if (this.mode === 'table') {
