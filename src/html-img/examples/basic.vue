@@ -9,6 +9,13 @@
 			<div>tpl</div>
 			<div>tpl</div>
 			<img src="https://avatars3.githubusercontent.com/u/34465004?s=200&v=4" class="image">
+			
+			<!-- 需要crossorigin加在第一个， 才能处理跨域 -->
+			<img 
+				:crossorigin="`anonymous`" 
+				src="https://wyatest.oss-cn-hangzhou.aliyuncs.com/image/1/20190518/102315/227984.jpg" 
+				class="image"
+			>
 		</vc-html-img>
 		<vc-button @click="handleClick">生成</vc-button>
 	</div>

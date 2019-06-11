@@ -34,6 +34,7 @@ export const retrieveImageURL = (dataTransferItems, callback) => {
 	}
 };
 
+
 export const isTouchDevice = !!(
 	typeof window !== 'undefined'
 	&& typeof navigator !== 'undefined'
@@ -41,6 +42,18 @@ export const isTouchDevice = !!(
 );
 
 export const isFileAPISupported = typeof File !== 'undefined';
+
+/**
+ * 判断是否是url链接
+ * 基于base64正则
+ */
+export const isDataURL = (str) => {
+	if (str === null) {
+		return false;
+	}
+	const regex = /^\s*data:([a-z]+\/[a-z]+(;[a-z-]+=[a-z-]+)?)?(;base64)?,[a-z0-9!$&',()*+;=\-._~:@/?%\s]*\s*$/i;
+	return !!str.match(regex);
+};
 
 /**
  * 获取源数据

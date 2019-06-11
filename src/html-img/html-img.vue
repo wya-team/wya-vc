@@ -5,11 +5,20 @@
 </template>
 <script>
 import { Utils } from '@wya/utils';
+import { isDataURL } from '../utils/utils';
+
 import VcError from '../vc/error';
 
 export default {
 	name: "vc-tpl",
 	props: {
+		// useCORS
+		crossOrigin: {
+			type: String,
+			// ''. 'anonymous', 'use-credentials'
+			default: 'anonymous',
+			validator: v => /^(|anonymous|use-credentials)$/.test(v),
+		},
 	},
 	data() {
 		return {
@@ -25,6 +34,9 @@ export default {
 				let html2canvas = await import('html2canvas');
 				// 兼容webpack 3.0/4.0 写法
 				html2canvas = html2canvas.default ? html2canvas.default : html2canvas;
+
+				// 处理跨域兼容
+				this.crossOrigin && await this.loadImageURL();
 
 				const canvas = await html2canvas(this.$refs.target, { allowTaint: false, useCORS: true });
 
@@ -59,8 +71,33 @@ export default {
 			} catch (e) {
 				throw new VcError('html-img', e);
 			}
-		}
+		},
+
+		/**
+		 * 网络的图片如果没有加上crossOrigin，且没有放在第一个就会出现问题（Safari）
+		 */
+		loadImageURL() {
+			return Promise.all([...this.$refs.target.querySelectorAll('img')].map((node) => {
+				return new Promise((resolve, reject) => {
+					if (isDataURL(node.src)) { // data: base64
+						resolve();
+					} else {
+						let img = new Image();
+						img.crossOrigin = this.crossOrigin;
+						img.src = `${node.src}?=${new Date().getTime()}`; // 强制不缓存
+						img.onload = () => {
+							node.src = img.src;
+							resolve();
+						};
+						img.onerror = () => {
+							// 打印不了该图片
+							resolve();
+						};
+					}
+				});
+			}));
+		},
+
 	}
 };
 </script>
-<style></style>

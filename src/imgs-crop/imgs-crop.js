@@ -1,5 +1,5 @@
 import { Utils } from '@wya/utils';
-import { retrieveImageURL, isTouchDevice, isFileAPISupported } from '../utils/utils';
+import { retrieveImageURL, isTouchDevice, isFileAPISupported, isDataURL } from '../utils/utils';
 
 export const draggableEvents = {
 	start: ['touchstart', 'mousedown'],
@@ -655,17 +655,6 @@ export default {
 			}
 		},
 		/**
-		 * 判断是否是url链接
-		 * 基于base64正则
-		 */
-		isDataURL(str) {
-			if (str === null) {
-				return false;
-			}
-			const regex = /^\s*data:([a-z]+\/[a-z]+(;[a-z-]+=[a-z-]+)?)?(;base64)?,[a-z0-9!$&',()*+;=\-._~:@/?%\s]*\s*$/i;
-			return !!str.match(regex);
-		},
-		/**
 		 * 选择加载图片的方式
 		 */
 		loadImage(image) {
@@ -687,7 +676,7 @@ export default {
 			 * 例如 <img> 和 <video> 均有一个跨域属性 (crossOrigin property)，
 			 * 它允许你配置元素获取数据的 CORS 请求。 这些属性是枚举的，并具有以下可能的值：
 			 */
-			if (!this.isDataURL(imageURL) && this.crossOrigin) { 
+			if (!isDataURL(imageURL) && this.crossOrigin) { 
 				imageObj.crossOrigin = this.crossOrigin; 
 			}
 			imageObj.src = imageURL;
