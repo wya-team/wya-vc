@@ -1,4 +1,4 @@
-import { Resize } from '../utils/index';
+import { Resize, getUid } from '../utils/index';
 
 export default {
 	model: {
@@ -73,6 +73,11 @@ export default {
 		}
 	},
 	created() {
+		this.tabsId = getUid('tabs');
+		
+		// 给paging， 做判断使用
+		this.hasClick = false;
+
 		// 正在切换
 		this.timer = null;
 	},
@@ -134,6 +139,8 @@ export default {
 			this.currentName = nav.name;
 			this.$emit('change', nav.name);
 			this.$emit('click', nav.name);
+
+			this.hasClick = true;
 		},
 
 		handleResize() {

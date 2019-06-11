@@ -94,13 +94,7 @@ export default {
 		},
 		tableOpts: {
 			type: Object,
-			default: () => (VcInstance.config.Paging.pageOpts || {
-				showCount: true,
-				showSizer: true,
-				showElevator: true,
-				placement: 'top',
-				pageSizeOpts: [10, 20, 30, 50, 100]
-			})
+			default: () => (VcInstance.config.Paging.tableOpts || {})
 		},
 		// ---- end
 		// ---- page 组件属性 start
@@ -187,7 +181,15 @@ export default {
 				change: () => {},
 				pageSizeChange: () => {}
 			};
-		}
+		},
+		// tabs会受到影响, 针对性hack
+		hasTabsClick() {
+			let parent = this.$parent;
+			while (parent && !parent.tabsId) {
+				parent = parent.$parent;
+			}
+			return parent.hasClick;
+		},
 	},
 	watch: {
 		show(v) {
@@ -223,7 +225,7 @@ export default {
 	},
 	created() {
 		let { query: { page = 1 } } = URL.parse();
-		this.show && this._loadData(page);
+		this.show && this._loadData(!this.hasTabsClick ? page : 1);
 	},
 	mounted() {
 		if (this.mode === 'table') {
