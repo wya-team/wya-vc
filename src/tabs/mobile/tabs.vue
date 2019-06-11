@@ -1,6 +1,6 @@
 <template>
 	<div :class="classes" class="vcm-tabs">
-		<div ref="wrapper" class="vcm-tabs__bar">
+		<div ref="wrapper" :style="barStyle" class="vcm-tabs__bar">
 			<div ref="scroll" class="vcm-tabs__scroll">
 				<div ref="nav" class="vcm-tabs__nav">
 					<div :style="afloatStyle" class="vcm-tabs__afloat" />
@@ -49,6 +49,10 @@ export default {
 			default: 'light',
 			validator: v => /(light|dark)/.test(v)
 		},
+		barStyle: {
+			type: Object | Array,
+			default: () => ({}),
+		},
 		autoAfloatWidth: {
 			type: Boolean,
 			default: true,
@@ -75,12 +79,8 @@ export default {
 			this.refreshAfloat();
 		}
 	},
-	mounted() {
-		console.log(this.scrollStyle);
-	},
-	destoryed() {
-	},
-
+	mounted() { },
+	destoryed() { },
 	methods: {
 		/**
 		 * 刷新当前标签底下的滑块位置
@@ -142,7 +142,7 @@ export default {
 	width: 100%;
 	overflow: hidden;
 	@include element(bar) {
-		margin-bottom: 16px;
+		margin-bottom: 8px;
 		display: flex;
 		align-items: center;
 		position: relative;
