@@ -166,7 +166,7 @@ export default {
 		position: relative;
 		text-align: center;
 		transition: color .3s ease-in-out;
-		font-size: 14px;
+		font-size: 15px;
 		line-height: 1;
 		padding: 15px 10px;
 		@include when(average) {

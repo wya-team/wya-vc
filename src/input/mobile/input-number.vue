@@ -8,6 +8,7 @@
 		:type="type"
 		:class="{ 'is-disabled': disabled && step, 'vcm-input-number': step }"
 		:input-style="[currentStyle, inputStyle]"
+		:right="right"
 		v-on="hooks"
 	>
 		<template v-if="step" #prepend>
@@ -43,6 +44,10 @@ export default {
 	mixins: [inputNumberMixin],
 	props: {
 		clearable: {
+			type: Boolean,
+			default: false
+		},
+		right: {
 			type: Boolean,
 			default: false
 		}
