@@ -366,7 +366,7 @@ $block: vc-select;
 	}
 	@include element(append) {
 		color: #808695;
-		padding: 0 10px;
+		padding: 0 10px 0 2px;
 		position: relative;
 		text-align: center;
 		line-height: 28px;

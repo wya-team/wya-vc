@@ -348,7 +348,7 @@ $block: vc-cascader;
 	@include element(append) {
 		cursor: pointer;
 		color: #808695;
-		padding: 0 10px;
+		padding: 0 10px 0 2px;
 		background: white !important;
 		position: relative;
 		text-align: center;
