@@ -247,7 +247,7 @@ export default {
 	mounted() {
 		document.addEventListener('keydown', this.handleEscClose);
 		document.addEventListener('click', this.handleClick, true);
-		Resize.on(this.$refs.container, this.resizeListener);
+		Resize.on(this.$refs.container, this.handleResize);
 	},
 	updated() {
 		/**
@@ -260,10 +260,10 @@ export default {
 		document.removeEventListener('keydown', this.handleEscClose);
 		document.removeEventListener("mousemove", this.handleMouseMove);
 		document.removeEventListener("mouseup", this.handleMouseUp);
-		Resize.off(this.$refs.container, this.resizeListener);
+		Resize.off(this.$refs.container, this.handleResize);
 	},
 	methods: {
-		resizeListener() {
+		handleResize() {
 			if (!this.mode) {
 				const $container = this.$refs.container;
 				let containerHeight = $container.offsetHeight;
