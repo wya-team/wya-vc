@@ -215,6 +215,14 @@ $block: vc-input;
 	@include element(hack) {
 		padding-right: 1px;
 	}
-
+}
+.vc-form-item.is-error {
+	@include block($block) {
+		&:after, &:before {
+			border-color: $error;
+			box-shadow: none;
+		}
+		z-index: 2;
+	}
 }
 </style>
