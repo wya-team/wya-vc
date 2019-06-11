@@ -84,6 +84,7 @@ import Button from '../button';
 import Transition from '../transition';
 import Customer from "../customer/index";
 import { VcInstance } from "../vc/index";
+import { Resize, getUid } from '../utils/index';
 
 
 let zIndexNumber = 1002;
@@ -246,6 +247,7 @@ export default {
 	mounted() {
 		document.addEventListener('keydown', this.handleEscClose);
 		document.addEventListener('click', this.handleClick, true);
+		Resize.on(this.$refs.container, this.resizeListener);
 	},
 	updated() {
 		/**
@@ -258,8 +260,19 @@ export default {
 		document.removeEventListener('keydown', this.handleEscClose);
 		document.removeEventListener("mousemove", this.handleMouseMove);
 		document.removeEventListener("mouseup", this.handleMouseUp);
+		Resize.off(this.$refs.container, this.resizeListener);
 	},
 	methods: {
+		resizeListener() {
+			if (!this.mode) {
+				const $container = this.$refs.container;
+				let containerHeight = $container.offsetHeight;
+				if (containerHeight % 2 !== 0) {
+					$container.style.height = `${containerHeight + 1}px`;
+				}	
+			}
+					
+		},
 		handleClick(e) {
 			// this.isActive click先触发,后设置后
 			if (this.draggable && this.isActive && this.originX) return;
