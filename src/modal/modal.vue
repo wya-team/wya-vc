@@ -260,12 +260,12 @@ export default {
 		document.removeEventListener('keydown', this.handleEscClose);
 		document.removeEventListener("mousemove", this.handleMouseMove);
 		document.removeEventListener("mouseup", this.handleMouseUp);
-		Resize.off(this.$refs.container, this.handleResize);
 	},
 	methods: {
 		handleResize() {
 			if (!this.mode) {
 				const $container = this.$refs.container;
+				console.log($container.offsetHeight);
 				let containerHeight = $container.offsetHeight;
 				if (containerHeight % 2 !== 0) {
 					$container.style.height = `${containerHeight + 1}px`;
@@ -390,6 +390,7 @@ export default {
 		cancel() {
 			const { onCancel } = this;
 			onCancel ? onCancel() : this.$emit('cancel');
+			Resize.off(this.$refs.container, this.handleResize);
 		},
 
 		/**
