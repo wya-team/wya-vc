@@ -142,7 +142,6 @@ export default {
 		z-index: 1000;
 	}
 	@include element(wrapper) {
-		position: absolute;
 		z-index: 1000;
 	}
 	@include when(bottom) {

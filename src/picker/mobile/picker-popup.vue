@@ -99,14 +99,6 @@ export default {
 @import '../../style/index.scss';
 
 @include block(vcm-picker-popup) {
-	display: flex;
-	align-items: center;
-	flex-direction: row;
-	align-items: center;
-	flex: 1;
-	box-sizing: border-box;
-	overflow: hidden;
-	background-color: #fff;
 	@include element(header) {
 		position: relative;
 		display: flex;
