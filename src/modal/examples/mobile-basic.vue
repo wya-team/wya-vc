@@ -67,8 +67,13 @@ export default {
 		handleCancel() {
 			console.log('点击取消这个按钮时回调');
 		},
-		handleOk() {
+		handleOk(e, done) {
 			console.log('点击确定这个按钮时回调');
+			return new Promise((resolve, reject) => {
+				setTimeout(done, 3000);
+			});
+			// setTimeout(done, 3000);
+			// return true;
 		},
 		handleClick1() {
 			this.visible1 = !this.visible1;

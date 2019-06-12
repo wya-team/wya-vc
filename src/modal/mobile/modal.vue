@@ -190,22 +190,38 @@ export default {
 		}
 	},
 	methods: {
-		/**
-		 * Todo Promise
-		 */
-		handleClickWithPromise(e, fn) {
-			this.isActive = false;
+		handleClickWithPromise(e, hook) {
 
-			fn && fn();
+			let callback = () => {
+				this.isActive = false;
+			};
+
+			let fn = hook && hook(e, callback);
+
+			if (fn && fn.then) {
+				return fn.then((res) => {
+					return res;
+				}).catch((res) => {
+					return Promise.reject(res);
+				});
+			} else if (!fn) {
+				callback();
+			}
 		},
-		handleOk(e) {
-			this.ok();
+		handleOk(...rest) {
+			let { $listeners: { ok }, onOk } = this;
+			ok = ok || onOk; // 兼容portal
+
+			return ok(...rest);
 		},
 		/**
 		 * 用户点击取消按钮时为取消
 		 */
-		handleCancel() {
-			this.cancel();
+		handleCancel(...rest) {
+			let { $listeners: { cancel }, onCancel } = this;
+			cancel = cancel || onCancel; // 兼容portal
+
+			return cancel(...rest);
 		},
 		/**
 		 * 关闭事件
@@ -219,7 +235,7 @@ export default {
 			) {
 				this.isActive = false;
 				// 用户主要取消与关闭事件关联
-				this.closeWithCancel && this.cancel();
+				this.closeWithCancel && this.handleCancel();
 			}
 		},
 		/**
@@ -232,21 +248,7 @@ export default {
 				this.$emit('close'),
 				this.$emit('visible-change', false)
 			);
-		},
-		/**
-		 * 取消兼容
-		 */
-		ok() {
-			const { onOk } = this;
-			onOk ? onOk() : this.$emit('ok');
-		},
-		/**
-		 * 取消兼容
-		 */
-		cancel() {
-			const { onCancel } = this;
-			onCancel ? onCancel() : this.$emit('cancel');
-		},
+		}
 	}
 };
 </script>
