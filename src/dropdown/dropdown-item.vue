@@ -22,6 +22,10 @@ export default {
 		divided: {
 			type: Boolean,
 			default: false
+		},
+		closable: {
+			type: Boolean,
+			default: true
 		}
 	},
 	computed: {
@@ -46,7 +50,7 @@ export default {
 			this.$emit('click', this.name);
 			this.owner.$emit('click', this.name);
 
-			this.owner.close();
+			this.closable && this.owner.close();
 		}
 	}
 };

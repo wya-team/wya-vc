@@ -1,14 +1,21 @@
 import Vue from 'vue';
 import Watcher from './watcher';
 
+
 Watcher.prototype.mutations = {
 	setData(states, data) {
+		// 用户是否修改了数据
 		const dataInstanceChanged = states._data !== data;
+		// clone
 		states._data = data;
+		// reset
+		states.data = data;
 
-		this.execQuery();
-		// 数据变化，更新部分数据。
-		// 没有使用 computed，而是手动更新部分数据 https://github.com/vuejs/vue/issues/6660#issuecomment-331417140
+		/**
+		 * 数据变化，更新部分数据。
+		 * 没有使用 computed，而是手动更新部分数据 
+		 * https://github.com/vuejs/vue/issues/6660#issuecomment-331417140
+		 */
 		this.updateCurrentRow();
 		this.updateExpandRows();
 		if (!states.reserveSelection) {
@@ -70,55 +77,6 @@ Watcher.prototype.mutations = {
 			this.updateColumns(); // hack for dynamics remove column
 			this.scheduleLayout();
 		}
-	},
-
-	sort(states, options) {
-		const { prop, order } = options;
-		if (prop) {
-			// TODO：nextTick 是否有必要？
-			Vue.nextTick(() => {
-				const column = states.columns.find(column => column.property === prop);
-				if (column) {
-					column.order = order;
-					this.updateSort(column, prop, order);
-					this.commit('changeSortCondition');
-				}
-			});
-		}
-	},
-
-	changeSortCondition(states, options) {
-		// 修复 pr https://github.com/ElemeFE/element/pull/15012 导致的 bug
-		const { sortingColumn: column, sortProp: prop, sortOrder: order } = states;
-		if (order === null) {
-			states.sortingColumn = null;
-			states.sortProp = null;
-		}
-		const ingore = { filter: true };
-		this.execQuery(ingore);
-
-		if (!options || !options.silent) {
-			this.table.$emit('sort-change', {
-				column,
-				prop,
-				order
-			});
-		}
-
-		this.updateTableScrollY();
-	},
-
-	filterChange(states, options) {
-		let { column, values, silent } = options;
-		const newFilters = this.updateFilters(column, values);
-
-		this.execQuery();
-
-		if (!silent) {
-			this.table.$emit('filter-change', newFilters);
-		}
-
-		this.updateTableScrollY();
 	},
 
 	toggleAllSelection() {

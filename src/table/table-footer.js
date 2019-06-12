@@ -12,15 +12,6 @@ export default {
 		getSummary: Function,
 		sumText: String,
 		border: Boolean,
-		defaultSort: {
-			type: Object,
-			default() {
-				return {
-					prop: '',
-					order: ''
-				};
-			}
-		}
 	},
 	computed: {
 		table() {

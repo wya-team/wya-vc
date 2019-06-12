@@ -16,7 +16,6 @@
 				ref="tableHeader"
 				:store="store"
 				:border="border"
-				:default-sort="defaultSort"
 				:style="{
 					width: layout.bodyWidth ? layout.bodyWidth + 'px' : ''
 				}"
@@ -69,7 +68,6 @@
 				:border="border"
 				:sum-text="sumText || '合计'"
 				:get-summary="getSummary"
-				:default-sort="defaultSort"
 				:style="{ width: layout.bodyWidth ? layout.bodyWidth + 'px' : ''}"
 			/>
 		</div>
@@ -124,7 +122,7 @@
 					:sum-text="sumText || '合计'"
 					:get-summary="getSummary"
 					:store="store"
-					:style="{ width: bodyWidth}" 
+					:style="{ width: bodyWidth }" 
 					fixed="left"
 				/>
 			</div>
@@ -244,11 +242,7 @@ export default {
 			default: () => ([])
 		},
 		width: String | Number,
-		// Table 的高度，默认为自动高度。
-		// 如果 height 为 number 类型，单位 px；如果 height 为 string 类型，
-		// 则这个高度会设置为 Table 的 style.height 的值，Table 的高度会受控于外部样式。
 		height: String | Number,
-		// Table 的最大高度
 		maxHeight: String | Number,
 		// 列的宽度是否自撑开
 		fit: {
@@ -259,8 +253,6 @@ export default {
 		stripe: Boolean,
 		// 是否带有纵向边框
 		border: Boolean,
-		// 行数据的 Key，用来优化 Table 的渲染；在使用 reserve-selection 功能与显示树形数据时，该属性是必填的。
-		// 类型为 String 时，支持多层访问：user.info.id，但不支持 user.info[0].id，此种情况请使用 Function。
 		rowKey: String | Function,
 		context: {
 			type: Object,
@@ -274,34 +266,22 @@ export default {
 		showSummary: Boolean,
 		sumText: String,
 		getSummary: Function,
-		// 行的 style 的回调方法，也可以使用一个固定的 Object 为所有行设置一样的 Style。
 		rowClassName: String | Function,
 		rowStyle: Object | Function,
-		// 单元格的 style 的回调方法，也可以使用一个固定的 Object 为所有单元格设置一样的 Style。
 		cellClassName: String | Function,
 		cellStyle: Object | Function,
-		// 表头行的 className 的回调方法，也可以使用字符串为所有表头行设置一个固定的 className。
 		headerRowClassName: String | Function,
 		headerRowStyle: Object | Function,
-		// 表头行的 style 的回调方法，也可以使用一个固定的 Object 为所有表头行设置一样的 Style。
 		headerCellClassName: String | Function,
 		headerCellStyle: Object | Function,
-		// 是否要高亮当前行
 		highlightCurrentRow: Boolean,
-		// 当前行的 key，只写属性
 		currentRowKey: String | Number,
-		// 空数据时显示的文本内容，也可以通过 slot="empty" 设置
 		emptyText: String | Function,
-		// 可以通过该属性设置 Table 目前的展开行，需要设置 row-key 属性才能使用，该属性为展开行的 keys 数组。
 		expandRowKeys: Array,
-		// 是否默认展开所有行，当 Tale 包含展开行存在或者为树形表格时有效
 		defaultExpandAll: Boolean,
-		// 默认的排序列的 prop 和顺序。它的prop属性指定默认的排序的列，order指定默认排序的顺序
-		// 如果只指定了prop, 没有指定order, 则默认顺序是 ascending, descending
-		defaultSort: Object,
-		tooltipEffect: String,
 		/**
-		 * 在多选表格中，当仅有部分行被选中时，点击表头的多选框时的行为。若为 true，则选中所有行；若为 false，则取消选择所有行
+		 * 在多选表格中，当仅有部分行被选中时，点击表头的多选框时的行为。
+		 * 若为 true，则选中所有行；若为 false，则取消选择所有行
 		 */
 		selectOnIndeterminate: {
 			type: Boolean,
@@ -483,7 +463,7 @@ export default {
 				this.store.commit('setData', value);
 				if (this.$ready) {
 					this.$nextTick(() => {
-						this.doLayout();
+						this.refreshLayout();
 					});
 				}
 			}
@@ -501,29 +481,18 @@ export default {
 
 	created() {
 		this.tableId = getUid('table');
-		this.debouncedUpdateLayout = debounce(() => this.doLayout(), 50);
+		this.debouncedUpdateLayout = debounce(() => this.refreshLayout(), 50);
 	},
 
 	mounted() {
 		this.bindEvents();
 		this.store.updateColumns();
-		this.doLayout();
+		this.refreshLayout();
 
 		this.resizeState = {
 			width: this.$el.offsetWidth,
 			height: this.$el.offsetHeight
 		};
-
-		// init filters
-		this.store.states.columns.forEach(column => {
-			if (column.filteredValue && column.filteredValue.length) {
-				this.store.commit('filterChange', {
-					column,
-					values: column.filteredValue,
-					silent: true
-				});
-			}
-		});
 
 		this.$ready = true;
 	},
@@ -617,7 +586,7 @@ export default {
 			if (shouldUpdateLayout) {
 				this.resizeState.width = width;
 				this.resizeState.height = height;
-				this.doLayout();
+				this.refreshLayout();
 			}
 		},
 
@@ -626,19 +595,11 @@ export default {
 		 * 对 Table 进行重新布局。
 		 * 当 Table 或其祖先元素由隐藏切换为显示时，可能需要调用此方法
 		 */
-		doLayout() {
+		refreshLayout() {
 			this.layout.updateColumnsWidth();
 			if (this.shouldUpdateHeight) {
 				this.layout.updateElsHeight();
 			}
-		},
-
-		/**
-		 * 手动对 Table 进行排序。
-		 * 参数prop属性指定排序列，order指定排序顺序。
-		 */
-		sort(prop, order) {
-			this.store.commit('sort', { prop, order });
 		},
 
 		/**
@@ -677,21 +638,6 @@ export default {
 		clearSelection() {
 			this.store.clearSelection();
 		},
-
-		/**
-		 * 不传入参数时用于清空所有过滤条件，数据会恢复成未过滤的状态，也可传入由columnKey组成的数组以清除指定列的过滤条件
-		 */
-		clearFilter(columnKeys) {
-			this.store.clearFilter(columnKeys);
-		},
-
-		/**
-		 * 用于清空排序条件，数据会恢复成未排序的状态
-		 */
-		clearSort() {
-			this.store.clearSort();
-		},
-
 	},
 };
 </script>

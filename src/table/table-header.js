@@ -70,16 +70,7 @@ export default {
 		store: {
 			required: true
 		},
-		border: Boolean,
-		defaultSort: {
-			type: Object,
-			default() {
-				return {
-					prop: '',
-					order: ''
-				};
-			}
-		}
+		border: Boolean
 	},
 	data() {
 		return {
@@ -110,22 +101,12 @@ export default {
 	},
 
 	created() {
-		this.filterPanels = {};
 	},
 
 	mounted() {
-		const { prop, order } = this.defaultSort;
-		const init = true;
-		this.store.commit('sort', { prop, order, init });
 	},
 
 	beforeDestroy() {
-		const panels = this.filterPanels;
-		for (let prop in panels) {
-			if (Utils.hasOwn(panels, prop) && panels[prop]) {
-				panels[prop].$destroy(true);
-			}
-		}
 	},
 
 	methods: {
@@ -189,10 +170,6 @@ export default {
 				classes.push('is-leaf');
 			}
 
-			if (column.sortable) {
-				classes.push('is-sortable');
-			}
-
 			const headerCellClassName = this.table.headerCellClassName;
 			if (typeof headerCellClassName === 'string') {
 				classes.push(headerCellClassName);
@@ -214,12 +191,6 @@ export default {
 		},
 
 		handleHeaderClick(event, column) {
-			if (!column.filters && column.sortable) {
-				this.handleSortClick(event, column);
-			} else if (column.filterable && !column.sortable) {
-				this.handleFilterClick(event, column);
-			}
-
 			this.$parent.$emit('header-click', column, event);
 		},
 
@@ -369,14 +340,15 @@ export default {
 										<th
 											colspan={column.colSpan}
 											rowspan={column.rowSpan}
-											on-mousemove={($event) => this.handleMouseMove($event, column)}
-											on-mouseout={this.handleMouseOut}
-											on-mousedown={($event) => this.handleMouseDown($event, column)}
-											on-click={($event) => this.handleHeaderClick($event, column)}
-											on-contextmenu={($event) => this.handleHeaderContextMenu($event, column)}
+											onMousemove={($event) => this.handleMouseMove($event, column)}
+											onMouseout={this.handleMouseOut}
+											onMousedown={($event) => this.handleMouseDown($event, column)}
+											onClick={($event) => this.handleHeaderClick($event, column)}
+											onContextmenu={($event) => this.handleHeaderContextMenu($event, column)}
 											style={this.getHeaderCellStyle(rowIndex, cellIndex, columns, column)}
 											class={this.getHeaderCellClass(rowIndex, cellIndex, columns, column)}
-											key={column.id}>
+											key={column.id}
+										>
 											<div 
 												class={[
 													'vc-table__cell', 
@@ -403,7 +375,7 @@ export default {
 									))
 								}
 								{
-									this.hasGutter && <th class="gutter" />
+									this.hasGutter ? <th class="gutter" /> : ''
 								}
 							</tr>
 						))

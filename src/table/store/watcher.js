@@ -6,17 +6,6 @@ import expand from './expand';
 import current from './current';
 import tree from './tree';
 
-/**
- * TODO: 废弃
- */
-const sortData = (data, states) => {
-	const sortingColumn = states.sortingColumn;
-	if (!sortingColumn || typeof sortingColumn.sortable === 'string') {
-		return data;
-	}
-	return data;
-};
-
 const doFlattenColumns = (columns) => {
 	const result = [];
 	columns.forEach((column) => {
@@ -64,15 +53,6 @@ export default Vue.extend({
 				selectOnIndeterminate: false,
 				selectable: null,
 
-				// 过滤
-				filters: {}, // 不可响应的
-				filteredData: null,
-
-				// 排序
-				sortingColumn: null,
-				sortProp: null,
-				sortOrder: null,
-
 				hoverRow: null,
 				currentRow: null
 			}
@@ -101,6 +81,9 @@ export default Vue.extend({
 			const notFixedColumns = _columns.filter(column => !column.fixed);
 			states.originColumns = [].concat(states.fixedColumns).concat(notFixedColumns).concat(states.rightFixedColumns);
 
+			/**
+			 * 多级表头，嵌套
+			 */
 			const leafColumns = doFlattenColumns(notFixedColumns);
 			const fixedLeafColumns = doFlattenColumns(states.fixedColumns);
 			const rightFixedLeafColumns = doFlattenColumns(states.rightFixedColumns);
@@ -110,6 +93,7 @@ export default Vue.extend({
 			states.rightFixedLeafColumnsLength = rightFixedLeafColumns.length;
 
 			states.columns = [].concat(fixedLeafColumns).concat(leafColumns).concat(rightFixedLeafColumns);
+
 			states.isComplex = states.fixedColumns.length > 0 || states.rightFixedColumns.length > 0;
 		},
 
@@ -257,116 +241,6 @@ export default Vue.extend({
 
 			if (selectedCount === 0) isAllSelected = false;
 			states.isAllSelected = isAllSelected;
-		},
-
-		// 过滤与排序
-		updateFilters(columns, values) {
-			if (!Array.isArray(columns)) {
-				columns = [columns];
-			}
-			const states = this.states;
-			const filters = {};
-			columns.forEach(col => {
-				states.filters[col.id] = values;
-				filters[col.columnKey || col.id] = values;
-			});
-
-			return filters;
-		},
-
-		updateSort(column, prop, order) {
-			this.states.sortingColumn = column;
-			this.states.sortProp = prop;
-			this.states.sortOrder = order;
-		},
-
-		execFilter() {
-			const states = this.states;
-			const { _data, filters } = states;
-			let data = _data;
-
-			Object.keys(filters).forEach((columnId) => {
-				const values = states.filters[columnId];
-				if (!values || values.length === 0) return;
-				const column = getColumnById(this.states, columnId);
-				if (column && column.filterMethod) {
-					data = data.filter((row) => {
-						return values.some(value => column.filterMethod.call(null, value, row, column));
-					});
-				}
-			});
-
-			states.filteredData = data;
-			// states.data = data;
-		},
-
-		execSort() {
-			const states = this.states;
-			states.data = sortData(states.filteredData, states);
-		},
-
-		// 根据 filters 与 sort 去过滤 data
-		execQuery(ignore) {
-			if (!(ignore && ignore.filter)) {
-				this.execFilter();
-			}
-			this.execSort();
-		},
-
-		clearFilter(columnKeys) {
-			const states = this.states;
-			const { tableHeader, fixedTableHeader, rightFixedTableHeader } = this.table.$refs;
-
-			let panels = {};
-			if (tableHeader) panels = Object.assign(panels, tableHeader.filterPanels);
-			if (fixedTableHeader) panels = Object.assign(panels, fixedTableHeader.filterPanels);
-			if (rightFixedTableHeader) panels = Object.assign(panels, rightFixedTableHeader.filterPanels);
-
-			const keys = Object.keys(panels);
-			if (!keys.length) return;
-
-			if (typeof columnKeys === 'string') {
-				columnKeys = [columnKeys];
-			}
-
-			if (Array.isArray(columnKeys)) {
-				const columns = columnKeys.map(key => getColumnByKey(states, key));
-				keys.forEach(key => {
-					const column = columns.find(col => col.id === key);
-					if (column) {
-						// TODO: 优化这里的代码
-						panels[key].filteredValue = [];
-					}
-				});
-				this.commit('filterChange', {
-					column: columns,
-					values: [],
-					silent: true,
-					multi: true
-				});
-			} else {
-				keys.forEach(key => {
-					// TODO: 优化这里的代码
-					panels[key].filteredValue = [];
-				});
-
-				states.filters = {};
-				this.commit('filterChange', {
-					column: {},
-					values: [],
-					silent: true
-				});
-			}
-		},
-
-		clearSort() {
-			const states = this.states;
-			if (!states.sortingColumn) return;
-
-			this.updateSort(null, null, null);
-			this.commit('changeSortCondition', {
-				silent: true
-			});
 		},
 
 		// 适配层，expand-row-keys 在 Expand 与 TreeTable 中都有使用

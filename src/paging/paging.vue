@@ -243,7 +243,7 @@ export default {
 			this.toggleAllSelection = this.$refs.table.toggleAllSelection;
 			this.toggleRowExpansion = this.$refs.table.toggleRowExpansion;
 			this.setCurrentRow = this.$refs.table.setCurrentRow;
-			this.doLayout = this.$refs.table.doLayout;
+			this.refreshLayout = this.$refs.table.refreshLayout;
 		}
 	},
 	methods: {

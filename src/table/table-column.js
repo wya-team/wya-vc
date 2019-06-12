@@ -19,12 +19,6 @@ export default {
 		width: {},
 		minWidth: {},
 		renderHeader: Function,
-		sortable: {
-			type: [Boolean, String],
-			default: false
-		},
-		sortMethod: Function,
-		sortBy: [String, Function, Array],
 		resizable: {
 			type: Boolean,
 			default: true
@@ -37,24 +31,7 @@ export default {
 		formatter: Function,
 		selectable: Function,
 		reserveSelection: Boolean,
-		filterMethod: Function,
-		filteredValue: Array,
-		filters: Array,
-		filterPlacement: String,
-		filterMultiple: {
-			type: Boolean,
-			default: true
-		},
 		index: [Number, Function],
-		sortOrders: {
-			type: Array,
-			default() {
-				return ['ascending', 'descending', null];
-			},
-			validator(val) {
-				return val.every(order => ['ascending', 'descending', null].indexOf(order) > -1);
-			}
-		}
 	},
 	data() {
 		return {
@@ -107,7 +84,6 @@ export default {
 		this.columnId = (parent.tableId || parent.columnId) + '_column_' + columnIdSeed++;
 
 		const type = this.type || 'default';
-		const sortable = this.sortable === '' ? true : this.sortable;
 		const defaults = {
 			...cellStarts[type],
 			id: this.columnId,
@@ -116,24 +92,14 @@ export default {
 			align: this.realAlign,
 			headerAlign: this.realHeaderAlign,
 			showPopover: this.showPopover,
-			// filter 相关属性
-			filterable: this.filters || this.filterMethod,
-			filteredValue: [],
-			filterPlacement: '',
-			isColumnGroup: false,
-			filterOpened: false,
-			// sort 相关属性
-			sortable,
 			// index 列
 			index: this.index
 		};
 
 		const basicProps = ['columnKey', 'label', 'className', 'labelClassName', 'type', 'renderHeader', 'resizable', 'formatter', 'fixed', 'resizable']; // eslint-disable-line
-		const sortProps = ['sortMethod', 'sortBy', 'sortOrders'];
 		const selectProps = ['selectable', 'reserveSelection'];
-		const filterProps = ['filterMethod', 'filters', 'filterMultiple', 'filterOpened', 'filteredValue', 'filterPlacement'];
 
-		let column = this.getPropsData(basicProps, sortProps, selectProps, filterProps);
+		let column = this.getPropsData(basicProps, selectProps);
 
 		column = Object.assign(defaults, column); // TODO: column没有值使用默认值
 
@@ -259,7 +225,7 @@ export default {
 		},
 
 		registerNormalWatchers() {
-			const props = ['label', 'property', 'filters', 'filterMultiple', 'sortable', 'index', 'formatter', 'className', 'labelClassName'];
+			const props = ['label', 'property', 'index', 'formatter', 'className', 'labelClassName'];
 			// 一些属性具有别名
 			const aliases = {
 				prop: 'property',
