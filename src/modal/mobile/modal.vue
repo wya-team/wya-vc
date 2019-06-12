@@ -290,9 +290,9 @@ export default {
 	}
 	@include element(title) {
 		margin: 0;
-		font-size: 18px;
+		font-size: 17px;
 		line-height: 1;
-		color: $c333;
+		color: #000;
 		text-align: center;
 		word-wrap: break-word;
 		font-weight: 400;
@@ -304,8 +304,8 @@ export default {
 		
 	}
 	@include element(html) {
-		font-size: 14px;
-		color: #888;
+		font-size: 15px;
+		color: #666;
 		line-height: 1.5;
 		text-align: center;
 	}
@@ -313,13 +313,13 @@ export default {
 		position: relative;
 		flex: 1;
 		text-align: center;
-		color: #108de7;
-		font-size: 18px;
+		color: #4787f2;
+		font-size: 17px;
 		height: 50px;
 		line-height: 50px;
 		word-wrap: break-word;
 		&:first-child {
-			color: $c333;
+			color: #000;
 			@include commonBorder1PX(right, #ddd);
 		}
 	}
@@ -331,7 +331,7 @@ export default {
 			flex-direction: column;
 			@include element(button) { 
 				&:first-child {
-					color: #108de7;
+					color: #4787f2;
 					&:before, &:after {
 						border: none;
 					}
@@ -343,7 +343,7 @@ export default {
 		}
 		@include when(alone) {
 			@include element(button) { 
-				color: #108de7;
+				color: #4787f2;
 				&:first-child {
 					&:before, &:after {
 						border: none;
