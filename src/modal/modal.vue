@@ -255,6 +255,9 @@ export default {
 		 */
 		!this.draggable && this.isActive && this.resetOrigin();
 	},
+	beforeDestroy() {
+		Resize.off(this.$refs.container, this.handleResize);
+	},
 	destroyed() {
 		document.removeEventListener('click', this.handleClick, true);
 		document.removeEventListener('keydown', this.handleEscClose);
@@ -390,7 +393,6 @@ export default {
 		cancel() {
 			const { onCancel } = this;
 			onCancel ? onCancel() : this.$emit('cancel');
-			Resize.off(this.$refs.container, this.handleResize);
 		},
 
 		/**
