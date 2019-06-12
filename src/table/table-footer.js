@@ -132,7 +132,7 @@ export default {
 									rowspan={ column.rowSpan }
 									class={ this.getRowClasses(column, cellIndex) }
 								>
-									<div class={ ['cell', column.labelClassName] }>
+									<div class={ ['vc-table__cell', column.labelClassName] }>
 										{
 											sums[cellIndex]
 										}

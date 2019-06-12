@@ -155,7 +155,7 @@ export const getPropByPath = (obj, path) => {
 /**
  * https://github.com/reduxjs/redux/blob/master/src/compose.js
  */
-export function compose(...funcs) {
+export const compose = (...funcs) => {
 	if (funcs.length === 0) {
 		return arg => arg;
 	}
@@ -163,4 +163,4 @@ export function compose(...funcs) {
 		return funcs[0];
 	}
 	return funcs.reduce((a, b) => (...args) => a(b(...args)));
-}
+};

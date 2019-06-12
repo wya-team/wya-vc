@@ -1,6 +1,6 @@
 import Store from './index';
 
-export function createStore(table, initialState = {}) {
+export const createStore = (table, initialState = {}) => {
 	if (!table) {
 		throw new Error('Table is required.');
 	}
@@ -11,9 +11,9 @@ export function createStore(table, initialState = {}) {
 		store.states[key] = initialState[key];
 	});
 	return store;
-}
+};
 
-export function mapStates(mapper) {
+export const mapStates = (mapper) => {
 	const res = {};
 	Object.keys(mapper).forEach(key => {
 		const value = mapper[key];
@@ -34,4 +34,4 @@ export function mapStates(mapper) {
 		}
 	});
 	return res;
-}
+};

@@ -182,13 +182,16 @@ export default {
 				pageSizeChange: () => {}
 			};
 		},
-		// tabs会受到影响, 针对性hack
+		/**
+		 * tabs会受到影响, 针对性hack
+		 * 没有tabs回无限找，可能存在性能问题
+		 */
 		hasTabsClick() {
 			let parent = this.$parent;
 			while (parent && !parent.tabsId) {
 				parent = parent.$parent;
 			}
-			return parent.hasClick;
+			return parent && parent.hasClick;
 		},
 	},
 	watch: {
