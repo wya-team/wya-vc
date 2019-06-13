@@ -6,56 +6,40 @@
 		<div
 			v-for="(item, index) in dataSource"
 			:key="index"
+			:class="itemClass"
 			class="vc-imgs-preview__item"
 		>
-			<vc-customer
-				v-if="!$slots.row && !$scopedSlots.row" 
-				:src="item | getImage"
-				:index="index"
-				:render="renderRow"
-			/>
-			<slot 
-				v-else
+			<slot
 				:src="item | getImage" 
 				:index="index" 
-				name="row" 
-			/>
+				name="row"
+			>
+				<vc-customer
+					:src="item | getImage"
+					:index="index"
+					:render="renderRow"
+				/>
+			</slot>
 			<div class="vc-imgs-preview__mask">
-				<div v-if="!$slots.operate && !$scopedSlots.operate">
+				<slot 
+					:src="item | getImage" 
+					:index="index" 
+					:show="handleShow" 
+					name="operate"
+				>
 					<vc-icon type="preview" @click.stop="handleShow($event, index)" />
-				</div>
-				<div v-else>
-					<slot 
-						:src="item | getImage" 
-						:index="index" 
-						:show="handleShow" 
-						name="operate" 
-					/>
-				</div>
+				</slot>
 			</div>
 		</div>
 	</div>
 </template>
 <script>
-import Core, { Func } from './core';
-import Customer from '../customer/index';
-import Icon from '../icon/index';
+import BasicMixin from './basic-mixin';
 
 export default {
 	name: "vc-imgs-preview-row",
-	components: {
-		'vc-customer': Customer,
-		'vc-icon': Icon
-	},
-	filters: {
-		getImage(item) {
-			return typeof item === 'object' 
-				? (item.thumbnail || item.msrc || item.src || item)
-				: item;
-		}
-	},
+	mixins: [BasicMixin],
 	props: {
-		...Core.props,
 		renderRow: {
 			type: Function,
 			default: (h, props, parent) => {
@@ -68,45 +52,6 @@ export default {
 					}
 				});
 			}
-		}
-	},
-	data() {
-		return {
-		};
-	},
-	computed: {
-		
-	},
-	methods: {
-		handleShow(e, index) {
-			const { id, dataSource, opts, events, getInstance } = this;
-			let pos = {};
-			try {
-				const target = e.target; // 先得到pos, 否则getThumbBoundsFn再计划，target已变化
-				const pageYScroll = window.pageYOffset || document.documentElement.scrollTop;
-				const rect = target.getBoundingClientRect();
-
-				pos = { x: rect.left, y: rect.top + pageYScroll, w: rect.width };
-
-			} catch (e) {
-				console.log(e);
-			}
-
-			this.$emit('open');
-			Func.popup({
-				id,
-				dataSource,
-				events,
-				getInstance,
-				opts: {
-					...opts,
-					index,
-					history: false,
-					getThumbBoundsFn: (index) => pos,
-				},
-				onSure: () => this.$emit('close'),
-				onClose: () => this.$emit('close'),
-			});
 		}
 	}
 };
