@@ -127,7 +127,7 @@ export default class TreeStore {
 	setCheckedKeys(newVal) {
 		if (!isEqualWith(newVal, this.checkedKeys)) {
 			// 额外处理, 移除checkbox
-			difference(this.checkedKeys, newVal).forEeach((key) => {
+			difference(this.checkedKeys, newVal).forEach((key) => {
 				this.nodesMap[key] 
 					&& this.nodesMap[key].setChecked(false, !this.checkStrictly);
 			});
