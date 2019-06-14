@@ -17,6 +17,7 @@
 			:show-checkbox="showCheckbox"
 			:key="getNodeKey(child)"
 			:render-content="renderContent"
+			:allow-dispatch="allowDispatch"
 			@node-expand="handleNodeExpand"
 		/>
 		<div v-if="isEmpty" class="vc-tree__empty-block">
@@ -62,7 +63,10 @@ export default {
 			type: Boolean,
 			default: true
 		},
-		checkStrictly: Boolean,
+		checkStrictly: {
+			type: Boolean,
+			default: false
+		},
 		defaultExpandAll: Boolean,
 		expandOnClickNode: {
 			type: Boolean,
@@ -113,6 +117,10 @@ export default {
 				disabled: 'disabled',
 				isLeaf: 'isLeaf'
 			})
+		},
+		allowDispatch: {
+			type: Boolean,
+			default: true
 		}
 	},
 	data() {
@@ -142,33 +150,39 @@ export default {
 	},
 
 	watch: {
-		checkedKeys(newVal) {
-			this.store.setCheckedKeys(newVal);
+		checkedKeys(v) {
+			/**
+			 * [...v], 避免同一引用
+			 */
+			this.store.setCheckedKeys([...v]);
 		},
 
-		expandedKeys(newVal) {
-			this.store.expandedKeys = newVal;
-			this.store.setExpandedKeys(newVal);
+		expandedKeys(v) {
+			/**
+			 * [...v], 避免同一引用
+			 */
+			this.store.expandedKeys = [...v];
+			this.store.setExpandedKeys([...v]);
 		},
 
-		dataSource(newVal) {
-			this.store.setData(newVal);
+		dataSource(v) {
+			this.store.setData(v);
 		},
 
-		checkboxItems(val) {
-			Array.prototype.forEach.call(val, (checkbox) => {
+		checkboxItems(v) {
+			Array.prototype.forEach.call(v, (checkbox) => {
 				checkbox.setAttribute('tabindex', -1);
 			});
 		},
 
-		checkStrictly(newVal) {
-			this.store.checkStrictly = newVal;
+		checkStrictly(v) {
+			this.store.checkStrictly = v;
 		}
 	},
 
 	created() {
 		this.isTree = true;
-
+		
 		this.store = new TreeStore({
 			key: this.treeProps.value,
 			data: this.dataSource,

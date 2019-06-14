@@ -2,21 +2,10 @@ import Vue from 'vue';
 import { debounce } from 'lodash';
 import { Utils } from '@wya/utils';
 import { getKeysMap, getRowIdentity, getColumnById, getColumnByKey, toggleRowStatus } from '../utils';
+import { flattenData } from '../../utils';
 import expand from './expand';
 import current from './current';
 import tree from './tree';
-
-const doFlattenColumns = (columns) => {
-	const result = [];
-	columns.forEach((column) => {
-		if (column.children) {
-			result.push(...doFlattenColumns(column.children));
-		} else {
-			result.push(column);
-		}
-	});
-	return result;
-};
 
 export default Vue.extend({
 
@@ -84,9 +73,9 @@ export default Vue.extend({
 			/**
 			 * 多级表头，嵌套
 			 */
-			const leafColumns = doFlattenColumns(notFixedColumns);
-			const fixedLeafColumns = doFlattenColumns(states.fixedColumns);
-			const rightFixedLeafColumns = doFlattenColumns(states.rightFixedColumns);
+			const leafColumns = flattenData(notFixedColumns);
+			const fixedLeafColumns = flattenData(states.fixedColumns);
+			const rightFixedLeafColumns = flattenData(states.rightFixedColumns);
 
 			states.leafColumnsLength = leafColumns.length;
 			states.fixedLeafColumnsLength = fixedLeafColumns.length;

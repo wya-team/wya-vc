@@ -1,17 +1,25 @@
 <template>
 	<div>
 		<vc-button @click="lazy = !lazy">lazy {{ lazy }}</vc-button>
+		<vc-button @click="checkStrictly = !checkStrictly">单选独立 {{ checkStrictly }}</vc-button>
 		<vc-tree 
 			v-model="value"
 			:data-source="data"
 			:load-data="loadData" 
 			:lazy="lazy"
 			:key="lazy"
+			:check-strictly="checkStrictly"
 			show-checkbox 
 			accordion
 			draggable
 			default-expand-all
 			@check-change="handleCheckChange"
+		/>
+		<vc-tree-select 
+			v-model="value"
+			:data-source="data"
+			:check-strictly="checkStrictly"
+			clearable
 		/>
 	</div>
 </template>
@@ -23,12 +31,14 @@ export default {
 	name: "vc-tree-basic",
 	components: {
 		'vc-tree': Tree,
+		'vc-tree-select': Tree.Select,
 		'vc-button': Button,
 	},
 	data() {
 		return {
 			lazy: true,
-			value: ["1"],
+			checkStrictly: false,
+			value: [],
 			data: [{
 				value: '1',
 				label: '一级 1',

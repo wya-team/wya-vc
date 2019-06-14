@@ -148,6 +148,7 @@ $block: vc-input;
 		background-color: #fff;
 		cursor: pointer;
 		display: none;
+		line-height: inherit;
 	}
 
 	/**

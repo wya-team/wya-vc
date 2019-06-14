@@ -113,6 +113,7 @@ $block: vc-tag;
 	@include element(close) {
 		font-size: 12px;
 		transform: scale(0.7);
+		line-height: inherit;
 	}
 	@include element(dot) {
 		display: flex;

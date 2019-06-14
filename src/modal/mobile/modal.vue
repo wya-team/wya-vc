@@ -210,7 +210,7 @@ export default {
 		},
 		handleOk(...rest) {
 			let { $listeners: { ok }, onOk } = this;
-			ok = ok || onOk; // 兼容portal
+			ok = ok || onOk || (() => {}); // 兼容portal
 
 			return ok(...rest);
 		},
@@ -219,7 +219,7 @@ export default {
 		 */
 		handleCancel(...rest) {
 			let { $listeners: { cancel }, onCancel } = this;
-			cancel = cancel || onCancel; // 兼容portal
+			cancel = cancel || onCancel || (() => {}); // 兼容portal
 
 			return cancel(...rest);
 		},

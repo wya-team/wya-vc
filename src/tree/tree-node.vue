@@ -64,6 +64,7 @@
 					:render-content="renderContent"
 					:render-after-expand="renderAfterExpand"
 					:show-checkbox="showCheckbox"
+					:allow-dispatch="allowDispatch"
 					:key="getNodeKey(child)"
 					:node="child"
 					@node-expand="handleChildNodeExpand"
@@ -106,6 +107,10 @@ export default {
 		showCheckbox: {
 			type: Boolean,
 			default: false
+		},
+		allowDispatch: {
+			type: Boolean,
+			default: true
 		}
 	},
 
@@ -232,7 +237,10 @@ export default {
 					halfCheckedKeys: store.getHalfCheckedKeys(),
 				};
 				this.tree.$emit('check', this.node.data, data);
-				this.tree.$emit('change', data.checkedKeys);
+
+				// for v-model
+				this.tree.$emit('change', data.checkedKeys, data);
+				this.allowDispatch && this.dispatch('vc-form-item', 'form-change', this.currentValue);
 			});
 		},
 

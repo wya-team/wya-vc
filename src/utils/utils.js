@@ -84,6 +84,22 @@ export const getSelectedData = (value = [], source = [], opts = {}) => {
 	});
 };
 
+export const flattenData = (data) => {
+	const result = [];
+	data.forEach((item) => {
+		if (item.children) {
+			result.push(...flattenData(item.children));
+		} else {
+			result.push(item);
+		}
+	});
+	return result;
+};
+
+export const getLabel = (data, v) => {
+	let { label = '' } = data.find(i => i.value == v) || {};
+	return label;
+};
 /**
  * 是否符合条件
  * @exceptions {

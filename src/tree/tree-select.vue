@@ -10,7 +10,7 @@
 		:disabled="disabled"
 		:portal-class-name="['is-padding-none', portalClassName]"
 		:class="classes"
-		class="vc-select"
+		class="vc-tree-select"
 		animate="y"
 		@mouseenter.native="isHover = true"
 		@mouseleave.native="isHover = false"
@@ -26,46 +26,55 @@
 			:value="currentLabel"
 			:placeholder="placeholder || '请选择'"
 			:allow-dispatch="false"
-			class="vc-select__input"
+			class="vc-tree-select__input"
 		>
-			<template v-if="multiple && (currentValue && currentValue.length > 0)" #content>
-				<div :class="classes" class="vc-select__tags">
+			<template v-if="(currentValue && currentValue.length > 0)" #content>
+				<div :class="classes" class="vc-tree-select__tags">
 					<vc-tag 
 						v-for="(item, index) in currentValue" 
 						:key="item" 
 						:closable="!disabled"
-						@close="handleClose(item)"
+						@close="handleClose(item, index)"
 					>
-						{{ currentLabel[index] || '' }}
+						{{ currentLabel[index] || extra[index] || '' }}
 					</vc-tag>
 				</div>
 			</template>
 			<template #append>
 				<!-- down, up, clear -->
-				<div class="vc-select__append">
+				<div class="vc-tree-select__append">
 					<vc-icon
 						:type="showClear ? 'clear' : icon"
 						:class="{ 'is-arrow': !showClear }"
-						class="vc-select__icon"
+						class="vc-tree-select__icon"
 						@click="handleClear"
 					/>
 				</div>
 			</template>
 		</vc-input>
 		<template #content>
-			<div class="vc-select__content">
-				<div v-if="search" class="vc-select__search">
+			<div class="vc-tree-select__content">
+				<div v-if="search" class="vc-tree-select__search">
 					<vc-input-search 
 						v-model="searchValue" 
 						:placeholder="searchPlaceholder"
 						@input="handleSearch" 
 					/>
 				</div>
-				<div v-if="loading" class="vc-select__loading">
+				<div v-if="loading" class="vc-tree-select__loading">
 					<vc-spin :size="16" />
 				</div>
-				<div class="vc-select__options">
-					<slot />
+				<div class="vc-tree-select__options">
+					<!-- 暂时不支持lazy -->
+					<vc-tree
+						v-model="currentValue" 
+						:data-source="dataSource"
+						:check-strictly="checkStrictly"
+						:expanded-keys="currentValue"
+						:allow-dispatch="false"
+						show-checkbox
+						@change="handleChange"
+					/>
 				</div>
 				<!-- hack for slot, 异步数据弹层已打开时未刷新 -->
 				<span v-show="false" v-text="currentLabel" />
@@ -76,7 +85,7 @@
 
 <script>
 import { pick, cloneDeep, debounce, isEqualWith } from 'lodash';
-import { getSelectedData, getUid, getLabel } from '../utils/index';
+import { getSelectedData, getUid, flattenData, getLabel } from '../utils/index';
 import { VcError } from '../vc/index';
 import emitter from '../extends/mixins/emitter'; // 表单验证
 import Input from '../input/index';
@@ -85,9 +94,10 @@ import Spin from '../spin/index';
 import Tag from '../tag/index';
 import Icon from '../icon/index';
 import InputMixin from '../input/input-mixin';
+import Tree from './tree';
 
 export default {
-	name: 'vc-select',
+	name: 'vc-tree-select',
 	components: {
 		'vc-input': Input,
 		'vc-input-search': Input.Search,
@@ -95,6 +105,7 @@ export default {
 		'vc-popover': Popover,
 		'vc-tag': Tag,
 		'vc-spin': Spin,
+		'vc-tree': Tree,
 	},
 	mixins: [emitter],
 	inheritAttrs: false,
@@ -103,6 +114,10 @@ export default {
 		event: 'change'
 	},
 	props: {
+		...pick(Tree.props, [
+			'checkStrictly',
+			'dataSource'
+		]),
 		...pick(Popover.props, [
 			'portalClassName'
 		]),
@@ -140,7 +155,8 @@ export default {
 			default: true
 		},
 		extra: {
-			type: String | Array
+			type: Array,
+			default: () => ([])
 		},
 		max: {
 			type: Number,
@@ -162,8 +178,8 @@ export default {
 			loading: false,
 			searchValue: '',
 			searchRegex: new RegExp(),
-			currentValue: this.max > 1 ? [] : '',
-			currentLabel: this.max > 1 ? [] : '',
+			currentValue: [],
+			currentLabel: [],
 			rebuildData: []
 		};
 	},
@@ -176,14 +192,14 @@ export default {
 			let basic = this.clearable && !this.disabled && this.isHover;
 			return value && basic;
 		},
-		multiple() {
-			return this.max > 1;
-		},
 		classes() {
 			return {
 				'is-disabled': this.disabled
 			};
 		},
+		dataMap() {
+			return flattenData(this.dataSource);
+		}
 	},
 	watch: {
 		value: {
@@ -194,7 +210,10 @@ export default {
 				}
 				this.currentValue = v;
 
-				this.update(true);
+				/**
+				 * 耗时操作
+				 */
+				this.currentLabel = this.currentValue.map(v => getLabel(this.dataMap, v));
 			}
 		},
 		currentValue(v, old) {
@@ -202,34 +221,26 @@ export default {
 		}
 	},
 	created() {
-		this.selectId = getUid('select');
-
-		this.hasInit = !(this.currentValue || this.currentValue.length > 0);
-
-		this.dataSource = []; 
-		this.update();
+		this.treeSelectId = getUid('select');
 	},
 	beforeUpdate() {
-		/**
-		 * 容易造成内存溢出
-		 */
-		this.update();
+		
 	},
 	methods: {
 		handleClear(e) {
 			if (!this.showClear) return;
 			e.stopPropagation();
-
 			this.$emit('clear');
-
-			this.currentValue = this.multiple ? [] : '';
-			this.currentLabel = this.multiple ? [] : '';
-
+			this.currentValue = [];
+			this.currentLabel = [];
 			this.sync();
 		},
 
-		handleClose(v) {
-			this.remove(v);
+		handleClose(v, index) {
+			this.currentValue.splice(index, 1);
+			this.currentLabel.splice(index, 1);
+
+			this.sync();
 		},
 
 		handleSearch(v) {
@@ -238,82 +249,17 @@ export default {
 			this.loadData && this._loadData();
 		},
 
-		add(v, label) {
-			if (!this.multiple) {
-				this.currentValue = v;
-				this.currentLabel = label;
-				this.visible = false;
-			} else {
-				this.currentValue.push(v); 
-				this.currentLabel.push(label);
-			}
+		handleChange(v, data) {
+			this.currentValue = v;
+			this.currentLabel = data.checkedNodes.map(i => i.label);
 
 			this.sync();
 		},
-
-		remove(v, label) {
-			let index = this.currentValue.findIndex(i => i == v);
-
-			this.currentValue.splice(index, 1);
-			this.currentLabel.splice(index, 1);
-
-			this.sync();
-		},
-
-		close() {
-			this.visible = false;
-		},
-
-		update(force = false) {
-			if (force === false && (this.hasInit || this.extra)) return;
-			if (!this.$slots.default) return;
-			/**
-			 * 可能存在耗时操作
-			 */
-			this.$nextTick(() => {
-				let vnodes = [];
-				this.$slots.default.forEach((vnode) => {
-					if (!vnode.tag) return;
-					if (vnode && /option-group$/.test(vnode.tag)) {
-						let child = vnode.componentOptions.children.filter(i => i.tag);
-						vnodes.push(...child);
-					} else {
-						vnodes.push(vnode);
-					}
-				});
-
-				let data = [];
-				vnodes.forEach((vnode) => {
-					let { value, label = '', disabled } = vnode.componentOptions.propsData;
-
-					label = String(
-						label 
-						|| (vnode.componentOptions.children && vnode.componentOptions.children[0].text) 
-						|| value
-					);
-
-					data.push({
-						disabled,
-						value,
-						label: label.trim()
-					});
-				});
-				if (!force && isEqualWith(this.dataSource, data)) return;
-
-				this.currentLabel = this.multiple 
-					? this.currentValue.map(getLabel.bind(null, data))
-					: getLabel(data, this.currentValue);
-
-				this.hasInit = true;
-				this.dataSource = data;
-			});
-		},
-
 		/**
 		 * v-model 同步, 外部的数据改变时不会触发
 		 */
 		sync() {
-			this.$emit('change', this.currentValue, this.currentLabel);
+			this.$emit('change', this.currentValue);
 
 			// form表单
 			this.dispatch('vc-form-item', 'form-change', this.currentValue);
@@ -332,7 +278,7 @@ export default {
 					this.loading = false;
 				});
 			} else {
-				throw new VcError('select', 'loadData 返回值需要Promise');
+				throw new VcError('tree-select', 'loadData 返回值需要Promise');
 			}
 		}, 250, { leading: false })
 	},
@@ -342,7 +288,7 @@ export default {
 <style lang='scss'>
 @import '../style/index.scss';
 
-$block: vc-select;
+$block: vc-tree-select;
 
 @include block($block) {
 	display: inline-block;

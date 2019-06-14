@@ -1,3 +1,4 @@
+import { isEqualWith, difference } from 'lodash';
 import { Utils } from '@wya/utils';
 import Node from './node';
 import { getNodeKey } from './util';
@@ -124,7 +125,13 @@ export default class TreeStore {
 	}
 
 	setCheckedKeys(newVal) {
-		if (newVal !== this.checkedKeys) {
+		if (!isEqualWith(newVal, this.checkedKeys)) {
+			// 额外处理, 移除checkbox
+			difference(this.checkedKeys, newVal).forEeach((key) => {
+				this.nodesMap[key] 
+					&& this.nodesMap[key].setChecked(false, !this.checkStrictly);
+			});
+
 			this.checkedKeys = newVal;
 			this._initDefaultCheckedNodes();
 		}
