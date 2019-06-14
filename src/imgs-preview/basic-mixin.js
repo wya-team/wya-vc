@@ -35,7 +35,7 @@ export default {
 				this.handlePSWPPreview(e, index);
 			}
 		},
-		handleWechatPreview() {
+		handleWechatPreview(index) {
 			this.$wx && this.$wx.previewImage({
 				current: this.dataSource[index], // 当前显示图片的http链接
 				urls: this.dataSource // 需要预览的图片http链接列表
