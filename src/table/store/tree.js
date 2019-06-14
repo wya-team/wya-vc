@@ -203,7 +203,5 @@ export default {
 				
 			}
 		},
-
-
 	}
 };

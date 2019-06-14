@@ -1,154 +1,118 @@
 <template>
-	<vc-tree :data-source="data5" :render="renderContent" />
+	<div>
+		<vc-button @click="lazy = !lazy">lazy {{ lazy }}</vc-button>
+		<vc-tree 
+			v-model="value"
+			:data-source="data"
+			:load-data="loadData" 
+			:lazy="lazy"
+			:key="lazy"
+			show-checkbox 
+			accordion
+			draggable
+			default-expand-all
+			@check-change="handleCheckChange"
+		/>
+	</div>
 </template>
 <script>
 import Tree from '..';
+import Button from '../../button';
 
 export default {
 	name: "vc-tree-basic",
 	components: {
-		'vc-tree': Tree
+		'vc-tree': Tree,
+		'vc-button': Button,
 	},
 	data() {
 		return {
-			data5: [
-				{
-					title: 'parent 1',
-					expand: true,
-					render: (h, { root, node, data }) => {
-						return h('span', {
-							style: {
-								display: 'inline-block',
-								width: '100%'
-							}
-						}, [
-							h('span', [
-								h('div', {
-									props: {
-										type: 'ios-folder-outline'
-									},
-									style: {
-										marginRight: '8px'
-									}
-								}),
-								h('span', data.title)
-							]),
-							h('span', {
-								style: {
-									display: 'inline-block',
-									float: 'right',
-									marginRight: '32px'
-								}
-							}, [
-								h('div', {
-									props: Object.assign({}, this.buttonProps, {
-										icon: 'ios-add',
-										type: 'primary'
-									}),
-									style: {
-										width: '64px'
-									},
-									on: {
-										click: () => { this.append(data); }
-									}
-								})
-							])
-						]);
-					},
-					children: [
-						{
-							title: 'child 1-1',
-							expand: true,
-							children: [
-								{
-									title: 'leaf 1-1-1',
-									expand: true
-								},
-								{
-									title: 'leaf 1-1-2',
-									expand: true
-								}
-							]
-						},
-						{
-							title: 'child 1-2',
-							expand: true,
-							children: [
-								{
-									title: 'leaf 1-2-1',
-									expand: true
-								},
-								{
-									title: 'leaf 1-2-1',
-									expand: true
-								}
-							]
-						}
-					]
-				}
-			],
-			buttonProps: {
-				type: 'default',
-				size: 'small',
-			}
+			lazy: true,
+			value: ["1"],
+			data: [{
+				value: '1',
+				label: '一级 1',
+				children: [{
+					value: '1-1',
+					label: '二级 1-1',
+					children: [{
+						value: '1-1-1',
+						label: '三级 1-1-1',
+						isLeaf: true // 已经是叶子节点
+					}]
+				}]
+			}, {
+				value: '2',
+				label: '一级 2',
+				children: [{
+					value: '2-1',
+					label: '二级 2-1',
+					children: [{
+						value: '2-1-1',
+						label: '三级 2-1-1'
+					}]
+				}, {
+					value: '2-2',
+					label: '二级 2-2',
+					children: [{
+						value: '2-2-1',
+						label: '三级 2-2-1'
+					}]
+				}]
+			}, {
+				value: '3',
+				label: '一级 3',
+				children: [{
+					value: '3-1',
+					label: '二级 3-1',
+					children: [{
+						value: '3-1-1',
+						label: '三级 3-1-1'
+					}]
+				}, {
+					value: '3-2',
+					label: '二级 3-2',
+					children: [{
+						value: '3-2-1',
+						label: '三级 3-2-1'
+					}]
+				}]
+			}, {
+				value: '4',
+				label: '一级 4',
+				children: []
+			}]
 		};
 	},
 	computed: {
 		
 	},
 	methods: {
-		renderContent(h, { root, node, data }) {
-			return h('span', {
-				style: {
-					display: 'inline-block',
-					width: '100%'
-				}
-			}, [
-				h('span', [
-					h('span', {
-						style: {
-							marginRight: '8px'
-						}
-					}, '?'),
-					h('span', data.title)
-				]),
-				h('span', {
-					style: {
-						display: 'inline-block',
-						float: 'right',
-						marginRight: '32px'
-					}
-				}, [
-					h('span', {
-						style: {
-							marginRight: '8px'
-						},
-						on: {
-							click: () => { this.append(data); }
-						}
-					}, '+'),
-					h('span', {
-						on: {
-							click: () => { this.remove(root, node, data); }
-						}
-					}, '-')
-				])
-			]);
-		},
-		append(data) {
-			const children = data.children || [];
-			children.push({
-				title: 'appended node',
-				expand: true
+		loadData(parent) {
+			return new Promise((resolve) => {
+				setTimeout(() => {
+					resolve([{
+						value: '4-1',
+						label: '二级 4-1',
+						children: [{
+							value: '4-1-1',
+							label: '三级 4-1-1'
+						}],
+					}, {
+						value: '4-2',
+						label: '二级 4-2',
+						isLeaf: true
+					}, {
+						value: '4-3',
+						label: '二级 4-3'
+					}]);
+				}, 3000);
 			});
-			this.$set(data, 'children', children);
 		},
-		remove(root, node, data) {
-			const parentKey = root.find(el => el === node).parent;
-			const parent = root.find(el => el.nodeKey === parentKey).node;
-			const index = parent.children.indexOf(data);
-			parent.children.splice(index, 1);
-		}
+		handleCheckChange(data, checked, indeterminate) {
+			console.log(data, checked, indeterminate);
+		},
+
 	}
 };
 </script>

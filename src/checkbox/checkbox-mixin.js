@@ -90,7 +90,7 @@ export default {
 			} else {
 				this.currentValue = checked ? this.trueValue : this.falseValue;
 
-				this.sync();
+				this.sync(e);
 			}
 		},
 		handleBlur() {
@@ -102,8 +102,8 @@ export default {
 		/**
 		 * v-model 同步, 外部的数据改变时不会触发
 		 */
-		sync() {
-			this.$emit('change', this.currentValue);
+		sync(e) {
+			this.$emit('change', this.currentValue, e);
 			this.dispatch('vc-form-item', 'form-change', this.currentValue);
 		}
 	}
