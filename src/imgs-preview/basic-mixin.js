@@ -27,6 +27,23 @@ export default {
 			isWechat: Device.wechat
 		};
 	},
+	computed: {
+		images() {
+			return this.dataSource.map((item, index) => {
+				if (typeof item === 'object') {
+					return {
+						...item
+					};
+				} else {
+					return {
+						src: item,
+						thumbnail: item,
+						title: `IMG_${index + 1}`
+					};
+				}
+			});
+		}
+	},
 	methods: {
 		handleShow(e, index) {
 			if (this.isWechat) {
@@ -37,8 +54,8 @@ export default {
 		},
 		handleWechatPreview(index) {
 			this.$wx && this.$wx.previewImage({
-				current: this.dataSource[index], // 当前显示图片的http链接
-				urls: this.dataSource // 需要预览的图片http链接列表
+				current: this.images[index].src, // 当前显示图片的http链接
+				urls: this.images.map((item) => item.src) // 需要预览的图片http链接列表
 			});
 		},
 		handlePSWPPreview(e, index) {
