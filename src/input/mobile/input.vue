@@ -130,6 +130,7 @@ $block: vcm-input;
 	@include element(icon-clear){
 		@include extend-rule(icon);
 		display: none;
+		line-height: inherit;
 	}
 	@include pseudo(hover) {
 		@include element(icon-clear){
