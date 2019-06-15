@@ -6,7 +6,7 @@
 		<div
 			v-for="(item, index) in dataSource"
 			:key="index"
-			:class="itemClass"
+			:class="itemClassName"
 			class="vc-imgs-preview__item"
 		>
 			<slot
