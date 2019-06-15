@@ -40,10 +40,10 @@ export default {
 		},
 		y: Number,
 		auto: Boolean, // 是否有内部控制滚动
-		isEnd: Number,
 		current: Number | String,
 		total: String | Number,
-		status: Number
+		scrollStatus: Number,
+		pullStatus: Number
 	},
 	data() {
 		return {
@@ -128,7 +128,7 @@ export default {
 			};
 		},
 		loadFirstData() {
-			if (!this.show || (this.total != 0 && this.isEnd > 0)) { // 禁用，加载完成或者加载中无视
+			if (!this.show || (this.total != 0 && this.scrollStatus > 0)) { // 禁用，加载完成或者加载中无视
 				return false;
 			}
 			this._loadData(1, false);
@@ -143,7 +143,7 @@ export default {
 			// 延迟计算
 			this.timer && clearTimeout(this.timer);
 			this.timer = setTimeout(() => {
-				if (!this.show || this.isEnd == 2) {
+				if (!this.show || this.scrollStatus == 2) {
 					return;
 				}
 
@@ -201,40 +201,40 @@ export default {
 
 
 			if (!this.pull || !this.touching || this.isLoadingForScroll) return;
-			if (this.status) { // 状态非0时
+			if (this.pullStatus) { // 状态非0时
 				const pulledY = (eTouchScreenY - this.startY) * this.scaleY; // 用scaleY对pull的距离进行缩放
 				if (pulledY >= 0) { // 进行下拉
 					this.endY = eTouchScreenY;
-					this.$emit('update:y', this.status === 3 && pulledY < this.pauseY ? this.pauseY : pulledY);
+					this.$emit('update:y', this.pullStatus === 3 && pulledY < this.pauseY ? this.pauseY : pulledY);
 
-					if (this.status !== 3) { // 在状态不为3时，即状态为1或2时
+					if (this.pullStatus !== 3) { // 在状态不为3时，即状态为1或2时
 						if (pulledY > this.pauseY) { // 拉动的值超过设定的，即提示释放刷新
-							if (this.status !== 2) {
-								this.$emit('update:status', 2);
+							if (this.pullStatus !== 2) {
+								this.$emit('update:pull-status', 2);
 							}
-						} else if (this.status !== 1) { // 拉动的值不超过设定的，即提示下拉刷新
-							this.$emit('update:status', 1);
+						} else if (this.pullStatus !== 1) { // 拉动的值不超过设定的，即提示下拉刷新
+							this.$emit('update:pull-status', 1);
 						}
 					}
 				} else { // 上滑，其实只有状态为3时才会进入该逻辑，pulledY < 0时，回到状态0
 					// e.preventDefault(); // 屏蔽滚动
-					this.$emit('update:status', 0);
+					this.$emit('update:pull-status', 0);
 					this.$emit('update:y', 0);
 				}
 			} else if (this.getParams().scrollTop === 0) { // 状态为0时, scrollTop为0时进入状态1
 				this.startY = eTouchScreenY;
-				this.$emit('update:status', 1);
+				this.$emit('update:pull-status', 1);
 			}
 		},
 
 		handleEnd() {
 			if (!this.pull || this.isLoadingForScroll) return;
 
-			if (this.status) {
+			if (this.pullStatus) {
 				// 判断是否进入状态3还是回到状态0
 				let isPause; 
 				if (this.y > this.pauseY) {
-					this.$emit('update:status', 3);
+					this.$emit('update:pull-status', 3);
 
 					// 强制置顶
 					this.getParams().el.scrollTop = 0;
@@ -245,7 +245,7 @@ export default {
 					this.shouldLoadForPull = false;
 					isPause = true;
 				} else {
-					this.$emit('update:status', 0);
+					this.$emit('update:pull-status', 0);
 					isPause = false;
 				}
 			
@@ -258,7 +258,7 @@ export default {
 		},
 		reset() {
 			this.$emit('update:y', 0);
-			this.$emit('update:status', 0);
+			this.$emit('update:pull-status', 0);
 			this.shouldLoadForPull = true;
 		},
 		_loadData(page, isRefresh) {

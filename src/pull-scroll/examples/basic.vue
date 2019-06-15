@@ -5,7 +5,7 @@
 		:total="total"
 	>
 		<template #header>
-			<div>这是一个window下的滚动</div>
+			<div @click="handleClick">这是一个window下的滚动</div>
 		</template>
 		<template #default="{ it }">
 			<div style="padding: 20px" @click="handleReset">{{ it }}</div>
@@ -78,6 +78,9 @@ export default {
 		handleReset() {
 			this.total = 0;
 			this.dataSource = [];
+		},
+		handleClick() {
+			console.log(2);
 		}
 	}
 

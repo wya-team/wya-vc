@@ -1,22 +1,21 @@
 <template>
 	<div :style="[basicStyle]" class="vc-pull-scroll">
-		<vc-status
-			v-if="reverse"
-			:style="style"
-			:status="isEnd"
-			:y="y" 
-			:current="currentPage"
-			:data-source="dataSource" 
-			type="scroll"
-		/>
-		<vc-status
-			v-if="!reverse && pull"
-			:style="style" 
-			:status="status" 
-			:y="y" 
-			type="pull" 
-		/>
-		<!-- TODO: reverse-status -->
+		<div v-if="reverse" :style="style">
+			<slot :status="rebuildScrollStatus" name="scroll-status">
+				<vc-scroll-status
+					:status="rebuildScrollStatus"
+					:text="scrollText"
+				/>
+			</slot>
+		</div>
+		<div v-if="!reverse && pull" :style="style">
+			<slot :status="rebuildScrollStatus" name="pull-status">
+				<vc-pull-status
+					:status="pullStatus"
+					:text="pullText"
+				/>
+			</slot>
+		</div>
 		<vc-core
 			ref="core"
 			:style="style"
@@ -29,9 +28,9 @@
 			:scale-y="scaleY"
 			:pause-y="pauseY"
 			:load-data="loadData"
-			:is-end="isEnd"
+			:scroll-status="scrollStatus"
 			:y.sync="y"
-			:status.sync="status" 
+			:pull-status.sync="pullStatus" 
 			:auto="auto"
 			@load-pending="handlePending"
 			@load-success="handleSuccess"
@@ -46,26 +45,29 @@
 			</template>
 			<slot name="footer" />
 		</vc-core>
-		<vc-status
-			v-if="!reverse && scroll"
-			:style="style"
-			:status="isEnd"
-			:y="y" 
-			:current="currentPage"
-			:data-source="dataSource" 
-			type="scroll"
-		/>
+		<div v-if="!reverse && scroll" :style="style">
+			<slot :status="rebuildScrollStatus" name="scroll-status">
+				<vc-scroll-status
+					:status="rebuildScrollStatus"
+					:text="scrollText"
+				/>
+			</slot>
+		</div>
 	</div>
 </template>
 <script>
 import { pick } from 'lodash';
 import Status from './status.vue';
 import Core from './core.vue';
+import ScrollStatus from './scroll-status.vue';
+import PullStatus from './pull-status.vue';
 
 export default {
 	name: "vc-pull-scroll",
 	components: {
 		'vc-status': Status,
+		'vc-scroll-status': ScrollStatus,
+		'vc-pull-status': PullStatus,
 		'vc-core': Core,
 	},
 	props: {
@@ -86,13 +88,15 @@ export default {
 			default: false,
 		},
 		...pick(Core.props, ['scaleY', 'pauseY', 'reverse', 'dataSource', 'show', 'loadData', 'current', 'total']),
-		...pick(Status.props, ['scrollText', 'pullText'])
+		scrollText: ScrollStatus.props.text,
+		pullText: PullStatus.props.text,
+		empeyText: Function | String,
 	},
 	data() {
 		return {
 			y: 0, // 下拉的距离
-			status: 0, // 下拉的距离
-			isEnd: 0,
+			pullStatus: 0,
+			scrollStatus: 0,
 
 			pulling: false,
 
@@ -115,10 +119,16 @@ export default {
 			// TODO： 写对应的demo, 避免重构时出问题
 			return this.y !== 0 
 				? {
-					transition: `transform ${!this.pulling && (this.status === 0 || this.status === 3) ? '300' : '0'}ms ease-out`,
+					transition: `transform ${!this.pulling && (this.pullStatus === 0 || this.pullStatus === 3) ? '300' : '0'}ms ease-out`,
 					transform: `translate3d(0, ${this.y}px, 0)`
 				}
 				: {};
+		},
+		isEmpty() {
+			return this.currentPage === 1 && this.dataSource.length === 0;
+		},
+		rebuildScrollStatus() {
+			return this.isEmpty ? 4 : this.scrollStatus;
 		}
 	},
 	mounted() {
@@ -128,7 +138,7 @@ export default {
 	methods: {
 		reset() {
 			this.y = 0;
-			this.status = 0;
+			this.pullStatus = 0;
 		},
 		handleChange(value) {
 			const { pauseY } = this;
@@ -141,19 +151,19 @@ export default {
 			switch (value) {
 				case 0:
 					this.y = 0;
-					this.status = value;
+					this.pullStatus = value;
 					break;
 				case 3:
 					this.y = this.pauseY;
-					this.status = value;
+					this.pullStatus = value;
 					break;
 				default:
-					this.status = value;
+					this.pullStatus = value;
 					break;
 			}
 		},
 		handlePending(res) {
-			this.isEnd = 1;
+			this.scrollStatus = 1;
 			this.$emit('load-pending', res);
 		},
 		handleSuccess(res, page) {
@@ -161,7 +171,7 @@ export default {
 			this.$emit('load-success', res);
 		},
 		handleFinish(res) {
-			this.isEnd = this.total < Number(this.currentPage) + 1 ? 2 : 0;
+			this.scrollStatus = this.total < Number(this.currentPage) + 1 ? 2 : 0;
 			this.$emit('load-finish', res);
 		},
 		handleStart() {
