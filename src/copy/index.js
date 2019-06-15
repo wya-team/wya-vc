@@ -1,5 +1,5 @@
 import Copy from './copy';
-import copyToClipboard from './utils';
+import { copyToClipboard } from './utils';
 
 Copy.set = copyToClipboard;
 

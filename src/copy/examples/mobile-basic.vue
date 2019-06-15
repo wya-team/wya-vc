@@ -2,28 +2,28 @@
 	<div>
 		<input v-model="msg" type="text">
 		<br>
-		<vc-copy 
+		<vcm-copy 
 			:value="msg" 
 			tag="span"
 			@before="handleBefore"
 			@after="handleAfter"
 		>
 			复制
-		</vc-copy>
+		</vcm-copy>
 		<br>
 		<br>
 		<br>
-		<vc-copy :value="msg">简洁版复制</vc-copy>
+		<vcm-copy :value="msg">简洁版复制</vcm-copy>
 	</div>
 </template>
 <script>
-import Message from '../../message';
-import Copy from '..';
+import MToast from '../../toast';
+import Copy from '../index.m';
 
 export default {
-	name: "vc-copy-basic",
+	name: "vcm-copy-basic",
 	components: {
-		"vc-copy": Copy
+		"vcm-copy": Copy
 	},
 	data() {
 		return {
@@ -35,7 +35,7 @@ export default {
 	},
 	methods: {
 		handleAfter(value) {
-			Message.success({
+			MToast.info({
 				content: `复制成功：${value}`
 			});
 			return value;
