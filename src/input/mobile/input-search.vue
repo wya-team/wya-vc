@@ -43,6 +43,10 @@ export default {
 		cancelTxt: {
 			type: String,
 			default: '取消'
+		},
+		type: {
+			type: String,
+			default: 'search'
 		}
 	},
 	methods: {
