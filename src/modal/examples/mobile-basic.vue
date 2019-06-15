@@ -19,6 +19,7 @@
 			@ok="handleOk"
 		>
 			<div @click="handleClick4">portal: 确定，取消</div>
+			<vcm-input v-model="value"/>
 		</vcm-modal>
 		<vcm-modal 
 			v-model="visible3"
@@ -42,15 +43,18 @@
 <script>
 import MModal from '../index.m';
 import { VcInstance } from '../../vc/index';
+import MInput from '../../input/index.m';
 
 window.vc = VcInstance;
 export default {
 	name: "vc-tpl-basic",
 	components: {
 		'vcm-modal': MModal,
+		'vcm-input': MInput,
 	},
 	data() {
 		return {
+			value: "222",
 			mode: 'alert',
 			visible1: false,			
 			visible2: false,
