@@ -2,6 +2,7 @@
 	<vcm-popup 
 		v-model="visible" 
 		:placement="param.placement" 
+		class="vc-popup-basic-tip"
 		@visible-change="handleChange"
 	>
 		<div @click="handleClose">点击关闭</div>
@@ -30,7 +31,7 @@
 		tip <br>
 		tip <br>
 		tip <br>
-		tip <br>
+		tip2 <br>
 	</vcm-popup>
 </template>
 
@@ -76,5 +77,6 @@ export const Tip = CreatePortal({}, config);
 
 </script>
 
-<style lang="scss" scoped>
+<style lang="scss">
+
 </style>

@@ -30,7 +30,7 @@
 					v-if="clearable && currentValue" 
 					class="vcm-input__icon vcm-input__icon-clear" 
 					type="clear" 
-					@click="handleClear"
+					@touchstart.native="handleClear"
 				/>
 			</vcm-transition-fade>
 			<div
@@ -144,7 +144,7 @@ $block: vcm-input;
 	@include share-rule(pend) {
 		height: 100%;
 		text-align: center;
-		font-size: 13px;
+		line-height: inherit;
 		white-space: nowrap;
 		z-index: 3;
 		@include when(icon) {

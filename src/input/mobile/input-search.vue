@@ -11,7 +11,7 @@
 			v-on="hooks"
 		>
 			<template #prepend>
-				<slot name="prepend" >
+				<slot name="prepend">
 					<vcm-icon type="search" class="vcm-input-search__icon"/>
 				</slot>
 			</template>
@@ -69,6 +69,9 @@ $size: 56px;
 	padding: 12px 12px;
 	.vcm-input {
 		height: 32px;
+	}
+	.vcm-input__prepend {
+		line-height: 32px;
 	}
 	@include element(content) {
 		background: white;

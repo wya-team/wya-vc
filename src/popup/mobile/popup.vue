@@ -5,12 +5,14 @@
 				v-show="mask && isActive"
 				class="vcm-popup__mask"
 				@click="handleClose(maskClosable)"
+				@touchmove.prevent
 			/>
 		</vcm-transtion-fade>
 		<components :is="animateComponent" :mode="mode" @after-leave="handleRemove">
 			<div
 				v-show="isActive"
-				:style="{ position: fixed ? 'fixed' : 'absolute' }"
+				:style="[{ position: fixed ? 'fixed' : 'absolute' }, wrapperStyle]"
+				:class="wrapperClassName"
 				class="vcm-popup__wrapper"
 			>
 				<slot />
@@ -67,6 +69,8 @@ export default {
 			default: 'light',
 			validator: v => /(light|dark|none)/.test(v)
 		},
+		wrapperClassName: Object | Array | String,
+		wrapperStyle: Object | Array | String
 	},
 	data() {
 		return {

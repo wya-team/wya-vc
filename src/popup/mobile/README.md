@@ -14,7 +14,8 @@ placement | 从哪个方向弹出（top/bottom/left/right/center） | `String` |
 theme | 背景（dark/light/none） | `String` | light
 mask | 是否显示遮罩（只有在position为bottom的时候才有用） | `Boolean` | true
 maskClosable | 是否允许通过点击遮罩关闭弹窗 | `Boolean` | true
-
+wrapperClassName | - | `Object,Array,String` | -
+wrapperStyle | - | `Object,Array,String` | -
 
 #### 事件
 
