@@ -46,21 +46,21 @@ export default {
 	methods: {
 		handleShow(e, index) {
 			if (Device.wechat && this.$wx) {
-				this.handleWechatPreview(index);
+				this.previewByWechat(index);
 			} else {
-				this.handlePSWPPreview(e, index);
+				this.previewByPS(e, index);
 			}
 		},
 		/**
 		 * 确保已经注入到Vue.prototype.$wx
 		 */
-		handleWechatPreview(index) {
+		previewByWechat(index) {
 			this.$wx.previewImage({
 				current: this.images[index].src, // 当前显示图片的http链接
 				urls: this.images.map((item) => item.src) // 需要预览的图片http链接列表
 			});
 		},
-		handlePSWPPreview(e, index) {
+		previewByPS(e, index) {
 			const { id, dataSource, opts, events, getInstance } = this;
 			let pos = {};
 			try {
