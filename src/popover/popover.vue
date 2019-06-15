@@ -27,7 +27,7 @@ export default {
 	props: {
 		...pick(Core.props, [
 			'visible', 
-			'animate', 
+			'animation', 
 			'placement', 
 			'theme', 
 			'content', 

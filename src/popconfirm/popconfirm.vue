@@ -71,7 +71,7 @@ export default {
 	},
 	props: {
 		// ...pick(Popover.props, [
-		// 	'animate', 
+		// 	'animation', 
 		// 	'theme', 
 		// 	'content', 
 		// 	'getPopupContainer', 

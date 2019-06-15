@@ -1,7 +1,7 @@
 <template>
 	<!-- TODO: Transtion 动态的动画组件 -->
 	<vc-transition-scale 
-		:mode="animate || 'part'" 
+		:mode="animation || 'part'" 
 		:duration="{ enter: 0.3, leave: 0.15 }"
 		@after-leave="handleRemove"
 	>
@@ -44,7 +44,7 @@ const popup = {
 	},
 	props: {
 		visible: Boolean,
-		animate: Transition.Scale.props.mode,
+		animation: Transition.Scale.props.mode,
 		placement: {
 			type: String,
 			default: 'bottom',

@@ -9,7 +9,7 @@ Popover
 属性 | 说明 | 类型 | 默认值
 ---|---|---|---
 visible | 显示popover | `boolean` | `false`
-animate | 自定义的动画效果 | `string` | 无
+animation | 自定义的动画效果 | `string` | 无
 placement | 弹层的位置(`top` `left` `right` `bottom` `bottom-left` `bottom-right` `top-left` `top-right` `right-top` `right-bottom` `left-top` `left-bottom`) | `string` | `bottom`
 trigger | 触发的行为`hover` `click` `focus` | `string` | `hover`
 content | 显示的内容 | `string` | 无
