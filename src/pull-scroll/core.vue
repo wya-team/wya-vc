@@ -26,7 +26,7 @@ export default {
 			type: Number,
 			default: 75,
 		},
-		reverse: {
+		inverted: {
 			type: Boolean,
 			default: false
 		},
@@ -138,7 +138,7 @@ export default {
 			this.prvScrollTop = 0;
 		},
 		handleScroll(event) {
-			const { scroll, reverse } = this;
+			const { scroll, inverted } = this;
 			if (!scroll || this.total === 0) return;
 			// 延迟计算
 			this.timer && clearTimeout(this.timer);
@@ -149,14 +149,14 @@ export default {
 
 				const { scrollTop, totalHeight, containerHeight } = this.getParams();
 				// 防止向上滚动也拉数据
-				if (!reverse && this.prvScrollTop > scrollTop) {
+				if (!inverted && this.prvScrollTop > scrollTop) {
 					return;
 				}
 				this.prvScrollTop = scrollTop;
 				
 				if (
-					(!reverse && scrollTop >= totalHeight - containerHeight - 100)
-					|| (reverse && scrollTop == 0)
+					(!inverted && scrollTop >= totalHeight - containerHeight - 100)
+					|| (inverted && scrollTop == 0)
 				) {
 					this._loadData(this.current + 1, false);
 				}
@@ -269,7 +269,7 @@ export default {
 				this.$emit('load-pending');
 				load.then((res) => {
 					this.$emit('load-success', res, page);
-					this.reverse && this.scrollTo(1);
+					this.inverted && this.scrollTo(1);
 					return res;
 				}).catch((res) => {
 					this.$emit('load-fail', res);

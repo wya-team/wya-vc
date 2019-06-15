@@ -1,7 +1,7 @@
 <template>
 	<div class="vc-pull-scroll-pull-status">
 		<div 
-			v-if="typeof text[status] === 'string'"
+			v-if="typeof renderer[status] === 'string'"
 			class="vc-pull-scroll-pull-status__wrapper" 
 		>
 			<vc-spin 
@@ -10,17 +10,18 @@
 				background="#666" 
 				style="margin-right: 6px"
 			/>
-			<span v-html="text[status]" />
+			<span v-html="renderer[status]" />
 		</div>
 		<vc-customer 
-			v-else-if="text[status] || text"
-			:render="text[status] || text"
+			v-else-if="renderer[status] || renderer"
+			:render="renderer[status] || renderer"
 			:status="status"
 		/>
 	</div>
 </template>
 
 <script>
+import { merge } from 'lodash';
 import Customer from '../customer';
 import Spin from '../spin';
 
@@ -34,15 +35,18 @@ export default {
 		status: Number,
 		text: {
 			type: Object | Function,
-			default() {
-				return Object.assign({
-					0: '↓ 下拉刷新', 
-					1: '↓ 下拉刷新', 
-					2: '↑ 释放更新', 
-					3: '加载中...', 
-				}, this.text);
-			}
-		},
+			default: () => ({}),
+		}
+	},
+	computed: {
+		renderer() {
+			return merge(this.text, {
+				0: '↓ 下拉刷新', 
+				1: '↓ 下拉刷新', 
+				2: '↑ 释放更新', 
+				3: '加载中...', 
+			});
+		}
 	}
 };
 </script>

@@ -1,17 +1,17 @@
 <template>
 	<div class="vc-pull-scroll-scroll-status">
-		<template v-if="typeof current[status] === 'string'">
+		<template v-if="typeof renderer[status] === 'string'">
 			<vc-spin 
 				v-if="status === 1" 
 				:size="12" 
 				background="#666" 
 				style="margin-right: 6px"
 			/>
-			<span v-html="current[status]" />
+			<span v-html="renderer[status]" />
 		</template>
 		<vc-customer 
-			v-else-if="current[status] || current"
-			:render="current[status] || current"
+			v-else-if="renderer[status] || renderer"
+			:render="renderer[status] || renderer"
 			:status="status"
 		/>
 	</div>
@@ -37,14 +37,14 @@ export default {
 		emptyText: Function | String,
 	},
 	computed: {
-		current() {
-			return merge({
+		renderer() {
+			return merge(this.text, {
 				0: '上拉加载', 
 				1: '加载中', 
 				2: '已全部加载', 
 				3: '网络不稳定，请稍后重试', 
 				4: '没有内容可供显示'
-			}, this.text, {
+			}, {
 				4: this.emptyText
 			});
 		}

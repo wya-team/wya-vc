@@ -1,6 +1,6 @@
 <template>
 	<div :style="[basicStyle]" class="vc-pull-scroll">
-		<div v-if="reverse" :style="style">
+		<div v-if="inverted" :style="style">
 			<slot :status="rebuildScrollStatus" name="scroll-status">
 				<vc-scroll-status
 					:status="rebuildScrollStatus"
@@ -8,7 +8,7 @@
 				/>
 			</slot>
 		</div>
-		<div v-if="!reverse && pull" :style="style">
+		<div v-if="!inverted && pull" :style="style">
 			<slot :status="rebuildScrollStatus" name="pull-status">
 				<vc-pull-status
 					:status="pullStatus"
@@ -20,9 +20,9 @@
 			ref="core"
 			:style="style"
 			:show="show"
-			:pull="!reverse && pull"
+			:pull="!inverted && pull"
 			:scroll="scroll"
-			:reverse="reverse"
+			:inverted="inverted"
 			:current="currentPage"
 			:total="total"
 			:scale-y="scaleY"
@@ -45,7 +45,7 @@
 			</template>
 			<slot name="footer" />
 		</vc-core>
-		<div v-if="!reverse && scroll" :style="style">
+		<div v-if="!inverted && scroll" :style="style">
 			<slot :status="rebuildScrollStatus" name="scroll-status">
 				<vc-scroll-status
 					:status="rebuildScrollStatus"
@@ -57,7 +57,6 @@
 </template>
 <script>
 import { pick } from 'lodash';
-import Status from './status.vue';
 import Core from './core.vue';
 import ScrollStatus from './scroll-status.vue';
 import PullStatus from './pull-status.vue';
@@ -65,7 +64,6 @@ import PullStatus from './pull-status.vue';
 export default {
 	name: "vc-pull-scroll",
 	components: {
-		'vc-status': Status,
 		'vc-scroll-status': ScrollStatus,
 		'vc-pull-status': PullStatus,
 		'vc-core': Core,
@@ -87,7 +85,7 @@ export default {
 			type: Boolean,
 			default: false,
 		},
-		...pick(Core.props, ['scaleY', 'pauseY', 'reverse', 'dataSource', 'show', 'loadData', 'current', 'total']),
+		...pick(Core.props, ['scaleY', 'pauseY', 'inverted', 'dataSource', 'show', 'loadData', 'total']),
 		scrollText: ScrollStatus.props.text,
 		pullText: PullStatus.props.text,
 		empeyText: Function | String,
