@@ -5,6 +5,7 @@
 				<vc-scroll-status
 					:status="rebuildScrollStatus"
 					:text="scrollText"
+					:empty-text="emptyText"
 				/>
 			</slot>
 		</div>
@@ -50,6 +51,7 @@
 				<vc-scroll-status
 					:status="rebuildScrollStatus"
 					:text="scrollText"
+					:empty-text="emptyText"
 				/>
 			</slot>
 		</div>
@@ -88,7 +90,7 @@ export default {
 		...pick(Core.props, ['scaleY', 'pauseY', 'inverted', 'dataSource', 'show', 'loadData', 'total']),
 		scrollText: ScrollStatus.props.text,
 		pullText: PullStatus.props.text,
-		empeyText: Function | String,
+		emptyText: ScrollStatus.props.emptyText,
 	},
 	data() {
 		return {
