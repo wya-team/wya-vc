@@ -133,7 +133,7 @@ $block: vc-input;
 	@include share-rule(icon) {
 		width: 28px;
 		height: 28px;
-		line-height: 28px;
+		line-height: 28px!important; // 强制处理【目前potral会导致style重复，导致覆盖，延后处理】
 		font-size: 13px;
 		text-align: left;
 		padding-left: 1px; // hack for vc-icon
@@ -148,7 +148,6 @@ $block: vc-input;
 		background-color: #fff;
 		cursor: pointer;
 		display: none;
-		line-height: inherit;
 	}
 
 	/**

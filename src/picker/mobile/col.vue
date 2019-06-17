@@ -50,7 +50,6 @@ export default {
 			scrollEnd: true,
 		};
 	},
-	minxin: [],
 	computed: {
 		maxH() {
 			return this.itemH * this.dataSource.length - this.itemH;
