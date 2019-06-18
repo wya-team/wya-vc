@@ -178,7 +178,7 @@
 
 			<vc-form-item label="搜索设置单选：" prop="value1">
 				<vc-select 
-					v-model="value2" 
+					v-model="value3" 
 					:load-data="handleSearch" 
 					style="width: 200px"
 					search

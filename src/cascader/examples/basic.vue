@@ -14,6 +14,9 @@
 			<vc-cascader :data-source="dataSource" v-model="value2" clearable/>
 		</div>
 		<div style="margin: 40px 0 ">
+			<vc-cascader :data-source="dataSourceAlone" v-model="valueAlone" clearable/>
+		</div>
+		<div style="margin: 40px 0 ">
 			<vc-cascader :data-source="dataAsyncSource1" v-model="value3" clearable/>
 		</div>
 		<div style="margin: 40px 0 ">
@@ -59,6 +62,7 @@ export default {
 			value2: [],
 			value3: ['jiangsu', 'nanjing'],
 			value4: [],
+			valueAlone: [],
 			bigData,
 			dataSource: [
 				{
@@ -108,6 +112,16 @@ export default {
 							]
 						}
 					],
+				}
+			],
+			dataSourceAlone: [
+				{
+					value: 'beijing',
+					label: '北京'
+				},
+				{
+					value: 'suzhou',
+					label: '苏州'
 				}
 			],
 			dataAsyncSource1: [],
