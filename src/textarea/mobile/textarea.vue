@@ -41,7 +41,7 @@ $block: vcm-textarea;
 	width: 100%;
 	display: inline-block;
 	cursor: text;
-	height: 24px;
+	min-height: 24px; // 动态计算
 	line-height: 1.5;
 	@include element(wrapper) {
 		display: flex;
