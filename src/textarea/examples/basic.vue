@@ -1,32 +1,73 @@
 <template>
 	<div>
-		<div style="width: 300px">
-			<vc-textarea 
-				v-model="textvalue"
-				:autosize="true"
-				type="textarea"
-				style="margin-top: 10px;"
-				placeholder="被禁用的textarea"
-			/>
-		</div>
+		<vc-textarea
+			v-model="value"
+			placeholder="显示placeholder"
+			@change="handleChange"
+			@focus="handleFocus"
+			@blur="handleBlur"
+			@enter="handleEnter"
+		/>
+		<br>	
+		<br>	
+		<br>	
+		<br>	
+		<vc-form
+			ref="formValidate" 
+			:label-width="96"
+			style="padding-left: 56px; margin-top: 21px"
+			@submit.native.prevent
+		>
+			<vc-form-item label="test">
+				<vc-textarea
+					v-model="value"
+					:autosize="{ maxRows: 2 }"
+				/>
+			</vc-form-item>
+			<vc-form-item label="test">
+				<vc-textarea
+					v-model="value"
+				/>
+			</vc-form-item>
+			<vc-form-item label="test">
+				<vc-textarea
+					v-model="value"
+					:autosize="{ maxRows: 2 }"
+				/>
+			</vc-form-item>
+			<vc-form-item label="test">
+				<vc-textarea
+					v-model="value"
+				/>
+			</vc-form-item>
+		</vc-form>
 	</div>
 </template>
 <script>
-import Textarea from '..';
+import Textarea from '../index';
+import Form from '../../form/index';
+import List from '../../list/index';
 
 export default {
 	name: "vc-tpl-basic",
 	components: {
-		'vc-textarea': Textarea
+		'vc-textarea': Textarea,
+		'vc-form': Form,
+		'vc-form-item': Form.Item,
+		'vc-list-item': List.Item,
 	},
 	data() {
 		return {
-			value: '',
-			textvalue: ''
+			value: ''
 		};
 	},
 	computed: {
 		
+	},
+	created() {
+		setTimeout(() => {
+			this.value = 9999;
+		}, 3000);
 	},
 	methods: {
 		handleChange() {

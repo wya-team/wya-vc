@@ -1,69 +1,105 @@
 <template>
-	<i-input 
-		ref="input"
-		:value="value"
-		:size="size"
-		:placeholder="placeholder"
-		:clearable="clearable"
-		:disabled="disabled"
-		:readonly="readonly"
-		:maxlength="maxlength"
-		:icon="icon"
-		:prefix="prefix"
-		:suffix="suffix"
-		:search="search"
-		:enter-button="enterButton"
-		:rows="rows"
-		:number="number"
-		:autofocus="autofocus"
-		:autosize="autosize"
-		:autocomplete="autocomplete"
-		:element-id="elementId"
-		:spellcheck="spellcheck"
-		:wrap="wrap"
-		type="textarea"
-		@on-enter="$emit('enter', arguments[0])"
-		@on-click="$emit('click', arguments[0])"
-		@on-change="$emit('change', arguments[0])"
-		@on-focus="$emit('focus', arguments[0])"
-		@on-blur="$emit('blur', arguments[0])"
-		@on-keyup="$emit('keyup', arguments[0])"
-		@on-keydown="$emit('keydown', arguments[0])"
-		@on-keypress="$emit('keypress', arguments[0])"
-		@on-search="$emit('search', arguments[0])"
-		@input="$emit('input', arguments[0])"
-	>
-		<slot slot="prepend" name="prepend" />
-		<slot slot="append" name="append" />
-		<slot slot="prefix" name="prefix" />
-		<slot slot="suffix" name="suffix" />
-	</i-input>
+	<div :class="classes" class="vc-textarea">
+		<div class="vc-textarea__wrapper">
+			<div :class="classes" :style="contentStyle" class="vc-textarea__content">
+				<textarea
+					ref="textarea"
+					:value="currentValue"
+					:style="textareaStyle"
+					v-bind="binds"
+					v-on="hooks"
+				/>
+			</div>
+		</div>
+	</div>
 </template>
 <script>
-import Input from 'iview/src/components/input';
-import formHack from '../extends/mixins/form-hack';
+import TextareaMixin from './textarea-mixin';
 
 export default {
-	// name: 'vc-textarea',
-	components: {
-		'i-input': Input
-	},
-	mixins: [formHack],
-	props: {
-		...Input.props
-	},
-	data() {
-		return {
-		};
-	},
-	computed: {
-		
-	},
-	mounted() {
-		this.focus = this.$refs.input.focus;
-	},
-	methods: {
-	}
+	name: 'vc-textarea',
+	mixins: [TextareaMixin]
 };
 </script>
-<style></style>
+<style lang="scss">
+@import '../style/index.scss';
+
+$block: vc-textarea;
+
+@include block($block) {
+	display: inline-block;
+	position: relative;
+	width: 100%;
+	cursor: text;
+	font-size: 12px;
+	border-radius: 4px;
+	min-height: 28px;
+	line-height: 1.5;
+	transition: border .2s ease-in-out, 
+		background .2s ease-in-out, 
+		box-shadow .2s ease-in-out;
+	background-color: $white;
+
+	@include commonBorder1PX('', $cd9); // 不占边距
+	@include when(focus) {
+		&:after, &:before {
+			border-color: #5495f6;
+		}
+		z-index: 2;
+		box-shadow: 0 0 1px 1px rgba(45, 140, 240, .2)
+	}
+	&:hover {
+		border-color: #5495f6
+	}
+	@include element(wrapper) {
+		display: flex;
+		flex: 1;
+		align-items: center;
+		border-radius: 4px;
+		overflow: hidden;
+		position: relative;
+	}
+	@include element(content){
+		flex: 1;
+		align-items: center;
+		textarea {
+			position: relative;
+			width: 100%;
+			outline: 0;
+			color: $c51;
+			padding-top: 5px;
+			padding-bottom: 5px; // 18 + 10 = 28
+			padding-left: 7px;
+			padding-right: 7px;
+
+			overflow: auto;
+			resize: vertical; // 形式拖拽按钮 
+			min-height: 28px;
+
+			&::placeholder {
+				color: #aaa;
+			}
+		}
+		@include when(disabled) {
+			background-color: #f4f4f4;
+			opacity: 1;
+			cursor: not-allowed;
+			color: #ccc;
+			// hack需要设置
+			textarea {
+				background-color: #f4f4f4;
+				cursor: not-allowed;
+			}
+		}
+	}
+}
+.vc-form-item.is-error {
+	@include block($block) {
+		&:after, &:before {
+			border-color: $error;
+			box-shadow: none;
+		}
+		z-index: 2;
+	}
+}
+</style>
