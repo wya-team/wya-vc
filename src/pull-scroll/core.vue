@@ -262,6 +262,7 @@ export default {
 			this.shouldLoadForPull = true;
 		},
 		_loadData(page, isRefresh) {
+			if (this.isLoadingForScroll) return;
 			!isRefresh && (this.isLoadingForScroll = true);
 			// 请求
 			const load = this.loadData(page, isRefresh);
