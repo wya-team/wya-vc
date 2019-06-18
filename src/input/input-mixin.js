@@ -7,7 +7,7 @@ export default {
 	props: {
 		type: {
 			type: String,
-			validator: v => /(text|password|tel|search)/.test(v),
+			validator: v => /(text|password|tel|search|date|number|email|url)/.test(v),
 			default: 'text'
 		},
 		value: {
