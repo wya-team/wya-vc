@@ -36,7 +36,7 @@ export default {
 	},
 	data() {
 		return {
-			currentValue: this.value,
+			currentValue: null,
 			isOnComposition: false,
 			isFocus: false,
 			textareaStyle: {},
@@ -83,10 +83,9 @@ export default {
 	},
 	watch: {
 		value: {
-			immediate: false,
+			immediate: true,
 			handler(v, old) {
 				this.currentValue = v;
-				this.allowDispatch && this.dispatch('vc-form-item', 'form-change', v);
 			}
 		}
 	},
@@ -138,10 +137,10 @@ export default {
 			let value = e.target.value;
 			if (this.isOnComposition || value === this.currentValue) return;
 
-			this.$emit('input', value);
-			this.$emit('change', e);
-
 			this.currentValue = value;
+
+			this.sync(value, e);
+
 			this.$nextTick(() => {
 				this.textareaStyle = this.getFitStyle();
 			});
@@ -169,5 +168,15 @@ export default {
 		blur() {
 			this.$refs.textarea.blur();
 		},
+
+		/**
+		 * for v-model
+		 */
+		sync(v, e) {
+			this.$emit('input', v, e);
+			this.$emit('change', e);
+
+			this.allowDispatch && this.dispatch('vc-form-item', 'form-change', v);
+		}
 	}
 };
