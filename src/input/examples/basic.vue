@@ -1,5 +1,7 @@
 <template>
 	<div style="padding: 20px; background: #f3f3f3">
+		<vc-input />
+
 		<div>
 			<vc-input-number 
 				v-model="formValidate.value" 

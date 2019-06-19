@@ -1,5 +1,6 @@
 <template>
 	<vcm-input
+		ref="input"
 		v-bind="binds"
 		:value="formatterValue"
 		:clearable="clearable"
