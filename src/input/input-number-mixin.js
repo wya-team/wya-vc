@@ -120,6 +120,8 @@ export default {
 
 			try {
 				this.currentValue = await this.getValidValue(value);
+				this.hookValue = this.currentValue;
+				
 				this.$emit('blur', e);
 				// 同步
 				this.sync(this.currentValue, e);
@@ -179,6 +181,8 @@ export default {
 			this.timer && clearTimeout(this.timer);
 			this.timer = setTimeout(async () => {
 				this.currentValue = await this.getValidValue(value);
+				this.hookValue = this.currentValue;
+				
 				this.sync(this.currentValue, e);
 				this.timer = null;
 			}, 300);
