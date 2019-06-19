@@ -81,8 +81,14 @@ export default {
 			type: Boolean,
 			default: true
 		},
-		checkedKeys: Array,
-		expandedKeys: Array,
+		checkedKeys: {
+			type: Array,
+			default: () => ([])
+		},
+		expandedKeys: {
+			type: Array,
+			default: () => ([])
+		},
 		currentNodeKey: [String, Number],
 		renderContent: Function,
 		showCheckbox: {
@@ -192,8 +198,8 @@ export default {
 			currentNodeKey: this.currentNodeKey,
 			checkStrictly: this.checkStrictly,
 			checkDescendants: this.checkDescendants,
-			checkedKeys: this.checkedKeys,
-			expandedKeys: this.expandedKeys,
+			checkedKeys: [...this.checkedKeys], // 避免浅拷贝修改
+			expandedKeys: [...this.expandedKeys],
 			autoExpandParent: this.autoExpandParent,
 			defaultExpandAll: this.defaultExpandAll,
 			filterNode: this.filterNode

@@ -88,11 +88,21 @@ export const getSelectedData = (value = [], source = [], opts = {}) => {
 	});
 };
 
-export const flattenData = (data) => {
+/**
+ * opts: {
+ * 	parent
+ *  cascader
+ * }
+ */
+export const flattenData = (data, opts = {}) => {
 	const result = [];
 	data.forEach((item) => {
 		if (item.children) {
-			result.push(...flattenData(item.children));
+			const { children, ...rest } = item;
+			opts.parent 
+				? result.push(...[opts.cascader ? { ...rest, children } : rest, ...flattenData(children, opts)])
+				: result.push(...flattenData(children));
+			
 		} else {
 			result.push(item);
 		}

@@ -7,7 +7,7 @@ export default class TreeStore {
 	constructor(options) {
 		this.currentNode = null;
 		this.currentNodeKey = null;
-
+		
 		for (let option in options) {
 			if (Utils.hasOwn(options, option)) {
 				this[option] = options[option];
@@ -20,7 +20,6 @@ export default class TreeStore {
 			data: this.data,
 			store: this
 		});
-
 		// 不处理自动加载一次
 		this._initDefaultCheckedNodes();
 	}

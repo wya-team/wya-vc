@@ -17,7 +17,7 @@
 		@ready="$emit('ready')"
 		@close="$emit('close')"
 		@visible-change="$emit('visible-change', visible)"
-	>
+	>	
 		<vc-input
 			ref="input"
 			:element-id="elementId"
@@ -77,7 +77,7 @@
 					/>
 				</div>
 				<!-- hack for slot, 异步数据弹层已打开时未刷新 -->
-				<span v-show="false" v-text="currentLabel" />
+				<span v-show="false" v-text="currentValue" />
 			</div>
 		</template>
 	</vc-popover>
@@ -198,7 +198,7 @@ export default {
 			};
 		},
 		dataMap() {
-			return flattenData(this.dataSource);
+			return flattenData(this.dataSource, { parent: true, cascader: false });
 		}
 	},
 	watch: {
@@ -210,23 +210,27 @@ export default {
 				}
 				this.currentValue = v;
 
-				/**
-				 * 耗时操作
-				 */
-				this.currentLabel = this.currentValue.map(v => getLabel(this.dataMap, v));
+				this.resetLabel();
 			}
 		},
-		currentValue(v, old) {
-			// ..
+		dataSource(v, old) {
+			this.resetLabel();
 		}
 	},
 	created() {
-		this.treeSelectId = getUid('select');
+		this.treeSelectId = getUid('tree-select');
 	},
 	beforeUpdate() {
 		
 	},
 	methods: {
+		resetLabel() {
+			/**
+			 * 耗时操作
+			 */
+			this.currentLabel = this.currentValue.map(v => getLabel(this.dataMap, v));
+		},
+
 		handleClear(e) {
 			if (!this.showClear) return;
 			e.stopPropagation();

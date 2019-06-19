@@ -21,9 +21,17 @@
 			:check-strictly="checkStrictly"
 			clearable
 		/>
+
+		<vc-tree-select 
+			v-model="valueAsync"
+			:data-source="dataAsync"
+			:check-strictly="checkStrictly"
+			clearable
+		/>
 	</div>
 </template>
 <script>
+import { random, cloneDeep } from 'lodash';
 import Tree from '..';
 import Button from '../../button';
 
@@ -91,11 +99,22 @@ export default {
 				value: '4',
 				label: '一级 4',
 				children: []
-			}]
+			}],
+			valueAsync: [],
+			dataAsync: []
 		};
 	},
 	computed: {
 		
+	},
+	mounted() {
+		setTimeout(() => {
+			this.valueAsync = ['1'];
+		}, random(100, 300));	
+
+		setTimeout(() => {
+			this.dataAsync = cloneDeep(this.data);
+		}, random(100, 300));
 	},
 	methods: {
 		loadData(parent) {
