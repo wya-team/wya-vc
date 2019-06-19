@@ -162,7 +162,7 @@ export default {
 
 				if (state) {
 					this.currentValue = value;
-					this.sync(value, e);
+					this.sync(value);
 				}
 
 				this.setVaildValue(value);
@@ -183,7 +183,7 @@ export default {
 				this.currentValue = await this.getValidValue(value);
 				this.hookValue = this.currentValue;
 				
-				this.sync(this.currentValue, e);
+				this.sync(this.currentValue);
 				this.timer = null;
 			}, 300);
 		},

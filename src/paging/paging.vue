@@ -96,6 +96,7 @@ export default {
 			type: Object,
 			default: () => (VcInstance.config.Paging.tableOpts || {})
 		},
+		columns: Array, // native table
 		// ---- end
 		// ---- page 组件属性 start
 		pageOpts: {
