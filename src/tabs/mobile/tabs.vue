@@ -1,6 +1,6 @@
 <template>
 	<div :class="classes" class="vcm-tabs">
-		<div ref="wrapper" :style="barStyle" class="vcm-tabs__bar">
+		<div v-if="showWrapper" ref="wrapper" :style="barStyle" class="vcm-tabs__bar">
 			<div ref="scroll" class="vcm-tabs__scroll">
 				<div ref="nav" class="vcm-tabs__nav">
 					<div :style="afloatStyle" class="vcm-tabs__afloat" />
@@ -23,7 +23,6 @@
 					</div>
 				</div>
 			</div>
-			
 		</div>
 		<div :style="contentStyle" class="vcm-tabs__content">
 			<slot />
@@ -60,6 +59,10 @@ export default {
 		average: {
 			type: Boolean,
 			default: true
+		},
+		showWrapper: {
+			type: Boolean,
+			default: true
 		}
 	},
 	data() {
@@ -86,6 +89,8 @@ export default {
 		 * 刷新当前标签底下的滑块位置
 		 */
 		refreshAfloat() {
+			if (!this.showWrapper) return;
+			
 			this.$nextTick(() => {
 				const index = this.getTabIndex(this.currentName);
 				if (this._isDestroyed) return;
