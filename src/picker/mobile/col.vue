@@ -1,12 +1,12 @@
 <template>
 	<div
+		v-event:touchstart.prevent.stop="e => handleStart(e.touches[0].screenY)"
+		v-event:touchmove.prevent.stop="e => handleMove(e.touches[0].screenY)"
+		v-event:touchend.prevent.stop="e => handleEnd(e.changedTouches[0].screenY)"
+		v-event:mousedown.prevent.stop="e => handleStart(e.screenY)"
+		v-event:mousemove.prevent.stop="e => handleMove(e.screenY)"
+		v-event:mouseup.prevent.stop="e => handleEnd(e.screenY)"
 		class="vcm-picker-col"
-		@touchstart.stop.prevent="handleStart($event.touches[0].screenY)"
-		@touchmove.stop.prevent="handleMove($event.touches[0].screenY)"
-		@touchend.stop.prevent="handleEnd($event.changedTouches[0].screenY)"
-		@mousedown.stop.prevent="handleStart($event.screenY)"
-		@mousemove.stop.prevent="handleMove($event.screenY)"
-		@mouseup.stop.prevent="handleEnd($event.screenY)"
 	>
 		<div class="vcm-picker-col__mask" />
 		<div :style="styleH" class="vcm-picker-col__indicator" />
@@ -25,10 +25,13 @@
 
 <script>
 import { cloneDeep } from 'lodash';
+import Event from '../../extends/directives/event';
 
 export default {
 	name: 'vcm-picker-col',
-	components: {},
+	directives: {
+		Event
+	},
 	props: {
 		dataSource: {
 			type: Array,

@@ -7,7 +7,7 @@
 		<!-- 依赖收集 -->
 		<div ref="hiddenColumns" class="vc-table__hidden"><slot /></div>
 		<div
-			v-mousewheel="handleHeaderFooterMousewheel"
+			v-event:mousewheel="handleHeaderFooterMousewheel"
 			v-if="showHeader"
 			ref="headerWrapper"
 			class="vc-table__header-wrapper"
@@ -57,7 +57,7 @@
 			</div>
 		</div>
 		<div
-			v-mousewheel="handleHeaderFooterMousewheel"
+			v-event:mousewheel="handleHeaderFooterMousewheel"
 			v-if="showSummary"
 			v-show="dataSource && dataSource.length > 0"
 			ref="footerWrapper"
@@ -72,7 +72,7 @@
 			/>
 		</div>
 		<div
-			v-mousewheel="handleFixedMousewheel"
+			v-event:mousewheel="handleFixedMousewheel"
 			v-if="fixedColumns.length > 0"
 			ref="fixedWrapper"
 			:style="[{ width: layout.fixedWidth ? layout.fixedWidth + 'px' : ''}, fixedHeight]"
@@ -128,7 +128,7 @@
 			</div>
 		</div>
 		<div
-			v-mousewheel="handleFixedMousewheel"
+			v-event:mousewheel="handleFixedMousewheel"
 			v-if="rightFixedColumns.length > 0"
 			ref="rightFixedWrapper"
 			:style="[
@@ -212,7 +212,7 @@
 <script>
 import { debounce, throttle } from 'lodash';
 
-import Mousewheel from '../extends/directives/mousewheel';
+import Event from '../extends/directives/event';
 import { Resize, getUid } from '../utils/index';
 import { parseHeight } from './utils';
 
@@ -234,7 +234,7 @@ export default {
 		'vc-customer': Customer,
 	},
 	directives: {
-		Mousewheel
+		Event
 	},
 	props: {
 		dataSource: {
