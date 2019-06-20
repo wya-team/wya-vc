@@ -8,7 +8,7 @@
 		:append="append"
 		:type="type"
 		:class="{ 'is-disabled': disabled && step, 'vcm-input-number': step }"
-		:input-style="[currentStyle, inputStyle]"
+		:input-style="[inputStyle]"
 		:right="right"
 		v-on="hooks"
 	>
@@ -53,11 +53,6 @@ export default {
 			default: false
 		}
 	},
-	computed: {
-		currentStyle() {
-			return this.step && Number(this.currentValue) > 99 && { 'text-align': 'right' };
-		}
-	}
 };
 </script>
 
