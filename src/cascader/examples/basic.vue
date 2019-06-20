@@ -99,17 +99,7 @@ export default {
 						},
 						{
 							value: 'suzhou',
-							label: '苏州',
-							children: [
-								{
-									value: 'zhuozhengyuan',
-									label: '拙政园',
-								},
-								{
-									value: 'shizilin',
-									label: '狮子林',
-								}
-							]
+							label: '苏州'
 						}
 					],
 				}

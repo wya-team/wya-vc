@@ -273,6 +273,12 @@ export default {
 				}
 
 				children && this.rebuildData.splice(colIndex + 1, len, this.makeData(children));
+
+				// 清理
+				if (!children && colIndex < this.rebuildData.length) {
+					this.currentValue.splice(colIndex + 1, len);
+					this.rebuildData.splice(colIndex + 1, len);
+				}
 			} catch (e) {
 				throw new VcError('vc-cascader', e);
 			} finally {
