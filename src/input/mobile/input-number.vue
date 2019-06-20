@@ -136,7 +136,7 @@ $block: vcm-input-number;
 		color: #000;
 		background-color: #F5F5F5;
 		margin: 0 1px;
-		padding: 0 6px;
+		padding: 0 3px;
 		outline: none;
 		text-align: center;
 		border-radius: 0; // 不加的话ios端默认带圆角
