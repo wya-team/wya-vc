@@ -18,14 +18,14 @@
 import { isEqualWith } from 'lodash';
 import Col from './col';
 import { getSelectedData } from '../../utils/index';
-import emitter from '../../extends/mixins/emitter'; // 表单验证
+import Extends from '../../extends';
 
 export default {
 	name: "vcm-picker-view",
 	components: {
 		'vcm-picker-col': Col
 	},
-	mixins: [emitter],
+	mixins: [...Extends.mixins(['emitter'])],
 	model: {
 		prop: 'value',
 		event: 'change'

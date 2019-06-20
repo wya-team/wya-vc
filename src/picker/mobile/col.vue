@@ -25,12 +25,12 @@
 
 <script>
 import { cloneDeep } from 'lodash';
-import Event from '../../extends/directives/event';
+import Extends from '../../extends';
 
 export default {
 	name: 'vcm-picker-col',
 	directives: {
-		Event
+		...Extends.directives('event')
 	},
 	props: {
 		dataSource: {

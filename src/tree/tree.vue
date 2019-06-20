@@ -36,14 +36,14 @@ import { Dom } from '@wya/utils';
 import TreeStore from './model/tree-store';
 import { getNodeKey, findNearestComponent } from './model/util';
 import TreeNode from './tree-node.vue';
-import emitter from '../extends/mixins/emitter';
+import Extends from '../extends';
 
 export default {
 	name: 'vc-tree',
 	components: {
 		'vc-tree-node': TreeNode
 	},
-	mixins: [emitter],
+	mixins: [...Extends.mixins(['emitter'])],
 	/**
 	 * 当v-model时，支持checkbox
 	 */

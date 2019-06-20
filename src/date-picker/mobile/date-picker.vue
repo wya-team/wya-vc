@@ -19,7 +19,7 @@ import Core, { Func } from './core';
 import List from '../../list/index.m';
 import { VcError } from '../../vc/index';
 import { getSelectedData } from '../../utils/index';
-import emitter from '../../extends/mixins/emitter'; // 表单验证
+import Extends from '../../extends';
 import { value2date, date2value, parseMode } from '../utils';
 
 export default {
@@ -27,7 +27,7 @@ export default {
 	components: {
 		'vcm-list-item': List.Item
 	},
-	mixins: [emitter],
+	mixins: [...Extends.mixins(['emitter'])],
 	model: {
 		prop: 'value',
 		event: 'change'

@@ -2,7 +2,7 @@ import emitter from './emitter';
 
 export default {
 	name: "FormItem",
-	mixins: [emitter],
+	mixins: [...Extends.mixins(['emitter'])],
 	mounted() {
 		this.$on('on-form-change', (...rest) => {
 			this.dispatch('vc-form-item', 'form-change', ...rest);

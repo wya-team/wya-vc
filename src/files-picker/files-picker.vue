@@ -43,7 +43,7 @@
 
 <script>
 import { Device } from '@wya/utils';
-import emitter from '../extends/mixins/emitter'; // 表单验证
+import Extends from '../extends';
 import Message from '../message/index';
 import Toast from '../toast/index';
 import Upload from '../upload/index';
@@ -55,7 +55,7 @@ export default {
 		'vc-upload': Upload,
 		'vc-icon': Icon
 	},
-	mixins: [emitter],
+	mixins: [...Extends.mixins(['emitter'])],
 	model: {
 		prop: 'dataSource',
 		event: 'change'

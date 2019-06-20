@@ -29,7 +29,7 @@
 	</vc-transtion-fade>
 </template>
 <script>
-import emitter from '../extends/mixins/emitter'; // 表单验证
+import Extends from '../extends';
 import Transition from '../transition'; // 表单验证
 
 export default {
@@ -37,7 +37,7 @@ export default {
 	components: {
 		'vc-transtion-fade': Transition.Fade
 	},
-	mixins: [emitter],
+	mixins: [...Extends.mixins(['emitter'])],
 	model: {
 		prop: 'dataSource',
 		event: 'change'

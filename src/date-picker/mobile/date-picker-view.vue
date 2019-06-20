@@ -13,7 +13,7 @@ import { Utils } from '@wya/utils';
 import MPicker from '../../picker/index.m';
 import { VcError } from '../../vc/index';
 import { getSelectedData } from '../../utils/index';
-import emitter from '../../extends/mixins/emitter'; // 表单验证
+import Extends from '../../extends';
 import { value2date, date2value, parseMode } from '../utils';
 
 export default {
@@ -21,7 +21,7 @@ export default {
 	components: { 
 		'vcm-picker-view': MPicker.View 
 	},
-	mixins: [emitter],
+	mixins: [...Extends.mixins(['emitter'])],
 	model: {
 		prop: 'value',
 		event: 'change'

@@ -78,7 +78,7 @@
 import { pick, cloneDeep, debounce, isEqualWith } from 'lodash';
 import { getSelectedData, getUid, getLabel } from '../utils/index';
 import { VcError } from '../vc/index';
-import emitter from '../extends/mixins/emitter'; // 表单验证
+import Extends from '../extends';
 import Input from '../input/index';
 import Popover from '../popover/index';
 import Spin from '../spin/index';
@@ -96,7 +96,7 @@ export default {
 		'vc-tag': Tag,
 		'vc-spin': Spin,
 	},
-	mixins: [emitter],
+	mixins: [...Extends.mixins(['emitter'])],
 	inheritAttrs: false,
 	model: {
 		prop: 'value',

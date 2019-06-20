@@ -1,3 +1,3 @@
-export const linearArray = (value, content = '') => {
+export default (value, content = '') => {
 	return value;
 };

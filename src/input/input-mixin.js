@@ -1,9 +1,9 @@
-import emitter from '../extends/mixins/emitter'; // 表单验证
+import Extends from '../extends';
 import Icon from '../icon/index';
 import Transition from '../transition/index';
 
 export default {
-	mixins: [emitter],
+	mixins: [...Extends.mixins(['emitter'])],
 	props: {
 		type: {
 			type: String,

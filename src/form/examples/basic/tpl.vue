@@ -3,14 +3,14 @@
 </template>
 
 <script>
-import emitter from '../../../extends/mixins/emitter'; // 表单验证
+import Extends from '../../../extends';
 
 export default {
 	name: '',
 	components: {
 
 	},
-	mixins: [emitter],
+	mixins: [...Extends.mixins(['emitter'])],
 	props: {
 		type: String,
 		value: String | Number,

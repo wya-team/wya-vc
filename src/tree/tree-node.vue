@@ -80,7 +80,7 @@ import Checkbox from '../checkbox';
 import Customer from '../customer';
 import Spin from '../spin';
 import Icon from '../icon';
-import emitter from '../extends/mixins/emitter';
+import Extends from '../extends';
 import { getNodeKey } from './model/util';
 
 export default {
@@ -93,7 +93,7 @@ export default {
 		'vc-icon': Icon,
 		'vc-spin': Spin,
 	},
-	mixins: [emitter],
+	mixins: [...Extends.mixins(['emitter'])],
 	props: {
 		node: {
 			type: Object,

@@ -20,7 +20,7 @@ import MPickerPopup from './picker-popup';
 import List from '../../list/index.m';
 import { getSelectedData } from '../../utils/index';
 import { VcError } from '../../vc/index';
-import emitter from '../../extends/mixins/emitter'; // 表单验证
+import Extends from '../../extends';
 
 
 export default {
@@ -28,7 +28,7 @@ export default {
 	components: {
 		'vcm-list-item': List.Item
 	},
-	mixins: [emitter],
+	mixins: [...Extends.mixins(['emitter'])],
 	model: {
 		prop: 'value',
 		event: 'change'

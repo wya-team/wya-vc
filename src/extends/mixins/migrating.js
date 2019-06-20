@@ -1,5 +1,5 @@
 import { kebabCase } from 'lodash';
-import { VcError } from '../../utils/index';
+import { VcError } from '../../vc/index';
 /**
  * API 变迁使用
  * getMigratingConfig() {

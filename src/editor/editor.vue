@@ -21,7 +21,7 @@
 <script>
 // import Quill from 'quill';
 import './style.scss';
-import emitter from '../extends/mixins/emitter'; // 表单验证
+import Extends from '../extends';
 import EditorToolbar from './toolbar';
 import Upload from '../upload/index';
 import Icon from '../icon/index';
@@ -35,7 +35,7 @@ export default {
 		'vc-upload': Upload,
 		'vc-icon': Icon
 	},
-	mixins: [emitter],
+	mixins: [...Extends.mixins(['emitter'])],
 	model: {
 		prop: "value",
 		event: "input"

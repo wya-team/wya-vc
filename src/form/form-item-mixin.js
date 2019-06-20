@@ -2,7 +2,7 @@ import { cloneDeep } from 'lodash';
 import AsyncValidator from 'async-validator';
 import { RegEx } from '@wya/utils';
 import { getPropByPath } from '../utils';
-import emitter from '../extends/mixins/emitter';
+import Extends from '../extends';
 
 const filterEmpty = (val) => {
 	if (val instanceof Array) {
@@ -14,7 +14,7 @@ const filterEmpty = (val) => {
 export default {
 	name: 'vc-form-item',
 	components: {},
-	mixins: [emitter],
+	mixins: [...Extends.mixins(['emitter'])],
 	props: {
 		label: {
 			type: String,

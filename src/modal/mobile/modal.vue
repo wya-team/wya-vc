@@ -77,7 +77,7 @@
 </template>
 <script>
 import { debounce } from 'lodash';
-import ScrollbarMixin from '../../extends/mixins/scrollbar';
+import Extends from '../../extends';
 import MTransition from '../../transition/index.m';
 import Customer from "../../customer/index";
 import { VcInstance } from "../../vc/index";
@@ -90,7 +90,7 @@ export default {
 		'vcm-transition-fade': MTransition.Fade,
 		'vcm-transition-zoom': MTransition.Zoom,
 	},
-	mixins: [ScrollbarMixin],
+	mixins: [...Extends.mixins(['scrollbar'])],
 	model: {
 		prop: 'visible',
 		event: 'visible-change'

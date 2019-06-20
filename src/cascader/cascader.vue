@@ -61,7 +61,7 @@
 import { pick, cloneDeep, isEqualWith } from 'lodash';
 import { getSelectedData } from '../utils/index';
 import { VcError } from '../vc/index';
-import emitter from '../extends/mixins/emitter'; // 表单验证
+import Extends from '../extends';
 import Input from '../input/index';
 import Popover from '../popover/index';
 import Icon from '../icon/index';
@@ -76,7 +76,7 @@ export default {
 		'vc-popover': Popover,
 		'vc-cascader-col': Col,
 	},
-	mixins: [emitter],
+	mixins: [...Extends.mixins(['emitter'])],
 	inheritAttrs: false,
 	model: {
 		prop: 'value',

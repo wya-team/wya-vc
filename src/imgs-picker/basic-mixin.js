@@ -4,11 +4,11 @@
 import { Device } from '@wya/utils';
 import Message from '../message/index';
 import Toast from '../toast/index';
-import emitter from '../extends/mixins/emitter'; // 表单验证
+import Extends from '../extends';
 import ImgsPreview from '../imgs-preview/index';
 
 export default {
-	mixins: [emitter],
+	mixins: [...Extends.mixins(['emitter'])],
 	model: {
 		prop: 'dataSource',
 		event: 'change'

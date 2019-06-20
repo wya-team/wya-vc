@@ -1,8 +1,8 @@
-import Emitter from '../extends/mixins/emitter';
+import Extends from '../extends';
 import { getUid } from '../utils/index';
 
 export default {
-	mixins: [Emitter],
+	mixins: [...Extends.mixins(['emitter'])],
 	model: {
 		prop: 'value',
 		event: 'change'

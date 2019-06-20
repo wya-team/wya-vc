@@ -212,7 +212,7 @@
 <script>
 import { debounce, throttle } from 'lodash';
 
-import Event from '../extends/directives/event';
+import Extends from '../extends';
 import { Resize, getUid } from '../utils/index';
 import { parseHeight } from './utils';
 
@@ -234,7 +234,7 @@ export default {
 		'vc-customer': Customer,
 	},
 	directives: {
-		Event
+		...Extends.directives('event')
 	},
 	props: {
 		dataSource: {

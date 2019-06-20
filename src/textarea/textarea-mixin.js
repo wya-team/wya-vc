@@ -1,11 +1,11 @@
 import { pick } from 'lodash';
-import emitter from '../extends/mixins/emitter'; // 表单验证
+import Extends from '../extends';
 import InputMixin from '../input/input-mixin';
 import { calcTextareaHeight } from './utils';
 import { Resize } from '../utils';
 
 export default {
-	mixins: [emitter],
+	mixins: [...Extends.mixins(['emitter'])],
 	props: {
 		...pick(InputMixin.props, [
 			'elementId',  

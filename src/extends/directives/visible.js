@@ -1,4 +1,4 @@
-export const visible = (el, opts = {}, vm = {}) => {
+export default (el, opts = {}, vm = {}) => {
 	try {
 		let { value } = opts;
 		let str = value ? 'visible' : 'hidden';

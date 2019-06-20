@@ -63,7 +63,6 @@ export default {
 			method,
 			modifiers
 		};
-		console.log(value);
 		/**
 		 * el bind
 		 * TODO

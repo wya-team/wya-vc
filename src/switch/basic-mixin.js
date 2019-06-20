@@ -1,9 +1,9 @@
-import Emitter from '../extends/mixins/emitter';
+import Extends from '../extends';
 
 export default {
 	name: 'vc-switch',
 	components: {},
-	mixins: [Emitter],
+	mixins: [...Extends.mixins(['emitter'])],
 	model: {
 		prop: 'value',
 		event: 'change'
