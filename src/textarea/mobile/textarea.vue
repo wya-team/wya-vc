@@ -1,7 +1,7 @@
 <template>
 	<div :class="classes" class="vcm-textarea">
 		<div class="vcm-textarea__wrapper">
-			<div :class="{ 'is-right': true }" :style="contentStyle" class="vcm-textarea__content">
+			<div :class="{ 'is-right': right }" :style="contentStyle" class="vcm-textarea__content">
 				<textarea
 					ref="textarea"
 					:value="currentValue"
