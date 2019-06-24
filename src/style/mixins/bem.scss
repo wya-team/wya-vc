@@ -185,10 +185,8 @@ $state-prefix: 'is-';
  * 与xxx:hover类似
  */
 @mixin when($state) {
-	$selector: &;
-
 	@at-root {
-		#{$selector}.#{$state-prefix + $state} {
+		&.#{$state-prefix + $state} {
 			@content;
 		}
 	}
