@@ -28,11 +28,10 @@
 			<!-- 上传失败或者成功后显示 -->
 			<vc-icon 
 				v-if="!disabled && (typeof it !== 'object' || it.status == 0)" 
-				type="clear" 
+				type="close-small" 
 				class="vcp-imgs-picker__delete"
 				@click="handleDel(it)" 
 			/>
-			<div class="vcp-imgs-picker__delete--bg"/>
 		</slot>
 	</div>
 </template>

@@ -151,18 +151,13 @@ export default {
 		position: absolute;
 		top: -6px;
 		right: -6px;
-		color: #5495F6;
-		font-size: 16px;
+		width: 14px;
+		height: 14px;
+		border-radius: 7px;
+		background-color: #5495F6;
+		color: #ffffff;
+		font-size: 14px;
 		z-index: 1;
-		@include modifier(bg) {
-			position: absolute;
-			top: -5px;
-			right: -5px;
-			background: #ffffff;
-			width: 14px;
-			height: 14px;
-			border-radius: 7px;
-		}
 	}
 	@include element(progressbar) {
 		flex: 1;
