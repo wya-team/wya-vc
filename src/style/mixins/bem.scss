@@ -69,23 +69,28 @@ $state-prefix: 'is-';
 @mixin element($element, $root: true) {
 	$E: $element !global;
 	$selector: &;
+	$currentSelector: "";
+	// 支持数组
+	@each $unit in $element {
+		$currentSelector: #{$currentSelector + "." + $B + $element-separator + $unit + ","};
+	}
 
 	@if hitAllSpecialNestRule($selector) {
 		@at-root {
 			#{$selector} {
-				.#{$B + $element-separator + $element} {
+				#{$currentSelector} {
 					@content;
 				}
 			}
 		}
 	} @else if $root {
 		@at-root {
-			.#{$B + $element-separator + $element} {
+			#{$currentSelector} {
 				@content;
 			}
 		}
 	} @else {
-		.#{$B + $element-separator + $element} {
+		#{$currentSelector} {
 			@content;
 		}
 	}
@@ -93,23 +98,29 @@ $state-prefix: 'is-';
 
 @mixin modifier($modifier, $root: true) {
 	$selector: &;
+	// 支持数组
+	$currentSelector: "";
+	@each $unit in $modifier {
+		$currentSelector: #{$currentSelector + & + $modifier-separator + $unit + ","};
+	}
+
 	// TODO: 待验证第一个判断;
 	@if hitAllSpecialNestRule($selector) {
 		@at-root {
 			#{$selector} {
-				.#{$B + $modifier-separator + $modifier} {
+				.#{$B + $currentSelector} {
 					@content;
 				}
 			}
 		}
 	} @else if $root {
 		@at-root {
-			#{& + $modifier-separator + $modifier} {
+			#{$currentSelector} {
 				@content;
 			}
 		}
 	} @else {
-		#{& + $modifier-separator + $modifier} {
+		#{$currentSelector} {
 			@content;
 		}
 	}
