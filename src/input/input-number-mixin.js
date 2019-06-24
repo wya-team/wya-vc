@@ -91,40 +91,28 @@ export default {
 					: new RegExp(`(.*)\\.`);
 
 				value = value.replace(regex, '$1');
-				// 0002 -> 2, 0.2 -> 2
+				// 0002 -> 2, 0.2 -> .2
 				value = value === '0' ? '0' : value.replace(/^[0]{1,}/, '');
 				// '0.' -> '.' -> '0.'
 				value = value.charAt(0) === '.' ? `0${value}` : value;
 			}
+
 			value = value === '' ? value : this.compareWithBoundary({ value, type: 'input' });
 
-			this.currentValue = value;
-
-			/**
-			 * 如果输入特殊字符，相对vc-input接收到的值不变，显示不会变
-			 * 强制处理
-			 */
-			this.$refs.input.currentValue = value;
-			
-			this.sync(this.currentValue, e);
+			this.$emit('input', value);
 		},
 		async handleBlur(e) {
 			this.isInput = false;
 			// 失焦时，只留一个'-'
-			let value = this.currentValue === '-' 
-				? '' 
-				: this.currentValue;
-			value = this.required && !value
+			let value = this.currentValue === '-' ? '' : this.currentValue;
+			value = this.required && !this.currentValue
 				? this.min
-				: value;
+				: this.currentValue;
 
 			try {
-				this.currentValue = await this.getValidValue(value);
-				this.hookValue = this.currentValue;
-				
+				let state = await this.afterHook(value);
+				state && this.$emit('input', value);
 				this.$emit('blur', e);
-				// 同步
-				this.sync(this.currentValue, e);
 			} catch (e) {
 				throw new VcError('vc-input-number', e);
 			}
@@ -155,18 +143,12 @@ export default {
 
 			let state = true;
 			try {
-				// TODO: before可以考虑废掉
 				if (before) {
 					state = await before(value);
 				}
 
-				if (state) {
-					this.currentValue = value;
-					this.sync(value);
-				}
-
-				this.setVaildValue(value);
-
+				state && this.$emit('input', value);
+				this.afterDebounce(value);
 			} catch (e) {
 				throw new VcError('vc-input-number', e);
 			}
@@ -177,25 +159,23 @@ export default {
 		 * 有after时，根据after的返回值，如果是false，则由内部发射input事件，重新赋值value；
 		 * 如果是true，也由外部发射
 		 */
-		setVaildValue(value) {
+		afterDebounce(value) {
 			this.timer && clearTimeout(this.timer);
-			this.timer = setTimeout(async () => {
-				this.currentValue = await this.getValidValue(value);
-				this.hookValue = this.currentValue;
-				
-				this.sync(this.currentValue);
+			this.timer = setTimeout(() => {
+				this.afterHook(value);
 				this.timer = null;
 			}, 300);
 		},
-		async getValidValue(value) {
+		async afterHook(value) {
 			let { $listeners: { after } } = this;
-			if (!after) return value;
+			if (!after) return true;
 			let state = await after(value);
 			if (state) {
-				return value;
+				this.hookValue = value;
 			} else {
-				return this.hookValue;
+				this.$emit('input', this.hookValue);
 			}
+			return state;
 		},
 		/**
 		 * @param  {String}  options.value
@@ -226,16 +206,6 @@ export default {
 				});
 			}
 			return value;
-		},
-
-		/**
-		 * v-model
-		 */
-		sync(v, e) {
-			if (v == this.value) return;
-			e = e || { target: { value: v } };
-			this.$emit('input', v, e);
-			this.$emit('change', e);
 		}
 	}
 };

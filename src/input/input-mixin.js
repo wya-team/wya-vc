@@ -69,16 +69,20 @@ export default {
 	},
 	data() {
 		return {
-			currentValue: '',
+			currentValue: this.value,
 			isFocus: false,
 			isOnComposition: false
 		};
 	},
 	watch: {
 		value: {
-			immediate: true,
+			immediate: false,
 			handler(v, old) {
+				/**
+				 * 强制必须使用v-model，所以不需要判断一次
+				 */
 				this.currentValue = v;
+				this.allowDispatch && this.dispatch('vc-form-item', 'form-change', v);
 			}
 		}
 	},
@@ -157,33 +161,21 @@ export default {
 		},
 		handleInput(e) {
 			if (this.isOnComposition) return;
+			let value = e.target.value;
 
-			this.currentValue = e.target.value;
-			this.sync(this.currentValue, e);
+			this.$emit('input', value, e);
+			this.$emit('change', e);
+			this.$forceUpdate(); // hack
 		},
 		handleChange(e) {
 			this.$emit('change', e);
 		},
 		handleClear() {
 			const e = { target: { value: '' } };
-
-			this.currentValue = e.target.value;
-			this.sync(this.currentValue, e);
-
-			this.focus();
-		},
-		sync(v, e) {
-			if (v == this.value) return;
-			
-			e = e || { target: { value: v } };
-
-			this.$emit('input', v, e);
+			this.$emit('input', '');
 			this.$emit('change', e);
 
-			/**
-			 * TODO: 外部主动设置值，是否需要验证，移入到watch中
-			 */
-			this.allowDispatch && this.dispatch('vc-form-item', 'form-change', v);
+			this.focus();
 		},
 		/**
 		 * 外部方法扩展
@@ -196,6 +188,6 @@ export default {
 		},
 		click() {
 			this.$refs.input.click();
-		},
-	}
+		}
+	},
 };

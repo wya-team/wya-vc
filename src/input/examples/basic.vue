@@ -1,7 +1,9 @@
 <template>
 	<div style="padding: 20px; background: #f3f3f3">
 		<vc-input />
-
+		特殊考虑：必须使用v-model或者(v-bind和v-on), 否则无法输入;
+		<br>
+		<br>
 		<div>
 			<vc-input-number 
 				v-model="formValidate.value" 
