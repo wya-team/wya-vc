@@ -231,11 +231,14 @@ export default {
 <style lang="scss">
 .vc-quill-editor {
 	color: #333 !important;
+	display: flex;
+	flex-direction: column;
 	.vc-editor-size {
 		width: 78px;
 	}
-	.ql-editor{
-		height:500px;
+	.ql-container {
+		flex: 1;
+		overflow: auto;
 	}
 }
 </style>
