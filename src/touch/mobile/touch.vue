@@ -2,7 +2,7 @@
 	<component 
 		:is="tag"
 		@touchstart="handleStart"
-		@touchmove="handleMove"
+		@touchmove.prevent="handleMove"
 		@touchend="handleEnd"
 	>
 		<slot />
@@ -70,6 +70,7 @@ export default {
 			this.startX = point.pageX;
 			this.startY = point.pageY;
 			clearTimeout(this.longTapTimeout);
+			this.startTime = this.getTime();
 			// 两点接触
 			if (event.touches.length > 1) {
 				let point2 = event.touches[1];
@@ -81,7 +82,6 @@ export default {
 					y: point2.pageY - this.startY
 				};
 			} else {
-				this.startTime = this.getTime();
 				this.longTapTimeout = setTimeout(() => {
 					this.$emit('long-tap', event);
 				}, 800);
@@ -102,27 +102,35 @@ export default {
 		},
 		handleMove(event) {
 			let timestamp = this.getTime();
+
 			if (event.touches.length > 1) {
 				let xLen = Math.abs(event.touches[0].pageX - event.touches[1].pageX);
-				let yLen = Math.abs(event.touches[1].pageY - event.touches[1].pageY);
+				let yLen = Math.abs(event.touches[0].pageY - event.touches[1].pageY);
 				let touchDistance = this.getDistance(xLen, yLen);
+				// 缩放
 				if (this.touchDistance) {
-					let pinchScale = touchDistance / this.touchDistance;
-					this.$emit('pinch', {
-						scale: pinchScale - this.previousPinchScale,
-						_scale: pinchScale
-					});
+					let pinchScale;
+					if (touchDistance > this.touchDistance) { // 放大
+						pinchScale = touchDistance / this.touchDistance;
+						this.$emit('pinch', {
+							scale: pinchScale - this.previousPinchScale,
+						});
+					} else { // 缩小
+						pinchScale = this.touchDistance / touchDistance;
+						this.$emit('pinch', {
+							scale: this.previousPinchScale - pinchScale,
+						});
+					}
 					this.previousPinchScale = pinchScale;
 				}
+				// 旋转
 				if (this.touchVector) {
 					let vector = {
 						x: event.touches[1].pageX - event.touches[0].pageX,
 						y: event.touches[1].pageY - event.touches[0].pageY
 					};
 					let angle = this.getRotateAngle(vector, this.touchVector);
-					this.$emit('rotate', {
-						angle
-					});
+					this.$emit('rotate', { angle });
 					this.touchVector.x = vector.x;
 					this.touchVector.y = vector.y;
 				}
@@ -138,13 +146,6 @@ export default {
 				});
 				this.moveX = point.pageX;
 				this.moveY = point.pageY;
-			}
-			// 判断默认行为是否可以被禁用
-			if (event.cancelable) {
-				// 判断默认行为是否已经被禁用
-				if (!event.defaultPrevented) {
-					event.preventDefault();
-				}
 			}
 		},
 		handleCancel(event) {

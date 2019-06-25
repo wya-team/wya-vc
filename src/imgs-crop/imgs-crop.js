@@ -415,7 +415,8 @@ export default {
 			return canvas;
 		},
 
-		getImage({ isNormal = true, filename = 'image', getFile = false }) {
+		getImage(opts = {}) {
+			const { isNormal = true, filename = 'image', getFile = false } = opts;
 			return Utils.canvas2file(
 				isNormal ? this.getImageToCanvas() : this.getImageScaledToCanvas(), 
 				{ filename, getFile }
@@ -545,7 +546,7 @@ export default {
 		handleEnd() {
 			if (this.drag) {
 				this.drag = false;
-				this.$emit('mouse-up');
+				this.$emit('mouseup');
 			}
 		},
 
@@ -621,7 +622,7 @@ export default {
 			/**
 			 * 移动回掉
 			 */
-			this.$emit('mouse-move', e);
+			this.$emit('mousemove', e);
 		},
 
 		/**
