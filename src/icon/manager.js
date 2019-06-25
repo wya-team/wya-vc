@@ -1,4 +1,5 @@
 import { Storage } from '@wya/utils';
+import { ajax } from '@wya/http';
 import VcBasic from '../vc/basic';
 import VcError from '../vc/error';
 
@@ -24,23 +25,45 @@ class Manager extends VcBasic {
 		this.basicStatus = this.load(basicUrl);
 	}
 
-	/**
-	 * TODO1: 换成@wya/http
-	 * TODO2: 删除老的缓存
-	 */
 	load(url) {
 		this.sourceStatus[url] = this.sourceStatus[url] || new Promise(async (resolve, reject) => {
 			try {
 				if (/.js$/.test(url)) { // 避免重复加载
-					let icons = Storage.get(`${prefix}${url}`);
+					let key = `${prefix}${url}`;
+					let icons = Storage.get(key);
 					
 					if (!icons) {
-						let res = await fetch(url);
-
+						let res = await ajax({
+							url: `${window.location.protocol}${url}`,
+							headers: {
+								'X-Requested-With': null
+							},
+							credentials: 'omit',
+							onAfter: ({ response }) => {
+								return {
+									status: 1,
+									data: response.data
+								};
+							}
+						});
 						// 等待解析
-						let svgStr = await res.text();
-						icons = await this.parser(svgStr, url);
-						Storage.set(`${prefix}${url}`, icons);
+						icons = await this.parser(res.data, url);
+						try {
+							Storage.set(key, icons);
+						} catch (e) {
+							// 内存溢出，删除老缓存, 延迟3秒清理，重新设置
+							setTimeout(() => {
+								let needs = Object.keys(this.sourceStatus); 
+								Object.keys(window.localStorage).forEach((item) => {
+									if (item.includes(prefix) && !needs.includes(key)) {
+										Storage.remove(item);
+									}
+								});
+								// 如果还存在溢出，项目内自行处理吧
+								Storage.set(key, icons);
+							}, 3000);
+						}
+						
 					}
 					// 重构图标
 					this.icons = {

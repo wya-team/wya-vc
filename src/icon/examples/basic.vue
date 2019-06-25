@@ -20,7 +20,6 @@ import Copy from '../../copy';
 import IconManager from '../manager';
 
 window.IconManager = IconManager;
-
 let mobile = !!(Storage.get('@wya/vc/demo/icon') || {}).status;
 
 export default {
@@ -44,8 +43,9 @@ export default {
 	mounted() {
 		Promise.all([
 			IconManager.basicStatus,
-			IconManager.load('//at.alicdn.com/t/font_1096960_kraucqlrb.js'),
-			IconManager.load('//at.alicdn.com/t/font_1096957_qnepg9rstn.js')
+			IconManager.load('//at.alicdn.com/t/font_1096960_mfllg2fv23r.js'),
+			IconManager.load('//at.alicdn.com/t/font_1096957_mlwz0ycyaln.js'),
+			IconManager.load('//at.alicdn.com/t/font_1169912_pa6aa8abxnr.js')
 		]).then(() => {
 			this.items = Object.keys(IconManager.icons);
 			console.log(1);
