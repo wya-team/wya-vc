@@ -1,4 +1,4 @@
-(window.webpackJsonp=window.webpackJsonp||[]).push([[78],{"./node_modules/html2canvas/dist/html2canvas.js":function(module,exports,__webpack_require__){
+(window.webpackJsonp=window.webpackJsonp||[]).push([[84],{"./node_modules/html2canvas/dist/html2canvas.js":function(module,exports,__webpack_require__){
 /*!
  * html2canvas 1.0.0-rc.1 <https://html2canvas.hertzen.com>
  * Copyright (c) 2019 Niklas von Hertzen <https://hertzen.com>
