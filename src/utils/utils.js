@@ -212,3 +212,11 @@ export const autoprefixer = (style) => {
 	});
 	return style;
 };
+
+export const placement2mode = {
+	left: 'left',
+	right: 'right',
+	bottom: 'up',
+	top: 'down',
+	center: '',
+};

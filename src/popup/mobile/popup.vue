@@ -23,14 +23,8 @@
 <script>
 import MTransition from '../../transition/index.m';
 import Extends from '../../extends';
+import { placement2mode } from '../../utils';
 
-const placement2mode = {
-	left: 'left',
-	right: 'right',
-	bottom: 'up',
-	top: 'down',
-	center: '',
-};
 export default {
 	name: "vcm-popup",
 	components: {
@@ -205,7 +199,6 @@ export default {
 			background-color: #fff;
 		}
 	}
-		
 }
 
 

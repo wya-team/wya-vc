@@ -178,7 +178,7 @@ $block: vc-transition-slide;
 
 	to {
 		opacity: 0;
-		transform: translateX(15px);
+		transform: translate3d(100%, 0, 0);
 	}
 }
 

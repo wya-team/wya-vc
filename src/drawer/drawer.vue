@@ -1,44 +1,50 @@
 <template>
-	<div class="vc-drawer">
-		<transition name="mask">
+	<div :class="classes" class="vc-drawer">
+		<vc-transition-fade :delay=".05">
 			<div 
-				v-if="mask && visible"
+				v-show="mask && isActive"
 				:style="maskStyle"
-				class="__drawer-mask"
-				@click="handleMaskClose"
+				class="vc-drawer__mask"
+				@click="handleClose($event, maskClosable)"
 			/>
-		</transition>
-		<transition :name="drawerAnimation">
+		</vc-transition-fade>
+		<vc-transition-slide :mode="mode" @after-leave="handleRemove">
 			<div 
-				v-if="visible" 
-				:style="style"
-				:class="drawerClass"
-				class="__drawer"
+				v-show="isActive" 
+				:class="wrapperClassName"
+				:style="[style, wrapperStyle]"
+				class="vc-drawer__wrapper"
 			>
-				<div ref="header" class="__drawer-header">
+				<div ref="header" class="vc-drawer__header">
 					<slot name="header">
-						<p class="__header-inner">我是标题</p>
+						<p class="vc-drawer__title" v-html="title || '我是标题' " />
 					</slot>
-					<a class="__drawer-close" @click="handleClose">
+					<a class="vc-drawer__close" @click="handleClose($event, true)">
 						<vc-icon type="close"/>
 					</a>
 				</div>
 				<slot/>
 			</div>
-		</transition>
+		</vc-transition-slide>
 	</div>
 </template>
 <script>
 import Icon from '../icon';
 import Button from '../button';
+import Transition from '../transition';
+import { placement2mode } from '../utils';
+import Extends from '../extends';
 
 let drawerNumber = 0;
 export default {
 	name: "vc-drawer",
 	components: {
 		'vc-icon': Icon,
-		'vc-button': Button
+		'vc-button': Button,
+		'vc-transition-fade': Transition.Fade,
+		'vc-transition-slide': Transition.Slide,
 	},
+	mixins: [...Extends.mixins(['scrollbar'])],
 	model: {
 		prop: 'visible',
 		event: 'visible-change'
@@ -71,147 +77,134 @@ export default {
 		},
 		placement: {
 			type: String,
-			default: 'right'
+			default: 'right' // top/right/left/bottom
 		},
-		maskStyle: Object
+		maskStyle: Object,
+		wrapperClassName: Object | Array | String,
+		wrapperStyle: Object | Array | String
 	},
 	data() {
 		return {
-			style: {},
-			drawerClass: '',
-			drawerIndex: 0,
-			drawerAnimation: '',
+			isActive: false,
 		};
 	},
 	computed: {
+		classes() {
+			return {
+				[`is-${this.placement}`]: true,
+			};
+		},
+		style() {
+			return this.placement === 'top' || this.placement === 'bottom'
+				? { height: `${this.height}px` }
+				: { width: `${this.width}px` };
+		},
+		mode() {
+			return placement2mode[this.placement];
+		}
 	},
 	watch: {
-		visible(val) {
-			if (!this.scrollable && val) {
-				document.querySelector('body').style.overflow = 'hidden';
-			} else {
-				document.querySelector('body').style.overflow = 'auto';
-			}
-			switch (this.placement) {
-				case 'top':
-					this.drawerClass = '__drawer-top';
-					this.drawerAnimation = 'drawer-top';
-					break;
-				case 'right':
-					this.drawerClass = '__drawer-right';
-					this.drawerAnimation = 'drawer-right';
-					break;
-				case 'bottom':
-					this.drawerClass = '__drawer-bottom';
-					this.drawerAnimation = 'drawer-bottom';
-					break;
-				case 'left':
-					this.drawerClass = '__drawer-left';
-					this.drawerAnimation = 'drawer-left';
-					break;
-				default:
-					return;
-			}
-			if (this.placement === 'top' || this.placement === 'bottom') {
-				this.style.height = `${this.height}px`;
-			} else {
-				this.style.width = `${this.width}px`;
+		visible: {
+			immediate: true,
+			handler(v) {
+				this.isActive = v;
 			}
 		}
 	},
 	methods: {
-		handleClose() {
-			this.$emit('close');
-			this.$emit('visible-change', false);
-		},
-		handleMaskClose() {
-			if (this.maskClosable) {
-				this.handleClose();
+		/**
+		 * 关闭事件
+		 */
+		handleClose(e, closable) {
+			if (closable 
+				|| (
+					this.maskClosable 
+					&& e.target.classList.contains('vc-drawer__wrapper')
+				)
+			) {
+				this.isActive = false;
 			}
-		}
+		},
+
+		/**
+		 * 动画执行后关闭, 关闭事件都会被执行
+		 * visible-change 由移除之后触发
+		 * 同时close兼容portal设计
+		 */
+		handleRemove() {
+			!this._isDestroyed && (
+				this.$emit('close'),
+				this.$emit('visible-change', false)
+			);
+		},
 	}
 };
 </script>
-<style lang="scss" scoped>
-.vc-drawer{
-	.__drawer-mask{
+<style lang="scss">
+@import '../style/index.scss';
+$block: vc-drawer;
+
+@include block($block) {
+	@include element(mask){
 		position: fixed;
 		top: 0;
+		right: 0;
+		bottom: 0;
 		left: 0;
-		width: 100%;
+		background-color: rgba(0, 0, 0, .4);
 		height: 100%;
-		background-color: rgba(55,55,55,.6);
 		z-index: 1000;
 	}
-	.__drawer{
+	@include element(wrapper) {
 		position: fixed;
 		z-index: 1000;
 		background-color: #fff;
 		box-shadow: 0 4px 12px rgba(0,0,0,.15);
-		transition: transform .5s cubic-bezier(.075,.82,.165,1),
-			opacity .5s cubic-bezier(.075,.82,.165,1);
-		&-top{
-			width: 100%;
-			top: 0;
-			left: 0;
-		}
-		&-right{
-			height: 100%;
-			top: 0;
+	}
+	@include when(bottom) {
+		@include element(wrapper) {
 			right: 0;
+			left: 0;
+			bottom: 0;
+			// padding-bottom: env(safe-area-inset-bottom);
 		}
-		&-bottom{
-			width: 100%;
+	}
+
+	@include when(top) {
+		@include element(wrapper) {
+			right: 0;
+			left: 0;
+			top: 0;
+			// padding-top: env(safe-area-inset-bottom);
+		}
+	}
+	@include when(left) {
+		@include element(wrapper) {
+			top: 0;
 			bottom: 0;
 			left: 0;
 		}
-		&-left{
-			height: 100%;
+	}
+
+	@include when(right) {
+		@include element(wrapper) {
 			top: 0;
-			left: 0;
-		}
-		.__drawer-header{
-			position: relative;
-			border-bottom: 1px solid #e8eaec;
-			padding: 14px 16px;
-			line-height: 1;
-			font-size: 14px;
-			.__drawer-close{
-				position: absolute;
-				top: 12px;
-				right: 16px;
-				color: #999;
-			}
+			bottom: 0;
+			right: 0;
 		}
 	}
-	.mask-enter-active, 
-	.mask-leave-active{
-		transition: transform .5s cubic-bezier(.075,.82,.165,1),
-			opacity .5s cubic-bezier(.075,.82,.165,1);
+	@include element(header) {
+		position: relative;
+		border-bottom: 1px solid #e8eaec;
+		padding: 14px 16px;
+		line-height: 1;
+		font-size: 14px;
 	}
-	.drawer-top-enter,
-	.drawer-top-leave-to{
-		opacity: 0;
-		transform: translateY(-100%);
-	}
-	.drawer-right-enter,
-	.drawer-right-leave-to{
-		opacity: 0;
-		transform: translateX(100%);
-	}
-	.drawer-bottom-enter,
-	.drawer-bottom-leave-to{
-		opacity: 0;
-		transform: translateY(100%);
-	}
-	.drawer-left-enter,
-	.drawer-left-leave-to{
-		opacity: 0;
-		transform: translateX(-100%);
-	}
-	.mask-enter, 
-	.mask-leave-to{
-		opacity: 0;
-	}
+	@include element(close) {
+		position: absolute;
+		top: 12px;
+		right: 16px;
+		color: #999;
+	}	
 }
 </style>
