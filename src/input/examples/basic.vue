@@ -6,9 +6,9 @@
 		<br>
 		<div>
 			<vc-input-number 
-				v-model="formValidate.value" 
+				v-model="formValidate.value1" 
 				:precision="0" 
-				:min="-10"
+				:min="1000"
 				:disabled="disabled"
 				clearable
 			/>
@@ -138,6 +138,7 @@ export default {
 			textvalue: '',
 			formValidate: {
 				value: '',
+				value1: '',
 			},
 			ruleValidate: {
 				value: [{

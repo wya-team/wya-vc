@@ -29,7 +29,7 @@ export default {
 		},
 		formatter: {
 			type: Function,
-			default: (v, precision) => (v === '' || v === '-' ? '' : Number(v).toFixed(precision))
+			default: (v, precision) => (/^(-|)$/.test(v) ? '' : Number(v).toFixed(precision))
 		}
 	},
 	data() {
@@ -97,17 +97,17 @@ export default {
 				value = value.charAt(0) === '.' ? `0${value}` : value;
 			}
 
-			value = value === '' ? value : this.compareWithBoundary({ value, type: 'input' });
-
 			this.$emit('input', value);
 		},
 		async handleBlur(e) {
 			this.isInput = false;
-			// 失焦时，只留一个'-'
-			let value = this.currentValue === '-' ? '' : this.currentValue;
-			value = this.required && !this.currentValue
+			// 失焦时，只留一个'-'或为''
+			let value = /^(-|)$/.test(this.currentValue)
+				? '' 
+				: this.compareWithBoundary({ value: this.currentValue, type: 'blur' });
+			value = this.required && !value
 				? this.min
-				: this.currentValue;
+				: value;
 
 			try {
 				let state = await this.afterHook(value);
