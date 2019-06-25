@@ -67,21 +67,24 @@ export default {
 		}
 	},
 	watch: {
-		items(val) {
-			if (val.length > 0) this.setActiveItem(this.initialIndex);
+		items(v) {
+			if (v.length > 0) this.setActiveItem(this.initialIndex);
 		},
 
-		activeIndex(val, oldVal) {
-			this.resetItemPosition(oldVal);
-			this.$emit('change', val, oldVal);
+		activeIndex(v, oldV) {
+			this.resetItemPosition(oldV);
+			this.$emit('change', v, oldV);
 		},
 
-		autoplay(val) {
-			val ? this.startTimer() : this.pauseTimer();
+		autoplay(v) {
+			v ? this.startTimer() : this.pauseTimer();
 		},
 
 		loop() {
 			this.setActiveItem(this.activeIndex);
+		},
+		t() {
+			this.pauseTimer();
 		}
 	},
 	
@@ -98,6 +101,7 @@ export default {
 	beforeDestroy() {
 		if (this.$el) Resize.off(this.$el, this.resetItemPosition);
 		this.pauseTimer();
+		this.startTimer();
 	},
 	methods: {
 		updateItems() {
