@@ -52,6 +52,7 @@ export default {
 	methods: {
 		handleCancel(e) {
 			this.$emit('input', '');
+			this.$emit('cancel');
 		}
 	}
 };
