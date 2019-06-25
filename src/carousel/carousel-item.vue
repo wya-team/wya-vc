@@ -6,7 +6,7 @@
 			'is-card': isCard,
 			'is-in-stage': isInStage,
 			'is-hover': isHover,
-			'is-animating': isAnimating
+			'is-animating': isAnimating && !isMove
 		}"
 		:style="itemStyle"
 		class="vc-carousel-item"

@@ -2,8 +2,9 @@
 	<div
 		:class="`is-${direction}`"
 		class="vcm-carousel"
-		@touchstart="handleTouchStart"
-		@touchend="handleTouchEnd"
+		@touchstart.prevent.stop="e => handleStart(e.touches[0])"
+		@touchmove.prevent.stop="e => handleMove(e.touches[0])"
+		@touchend.prevent.stop="e => handleEnd(e.changedTouches[0])"
 	>
 		<div
 			:style="{ height: height ? `${height}px` : 'auto' }"
@@ -31,6 +32,9 @@
 				</button>
 			</li>
 		</ul>
+		<div v-if="type !== 'card' && indicator" class="vcm-carousel__indicator">
+			{{ activeIndex + 1 }} / {{ items.length }}
+		</div>
 	</div>
 </template>
 
@@ -40,14 +44,15 @@ import CarouselMixin from '../carousel-mixin';
 export default {
 	name: 'vcm-carousel',
 	mixins: [CarouselMixin],
-	methods: {
-		handleTouchStart() {
-			this.pauseTimer();
+	props: {
+		dots: {
+			type: String | Boolean,
+			default: false // bottom/outside | false
 		},
-
-		handleTouchEnd() {
-			this.startTimer();
-		},
+		indicator: {
+			type: Boolean,
+			default: true
+		}
 	}
 };
 </script>
@@ -164,6 +169,18 @@ export default {
 		margin: 0 2px;
 		cursor: pointer;
 		transition: .3s;
+	}
+	@include element(indicator) {
+		position: absolute;
+		right: 10px;
+		bottom: 10px;
+		z-index: 2;
+		background: rgba(0, 0, 0, .7);
+		color: white;
+		border-radius: 10px;	
+		height: 20px;
+		line-height: 20px;
+		padding: 0 10px;
 	}
 }
 </style>

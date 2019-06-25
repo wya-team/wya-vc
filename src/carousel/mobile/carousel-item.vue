@@ -4,7 +4,7 @@
 		:class="{
 			'is-active': isActive,
 			'is-card': isCard,
-			'is-animating': isAnimating,
+			'is-animating': isAnimating && !isMove,
 			'is-in-stage': isInStage,
 		}"
 		:style="itemStyle"
@@ -25,7 +25,7 @@ import CarouselItemMixin from '../carousel-item-mixin';
 
 export default {
 	name: 'vcm-carousel-item',
-	mixins: [CarouselItemMixin],
+	mixins: [CarouselItemMixin], 
 };
 </script>
 

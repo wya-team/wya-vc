@@ -29,6 +29,9 @@ export default {
 		isCard() {
 			return this.$parent.type === 'card';
 		},
+		isMove() {
+			return this.$parent.offset !== 0;
+		},
 		itemStyle() {
 			const translateType = this.isVertical ? 'translateY' : 'translateX';
 			const value = `${translateType}(${this.translate}px) scale(${this.scale})`;
@@ -69,9 +72,9 @@ export default {
 		},
 		calcTranslate(index, activeIndex) {
 			const distance = this.$parent.$el[this.isVertical ? 'offsetHeight' : 'offsetWidth'];
-			return distance * (index - activeIndex);
+			return distance * (index - activeIndex) + this.$parent.offset;
 		},
-		translateItem(index, activeIndex, oldIndex) {
+		reset(index, activeIndex, oldIndex) {
 			const length = this.$parent.items.length;
 			if (!this.isCard && oldIndex !== undefined) {
 				this.isAnimating = index === activeIndex || index === oldIndex;

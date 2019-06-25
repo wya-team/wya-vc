@@ -43,7 +43,7 @@ export default {
 			items: [],
 			activeIndex: -1,
 			timer: null,
-			isHover: false
+			offset: 0
 		};
 	},
 	computed: {
@@ -72,7 +72,7 @@ export default {
 		},
 
 		activeIndex(v, oldV) {
-			this.resetItemPosition(oldV);
+			this.resetItems(oldV);
 			this.$emit('change', v, oldV);
 		},
 
@@ -85,13 +85,14 @@ export default {
 		},
 		t() {
 			this.pauseTimer();
+			this.startTimer();
 		}
 	},
 	
 	mounted() {
 		this.updateItems();
 		this.$nextTick(() => {
-			Resize.on(this.$el, this.resetItemPosition);
+			Resize.on(this.$el, this.resetItems);
 			if (this.initialIndex < this.items.length && this.initialIndex >= 0) {
 				this.activeIndex = this.initialIndex;
 			}
@@ -99,7 +100,7 @@ export default {
 		});
 	},
 	beforeDestroy() {
-		if (this.$el) Resize.off(this.$el, this.resetItemPosition);
+		if (this.$el) Resize.off(this.$el, this.resetItems);
 		this.pauseTimer();
 		this.startTimer();
 	},
@@ -110,9 +111,9 @@ export default {
 			);
 		},
 
-		resetItemPosition(oldIndex) {
+		resetItems(oldIndex) {
 			this.items.forEach((item, index) => {
-				item.translateItem(index, this.activeIndex, oldIndex);
+				item.reset(index, this.activeIndex, oldIndex);
 			});
 		},
 
@@ -157,7 +158,7 @@ export default {
 				this.activeIndex = index;
 			}
 			if (oldIndex === this.activeIndex) {
-				this.resetItemPosition(oldIndex);
+				this.resetItems(oldIndex);
 			}
 		},
 
@@ -171,6 +172,37 @@ export default {
 
 		handleDotClick(index) {
 			this.activeIndex = index;
+		},
+
+		handleStart(e) {
+			this.pauseTimer();
+
+			this.start = true;
+			this.startX = e.screenX;
+			this.startY = e.screenY;
+		},
+
+		handleMove(e) {
+			if (!this.start) return;
+			this.offset = !this.vertical 
+				? (e.screenX - this.startX) 
+				: (e.screenY - this.startY);
+
+			this.resetItems();
+		},
+
+		handleEnd() {
+			this.start = false;
+			this.startTimer();
+			const offset = Math.abs(this.offset);
+			const direction = this.offset > 0;
+			this.offset = 0;
+			if (offset > 5) {
+				direction && this.prev();
+				!direction && this.next();
+			} else {
+				this.resetItems();
+			}
 		},
 	},
 };

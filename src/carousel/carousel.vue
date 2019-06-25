@@ -2,6 +2,9 @@
 	<div
 		:class="`is-${direction}`"
 		class="vc-carousel"
+		@mousedown.prevent.stop="handleStart"
+		@mousemove.prevent.stop="handleMove"
+		@mouseup.prevent.stop="handleEnd"
 		@mouseenter.stop="handleMouseEnter"
 		@mouseleave.stop="handleMouseLeave"
 	>
@@ -78,6 +81,11 @@ export default {
 		'vc-transition-slide': Transition.Slide
 	},
 	mixins: [CarouselMixin],
+	data() {
+		return {
+			isHover: false
+		};
+	},
 	computed: {
 		arrowDisplay() {
 			return this.arrow && !this.vertical;
@@ -104,15 +112,6 @@ export default {
 			}
 			return false;
 		},
-		handleMouseEnter() {
-			this.isHover = true;
-			this.pauseTimer();
-		},
-
-		handleMouseLeave() {
-			this.isHover = false;
-			this.startTimer();
-		},
 		handleButtonEnter(arrow) {
 			if (this.vertical) return;
 			this.items.forEach((item, index) => {
@@ -131,7 +130,15 @@ export default {
 			if (this.trigger === 'hover' && index !== this.activeIndex) {
 				this.activeIndex = index;
 			}
-		}
+		},
+		handleMouseEnter() {
+			this.isHover = true;
+			this.pauseTimer();
+		},
+		handleMouseLeave() {
+			this.isHover = false;
+			this.startTimer();
+		},
 	}
 };
 </script>

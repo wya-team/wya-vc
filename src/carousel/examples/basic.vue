@@ -13,7 +13,7 @@
 		<br>
 		<br>
 		<div>
-			<vc-carousel :t="4" type="card" height="200px">
+			<vc-carousel :t="4" :height="200" type="card">
 				<vc-carousel-item v-for="item in 6" :key="item">
 					<h3 class="medium">{{ item }}</h3>
 				</vc-carousel-item>
@@ -23,7 +23,7 @@
 		<br>
 		<br>
 		<div>
-			<vc-carousel :autoplay="false" height="200px" direction="vertical">
+			<vc-carousel :autoplay="false" :height="200" vertical>
 				<vc-carousel-item v-for="item in 3" :key="item">
 					<h3 class="medium">{{ item }}</h3>
 				</vc-carousel-item>
