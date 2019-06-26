@@ -59,7 +59,7 @@ export default {
 	name: "vc-imgs-crop",
 	props: {
 		src: {
-			type: [String, Object], // File类型也可以
+			type: String | Object | File, // File类型也可以
 			required: true
 		},
 
@@ -77,7 +77,7 @@ export default {
 
 		// 裁剪的边框 [x, y]
 		border: {
-			type: [Number, Array],
+			type: Number | Array,
 			default: 20
 		},
 
