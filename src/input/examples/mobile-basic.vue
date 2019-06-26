@@ -50,6 +50,7 @@
 				v-model="value1"
 				placeholder="搜索" 
 				clearable
+				@cancel="handleCancel"
 			/>
 		</div>
 	</div>
@@ -103,6 +104,9 @@ export default {
 		},
 		handleTip({ value }) {
 			console.log(value, '超出的提示');
+		},
+		handleCancel() {
+			alert('cancel');
 		},
 		handleChangeAfter(value) {
 			return new Promise((resolve, rejcet) => {
