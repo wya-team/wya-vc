@@ -12,7 +12,7 @@
 				:lang="lang"
 			/>
 		</slot>
-		<vc-transition-slide :mode="`${slideMode}`" @before-leave="handleBeforeLeave">
+		<transition-group :name="`vc-calendar__${slideMode}`">
 			<div :key="currentMonth" class="vc-calendar__content">
 				<slot
 					:date="weekNames.map((item) => item[lang])" 
@@ -47,14 +47,13 @@
 					</div>
 				</div>
 			</div>
-		</vc-transition-slide>
+		</transition-group>
 	</div>
 </template>
 
 <script>
 import { Utils } from "@wya/utils";
 import Customer from "../customer";
-import Transition from "../transition";
 import date2holiday from "./date2holiday";
 import { monthNames, weekNames } from './constants';
 import { defaultRenderDate, defaultRenderMonth, defaultRenderWeek } from './components';
@@ -63,7 +62,6 @@ export default {
 	name: "vc-calendar",
 	components: {
 		'vc-customer': Customer,
-		'vc-transition-slide': Transition.Slide
 	},
 	props: {
 		renderMonth: {
@@ -220,13 +218,6 @@ export default {
 			} else {
 				this.currentMonth--;
 			}
-		},
-		handleBeforeLeave(el) {
-			el.style.position = 'absolute';
-			el.style.animation = 'none';
-			el.style.transform = this.slideMode === 'left' ? 'translateX(100%)' : 'translateX(-100%)';
-			el.style.transitionTimingFunction = 'ease-out';
-			el.style.transitionDuration = '0.3s';
 		}
 	}
 };
@@ -291,5 +282,18 @@ $block: vc-calendar;
 			}
 		}
 	}
+}
+
+.vc-calendar__right-leave-active,
+.vc-calendar__left-leave-active {
+	position: absolute !important;
+}
+.vc-calendar__right-leave-to,
+.vc-calendar__left-enter {
+	transform: translateX(100%);
+}
+.vc-calendar__right-enter,
+.vc-calendar__left-leave-to {
+	transform: translateX(-100%);
 }
 </style>
