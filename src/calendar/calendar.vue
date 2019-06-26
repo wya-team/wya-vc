@@ -1,21 +1,21 @@
 <template>
-	<div class="vc-calendar">
+	<div ref="target" class="vc-calendar">
 		<slot
-			:data="{month: monthNames[showMonth][lang], year: showYear}" 
+			:data="{ month: monthNames[currentMonth][lang], year: currentYear }" 
 			name="month" 
 		>
 			<vc-customer
-				:render="renderMonth"
-				:month="showMonth"
-				:year="showYear"
+				:month="currentMonth"
+				:year="currentYear"
 				:month-names="monthNames"
+				:render="renderMonth"
 				:lang="lang"
 			/>
 		</slot>
-		<transition-group :name="slideDirect">
-			<div :key="showMonth" class="vc-calendar__content">
+		<vc-transition-slide :mode="`${slideMode}`" @before-leave="handleBeforeLeave">
+			<div :key="currentMonth" class="vc-calendar__content">
 				<slot
-					:data="weekNames.map((item) => item[lang])" 
+					:date="weekNames.map((item) => item[lang])" 
 					name="week" 
 				>
 					<vc-customer
@@ -32,13 +32,14 @@
 							:key="index"
 						>
 							<slot
-								:data="item" 
-								:curDate="curDateStr"
+								:date="item" 
+								:formatter-date="formatterDate"
 								:holiday="date2holiday(item.date)"
 							>
 								<vc-customer
 									:date="item"
-									:cur-date-str="curDateStr"
+									:formatter-date="formatterDate"
+									:holiday="date2holiday(item.date)"
 									:render="renderDate"
 								/>
 							</slot>
@@ -46,23 +47,23 @@
 					</div>
 				</div>
 			</div>
-		</transition-group>
+		</vc-transition-slide>
 	</div>
 </template>
 
 <script>
 import { Utils } from "@wya/utils";
 import Customer from "../customer";
+import Transition from "../transition";
 import date2holiday from "./date2holiday";
 import { monthNames, weekNames } from './constants';
 import { defaultRenderDate, defaultRenderMonth, defaultRenderWeek } from './components';
 
-const curDate = new Date();
-
 export default {
 	name: "vc-calendar",
 	components: {
-		'vc-customer': Customer
+		'vc-customer': Customer,
+		'vc-transition-slide': Transition.Slide
 	},
 	props: {
 		renderMonth: {
@@ -91,23 +92,27 @@ export default {
 		}
 	},
 	data() {
+		let now = new Date();
 		return {
-			curDate,
-			showMonth: curDate.getMonth(), // 要展示的月份 0-11
-			showYear: curDate.getFullYear(), // 要展示的年份,
-			slideDirect: "left",
-			toggle: true
+			currentDate: now,
+			currentMonth: now.getMonth(), // 要展示的月份 0-11
+			currentYear: now.getFullYear(), // 要展示的年份,
+			slideMode: "left",
+			toggle: true,
 		};
 	},
 	computed: {
 		dateArr() {
-			return this.getCurrentInfo(this.showYear, this.showMonth + 1);
+			return this.getCurrentInfo(this.currentYear, this.currentMonth + 1);
 		},
-		curDateStr() {
-			return `${this.curDate.getFullYear()}-${Utils.preZero(this.curDate.getMonth() + 1)}-${Utils.preZero(
-				this.curDate.getDate()
+		formatterDate() {
+			return `${this.currentDate.getFullYear()}-${Utils.preZero(this.currentDate.getMonth() + 1)}-${Utils.preZero(
+				this.currentDate.getDate()
 			)}`;
 		}
+	},
+	watch: {
+		
 	},
 	methods: {
 		getCurrentInfo(year, month) {
@@ -197,32 +202,40 @@ export default {
 		},
 
 		next() {
-			this.slideDirect = "left";
+			this.slideMode = "left";
 			this.toggle = !this.toggle;
-			if (this.showMonth === 11) {
-				this.showMonth = 0;
-				this.showYear++;
+			if (this.currentMonth === 11) {
+				this.currentMonth = 0;
+				this.currentYear++;
 			} else {
-				this.showMonth++;
+				this.currentMonth++;
 			}
 		},
 		prev() {
-			this.slideDirect = "right";
+			this.slideMode = "right";
 			this.toggle = !this.toggle;
-			if (this.showMonth === 0) {
-				this.showMonth = 11;
-				this.showYear--;
+			if (this.currentMonth === 0) {
+				this.currentMonth = 11;
+				this.currentYear--;
 			} else {
-				this.showMonth--;
+				this.currentMonth--;
 			}
+		},
+		handleBeforeLeave(el) {
+			el.style.position = 'absolute';
+			el.style.animation = 'none';
+			el.style.transform = this.slideMode === 'left' ? 'translateX(100%)' : 'translateX(-100%)';
+			el.style.transitionTimingFunction = 'ease-out';
+			el.style.transitionDuration = '0.3s';
 		}
 	}
 };
 </script>
-<style lang="scss" scoped>
+<style lang="scss">
 @import '../style/index.scss';
+$block: vc-calendar;
 
-@include block(vc-calendar) {
+@include block($block) {
 	width: 100%;
 	position: relative;
 	overflow: hidden;
@@ -278,18 +291,5 @@ export default {
 			}
 		}
 	}
-}
-
-.right-leave-active,
-.left-leave-active {
-	position: absolute !important;
-}
-.right-leave-to,
-.left-enter {
-	transform: translateX(100%);
-}
-.right-enter,
-.left-leave-to {
-	transform: translateX(-100%);
 }
 </style>

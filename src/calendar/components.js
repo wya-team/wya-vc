@@ -1,5 +1,5 @@
-export const defaultRenderDate = (h, { date, curDateStr }) => {
-	return <span class={date.date === curDateStr ? "is-selected" : ""}>{date.day}</span>;
+export const defaultRenderDate = (h, { date, formatterDate }) => {
+	return <span class={date.date === formatterDate ? "is-selected" : ""}>{date.day}</span>;
 };
 export const defaultRenderMonth = (h, { month, year, lang, monthNames }) => {
 	return (
