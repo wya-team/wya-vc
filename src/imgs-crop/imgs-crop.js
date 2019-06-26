@@ -279,13 +279,6 @@ export default {
 					-(context.canvas.height / 2)
 				);
 
-				if (this.isVertical()) {
-					context.translate(
-						(context.canvas.width - context.canvas.height) / 2,
-						(context.canvas.height - context.canvas.width) / 2
-					);
-				}
-
 				context.scale(scaleFactor, scaleFactor);
 				// 在源图像上方显示目标图像
 				context.globalCompositeOperation = 'destination-over';
@@ -299,12 +292,6 @@ export default {
 
 				context.restore();
 			}
-		},
-		/**
-		 * 是否选择超过180
-		 */
-		isVertical() {
-			return this.rotate % 180 !== 0;
 		},
 		/**
 		 * 边框
@@ -325,13 +312,8 @@ export default {
 			const canvasWidth = width;
 			const canvasHeight = height;
 
-			if (this.isVertical()) {
-				canvas.width = canvasHeight;
-				canvas.height = canvasWidth;
-			} else {
-				canvas.width = canvasWidth;
-				canvas.height = canvasHeight;
-			}
+			canvas.width = canvasWidth;
+			canvas.height = canvasHeight;
 
 			canvas.width += borderX * 2;
 			canvas.height += borderY * 2;
@@ -363,13 +345,8 @@ export default {
 			// 创建具有正确尺寸的画布
 			const canvas = document.createElement('canvas');
 
-			if (this.isVertical()) {
-				canvas.width = cropRect.height;
-				canvas.height = cropRect.width;
-			} else {
-				canvas.width = cropRect.width;
-				canvas.height = cropRect.height;
-			}
+			canvas.width = cropRect.width;
+			canvas.height = cropRect.height;
 
 			// 在正确的位置绘制全尺寸图像,
 			// 图像被截断到画布的大小.
@@ -378,13 +355,6 @@ export default {
 			context.translate(canvas.width / 2, canvas.height / 2);
 			context.rotate(rotate * Math.PI / 180);
 			context.translate(-(canvas.width / 2), -(canvas.height / 2));
-
-			if (this.isVertical()) {
-				context.translate(
-					(canvas.width - canvas.height) / 2,
-					(canvas.height - canvas.width) / 2
-				);
-			}
 
 			context.drawImage(image.resource, -cropRect.x, -cropRect.y);
 
@@ -401,13 +371,8 @@ export default {
 
 			const canvas = document.createElement('canvas');
 
-			if (this.isVertical()) {
-				canvas.width = height;
-				canvas.height = width;
-			} else {
-				canvas.width = width;
-				canvas.height = height;
-			}
+			canvas.width = width;
+			canvas.height = height;
 
 			// 不要在这里绘制边框，因为它是生成的图像
 			this.paintImage(canvas.getContext('2d'), { ...this.image }, 0, 1);
@@ -509,13 +474,8 @@ export default {
 			let x = -croppingRect.x * width;
 			let y = -croppingRect.y * height;
 
-			if (this.isVertical()) {
-				x += borderY;
-				y += borderX;
-			} else {
-				x += borderX;
-				y += borderY;
-			}
+			x += borderX;
+			y += borderY;
 
 			return {
 				x,
