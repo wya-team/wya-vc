@@ -2,7 +2,7 @@ import Vue from 'vue';
 import { Utils, Dom } from '@wya/utils';
 import Checkbox from '../checkbox';
 import Layout from './layout/index';
-import { mapStates } from './store/helper';
+import { mapStates } from './store';
 
 const getAllColumns = (columns) => {
 	const result = [];
@@ -64,7 +64,7 @@ const convertToRows = (originColumns) => {
 
 export default {
 	name: 'vc-table-header',
-	mixins: [Layout.Observer],
+	mixins: [Layout.Mixin],
 	props: {
 		fixed: String,
 		store: {
@@ -86,7 +86,7 @@ export default {
 		},
 
 		hasGutter() {
-			return !this.fixed && this.tableLayout.gutterWidth;
+			return !!(!this.fixed && this.tableLayout.gutterWidth);
 		},
 
 		...mapStates({

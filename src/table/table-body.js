@@ -3,12 +3,12 @@ import { Dom } from '@wya/utils';
 import Popover from '../popover';
 import { getCell, getColumnByCell, getRowIdentity } from './utils';
 
-import { mapStates } from './store/helper';
+import { mapStates } from './store';
 import Layout from './layout/index';
 
 export default {
 	name: 'vc-table-body',
-	mixins: [Layout.Observer],
+	mixins: [Layout.Mixin],
 	components: {
 	},
 	props: {

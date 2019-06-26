@@ -42,7 +42,7 @@ export const parseMinWidth = (minWidth) => {
 export const getRowIdentity = (row, rowKey) => {
 	if (!row) throw new VcError('table', 'row is required when get row identity');
 	if (typeof rowKey === 'string') {
-		if (rowKey.indexOf('.') < 0) {
+		if (!rowKey.includes('.')) {
 			return row[rowKey];
 		}
 		let key = rowKey.split('.');
@@ -120,9 +120,9 @@ export const toggleRowStatus = (statusArr, row, newVal) => {
 /**
  * 
  */
-export const getKeysMap = (array, rowKey) => {
+export const getKeysMap = (array = [], rowKey) => {
 	const arrayMap = {};
-	(array || []).forEach((row, index) => {
+	array.forEach((row, index) => {
 		arrayMap[getRowIdentity(row, rowKey)] = { row, index };
 	});
 	return arrayMap;

@@ -13,30 +13,26 @@ export default {
 		setCurrentRowKey(key) {
 			this.assertRowKey();
 
-			const { states } = this;
-			const { data = [], rowKey } = states;
+			const { data = [], rowKey } = this.states;
 			const currentRow = data.find(item => getRowIdentity(item, rowKey) === key);
-			states.currentRow = currentRow || null;
+			this.states.currentRow = currentRow || null;
 		},
 
 		updateCurrentRow() {
-			const { states, table } = this;
-			const { rowKey } = states;
-			// data 为 null 时，结构时的默认值会被忽略
-			const data = states.data || [];
-			const oldCurrentRow = states.currentRow;
+			const { rowKey, data = [], currentRow } = this.states;
+			const oldCurrentRow = currentRow;
 
 			// 当 currentRow 不在 data 中时尝试更新数据
-			if (data.indexOf(oldCurrentRow) === -1 && oldCurrentRow) {
+			if (oldCurrentRow && !data.includes(oldCurrentRow)) {
 				let newCurrentRow = null;
 				if (rowKey) {
 					newCurrentRow = data.find(item => {
 						return getRowIdentity(item, rowKey) === getRowIdentity(oldCurrentRow, rowKey);
 					});
 				}
-				states.currentRow = newCurrentRow;
+				this.states.currentRow = newCurrentRow;
 				if (newCurrentRow !== oldCurrentRow) {
-					table.$emit('current-change', null, oldCurrentRow);
+					this.table.$emit('current-change', null, oldCurrentRow);
 				}
 			}
 		}

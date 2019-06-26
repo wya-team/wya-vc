@@ -216,7 +216,7 @@ import Extends from '../extends';
 import { Resize, getUid } from '../utils/index';
 import { parseHeight } from './utils';
 
-import { createStore, mapStates } from './store/helper';
+import { Store, mapStates } from './store';
 import Layout from './layout/index';
 
 // Table
@@ -239,7 +239,7 @@ export default {
 	props: {
 		dataSource: {
 			type: Array,
-			default: () => ([])
+			default: () => ([]),
 		},
 		width: String | Number,
 		height: String | Number,
@@ -308,7 +308,7 @@ export default {
 
 	data() {
 		const { hasChildren = 'hasChildren', children = 'children' } = this.treeProps;
-		this.store = createStore(this, {
+		this.store = new Store(this, {
 			rowKey: this.rowKey,
 			defaultExpandAll: this.defaultExpandAll,
 			selectOnIndeterminate: this.selectOnIndeterminate,

@@ -1,9 +1,9 @@
 import Layout from './layout/index';
-import { mapStates } from './store/helper';
+import { mapStates } from './store';
 
 export default {
 	name: 'vc-table-footer',
-	mixins: [Layout.Observer],
+	mixins: [Layout.Mixin],
 	props: {
 		fixed: String,
 		store: {

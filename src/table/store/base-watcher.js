@@ -3,13 +3,12 @@ import { debounce } from 'lodash';
 import { Utils } from '@wya/utils';
 import { getKeysMap, getRowIdentity, getColumnById, getColumnByKey, toggleRowStatus } from '../utils';
 import { flattenData } from '../../utils';
-import expand from './expand';
-import current from './current';
-import tree from './tree';
+import ExpandMixin from './expand-mixin';
+import CurrentMixin from './current-mixin';
+import TreeMixin from './tree-mixin';
 
 export default Vue.extend({
-
-	mixins: [expand, current, tree],
+	mixins: [ExpandMixin, CurrentMixin, TreeMixin],
 	data() {
 		return {
 			states: {
@@ -100,18 +99,24 @@ export default Vue.extend({
 			return selection.indexOf(row) > -1;
 		},
 
+		/**
+		 * 清除选择
+		 */
 		clearSelection() {
-			const states = this.states;
-			states.isAllSelected = false;
-			const oldSelection = states.selection;
-			if (states.selection.length) {
-				states.selection = [];
+			this.states.isAllSelected = false;
+			const oldSelection = this.states.selection;
+
+			if (this.states.selection.length) {
+				this.states.selection = [];
 			}
 			if (oldSelection.length > 0) {
-				this.table.$emit('selection-change', states.selection ? states.selection.slice() : []);
+				this.table.$emit('selection-change', []);
 			}
 		},
 
+		/**
+		 * 清理选择
+		 */
 		cleanSelection() {
 			const selection = this.states.selection || [];
 			const data = this.states.data;
@@ -193,24 +198,22 @@ export default Vue.extend({
 		},
 
 		updateAllSelected() {
-			const states = this.states;
-			const { selection, rowKey, selectable } = states;
-			// data 为 null 时，结构时的默认值会被忽略
-			const data = states.data || [];
+			const { selection, rowKey, selectable, data = [] } = this.states;
+
 			if (data.length === 0) {
-				states.isAllSelected = false;
+				this.states.isAllSelected = false;
 				return;
 			}
 
 			let selectedMap;
 			if (rowKey) {
-				selectedMap = getKeysMap(selection, rowKey);
+				selectedMap = getKeysMap(selection, rowKey); // -> object
 			}
 			const isSelected = function (row) {
 				if (selectedMap) {
 					return !!selectedMap[getRowIdentity(row, rowKey)];
 				} else {
-					return selection.indexOf(row) !== -1;
+					return selection.includes(row);
 				}
 			};
 			let isAllSelected = true;
@@ -229,7 +232,7 @@ export default Vue.extend({
 			}
 
 			if (selectedCount === 0) isAllSelected = false;
-			states.isAllSelected = isAllSelected;
+			this.states.isAllSelected = isAllSelected;
 		},
 
 		// 适配层，expand-row-keys 在 Expand 与 TreeTable 中都有使用

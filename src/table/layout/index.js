@@ -1,5 +1,5 @@
 import Layout from './layout';
-import Observer from './observer';
+import Mixin from './layout-mixin';
 
-Layout.Observer = Observer;
+Layout.Mixin = Mixin;
 export default Layout;
