@@ -74,7 +74,7 @@ VcInstance.init({
 					key: res.data.dir + "${filename}"   // eslint-disable-line
 				};
 			}).catch(error => {
-				return {};
+				return Promise.reject(error);
 			});
 		} // 必须返回对象或Promise对象
 	}

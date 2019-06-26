@@ -37,6 +37,7 @@
 			v-show="!disabled && (data.length < max || max === 0)"
 			v-bind="uploadOpts"
 			:accept="accept"
+			@file-before="handleFileBefore"
 			@file-start="handleFileStart"
 			@file-progress="handleFileProgress"
 			@file-success="handleFileSuccess"

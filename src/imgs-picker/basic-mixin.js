@@ -39,7 +39,7 @@ export default {
 			default: false
 		},
 		// 拖拽排序
-		sort: {
+		sortable: {
 			type: Boolean,
 			default: false
 		},
@@ -99,6 +99,23 @@ export default {
 		}
 	},
 	methods: {
+		handleFileBefore(file, fileList) {
+			return new Promise((resolve) => {
+				const { "file-before": fileBefore } = this.$listeners;
+
+				if (!fileBefore) return resolve(file);
+				const before = fileBefore(file, fileList);
+				if (before && before.then) {
+					before.then((processedFile) => {
+						resolve(processedFile);
+					}).catch(e => {
+						reject(e);
+					});
+				} else {
+					resolve(file);
+				}
+			});
+		},
 		handleFileStart(res) {
 			this.data = [...this.data, res];
 			// 开始上传时，最大值 -1

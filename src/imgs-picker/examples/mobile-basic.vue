@@ -62,7 +62,7 @@ VcInstance.init({
 				};
 			}).catch(error => {
 				console.error("[vc-upload: onPostBefore]" + error.msg);
-				return {};
+				return Promise.reject(error);
 			});
 		},
 		onPostAfter: ({ response, options }) => {

@@ -229,7 +229,7 @@ export default {
 						this.post(file);
 					}
 				}).catch(e => {
-					console && console.error(e);
+					throw new VcError('upload', e);
 				});
 			} else if (before !== false) {
 				setTimeout(() => this.post(file), 0);

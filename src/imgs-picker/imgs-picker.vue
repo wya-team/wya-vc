@@ -1,6 +1,6 @@
 <template>
 	<component :is="tag" class="vcp-imgs-picker">
-		<template v-if="!sort">
+		<template v-if="!sortable">
 			<vc-imgs-picker-item 
 				v-for="(item, index) in data" 
 				:key="typeof item === 'object' ? item.uid : item"
@@ -46,6 +46,7 @@
 			v-show="!disabled && (data.length < max || max === 0)"
 			v-bind="uploadOpts"
 			:accept="accept"
+			@file-before="handleFileBefore"
 			@file-start="handleFileStart"
 			@file-progress="handleFileProgress"
 			@file-success="handleFileSuccess"

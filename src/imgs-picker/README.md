@@ -17,7 +17,7 @@ disabled | 是否禁止上传和删除 | `Boolean` | false
 upload | upload组件的属性 | `Object` | {}
 accept | 可接受的文件类型 | `String` | `image/gif`, `image/jpeg`, `image/jpg`, `image/png`
 format | 自定义返回数据格式 | `Function` | - 
-sort | 是否开启拖拽排序 | `Boolean` | `false` 
+sortable | 是否开启拖拽排序 | `Boolean` | `false` 
 
 
 #### 事件
