@@ -34,6 +34,7 @@ import CreateProtal from '../create-portal/index';
 import Transition from '../transition/index';
 import Customer from '../customer/index';
 import { VcError } from '../vc/index';
+import { Resize } from '../utils/index';
 
 const popup = {
 	name: 'vc-popover-core',
@@ -136,11 +137,20 @@ const popup = {
 
 		// 捕获阶段执行
 		!this.hover && document.addEventListener('click', this.handleClick, true);
+		// 监听body的滚动
+		document.addEventListener('scroll', this.setPopupStyle);
+		// 监听触发节点的Resize
+		Resize.on(this.triggerEl, this.setPopupStyle);
+		// 监听弹层的Resize
+		Resize.on(this.$el, this.handleWrapperResize);
 
 		this.onReady && this.onReady();
 	},
 	destroyed() {
 		!this.hover && document.removeEventListener('click', this.handleClick, true);
+		document.removeEventListener('scroll', this.setPopupStyle);
+		Resize.off(this.triggerEl, this.setPopupStyle);
+		Resize.on(this.$el, this.handleWrapperResize);
 
 		this.alone && this.hover && this.removeEvents();
 	}, 
@@ -217,6 +227,12 @@ const popup = {
 		handleChange(e, { visible }) {
 			this.alone && this.handleTriggerChange(e);
 			!this.alone && this.onChange(e, { visible, context: this });
+		},
+		handleWrapperResize() {
+			this.getTBWrapperResize({
+				el: this.$el,
+				placement: this.placement
+			});
 		},
 		/**
 		 * 动画执行后关闭

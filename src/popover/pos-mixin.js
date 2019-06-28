@@ -130,7 +130,7 @@ export default {
 			let arrowStyle;
 			let popContainer = el.parentElement;
 			let isWindow = popContainer === document.body;
-			let scrollXWidth = isWindow ? window.scrollX : 0; // 横着上滚动的距离
+			let scrollXWidth = isWindow ? window.scrollX : 0; // 横轴上滚动的距离
 
 			switch (placement) {
 				case 'bottom':
@@ -236,6 +236,29 @@ export default {
 				wrapperStyle,
 				arrowStyle
 			};
+		},
+		/**
+		 * 弹层【宽度】变化后的自适应，主要服务于Cascader等内容会变化的下拉框
+		 */
+		getTBWrapperResize({ placement, el }) {
+			let direction = placement.split('-');
+
+			let left = parseFloat(this.wrapperStyle.left);
+			switch (direction[0]) {
+				case 'top':
+				case 'bottom':
+					if (left + el.offsetWidth >= window.innerWidth) {
+						this.wrapperStyle = {
+							...this.wrapperStyle,
+							left: `${window.innerWidth - el.offsetWidth}px`
+						};
+					} else {
+						this.setPopupStyle();
+					}
+					break;
+				default:
+					break;
+			}
 		}
 	}
 };
