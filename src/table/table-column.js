@@ -1,8 +1,7 @@
-import { compose } from '../utils/index';
+import { merge } from 'lodash';
+import { compose, getUid } from '../utils/index';
 import { cellStarts, cellForced, defaultRenderCell, treeCellPrefix } from './table-column-confg';
 import { parseWidth, parseMinWidth } from './utils';
-
-let columnIdSeed = 1;
 
 export default {
 	name: 'vc-table-column',
@@ -14,7 +13,6 @@ export default {
 		label: String,
 		className: String,
 		labelClassName: String,
-		property: String,
 		prop: String,
 		width: {},
 		minWidth: {},
@@ -35,8 +33,7 @@ export default {
 	},
 	data() {
 		return {
-			isSubColumn: false,
-			columns: []
+			isSubColumn: false
 		};
 	},
 	computed: {
@@ -65,30 +62,30 @@ export default {
 		},
 
 		realAlign() {
-			return this.align ? 'is-' + this.align : null;
+			return this.align 
+				? 'is-' + this.align 
+				: null;
 		},
 
 		realHeaderAlign() {
-			return this.headerAlign ? 'is-' + this.headerAlign : this.realAlign;
+			return this.headerAlign 
+				? 'is-' + this.headerAlign 
+				: this.realAlign;
 		}
-	},
-	beforeCreate() {
-		this.row = {};
-		this.column = {};
-		this.$index = 0;
-		this.columnId = '';
 	},
 	created() {
 		const parent = this.columnOrTableParent;
-		this.isSubColumn = this.owner !== parent;
-		this.columnId = (parent.tableId || parent.columnId) + '_column_' + columnIdSeed++;
 
-		const type = this.type || 'default';
+		const { type = 'default' } = this;
+
+		this.isSubColumn = this.owner !== parent;
+		this.columnId = (parent.tableId || parent.columnId) + getUid('column', '');
+
 		const defaults = {
 			...cellStarts[type],
-			id: this.columnId,
 			type,
-			property: this.prop || this.property,
+			id: this.columnId,
+			prop: this.prop,
 			align: this.realAlign,
 			headerAlign: this.realHeaderAlign,
 			showPopover: this.showPopover,
@@ -101,10 +98,14 @@ export default {
 
 		let column = this.getPropsData(basicProps, selectProps);
 
-		column = Object.assign(defaults, column); // TODO: column没有值使用默认值
+		column = merge(defaults, column);
 
 		// 注意 compose 中函数执行的顺序是从右到左
-		column = compose(this.setColumnRenders, this.setColumnWidth, this.setColumnForcedProps)(column);
+		column = compose(
+			this.setColumnRenders, 
+			this.setColumnWidth, 
+			this.setColumnForcedProps
+		)(column);
 
 		this.columnConfig = column;
 
@@ -115,23 +116,41 @@ export default {
 	mounted() {
 		const owner = this.owner;
 		const parent = this.columnOrTableParent;
-		let children = this.isSubColumn ? parent.$el.children : parent.$refs.hiddenColumns.children;
+		let children = this.isSubColumn 
+			? parent.$el.children 
+			: parent.$refs.hiddenColumns.children;
 		
-		if (!this.isSubColumn && children.length === 1 && /vc-table-item/.test(children[0].className)) {
+		if (!this.isSubColumn 
+			&& children.length === 1 
+			&& /vc-table-item/.test(children[0].className)
+		) {
 			children = children[0].children;
 		}
-		let columnIndex = Array.prototype.indexOf.call(children, this.$el);
+		// DOM上
+		let columnIndex = [...children].indexOf(this.$el);
 
-		owner.store.commit('insertColumn', this.columnConfig, columnIndex, this.isSubColumn ? parent.columnConfig : null);
+		owner.store.commit(
+			'insertColumn', 
+			this.columnConfig, 
+			columnIndex, 
+			this.isSubColumn && parent.columnConfig
+		);
 	},
 	destroyed() {
 		if (!this.$parent) return;
 		const parent = this.$parent;
-		this.owner.store.commit('removeColumn', this.columnConfig, this.isSubColumn ? parent.columnConfig : null);
+		this.owner.store.commit(
+			'removeColumn', 
+			this.columnConfig, 
+			this.isSubColumn && parent.columnConfig
+		);
 	},
 	methods: {
+		/**
+		 * 获取当前值情况，this[key]
+		 */
 		getPropsData(...props) {
-			return props.reduce((prev, cur) => {
+			let result = props.reduce((prev, cur) => {
 				if (Array.isArray(cur)) {
 					cur.forEach((key) => {
 						prev[key] = this[key];
@@ -139,8 +158,35 @@ export default {
 				}
 				return prev;
 			}, {});
+
+			return result;
 		},
 
+		/**
+		 * compose 1
+		 * 对于特定类型的 column，某些属性不允许设置
+		 * 如 type: selection | index | expand
+		 */
+		setColumnForcedProps(column) {
+			const type = column.type;
+			const source = cellForced[type] || {};
+			Object.keys(source).forEach(prop => {
+				let value = source[prop];
+				if (value !== undefined) {
+					column[prop] = prop === 'className' 
+						? `${column[prop]} ${value}` 
+						: value;
+				}
+			});
+			return column;
+		},
+
+		/**
+		 * compose 2
+		 * column
+		 * 	 -> width
+		 * 	 -> minWidth
+		 */
 		setColumnWidth(column) {
 			if (this.realWidth) {
 				column.width = this.realWidth;
@@ -151,32 +197,31 @@ export default {
 			if (!column.minWidth) {
 				column.minWidth = 80;
 			}
-			column.realWidth = column.width === undefined ? column.minWidth : column.width;
+			column.realWidth = column.width === undefined 
+				? column.minWidth 
+				: column.width;
 			return column;
 		},
 
-		setColumnForcedProps(column) {
-			// 对于特定类型的 column，某些属性不允许设置
-			const type = column.type;
-			const source = cellForced[type] || {};
-			Object.keys(source).forEach(prop => {
-				let value = source[prop];
-				if (value !== undefined) {
-					column[prop] = prop === 'className' ? `${column[prop]} ${value}` : value;
-				}
-			});
-			return column;
-		},
-
+		/**
+		 * compose 3
+		 * column
+		 *   -> renderHeader: 渲染头部
+		 *   -> renderCell: 渲染单元格
+		 * owner
+		 * 	 -> renderExpanded: 展开
+		 */
 		setColumnRenders(column) {
 			const specialTypes = Object.keys(cellForced);
 			// renderHeader 属性不推荐使用。
 			if (this.renderHeader) {
-				console.warn('[Element Warn][TableColumn]Comparing to render-header, scoped-slot header is easier to use. We recommend users to use scoped-slot header.'); // eslint-disable-line
+				column.renderHeader = this.renderHeader;
 			} else if (specialTypes.indexOf(column.type) === -1) {
 				column.renderHeader = (h, scope) => {
 					const renderHeader = this.$scopedSlots.header;
-					return renderHeader ? renderHeader(scope) : column.label;
+					return renderHeader 
+						? renderHeader(scope) 
+						: column.label;
 				};
 			}
 
@@ -211,7 +256,9 @@ export default {
 					};
 					if (column.showPopover) {
 						props.class += ' vc-popover';
-						props.style = { width: (data.column.realWidth || data.column.width) - 1 + 'px' };
+						props.style = { 
+							width: (data.column.realWidth || data.column.width) - 1 + 'px' 
+						};
 					}
 					return (
 						<div {...props}>
@@ -225,10 +272,10 @@ export default {
 		},
 
 		registerNormalWatchers() {
-			const props = ['label', 'property', 'index', 'formatter', 'className', 'labelClassName'];
+			const props = ['label', 'index', 'formatter', 'className', 'labelClassName'];
 			// 一些属性具有别名
 			const aliases = {
-				prop: 'property',
+				prop: 'prop',
 				realAlign: 'align',
 				realHeaderAlign: 'headerAlign',
 				realWidth: 'width'
@@ -241,8 +288,8 @@ export default {
 			Object.keys(allAliases).forEach(key => {
 				const columnKey = aliases[key];
 
-				this.$watch(key, (newVal) => {
-					this.columnConfig[columnKey] = newVal;
+				this.$watch(key, (v) => {
+					this.columnConfig[columnKey] = v;
 				});
 			});
 		},
@@ -261,16 +308,18 @@ export default {
 			Object.keys(allAliases).forEach(key => {
 				const columnKey = aliases[key];
 
-				this.$watch(key, (newVal) => {
-					this.columnConfig[columnKey] = newVal;
-					const updateColumns = columnKey === 'fixed';
-					this.owner.store.scheduleLayout(updateColumns);
+				this.$watch(key, (v) => {
+					this.columnConfig[columnKey] = v;
+					this.owner.store.scheduleLayout(columnKey === 'fixed');
 				});
 			});
 		}
 	},
+
+	/**
+	 * slots 也要渲染，需要计算合并表头
+	 */
 	render(h) {
-		// slots 也要渲染，需要计算合并表头
 		return h('div', this.$slots.default);
 	}
 };

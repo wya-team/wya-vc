@@ -126,7 +126,7 @@ export default {
 		},
 
 		getHeaderRowStyle(rowIndex) {
-			const headerRowStyle = this.table.headerRowStyle;
+			const { headerRowStyle } = this.table;
 			if (typeof headerRowStyle === 'function') {
 				return headerRowStyle.call(null, { rowIndex });
 			}
@@ -135,8 +135,8 @@ export default {
 
 		getHeaderRowClass(rowIndex) {
 			const classes = [];
+			const { headerRowClassName } = this.table;
 
-			const headerRowClassName = this.table.headerRowClassName;
 			if (typeof headerRowClassName === 'string') {
 				classes.push(headerRowClassName);
 			} else if (typeof headerRowClassName === 'function') {
@@ -147,7 +147,7 @@ export default {
 		},
 
 		getHeaderCellStyle(rowIndex, columnIndex, row, column) {
-			const headerCellStyle = this.table.headerCellStyle;
+			const { headerCellStyle } = this.table;
 			if (typeof headerCellStyle === 'function') {
 				return headerCellStyle.call(null, {
 					rowIndex,
@@ -170,7 +170,7 @@ export default {
 				classes.push('is-leaf');
 			}
 
-			const headerCellClassName = this.table.headerCellClassName;
+			const { headerCellClassName } = this.table;
 			if (typeof headerCellClassName === 'string') {
 				classes.push(headerCellClassName);
 			} else if (typeof headerCellClassName === 'function') {
@@ -308,7 +308,7 @@ export default {
 		},
 	},
 	render(h) {
-		const originColumns = this.store.states.originColumns;
+		const { originColumns } = this.store.states;
 		const columnRows = convertToRows(originColumns, this.columns);
 		// 是否拥有多级表头
 		const isGroup = columnRows.length > 1;
@@ -325,15 +325,16 @@ export default {
 						this.columns.map(column => <col name={ column.id } key={column.id} />)
 					}
 					{
-						this.hasGutter ? <col name="gutter" /> : ''
+						this.hasGutter ? <col name="gutter" /> : null
 					}
 				</colgroup>
 				<thead class={ [{ 'is-group': isGroup, 'has-gutter': this.hasGutter }] }>
 					{
+						// renderList
 						this._l(columnRows, (columns, rowIndex) => (
 							<tr
-								style={ this.getHeaderRowStyle(rowIndex) }
-								class={ this.getHeaderRowClass(rowIndex) }
+								style={this.getHeaderRowStyle(rowIndex)}
+								class={this.getHeaderRowClass(rowIndex)}
 							>
 								{
 									columns.map((column, cellIndex) => (
@@ -352,7 +353,10 @@ export default {
 											<div 
 												class={[
 													'vc-table__cell', 
-													column.filteredValue && column.filteredValue.length > 0 ? 'highlight' : '', column.labelClassName
+													{
+														"highlight": column.filteredValue && column.filteredValue.length > 0 
+													},
+													column.labelClassName
 												]}
 											>
 												{
@@ -375,7 +379,7 @@ export default {
 									))
 								}
 								{
-									this.hasGutter ? <th class="gutter" /> : ''
+									this.hasGutter ? <th class="gutter" /> : null
 								}
 							</tr>
 						))

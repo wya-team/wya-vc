@@ -19,7 +19,7 @@ export default {
 		},
 
 		hasGutter() {
-			return !this.fixed && this.tableLayout.gutterWidth;
+			return !!(!this.fixed && this.tableLayout.gutterWidth);
 		},
 
 		...mapStates({
@@ -73,7 +73,7 @@ export default {
 					sums[index] = this.sumText;
 					return;
 				}
-				const values = this.store.states.data.map(item => Number(item[column.property]));
+				const values = this.store.states.data.map(item => Number(item[column.prop]));
 				const precisions = [];
 				let notNumber = true;
 				values.forEach(value => {
@@ -110,17 +110,17 @@ export default {
 						this.columns.map(column => <col name={ column.id } key={column.id} />)
 					}
 					{
-						this.hasGutter ? <col name="gutter" /> : ''
+						this.hasGutter ? <col name="gutter" /> : null
 					}
 				</colgroup>
-				<tbody class={ [{ 'has-gutter': this.hasGutter }] }>
+				<tbody class={[{ 'has-gutter': this.hasGutter }]}>
 					<tr>
 						{
 							this.columns.map((column, cellIndex) => (
 								<td
 									key={cellIndex}
-									colspan={ column.colSpan }
-									rowspan={ column.rowSpan }
+									colspan={column.colSpan}
+									rowspan={column.rowSpan}
 									class={ this.getRowClasses(column, cellIndex) }
 								>
 									<div class={ ['vc-table__cell', column.labelClassName] }>
@@ -132,7 +132,7 @@ export default {
 							))
 						}
 						{
-							this.hasGutter ? <th class="gutter" /> : ''
+							this.hasGutter ? <th class="gutter" /> : null
 						}
 					</tr>
 				</tbody>

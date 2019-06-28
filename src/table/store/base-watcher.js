@@ -1,8 +1,9 @@
 import Vue from 'vue';
-import { debounce } from 'lodash';
+import { debounce, values, merge, concat } from 'lodash';
 import { Utils } from '@wya/utils';
 import { getKeysMap, getRowIdentity, getColumnById, getColumnByKey, toggleRowStatus } from '../utils';
 import { flattenData } from '../../utils';
+import { VcError } from '../../vc';
 import ExpandMixin from './expand-mixin';
 import CurrentMixin from './current-mixin';
 import TreeMixin from './tree-mixin';
@@ -22,9 +23,9 @@ export default Vue.extend({
 				isComplex: false,
 
 				// 列
-				_columns: [], // 不可响应的
-				originColumns: [],
-				columns: [],
+				_columns: [], // 不可响应的, 动态收集vc-table-column中的columnConfig
+				originColumns: [], // fixedColumns, notFixedColumns, rightFixedColumns
+				columns: [], // 包括 fixedLeafColumns，leafColumns，rightFixedLeafColumns
 				fixedColumns: [],
 				rightFixedColumns: [],
 				leafColumns: [],
@@ -42,21 +43,34 @@ export default Vue.extend({
 				selectable: null,
 
 				hoverRow: null,
-				currentRow: null
+				currentRow: null,
 			}
 		};
 	},
 
 	methods: {
-		// 检查 rowKey 是否存在
+		/**
+		 * 检查 rowKey 是否存在
+		 */
 		assertRowKey() {
-			const rowKey = this.states.rowKey;
-			if (!rowKey) throw new Error('[vc-table] prop row-key is required');
+			if (!this.states.rowKey) {
+				throw new VcError('vc-table', 'row-key 必传');
+			}
 		},
 
-		// 更新列
+		/**
+		 * 更新列
+		 * fixedColumns: 左fixed
+		 * rightFixedColumns: 右fixed
+		 * originColumns: 中（包括左右）
+		 * columns: 展开以上
+		 * leafColumnsLength
+		 * fixedLeafColumnsLength
+		 * rightFixedLeafColumnsLength
+		 * isComplex: 是否包含固定列
+		 */
 		updateColumns() {
-			const states = this.states;
+			const { states } = this;
 			const _columns = states._columns || [];
 			states.fixedColumns = _columns.filter((column) => column.fixed === true || column.fixed === 'left');
 			states.rightFixedColumns = _columns.filter((column) => column.fixed === 'right');
@@ -67,7 +81,7 @@ export default Vue.extend({
 			}
 
 			const notFixedColumns = _columns.filter(column => !column.fixed);
-			states.originColumns = [].concat(states.fixedColumns).concat(notFixedColumns).concat(states.rightFixedColumns);
+			states.originColumns = concat(states.fixedColumns, notFixedColumns, states.rightFixedColumns);
 
 			/**
 			 * 多级表头，嵌套
@@ -80,7 +94,7 @@ export default Vue.extend({
 			states.fixedLeafColumnsLength = fixedLeafColumns.length;
 			states.rightFixedLeafColumnsLength = rightFixedLeafColumns.length;
 
-			states.columns = [].concat(fixedLeafColumns).concat(leafColumns).concat(rightFixedLeafColumns);
+			states.columns = concat(fixedLeafColumns, leafColumns, rightFixedLeafColumns);
 
 			states.isComplex = states.fixedColumns.length > 0 || states.rightFixedColumns.length > 0;
 		},
@@ -96,7 +110,7 @@ export default Vue.extend({
 		// 选择
 		isSelected(row) {
 			const { selection = [] } = this.states;
-			return selection.indexOf(row) > -1;
+			return selection.includes(row);
 		},
 
 		/**
@@ -118,14 +132,12 @@ export default Vue.extend({
 		 * 清理选择
 		 */
 		cleanSelection() {
-			const selection = this.states.selection || [];
-			const data = this.states.data;
-			const rowKey = this.states.rowKey;
+			const { data, rowKey, selection = [] } = this.states;
 			let deleted;
 			if (rowKey) {
 				deleted = [];
 				const selectedMap = getKeysMap(selection, rowKey);
-				const dataMap = getKeysMap(data, rowKey);
+				const dataMap = getKeysMap(selection, rowKey);
 				for (let key in selectedMap) {
 					if (Utils.hasOwn(selectedMap, key) && !dataMap[key]) {
 						deleted.push(selectedMap[key].row);
@@ -142,33 +154,38 @@ export default Vue.extend({
 			});
 
 			if (deleted.length) {
-				this.table.$emit('selection-change', selection ? selection.slice() : []);
+				const newSelection = selection.filter(item => deleted.indexOf(item) === -1);
+				states.selection = newSelection;
+				this.table.$emit('selection-change', newSelection.slice());
 			}
 		},
 
-		toggleRowSelection(row, selected) {
+		toggleRowSelection(row, selected, emitChange = true) {
 			const changed = toggleRowStatus(this.states.selection, row, selected);
 			if (changed) {
-				const newSelection = this.states.selection ? this.states.selection.slice() : [];
-				this.table.$emit('select', newSelection, row);
+				const newSelection = (this.states.selection || []).slice();
+				// 调用 API 修改选中值，不触发 select 事件
+				if (emitChange) {
+					this.table.$emit('select', newSelection, row);
+				}
 				this.table.$emit('selection-change', newSelection);
 			}
 		},
 
 		toggleAllSelection: debounce(function () {
-			const states = this.states;
-			const { data = [], selection } = states;
-			// when only some rows are selected (but not all), select or deselect all of them
-			// depending on the value of selectOnIndeterminate
-			const value = states.selectOnIndeterminate
-				? !states.isAllSelected
-				: !(states.isAllSelected || selection.length);
-			states.isAllSelected = value;
+			const { data = [], selection, isAllSelected, selectOnIndeterminate, selectable } = this.states;
+
+			// 当只选择某些行(但不是全部)时，根据selectonindefined的值选择或取消选择所有行
+			const value = selectOnIndeterminate
+				? !isAllSelected
+				: !(isAllSelected || selection.length);
+
+			this.states.isAllSelected = value;
 
 			let selectionChanged = false;
 			data.forEach((row, index) => {
-				if (states.selectable) {
-					if (states.selectable.call(null, row, index) && toggleRowStatus(selection, row, value)) {
+				if (selectable) {
+					if (selectable.call(null, row, index) && toggleRowStatus(selection, row, value)) {
 						selectionChanged = true;
 					}
 				} else if (toggleRowStatus(selection, row, value)) {
@@ -183,7 +200,7 @@ export default Vue.extend({
 		}, 10),
 
 		updateSelectionByRowKey() {
-			const states = this.states;
+			const { states } = this;
 			const { selection, rowKey, data = [] } = states;
 			const selectedMap = getKeysMap(selection, rowKey);
 			// TODO：这里的代码可以优化
@@ -244,7 +261,8 @@ export default Vue.extend({
 
 		// 展开行与 TreeTable 都要使用
 		toggleRowExpansionAdapter(row, expanded) {
-			const hasExpandColumn = this.states.columns.some(({ type }) => type === 'expand');
+			const { columns } = this.states;
+			const hasExpandColumn = columns.some(({ type }) => type === 'expand');
 			if (hasExpandColumn) {
 				this.toggleRowExpansion(row, expanded);
 			} else {

@@ -1,16 +1,17 @@
 import { walkTreeNode, getRowIdentity } from '../utils';
+import { VcError } from '../../vc';
 
 export default {
 	data() {
 		return {
 			states: {
+				indent: 16,
 				// defaultExpandAll 存在于 expand.js 中，这里不重复添加
 				// TODO: 拆分为独立的 TreeTable，在 expand 中，展开行的记录是放在 expandRows 中，统一用法
 				expandRowKeys: [],
-				treeData: {},
-				indent: 16,
+				treeData: {}, // item的状态，比如loading, loaded
 				lazy: false,
-				lazyTreeNodeMap: {},
+				lazyTreeNodeMap: {}, // 源数据
 				lazyColumnIdentifier: 'hasChildren',
 				childrenColumnName: 'children'
 			}
@@ -113,15 +114,16 @@ export default {
 				lazyKeys.forEach(key => {
 					const oldValue = oldTreeData[key];
 					const lazyNodeChildren = normalizedLazyNode[key].children;
-					if (rootLazyRowKeys.indexOf(key) !== -1) {
+					if (rootLazyRowKeys.includes(key)) {
 						// 懒加载的 root 节点，更新一下原有的数据，原来的 children 一定是空数组
 						if (newTreeData[key].children.length !== 0) {
-							throw new Error('[vc-table]children must be an empty array.');
+							throw new VcError('table', 'children需要为空数组');
 						}
 						newTreeData[key].children = lazyNodeChildren;
 					} else {
 						const { loaded = false, loading = false } = oldValue || {};
 						newTreeData[key] = {
+							lazy: true,
 							loaded: !!loaded,
 							loading: !!loading,
 							expanded: getExpanded(oldValue, key),
@@ -182,7 +184,7 @@ export default {
 
 				let fn = (data) => {
 					if (!Array.isArray(data)) {
-						throw new Error('[vc-table] data must be an array');
+						throw new VcError('table', 'data必须是数组');
 					}
 					treeData[key].loading = false;
 					treeData[key].loaded = true;
@@ -195,7 +197,7 @@ export default {
 
 				if (promise && promise.then) {
 					promise.then((data) => fn(data)).catch(e => {
-						throw new Error(e);
+						throw new VcError('table', e);
 					});
 				} else if (Array.isArray(data)) {
 					fn(data);

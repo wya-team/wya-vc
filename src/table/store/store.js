@@ -1,4 +1,5 @@
 import Vue from 'vue';
+import { VcError } from '../../vc';
 import BaseWatcher from './base-watcher';
 
 class Store extends BaseWatcher {
@@ -6,7 +7,7 @@ class Store extends BaseWatcher {
 		super();
 
 		if (!table) {
-			throw new Error('Table is required.');
+			throw new VcError('table', 'table必传');
 		}
 		this.table = table;
 
@@ -54,14 +55,16 @@ class Store extends BaseWatcher {
 			this.updateTableScrollY();
 		},
 
+		/**
+		 * states
+		 * 	-> _columns
+		 * 	-> selectable
+		 * 	-> reserveSelection
+		 */
 		insertColumn(states, column, index, parent) {
 			let array = states._columns;
 			if (parent) {
-				array = parent.children;
-				if (!array) {
-					array = [];
-					parent.children = array;
-				}
+				array = parent.children || [];
 			}
 
 			if (typeof index !== 'undefined') {
@@ -84,11 +87,7 @@ class Store extends BaseWatcher {
 		removeColumn(states, column, parent) {
 			let array = states._columns;
 			if (parent) {
-				array = parent.children;
-				if (!array) {
-					array = [];
-					parent.children = array;
-				}
+				array = parent.children || [];
 			}
 			if (array) {
 				array.splice(array.indexOf(column), 1);
@@ -128,7 +127,7 @@ class Store extends BaseWatcher {
 		if (mutations[name]) {
 			mutations[name].apply(this, [this.states].concat(args));
 		} else {
-			throw new Error(`Action not found: ${name}`);
+			throw new VcError('table', `mutation 未定义：${name}`);
 		}
 	}
 

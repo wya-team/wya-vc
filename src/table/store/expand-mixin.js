@@ -32,9 +32,10 @@ export default {
 		},
 
 		toggleRowExpansion(row, expanded) {
-			const changed = toggleRowStatus(this.states.expandRows, row, expanded);
+			const { expandRows } = this.states;
+			const changed = toggleRowStatus(expandRows, row, expanded);
 			if (changed) {
-				this.table.$emit('expand-change', row, this.states.expandRows.slice());
+				this.table.$emit('expand-change', row, expandRows.slice());
 				this.scheduleLayout();
 			}
 		},

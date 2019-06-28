@@ -17,8 +17,8 @@ export default {
 		},
 		stripe: Boolean,
 		context: {},
-		rowClassName: [String, Function],
-		rowStyle: [Object, Function],
+		rowClassName: String | Function,
+		rowStyle: Object | Function,
 		fixed: String,
 		highlight: Boolean
 	},
@@ -45,8 +45,8 @@ export default {
 	},
 
 	watch: {
-		// don't trigger getter of currentRow in getCellClass. see https://jsfiddle.net/oe2b4hqt/
-		// update DOM manually. see https://github.com/ElemeFE/element/pull/13954/files#diff-9b450c00d0a9dec0ffad5a3176972e40
+		// 不要在getCellClass中触发currentRow的getter.
+		// 手动更新DOM.
 		'store.states.hoverRow': function (newVal, oldVal) {
 			if (!this.store.states.isComplex || this.$isServer) return;
 			let raf = window.requestAnimationFrame;
@@ -78,7 +78,7 @@ export default {
 
 	methods: {
 		getKeyOfRow(row, index) {
-			const rowKey = this.table.rowKey;
+			const { rowKey } = this.table;
 			if (rowKey) {
 				return getRowIdentity(row, rowKey);
 			}
@@ -98,9 +98,9 @@ export default {
 		getSpan(row, column, rowIndex, columnIndex) {
 			let rowspan = 1;
 			let colspan = 1;
-			const fn = this.table.getSpan;
-			if (typeof fn === 'function') {
-				const result = fn({
+			const { getSpan } = this.table;
+			if (typeof getSpan === 'function') {
+				const result = getSpan({
 					row,
 					column,
 					rowIndex,
@@ -118,7 +118,7 @@ export default {
 		},
 
 		getRowStyle(row, rowIndex) {
-			const rowStyle = this.table.rowStyle;
+			const { rowStyle } = this.table;
 			if (typeof rowStyle === 'function') {
 				return rowStyle.call(null, {
 					row,
@@ -155,7 +155,7 @@ export default {
 		},
 
 		getCellStyle(rowIndex, columnIndex, row, column) {
-			const cellStyle = this.table.cellStyle;
+			const { cellStyle } = this.table;
 			if (typeof cellStyle === 'function') {
 				return cellStyle.call(null, {
 					rowIndex,
@@ -198,15 +198,14 @@ export default {
 		},
 
 		handleCellMouseEnter(event, row) {
-			const table = this.table;
 			const cell = getCell(event);
 
 			if (cell) {
-				const column = getColumnByCell(table, cell);
+				const column = getColumnByCell(this.table, cell);
 				const hoverState = { cell, column, row };
-				table.hoverState = hoverState;
+				this.table.hoverState = hoverState;
 
-				table.$emit('cell-mouse-enter', hoverState.row, hoverState.column, hoverState.cell, event);
+				this.table.$emit('cell-mouse-enter', hoverState.row, hoverState.column, hoverState.cell, event);
 			}
 
 			// 判断是否text-overflow, 如果是就显示tooltip
@@ -267,16 +266,15 @@ export default {
 		},
 
 		handleEvent(event, row, name) {
-			const table = this.table;
 			const cell = getCell(event);
 			let column;
 			if (cell) {
-				column = getColumnByCell(table, cell);
+				column = getColumnByCell(this.table, cell);
 				if (column) {
-					table.$emit(`cell-${name}`, row, column, cell, event);
+					this.table.$emit(`cell-${name}`, row, column, cell, event);
 				}
 			}
-			table.$emit(`row-${name}`, row, column, event);
+			this.table.$emit(`row-${name}`, row, column, event);
 		},
 
 		renderRow(row, $index, treeRowData) {
@@ -285,83 +283,84 @@ export default {
 			const rowClasses = this.getRowClass(row, $index);
 			let display = true;
 			if (treeRowData) {
-				rowClasses.push('vc-table__row--levvc-' + treeRowData.level);
+				rowClasses.push('vc-table__row--level-' + treeRowData.level);
 				display = treeRowData.display;
 			}
-			return (<tr
-				v-show={display}
-				style={ this.getRowStyle(row, $index) }
-				class={ rowClasses }
-				key={ this.getKeyOfRow(row, $index) }
-				on-dblclick={ ($event) => this.handleDoubleClick($event, row) }
-				on-click={ ($event) => this.handleClick($event, row) }
-				on-contextmenu={ ($event) => this.handleContextMenu($event, row) }
-				on-mouseenter={ _ => this.handleMouseEnter($index) }
-				on-mouseleave={ this.handleMouseLeave }>
-				{
-					columns.map((column, cellIndex) => {
-						const { rowspan, colspan } = this.getSpan(row, column, $index, cellIndex);
-						if (!rowspan || !colspan) {
-							return null;
-						}
-						const columnData = { ...column };
-						columnData.realWidth = this.getColspanRealWidth(columns, colspan, cellIndex);
-						const data = {
-							store: this.store,
-							_self: this.context || this.table.$vnode.context,
-							column: columnData,
-							row,
-							$index
-						};
-						if (cellIndex === firstDefaultColumnIndex && treeRowData) {
-							data.treeNode = {
-								indent: treeRowData.level * treeIndent,
-								level: treeRowData.level
+			return (
+				<tr
+					v-show={display}
+					style={this.getRowStyle(row, $index)}
+					class={rowClasses}
+					key={this.getKeyOfRow(row, $index)}
+					onDblclick={($event) => this.handleDoubleClick($event, row)}
+					onClick={($event) => this.handleClick($event, row)}
+					onContextmenu={($event) => this.handleContextMenu($event, row)}
+					onMouseenter={_ => this.handleMouseEnter($index)}
+					onMouseleave={this.handleMouseLeave}
+				>
+					{
+						columns.map((column, cellIndex) => {
+							const { rowspan, colspan } = this.getSpan(row, column, $index, cellIndex);
+							if (!rowspan || !colspan) {
+								return null;
+							}
+							const columnData = { ...column };
+							columnData.realWidth = this.getColspanRealWidth(columns, colspan, cellIndex);
+							const data = {
+								store: this.store,
+								_self: this.context || this.table.$vnode.context,
+								column: columnData,
+								row,
+								$index
 							};
-							// TODO: 优化这里的逻辑
-							if (typeof treeRowData.expanded === 'boolean') {
-								data.treeNode.expanded = treeRowData.expanded;
-								// 表明是懒加载
-								if ('loading' in treeRowData) {
-									data.treeNode.loading = treeRowData.loading;
-								}
-								if ('noLazyChildren' in treeRowData) {
-									data.treeNode.noLazyChildren = treeRowData.noLazyChildren;
+							if (cellIndex === firstDefaultColumnIndex && treeRowData) {
+								data.treeNode = {
+									indent: treeRowData.level * treeIndent,
+									level: treeRowData.level
+								};
+								if (typeof treeRowData.expanded === 'boolean') {
+									data.treeNode.expanded = treeRowData.expanded;
+									// 表明是懒加载
+									if ('loading' in treeRowData) {
+										data.treeNode.loading = treeRowData.loading;
+									}
+									if ('noLazyChildren' in treeRowData) {
+										data.treeNode.noLazyChildren = treeRowData.noLazyChildren;
+									}
 								}
 							}
-						}
-						return (
-							<td
-								style={ this.getCellStyle($index, cellIndex, row, column) }
-								class={ this.getCellClass($index, cellIndex, row, column) }
-								rowspan={ rowspan }
-								colspan={ colspan }
-								onMouseenter={ ($event) => this.handleCellMouseEnter($event, row) }
-								onMouseleave={ this.handleCellMouseLeave }>
-								{
-									column.renderCell.call(
-										this._renderProxy,
-										this.$createElement,
-										data,
-										columnsHidden[cellIndex]
-									)
-								}
-							</td>
-						);
-					})
-				}
-			</tr>);
+							return (
+								<td
+									style={this.getCellStyle($index, cellIndex, row, column)}
+									class={this.getCellClass($index, cellIndex, row, column)}
+									rowspan={rowspan}
+									colspan={colspan}
+									onMouseenter={($event) => this.handleCellMouseEnter($event, row)}
+									onMouseleave={this.handleCellMouseLeave}
+								>
+									{
+										column.renderCell.call(
+											this._renderProxy,
+											this.$createElement,
+											data,
+											columnsHidden[cellIndex]
+										)
+									}
+								</td>
+							);
+						})
+					}
+				</tr>
+			);
 		},
 
 		renderRowWrapper(row, $index) {
-			const store = this.store;
-			const { isRowExpanded, assertRowKey } = store;
-			const { treeData, lazyTreeNodeMap, childrenColumnName, rowKey } = store.states;
-			if (this.hasExpandColumn && isRowExpanded(row)) {
+			const { treeData, lazyTreeNodeMap, childrenColumnName, rowKey } = this.store.states;
+			if (this.hasExpandColumn && this.store.isRowExpanded(row)) {
 				const renderExpanded = this.table.renderExpanded;
 				const tr = this.renderRow(row, $index);
 				if (!renderExpanded) {
-					console.error('[Element Error]renderExpanded is required.');
+					console.error('[vc-table]: renderExpanded必填');
 					return tr;
 				}
 				// 使用二维数组，避免修改 $index
@@ -369,14 +368,14 @@ export default {
 					[
 						tr,
 						<tr key={'expanded-row__' + tr.key}>
-							<td colspan={ this.columnsCount } class="vc-table__expanded-cell">
+							<td colspan={this.columnsCount } class="vc-table__expanded-cell">
 								{ renderExpanded(this.$createElement, { row, $index, store: this.store }) }
 							</td>
 						</tr>
 					]
 				];
 			} else if (Object.keys(treeData).length) {
-				assertRowKey();
+				this.store.assertRowKey();
 				// TreeTable 时，rowKey 必须由用户设定，不使用 getKeyOfRow 计算
 				// 在调用 renderRow 函数时，仍然会计算 rowKey，不太好的操作
 				const key = getRowIdentity(row, rowKey);
@@ -388,10 +387,11 @@ export default {
 						level: cur.level,
 						display: true
 					};
-					if (typeof cur.loaded === 'boolean' && cur.loaded) {
-						treeRowData.noLazyChildren = !(cur.children && cur.children.length);
-					}
-					if (typeof cur.loading === 'boolean') {
+					
+					if (typeof cur.lazy === 'boolean') {
+						if (typeof cur.loaded === 'boolean' && cur.loaded) {
+							treeRowData.noLazyChildren = !(cur.children && cur.children.length);
+						}
 						treeRowData.loading = cur.loading;
 					}
 				}
@@ -421,10 +421,10 @@ export default {
 								// 懒加载的某些节点，level 未知
 								cur.level = cur.level || innerTreeRowData.level;
 								cur.display = !!(cur.expanded && innerTreeRowData.display);
-								if (typeof cur.loaded === 'boolean' && cur.loaded) {
-									innerTreeRowData.noLazyChildren = !(cur.children && cur.children.length);
-								}
 								if (typeof cur.lazy === 'boolean') {
+									if (typeof cur.loaded === 'boolean' && cur.loaded) {
+										innerTreeRowData.noLazyChildren = !(cur.children && cur.children.length);
+									}
 									innerTreeRowData.loading = cur.loading;
 								}
 							}
@@ -458,7 +458,7 @@ export default {
 			>
 				<colgroup>
 					{
-						this.columns.map(column => <col name={ column.id } key={column.id} />)
+						this.columns.map(column => <col name={column.id } key={column.id} />)
 					}
 				</colgroup>
 				<tbody>

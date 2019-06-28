@@ -63,7 +63,7 @@ expand-change | 当用户对某一行展开或者关闭的时候会触发该事�
 属性 | 说明 | 参数 | 返回值
 ---|---|---|---
 clearSelection | 用于多选表格，清空用户的选择 | —
-toggleRowSelection | 用于多选表格，切换某一行的选中状态，如果使用了第二个参数，则是设置这一行选中与否（selected 为 true 则选中） | row, selected
+toggleRowSelection | 用于多选表格，切换某一行的选中状态，如果使用了第二个参数，则是设置这一行选中与否（selected 为 true 则选中） | row, selected, emitChange
 toggleAllSelection | 用于多选表格，切换所有行的选中状态 | -
 toggleRowExpansion | 用于可展开表格，切换某一行的展开状态，如果使用了第二个参数，则是设置这一行展开与否（expanded 为 true 则展开） | row, expanded
 setCurrentRow | 用于单选表格，设定某一行为选中行，如果调用时不加参数，则会取消目前高亮行的选中状态。 | row
@@ -82,13 +82,13 @@ type | 对应列的类型。如果设置了 `selection` 则显示多选框；如
 index | 如果设置了 `type=index`，可以通过传递 `index` 属性来自定义索引 | number, Function(index) | -
 column-key | column 的 key，如果需要使用 filter-change 事件，则需要此属性标识是哪个 column 的筛选条件 | string | — 
 label | 显示的标题 | string | — 
-prop | 对应列内容的字段名，也可以使用 property 属性 | string | — 
+prop | 对应列内容的字段名 | string | — 
 width | 对应列的宽度 | string | — 
 min-width | 对应列的最小宽度，与 width 的区别是 width 是固定的，min-width 会把剩余宽度按比例分配给设置了 min-width 的列 | string | — 
 fixed | 列是否固定在左侧或者右侧，true 表示固定在左侧 | string, boolean | true, left, right | —
 render-header | 列标题 Label 区域渲染使用的 Function | Function(h, { column, $index }) | — 
 resizable | 对应列是否可以通过拖动改变宽度（需要在 vc-table 上设置 border 属性为真） | boolean | true
-formatter | 用来格式化内容 | Function(row, column, cellValue, index) | — 
+formatter | 用来格式化内容 | Function({ row, column, cellValue, $index }) | — 
 show-popover | 当内容过长被隐藏时显示 popover | Boolean | false
 align | 对齐方式 | String | left/center/right | left
 header-align | 表头对齐方式，若不设置该项，则使用表格的对齐方式 | String | left/center/right | —
@@ -111,33 +111,24 @@ header | 自定义表头的内容. 参数为 { column, $index }
 
 ```vue
 <template>
-	<div style="padding: 20px">
-		<div @click="resetDateFilter">清除日期过滤器</div>
-		<div @click="clearFilter">清除所有过滤器</div>
-		<vc-table
-			ref="filterTable"
-			:data="tableData"
-			style="width: 100%"
-		>
+	<div style="padding: 30px">
+		<h1>Basic</h1>
+		<vc-table :data-source="dataSource">
 			<vc-table-item>
 				<vc-table-column
 					prop="date"
 					label="日期"
-					width="180"
+					min-width="180"
 				/>
 				<vc-table-column
 					prop="name"
 					label="姓名"
-					width="180"
-				/>
+					width="180"/>
 				<vc-table-column
-					:formatter="formatter"
 					prop="address"
 					label="地址"
-				>
-					<div @click="handleResetFirst">回到首页刷新</div>
-					<div @click="handleResetCur">当前页刷新</div>
-				</vc-table-column>
+					width="880"
+				/>
 			</vc-table-item>
 		</vc-table>
 	</div>
@@ -154,47 +145,35 @@ export default {
 	},
 	data() {
 		return {
-			tableData: [{
-				date: '2016-05-02',
-				name: '王小虎',
-				address: '上海市普陀区金沙江路 1518 弄',
-				tag: '家'
-			}, {
-				date: '2016-05-04',
-				name: '王小虎',
-				address: '上海市普陀区金沙江路 1517 弄',
-				tag: '公司'
-			}, {
-				date: '2016-05-01',
-				name: '王小虎',
-				address: '上海市普陀区金沙江路 1519 弄',
-				tag: '家'
-			}, {
-				date: '2016-05-03',
-				name: '王小虎',
-				address: '上海市普陀区金沙江路 1516 弄',
-				tag: '公司'
-			}]
+			dataSource: [
+				{
+					id: 1,
+					date: '2016-05-02',
+					name: '王小虎',
+					address: '浙江省杭州市拱墅区祥符街道',
+				}, 
+				{
+					id: 2,
+					date: '2016-05-04',
+					name: '王小虎',
+					address: '上海市普陀区金沙江路 1517 弄',
+				}, 
+				{
+					id: 3,
+					date: '2016-05-01',
+					name: '王小虎',
+					address: '上海市普陀区金沙江路 1519 弄'
+				},
+				{
+					id: 4,
+					date: '2016-05-03',
+					name: '王小虎',
+					address: '上海市普陀区金沙江路 1516 弄'
+				}
+			]
 		};
 	},
-	methods: {
-		resetDateFilter() {
-			this.$refs.filterTable.clearFilter('date');
-		},
-		clearFilter() {
-			this.$refs.filterTable.clearFilter();
-		},
-		formatter(row, column) {
-			return row.address;
-		},
-		filterTag(value, row) {
-			return row.tag === value;
-		},
-		filterHandler(value, row, column) {
-			const property = column.property;
-			return row[property] === value;
-		}
-	}
+	methods: {}
 };
 </script>
 ```

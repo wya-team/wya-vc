@@ -441,26 +441,30 @@ export default {
 	watch: {
 		height: {
 			immediate: true,
-			handler(value) {
-				this.layout.setHeight(value);
+			handler(v) {
+				this.layout.setHeight(v);
 			}
 		},
 
 		maxHeight: {
 			immediate: true,
-			handler(value) {
-				this.layout.setMaxHeight(value);
+			handler(v) {
+				this.layout.setMaxHeight(v);
 			}
 		},
 
-		currentRowKey(newVal) {
-			this.store.setCurrentRowKey(newVal);
+		currentRowKey: {
+			immediate: true,
+			handler(v) {
+				if (!this.rowKey) return;
+				this.store.setCurrentRowKey(v);
+			}
 		},
 
 		dataSource: {
 			immediate: true,
-			handler(value) {
-				this.store.commit('setData', value);
+			handler(v) {
+				this.store.commit('setData', v);
 				if (this.$ready) {
 					this.$nextTick(() => {
 						this.refreshLayout();
@@ -471,9 +475,9 @@ export default {
 
 		expandRowKeys: {
 			immediate: true,
-			handler(newVal) {
-				if (newVal) {
-					this.store.setExpandRowKeysAdapter(newVal);
+			handler(v) {
+				if (v) {
+					this.store.setExpandRowKeysAdapter(v);
 				}
 			}
 		}
@@ -502,14 +506,64 @@ export default {
 	},
 
 	methods: {
+		bindEvents() {
+			this.bodyWrapper.addEventListener('scroll', this.handleSyncPosition, { passive: true });
+			if (this.fit) {
+				Resize.on(this.$el, this.handleResize);
+			}
+		},
+
+		unbindEvents() {
+			this.bodyWrapper.removeEventListener('scroll', this.handleSyncPosition, { passive: true });
+			if (this.fit) {
+				Resize.off(this.$el, this.handleResize);
+			}
+		},
+
+		// TODO 性能优化
+		handleSyncPosition: throttle(function () {
+			const { scrollLeft, scrollTop, offsetWidth, scrollWidth } = this.bodyWrapper;
+			const { headerWrapper, footerWrapper, fixedBodyWrapper, rightFixedBodyWrapper } = this.$refs;
+			if (headerWrapper) headerWrapper.scrollLeft = scrollLeft;
+			if (footerWrapper) footerWrapper.scrollLeft = scrollLeft;
+			if (fixedBodyWrapper) fixedBodyWrapper.scrollTop = scrollTop;
+			if (rightFixedBodyWrapper) rightFixedBodyWrapper.scrollTop = scrollTop;
+			const maxScrollLeftPosition = scrollWidth - offsetWidth - 1;
+			if (scrollLeft >= maxScrollLeftPosition) {
+				this.scrollPosition = 'right';
+			} else if (scrollLeft === 0) {
+				this.scrollPosition = 'left';
+			} else {
+				this.scrollPosition = 'middle';
+			}
+		}, 20),
+
+		handleResize() {
+			if (!this.$ready) return;
+			let shouldUpdateLayout = false;
+			const el = this.$el;
+			const { width: oldWidth, height: oldHeight } = this.resizeState;
+
+			const width = el.offsetWidth;
+			if (oldWidth !== width) {
+				shouldUpdateLayout = true;
+			}
+
+			const height = el.offsetHeight;
+			if ((this.height || this.shouldUpdateHeight) && oldHeight !== height) {
+				shouldUpdateLayout = true;
+			}
+
+			if (shouldUpdateLayout) {
+				this.resizeState.width = width;
+				this.resizeState.height = height;
+				this.refreshLayout();
+			}
+		},
+
 		handleMouseLeave() {
 			this.store.commit('setHoverRow', null);
 			if (this.hoverState) this.hoverState = null;
-		},
-
-		updateScrollY() {
-			this.layout.updateScrollY();
-			this.layout.updateColumnsWidth();
 		},
 
 		handleFixedMousewheel(event, data) {
@@ -535,61 +589,10 @@ export default {
 			}
 		},
 
-		// TODO 性能优化
-		syncPostion: throttle(function () {
-			const { scrollLeft, scrollTop, offsetWidth, scrollWidth } = this.bodyWrapper;
-			const { headerWrapper, footerWrapper, fixedBodyWrapper, rightFixedBodyWrapper } = this.$refs;
-			if (headerWrapper) headerWrapper.scrollLeft = scrollLeft;
-			if (footerWrapper) footerWrapper.scrollLeft = scrollLeft;
-			if (fixedBodyWrapper) fixedBodyWrapper.scrollTop = scrollTop;
-			if (rightFixedBodyWrapper) rightFixedBodyWrapper.scrollTop = scrollTop;
-			const maxScrollLeftPosition = scrollWidth - offsetWidth - 1;
-			if (scrollLeft >= maxScrollLeftPosition) {
-				this.scrollPosition = 'right';
-			} else if (scrollLeft === 0) {
-				this.scrollPosition = 'left';
-			} else {
-				this.scrollPosition = 'middle';
-			}
-		}, 20),
-
-		bindEvents() {
-			this.bodyWrapper.addEventListener('scroll', this.syncPostion, { passive: true });
-			if (this.fit) {
-				Resize.on(this.$el, this.resizeListener);
-			}
+		updateScrollY() {
+			this.layout.updateScrollY();
+			this.layout.updateColumnsWidth();
 		},
-
-		unbindEvents() {
-			this.bodyWrapper.removeEventListener('scroll', this.syncPostion, { passive: true });
-			if (this.fit) {
-				Resize.off(this.$el, this.resizeListener);
-			}
-		},
-
-		resizeListener() {
-			if (!this.$ready) return;
-			let shouldUpdateLayout = false;
-			const el = this.$el;
-			const { width: oldWidth, height: oldHeight } = this.resizeState;
-
-			const width = el.offsetWidth;
-			if (oldWidth !== width) {
-				shouldUpdateLayout = true;
-			}
-
-			const height = el.offsetHeight;
-			if ((this.height || this.shouldUpdateHeight) && oldHeight !== height) {
-				shouldUpdateLayout = true;
-			}
-
-			if (shouldUpdateLayout) {
-				this.resizeState.width = width;
-				this.resizeState.height = height;
-				this.refreshLayout();
-			}
-		},
-
 
 		/**
 		 * 对 Table 进行重新布局。
@@ -619,8 +622,8 @@ export default {
 		/**
 		 * 用于多选表格，切换某一行的选中状态，如果使用了第二个参数，则是设置这一行选中与否（selected 为 true 则选中）
 		 */
-		toggleRowSelection(row, selected) {
-			this.store.toggleRowSelection(row, selected);
+		toggleRowSelection(row, selected, emitChange) {
+			this.store.toggleRowSelection(row, selected, emitChange);
 			this.store.updateAllSelected();
 		},
 

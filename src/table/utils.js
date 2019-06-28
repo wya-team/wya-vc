@@ -89,7 +89,8 @@ export const walkTreeNode = (root, cb, childrenKey = 'children', lazyKey = 'hasC
 };
 
 /**
- * 
+ * 存在副作用
+ * 对statusArr做添加和删除的操作
  */
 export const toggleRowStatus = (statusArr, row, newVal) => {
 	let changed = false;

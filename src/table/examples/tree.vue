@@ -18,6 +18,7 @@
 					prop="date"
 					label="日期"
 					width="180"
+					resizable
 				/>
 				<vc-table-column
 					prop="name"
@@ -89,6 +90,9 @@ export default {
 			]
 		};
 	},
+	mounted() {
+		window.store = this.$refs.table.store;
+	},
 	methods: {
 		loadExpand(tree, treeNode) {
 			console.log(tree, treeNode, /loadExpand/);
@@ -113,7 +117,7 @@ export default {
 				}, 1000);
 			});
 		},
-		formatter(row, column, cellValue, index) {
+		formatter({ row, column, cellValue, index }) {
 			return row.address;
 		}
 	}
