@@ -2,9 +2,9 @@
 	<div
 		:class="`is-${direction}`"
 		class="vcm-carousel"
-		@touchstart.prevent.stop="e => handleStart(e.touches[0])"
+		@touchstart.stop="e => handleStart(e.touches[0])"
 		@touchmove.prevent.stop="e => handleMove(e.touches[0])"
-		@touchend.prevent.stop="e => handleEnd(e.changedTouches[0])"
+		@touchend.stop="e => handleEnd(e.changedTouches[0])"
 	>
 		<div
 			:style="{ height: height ? `${height}px` : 'auto' }"
