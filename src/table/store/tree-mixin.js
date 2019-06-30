@@ -9,9 +9,11 @@ export default {
 				// defaultExpandAll 存在于 expand.js 中，这里不重复添加
 				// TODO: 拆分为独立的 TreeTable，在 expand 中，展开行的记录是放在 expandRows 中，统一用法
 				expandRowKeys: [],
+				expandSelectable: true,
 				treeData: {}, // item的状态，比如loading, loaded
 				lazy: false,
 				lazyTreeNodeMap: {}, // 源数据
+				lazyTreeData: [], // 源数据展开
 				lazyColumnIdentifier: 'hasChildren',
 				childrenColumnName: 'children'
 			}
@@ -19,16 +21,20 @@ export default {
 	},
 
 	computed: {
-		// 嵌入型的数据，watch 无法是检测到变化 https://github.com/ElemeFE/element/issues/14998
-		// TODO: 使用 computed 解决该问题，是否会造成性能问题？
-		// @return { id: { level, children } }
+		/**
+		 * 解决问题嵌入型的数据，watch 无法是检测到变化
+		 * TODO: 是否会造成性能问题？同base-watcher flattenData
+		 * @return { id: { level, children } }
+		 */
 		normalizedData() {
 			if (!this.states.rowKey) return {};
 			const data = this.states.data || [];
 			return this.normalize(data);
 		},
-		// @return { id: { children } }
-		// 针对懒加载的情形，不处理嵌套数据
+		/**
+		 * 针对懒加载的情形，不处理嵌套数据
+		 * @return { id: { children } }
+		 */
 		normalizedLazyNode() {
 			const { rowKey, lazyTreeNodeMap, lazyColumnIdentifier, childrenColumnName } = this.states;
 			const keys = Object.keys(lazyTreeNodeMap);
@@ -176,7 +182,6 @@ export default {
 
 		loadData(row, key, treeNode) {
 			const { lazyTreeNodeMap, treeData } = this.states;
-
 			if (this.table.loadExpand && !treeData[key].loaded) {
 				
 				treeData[key].loading = true;
@@ -191,8 +196,23 @@ export default {
 					treeData[key].expanded = true;
 					if (data.length) {
 						this.$set(lazyTreeNodeMap, key, data);
+
+						// 用新的lazyTreeNodeMap计算lazyTreeData
+						if (this.states.expandSelectable) {
+							this.states.lazyTreeData = Object.keys(lazyTreeNodeMap).reduce((pre, cur) => {
+								return pre.concat(lazyTreeNodeMap[cur]);
+							}, []);
+						}
 					}
 					this.table.$emit('expand-change', row, true);
+
+					// 对异步过来的数据进行选择
+					if (this.isSelected(row)) {
+						data.forEach((i) => {
+							this.toggleRowSelection(i);	
+						});
+					}
+					this.updateAllSelected();
 				};
 
 				if (promise && promise.then) {

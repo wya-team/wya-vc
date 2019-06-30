@@ -1,6 +1,7 @@
 import Vue from 'vue';
 import { Utils } from '@wya/utils';
 import { parseHeight } from '../utils';
+import { VcError } from '../../vc';
 
 let scrollBarWidth;
 /**
@@ -62,10 +63,10 @@ class TableLayout {
 		}
 
 		if (!this.table) {
-			throw new Error('table is required for Table Layout');
+			throw new VcError('table', 'Table Layout 必须包含table实例');
 		}
 		if (!this.store) {
-			throw new Error('store is required for Table Layout');
+			throw new VcError('table', 'Table Layout 必须包含store实例');
 		}
 	}
 
@@ -251,7 +252,7 @@ class TableLayout {
 					observer.onScrollableChange(this);
 					break;
 				default:
-					throw new Error(`Table Layout don't have event ${event}.`);
+					throw new VcError('table', `Layout 不包含事件 ${event}.`);
 			}
 		});
 	}

@@ -19,6 +19,7 @@ class Store extends BaseWatcher {
 		 * lazy
 		 * lazyColumnIdentifier
 		 * childrenColumnName
+		 * expandSelectable
 		 */
 		Object.keys(initialState).forEach(key => {
 			this.states[key] = initialState[key];

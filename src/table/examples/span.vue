@@ -67,8 +67,8 @@
 </template>
 
 <script>
-import Table from '..';
 import { debounce } from 'lodash';
+import Table from '..';
 
 let categoryCount = 0;
 

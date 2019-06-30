@@ -287,6 +287,7 @@ export default {
 			type: Boolean,
 			default: true
 		},
+		lazy: Boolean,
 		// 展示树形数据时，树节点的缩进
 		indent: {
 			type: Number,
@@ -301,7 +302,11 @@ export default {
 				};
 			}
 		},
-		lazy: Boolean,
+		// 树形表格子集是否需要显示选择按钮
+		expandSelectable: {
+			type: Boolean,
+			default: true
+		},
 		loadExpand: Function,
 		getSpan: Function
 	},
@@ -316,7 +321,8 @@ export default {
 			indent: this.indent,
 			lazy: this.lazy,
 			lazyColumnIdentifier: hasChildren,
-			childrenColumnName: children
+			childrenColumnName: children,
+			expandSelectable: this.expandSelectable
 		});
 		const layout = new Layout({
 			store: this.store,

@@ -30,6 +30,7 @@ row-key | 行数据的 Key，用来优化 Table 的渲染；在使用 reserve-se
 empty-text | 空数据时显示的文本内容，也可以通过 `slot="empty"` 设置 | String | 暂无数据 
 default-expand-all | 是否默认展开所有行，当 Table 中存在 type="expand" 的 Column 的时候有效 | Boolean | false 
 expand-row-keys | 可以通过该属性设置 Table 目前的展开行，需要设置 row-key 属性才能使用，该属性为展开行的 keys 数组。 | Array | - 
+expand-selectable | 子节点是否可选择（会被隐藏） | Boolean | true 
 show-summary | 是否在表尾显示合计行 | Boolean | false 
 sum-text | 合计行第一列的文本 | String | 合计 
 get-summary | 自定义的合计计算方法 | Function({ columns, data }) | - 

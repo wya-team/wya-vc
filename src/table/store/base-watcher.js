@@ -1,7 +1,7 @@
 import Vue from 'vue';
 import { debounce, values, merge, concat } from 'lodash';
 import { Utils } from '@wya/utils';
-import { getKeysMap, getRowIdentity, getColumnById, getColumnByKey, toggleRowStatus } from '../utils';
+import { getKeysMap, getRowIdentity, getColumnById, getColumnByKey } from '../utils';
 import { flattenData } from '../../utils';
 import { VcError } from '../../vc';
 import ExpandMixin from './expand-mixin';
@@ -46,6 +46,22 @@ export default Vue.extend({
 				currentRow: null,
 			}
 		};
+	},
+
+	computed: {
+		/**
+		 * TODO: 如果有性能问题，select时单独计算
+		 */
+		flattenData() {
+			if (this.states.expandSelectable) {
+				return concat(
+					flattenData(this.states.data, { parent: true, cascader: true }),
+					this.states.lazyTreeData
+				);
+			} else {
+				return this.states.data;
+			}
+		}
 	},
 
 	methods: {
@@ -132,7 +148,7 @@ export default Vue.extend({
 		 * 清理选择
 		 */
 		cleanSelection() {
-			const { data, rowKey, selection = [] } = this.states;
+			const { data, rowKey, selection = [], lazyTreeData } = this.states;
 			let deleted;
 			if (rowKey) {
 				deleted = [];
@@ -145,7 +161,7 @@ export default Vue.extend({
 				}
 			} else {
 				deleted = selection.filter((item) => {
-					return data.indexOf(item) === -1;
+					return !this.flattenData.includes(item);
 				});
 			}
 
@@ -154,14 +170,46 @@ export default Vue.extend({
 			});
 
 			if (deleted.length) {
-				const newSelection = selection.filter(item => deleted.indexOf(item) === -1);
+				const newSelection = selection.filter(item => !deleted.includes(item));
 				states.selection = newSelection;
 				this.table.$emit('selection-change', newSelection.slice());
 			}
 		},
 
+		/**
+		 * 存在副作用
+		 * 对statusArr做添加和删除的操作
+		 * 如 this.states.selection
+		 */
+		toggleRowStatus(statusArr, row, newVal) {
+			let changed = false;
+			let index = statusArr.indexOf(row);
+			let included = index !== -1;
+
+			const addRow = () => {
+				statusArr.push(row);
+				changed = true;
+			};
+			const removeRow = () => {
+				statusArr.splice(index, 1);
+				changed = true;
+			};
+
+			if (typeof newVal === 'boolean') {
+				if (newVal && !included) {
+					addRow();
+				} else if (!newVal && included) {
+					removeRow();
+				}
+			} else {
+				included ? removeRow() : addRow();
+			}
+			return changed;
+		},
+
 		toggleRowSelection(row, selected, emitChange = true) {
-			const changed = toggleRowStatus(this.states.selection, row, selected);
+			const { selection, rowKey } = this.states;
+			const changed = this.toggleRowStatus(selection, row, selected);
 			if (changed) {
 				const newSelection = (this.states.selection || []).slice();
 				// 调用 API 修改选中值，不触发 select 事件
@@ -173,7 +221,7 @@ export default Vue.extend({
 		},
 
 		toggleAllSelection: debounce(function () {
-			const { data = [], selection, isAllSelected, selectOnIndeterminate, selectable } = this.states;
+			const { data = [], selection, isAllSelected, selectOnIndeterminate, selectable, lazyTreeData, rowKey } = this.states;
 
 			// 当只选择某些行(但不是全部)时，根据selectonindefined的值选择或取消选择所有行
 			const value = selectOnIndeterminate
@@ -183,12 +231,12 @@ export default Vue.extend({
 			this.states.isAllSelected = value;
 
 			let selectionChanged = false;
-			data.forEach((row, index) => {
+			this.flattenData.forEach((row, index) => {
 				if (selectable) {
-					if (selectable.call(null, row, index) && toggleRowStatus(selection, row, value)) {
+					if (selectable.call(null, row, index) && this.toggleRowStatus(selection, row, value)) {
 						selectionChanged = true;
 					}
-				} else if (toggleRowStatus(selection, row, value)) {
+				} else if (this.toggleRowStatus(selection, row, value)) {
 					selectionChanged = true;
 				}
 			});
@@ -200,11 +248,10 @@ export default Vue.extend({
 		}, 10),
 
 		updateSelectionByRowKey() {
-			const { states } = this;
-			const { selection, rowKey, data = [] } = states;
+			const { selection, rowKey, data = [], lazyTreeData } = this.states;
 			const selectedMap = getKeysMap(selection, rowKey);
 			// TODO：这里的代码可以优化
-			states.selection = data.reduce((prev, row) => {
+			this.states.selection = this.flattenData.reduce((prev, row) => {
 				const rowId = getRowIdentity(row, rowKey);
 				const rowInfo = selectedMap[rowId];
 				if (rowInfo) {
@@ -215,30 +262,21 @@ export default Vue.extend({
 		},
 
 		updateAllSelected() {
-			const { selection, rowKey, selectable, data = [] } = this.states;
+			const { selection, rowKey, selectable, data = [], lazyTreeData } = this.states;
 
 			if (data.length === 0) {
 				this.states.isAllSelected = false;
 				return;
 			}
 
-			let selectedMap;
-			if (rowKey) {
-				selectedMap = getKeysMap(selection, rowKey); // -> object
-			}
-			const isSelected = function (row) {
-				if (selectedMap) {
-					return !!selectedMap[getRowIdentity(row, rowKey)];
-				} else {
-					return selection.includes(row);
-				}
-			};
 			let isAllSelected = true;
 			let selectedCount = 0;
-			for (let i = 0, j = data.length; i < j; i++) {
-				const item = data[i];
+
+			let temp = this.flattenData;
+			for (let i = 0, j = temp.length; i < j; i++) {
+				const row = temp[i];
 				const isRowSelectable = selectable && selectable.call(null, item, i);
-				if (!isSelected(item)) {
+				if (!this.isSelected(row)) {
 					if (!selectable || isRowSelectable) {
 						isAllSelected = false;
 						break;

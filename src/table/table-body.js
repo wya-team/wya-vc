@@ -47,7 +47,7 @@ export default {
 	watch: {
 		// 不要在getCellClass中触发currentRow的getter.
 		// 手动更新DOM.
-		'store.states.hoverRow': function (newVal, oldVal) {
+		'store.states.hoverRow': function (v, oldV) {
 			if (!this.store.states.isComplex || this.$isServer) return;
 			let raf = window.requestAnimationFrame;
 			if (!raf) {
@@ -55,8 +55,8 @@ export default {
 			}
 			raf(() => {
 				const rows = this.$el.querySelectorAll('.vc-table__row');
-				const oldRow = rows[oldVal];
-				const newRow = rows[newVal];
+				const oldRow = rows[oldV];
+				const newRow = rows[v];
 				if (oldRow) {
 					Dom.removeClass(oldRow, 'hover-row');
 				}
@@ -310,14 +310,17 @@ export default {
 								store: this.store,
 								_self: this.context || this.table.$vnode.context,
 								column: columnData,
+								level: (treeRowData && treeRowData.level) || 0, // 用于expandSelectable
 								row,
-								$index
+								$index,
 							};
+
 							if (cellIndex === firstDefaultColumnIndex && treeRowData) {
 								data.treeNode = {
 									indent: treeRowData.level * treeIndent,
 									level: treeRowData.level
 								};
+
 								if (typeof treeRowData.expanded === 'boolean') {
 									data.treeNode.expanded = treeRowData.expanded;
 									// 表明是懒加载
@@ -385,7 +388,7 @@ export default {
 					treeRowData = {
 						expanded: cur.expanded,
 						level: cur.level,
-						display: true
+						display: true,
 					};
 					
 					if (typeof cur.lazy === 'boolean') {

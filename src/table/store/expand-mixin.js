@@ -1,4 +1,4 @@
-import { toggleRowStatus, getKeysMap, getRowIdentity } from '../utils';
+import { getKeysMap, getRowIdentity } from '../utils';
 
 export default {
 	data() {
@@ -33,7 +33,7 @@ export default {
 
 		toggleRowExpansion(row, expanded) {
 			const { expandRows } = this.states;
-			const changed = toggleRowStatus(expandRows, row, expanded);
+			const changed = this.toggleRowStatus(expandRows, row, expanded);
 			if (changed) {
 				this.table.$emit('expand-change', row, expandRows.slice());
 				this.scheduleLayout();

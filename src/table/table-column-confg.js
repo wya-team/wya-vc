@@ -41,11 +41,11 @@ export const cellForced = {
 				/>
 			);
 		},
-		renderCell(h, { row, column, store, $index }) {
-			let checked = store.isSelected(row);
+		renderCell(h, { row, column, store, $index, level }) {
 			return (
 				<Checkbox
-					value={checked}
+					v-show={store.states.expandSelectable || level === 0}
+					value={store.isSelected(row)}
 					disabled={
 						column.selectable 
 							? !column.selectable.call(null, row, $index) 

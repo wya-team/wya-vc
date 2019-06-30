@@ -88,6 +88,7 @@ export const getSelectedData = (value = [], source = [], opts = {}) => {
 };
 
 /**
+ * Table, Tree-Select 组件有多处使用
  * opts: {
  * 	parent
  *  cascader
@@ -99,7 +100,7 @@ export const flattenData = (data, opts = {}) => {
 		if (item.children) {
 			const { children, ...rest } = item;
 			opts.parent 
-				? result.push(...[opts.cascader ? { ...rest, children } : rest, ...flattenData(children, opts)])
+				? result.push(...[opts.cascader ? item : rest, ...flattenData(children, opts)])
 				: result.push(...flattenData(children));
 			
 		} else {

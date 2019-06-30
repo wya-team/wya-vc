@@ -23,7 +23,7 @@
 				<vc-table-column
 					prop="name"
 					label="姓名"
-					width="180"
+					min-width="180"
 				/>
 				<vc-table-column
 					:formatter="formatter"
