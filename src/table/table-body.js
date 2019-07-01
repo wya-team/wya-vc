@@ -379,8 +379,10 @@ export default {
 				];
 			} else if (Object.keys(treeData).length) {
 				this.store.assertRowKey();
-				// TreeTable 时，rowKey 必须由用户设定，不使用 getKeyOfRow 计算
-				// 在调用 renderRow 函数时，仍然会计算 rowKey，不太好的操作
+				/**
+				 * TreeTable 时，rowKey 必须由用户设定，不使用 getKeyOfRow 计算
+				 * 在调用 renderRow 函数时，仍然会计算 rowKey，不太好的操作
+				 */
 				const key = getRowIdentity(row, rowKey);
 				let cur = treeData[key];
 				let treeRowData = null;
@@ -411,18 +413,23 @@ export default {
 								display: parent.display && parent.expanded,
 								level: parent.level + 1
 							};
+
 							const childKey = getRowIdentity(node, rowKey);
 							if (childKey === undefined || childKey === null) {
-								throw new Error('for nested data item, row-key is required.');
+								throw new VcError('table', '子节点，rowKey是必须的');
 							}
-							cur = { ...treeData[childKey] };
-							// 对于当前节点，分成有无子节点两种情况。
-							// 如果包含子节点的，设置 expanded 属性。
-							// 对于它子节点的 display 属性由它本身的 expanded 与 display 共同决定。
+							// 浅拷贝，level修改有助于treeData判断当前最大的level,计算宽度
+							cur = treeData[childKey]; 
+							/**
+							 * 对于当前节点，分成有无子节点两种情况。
+							 * 如果包含子节点的，设置 expanded 属性。
+							 * 对于它子节点的 display 属性由它本身的 expanded 与 display 共同决定。
+							 */
 							if (cur) {
 								innerTreeRowData.expanded = cur.expanded;
 								// 懒加载的某些节点，level 未知
 								cur.level = cur.level || innerTreeRowData.level;
+
 								cur.display = !!(cur.expanded && innerTreeRowData.display);
 								if (typeof cur.lazy === 'boolean') {
 									if (typeof cur.loaded === 'boolean' && cur.loaded) {

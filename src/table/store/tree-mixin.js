@@ -89,6 +89,21 @@ export default {
 			return res;
 		},
 
+		/**
+		 * 获取当前展开最大的level
+		 */
+		getMaxLevel() {
+			let level = 0;
+			Object.keys(this.states.treeData).forEach((item) => {
+				let target = this.states.treeData[item];
+				if (target.expanded && target.level >= level) {
+					level = target.level + 1;
+				}
+			});
+
+			return level;
+		},
+
 		updateTreeData() {
 			const nested = this.normalizedData;
 			const normalizedLazyNode = this.normalizedLazyNode;
@@ -162,7 +177,7 @@ export default {
 				expanded = typeof expanded === 'undefined' ? !data.expanded : expanded;
 				treeData[id].expanded = expanded;
 				if (oldExpanded !== expanded) {
-					this.table.$emit('expand-change', row, expanded);
+					this.table.$emit('expand-change', row, expanded, this.getMaxLevel());
 				}
 				this.updateTableScrollY();
 			}
@@ -204,7 +219,7 @@ export default {
 							}, []);
 						}
 					}
-					this.table.$emit('expand-change', row, true);
+					this.table.$emit('expand-change', row, true, this.getMaxLevel());
 
 					// 对异步过来的数据进行选择
 					if (this.isSelected(row)) {

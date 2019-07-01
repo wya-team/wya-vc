@@ -13,6 +13,7 @@
 			lazy
 			style="width: 100%"
 			row-key="id"
+			@expand-change="handleExpandChange"
 		>
 			<vc-table-item>
 				<vc-table-column
@@ -20,10 +21,9 @@
 					width="55"
 				/>
 				<vc-table-column
+					:width="treeWidth"
 					prop="date"
 					label="日期"
-					width="180"
-					resizable
 				/>
 				<vc-table-column
 					prop="name"
@@ -55,6 +55,7 @@ export default {
 	data() {
 		return {
 			expandSelectable: true,
+			treeWidth: 180,
 			dataSource: [
 				{
 					id: 1,
@@ -128,6 +129,9 @@ export default {
 		},
 		formatter({ row, column, cellValue, index }) {
 			return row.address;
+		},
+		handleExpandChange(row, expandedRows, maxLevel) {
+			this.treeWidth = 180 + maxLevel * 20;
 		}
 	}
 };
