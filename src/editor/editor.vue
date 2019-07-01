@@ -29,7 +29,7 @@ import ImgsPreview from '../imgs-preview/index';
 import defaultOptinos from './default-options';
 
 export default {
-	// name: "vc-editor",
+	name: "vc-editor",
 	components: {
 		'vc-editor-toolbar': EditorToolbar,
 		'vc-upload': Upload,
