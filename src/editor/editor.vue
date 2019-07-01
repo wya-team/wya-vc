@@ -97,7 +97,7 @@ export default {
 		},
 	},
 	async mounted() {
-		let Quill = await import('node_modules/quill');
+		let Quill = await import('quill');
 		// 兼容webpack 3.0/4.0 写法
 		this.Quill = Quill.default ? Quill.default : Quill;
 

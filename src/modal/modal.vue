@@ -268,7 +268,6 @@ export default {
 		handleResize() {
 			if (!this.mode) {
 				const $container = this.$refs.container;
-				console.log($container.offsetHeight);
 				let containerHeight = $container.offsetHeight;
 				if (containerHeight % 2 !== 0) {
 					$container.style.height = `${containerHeight - 1}px`;
