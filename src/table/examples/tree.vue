@@ -1,10 +1,15 @@
 <template>
 	<div style="padding: 20px">
 		<h1>Tree</h1>
+		<vc-button @click="expandSelectable = !expandSelectable">expandSelectable: {{ expandSelectable }}</vc-button>
+		<br>
+		<br>
 		<vc-table
 			ref="table"
+			:key="expandSelectable"
 			:data-source="dataSource"
 			:load-expand="loadExpand"
+			:expand-selectable="expandSelectable"
 			lazy
 			style="width: 100%"
 			row-key="id"
@@ -36,56 +41,60 @@
 </template>
 
 <script>
+import { random } from 'lodash';
 import Table from '..';
+import Button from '../../button';
 
 export default {
 	components: {
 		'vc-table': Table,
 		'vc-table-column': Table.Column,
-		'vc-table-item': Table.Item
+		'vc-table-item': Table.Item,
+		'vc-button': Button
 	},
 	data() {
 		return {
+			expandSelectable: true,
 			dataSource: [
 				{
 					id: 1,
-					date: '2016-05-02',
-					name: '王小虎',
-					address: '浙江省杭州市拱墅区祥符街道',
+					date: `${new Date().getTime()}`,
+					name: `代号 - ${random(0, 10000)}`,
+					address: `祥园路${random(0, 10000)}号`,
 					hasChildren: true
 				}, 
 				{
 					id: 2,
-					date: '2016-05-04',
-					name: '王小虎',
-					address: '上海市普陀区金沙江路 1517 弄',
+					date: `${new Date().getTime()}`,
+					name: `代号 - ${random(0, 10000)}`,
+					address: `祥园路${random(0, 10000)}号`,
 					hasChildren: true
 				}, 
 				{
 					id: 3,
-					date: '2016-05-01',
-					name: '王小虎',
-					address: '上海市普陀区金沙江路 1519 弄',
+					date: `${new Date().getTime()}`,
+					name: `代号 - ${random(0, 10000)}`,
+					address: `祥园路${random(0, 10000)}号`,
 					children: [
 						{
 							id: 31,
-							date: '2016-05-01',
-							name: '王小虎',
-							address: '上海市普陀区金沙江路 1519 弄'
+							date: `${new Date().getTime()}`,
+							name: `代号 - ${random(0, 10000)}`,
+							address: `祥园路${random(0, 10000)}号`,
 						}, 
 						{
 							id: 32,
-							date: '2016-05-01',
-							name: '王小虎',
-							address: '上海市普陀区金沙江路 1519 弄'
+							date: `${new Date().getTime()}`,
+							name: `代号 - ${random(0, 10000)}`,
+							address: `祥园路${random(0, 10000)}号`,
 						}
 					]
 				},
 				{
 					id: 4,
-					date: '2016-05-03',
-					name: '王小虎',
-					address: '上海市普陀区金沙江路 1516 弄'
+					date: `${new Date().getTime()}`,
+					name: `代号 - ${random(0, 10000)}`,
+					address: `祥园路${random(0, 10000)}号`,
 				}
 			]
 		};
@@ -100,17 +109,17 @@ export default {
 				setTimeout(() => {
 					resolve([
 						{
-							id: Math.random(),
-							date: '2016-05-01',
-							name: '王小虎',
-							address: '上海市普陀区金沙江路 1519 弄',
+							id: random(0, Number.MAX_SAFE_INTEGER),
+							date: `${new Date().getTime()}`,
+							name: `代号 - ${random(0, 10000)}`,
+							address: `祥园路${random(0, 10000)}号`,
 							hasChildren: true
 						}, 
 						{
-							id: Math.random(),
-							date: '2016-05-01',
-							name: '王小虎',
-							address: '上海市普陀区金沙江路 1519 弄',
+							id: random(0, Number.MAX_SAFE_INTEGER),
+							date: `${new Date().getTime()}`,
+							name: `代号 - ${random(0, 10000)}`,
+							address: `祥园路${random(0, 10000)}号`,
 							hasChildren: true
 						}
 					]);

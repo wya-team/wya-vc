@@ -332,14 +332,14 @@ export default {
 		});
 		return {
 			layout,
-			isHidden: false,
+			// 由table-column控制
 			renderExpanded: null,
 			resizeProxyVisible: false,
 			resizeState: {
 				width: null,
 				height: null
 			},
-			// 是否拥有多级表头
+			// 是否拥有多级表头, 由table-header控制
 			isGroup: false,
 			scrollPosition: 'left'
 		};
@@ -350,7 +350,6 @@ export default {
 				'vc-table--fit': this.fit,
 				'vc-table--striped': this.stripe,
 				'vc-table--border': this.border || this.isGroup,
-				'vc-table--hidden': this.isHidden,
 				'vc-table--group': this.isGroup,
 				'vc-table--fluid-height': this.maxHeight,
 				'vc-table--scrollable-x': this.layout.scrollX,

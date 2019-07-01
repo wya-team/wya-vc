@@ -111,6 +111,7 @@
 	</div>
 </template>
 <script>
+import { random } from 'lodash';
 import Table from '..';
 import Button from '../../button';
 import TableFilter from './develop/filter';
@@ -145,17 +146,17 @@ export default {
 						setTimeout(() => {
 							resolve([
 								{
-									id: Math.random(),
-									date: '2016-05-01',
-									name: '王小虎',
-									address: '上海市普陀区金沙江路 1519 弄',
+									id: random(0, Number.MAX_SAFE_INTEGER),
+									date: `${new Date().getTime()}`,
+									name: `代号 - ${random(0, 10000)}`,
+									address: `祥园路${random(0, 10000)}号`,
 									hasChildren: true
 								}, 
 								{
-									id: Math.random(),
-									date: '2016-05-01',
-									name: '王小虎',
-									address: '上海市普陀区金沙江路 1519 弄',
+									id: random(0, Number.MAX_SAFE_INTEGER),
+									date: `${new Date().getTime()}`,
+									name: `代号 - ${random(0, 10000)}`,
+									address: `祥园路${random(0, 10000)}号`,
 									hasChildren: true
 								}
 							]);
@@ -183,8 +184,8 @@ export default {
 			dataSource: [
 				{
 					id: 1,
-					date: '2016-05-02',
-					name: '王小虎',
+					date: `${new Date().getTime()}`,
+					name: `代号 - ${random(0, 10000)}`,
 					address: `浙江省杭州市拱墅区祥符街道 
 						showPopover showPopover showPopover showPopover showPopover
 					`,
@@ -192,8 +193,8 @@ export default {
 				}, 
 				{
 					id: 2,
-					date: '2016-05-04',
-					name: '王小虎',
+					date: `${new Date().getTime()}`,
+					name: `代号 - ${random(0, 10000)}`,
 					address: `浙江省杭州市拱墅区祥符街道 
 						showPopover showPopover showPopover showPopover showPopover
 					`,
@@ -201,16 +202,16 @@ export default {
 				}, 
 				{
 					id: 3,
-					date: '2016-05-01',
-					name: '王小虎',
-					address: '浙江省杭州市拱墅区祥符街道',
+					date: `${new Date().getTime()}`,
+					name: `代号 - ${random(0, 10000)}`,
+					address: `祥园路${random(0, 10000)}号`,
 					hasChildren: true
 				},
 				{
 					id: 4,
-					date: '2016-05-03',
-					name: '王小虎',
-					address: '浙江省杭州市拱墅区祥符街道',
+					date: `${new Date().getTime()}`,
+					name: `代号 - ${random(0, 10000)}`,
+					address: `祥园路${random(0, 10000)}号`,
 					hasChildren: true
 				}
 			]
@@ -271,7 +272,7 @@ export default {
 			switch (type) {
 				case 'add':
 					this.dataSource.push({
-						id: Math.random(),
+						id: random(0, Number.MAX_SAFE_INTEGER),
 						date: Math.random(),
 						name: Math.random(),
 						address: Math.random(),
