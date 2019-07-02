@@ -1,3 +1,5 @@
+import { VcError } from '../../vc';
+
 export default {
 	created() {
 		this.tableLayout.addObserver(this);
@@ -14,7 +16,7 @@ export default {
 				layout = this.table.layout;
 			}
 			if (!layout) {
-				throw new Error('Can not find table layout.');
+				throw new VcError('table', 'layout未定义');
 			}
 			return layout;
 		}

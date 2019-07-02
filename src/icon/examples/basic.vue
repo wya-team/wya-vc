@@ -14,8 +14,8 @@
 </template>
 <script>
 import { shuffle } from 'lodash';
-import Icon from '..';
 import { Storage } from '@wya/utils';
+import Icon from '..';
 import Copy from '../../copy';
 import IconManager from '../manager';
 
