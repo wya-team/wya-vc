@@ -1,8 +1,8 @@
 <template>
 	<div
-		v-if="visible"
+		v-if="isActive"
 		:disabled="disabled"
-		:class="{ 'is-select': selected, 'is-last': isLast }"
+		:class="{ 'is-select': isSelect, 'is-last': isLast }"
 		class="vc-select-option"
 		@click.stop="handleSelect"
 		@touchend.stop="handleSelect"
@@ -10,7 +10,7 @@
 		@touchstart.prevent
 	>
 		<slot>{{ formatterLabel }}</slot>
-		<vc-icon v-if="selected" type="correct"/>
+		<vc-icon v-if="isSelect" type="correct"/>
 	</div>
 </template>
 
@@ -64,7 +64,7 @@ export default {
 			let v = String((this.$slots.default && this.$slots.default[0].text) || this.label || this.value);
 			return v.trim();
 		},
-		selected() {
+		isSelect() {
 			return !this.owner.multiple 
 				? this.owner.value == this.value
 				: this.owner.value.includes(this.value);
@@ -75,7 +75,7 @@ export default {
 		isLast() {
 			return !this.owner.multiple ? true : this.owner.value.slice(-1)[0] === this.value;
 		},
-		visible() {
+		isActive() {
 			return this.owner.searchRegex.test(this.formatterLabel) || !this.filterable;
 		}
 	},
@@ -87,10 +87,10 @@ export default {
 			// 禁止操作
 			if (this.disabled) return;
 			// 已选中，弹层关闭
-			if (!this.owner.multiple && this.selected) {
+			if (!this.owner.multiple && this.isSelect) {
 				this.owner.close();
 				return;
-			} else if (this.selected) {
+			} else if (this.isSelect) {
 				this.owner.remove(this.value, this.formatterLabel);
 				return;
 			}
