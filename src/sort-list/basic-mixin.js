@@ -1,3 +1,5 @@
+import { isEqualWith } from 'lodash';
+
 import Extends from '../extends';
 
 export default {
@@ -32,7 +34,21 @@ export default {
 		}
 	},
 	data() {
-		return {};
+		return {
+			currentValue: [],
+			dragging: false
+		};
+	},
+	watch: {
+		dataSource: {
+			immediate: true,
+			handler(v) {
+				if (isEqualWith(v, this.currentValue)) {
+					return;
+				}
+				this.currentValue = v;
+			}
+		}
 	},
 	created() {
 		this.eleDrag = null;
@@ -46,10 +62,10 @@ export default {
 		 * 获取左移、右移、拖拽、删除后的列表
 		 */
 		getSortList(current) {
-			const { dataSource } = this;
+			const { currentValue } = this;
 			const { item, index, type } = current; // id:移动对象，i：目标位置，type：类型
 			let isObject = typeof item === 'object';
-			const arr = dataSource.filter(it => {
+			const arr = currentValue.filter(it => {
 				if (isObject) {
 					return it[this.valueKey] !== item[this.valueKey];
 				}
@@ -59,14 +75,14 @@ export default {
 			let targetIndex;
 			switch (type) {
 				case 'left':
-					arr.splice(index - 1, 0, dataSource[index]);
+					arr.splice(index - 1, 0, currentValue[index]);
 					break;
 				case 'right':
-					arr.splice(index + 1, 0, dataSource[index]);
+					arr.splice(index + 1, 0, currentValue[index]);
 					break;
 				case 'drag':
-					targetIndex = this.dataSource.findIndex(it => it === item); // 这个id元素对应的下标
-					arr.splice(index, 0, dataSource[targetIndex]);
+					targetIndex = this.currentValue.findIndex(it => it === item); // 这个id元素对应的下标
+					arr.splice(index, 0, currentValue[targetIndex]);
 					break;
 				default: // 删除
 					break;
@@ -75,7 +91,8 @@ export default {
 		},
 
 		handleClick(e, current) {
-			this.sync(this.getSortList(current));
+			this.currentValue = this.getSortList(current);
+			this.sync();
 		},
 
 		/**
@@ -87,13 +104,11 @@ export default {
 
 			// 拖放效果
 			e.dataTransfer.effectAllowed = "move";
-
 			e.target.style.opacity = 0;
 
-
 			this.eleDrag = e.target;
-
 			this.eleDrag.item = item;
+			this.dragging = true;
 		},
 
 		/**
@@ -115,7 +130,7 @@ export default {
 				this.timer = null;
 			}, 300);
 
-			this.sync(this.getSortList({ item, index, type: 'drag' }));
+			this.currentValue = this.getSortList({ item, index, type: 'drag' });
 		},
 
 		handleDragOver(e, index, _item) {
@@ -130,14 +145,17 @@ export default {
 
 			e.target.style.opacity = 1;
 			this.eleDrag = null;
+			this.dragging = false;
+
+			this.sync();
 		},
 
 		/**
 		 * v-model 同步, 外部的数据改变时不会触发
 		 */
-		sync(v) {
-			this.$emit('change', v);
-			this.dispatch('vc-form-item', 'form-change', v);
+		sync() {
+			this.$emit('change', this.currentValue);
+			this.dispatch('vc-form-item', 'form-change', this.currentValue);
 		}
 	}
 };

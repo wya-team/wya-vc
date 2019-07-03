@@ -1,7 +1,7 @@
 <template>
 	<vcm-transtion-fade tag="div" class="vcm-sort-list" group>
 		<component 
-			v-for="(item, index) in dataSource" 
+			v-for="(item, index) in currentValue" 
 			:key="typeof item === 'object' ? item[valueKey] : item"
 			:is="tag"
 			:draggable="getDraggable(item)"

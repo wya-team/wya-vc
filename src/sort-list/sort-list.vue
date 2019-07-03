@@ -1,7 +1,7 @@
 <template>
 	<vc-transtion-fade tag="div" class="vc-sort-list" group>
 		<component 
-			v-for="(item, index) in dataSource" 
+			v-for="(item, index) in currentValue" 
 			:key="typeof item === 'object' ? item[valueKey] : item"
 			:is="tag"
 			:draggable="getDraggable(item)"
@@ -13,14 +13,14 @@
 		>
 			<!-- 项目中统一使用it, key由slot决定 -->
 			<slot :it="item" :index="index" />
-			<div v-if="mask" class="vc-sort-list__mask">
+			<div v-if="mask && !dragging" class="vc-sort-list__mask">
 				<span 
 					:style="{visibility: index !== 0 ? 'unset' : 'hidden'}"
 					@click="handleClick($event, { item, index, type: 'left' })"
 				>&#10094;</span>
 				<span @click="handleClick($event, { item, index, type: 'delete'})">&#10006;</span>
 				<span 
-					:style="{visibility: index !== dataSource.length - 1 ? 'unset' : 'hidden'}"
+					:style="{visibility: index !== currentValue.length - 1 ? 'unset' : 'hidden'}"
 					@click="handleClick($event, { item, index, type: 'right' })"
 				>&#10095;</span>
 			</div>
