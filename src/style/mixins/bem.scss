@@ -5,7 +5,8 @@ $E: '';
 
 $element-separator: '__';
 $modifier-separator: '--';
-$state-prefix: 'is-';
+$state-is-prefix: 'is-';
+$state-has-prefix: 'has-';
 
 /* Func
  -------------------------- */
@@ -28,7 +29,7 @@ $state-prefix: 'is-';
 @function containWhenFlag($selector) {
 	$selector: selectorToString($selector);
 
-	@if str-index($selector, '.' + $state-prefix) {
+	@if str-index($selector, '.' + $state-is-prefix) or str-index($selector, '.' + $state-has-prefix) {
 		@return true;
 	} 
 	@else {
@@ -184,9 +185,15 @@ $state-prefix: 'is-';
  * -> [className].is_require 
  * 与xxx:hover类似
  */
-@mixin when($state) {
+@mixin when($state, $useHas: false) {
+	$currentPrefix: $state-is-prefix;
+
+	@if $useHas {
+		$currentPrefix: $state-has-prefix;
+	}
+
 	@at-root {
-		&.#{$state-prefix + $state} {
+		&.#{$currentPrefix + $state} {
 			@content;
 		}
 	}
