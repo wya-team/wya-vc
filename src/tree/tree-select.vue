@@ -1,7 +1,7 @@
 <template>
 	<vc-popover 
 		v-bind="$attrs"
-		v-model="visible" 
+		v-model="isActive" 
 		:arrow="arrow" 
 		:trigger="trigger"
 		:tag="tag"
@@ -16,7 +16,7 @@
 		@mouseleave.native="isHover = false"
 		@ready="$emit('ready')"
 		@close="$emit('close')"
-		@visible-change="$emit('visible-change', visible)"
+		@visible-change="$emit('visible-change', isActive)"
 	>	
 		<vc-input
 			ref="input"
@@ -174,7 +174,7 @@ export default {
 	data() {
 		return {
 			isHover: false,
-			visible: false,
+			isActive: false,
 			loading: false,
 			searchValue: '',
 			searchRegex: new RegExp(),
@@ -185,7 +185,7 @@ export default {
 	},
 	computed: {
 		icon() {
-			return this.visible ? 'up' : 'down';
+			return this.isActive ? 'up' : 'down';
 		},
 		showClear() {
 			let value = !this.multiple ? this.currentValue : this.currentValue.length > 0;
@@ -237,6 +237,7 @@ export default {
 			this.$emit('clear');
 			this.currentValue = [];
 			this.currentLabel = [];
+			this.isActive = false;
 			this.sync();
 		},
 
