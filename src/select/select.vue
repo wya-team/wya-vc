@@ -1,7 +1,7 @@
 <template>
 	<vc-popover 
 		v-bind="$attrs"
-		v-model="visible" 
+		v-model="isActive" 
 		:arrow="arrow" 
 		:trigger="trigger"
 		:tag="tag"
@@ -16,7 +16,7 @@
 		@mouseleave.native="isHover = false"
 		@ready="$emit('ready')"
 		@close="$emit('close')"
-		@visible-change="$emit('visible-change', visible)"
+		@visible-change="$emit('visible-change', isActive)"
 	>
 		<vc-input
 			ref="input"
@@ -61,7 +61,7 @@
 						@input="handleSearch" 
 					/>
 				</div>
-				<div v-if="loading" class="vc-select__loading">
+				<div v-if="isLoading" class="vc-select__loading">
 					<vc-spin :size="16" />
 				</div>
 				<div class="vc-select__options">
@@ -158,8 +158,8 @@ export default {
 	data() {
 		return {
 			isHover: false,
-			visible: false,
-			loading: false,
+			isActive: false,
+			isLoading: false,
 			searchValue: '',
 			searchRegex: new RegExp(),
 			currentValue: this.max > 1 ? [] : '',
@@ -169,7 +169,7 @@ export default {
 	},
 	computed: {
 		icon() {
-			return this.visible ? 'up' : 'down';
+			return this.isActive ? 'up' : 'down';
 		},
 		showClear() {
 			let value = !this.multiple ? this.currentValue : this.currentValue.length > 0;
@@ -224,6 +224,7 @@ export default {
 
 			this.currentValue = this.multiple ? [] : '';
 			this.currentLabel = this.multiple ? [] : '';
+			this.isActive = false;
 
 			this.sync();
 		},
@@ -242,7 +243,7 @@ export default {
 			if (!this.multiple) {
 				this.currentValue = v;
 				this.currentLabel = label;
-				this.visible = false;
+				this.isActive = false;
 			} else {
 				this.currentValue.push(v); 
 				this.currentLabel.push(label);
@@ -261,7 +262,7 @@ export default {
 		},
 
 		close() {
-			this.visible = false;
+			this.isActive = false;
 		},
 
 		update(force = false) {
@@ -327,11 +328,11 @@ export default {
 			let remote = this.loadData(this.searchValue, this);
 			
 			if (remote && remote.then) {
-				this.loading = true;
+				this.isLoading = true;
 				remote.then(() => {
 
 				}).finally(() => {
-					this.loading = false;
+					this.isLoading = false;
 				});
 			} else {
 				throw new VcError('select', 'loadData 返回值需要Promise');

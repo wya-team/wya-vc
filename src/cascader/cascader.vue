@@ -1,7 +1,7 @@
 <template>
 	<vc-popover 
 		v-bind="$attrs"
-		v-model="visible" 
+		v-model="isActive" 
 		:arrow="arrow" 
 		:trigger="trigger"
 		:tag="tag"
@@ -15,7 +15,7 @@
 		@ready="handleReady"
 		@close="handleClose"
 		@destory="handleDestory"
-		@visible-change="$emit('visible-change', visible)"
+		@visible-change="$emit('visible-change', isActive)"
 	>
 		<vc-input
 			ref="input"
@@ -135,7 +135,7 @@ export default {
 	data() {
 		return {
 			isHover: false,
-			visible: false,
+			isActive: false,
 			currentValue: [],
 			currentLabel: [],
 			rebuildData: []
@@ -143,7 +143,7 @@ export default {
 	},
 	computed: {
 		icon() {
-			return this.visible ? 'up' : 'down';
+			return this.isActive ? 'up' : 'down';
 		},
 		showClear() {
 			return this.currentValue && this.currentValue.length && this.clearable && !this.disabled && this.isHover;
@@ -196,7 +196,8 @@ export default {
 			e.stopPropagation();
 
 			this.currentValue.splice(0, this.currentValue.length);
-
+			this.isActive = false;
+			
 			this.sync(true);
 		},
 
@@ -304,7 +305,7 @@ export default {
 
 		// 可能存在强制关闭的情况
 		handleDestory() {
-			this.visible && (this.visible = false);
+			this.isActive && (this.isActive = false);
 		},
 		/**
 		 * v-model 同步, 外部的数据改变时不会触发
@@ -317,7 +318,7 @@ export default {
 
 			let isLast = !lastData || lastData.length === 0;
 
-			(isLast || this.changeOnSelect) && (this.visible = false);
+			(isLast || this.changeOnSelect) && (this.isActive = false);
 
 			// 该模式下，label会变为上一个值，这里重新获取一次
 			if ((force || isLast) && !this.changeOnSelect) {
