@@ -79,7 +79,7 @@ export default {
 		const { type = 'default' } = this;
 
 		this.isSubColumn = this.owner !== parent;
-		this.columnId = (parent.tableId || parent.columnId) + getUid('column', '');
+		this.columnId = (parent.tableId || parent.columnId) + getUid('column', { prefix: '' });
 
 		const defaults = {
 			...cellStarts[type],

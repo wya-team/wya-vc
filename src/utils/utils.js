@@ -1,9 +1,15 @@
 import { cloneDeep } from 'lodash';
 
+const now = +(new Date());
 let index = 0;
 
-export const getUid = (comp, prefix = 'vc') => {
-	return `${prefix}${`${comp ? `-${comp}` : ''}`}-${++index}`;
+/**
+ * timestamp在某些场景下是有必要的
+ */
+export const getUid = (comp, opts = {}) => {
+	const { prefix = 'vc', timestamp = false } = opts;
+
+	return `${prefix}${`${comp ? `-${comp}` : ''}`}${timestamp ? `-${now}` : ''}-${++index}`;
 };
 
 

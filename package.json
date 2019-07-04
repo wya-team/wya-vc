@@ -1,6 +1,6 @@
 {
     "name": "@wya/vc",
-    "version": "1.4.61",
+    "version": "1.4.62",
     "description": "wya for vue components",
     "main": "lib/index.js",
     "files": [
