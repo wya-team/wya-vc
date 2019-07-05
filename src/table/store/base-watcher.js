@@ -275,7 +275,7 @@ export default Vue.extend({
 			let temp = this.flattenData;
 			for (let i = 0, j = temp.length; i < j; i++) {
 				const row = temp[i];
-				const isRowSelectable = selectable && selectable.call(null, item, i);
+				const isRowSelectable = selectable && selectable.call(null, row, i);
 				if (!this.isSelected(row)) {
 					if (!selectable || isRowSelectable) {
 						isAllSelected = false;
