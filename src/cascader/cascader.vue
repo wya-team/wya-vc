@@ -244,8 +244,6 @@ export default {
 		 * @param  {Number} isHover 是否是xx
 		 */
 		async handleCellChange({ value, rowIndex, colIndex }) {
-			this.isLast = false;
-
 			try {
 				const len = this.currentValue.slice(colIndex).length;
 				this.currentValue.splice(colIndex, len, value);
@@ -276,7 +274,7 @@ export default {
 				children && this.rebuildData.splice(colIndex + 1, len, this.makeData(children));
 
 				// 清理
-				if (!children && colIndex < this.rebuildData.length) {
+				if ((!children || children.length === 0) && colIndex < this.rebuildData.length) {
 					this.currentValue.splice(colIndex + 1, len);
 					this.rebuildData.splice(colIndex + 1, len);
 				}
