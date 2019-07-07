@@ -1,23 +1,25 @@
 <template>
 	<div class="vcm-cascader-view">
-		<div class="vcm-cascader-view__wrapper">
-			<div
-				v-for="(item, index) in currentValue"
-				:key="item"
-				:class="{ 'is-active': currentIndex === index }"
-				class="vcm-cascader-view__label"
-				@click="currentIndex = index"
-			>
-				{{ label[index] }}
+		<slot name="header">
+			<div class="vcm-cascader-view__wrapper">
+				<div
+					v-for="(item, index) in currentValue"
+					:key="item"
+					:class="{ 'is-active': currentIndex === index }"
+					class="vcm-cascader-view__label"
+					@click="currentIndex = index"
+				>
+					{{ label[index] }}
+				</div>
+				<div 
+					v-if="hasChildren" 
+					:class="{ 'is-active': currentIndex === currentValue.length }"
+					class="vcm-cascader-view__label"
+				>
+					请选择
+				</div>
 			</div>
-			<div 
-				v-if="hasChildren" 
-				:class="{ 'is-active': currentIndex === currentValue.length }"
-				class="vcm-cascader-view__label"
-			>
-				请选择
-			</div>
-		</div>
+		</slot>
 		<vcm-cascader-col
 			:value="colValue"
 			:data-source="colData"
@@ -186,7 +188,6 @@ export default {
 			}
 		},
 		getInfo(v) {
-			console.log(this.currentValue);
 			return getSelectedData(v, this.dataSource) || {};
 		},
 	}

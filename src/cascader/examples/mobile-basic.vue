@@ -2,17 +2,18 @@
 	<div style="margin-top: 30px;">
 		<vcm-cascader
 			v-model="value"
-			:data-source="dataSource"
+			:data-source="dataSource2"
 			:load-data="loadData"
 		/>
 		<br>
 		<br>
+		<div @click="handleClick">直接调用</div>
 		<br>
 		<br>
 		<vcm-cascader-view
 			ref="target"
 			v-model="value"
-			:data-source="dataSource"
+			:data-source="dataSource2"
 			:load-data="loadData"
 		/>
 	</div>
@@ -71,7 +72,7 @@ export default {
 					],
 				}
 			],
-			value: [2, 276],
+			value: [],
 		};
 	},
 	mounted() {
@@ -98,6 +99,12 @@ export default {
 				}, 2000);
 			});
 		},
+		handleClick() {
+			MCascader.open({
+				dataSource: this.dataSource2,
+				value: []
+			});
+		}
 	}
 
 };
