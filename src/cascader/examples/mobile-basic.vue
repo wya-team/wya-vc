@@ -77,6 +77,10 @@ export default {
 	},
 	mounted() {
 		window.vm = this.$refs.target;
+
+		setTimeout(() => {
+			this.value = ['jiangsu', 'nanjing'];
+		}, 5000);
 	},
 	methods: {
 		loadData() {
@@ -102,7 +106,7 @@ export default {
 		handleClick() {
 			MCascader.open({
 				dataSource: this.dataSource2,
-				value: []
+				value: ['jiangsu', 'nanjing']
 			});
 		}
 	}

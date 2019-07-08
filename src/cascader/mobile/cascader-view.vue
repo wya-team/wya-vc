@@ -1,6 +1,6 @@
 <template>
 	<div class="vcm-cascader-view">
-		<slot name="header">
+		<slot :label="label" :current="currentIndex" name="header">
 			<div class="vcm-cascader-view__wrapper">
 				<div
 					v-for="(item, index) in currentValue"
@@ -82,6 +82,8 @@ export default {
 			immediate: false,
 			handler() {
 				this.rebuildData = this.makeRebuildData();
+
+				this.resetIndex();
 			}
 		},
 		value: {
@@ -94,14 +96,34 @@ export default {
 				
 				this.currentValue = v;
 				this.rebuildData = this.makeRebuildData();
-				// this.currentValue.forEach((item) => {
-				// 	// todo
-				// });
+
+				this.resetIndex();
 			}
 		}
 	},
 
 	methods: {
+		/**
+		 * 重置index
+		 */
+		async resetIndex() {
+			if (this.currentValue.length === 0 || this.rebuildData.length === 0) {
+				this.currentIndex = 0;
+				return;
+			}
+			// TODO: 异步场景
+			// if (this.currentValue.length >= this.rebuildData.length) {
+			// 	for (let i = this.rebuildData.length; i <= this.currentValue.length; i++) {
+			// 		await
+			// 	}
+			// }
+			let value = this.currentValue.slice(-1)[0];
+			let colIndex = this.currentValue.length - 1;
+			let rowIndex = this.rebuildData[colIndex].findIndex(i => i.value === value);
+
+			this.handleChange({ value, rowIndex, colIndex });
+		},
+
 		/**
 		 * 单列数据
 		 * @param  {Array} source 数据源
@@ -158,7 +180,6 @@ export default {
 				 * 异步加载数据
 				 */
 				if (this.loadData && children && children.length === 0) {
-
 					this.rebuildData[colIndex][rowIndex].loading = true;
 
 					let res = await this.loadData();

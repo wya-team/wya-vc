@@ -301,8 +301,6 @@ export default {
 				});
 				if (!force && isEqualWith(this.dataSource, data)) return;
 
-				console.log(this.max);
-
 				this.currentLabel = this.multiple 
 					? this.currentValue.map(getLabel.bind(null, data))
 					: getLabel(data, this.currentValue);
