@@ -161,7 +161,7 @@ export default {
 				 * 如果v为undefined，this.currentValue也undefined
 				 * NaN !== NaN true -> this.currentValue = undefined;
 				 */
-				if (+new Date(v) !== +value2date(this.currentValue)) {
+				if (this.currentValue.length === 0 || +new Date(v) !== +value2date(this.currentValue)) {
 					this.currentValue = date2value(v || this.defaultValue, this.modeArr);
 					this.rebuildData = this.makeRebuildData();
 				}
