@@ -61,6 +61,11 @@ export default {
 	transform: translateZ(0);
 	font-size: 12px;
 	overflow: hidden;
+	// iPhone X 头尾异常了 几px;
+	> span {
+		padding-left: 10px;
+		padding-right: 10px;
+	}
 }
 
 </style>

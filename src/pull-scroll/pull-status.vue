@@ -68,11 +68,5 @@ export default {
 		height: 75px;
 		padding-top: 45px;
 	}
-	// iPhone X 头尾异常了 几px;
-	> span {
-		padding-left: 10px;
-		padding-right: 10px;
-	}
 }
-
 </style>
