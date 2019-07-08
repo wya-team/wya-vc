@@ -292,7 +292,6 @@ export default {
 						|| label 
 						|| value
 					);
-					console.log(vnode);
 					data.push({
 						disabled,
 						value,
