@@ -52,14 +52,18 @@ export default {
 			type: Array,
 			default: () => ([])
 		},
-		loadData: Function
+		loadData: Function,
+		changeOnSelect: {
+			type: Boolean,
+			default: false
+		}
 	},
 	data() {
 		return {
 			currentIndex: 0,
 			currentValue: [],
 			rebuildData: [],
-			hasChildren: false
+			hasChildren: true
 		};
 	},
 	computed: {
@@ -121,7 +125,7 @@ export default {
 			let colIndex = this.currentValue.length - 1;
 			let rowIndex = this.rebuildData[colIndex].findIndex(i => i.value === value);
 
-			this.handleChange({ value, rowIndex, colIndex });
+			this.handleChange({ value, rowIndex, colIndex, sync: false });
 		},
 
 		/**
@@ -163,7 +167,7 @@ export default {
 		 * @param  {Number} colIndex 列
 		 * @param  {Number} isHover 是否是xx
 		 */
-		async handleChange({ value, rowIndex, colIndex }) {
+		async handleChange({ value, rowIndex, colIndex, sync }) {
 			try {
 				const len = this.currentValue.slice(colIndex).length;
 				this.currentValue.splice(colIndex, len, value);
@@ -200,6 +204,8 @@ export default {
 					this.hasChildren = true;
 					this.currentIndex = this.currentValue.length;
 				}
+
+				sync !== false && this.sync();
 			} catch (e) {
 				throw new VcError('vc-cascader', e);
 			} finally {
@@ -211,6 +217,23 @@ export default {
 		getInfo(v) {
 			return getSelectedData(v, this.dataSource) || {};
 		},
+		/**
+		 * v-model 同步, 外部的数据改变时不会触发
+		 */
+		sync() {
+			(this.changeOnSelect) && this.$emit('change', this.currentValue, this.label);
+
+			// 最后一项，自动关闭
+			let lastData = this.rebuildData[this.currentValue.length];
+			let isLast = !lastData || lastData.length === 0;
+
+			// 该模式下，label会变为上一个值，这里重新获取一次
+			if (isLast && !this.changeOnSelect) {
+				const { label } = this.getInfo(this.currentValue);
+				this.$emit('change', this.currentValue, label);
+				this.$emit('complete', this.currentValue, label);
+			}
+		}
 	}
 };
 </script>

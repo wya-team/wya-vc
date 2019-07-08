@@ -15,6 +15,7 @@
 			v-model="value"
 			:data-source="dataSource2"
 			:load-data="loadData"
+			@complete="handleComplete"
 		/>
 	</div>
 </template>
@@ -108,6 +109,9 @@ export default {
 				dataSource: this.dataSource2,
 				value: ['jiangsu', 'nanjing']
 			});
+		},
+		handleComplete() {
+			console.log(arguments);
 		}
 	}
 
