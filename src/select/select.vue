@@ -288,11 +288,11 @@ export default {
 					let { value, label = '', disabled } = vnode.componentOptions.propsData;
 
 					label = String(
-						label 
-						|| (vnode.componentOptions.children && vnode.componentOptions.children[0].text) 
+						(vnode.componentOptions.children && vnode.componentOptions.children[0].text) 
+						|| label 
 						|| value
 					);
-
+					console.log(vnode);
 					data.push({
 						disabled,
 						value,
@@ -301,6 +301,7 @@ export default {
 				});
 				if (!force && isEqualWith(this.dataSource, data)) return;
 
+				console.log(data);
 				this.currentLabel = this.multiple 
 					? this.currentValue.map(getLabel.bind(null, data))
 					: getLabel(data, this.currentValue);
