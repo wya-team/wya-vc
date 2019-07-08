@@ -210,28 +210,28 @@
 		& {
 			@if $direction == 'top' {
 				&:before {
-					width: 297%; // 安卓机子部分不展示，由300% -> 297%
+					width: 300%;
 					transform: scale(0.33333333);
 				}
 			} @else if $direction == 'right' {
 				&:after {
-					height: 297%;
+					height: 300%;
 					transform: scale(0.33333333);
 				}
 			} @else if $direction == 'bottom' {
 				&:after {
-					width: 297%;
+					width: 300%;
 					transform: scale(0.33333333);
 				}
 			} @else if $direction == 'left' {
 				&:before {
-					height: 297%;
+					height: 300%;
 					transform: scale(0.33333333);
 				}
 			} @else {
 				&:after {
-					width: 297%;
-					height: 297%;
+					width: 300%;
+					height: 300%;
 					transform: scale(0.33333333);
 				}
 			}
