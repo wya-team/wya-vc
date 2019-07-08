@@ -4,7 +4,7 @@
 			<vcm-date-picker 
 				v-model="value"
 				label="默认值：当前时间"
-				mode="datetime"
+				mode="yearmonth"
 				title="test"
 			/>
 			<vcm-date-picker 
