@@ -72,6 +72,11 @@
 		display: inline-block;
 		width: 20px;
 	}
+	
+	@include element(append-wrapper) {
+		// 避免外边距重合 https://developer.mozilla.org/zh-CN/docs/Web/CSS/CSS_Box_Model/Mastering_margin_collapsing
+		overflow: hidden;
+	}
 
 	@include modifier(fit) {
 		border-right: 0;

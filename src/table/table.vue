@@ -175,6 +175,11 @@
 					:style="{ width: bodyWidth }"
 					fixed="right"
 				/>
+				<div
+					v-if="$slots.append"
+					:style="{ height: layout.appendHeight + 'px' }"
+					class="vc-table__append-gutter"
+				/>
 			</div>
 			<div
 				v-if="showSummary"
