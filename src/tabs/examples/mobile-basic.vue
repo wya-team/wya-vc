@@ -9,6 +9,7 @@
 			:animated="animated" 
 			:theme="theme"
 			:average="false"
+			:sticky="true"
 			closable 
 			@click="handleClick"
 			@tab-remove="handleRemove"

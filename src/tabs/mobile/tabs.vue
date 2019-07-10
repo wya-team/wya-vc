@@ -1,10 +1,16 @@
 <template>
 	<div :class="classes" class="vcm-tabs">
-		<div v-if="showWrapper" ref="wrapper" :style="barStyle" class="vcm-tabs__bar">
+		<div
+			v-if="showWrapper"
+			ref="wrapper"
+			:style="barStyle"
+			:class="{ 'is-fixed': isFixed }"
+			class="vcm-tabs__bar"
+		>
 			<div ref="scroll" class="vcm-tabs__scroll">
 				<div ref="nav" class="vcm-tabs__nav">
 					<div :style="afloatStyle" class="vcm-tabs__afloat" />
-					<div 
+					<div
 						v-for="(item, index) in list"
 						:key="index"
 						:class="[{ 'is-active': item.name == currentName, 'is-average': average }]"
@@ -13,9 +19,9 @@
 					>
 						<slot :it="item" :index="index" name="label">
 							<span v-if="typeof item.label === 'string'" v-html="item.label" />
-							<vc-customer 
-								v-else-if="typeof item.label === 'function'" 
-								:render="item.label" 
+							<vc-customer
+								v-else-if="typeof item.label === 'function'"
+								:render="item.label"
 								:it="item"
 								:index="index"
 							/>
@@ -24,6 +30,7 @@
 				</div>
 			</div>
 		</div>
+		<div v-if="isFixed" class="vcm-tabs_placeholder" style="height: 53px"/>
 		<div :style="contentStyle" class="vcm-tabs__content">
 			<slot />
 		</div>
@@ -63,10 +70,15 @@ export default {
 		showWrapper: {
 			type: Boolean,
 			default: true
+		},
+		sticky: {
+			type: Boolean,
+			default: true
 		}
 	},
 	data() {
 		return {
+			isFixed: false
 		};
 	},
 	computed: {
@@ -82,29 +94,36 @@ export default {
 			this.refreshAfloat();
 		}
 	},
-	mounted() { },
-	destoryed() { },
+	mounted() {
+		this.sticky && window.addEventListener('scroll', this.handleScroll);
+	},
+	destoryed() { 
+		this.sticky && window.removeEventListener('scroll', this.handleScroll);
+	},
 	methods: {
+		handleScroll() {
+			this.isFixed = document.scrollingElement.scrollTop > this.$refs.wrapper.offsetTop;
+		},
 		/**
 		 * 刷新当前标签底下的滑块位置
 		 */
 		refreshAfloat() {
 			if (!this.showWrapper) return;
-			
+
 			this.$nextTick(() => {
 				const index = this.getTabIndex(this.currentName);
 				if (this._isDestroyed) return;
 				const items = this.$refs.nav.querySelectorAll(`.vcm-tabs__item`);
-				
+
 				const $ = items[index];
 
 				// 暂时写死42
-				this.afloatWidth = $ 
-					? this.isDark 
-						? 20 
+				this.afloatWidth = $
+					? this.isDark
+						? 20
 						: this.autoAfloatWidth
-							? $.querySelector('span').offsetWidth 
-							: $.offsetWidth 
+							? $.querySelector('span').offsetWidth
+							: $.offsetWidth
 					: 0;
 
 				let offset = 0;
@@ -114,7 +133,7 @@ export default {
 					for (let i = 0; i < index; i++) {
 						offset += parseFloat(items[i].offsetWidth);
 					}
-					
+
 				}
 
 				this.afloatOffset = offset + basicOffset;
@@ -127,14 +146,14 @@ export default {
 		 * TODO
 		 */
 		refreshScroll() {
-			
+
 		},
 
 		/**
 		 * TODO
 		 */
 		scrollToActive() {
-			
+
 		},
 	},
 };
@@ -151,6 +170,13 @@ export default {
 		display: flex;
 		align-items: center;
 		position: relative;
+		@include when(fixed) {
+			position: fixed;
+			width: 100%;
+			top: 0;
+			z-index: 999;
+			box-shadow: 0px -5px 5px 5px #999;
+		}
 	}
 	/**
 	 * 这里的设计，存在问题，要做到少时自动撑开，多是滚动
@@ -178,14 +204,14 @@ export default {
 			flex: 1;
 		}
 	}
-	
+
 	@include element(afloat) {
 		height: 2px;
 		box-sizing: border-box;
 		position: absolute;
 		left: 0;
 		z-index: 1;
-		
+
 	}
 	@include element(content) {
 		display: flex;
@@ -199,7 +225,7 @@ export default {
 		@include element(content) {
 			will-change: transform;
 			transition: transform .3s cubic-bezier(.35, 0, .25, 1);
-		} 
+		}
 	}
 
 	@include when(light) {
