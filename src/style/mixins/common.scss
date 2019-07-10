@@ -207,28 +207,28 @@
 				@if $direction == 'top' {
 					&:before {
 						width: 300%;
-						transform: scale(0.333) translate(-100%, -100%);
+						transform: scale(0.3333333333333333) translate(-100%, -100%);
 					}
 				} @else if $direction == 'right' {
 					&:after {
 						height: 300%;
-						transform: scale(0.333) translate(-100%, -100%);
+						transform: scale(0.3333333333333333) translate(-100%, -100%);
 					}
 				} @else if $direction == 'bottom' {
 					&:after {
 						width: 300%;
-						transform: scale(0.333) translate(-100%, -100%);
+						transform: scale(0.3333333333333333) translate(-100%, -100%);
 					}
 				} @else if $direction == 'left' {
 					&:before {
 						height: 300%;
-						transform: scale(0.333) translate(-100%, -100%);
+						transform: scale(0.3333333333333333) translate(-100%, -100%);
 					}
 				} @else {
 					&:after {
 						width: 300%;
 						height: 300%;
-						transform: scale(0.333) translate(-100%, -100%);
+						transform: scale(0.3333333333333333) translate(-100%, -100%);
 					}
 				}
 			}
