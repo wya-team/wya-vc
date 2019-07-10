@@ -2,7 +2,7 @@
 	<component 
 		:is="tag"
 		@touchstart="handleStart"
-		@touchmove.prevent="handleMove"
+		@touchmove="handleMove"
 		@touchend="handleEnd"
 	>
 		<slot />
@@ -19,6 +19,10 @@ export default {
 		flickThreshold: {
 			type: Number,
 			default: 0.6
+		},
+		prevent: {
+			type: Boolean,
+			default: true
 		}
 	},
 	data() {
@@ -65,15 +69,15 @@ export default {
 			if (r < -1) r = -1;
 			return Math.acos(r) * direction * 180 / Math.PI;
 		},
-		handleStart(event) {
-			let point = event.touches ? event.touches[0] : event;
+		handleStart(e) {
+			let point = e.touches ? e.touches[0] : e;
 			this.startX = point.pageX;
 			this.startY = point.pageY;
 			clearTimeout(this.longTapTimeout);
 			this.startTime = this.getTime();
 			// 两点接触
-			if (event.touches.length > 1) {
-				let point2 = event.touches[1];
+			if (e.touches.length > 1) {
+				let point2 = e.touches[1];
 				let xLen = Math.abs(point2.pageX - this.startX);
 				let yLen = Math.abs(point2.pageY - this.startY);
 				this.touchDistance = this.getDistance(xLen, yLen); 
@@ -83,14 +87,14 @@ export default {
 				};
 			} else {
 				this.longTapTimeout = setTimeout(() => {
-					this.$emit('long-tap', event);
+					this.$emit('long-tap', e);
 				}, 800);
 				if (this.previousTouchPoint) {
 					if (Math.abs(this.startX - this.previousTouchPoint.startX) < this.maxTapAbsX 
 						&& Math.abs(this.startY - this.previousTouchPoint.startY) < this.maxTapAbsY 
 						&& Math.abs(this.startTime - this.previousTouchTime) < 300
 					) {
-						this.$emit('double-tap', event);
+						this.$emit('double-tap', e);
 					}
 				}
 				this.previousTouchTime = this.startTime;
@@ -100,12 +104,14 @@ export default {
 				};
 			}
 		},
-		handleMove(event) {
+		handleMove(e) {
+			this.prevent && e.preventDefault();
+
 			let timestamp = this.getTime();
 
-			if (event.touches.length > 1) {
-				let xLen = Math.abs(event.touches[0].pageX - event.touches[1].pageX);
-				let yLen = Math.abs(event.touches[0].pageY - event.touches[1].pageY);
+			if (e.touches.length > 1) {
+				let xLen = Math.abs(e.touches[0].pageX - e.touches[1].pageX);
+				let yLen = Math.abs(e.touches[0].pageY - e.touches[1].pageY);
 				let touchDistance = this.getDistance(xLen, yLen);
 				// 缩放
 				if (this.touchDistance) {
@@ -126,8 +132,8 @@ export default {
 				// 旋转
 				if (this.touchVector) {
 					let vector = {
-						x: event.touches[1].pageX - event.touches[0].pageX,
-						y: event.touches[1].pageY - event.touches[0].pageY
+						x: e.touches[1].pageX - e.touches[0].pageX,
+						y: e.touches[1].pageY - e.touches[0].pageY
 					};
 					let angle = this.getRotateAngle(vector, this.touchVector);
 					this.$emit('rotate', { angle });
@@ -136,7 +142,7 @@ export default {
 				}
 			} else {
 				clearTimeout(this.longTapTimeout);
-				let point = event.touches ? event.touches[0] : event;
+				let point = e.touches ? e.touches[0] : e;
 				let deltaX = this.moveX === null ? 0 : point.pageX - this.moveX;
 				let deltaY = this.moveY === null ? 0 : point.pageY - this.moveY;
 				
@@ -148,15 +154,15 @@ export default {
 				this.moveY = point.pageY;
 			}
 		},
-		handleCancel(event) {
+		handleCancel(e) {
 			this.handleEnd();
 		},
-		handleEnd(event) {
+		handleEnd(e) {
 			/**
 			 * 在X轴或Y轴发生过移动
 			 */
 			clearTimeout(this.longTapTimeout);
-			let isDouble = event.changedTouches.length > 1;
+			let isDouble = e.changedTouches.length > 1;
 			let timestamp = this.getTime();
 			let absX = Math.abs(this.moveX - this.startX);
 			let deltaX = this.moveX - this.startX;
@@ -186,10 +192,10 @@ export default {
 
 			} else if (timestamp - this.startTime < 2000) {
 				if (timestamp - this.startTime < 500) {
-					this.$emit('tap', event);
+					this.$emit('tap', e);
 				}
 				if (timestamp - this.startTime > 500) {
-				 // this.$emit('long-tap', event);
+				 // this.$emit('long-tap', e);
 				}
 			}
 
