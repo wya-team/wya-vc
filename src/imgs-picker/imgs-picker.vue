@@ -108,8 +108,10 @@ export default {
 			const { ImgsPicker = {} } = VcInstance.config;
 			if (typeof this.gallery === 'function' || (this.gallery && ImgsPicker.gallery)) {
 				e.stopPropagation();
-				console.log(2);
-				fn = this.gallery || ImgsPicker.gallery;
+
+				let fn = typeof this.gallery === 'function' 
+					? this.gallery
+					: ImgsPicker.gallery;
 				fn(instance);
 			} 
 		}
