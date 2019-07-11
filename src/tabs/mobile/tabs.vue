@@ -73,7 +73,7 @@ export default {
 		},
 		sticky: {
 			type: Boolean,
-			default: true
+			default: false
 		}
 	},
 	data() {
@@ -95,6 +95,7 @@ export default {
 		}
 	},
 	mounted() {
+		this.top = this.$refs.wrapper.offsetTop;
 		this.sticky && window.addEventListener('scroll', this.handleScroll);
 	},
 	destoryed() { 
@@ -102,7 +103,7 @@ export default {
 	},
 	methods: {
 		handleScroll() {
-			this.isFixed = document.scrollingElement.scrollTop > this.$refs.wrapper.offsetTop;
+			this.isFixed = document.scrollingElement.scrollTop > this.top;
 		},
 		/**
 		 * 刷新当前标签底下的滑块位置
