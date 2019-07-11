@@ -95,14 +95,16 @@ export default {
 		}
 	},
 	mounted() {
-		this.sticky && window.addEventListener('scroll', this.handleScroll);
-
-		Resize.on(document.documentElement, this.handleResizeForDoc);
+		if (this.sticky) {
+			window.addEventListener('scroll', this.handleScroll);
+			Resize.on(document.documentElement, this.handleResizeForDoc);
+		}
 	},
 	destoryed() { 
-		this.sticky && window.removeEventListener('scroll', this.handleScroll);
-
-		Resize.off(document.documentElement, this.handleResizeForDoc);
+		if (this.sticky) {
+			this.sticky && window.removeEventListener('scroll', this.handleScroll);
+			Resize.off(document.documentElement, this.handleResizeForDoc);
+		}
 	},
 	methods: {
 		/**
