@@ -18,6 +18,7 @@ upload | upload组件的属性 | `Object` | {}
 accept | 可接受的文件类型 | `String` | `image/gif`, `image/jpeg`, `image/jpg`, `image/png`
 format | 自定义返回数据格式 | `Function` | - 
 sortable | 是否开启拖拽排序 | `Boolean` | `false` 
+gallery | true, false, () => {}效果不同 | `Boolean, Function` | `true` 
 
 
 #### 事件

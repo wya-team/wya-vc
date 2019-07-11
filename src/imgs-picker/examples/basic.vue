@@ -7,10 +7,11 @@
 	>
 		<vc-form-item prop="imgs" @on-form-change="handleChange">
 			<vc-imgs-picker 
+				ref="target"
 				v-model="formValidate.imgs" 
 				:max="3"
 				:upload="{multiple: true, max: 3}"
-				sort
+				sortable
 				@error="handleError"
 			/>
 		</vc-form-item>
@@ -119,11 +120,13 @@ export default {
 				`https://wya-oa.oss-cn-hangzhou.aliyuncs.com/common/file-download.png?v=${new Date().getTime()}`
 			];
 		}, 5000);
+
+		window.ImgsPicker = this.$refs.target;
 	},
 	methods: {
 		handleChange(value) {
 			console.log(value, 'change');
-		},
+		},	
 		handleSubmit(name) {
 			this.$refs.form.validate((valid) => {
 				if (valid) {

@@ -55,7 +55,7 @@ export default {
 		/**
 		 * 上传成功后对数据的格式化
 		 */
-		format: Function,
+		formatter: Function,
 		/**
 		 * 盒子className
 		 */
@@ -71,7 +71,7 @@ export default {
 	},
 	data() {
 		return {
-			data: this.dataSource,
+			currentValue: [],
 			uploadOpts: { ...this.upload }
 		};
 	},
@@ -79,8 +79,8 @@ export default {
 		dataSource: {
 			immediate: true,
 			handler(newVal) {
-				let arr = this.data.length === 0 ? newVal : this.data;
-				this.data = arr.map((it) => {
+				let arr = this.currentValue.length === 0 ? newVal : this.currentValue;
+				this.currentValue = arr.map((it) => {
 					for (let i = 0; i < newVal.length; i++) {
 						if (typeof it === 'string' && newVal[i] === it) {
 							return newVal[i];
@@ -90,7 +90,7 @@ export default {
 				});
 				if (this.upload.multiple) {
 					let max = this.upload.max || 1;
-					let canSelectNum = max - this.data.length;
+					let canSelectNum = max - this.currentValue.length;
 					if (this.uploadOpts.max != canSelectNum) {
 						this.uploadOpts.max = canSelectNum;
 					}
@@ -117,7 +117,7 @@ export default {
 			});
 		},
 		handleFileStart(res) {
-			this.data = [...this.data, res];
+			this.currentValue = [...this.currentValue, res];
 			// 开始上传时，最大值 -1
 			if (this.uploadOpts.multiple) {
 				let max = this.uploadOpts.max - 1;
@@ -126,7 +126,7 @@ export default {
 		},
 		handleFileProgress(e, file) {
 			if (parseInt(e.percent, 10) <= 100) {
-				this.data = this.data.map((item) => {
+				this.currentValue = this.currentValue.map((item) => {
 					if (file.uid === item.uid) {
 						return {
 							...item,
@@ -139,22 +139,20 @@ export default {
 		},
 		handleFileSuccess(res, file) {
 			let dataSource;
-			this.data = this.data.map((item) => {
+			this.currentValue = this.currentValue.map((item) => {
 				if (item.uid === file.uid) {
 					return this.getUrl(res);
 				}
 				return item;
 			});
 			// 将已经上传成功的文件传递给外部
-			dataSource = this.data.filter((it) => !it.errorFlag && this.getUrl(res));
-			this.$emit('change', dataSource);
-
-			// form表单
-			this.dispatch('vc-form-item', 'form-change', dataSource);
+			dataSource = this.currentValue.filter((it) => !it.errorFlag && this.getUrl(res));
+			
+			this.sync(dataSource);
 		},
 		handleFileError(res, file) {
 			// 内部保存上传失败的文件，不传递给外层
-			this.data = this.data.map((item) => {
+			this.currentValue = this.currentValue.map((item) => {
 				if (item.uid === file.uid) {
 					return {
 						...item,
@@ -180,12 +178,12 @@ export default {
 				this.uploadOpts.max = this.uploadOpts.max + 1;
 			}
 			if (item.errorFlag) {
-				this.data = this.data.filter(it => it.uid != item.uid);
+				this.currentValue = this.currentValue.filter(it => it.uid != item.uid);
 				return;
 			}
 			
-			this.data = this.data.filter(it => it != item);
-			let dataSource = this.data.filter(it => !it.errorFlag);
+			this.currentValue = this.currentValue.filter(it => it != item);
+			let dataSource = this.currentValue.filter(it => !it.errorFlag);
 			this.$emit('change', dataSource);
 
 			// form表单
@@ -225,15 +223,35 @@ export default {
 			});
 		},
 		getUrl(res) {
-			return this.format ? this.format(res) : res.data.url;
+			return this.formatter 
+				? this.formatter(res) 
+				: res.data.url;
+		},
+
+		sync(v) {
+			this.$emit('change', v);
+
+			// form表单
+			this.dispatch('vc-form-item', 'form-change', v);
 		},
 
 		/**
 		 * 对外暴露
-		 * TODO: 可能会被废弃
 		 */
 		delete(index) {
-			this.data[index] && this.handleDel(this.data[index]);
+			this.currentValue[index] && this.handleDel(this.currentValue[index]);
+		},
+
+		/**
+		 * 增加
+		 */
+		add(imgs) {
+			if (!(imgs instanceof Array)) {
+				imgs = [imgs];
+			}
+			this.currentValue.push(...imgs);
+
+			this.sync(this.currentValue);
 		}
 	}
 };

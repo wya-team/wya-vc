@@ -123,6 +123,9 @@ VcBasic.prototype.config = {
 	},
 	Icon: {
 		urls: []
+	},
+	ImgsPicker: {
+		gallery: undefined
 	}
 };
 

@@ -1,12 +1,10 @@
 <template>
-	<component :is="tag" class="vcp-imgs-picker">
+	<component :is="tag" class="vc-imgs-picker">
 		<template v-if="!sortable">
 			<vc-imgs-picker-item 
-				v-for="(item, index) in data" 
+				v-for="(item, index) in currentValue" 
 				:key="typeof item === 'object' ? item.uid : item"
-				:img-class-name="imgClassName"
-				:img-classes="imgClasses"
-				:box-class-name="boxClassName"
+				:class="[imgClassName, 'vc-imgs-picker__item-img']"
 				:disabled="disabled"
 				:it="item"
 				@delete="handleDel(arguments[0])"
@@ -20,16 +18,14 @@
 		</template>
 		<vc-sort-list 
 			v-else 
-			v-model="data" 
-			:mask="sortMask" 
+			v-model="currentValue" 
+			:mask="mask" 
 			value-key="uid" 
 			class="is-sort"
 		>
 			<template #default="{ it, index }">
 				<vc-imgs-picker-item 
-					:img-class-name="imgClassName"
-					:img-classes="imgClasses"
-					:box-class-name="boxClassName"
+					:class="[imgClassName, 'vc-imgs-picker__item-img']"
 					:disabled="disabled"
 					:it="it"
 					style="margin-right: 0; margin-bottom: 0"
@@ -43,7 +39,7 @@
 			</template>
 		</vc-sort-list>
 		<vc-upload 
-			v-show="!disabled && (data.length < max || max === 0)"
+			v-show="!disabled && (currentValue.length < max || max === 0)"
 			v-bind="uploadOpts"
 			:accept="accept"
 			@file-before="handleFileBefore"
@@ -56,8 +52,9 @@
 		>
 			<slot name="upload">
 				<div 
-					:class="{uploadClassName: true, boxClassName: true}"
-					class="vcp-imgs-picker__upload vcp-imgs-picker__box"
+					:class="[uploadClassName, boxClassName]"
+					class="vc-imgs-picker__upload vc-imgs-picker__box"
+					@click="handleClick"
 				>
 					<vc-icon type="plus" style="font-size: 14px; margin-bottom: 8px" />
 					<span>上传</span>
@@ -71,6 +68,7 @@
 import BasicMixin from './basic-mixin';
 import Upload from '../upload/index';
 import Icon from '../icon/index';
+import { VcInstance } from '../vc/index';
 import Progress from '../progress/index';
 import SortList from '../sort-list/index';
 import Item from "./item";
@@ -93,26 +91,40 @@ export default {
 			type: String,
 			default: 'image/gif,image/jpeg,image/jpg,image/png' // 不默认为image/*是因为在Webkit浏览器下回响应很慢
 		},
-		sortMask: {
+		mask: {
 			type: Boolean,
 			default: false
+		},
+		gallery: {
+			type: Boolean | Function,
+			default: true
 		}
 	},
-	computed: {
-		imgClasses() {
-			return `vcp-imgs-picker__img ${this.imgClassName || ''}`;
+	methods: {
+		/**
+		 * 仅PC端有效
+		 */
+		handleClick(e) {
+			const { ImgsPicker = {} } = VcInstance.config;
+			if (typeof this.gallery === 'function' || (this.gallery && ImgsPicker.gallery)) {
+				e.stopPropagation();
+				console.log(2);
+				fn = this.gallery || ImgsPicker.gallery;
+				fn(instance);
+			} 
 		}
-	},
+	}
+
 };
 </script>
 
 <style lang="scss">
 @import '../style/index.scss';
-@include block(vcp-imgs-picker) {
+@include block(vc-imgs-picker) {
 	display: flex;
 	box-sizing: border-box;
 	flex-wrap: wrap;
-	@include element(box) {
+	@include share-rule(box) {
 		width: 64px;
 		height: 64px;
 		margin-right: 12px;
@@ -121,22 +133,8 @@ export default {
 		background-color: #fafafa;
 		cursor: pointer;
 	}
-	@include element(item) {
-		position: relative;
-	}
-	@include element(img) {
-		@include commonFlexCc();
-		width: 100%;
-		height: 100%;
-		border-radius: 4px;
-		background-size: cover;
-		overflow: hidden;
-		background-color: #F5F5F6;
-	}
-	@include element(error) {
-		position: relative;
-		color: #f42626;
-		border: 1px solid #f42626;
+	@include element(item-img) {
+		@include extend-rule(box);
 	}
 	@include element(upload) {
 		background-color: #F5F5F6;
@@ -147,28 +145,9 @@ export default {
 		flex-direction: column;
 		color: #999999;
 		line-height: 1;
+		@include extend-rule(box);
 	}
-	@include element(delete) {
-		position: absolute;
-		top: -6px;
-		right: -6px;
-		width: 14px;
-		height: 14px;
-		border-radius: 7px;
-		background-color: #5495F6;
-		color: #ffffff;
-		font-size: 14px;
-		z-index: 1;
-	}
-	@include element(progressbar) {
-		flex: 1;
-		background-color: #cdcdcd;
-		height: 8px;
-		border-radius: 5px;
-		overflow: hidden;
-		margin: 0 4px;
-	}
-	.vc-sort-list>div {
+	.vc-sort-list > div {
 		margin-right: 12px;
 		margin-bottom: 12px;
 		margin-top: 0;

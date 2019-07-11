@@ -1,16 +1,17 @@
 <template>
 	<div 
-		:class="{'vcp-imgs-picker__error': it.status == 0, imgClassName, boxClassName}"
-		class="vcp-imgs-picker__item vcp-imgs-picker__box"
+		:class="{ 'is-error': it.status == 0 }"
+		class="vc-imgs-picker-item"
 	>
 		<slot :it="it">
 			<div
 				v-if="typeof it !== 'object'"
 				:style="{backgroundImage: `url('${it}')`}"
-				:class="imgClasses"
+				:class="imgClassName"
+				class="vc-imgs-picker-item__img"
 				@click="handlePreview"
 			/>
-			<div v-else :class="imgClasses">
+			<div v-else :class="imgClassName" class="vc-imgs-picker-item__img">
 				<vc-progress
 					v-if="it.percent && it.percent != 100" 
 					:percent="it.percent"
@@ -29,7 +30,7 @@
 			<vc-icon 
 				v-if="!disabled && (typeof it !== 'object' || it.status == 0)" 
 				type="close-small" 
-				class="vcp-imgs-picker__delete"
+				class="vc-imgs-picker-item__delete"
 				@click="handleDel(it)" 
 			/>
 		</slot>
@@ -45,9 +46,7 @@ export default {
 		'vc-icon': Icon,
 	},
 	props: {
-		imgClassName: String,
-		boxClassName: String,
-		imgClasses: String,
+		imgClassName: String | Object | Array,
 		disabled: Boolean,
 		it: {
 			type: String | Object,
@@ -79,4 +78,38 @@ export default {
 </script>
 
 <style lang="scss">
+
+@import '../style/index.scss';
+@include block(vc-imgs-picker-item) {
+	position: relative;
+	display: flex;
+	box-sizing: border-box;
+	flex-wrap: wrap;
+	@include when(error) {
+		position: relative;
+		color: #f42626;
+		border: 1px solid #f42626;
+	}
+	@include element(img) {
+		@include commonFlexCc();
+		width: 100%;
+		height: 100%;
+		border-radius: 4px;
+		background-size: cover;
+		overflow: hidden;
+		background-color: #F5F5F6;
+	}
+	@include element(delete) {
+		position: absolute;
+		top: -6px;
+		right: -6px;
+		width: 14px;
+		height: 14px;
+		border-radius: 7px;
+		background-color: #5495F6;
+		color: #ffffff;
+		font-size: 14px;
+		z-index: 1;
+	}
+}
 </style>

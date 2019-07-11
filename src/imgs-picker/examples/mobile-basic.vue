@@ -1,25 +1,25 @@
 <template>
-	<vc-form
+	<vcm-form
 		ref="form"
 		:model="formValidate" 
 		:rules="ruleValidate" 
 		style="padding: 20px"
 	>
-		<vc-form-item prop="imgs" @on-form-change="handleChange">
-			<vc-imgs-picker 
+		<vcm-form-item prop="imgs" @on-form-change="handleChange">
+			<vcm-imgs-picker 
 				v-model="formValidate.imgs" 
 				:max="3"
 				:upload="{multiple: true, max: 3}"
 				@error="handleError"
 			/>
-		</vc-form-item>
+		</vcm-form-item>
 		<div @click="handleSubmit">提交</div>
-	</vc-form >
+	</vcm-form >
 </template>
 <script>
 import { ajax } from '@wya/http';
-import Form from '../../form';
-import Input from '../../input';
+import Form from '../../form/index.m';
+import Input from '../../input/index.m';
 import Message from '../../message';
 
 import ImgsPicker from '../index.m';
@@ -61,7 +61,7 @@ VcInstance.init({
 					key: `${res.data.key}${file.name}`
 				};
 			}).catch(error => {
-				console.error("[vc-upload: onPostBefore]" + error.msg);
+				console.error("[vcm-upload: onPostBefore]" + error.msg);
 				return Promise.reject(error);
 			});
 		},
@@ -87,12 +87,12 @@ VcInstance.init({
 });
 
 export default {
-	name: "vc-print-basic",
+	name: "vcm-print-basic",
 	components: {
-		'vc-imgs-picker': ImgsPicker,
-		'vc-form': Form,
-		'vc-form-item': Form.Item,
-		'vc-input': Input,
+		'vcm-imgs-picker': ImgsPicker,
+		'vcm-form': Form,
+		'vcm-form-item': Form.Item,
+		'vcm-input': Input,
 	},
 	data() {
 		return {

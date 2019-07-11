@@ -1,10 +1,10 @@
 <template>
 	<component :is="tag" class="vcm-imgs-picker">
 		<div 
-			v-for="(item, index) in data" 
+			v-for="(item, index) in currentValue" 
 			:key="typeof item === 'object' ? item.uid : item"
-			:class="{'vcm-imgs-picker__error': item.status == 0, imgClassName, boxClassName}"
-			class="vcm-imgs-picker__item vcm-imgs-picker__box"
+			:class="[{'is-error': item.status == 0}]"
+			class="vcm-imgs-picker__item"
 		>
 			<slot 
 				:it="item"
@@ -13,10 +13,11 @@
 				<div
 					v-if="typeof item !== 'object'"
 					:style="{backgroundImage: `url('${item}')`}"
-					:class="imgClasses"
+					:class="imgClassName"
+					class="vcm-imgs-picker__img"
 					@click="handlePreview($event, index)"
 				/>
-				<div v-else :class="imgClasses">
+				<div v-else :class="imgClassName" class="vcm-imgs-picker__img">
 					<vc-spin v-if="typeof item.status === 'undefined'"/>
 					<div v-else-if="item.status == 0" style="padding: 5px">
 						上传失败
@@ -34,7 +35,7 @@
 			</slot>
 		</div>
 		<vc-upload 
-			v-show="!disabled && (data.length < max || max === 0)"
+			v-show="!disabled && (currentValue.length < max || max === 0)"
 			v-bind="uploadOpts"
 			:accept="accept"
 			@file-before="handleFileBefore"
@@ -47,8 +48,8 @@
 		>
 			<slot name="upload">
 				<div 
-					:class="{uploadClassName: true, boxClassName: true}"
-					class="vcm-imgs-picker__upload vcm-imgs-picker__box"
+					:class="[uploadClassName, boxClassName]"
+					class="vcm-imgs-picker__upload"
 				>
 					<vc-icon type="plus" style="font-size: 30px" />
 				</div>
@@ -81,22 +82,20 @@ export default {
 			type: String,
 			default: 'image/*'
 		},
-	},
-	computed: {
-		imgClasses() {
-			return `vcm-imgs-picker__img ${this.imgClassName || ''}`;
-		}
-	},
+	}
 };
 </script>
 
 <style lang="scss">
 @import '../../style/index.scss';
+
+
+
 @include block(vcm-imgs-picker) {
 	display: flex;
 	box-sizing: border-box;
 	flex-wrap: wrap;
-	@include element(box) {
+	@include share-rule(box) {
 		width: 78px;
 		height: 78px;
 		margin-right: 8px;
@@ -105,8 +104,14 @@ export default {
 		background-color: #fafafa;
 		cursor: pointer;
 	}
+	@include when(error) {
+		position: relative;
+		color: #f42626;
+		border: 1px solid #f42626;
+	}
 	@include element(item) {
 		position: relative;
+		@include extend-rule(box);
 	}
 	@include element(img) {
 		@include commonFlexCc();
@@ -117,11 +122,6 @@ export default {
 		overflow: hidden;
 		background-color: #F5F5F6;
 	}
-	@include element(error) {
-		position: relative;
-		color: #f42626;
-		border: 1px solid #f42626;
-	}
 	@include element(upload) {
 		background-color: #F5F5F6;
 		display: flex;
@@ -130,6 +130,7 @@ export default {
 		flex-direction: column;
 		color: #999999;
 		line-height: 1;
+		@include extend-rule(box);
 	}
 	@include element(delete) {
 		@include commonFlexCc();
