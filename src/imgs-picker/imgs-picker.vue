@@ -112,7 +112,8 @@ export default {
 				let fn = typeof this.gallery === 'function' 
 					? this.gallery
 					: ImgsPicker.gallery;
-				fn(instance);
+					
+				fn(this);
 			} 
 		}
 	}
