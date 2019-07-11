@@ -98,23 +98,22 @@ export default {
 	mounted() {
 		if (this.sticky) {
 			window.addEventListener('scroll', this.handleScroll);
-			Resize.on(document.documentElement, this.handleResizeForDoc);
+		}
+	},
+	updated() {
+		if (this.sticky) {
+			/**
+			 * 使用Resize时, 切换页面失效，换种方案
+			 */
+			this.top = this.$refs.content.offsetTop - this.placeholderH;
 		}
 	},
 	destroyed() { 
 		if (this.sticky) {
 			this.sticky && window.removeEventListener('scroll', this.handleScroll);
-			Resize.off(document.documentElement, this.handleResizeForDoc);
 		}
 	},
 	methods: {
-		/**
-		 * TODO: 可能造成性能问题, 必要时做防抖
-		 */
-		handleResizeForDoc() {
-			this.top = this.$refs.content.offsetTop - this.placeholderH;
-		},
-
 		handleScroll() {
 			this.isFixed = document.scrollingElement.scrollTop > this.top;
 		},
