@@ -95,13 +95,23 @@ export default {
 		}
 	},
 	mounted() {
-		this.top = this.$refs.wrapper.offsetTop;
 		this.sticky && window.addEventListener('scroll', this.handleScroll);
+
+		Resize.on(document.documentElement, this.handleResizeForDoc);
 	},
 	destoryed() { 
 		this.sticky && window.removeEventListener('scroll', this.handleScroll);
+
+		Resize.off(document.documentElement, this.handleResizeForDoc);
 	},
 	methods: {
+		/**
+		 * TODO: 可能造成性能问题, 必要时做防抖
+		 */
+		handleResizeForDoc() {
+			this.top = this.$refs.wrapper.offsetTop;
+		},
+
 		handleScroll() {
 			this.isFixed = document.scrollingElement.scrollTop > this.top;
 		},

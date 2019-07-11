@@ -1,8 +1,9 @@
 <template>
 	<div style="background: #f7f6f6">
+		<div :style="{ height: `${height}px` }"/>
 		<vcm-button @click="animated = !animated"> animated: {{ animated }}</vcm-button>
 		<vcm-button @click="theme = theme === 'light' ? 'dark' : 'light'"> theme: {{ theme }}</vcm-button>
-		<br>
+		<vcm-button @click="handleClear">清除定时器</vcm-button>
 		<br>
 		<vcm-tabs 
 			v-model="value"
@@ -92,6 +93,7 @@ export default {
 	},
 	data() {
 		return {
+			height: 0,
 			value: 0,
 			animated: false,
 			theme: 'light',
@@ -101,12 +103,20 @@ export default {
 	computed: {
 		
 	},
+	mounted() {
+		this.timer = setInterval(() => {
+			this.height += 100;
+		}, 2000);
+	},
 	methods: {
 		handleClick() {
 			console.log('click');
 		},
 		handleRemove() {
 			console.log('remove');
+		},
+		handleClear() {
+			clearInterval(this.timer);
 		}
 	}
 };
