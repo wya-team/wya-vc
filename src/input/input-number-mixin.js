@@ -164,7 +164,7 @@ export default {
 			this.timer = setTimeout(() => {
 				this.afterHook(value);
 				this.timer = null;
-			}, 300);
+			}, 800);
 		},
 		async afterHook(value) {
 			let { $listeners: { after } } = this;
