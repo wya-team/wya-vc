@@ -30,8 +30,8 @@
 				</div>
 			</div>
 		</div>
-		<div v-if="isFixed" class="vcm-tabs_placeholder" style="height: 53px"/>
-		<div :style="contentStyle" class="vcm-tabs__content">
+		<div v-if="isFixed" :style="{ height: `${placeholderH}px` }" class="vcm-tabs__placeholder"/>
+		<div ref="content" :style="contentStyle" class="vcm-tabs__content">
 			<slot />
 		</div>
 	</div>
@@ -78,7 +78,8 @@ export default {
 	},
 	data() {
 		return {
-			isFixed: false
+			isFixed: false,
+			placeholderH: 53
 		};
 	},
 	computed: {
@@ -111,7 +112,7 @@ export default {
 		 * TODO: 可能造成性能问题, 必要时做防抖
 		 */
 		handleResizeForDoc() {
-			this.top = this.$refs.wrapper.offsetTop;
+			this.top = this.$refs.content.offsetTop - this.placeholderH;
 		},
 
 		handleScroll() {
