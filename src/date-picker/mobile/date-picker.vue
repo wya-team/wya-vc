@@ -111,7 +111,7 @@ export default {
 			// ...
 		}
 	},
-	destoryed() {
+	destroyed() {
 		this.pickerInstance && this.pickerInstance.$emit('destroy');
 	},
 	methods: {

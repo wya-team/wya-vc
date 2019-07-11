@@ -85,7 +85,7 @@ export default {
 		Resize.on(this.$refs.wrapper, this.handleResize);
 		this.scrollToActive && this.scrollToActive();
 	},
-	destoryed() {
+	destroyed() {
 		Resize.off(this.$refs.wrapper, this.handleResize);
 		this.timer && clearTimeout(this.timer);
 	},

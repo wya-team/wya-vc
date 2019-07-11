@@ -77,7 +77,7 @@ export default {
 	created() {
 		this.current = null;
 	},
-	destoryed() {
+	destroyed() {
 		this.pickerInstance && this.pickerInstance.$emit('destroy');
 	},
 	methods: {

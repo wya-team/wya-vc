@@ -94,7 +94,7 @@ export default {
 
 		Resize.on(this.$refs.textarea, this.handleResize);
 	},
-	beforeDestory() {
+	beforeDestroy() {
 		Resize.off(this.$refs.textarea, this.handleResize);
 	},
 	methods: {

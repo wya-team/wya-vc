@@ -101,7 +101,7 @@ export default {
 			Resize.on(document.documentElement, this.handleResizeForDoc);
 		}
 	},
-	destoryed() { 
+	destroyed() { 
 		if (this.sticky) {
 			this.sticky && window.removeEventListener('scroll', this.handleScroll);
 			Resize.off(document.documentElement, this.handleResizeForDoc);

@@ -14,7 +14,7 @@
 		@mouseleave.native="isHover = false"
 		@ready="handleReady"
 		@close="handleClose"
-		@destory="handleDestory"
+		@destroy="handleDestroy"
 		@visible-change="$emit('visible-change', isActive)"
 	>
 		<vc-input
@@ -302,7 +302,7 @@ export default {
 		},
 
 		// 可能存在强制关闭的情况
-		handleDestory() {
+		handleDestroy() {
 			this.isActive && (this.isActive = false);
 		},
 		/**

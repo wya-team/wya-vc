@@ -122,7 +122,7 @@ export default {
 	mounted() {
 		this.start();
 	},
-	destoryed() {
+	destroyed() {
 		this.stop();
 	},
 	methods: {

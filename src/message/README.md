@@ -67,5 +67,5 @@ Message.error(msg: String, opts: Object);
 
 Message.loading(msg: String, opts: Object);
 
-Message.destory(id);
+Message.destroy(id);
 ```

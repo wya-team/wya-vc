@@ -138,7 +138,7 @@ class PortalCore extends VcBasic {
 		let container = document.createElement(tag);
 		let target = typeof el === 'string' ? document.querySelector(el || 'body') : el;
 		
-		// destory
+		// destroy
 		!alive && this.APIS[cName] && this.APIS[cName].$emit('destroy');
 
 		let propsData = {
