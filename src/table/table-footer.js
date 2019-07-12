@@ -19,7 +19,8 @@ export default {
 		},
 
 		hasGutter() {
-			return !!(!this.fixed && this.tableLayout.gutterWidth);
+			// return !!(!this.fixed && this.tableLayout.gutterWidth);
+			return false;
 		},
 
 		...mapStates({
