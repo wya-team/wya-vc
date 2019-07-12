@@ -17,6 +17,8 @@ readonly | 输入框只读 | `Boolean` | false
 maxlength | 最大输入长度 | `Number` | -
 autofocus | 自动获取焦点 | `Boolean` | false
 afloat | append,prepend置顶显示，盖住虚线 | `Boolean` | false
+indicator | `vc-input`特有，类型为对象是`{placement: in or out, type: residual or currnt}`,如果`append`为`true`，则`placement`为`in`无效 | `Boolean | Object` | false
+indicateClassName | 计数文字的样式 | `String` | -
 
 #### 事件
 

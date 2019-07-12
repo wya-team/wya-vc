@@ -107,6 +107,13 @@
 				style="width: 80px" 
 				prepend="rmb"
 			/>
+			<br>
+			<br>
+			<vc-input 
+				v-model="formValidate.value"
+				:maxlength="10"
+				:indicator="{placement: 'in', type: 'current'}"
+			/>
 		</div>
 		<br>
 		<br>

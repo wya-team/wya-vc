@@ -35,7 +35,7 @@
 				/>
 			</vc-transition-fade>
 			<div
-				v-if="$slots.append || append" 
+				v-if="$slots.append || append || indicator" 
 				:class="[{ 'is-icon': append, 'is-afloat': afloat }, classes]" 
 				class="vc-input__append"
 			>
@@ -44,11 +44,27 @@
 						v-if="append" 
 						:type="append"
 					/>
+					<!-- place为‘in’的计数放入append内 -->
+					<span 
+						v-else-if="indicator && indicatePlace === 'in'" 
+						:class="indicateClassName"
+						class="vc-input__indicator is-in"
+					>
+						{{ indicatorNum }}
+					</span>
 				</slot>
 			</div>
 			<!-- hack, 莫名的黑点-->
 			<div v-else-if="!disabled" class="vc-input__hack"/>
 		</div>
+		<!-- 计数 -->
+		<span 
+			v-if="indicator && indicatePlace === 'out'" 
+			:class="indicateClassName"
+			class="vc-input__indicator is-out"
+		>
+			{{ indicatorNum }}
+		</span>
 	</div>
 </template>
 
@@ -63,7 +79,40 @@ export default {
 		'vc-icon': Icon,
 		'vc-transition-fade': Transition.Fade
 	},
-	mixins: [inputMixin]
+	mixins: [inputMixin],
+	props: {
+		indicator: {
+			type: [Boolean, Object],
+			default: false
+		},
+		indicateClassName: String
+	},
+	data() {
+		return {
+			...this.getIndicatorProps()
+		};
+	},
+	computed: {
+		currentNum() {
+			let currentLength = (String(this.value) || '').length;
+			return currentLength;
+		},
+		indicatorNum() {
+			let leftNum = this.indicateType === 'residual' ? this.maxlength - this.currentNum : this.currentNum;
+			return `${leftNum}/${this.maxlength}`;
+		}
+	},
+	methods: {
+		getIndicatorProps() {
+			if (this.indicator) {
+				return {
+					indicatePlace: this.indicator.placement || 'out',
+					indicateType: this.indicator.type || 'current'
+				};
+			}
+			return {};
+		}
+	}
 };
 </script>
 
@@ -214,6 +263,23 @@ $block: vc-input;
 	 */
 	@include element(hack) {
 		padding-right: 1px;
+	}
+
+	// 计数
+	@include element(indicator) {
+		line-height: 28px;
+		color: #999999;
+		font-size: 12px;
+		z-index: 1;
+		top: 0px;
+		@include when(in) {
+			margin-right: 8px;
+		}
+		@include when(out) {
+			position: absolute;
+			right: -6px;
+			transform: translateX(100%);
+		}
 	}
 }
 .vc-form-item.is-error {
