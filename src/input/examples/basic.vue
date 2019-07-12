@@ -112,7 +112,7 @@
 			<vc-input 
 				v-model="formValidate.value"
 				:maxlength="10"
-				:indicator="{placement: 'in', type: 'current'}"
+				:indicator="{inline: 'in', inverted: false}"
 			/>
 		</div>
 		<br>

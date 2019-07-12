@@ -17,7 +17,7 @@ maxlength | 最大输入长度 | `Number` | -
 autofocus | 自动获取焦点 | `Boolean` | false
 autosize | textarea 自动是适应高度，可传入对象 {maxRows:2; minRows:2} | `Boolean | Object` | false
 rows | textarea 默认行数 | `Number` | 1
-indicator | `vc-input`特有，类型为对象是`{type: residual or currnt}` | `Boolean | Object` | false
+indicator | `vc-input`特有，类型为对象是`{inverted: false}` | `Boolean | Object` | false
 indicateClassName | 计数文字的样式 | `String` | -
 
 #### 事件

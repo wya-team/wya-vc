@@ -46,7 +46,7 @@
 					/>
 					<!-- place为‘in’的计数放入append内 -->
 					<span 
-						v-else-if="indicator && indicatePlace === 'in'" 
+						v-else-if="indicator && indicateInline" 
 						:class="indicateClassName"
 						class="vc-input__indicator is-in"
 					>
@@ -59,7 +59,7 @@
 		</div>
 		<!-- 计数 -->
 		<span 
-			v-if="indicator && indicatePlace === 'out'" 
+			v-if="indicator && !indicateInline" 
 			:class="indicateClassName"
 			class="vc-input__indicator is-out"
 		>
@@ -98,7 +98,7 @@ export default {
 			return currentLength;
 		},
 		indicatorNum() {
-			let leftNum = this.indicateType === 'residual' ? this.maxlength - this.currentNum : this.currentNum;
+			let leftNum = this.indicateInverted ? this.maxlength - this.currentNum : this.currentNum;
 			return `${leftNum}/${this.maxlength}`;
 		}
 	},
@@ -106,8 +106,8 @@ export default {
 		getIndicatorProps() {
 			if (this.indicator) {
 				return {
-					indicatePlace: this.indicator.placement || 'out',
-					indicateType: this.indicator.type || 'current'
+					indicateInline: this.indicator.inline || false,
+					indicateInverted: this.indicator.inverted || false
 				};
 			}
 			return {};
