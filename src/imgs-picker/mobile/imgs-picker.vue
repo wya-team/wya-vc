@@ -36,7 +36,7 @@
 		</div>
 		<vc-upload 
 			v-show="!disabled && (currentValue.length < max || max === 0)"
-			v-bind="uploadOpts"
+			v-bind="currentUploadOpts"
 			:accept="accept"
 			@file-before="handleFileBefore"
 			@file-start="handleFileStart"

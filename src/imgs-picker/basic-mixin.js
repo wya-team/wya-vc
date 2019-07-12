@@ -46,7 +46,7 @@ export default {
 		/**
 		 * vc-upload组件的属性
 		 */
-		upload: {
+		uploadOpts: {
 			type: Object,
 			default() {
 				return {};
@@ -72,8 +72,8 @@ export default {
 	data() {
 		return {
 			currentValue: [],
-			uploadOpts: { 
-				...this.upload,
+			currentUploadOpts: { 
+				...this.uploadOpts,
 				max: this.max, // 已max属性为主，及时upload内部设置了max，也会被覆盖
 			}
 		};
@@ -91,11 +91,11 @@ export default {
 					}
 					return it;
 				});
-				if (this.upload.multiple) {
+				if (this.uploadOpts.multiple) {
 					let max = this.max || 1;
 					let canSelectNum = max - this.currentValue.length;
-					if (this.uploadOpts.max != canSelectNum) {
-						this.uploadOpts.max = canSelectNum;
+					if (this.currentUploadOpts.max != canSelectNum) {
+						this.currentUploadOpts.max = canSelectNum;
 					}
 				}
 			}
@@ -122,9 +122,9 @@ export default {
 		handleFileStart(res) {
 			this.currentValue = [...this.currentValue, res];
 			// 开始上传时，最大值 -1
-			if (this.uploadOpts.multiple) {
-				let max = this.uploadOpts.max - 1;
-				this.uploadOpts.max = max >= 0 ? max : 0;
+			if (this.currentUploadOpts.multiple) {
+				let max = this.currentUploadOpts.max - 1;
+				this.currentUploadOpts.max = max >= 0 ? max : 0;
 			}
 		},
 		handleFileProgress(e, file) {
@@ -177,8 +177,8 @@ export default {
 		},
 		handleDel(item) {
 			// 删除时，最大值加1
-			if (this.uploadOpts.multiple) {
-				this.uploadOpts.max = this.uploadOpts.max + 1;
+			if (this.currentUploadOpts.multiple) {
+				this.currentUploadOpts.max = this.currentUploadOpts.max + 1;
 			}
 			if (item.errorFlag) {
 				this.currentValue = this.currentValue.filter(it => it.uid != item.uid);
