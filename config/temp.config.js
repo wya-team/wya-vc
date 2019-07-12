@@ -26,6 +26,7 @@ const getEntryFileContent = (entryPath, fullpath) => {
 	let contents = '';
 	contents += `\nimport Vue from 'vue';\n`;
 	contents += `\nimport App from '${relativePath.replace(/\.vue/, '')}';\n`;
+	contents += `\nVue.config.devtools = true;\n`;
 	contents += `\nconst app = new Vue({`;
 	contents += `\n	el: "#pages",`;
 	contents += `\n	components: { App },`;
