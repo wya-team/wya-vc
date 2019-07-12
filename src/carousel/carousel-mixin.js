@@ -146,7 +146,7 @@ export default {
 			}
 			index = Number(index);
 			if (isNaN(index) || index !== Math.floor(index)) {
-				throw new VcError('carousel', 'index must be an integer.');
+				throw new VcError('carousel', '索引必须是整数');
 			}
 			let length = this.items.length;
 			const oldIndex = this.activeIndex;

@@ -84,7 +84,7 @@ export default {
 			}
 			if (this.isCard) {
 				if (this.isVertical) {
-					throw new VcError('carousel', 'vertical directionis not supported in card mode');
+					throw new VcError('carousel', '卡片模式不支持垂直方向');
 				}
 				this.isInStage = Math.round(Math.abs(index - activeIndex)) <= 1;
 				this.isActive = index === activeIndex;
