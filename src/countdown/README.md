@@ -31,7 +31,7 @@ end	| 结束回调 | - |	 -
 
 ```vue
 <template>
-	<vc-count-down 
+	<vc-countdown 
 		:target-time="targetTime" 
 		:server-time="serverTime"
 		:t="0.01" 
@@ -42,12 +42,12 @@ end	| 结束回调 | - |	 -
 	/> 
 </template>
 <script>
-import { CountDown } from "@wya/vc";
+import { Countdown } from "@wya/vc";
 
 export default {
 	name: "demo",
 	components: {
-		"vc-count-down": CountDown,	
+		"vc-countdown": Countdown,	
 	},
 	data() {
 		return {

@@ -1,6 +1,6 @@
 <template>
 	<div>
-		<vc-count-down 
+		<vc-countdown 
 			:target-time="targetTime" 
 			:server-time="new Date()"
 			:t="1" 
@@ -9,7 +9,7 @@
 			@end="handleEnd(1)"
 		/> 
 		<br>
-		<vc-count-down 
+		<vc-countdown 
 			:server-time="serverTime" 
 			:t="1"
 			target-time="2019-05-22 15:00:00" 
@@ -18,7 +18,7 @@
 			@end="handleEnd(1)"
 		/> 
 		<br>
-		<vc-count-down 
+		<vc-countdown 
 			:target-time="targetTime" 
 			:server-time="serverTime"
 			:t="0.01" 
@@ -27,7 +27,7 @@
 			@end="handleEnd(1)"
 		/> 
 		<br>
-		<vc-count-down 
+		<vc-countdown 
 			:target-time="targetTime" 
 			:server-time="serverTime"
 			:t="0.01" 
@@ -37,7 +37,7 @@
 			@end="handleEnd(1)"
 		/> 
 		<br>
-		<vc-count-down
+		<vc-countdown
 			:render-row="renderRow"
 			target-time="2020-10-15 10:10:10"
 			server-time="2018-10-15 10:10:5"
@@ -46,7 +46,7 @@
 			@end="handleEnd(2)"
 		/> 
 		<br>
-		<vc-count-down
+		<vc-countdown
 			target-time="2020-10-15 10:10:10"
 			server-time="2018-10-15 10:10:5"
 			@error="handleError"
@@ -54,8 +54,8 @@
 			@end="handleEnd(2)"
 		> 
 			<template #default="it">{{ it.seconds }}</template>
-		</vc-count-down>
-		<vc-count-down
+		</vc-countdown>
+		<vc-countdown
 			target-time="2020-10-15 10:10:10"
 			server-time="2018-10-15 10:10:5"
 			@error="handleError"
@@ -65,18 +65,18 @@
 			<div>
 				test
 			</div>
-		</vc-count-down>
+		</vc-countdown>
 		<div @click="handleTarget">点我targetTime: Data.now() + 1</div>
 		<div @click="handleServer">点我serverTime: Data.now() - 1</div>
 	</div>
 </template>
 <script>
-import CountDown from "..";
+import Countdown from "..";
 
 export default {
 	name: "demo",
 	components: {
-		"vc-count-down": CountDown,	
+		"vc-countdown": Countdown,	
 	},
 	data() {
 		return {
