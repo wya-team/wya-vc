@@ -52,6 +52,7 @@ $block: vcm-textarea;
 		flex: 1;
 		textarea {
 			position: relative;
+			display: block; // 两个文本框默认情况下上下会有一个间距
 			width: 100%;
 			background-color: $white;
 			outline: 0;
