@@ -29,29 +29,16 @@ export default {
 		},
 		indicateClassName: String
 	},
-	data() {
-		return {
-			...this.getIndicatorProps()
-		};
-	},
 	computed: {
-		currentNum() {
-			let currentLength = (String(this.value) || '').length;
-			return currentLength;
-		},
 		indicatorNum() {
-			let leftNum = this.indicateInverted ? this.maxlength - this.currentNum : this.currentNum;
-			return `${leftNum}/${this.maxlength}`;
-		}
-	},
-	methods: {
-		getIndicatorProps() {
-			if (this.indicator) {
-				return {
-					indicateInverted: this.indicator.inverted || false
-				};
-			}
-			return {};
+			let currentLength = (String(this.value) || '').length;
+			let length = this.indicator && this.indicator.inverted 
+				? this.maxlength - currentLength 
+				: currentLength;
+			return `${length}/${this.maxlength}`;
+		},
+		indicateInline() {
+			return this.indicator && this.indicator.inline;
 		}
 	}
 };
