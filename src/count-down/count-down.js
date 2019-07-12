@@ -13,8 +13,9 @@ export default {
 			type: String,
 			default: "span"
 		},
+		// 只能是String, 函数使用formatter
 		format: {
-			type: [String, Function],
+			type: String,
 			default: "DD天HH小时mm分ss秒ms"
 		},
 		t: {

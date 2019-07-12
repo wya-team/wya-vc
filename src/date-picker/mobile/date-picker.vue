@@ -55,6 +55,7 @@ export default {
 			type: String,
 			default: '请选择'
 		},
+		// 只能是String, 函数使用formatter
 		format: {
 			type: String,
 			default: 'YYYY-MM-DD HH:mm'
