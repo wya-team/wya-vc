@@ -95,28 +95,42 @@ export default {
 			this.refreshAfloat();
 		}
 	},
+	created() {
+		this.top = 0;
+	},
 	mounted() {
-		if (this.sticky) {
-			window.addEventListener('scroll', this.handleScroll);
-		}
+		this.refreshTop();
+		this.operateDOMEvents('add');
 	},
 	updated() {
-		if (this.sticky) {
-			/**
-			 * 使用Resize时, 切换页面失效，换种方案
-			 */
-			this.top = this.$refs.content.offsetTop - this.placeholderH;
-		}
+		this.refreshTop();
 	},
 	destroyed() { 
-		if (this.sticky) {
-			this.sticky && window.removeEventListener('scroll', this.handleScroll);
-		}
+		this.operateDOMEvents('remove');
 	},
 	methods: {
+		/**
+		 * TODO: 在height: 100%容器内滚动，让其带有粘性
+		 */
+		operateDOMEvents(type) {
+			if (!this.sticky) return;
+			let fn = type === 'add' ? window.addEventListener : window.removeEventListener;
+			fn('scroll', this.handleScroll);
+		},
+
 		handleScroll() {
 			this.isFixed = document.scrollingElement.scrollTop > this.top;
 		},
+
+		/**
+		 * 使用Resize时, 切换页面失效，换种方案
+		 */
+		refreshTop() {
+			if (this.sticky) {
+				this.top = this.$refs.content.offsetTop - this.placeholderH;
+			}
+		},
+
 		/**
 		 * 刷新当前标签底下的滑块位置
 		 */
