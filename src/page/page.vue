@@ -48,45 +48,45 @@
 	
 		<!-- 当前页 -->
 		<div 
-			v-if="currentPage != 1 && currentPage != allPages" 
+			v-if="currentPage != 1 && currentPage != totalPage" 
 			:title="currentPage"
 			class="vc-page__item is-active"
 		><span>{{ currentPage }}</span></div>
 		<!-- 分割线 -->
 
 		<div 
-			v-if="currentPage + 1 < allPages" 
+			v-if="currentPage + 1 < totalPage" 
 			:title="currentPage + 1"
 			class="vc-page__item" 
 			@click="handleChangePage(currentPage + 1)"
 		><span>{{ currentPage + 1 }}</span></div>
 		<div 
-			v-if="currentPage + 2 < allPages" 
+			v-if="currentPage + 2 < totalPage" 
 			:title="currentPage + 2"
 			class="vc-page__item" 
 			@click="handleChangePage(currentPage + 2)"
 		><span>{{ currentPage + 2 }}</span></div>
 		<div 
-			v-if="allPages - currentPage === 4" 
+			v-if="totalPage - currentPage === 4" 
 			:title="currentPage + 3"
 			class="vc-page__item" 
 			@click="handleChangePage(currentPage + 3)"
 		><span>{{ currentPage + 3 }}</span></div>
 		<div 
-			v-if="allPages - currentPage >= 5" 
+			v-if="totalPage - currentPage >= 5" 
 			title="向后 5 页"
 			class="vc-page__item is-jump"
 			@click="handleFastNext"
 		>...</div>
 		<div 
-			v-if="allPages > 1" 
-			:title="allPages" 
-			:class="{'is-active': currentPage == allPages }"
+			v-if="totalPage > 1" 
+			:title="totalPage" 
+			:class="{'is-active': currentPage == totalPage }"
 			class="vc-page__item"
-			@click="handleChangePage(allPages)"
-		><span>{{ allPages }}</span></div>
+			@click="handleChangePage(totalPage)"
+		><span>{{ totalPage }}</span></div>
 		<div
-			:class="{'is-disabled': currentPage == allPages }"
+			:class="{'is-disabled': currentPage == totalPage }"
 			title="next"
 			class="vc-page__item is-icon"
 			@click="handleNext"
@@ -115,13 +115,14 @@
 			<div v-if="showElevator">
 				<span>跳至</span>
 				<vc-input-number
-					v-model="inputPage"
+					:value="hackPage"
 					:spellcheck="false"
 					:step="0"
 					:min="1"
-					:max="allPages"
+					:max="totalPage"
 					style="width: 50px; margin-right: 10px;"
 					autocomplete="off"
+					@input="handleInput"
 					@enter="handleEnter"
 				/>
 				<span>页</span>
@@ -183,15 +184,15 @@ export default {
 	},
 	data() {
 		return {
+			hackPage: this.current,
 			currentPage: this.current,
-			inputPage: this.current,
 			currentPageSize: this.pageSize,
 		};
 	},
 	computed: {
-		allPages() {
-			const allPage = Math.ceil(this.count / this.currentPageSize);
-			return (allPage === 0) ? 1 : allPage;
+		totalPage() {
+			const v = Math.ceil(this.count / this.currentPageSize);
+			return (v === 0) ? 1 : v;
 		}
 	},
 	watch: {
@@ -201,11 +202,17 @@ export default {
 				this.currentPage = (maxPage === 0 ? 1 : maxPage);
 			}
 		},
-		current(val) {
-			this.currentPage = val;
+		current: {
+			immediate: true,
+			handler(v) {
+				this.currentPage = v;
+			}
 		},
-		pageSize(val) {
-			this.currentPageSize = val;
+		pageSize: {
+			immediate: true,
+			handler(v) {
+				this.currentPageSize = v;
+			}
 		}
 	},
 	created() {
@@ -233,7 +240,7 @@ export default {
 		},
 		handleNext() {
 			const current = this.currentPage;
-			if (current >= this.allPages) {
+			if (current >= this.totalPage) {
 				return false;
 			}
 			this.resetPage(current + 1);
@@ -248,8 +255,8 @@ export default {
 		},
 		handleFastNext() {
 			const page = this.currentPage + 5;
-			if (page > this.allPages) {
-				this.resetPage(this.allPages);
+			if (page > this.totalPage) {
+				this.resetPage(this.totalPage);
 			} else {
 				this.resetPage(page);
 			}
@@ -257,8 +264,11 @@ export default {
 		handleChangePageSize(pageSize) {
 			this.$emit('page-size-change', this.currentPageSize);
 		},
+		handleInput(v) {
+			this.hackPage = v > this.totalPage ? this.totalPage : v;
+		},
 		handleEnter(v) {
-			this.resetPage(Number(this.inputPage));
+			this.resetPage(Number(this.hackPage));
 		}
 	}
 };
