@@ -72,7 +72,10 @@ export default {
 	data() {
 		return {
 			currentValue: [],
-			uploadOpts: { ...this.upload }
+			uploadOpts: { 
+				...this.upload,
+				max: this.max, // 已max属性为主，及时upload内部设置了max，也会被覆盖
+			}
 		};
 	},
 	watch: {
@@ -89,7 +92,7 @@ export default {
 					return it;
 				});
 				if (this.upload.multiple) {
-					let max = this.upload.max || 1;
+					let max = this.max || 1;
 					let canSelectNum = max - this.currentValue.length;
 					if (this.uploadOpts.max != canSelectNum) {
 						this.uploadOpts.max = canSelectNum;

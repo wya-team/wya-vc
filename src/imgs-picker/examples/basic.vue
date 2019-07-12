@@ -10,7 +10,7 @@
 				ref="target"
 				v-model="formValidate.imgs" 
 				:max="3"
-				:upload="{multiple: true, max: 3}"
+				:upload="{multiple: true}"
 				sortable
 				@error="handleError"
 			/>
