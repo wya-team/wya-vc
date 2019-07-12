@@ -2,28 +2,28 @@
 	<div>
 		<input v-model="msg" type="text">
 		<br>
-		<vcm-copy 
+		<vcm-clipboard 
 			:value="msg" 
 			tag="span"
 			@before="handleBefore"
 			@after="handleAfter"
 		>
 			复制
-		</vcm-copy>
+		</vcm-clipboard>
 		<br>
 		<br>
 		<br>
-		<vcm-copy :value="msg">简洁版复制</vcm-copy>
+		<vcm-clipboard :value="msg">简洁版复制</vcm-clipboard>
 	</div>
 </template>
 <script>
 import MToast from '../../toast';
-import Copy from '../index.m';
+import Clipboard from '../index.m';
 
 export default {
-	name: "vcm-copy-basic",
+	name: "vcm-clipboard-basic",
 	components: {
-		"vcm-copy": Copy
+		"vcm-clipboard": Clipboard
 	},
 	data() {
 		return {

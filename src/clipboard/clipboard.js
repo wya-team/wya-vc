@@ -1,9 +1,9 @@
 import Message from '../message';
-import CopyMixin from './copy-mixin';
+import ClipboardMixin from './clipboard-mixin';
 
 export default {
-	name: "vc-copy",
-	mixins: [CopyMixin],
+	name: "vc-clipboard",
+	mixins: [ClipboardMixin],
 	methods: {
 		_toast(opts) {
 			Message.success(opts);

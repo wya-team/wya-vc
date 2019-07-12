@@ -2,28 +2,28 @@
 	<div>
 		<input v-model="msg" type="text">
 		<br>
-		<vc-copy 
+		<vc-clipboard 
 			:value="msg" 
 			tag="span"
 			@before="handleBefore"
 			@after="handleAfter"
 		>
 			复制
-		</vc-copy>
+		</vc-clipboard>
 		<br>
 		<br>
 		<br>
-		<vc-copy :value="msg">简洁版复制</vc-copy>
+		<vc-clipboard :value="msg">简洁版复制</vc-clipboard>
 	</div>
 </template>
 <script>
 import Message from '../../message';
-import Copy from '..';
+import Clipboard from '..';
 
 export default {
-	name: "vc-copy-basic",
+	name: "vc-clipboard-basic",
 	components: {
-		"vc-copy": Copy
+		"vc-clipboard": Clipboard
 	},
 	data() {
 		return {

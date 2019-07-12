@@ -1,4 +1,4 @@
-## [Demo Basic](https://wya-team.github.io/wya-vc/dist/copy/basic.html)
+## [Demo Basic](https://wya-team.github.io/wya-vc/dist/clipboard/basic.html)
 ## 功能
 复制内容
 
@@ -20,23 +20,23 @@ tag | 外层标签`span / div / **` | `str obj func` | div
 
 #### API方法调用
 
-- Copy.set(v)
+- Clipboard.set(v)
 
 ## 基础用法
 
 ```vue
 <template>
 	<div>
-		<vc-copy :value="msg">点我复制</vc-copy>
+		<vc-clipboard :value="msg">点我复制</vc-clipboard>
 	</div>
 </template>
 <script>
-import { Copy } from '@wya/vc';
+import { Clipboard } from '@wya/vc';
 
 export default {
-	name: "vc-copy-basic",
+	name: "vc-clipboard-basic",
 	components: {
-		'vc-name': Copy
+		'vc-name': Clipboard
 	},
 	data() {
 		return {
