@@ -97,6 +97,11 @@ export default {
 				value = value.charAt(0) === '.' ? `0${value}` : value;
 			}
 
+			// TODO: 实时边界值计算, 矛盾点考虑加入最小值是100, 无法删除到最小值以下
+			// if (this.min <= 1 && value !== '') {
+			// 	value = this.compareWithBoundary({ value, type: 'input' });
+			// }
+
 			this.$emit('input', value);
 		},
 		async handleBlur(e) {
