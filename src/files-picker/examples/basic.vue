@@ -3,6 +3,7 @@
 		ref="form"
 		:model="formValidate" 
 		:rules="ruleValidate" 
+		@click.native.prevent
 	>
 		<vc-form-item prop="files">
 			<vc-files-picker 
@@ -17,17 +18,24 @@
 						{{ item }}
 					</div>
 				</template> -->
-				<div slot="upload" class="_upload">
-					上传
-				</div>
+				<template #upload>
+					<vc-button>
+						上传
+					</vc-button>
+				</template>
 			</vc-files-picker>
 		</vc-form-item>
-		<div @click="handleSubmit">提交</div>
+		<vc-form-item>
+			<vc-button type="primary" @click="handleSubmit">
+				提交
+			</vc-button>
+		</vc-form-item>
 	</vc-form>
 </template>
 <script>
 import Form from '../../form';
 import Input from '../../input';
+import Button from '../../button';
 import Message from '../../message';
 import FilesPicker from '../files-picker';
 import { VcInstance } from '../../vc/index';
@@ -46,6 +54,7 @@ export default {
 		"vc-files-picker": FilesPicker,
 		'vc-form': Form,
 		'vc-form-item': Form.Item,
+		'vc-button': Button,
 	},
 	data() {
 		return {
@@ -70,14 +79,9 @@ export default {
 		}, 0);
 	},
 	methods: {
-		handleSubmit(name) {
-			this.$refs.form.validate((valid) => {
-				if (valid) {
-					Message.success('Success!');
-				} else {
-					Message.error('Fail!');
-				}
-			});
+		async handleSubmit(name) {
+			await this.$refs.form.validate();
+			Message.success('Success!');
 		},
 		handleError(error) {
 			Message.warning(error.msg);
@@ -85,26 +89,4 @@ export default {
 	}
 };
 </script>
-
-<style lang="scss">
-.v-files-picker {
-	._upload {
-		display: flex;
-		justify-content: center;
-		align-items: center;
-		width: 88px;
-		height: 40px;
-		font-size: 14px;
-		border: 1px solid #d4d4d4;
-		border-radius: 6px;
-		background: #ffffff;
-		margin-bottom: 12px;
-		cursor: pointer;
-		&:hover {
-			border: 1px solid #0085ff;
-			color: #0085ff;
-		}
-	}
-}
-</style>
 

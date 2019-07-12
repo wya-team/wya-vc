@@ -1,8 +1,8 @@
 <template>
-	<div class="vcp-files-picker">
+	<div class="vc-files-picker">
 		<vc-upload 
-			v-show="!disabled && (data.length < max || max === 0)"
-			v-bind="uploadOpts"
+			v-show="!disabled && (currentValue.length < max || max === 0)"
+			v-bind="currentUploadOpts"
 			mode="files"
 			@file-start="handleFileStart"
 			@file-progress="handleFileProgress"
@@ -13,25 +13,25 @@
 		>
 			<slot name="upload" />
 		</vc-upload>
-		<slot :it="data" name="file">
+		<slot :it="currentValue" name="file">
 			<div 
-				v-for="(item, index) in data" 
+				v-for="(item, index) in currentValue" 
 				:key="index"
-				:class="item.retcode == 0 && item.percent == 100 || item.errorFlag ? '__error' : ''"
-				class="__item"
+				:class="{ 'is-error': item.retcode == 0 && item.percent == 100 || item.errorFlag }"
+				class="vc-files-picker__item"
 			>
-				<vc-icon type="link" class="__download" />
-				<div :title="item.title" class="__title">{{ item.title }}</div>
+				<vc-icon type="link" class="vc-files-picker__download" />
+				<div :title="item.title" class="vc-files-picker__title">{{ item.title }}</div>
 				<template>
 					<div style="flex: 1; display: flex; align-items: center">
-						<div class="__pcontainer">
-							<div :style="{width: item.percent + '%'}" class="__progress" />
+						<div class="vc-files-picker__pcontainer">
+							<div :style="{width: item.percent + '%'}" class="vc-files-picker__progress" />
 						</div>
 					</div>
 				</template>
 				<span 
 					v-if="item[urlKey] || (item.retcode == 0 && item.percent == 100) || item.errorFlag" 
-					class="__close" 
+					class="vc-files-picker__close" 
 					@click="handleDel(item, index)"
 				>
 					<vc-icon type="close" />
@@ -75,7 +75,7 @@ export default {
 			type: Boolean,
 			default: false
 		},
-		upload: {
+		uploadOpts: {
 			type: Object,
 			default() {
 				return {};
@@ -86,13 +86,13 @@ export default {
 			type: String,
 			default: 'url'
 		},
-		format: Function
+		formatter: Function
 	},
 	data() {
 		return {
-			data: this.dataSource,
-			uploadOpts: { 
-				...this.upload,
+			currentValue: this.dataSource,
+			currentUploadOpts: { 
+				...this.uploadOpts,
 				max: this.max
 			}
 		};
@@ -101,8 +101,8 @@ export default {
 		dataSource: {
 			immediate: true,
 			handler(newVal) {
-				let arr = this.data.length === 0 ? newVal : this.data;
-				this.data = arr.map((it) => {
+				let arr = this.currentValue.length === 0 ? newVal : this.currentValue;
+				this.currentValue = arr.map((it) => {
 					for (let i = 0; i < newVal.length; i++) {
 						if (typeof newVal[i].uid !== 'undefined' 
 						&& typeof it.uid !== 'undefined'
@@ -112,11 +112,11 @@ export default {
 					}
 					return it;
 				});
-				if (this.upload.multiple) {
+				if (this.uploadOpts.multiple) {
 					let max = this.max || 1;
-					let canSelectNum = max - this.data.length;
-					if (this.uploadOpts.max != canSelectNum) {
-						this.uploadOpts.max = canSelectNum;
+					let canSelectNum = max - this.currentValue.length;
+					if (this.currentUploadOpts.max != canSelectNum) {
+						this.currentUploadOpts.max = canSelectNum;
 					}
 				}
 			}
@@ -125,16 +125,16 @@ export default {
 	methods: {
 		handleFileStart(res) {
 			res.title = res.name;
-			this.data = [...this.data, res];
+			this.currentValue = [...this.currentValue, res];
 			// 开始上传时，最大值 -1
-			if (this.uploadOpts.multiple) {
-				let max = this.uploadOpts.max - 1;
-				this.uploadOpts.max = max >= 0 ? max : 0;
+			if (this.currentUploadOpts.multiple) {
+				let max = this.currentUploadOpts.max - 1;
+				this.currentUploadOpts.max = max >= 0 ? max : 0;
 			}
 		},
 		handleFileProgress(e, file) {
 			if (parseInt(e.percent, 10) <= 100) {
-				this.data = this.data.map((item) => {
+				this.currentValue = this.currentValue.map((item) => {
 					if (file.uid === item.uid) {
 						return {
 							...item,
@@ -147,7 +147,7 @@ export default {
 		},
 		handleFileSuccess(res, file) {
 			let dataSource;
-			this.data = this.data.map((item) => {
+			this.currentValue = this.currentValue.map((item) => {
 				if (item.uid === file.uid) {
 					let result = { ...item, ...res.data };
 					return this.getPrase ? this.getPrase(result) : result;
@@ -155,13 +155,13 @@ export default {
 				return item;
 			});
 			// 将已经上传成功的文件传递给外部
-			dataSource = this.data.filter((it) => !it.errorFlag && it[this.urlKey]);
+			dataSource = this.currentValue.filter((it) => !it.errorFlag && it[this.urlKey]);
 			this.$emit('change', dataSource);
 			this.dispatch('vc-form-item', 'form-change', dataSource);
 		},
 		handleFileError(res, file) {
 			// 内部保存上传失败的文件，不传递给外层
-			this.data = this.data.map((item) => {
+			this.currentValue = this.currentValue.map((item) => {
 				if (item.uid === file.uid) {
 					return {
 						...item,
@@ -184,15 +184,15 @@ export default {
 		},
 		handleDel(item, index) {
 			// 删除时，最大值加1
-			if (this.uploadOpts.multiple) {
-				this.uploadOpts.max = this.uploadOpts.max + 1;
+			if (this.currentUploadOpts.multiple) {
+				this.currentUploadOpts.max = this.currentUploadOpts.max + 1;
 			}
 			if (item.errorFlag) {
-				this.data = this.data.filter(_item => _item.uid != item.uid);
+				this.currentValue = this.currentValue.filter(_item => _item.uid != item.uid);
 				return;
 			}
-			this.data.splice(index, 1);
-			let dataSource = this.data.filter(it => !it.errorFlag);
+			this.currentValue.splice(index, 1);
+			let dataSource = this.currentValue.filter(it => !it.errorFlag);
 			this.$emit('change', dataSource);
 			this.dispatch('vc-form-item', 'form-change', dataSource);
 		}
@@ -200,39 +200,34 @@ export default {
 };
 </script>
 
-<style lang="scss" scoped>
-.vcp-files-picker {
-	// display: flex;
+<style lang="scss">
+@import '../style/index.scss';
+
+@include block(vc-files-picker) {
 	box-sizing: border-box;
-	// flex-wrap: wrap;
 	margin: 20px;
-	.__error {
-		// border: 1px solid #e61212 !important;
-		.__title {
-			color: #E74854 !important;
-		}
-		.__progress {
-			background-color: #E74854 !important;
-		}
-	}
-	.__item {
+	@include element(item) {
 		position: relative;
-		// display: flex;
 		align-items: center;
 		box-sizing: border-box;
-		// margin-right: 8px;
-		// margin-bottom: 8px;
-		// border: 1px solid #d9d9d9;
 		margin-top: 16px;
 		padding-left: 20px;
-		.__title {
+		@include element(title) {
 			font-size: 12px;
 			color: #676767;
 		}
-		.__download {
+		@include element(download) {
 			position: absolute;
 			left: 0px;
 			top: 10px;
+		}
+		@include when(error) {
+			@include element(title) {
+				color: #E74854 !important;
+			}
+			@include element(progress) {
+				background-color: #E74854 !important;
+			}
 		}
 		span:first-child {
 			overflow: hidden;
@@ -241,27 +236,26 @@ export default {
 			min-width: 100px;
 			max-width: 100px;
 		}
-		.__close {
+		@include element(close) {
 			position: absolute;
 			top: 4px;
 			right: 0px;
 			cursor: pointer;
 		}
-		.__pcontainer {
+		@include element(pcontainer) {
 			flex: 1;
 			background-color: #e8e8e8;
 			height: 4px;
 			border-radius: 2px;
 			overflow: hidden;
 			margin-top: 6px;
-			// margin-left: 20px;
-			.__progress {
-				display: block;
-				margin: 0;
-				background-color: #5495F6;
-				height: 4px;
-				border-radius: 2px;
-			}
+		}
+		@include element(progress) {
+			display: block;
+			margin: 0;
+			background-color: #5495F6;
+			height: 4px;
+			border-radius: 2px;
 		}
 	}
 }

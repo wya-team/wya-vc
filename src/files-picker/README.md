@@ -16,7 +16,7 @@ disabled | 是否禁止上传 | `Boolean` | false
 upload | upload组件的属性 | `Object` | {}
 accept | 文件接收类型 | `String` | -
 urlKey | 文件的线上地址字段 | `String` | `url`
-format | 自定义返回数据格式 | `Function` | -
+formatter | 自定义返回数据格式 | `Function` | -
 
 
 #### 事件
