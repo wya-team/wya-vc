@@ -40,6 +40,13 @@
 					v-model="value"
 				/>
 			</vc-form-item>
+			<vc-form-item label="test1">
+				<vc-textarea
+					v-model="value"
+					:maxlength="200"
+					indicator
+				/>
+			</vc-form-item>
 		</vc-form>
 	</div>
 </template>

@@ -10,6 +10,9 @@
 					v-on="hooks"
 				/>
 			</div>
+			<div v-if="indicator" :class="indicateClassName" class="vc-textarea__indicator">
+				{{ indicatorNum }}
+			</div>
 		</div>
 	</div>
 </template>
@@ -18,7 +21,39 @@ import TextareaMixin from './textarea-mixin';
 
 export default {
 	name: 'vc-textarea',
-	mixins: [TextareaMixin]
+	mixins: [TextareaMixin],
+	props: {
+		indicator: {
+			type: [Boolean, Object],
+			default: false
+		},
+		indicateClassName: String
+	},
+	data() {
+		return {
+			...this.getIndicatorProps()
+		};
+	},
+	computed: {
+		currentNum() {
+			let currentLength = (String(this.value) || '').length;
+			return currentLength;
+		},
+		indicatorNum() {
+			let leftNum = this.indicateType === 'residual' ? this.maxlength - this.currentNum : this.currentNum;
+			return `${leftNum}/${this.maxlength}`;
+		}
+	},
+	methods: {
+		getIndicatorProps() {
+			if (this.indicator) {
+				return {
+					indicateType: this.indicator.type || 'current'
+				};
+			}
+			return {};
+		}
+	}
 };
 </script>
 <style lang="scss">
@@ -56,7 +91,6 @@ $block: vc-textarea;
 		flex: 1;
 		align-items: center;
 		border-radius: 4px;
-		overflow: hidden;
 		position: relative;
 	}
 	@include element(content){
@@ -91,6 +125,14 @@ $block: vc-textarea;
 				cursor: not-allowed;
 			}
 		}
+	}
+	@include element(indicator) {
+		position: absolute;
+		height: 18px;
+        line-height: 18px;
+		bottom: -18px;
+        right: 0px;
+		color: #999999;
 	}
 }
 .vc-form-item.is-error {
