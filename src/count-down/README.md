@@ -1,4 +1,4 @@
-## [Demo Basic](https://wya-team.github.io/wya-vc/dist/down-count/basic.html)
+## [Demo Basic](https://wya-team.github.io/wya-vc/dist/count-down/basic.html)
 ## 功能
 倒计时
 
@@ -31,7 +31,7 @@ end	| 结束回调 | - |	 -
 
 ```vue
 <template>
-	<vc-down-count 
+	<vc-count-down 
 		:target-time="targetTime" 
 		:server-time="serverTime"
 		:t="0.01" 
@@ -42,12 +42,12 @@ end	| 结束回调 | - |	 -
 	/> 
 </template>
 <script>
-import { DownCount } from "@wya/vc";
+import { CountDown } from "@wya/vc";
 
 export default {
 	name: "demo",
 	components: {
-		"vc-down-count": DownCount,	
+		"vc-count-down": CountDown,	
 	},
 	data() {
 		return {

@@ -3,7 +3,7 @@ import { debounce } from 'lodash';
 import Customer from "../customer";
 
 export default {
-	name: "vc-down-count",
+	name: "vc-count-down",
 	props: {
 		showZero: {
 			type: Boolean,
@@ -202,7 +202,7 @@ export default {
 	},
 	render(h) {
 		if (this.$scopedSlots.default) {
-			return h(this.tag, { class: "vc-down-count" }, [
+			return h(this.tag, { class: "vc-count-down" }, [
 				this.$scopedSlots.default({
 					days: this.days,
 					hours: this.hours,
@@ -217,7 +217,7 @@ export default {
 		} else if (this.renderRow) {
 			return (
 				<Customer
-					class="vc-down-count"
+					class="vc-count-down"
 					render={this.renderRow} 
 					days={this.days} 
 					hours={this.hours} 
@@ -234,7 +234,7 @@ export default {
 				domProps: {
 					innerHTML: this.result
 				},
-				class: "vc-down-count"
+				class: "vc-count-down"
 			});
 		}
 	}
