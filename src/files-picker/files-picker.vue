@@ -91,7 +91,10 @@ export default {
 	data() {
 		return {
 			data: this.dataSource,
-			uploadOpts: { ...this.upload }
+			uploadOpts: { 
+				...this.upload,
+				max: this.max
+			}
 		};
 	},
 	watch: {
@@ -110,7 +113,7 @@ export default {
 					return it;
 				});
 				if (this.upload.multiple) {
-					let max = this.upload.max || 1;
+					let max = this.max || 1;
 					let canSelectNum = max - this.data.length;
 					if (this.uploadOpts.max != canSelectNum) {
 						this.uploadOpts.max = canSelectNum;
