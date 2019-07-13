@@ -55,7 +55,7 @@
 				</slot>
 			</div>
 			<!-- hack, 莫名的黑点-->
-			<div v-else-if="!disabled" class="vc-input__hack"/>
+			<div class="vc-input__hack"/>
 		</div>
 		<!-- 计数 -->
 		<span 
