@@ -72,7 +72,7 @@ export default {
 	},
 	props: {
 		height: {
-			type: Number | String,
+			type: [String, Number],
 			default: window.innerHeight,
 		},
 		pull: {

@@ -137,7 +137,7 @@ export default {
 			default: 0
 		},
 		count: {
-			type: String | Number,
+			type: [String, Number],
 			default: 0
 		},
 		// 数据加载

@@ -63,7 +63,7 @@ const popup = {
 			default: 'light',
 			validator: v => /(light|dark|none)/.test(v)
 		},
-		content: String | Function,
+		content: [String, Function],
 		getPopupContainer: Function,
 		portal: {
 			type: Boolean,

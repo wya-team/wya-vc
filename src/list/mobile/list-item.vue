@@ -48,12 +48,12 @@ export default {
 	props: {
 		label: String,
 		labelWidth: {
-			type: Number | String,
+			type: [String, Number],
 			default: ''
 		},
 		extra: String,
 		arrow: {
-			type: String | Boolean,
+			type: [String, Boolean],
 			default: 'right',
 		},
 		// 多行

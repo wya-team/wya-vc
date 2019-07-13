@@ -13,7 +13,7 @@ export default {
 	mixins: [...Extends.mixins(['emitter'])],
 	props: {
 		type: String,
-		value: String | Number,
+		value: [String, Number],
 	},
 	data() {
 		return {

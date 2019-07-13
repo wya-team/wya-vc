@@ -96,7 +96,7 @@ export default {
 			default: false
 		},
 		gallery: {
-			type: Boolean | Function,
+			type: [Function, Boolean],
 			default: true
 		}
 	},

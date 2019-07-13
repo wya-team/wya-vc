@@ -154,11 +154,11 @@ export default {
 			default: false
 		},
 		okText: {
-			type: String | Boolean,
+			type: [String, Boolean],
 			default: '确定'
 		},
 		cancelText: {
-			type: String | Boolean,
+			type: [String, Boolean],
 			default: '取消'
 		},
 		styles: {

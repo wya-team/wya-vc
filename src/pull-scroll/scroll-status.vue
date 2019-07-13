@@ -31,7 +31,7 @@ export default {
 	props: {
 		status: Number,
 		text: {
-			type: Object | Function,
+			type: [Object, Function],
 			default: () => ({}),
 		},
 		emptyText: Function | String,

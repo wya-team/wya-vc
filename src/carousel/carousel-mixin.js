@@ -8,7 +8,7 @@ export default {
 			default: 3
 		},
 		type: String,
-		height: Number | String,
+		height: [String, Number],
 		initialIndex: {
 			type: Number,
 			default: 0
@@ -22,11 +22,11 @@ export default {
 			default: true
 		},
 		dots: {
-			type: String | Boolean,
+			type: [String, Boolean],
 			default: 'bottom' // bottom/outside | false
 		},
 		arrow: {
-			type: String | Boolean,
+			type: [String, Boolean],
 			default: 'hover' // hover/always | false
 		},
 		loop: {

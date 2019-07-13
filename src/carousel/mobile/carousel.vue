@@ -46,7 +46,7 @@ export default {
 	mixins: [CarouselMixin],
 	props: {
 		dots: {
-			type: String | Boolean,
+			type: [String, Boolean],
 			default: false // bottom/outside | false
 		},
 		indicator: {

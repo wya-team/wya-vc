@@ -114,7 +114,7 @@ export default {
 			default: 'warning',
 			validator: v => /(warning|info|success|error)/.test(v),
 		},
-		width: String | Number,
+		width: [String, Number],
 		renderTitle: {
 			type: Function,
 			default: (h, props, parent) => {

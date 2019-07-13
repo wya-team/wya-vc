@@ -56,7 +56,7 @@ export default {
 			validator: v => /(light|dark)/.test(v)
 		},
 		barStyle: {
-			type: Object | Array,
+			type: [Object, Array],
 			default: () => ({}),
 		},
 		autoAfloatWidth: {

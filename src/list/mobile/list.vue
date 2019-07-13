@@ -8,7 +8,7 @@ export default {
 	name: "vc-list",
 	props: {
 		labelWidth: {
-			type: Number | String,
+			type: [String, Number],
 			default: ''
 		},
 		border: {

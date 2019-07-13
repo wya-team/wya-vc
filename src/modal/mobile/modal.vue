@@ -125,13 +125,13 @@ export default {
 			type: Boolean,
 			default: true // 如果关闭, cancel只能是取消的按钮
 		},
-		title: String | Boolean, // false 不显示头部
+		title: [String, Boolean], // false 不显示头部
 		okText: {
-			type: String | Boolean,
+			type: [String, Boolean],
 			default: '确定'
 		},
 		cancelText: {
-			type: String | Boolean,
+			type: [String, Boolean],
 			default: '取消'
 		},
 		styles: {

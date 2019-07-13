@@ -40,8 +40,8 @@ export default {
 		},
 		y: Number,
 		auto: Boolean, // 是否有内部控制滚动
-		current: Number | String,
-		total: String | Number,
+		current: [String, Number],
+		total: [String, Number],
 		scrollStatus: Number,
 		pullStatus: Number
 	},

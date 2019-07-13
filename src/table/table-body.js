@@ -17,8 +17,8 @@ export default {
 		},
 		stripe: Boolean,
 		context: {},
-		rowClassName: String | Function,
-		rowStyle: Object | Function,
+		rowClassName: [String, Function],
+		rowStyle: [Object, Function],
 		fixed: String,
 		highlight: Boolean
 	},

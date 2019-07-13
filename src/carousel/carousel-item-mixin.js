@@ -7,7 +7,7 @@ export default {
 	props: {
 		name: String,
 		label: {
-			type: String | Number,
+			type: [String, Number],
 			default: ''
 		}
 	},
