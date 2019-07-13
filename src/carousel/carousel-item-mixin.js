@@ -61,14 +61,17 @@ export default {
 			return index;
 		},
 		calcCardTranslate(index, activeIndex) {
-			const parentWidth = this.$parent.$el.offsetWidth;
+			let value;
+			const parentW = this.$parent.$el.offsetWidth;
+
 			if (this.isInStage) {
-				return parentWidth * ((2 - CARD_SCALE) * (index - activeIndex) + 1) / 4;
+				value = parentW * ((2 - CARD_SCALE) * (index - activeIndex) + 1) / 4;
 			} else if (index < activeIndex) {
-				return -(1 + CARD_SCALE) * parentWidth / 4;
+				value = -(1 + CARD_SCALE) * parentW / 4;
 			} else {
-				return (3 + CARD_SCALE) * parentWidth / 4;
+				value = (3 + CARD_SCALE) * parentW / 4;
 			}
+			return value;
 		},
 		calcTranslate(index, activeIndex) {
 			const distance = this.$parent.$el[this.isVertical ? 'offsetHeight' : 'offsetWidth'];

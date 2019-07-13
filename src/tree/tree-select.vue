@@ -25,6 +25,7 @@
 			:disabled="disabled"
 			:placeholder="placeholder || '请选择'"
 			:allow-dispatch="false"
+			:value="currentLabel"
 			class="vc-tree-select__input"
 		>
 			<template v-if="(currentValue && currentValue.length > 0)" #content>
@@ -113,9 +114,6 @@ export default {
 		event: 'change'
 	},
 	props: {
-		value: {
-			type: Array
-		},
 		...pick(Tree.props, [
 			'checkStrictly',
 			'dataSource'
@@ -125,6 +123,7 @@ export default {
 		]),
 		...pick(InputMixin.props, [
 			'elementId', 
+			'value', 
 			'readonly', 
 			'disabled', 
 			'size', 

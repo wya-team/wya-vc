@@ -11,7 +11,7 @@ export default {
 			default: 'text'
 		},
 		value: {
-			type: [String, Number],
+			type: [String, Number, Array], // Array, 作为select等数组存放临时值
 			default: ''
 		},
 		placeholder: {
