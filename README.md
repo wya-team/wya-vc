@@ -52,7 +52,7 @@ Vue.use(Vc, {
 
 ```js
 // 调用, 如下：
-import { Copy } from 'wya-vc';
+import { Clipboard } from 'wya-vc';
 ```
 
 </details>
@@ -96,6 +96,7 @@ import { Copy } from 'wya-vc';
 [Form][Form] | 表单管理 | 1 | -
 [ImgsPicker][ImgsPicker] | 图片上传 | 1 | -
 [Input][Input] | 输入框 | 1 | -
+[Picker][Picker] | 联动选择弹框 | 1 | -
 [Radio][Radio] | 单选框 | 1 | -
 [Select][Select] | 选择器 | 1 | -
 [Slider][Slider] | 滑动输入条 | 1 | -
@@ -103,13 +104,8 @@ import { Copy } from 'wya-vc';
 [Switch][Switch] | 开关 | 1 | -
 [TimePicker][TimePicker] | 时间选择器 | 1 | -
 [TreeSelect][TreeSelect] | 树选择 | 0 | -
+[Textarea][Textarea] | 多行文本 | - | -
 [Upload][Upload] | 上传 | 1 | -
-
-- 数据录入（仅移动端）
-
-名称 | 说明 | 开发 | 计划
----|---|---|---
-[Picker][Picker] | 联动选择弹框 | 1 | -
 
 - 数据展示
 
@@ -117,24 +113,23 @@ import { Copy } from 'wya-vc';
 ---|---|---|---
 [Calendar][Calendar] | 日历 | - | -
 [Card][Card] | 卡片 | - | -
+[Carousel][Carousel] | 轮播 | - | -
 [Collapse][Collapse] | 折叠面板 | - | -
 [Customer][Customer] | 折叠面板 | - | -
-[DownCount][DownCount] | 倒计时 | - | -
+[Countdown][Countdown] | 倒计时 | - | -
 [Echarts][Echarts] | 图表 | - | -
 [Expand][Expand] | 展开 | - | -
+[HtmlImg][HtmlImg] | html2canvas | - | -
 [ImgsCrop][ImgsCrop] | 图片裁剪 | - | -
 [ImgsPreview][ImgsPreview] | 图片预览 | - | -
+[List][List] | 列表 | - | -
+[Popup][Popup] | 弹窗 | 1 | -
 [Popover][Popover] | 气泡卡片 | - | -
 [Table][Table] | 表格 | - | -
 [Tabs][Tabs] | 选项卡 | - | -
 [Tag][Tag] | 标签 | - | -
 [Tree][Tree] | 树形 | - | -
 
-- 数据展示（仅移动端）
-
-名称 | 说明 | 开发 | 计划
----|---|---|---
-[Popup][Popup] | 弹窗 | 1 | -
 
 - 组合
 
@@ -148,17 +143,13 @@ import { Copy } from 'wya-vc';
 
 名称 | 说明 | 开发 | 计划
 ---|---|---|---
-[Copy][Copy] | 复制 | 1 | -
-[CreateCustomer][CreateCustomer] | 自定义组件 | 1 | -
+[Clipboard][Clipboard] | 剪切板 | 1 | -
+[Customer][Customer] | 自定义组件 | 1 | -
 [CreatePortal][CreatePortal] | 传送门组件 | 1 | -
 [Fragment][Fragment] | 空节点 | 1 | Vue 3.x废除
 [Print][Print] | 打印 | 1 | -
-
-- 辅助（仅移动端）
-
-名称 | 说明 | 开发 | 计划
----|---|---|---
 [Touch][Touch] | 手势 | 1 | -
+[Transition][Transition] | 动画 | 1 | 同animate.css优化api
 
 - 反馈
 
@@ -171,11 +162,6 @@ import { Copy } from 'wya-vc';
 [Progress][Progress] | 进度条 | 1 | -
 [Spin][Spin] | 加载中 | 1 | -
 [Skeleton][Skeleton] | 骨架屏 | 0 | -
-
-- 反馈（仅移动端）
-
-名称 | 说明 | 开发 | 计划
----|---|---|---
 [Toast][Toast] | 轻提示 | 1 | -
 
 
@@ -202,12 +188,12 @@ import { Copy } from 'wya-vc';
 [Customer]: https://github.com/wya-team/wya-vc/tree/master/src/customer/
 [Collapse]: https://github.com/wya-team/wya-vc/tree/master/src/collapse/
 [ColorPicker]: https://github.com/wya-team/wya-vc/tree/master/src/color-picker/
-[Copy]: https://github.com/wya-team/wya-vc/tree/master/src/copy/
-[CreateCustomer]: https://github.com/wya-team/wya-vc/tree/master/src/create-customer/
+[Clipboard]: https://github.com/wya-team/wya-vc/tree/master/src/clipboard/
+[Customer]: https://github.com/wya-team/wya-vc/tree/master/src/customer/
 [CreatePortal]: https://github.com/wya-team/wya-vc/tree/master/src/create-portal/
 [DatePicker]: https://github.com/wya-team/wya-vc/tree/master/src/date-picker/
 [DebounceClick]: https://github.com/wya-team/wya-vc/tree/master/src/debounce-click/
-[DownCount]: https://github.com/wya-team/wya-vc/tree/master/src/down-count/
+[Countdown]: https://github.com/wya-team/wya-vc/tree/master/src/countdown/
 [Drawer]: https://github.com/wya-team/wya-vc/tree/master/src/drawer/
 [Dropdown]: https://github.com/wya-team/wya-vc/tree/master/src/dropdown/
 [Echarts]: https://github.com/wya-team/wya-vc/tree/master/src/echarts/
@@ -221,12 +207,12 @@ import { Copy } from 'wya-vc';
 [ImgsPicker]: https://github.com/wya-team/wya-vc/tree/master/src/imgs-picker/
 [ImgsPreview]: https://github.com/wya-team/wya-vc/tree/master/src/imgs-preview/
 [Input]: https://github.com/wya-team/wya-vc/tree/master/src/input/
-[DatePicker]: https://github.com/wya-team/wya-vc/tree/master/src/mobile/date-picker/
-[Form]: https://github.com/wya-team/wya-vc/tree/master/src/mobile/form/
-[Picker]: https://github.com/wya-team/wya-vc/tree/master/src/mobile/picker/
-[Popup]: https://github.com/wya-team/wya-vc/tree/master/src/mobile/popup/
-[Toast]: https://github.com/wya-team/wya-vc/tree/master/src/mobile/toast/
-[Touch]: https://github.com/wya-team/wya-vc/tree/master/src/mobile/touch/
+[DatePicker]: https://github.com/wya-team/wya-vc/tree/master/src/date-picker/
+[Form]: https://github.com/wya-team/wya-vc/tree/master/src/form/
+[Picker]: https://github.com/wya-team/wya-vc/tree/master/src/picker/
+[Popup]: https://github.com/wya-team/wya-vc/tree/master/src/popup/
+[Toast]: https://github.com/wya-team/wya-vc/tree/master/src/toast/
+[Touch]: https://github.com/wya-team/wya-vc/tree/master/src/touch/
 [Message]: https://github.com/wya-team/wya-vc/tree/master/src/message/
 [Modal]: https://github.com/wya-team/wya-vc/tree/master/src/modal/
 [Page]: https://github.com/wya-team/wya-vc/tree/master/src/page/
@@ -247,10 +233,17 @@ import { Copy } from 'wya-vc';
 [TimePicker]: https://github.com/wya-team/wya-vc/tree/master/src/time-picker/
 [Tree]: https://github.com/wya-team/wya-vc/tree/master/src/tree/
 [Upload]: https://github.com/wya-team/wya-vc/tree/master/src/upload/
+[TreeSelect]: https://github.com/wya-team/wya-vc/tree/master/src/tree/
+[Popconfirm]: https://github.com/wya-team/wya-vc/tree/master/src/popconfirm/
+[Textarea]: https://github.com/wya-team/wya-vc/tree/master/src/textarea/
+[Transition]: https://github.com/wya-team/wya-vc/tree/master/src/transition/
+[Option]: https://github.com/wya-team/wya-vc/tree/master/src/option/
+[Carousel]: https://github.com/wya-team/wya-vc/tree/master/src/carousel/
+[HtmlImg]: https://github.com/wya-team/wya-vc/tree/master/src/html-img/
+[List]: https://github.com/wya-team/wya-vc/tree/master/src/list/
 
-
-
-[BackTop]: https://github.com/wya-team/wya-vc/tree/master/src/
-[TreeSelect]: https://github.com/wya-team/wya-vc/tree/master/src/
-[Popconfirm]: https://github.com/wya-team/wya-vc/tree/master/src/
 [Skeleton]: https://github.com/wya-team/wya-vc/tree/master/src/
+[BackTop]: https://github.com/wya-team/wya-vc/tree/master/src/
+
+
+
