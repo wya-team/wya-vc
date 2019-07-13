@@ -103,8 +103,8 @@ import { Clipboard } from 'wya-vc';
 [SortList][SortList] | 排序 | 1 | -
 [Switch][Switch] | 开关 | 1 | -
 [TimePicker][TimePicker] | 时间选择器 | 1 | -
-[TreeSelect][TreeSelect] | 树选择 | 0 | -
-[Textarea][Textarea] | 多行文本 | - | -
+[TreeSelect][TreeSelect] | 树选择 | 1 | -
+[Textarea][Textarea] | 多行文本 | 1 | -
 [Upload][Upload] | 上传 | 1 | -
 
 - 数据展示
@@ -158,7 +158,7 @@ import { Clipboard } from 'wya-vc';
 [Message][Message] | 轻提示 | 1 | -
 [Modal][Modal] | 模态框 | 1 | -
 [Drawer][Drawer] | 抽屉 | 1 | -
-[Popconfirm][Popconfirm] | 气泡确认框 | 0 | -
+[Popconfirm][Popconfirm] | 气泡确认框 | 1 | -
 [Progress][Progress] | 进度条 | 1 | -
 [Spin][Spin] | 加载中 | 1 | -
 [Skeleton][Skeleton] | 骨架屏 | 0 | -
