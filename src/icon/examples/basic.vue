@@ -5,10 +5,10 @@
 		<h2 @click="handleClick">点我切换 prefix: {{ mobile ? 'vcm-' : 'vc-' }}</h2>
 		<div class="vc-icon-basic">
 			<!-- index 仅用于乱序测试 -->
-			<vc-copy v-for="(item, index) in items" :key="index" :value="`<vc${m}-icon type=&quot;${item}&quot; />`">
+			<vc-clipboard v-for="(item, index) in items" :key="index" :value="`<vc${m}-icon type=&quot;${item}&quot; />`">
 				<vc-icon :type="item" inherit />
 				<p>{{ item }}</p>
-			</vc-copy>
+			</vc-clipboard>
 		</div>
 	</div>
 </template>
@@ -16,7 +16,7 @@
 import { shuffle } from 'lodash';
 import { Storage } from '@wya/utils';
 import Icon from '..';
-import Copy from '../../copy';
+import Clipboard from '../../clipboard';
 import IconManager from '../manager';
 
 window.IconManager = IconManager;
@@ -26,7 +26,7 @@ export default {
 	name: "vc-icon-basic",
 	components: {
 		'vc-icon': Icon,
-		'vc-copy': Copy
+		'vc-clipboard': Clipboard
 	},
 	data() {
 		return {
