@@ -23,7 +23,6 @@
 			:element-id="elementId"
 			:readonly="true"
 			:disabled="disabled"
-			:value="currentLabel"
 			:placeholder="placeholder || '请选择'"
 			:allow-dispatch="false"
 			class="vc-tree-select__input"
@@ -114,6 +113,9 @@ export default {
 		event: 'change'
 	},
 	props: {
+		value: {
+			type: Array
+		},
 		...pick(Tree.props, [
 			'checkStrictly',
 			'dataSource'
@@ -125,7 +127,6 @@ export default {
 			'elementId', 
 			'readonly', 
 			'disabled', 
-			'value', 
 			'size', 
 			'placeholder',
 			'clearable'

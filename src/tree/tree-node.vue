@@ -49,7 +49,13 @@
 				:size="12"
 				class="vc-tree-node__loading-icon" 
 			/>
-			<span>{{ node.label }}</span>
+			<vc-customer 
+				v-if="renderContent" 
+				:render="renderContent" 
+				:node="node"
+				:it="node.data"
+			/>
+			<span v-else>{{ node.label }}</span>
 		</div>
 		<vc-transition-collapse>
 			<div

@@ -13,7 +13,7 @@ empty-text | 内容为空的时候展示的文本 | String | —
 tree-props | 配置选项，具体看下表 | object | —
 render-after-expand | 是否在第一次展开某个树节点后才渲染其子节点 | boolean | true 
 load-data | 加载子树数据的方法，仅当 lazy 属性为true 时生效 | function(node, resolve) | —
-render-content | 树节点的内容区的渲染 Function | Function(h, { node, data, store } | —
+render-content | 树节点的内容区的渲染 Function | Function(h, { it, node } | —
 highlight-current | 是否高亮当前选中节点，默认值是 false。 | boolean | false 
 default-expand-all | 是否默认展开所有节点 | boolean | false 
 expand-on-click-node | 是否在点击节点的时候展开或者收缩节点， 默认值为 true，如果为 false，则只有点箭头图标的时候才会展开或者收缩节点。 | boolean | true 
@@ -24,7 +24,7 @@ show-checkbox | 节点是否可被选择 | boolean | false
 check-strictly | 在显示复选框的情况下，是否严格的遵循父子不互相关联的做法，默认为 false | boolean | false 
 default-checked-keys | 默认勾选的节点的 key 的数组 | array | —
 current-node-key | 当前选中的节点 | string, number | —
-filter-node | 对树节点进行筛选时执行的方法，返回 true 表示这个节点可以显示，返回 false 则表示这个节点会被隐藏 | Function(value, data, node) | —
+filter-node | 对树节点进行筛选时执行的方法，返回 true 表示这个节点可以显示，返回 false 则表示这个节点会被隐藏 | Function(value, it, node) | —
 accordion | 是否每次只打开一个同级树节点展开 | boolean | false 
 indent | 相邻级节点间的水平缩进，单位为像素 | number | — | 16 
 icon-class-name | 自定义树节点的图标 | string | - | - 
@@ -39,11 +39,11 @@ allow-drop | 拖拽时判定目标节点能否被放置。`type` 参数有三种
 
 属性 | 说明 | 参数 | 返回值
 ---|---|---|---
-label | 指定节点标签为节点对象的某个属性值 | string, function(data, node) | — 
+label | 指定节点标签为节点对象的某个属性值 | string, function(it, node) | — 
 value | 指定节点标签为节点对象的某个属性值 | string | — 
 children | 指定子树为节点对象的某个属性值 | string | — 
-disabled | 指定节点选择框是否禁用为节点对象的某个属性值 | boolean, function(data, node) | — 
-isLeaf | 指定节点是否为叶子节点，仅在指定了 lazy 属性的情况下生效 | boolean, function(data, node) | — 
+disabled | 指定节点选择框是否禁用为节点对象的某个属性值 | boolean, function(it, node) | — 
+isLeaf | 指定节点是否为叶子节点，仅在指定了 lazy 属性的情况下生效 | boolean, function(it, node) | — 
 
 #### 方法
 

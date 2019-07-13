@@ -9,6 +9,7 @@
 			:lazy="lazy"
 			:key="lazy"
 			:check-strictly="checkStrictly"
+			:render-content="renderContent"
 			show-checkbox 
 			accordion
 			draggable
@@ -141,7 +142,11 @@ export default {
 		handleCheckChange(data, checked, indeterminate) {
 			console.log(data, checked, indeterminate);
 		},
-
+		renderContent(h, { it, node }) {
+			return (
+				<span>{it.label} { it.value }</span>
+			);
+		}
 	}
 };
 </script>
