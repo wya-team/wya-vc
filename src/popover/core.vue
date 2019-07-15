@@ -86,13 +86,13 @@ const popup = {
 			default: () => {}
 		},
 		onReady: Function,
-		// 直接发放调用时，hover需要绑定事件
+		// 直接传送门标记调用时，hover需要绑定事件
 		alone: {
 			type: Boolean,
 			default: false
 		},
 		hover: Boolean,
-		portalClassName: Object | String,
+		portalClassName: [Object, String],
 		portalStyle: Object,
 	},
 	data() {
@@ -150,7 +150,7 @@ const popup = {
 		!this.hover && document.removeEventListener('click', this.handleClick, true);
 		document.removeEventListener('scroll', this.setPopupStyle);
 		Resize.off(this.triggerEl, this.setPopupStyle);
-		Resize.on(this.$el, this.handleWrapperResize);
+		Resize.off(this.$el, this.handleWrapperResize);
 
 		this.alone && this.hover && this.removeEvents();
 	}, 
@@ -228,11 +228,29 @@ const popup = {
 			this.alone && this.handleTriggerChange(e);
 			!this.alone && this.onChange(e, { visible, context: this });
 		},
+		/**
+		 * 弹层【宽度】变化后的自适应，主要服务于Cascader等内容会变化的下拉框
+		 */
 		handleWrapperResize() {
-			this.getTBWrapperResize({
-				el: this.$el,
-				placement: this.placement
-			});
+			let direction = this.placement.split('-');
+
+			let left = parseFloat(this.wrapperStyle.left);
+			switch (direction[0]) {
+				case 'top':
+				case 'bottom':
+					if (left + this.$el.offsetWidth >= window.innerWidth) {
+						this.wrapperStyle = {
+							...this.wrapperStyle,
+							left: `${window.innerWidth - this.$el.offsetWidth}px`
+						};
+					} else {
+						this.setPopupStyle();
+					}
+					break;
+				default:
+					break;
+			}
+
 		},
 		/**
 		 * 动画执行后关闭

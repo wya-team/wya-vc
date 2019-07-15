@@ -116,7 +116,7 @@ export default {
 			validator: v => /(small|medium|large)/.test(v),
 			default: 'small'
 		},
-		portalClassName: Object | String,
+		portalClassName: [Object, String],
 		width: {
 			type: Number
 		},
