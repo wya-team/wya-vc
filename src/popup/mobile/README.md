@@ -16,6 +16,7 @@ mask | 是否显示遮罩（只有在position为bottom的时候才有用） | `B
 maskClosable | 是否允许通过点击遮罩关闭弹窗 | `Boolean` | true
 wrapperClassName | - | `Object,Array,String` | -
 wrapperStyle | - | `Object,Array,String` | -
+scrollRegExp | 判断滑动是否在滚动容器内，防止滚动穿透弹层 | `Function` | `void: function(v) { return /g-scroll-container/.test(v); }`
 
 #### 事件
 

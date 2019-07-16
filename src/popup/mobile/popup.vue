@@ -63,8 +63,12 @@ export default {
 			default: 'light',
 			validator: v => /(light|dark|none)/.test(v)
 		},
-		wrapperClassName: Object | Array | String,
-		wrapperStyle: Object | Array | String
+		wrapperClassName: [Object, Array, String],
+		wrapperStyle: [Object, Array, String],
+		scrollRegExp: {
+			type: Function,
+			default: (v) => /g-scroll-container/.test(v)
+		}
 	},
 	data() {
 		return {
@@ -95,8 +99,14 @@ export default {
 			}
 		}
 	},
+	mounted() {
+		document.body.addEventListener('touchstart', this.handleTouchStart, { passive: false }); // passive 参数不能省略，用来兼容ios和android
+		document.body.addEventListener('touchmove', this.handlePrevent, { passive: false }); // passive 参数不能省略，用来兼容ios和android
+	},
 	destroyed() {
 		this.clearTimer();
+		document.body.removeEventListener('touchstart', this.handleTouchStart, { passive: false });
+		document.body.removeEventListener('touchmove', this.handlePrevent, { passive: false });
 	},
 	methods: {
 		clearTimer() {
@@ -120,7 +130,35 @@ export default {
 				this.$emit('visible-change', false),
 				this.zIndex = -1
 			);
-		}
+		},
+		handleTouchStart(e) {
+			if (this.isActive) {
+				this.startY = e.touches[0].pageY;
+			}
+		},
+		handlePrevent(e) {
+			// 显示状态下才处理滑动
+			if (!this.isActive) return;
+			let path = e.path || (e.composedPath && e.composedPath()) || [];
+			let inContainer = path.some((ele) => {
+				if (this.scrollRegExp(ele.className)) {
+					this.scrollContainer = ele;
+					return true;
+				}
+				return false;
+			});
+			// 容器外的滑动禁止
+			if (!inContainer) { e.preventDefault(); return; }
+			
+			const moveY = e.touches[0].pageY;
+			const top = this.scrollContainer.scrollTop;
+			const ch = this.scrollContainer.clientHeight;
+			const sh = this.scrollContainer.scrollHeight;
+			if ((top === 0 && moveY > this.startY) || (top + ch === sh && moveY < this.startY)) {
+				// 到底或到头都禁止
+				e.preventDefault();
+			}
+		},
 	},
 };
 
