@@ -169,7 +169,7 @@ export default {
 			this.timer = setTimeout(() => {
 				this.afterHook(value);
 				this.timer = null;
-			}, 800);
+			}, 500);
 		},
 		async afterHook(value) {
 			let { $listeners: { after } } = this;
