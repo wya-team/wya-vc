@@ -35,6 +35,14 @@ const config = {
 	},
 	mounted() {
 		this.visible = true;
+		// 聚焦代码
+		this.$nextTick(() => {
+			let $ = document.querySelector('input');
+			let event = document.createEvent('HTMLEvents');
+			event.initEvent('focus', true, true);
+			$ && $.dispatchEvent(event);
+			$ && $.focus();
+		});
 	},
 	methods: {
 		handleOk() {
