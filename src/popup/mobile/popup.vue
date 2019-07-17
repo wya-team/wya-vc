@@ -100,15 +100,19 @@ export default {
 		}
 	},
 	mounted() {
-		document.body.addEventListener('touchstart', this.handleTouchStart, { passive: false }); // passive 参数不能省略，用来兼容ios和android
-		document.body.addEventListener('touchmove', this.handlePrevent, { passive: false }); // passive 参数不能省略，用来兼容ios和android
+		this.operateDOMEvents('add');
 	},
 	destroyed() {
 		this.clearTimer();
-		document.body.removeEventListener('touchstart', this.handleTouchStart, { passive: false });
-		document.body.removeEventListener('touchmove', this.handlePrevent, { passive: false });
+		this.operateDOMEvents('remove');
 	},
 	methods: {
+		operateDOMEvents(type) {
+			let fn = type === 'add' ? document.addEventListener : document.removeEventListener;
+			fn('touchstart', this.handleTouchStart);
+			fn('touchmove', this.handleTouchMove, { passive: false }); // 是否会使用preventDefault()，false表示使用
+		},
+
 		clearTimer() {
 			this.timer && clearTimeout(this.timer);
 		},
@@ -136,7 +140,7 @@ export default {
 				this.startY = e.touches[0].pageY;
 			}
 		},
-		handlePrevent(e) {
+		handleTouchMove(e) {
 			// 显示状态下才处理滑动
 			if (!this.isActive) return;
 			let path = e.path || (e.composedPath && e.composedPath()) || [];
