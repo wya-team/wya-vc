@@ -38,7 +38,7 @@ export default {
 		// iOS时间不要使用xxxx-xx -> xxxx/xx
 		minDate: {
 			type: Date,
-			default: () => new Date('1990/01/01 00:00')
+			default: () => new Date('1940/01/01 00:00')
 		},
 		maxDate: {
 			type: Date,
