@@ -474,6 +474,7 @@ export default {
 	@include element(content) { 
 		overflow-y: auto;
 		padding: 16px 24px;
+		flex: 1;
 		// modal下分页器距离table  16px
 		.vc-paging__footer {
 			padding: 16px 0 0 0;
