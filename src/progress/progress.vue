@@ -5,7 +5,7 @@
 			class="vc-progress__line is-line"
 		>
 			<div :class="{'vc-progress__info': showInfo}" class="vc-progress__wrapper">
-				<div class="vc-progress__box">
+				<div :class="`is-${currentStatus}`" class="vc-progress__box" >
 					<div 
 						:style="innerStyle"
 						:class="`is-${currentStatus}`" 
@@ -191,6 +191,9 @@ export default {
 					background-color: #f3f3f3;
 					overflow: hidden;
 					border-radius: 8px;	
+					@include when(error) {
+						border: 1px solid #f5222d;
+					}
 					@include element(inner) {
 						position: relative;
 						transition: width .5s cubic-bezier(.075,.82,.165,1);
@@ -202,7 +205,6 @@ export default {
 						}
 						@include when(error) {
 							background-color: #f5222d;
-							
 						}
 						@include when(active) {
 							&::before{
