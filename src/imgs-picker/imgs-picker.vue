@@ -42,6 +42,7 @@
 			v-show="!disabled && (currentValue.length < max || max === 0)"
 			v-bind="currentUploadOpts"
 			:accept="accept"
+			class="vc-imgs-picker__upload"
 			@file-before="handleFileBefore"
 			@file-start="handleFileStart"
 			@file-progress="handleFileProgress"
@@ -53,7 +54,7 @@
 			<slot name="upload">
 				<div 
 					:class="[uploadClassName, boxClassName]"
-					class="vc-imgs-picker__upload vc-imgs-picker__box"
+					class="vc-imgs-picker__box"
 					@click="handleClick"
 				>
 					<vc-icon type="plus" style="font-size: 14px; margin-bottom: 8px" />
@@ -130,16 +131,20 @@ export default {
 	@include share-rule(box) {
 		width: 64px;
 		height: 64px;
-		margin-right: 12px;
-		margin-bottom: 12px;
 		border-radius: 4px;
 		background-color: #fafafa;
 		cursor: pointer;
 	}
 	@include element(item-img) {
+		margin-right: 12px;
+		margin-bottom: 12px;
 		@include extend-rule(box);
 	}
 	@include element(upload) {
+		margin-right: 12px;
+		margin-bottom: 12px;
+	}
+	@include element(box) {
 		background-color: #F5F5F6;
 		border: 1px dashed #D9D9D9;
 		display: flex;
