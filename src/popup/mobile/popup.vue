@@ -23,7 +23,7 @@
 <script>
 import MTransition from '../../transition/index.m';
 import Extends from '../../extends';
-import { placement2mode } from '../../utils';
+import { placement2mode, eleInRegExp } from '../../utils';
 
 export default {
 	name: "vcm-popup",
@@ -66,8 +66,10 @@ export default {
 		wrapperClassName: [Object, Array, String],
 		wrapperStyle: [Object, Array, String],
 		scrollRegExp: {
-			type: Function,
-			default: (v) => /g-scroll-container/.test(v)
+			type: Object,
+			default: (v) => ({ 
+				className: /(vc-hack-scroll|scroll-container)/ 
+			})
 		}
 	},
 	data() {
@@ -145,7 +147,7 @@ export default {
 			if (!this.isActive) return;
 			let path = e.path || (e.composedPath && e.composedPath()) || [];
 			let inContainer = path.some((ele) => {
-				if (this.scrollRegExp(ele.className)) {
+				if (eleInRegExp(ele, this.scrollRegExp)) {
 					this.scrollContainer = ele;
 					return true;
 				}

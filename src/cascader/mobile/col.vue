@@ -1,5 +1,5 @@
 <template>
-	<div class="vcm-cascader-col">
+	<div class="vcm-cascader-col vc-hack-scroll">
 		<div 
 			v-for="(item, index) in dataSource"
 			:key="index"
@@ -57,6 +57,8 @@ $block: vcm-cascader-col;
 
 @include block($block) {
 	overflow-y: auto;
+	-webkit-overflow-scrolling: touch;
+	overflow-scrolling: touch;
 	background-color: #fff;
 	@include element(item) {
 		padding: 10px 12px;

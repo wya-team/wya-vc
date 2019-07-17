@@ -15,6 +15,7 @@
 					v-if="hasChildren" 
 					:class="{ 'is-active': currentIndex === currentValue.length }"
 					class="vcm-cascader-view__label"
+					@click="currentIndex = currentValue.length"
 				>
 					请选择
 				</div>
@@ -200,6 +201,7 @@ export default {
 					this.rebuildData.splice(colIndex + 1, len);
 
 					this.hasChildren = false;
+					this.currentIndex = this.currentValue.length - 1;
 				} else {
 					this.hasChildren = true;
 					this.currentIndex = this.currentValue.length;
