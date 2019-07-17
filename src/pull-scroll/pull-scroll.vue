@@ -1,5 +1,5 @@
 <template>
-	<div :style="[basicStyle]" class="vc-pull-scroll">
+	<div :style="[basicStyle]" class="vc-pull-scroll vc-hack-scroll">
 		<div v-if="inverted" :style="style">
 			<slot :status="rebuildScrollStatus" name="scroll-status">
 				<vc-scroll-status
