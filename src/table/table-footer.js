@@ -19,8 +19,7 @@ export default {
 		},
 
 		hasGutter() {
-			// return !!(!this.fixed && this.tableLayout.gutterWidth);
-			return false;
+			return !!(!this.fixed && this.tableLayout.gutterWidth);
 		},
 
 		...mapStates({
@@ -133,7 +132,7 @@ export default {
 							))
 						}
 						{
-							this.hasGutter ? <th class="gutter" /> : null
+							this.hasGutter ? <th class="vc-table__gutter" /> : null
 						}
 					</tr>
 				</tbody>

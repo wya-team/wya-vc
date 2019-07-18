@@ -92,7 +92,7 @@ const popup = {
 			default: false
 		},
 		hover: Boolean,
-		portalClassName: [Object, String],
+		portalClassName: [Object, String, Array],
 		portalStyle: Object,
 	},
 	data() {

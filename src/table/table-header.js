@@ -86,8 +86,7 @@ export default {
 		},
 
 		hasGutter() {
-			// return !!(!this.fixed && this.tableLayout.gutterWidth);
-			return false;
+			return !!(!this.fixed && this.tableLayout.gutterWidth);
 		},
 
 		...mapStates({
@@ -227,8 +226,8 @@ export default {
 				const resizeProxy = table.$refs.resizeProxy;
 				resizeProxy.style.left = this.dragState.startLeft + 'px';
 
-				document.onselectstart = function () { return false; };
-				document.ondragstart = function () { return false; };
+				document.onselectstart = () => false;
+				document.ondragstart = () => false;
 
 				const handleMouseMove = (event) => {
 					const deltaLeft = event.clientX - this.dragState.startMouseLeft;
@@ -380,7 +379,7 @@ export default {
 									))
 								}
 								{
-									this.hasGutter ? <th class="gutter" /> : null
+									this.hasGutter ? <th class="vc-table__gutter" /> : null
 								}
 							</tr>
 						))
