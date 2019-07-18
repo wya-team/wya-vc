@@ -20,7 +20,7 @@
 		<div 
 			v-if="$refs.input && $refs.input.isFocus" 
 			class="vcm-input-search__btn"
-			@touchstart="handleCancel"
+			@touchend="handleCancel"
 		>
 			{{ cancelTxt }}
 		</div>
