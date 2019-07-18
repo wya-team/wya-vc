@@ -122,6 +122,8 @@ const config = {
 			return this.dataSource.map((item, index) => {
 				if (typeof item === 'object') {
 					return {
+						w: 1200,
+						h: 900,
 						...item
 					}; // 会被photoswiper所引用
 				} else {
