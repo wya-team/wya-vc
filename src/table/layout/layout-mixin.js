@@ -59,7 +59,7 @@ export default {
 				const col = cols[i];
 				col.setAttribute('width', layout.scrollY ? layout.gutterWidth : '0');
 			}
-			const ths = this.$el.querySelectorAll('th.gutter');
+			const ths = this.$el.querySelectorAll('th.vc-table__gutter');
 			for (let i = 0, j = ths.length; i < j; i++) {
 				const th = ths[i];
 				th.style.width = layout.scrollY ? layout.gutterWidth + 'px' : '0';
