@@ -22,7 +22,6 @@
 						</div>
 						<div 
 							v-if="content || $slots.default" 
-							:class="{ 'is-footer-hack': footer || $slots.footer }"
 							class="vcm-modal__content"
 						>
 							<p 
@@ -306,9 +305,6 @@ export default {
 		overflow-y: auto;
 		padding: 0 15px 15px 15px;
 		position: relative;
-		@include when(footer-hack) {
-			@include commonBorder1PX(bottom, #ddd); // P30 不显示线bug, 此处设置
-		}
 	}
 	@include element(html) {
 		font-size: 15px;
@@ -333,6 +329,7 @@ export default {
 	@include element(footer) {
 		position: relative;
 		display: flex;
+		@include commonBorder1PX(top, #ddd);
 		@include when(column) {
 			flex-direction: column;
 			@include element(button) { 
