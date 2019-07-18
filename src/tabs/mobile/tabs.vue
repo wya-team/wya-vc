@@ -128,6 +128,7 @@ export default {
 		refreshTop() {
 			if (this.sticky) {
 				this.top = this.$refs.content.offsetTop - this.placeholderH;
+				this.isFixed = document.scrollingElement.scrollTop > this.top;
 			}
 		},
 

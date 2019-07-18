@@ -3,7 +3,7 @@
 		<div class="vc-tabs__extra">
 			<slot name="extra" />
 		</div>
-		<div ref="wrapper" :style="{ padding: scrollable && '0 12px' }" class="vc-tabs__bar">
+		<div ref="wrapper" :style="{ padding: scrollable && '0 24px' }" class="vc-tabs__bar">
 
 			<vc-icon v-if="scrollable" class="vc-tabs__icon is-left" type="left" @click="handlePrev"/>
 			<vc-icon v-if="scrollable" class="vc-tabs__icon is-right" type="right" @click="handleNext"/>
