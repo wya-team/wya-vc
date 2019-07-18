@@ -4,11 +4,11 @@
 			<vc-editor-toolbar v-if="options.modules && options.modules.toolbar === '#toolbar'">
 				<button id="img" style="outline: none; line-height: 1;" >
 					<vc-upload
-						v-bind="upload"
+						v-bind="uploadOpts"
 						:accept="accept" 
 						@file-success="handleImgSuccess"
 					>
-						<vc-icon type="image" style="font-size: 15px" />
+						<vc-icon type="image" style="font-size: 15px" @click="handleUploadImg" />
 					</vc-upload>
 				</button>
 				<slot name="extend" />
@@ -19,7 +19,6 @@
 </template>
 
 <script>
-// import Quill from 'quill';
 import './style.scss';
 import Extends from '../extends';
 import EditorToolbar from './toolbar';
@@ -27,6 +26,7 @@ import Upload from '../upload/index';
 import Icon from '../icon/index';
 import ImgsPreview from '../imgs-preview/index';
 import defaultOptinos from './default-options';
+import { VcInstance } from '../vc/index';
 
 export default {
 	name: "vc-editor",
@@ -59,7 +59,7 @@ export default {
 			type: Boolean,
 			default: false
 		},
-		upload: {
+		uploadOpts: {
 			type: Object,
 			default: () => ({})
 		},
@@ -69,6 +69,10 @@ export default {
 		accept: {
 			type: String,
 			default: 'image/gif,image/jpeg,image/jpg,image/png'
+		},
+		gallery: {
+			type: [Function, Boolean],
+			default: true
 		}
 	},
 	data() {
@@ -222,6 +226,24 @@ export default {
 					history: false,
 					getThumbBoundsFn: (index) => pos
 				}
+			});
+		},
+		handleUploadImg(e) {
+			const { ImgsPicker = {} } = VcInstance.config;
+			if (typeof this.gallery === 'function' || (this.gallery && ImgsPicker.gallery)) {
+				e.stopPropagation();
+
+				let fn = typeof this.gallery === 'function' 
+					? this.gallery
+					: ImgsPicker.gallery;
+					
+				fn(this);
+			} 
+		},
+		// 跟imgs-picker 对外暴露的增加方法保持同名
+		add(imgs = []) {
+			imgs.forEach(image => {
+				this.handleImgSuccess({ data: { url: image } });
 			});
 		}
 	}
