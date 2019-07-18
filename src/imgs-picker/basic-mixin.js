@@ -74,6 +74,7 @@ export default {
 			currentValue: [],
 			currentUploadOpts: { 
 				...this.uploadOpts,
+				multiple: this.max > 1,
 				max: this.max, // 已max属性为主，及时upload内部设置了max，也会被覆盖
 			}
 		};

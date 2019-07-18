@@ -24,9 +24,8 @@
 					</div>
 				</div>
 				<!-- 上传失败或者成功后显示 -->
-				<div class="vcm-imgs-picker__delete">
+				<div v-if="!disabled && (typeof item !== 'object' || item.status == 0)" class="vcm-imgs-picker__delete">
 					<vc-icon 
-						v-if="!disabled && (typeof item !== 'object' || item.status == 0)" 
 						type="close" 
 						style="color: white"
 						@click="handleDel(item)" 

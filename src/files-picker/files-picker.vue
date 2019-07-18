@@ -93,6 +93,7 @@ export default {
 			currentValue: this.dataSource,
 			currentUploadOpts: { 
 				...this.uploadOpts,
+				multiple: this.max > 1,
 				max: this.max
 			}
 		};

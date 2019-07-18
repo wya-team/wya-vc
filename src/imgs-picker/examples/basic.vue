@@ -9,8 +9,8 @@
 			<vc-imgs-picker 
 				ref="target"
 				v-model="formValidate.imgs" 
-				:max="3"
-				:upload="{multiple: true}"
+				:max="1"
+				:upload-opts="{multiple: true}"
 				sortable
 				@error="handleError"
 			/>
