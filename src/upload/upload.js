@@ -1,5 +1,5 @@
 import { ajax } from '@wya/http';
-import { Device } from '@wya/utils';
+import { Device, Utils } from '@wya/utils';
 import { attrAccept, initItem } from './utils';
 import { getUid } from '../utils/utils';
 import { VcInstance, VcError } from '../vc/index';
@@ -143,56 +143,40 @@ export default {
 			if (!el) {
 				return;
 			}
-			// 判断在手机端微信上
-			if (Device.touch && Device.wechat && this.$wx) {
-				this.handleChooseImage();
-			} else {
-				el.click();
-			}
+			
+			// TODO: 考虑用VcInstance注入
+			Device.touch && Device.wechat && this.$wx
+				? this.chooseImageByWechat()
+				: el.click();
 		},
-		handleChooseImage() {
+
+		chooseImageByWechat() {
 			this.$wx.chooseImage({
 				count: this.max > 9 || this.max === 0 ? 9 : this.max,
 				sizeType: ['original', 'compressed'],
 				sourceType: ['album', 'camera'],
-				success: (res) => {
-					let localIds = res.localIds;
-					let promiseArr = [];
-					for (let i = 0, length = localIds.length; i < length; i++) {
-						const localId = localIds[i];
-						let imgBase64 = this.getBase64ById(localId);
-						promiseArr.push(imgBase64);
-					}
-					Promise.all(promiseArr).then((files) => {
+				success: ({ localIds }) => {
+					let result = localIds.map((localId) => {
+						return new Promise((resolve, reject) => {
+							this.$wx.getLocalImgData({
+								localId,
+								success: ({ localData }) => {
+									let file = Utils.base642Blob(localData, `${getUid()}.png`);
+									resolve(file);
+								}
+							});
+						});
+					});
+
+					Promise.all(result).then((files) => {
 						this.handleChange({ target: { files } });
+					}).catch(() => {
+						this.$emit('error', { msg: `微信端服务异常，请稍后再试` });
 					});
 				}
 			});
-			
 		},
-		getBase64ById(localId) {
-			return new Promise((resolve, reject) => {
-				wx.getLocalImgData({
-					localId, // 图片的localID
-					success: async (res) => {
-						let localData = res.localData; // localData是图片的base64数据，可以用img标签显示
-						resolve(this.dataURL2File(localData, `${getUid()}.png`));
-					}
-				});
-			});
-		},
-		// 可放在utils里
-		dataURL2File(dataurl, filename) {
-			let arr = dataurl.split(',');
-			let mime = arr[0].match(/:(.*?);/)[1];
-			let bstr = atob(arr[1]);
-			let n = bstr.length;
-			let u8arr = new Uint8Array(n);
-			while (n--) {
-				u8arr[n] = bstr.charCodeAt(n);
-			}
-			return new File([u8arr], filename, { type: mime });
-		},
+
 		handleChange(e) {
 			const files = e.target.files;
 			this.uploadFiles(files);

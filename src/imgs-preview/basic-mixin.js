@@ -45,11 +45,10 @@ export default {
 	},
 	methods: {
 		handleShow(e, index) {
-			if (Device.wechat && this.$wx) {
-				this.previewByWechat(index);
-			} else {
-				this.previewByPS(e, index);
-			}
+			// TODO: 考虑用VcInstance注入
+			Device.touch && Device.wechat && this.$wx
+				? this.previewByWechat(index)
+				: this.previewByPS(e, index);
 		},
 		/**
 		 * 确保已经注入到Vue.prototype.$wx
