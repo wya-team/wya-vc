@@ -143,7 +143,55 @@ export default {
 			if (!el) {
 				return;
 			}
-			el.click();
+			// 判断在手机端微信上
+			if (Device.touch && Device.wechat && this.$wx) {
+				this.handleChooseImage();
+			} else {
+				el.click();
+			}
+		},
+		handleChooseImage() {
+			this.$wx.chooseImage({
+				count: this.max > 9 || this.max === 0 ? 9 : this.max,
+				sizeType: ['original', 'compressed'],
+				sourceType: ['album', 'camera'],
+				success: (res) => {
+					let localIds = res.localIds;
+					let promiseArr = [];
+					for (let i = 0, length = localIds.length; i < length; i++) {
+						const localId = localIds[i];
+						let imgBase64 = this.getBase64ById(localId);
+						promiseArr.push(imgBase64);
+					}
+					Promise.all(promiseArr).then((files) => {
+						this.handleChange({ target: { files } });
+					});
+				}
+			});
+			
+		},
+		getBase64ById(localId) {
+			return new Promise((resolve, reject) => {
+				wx.getLocalImgData({
+					localId, // 图片的localID
+					success: async (res) => {
+						let localData = res.localData; // localData是图片的base64数据，可以用img标签显示
+						resolve(this.dataURL2File(localData, `${getUid()}.png`));
+					}
+				});
+			});
+		},
+		// 可放在utils里
+		dataURL2File(dataurl, filename) {
+			let arr = dataurl.split(',');
+			let mime = arr[0].match(/:(.*?);/)[1];
+			let bstr = atob(arr[1]);
+			let n = bstr.length;
+			let u8arr = new Uint8Array(n);
+			while (n--) {
+				u8arr[n] = bstr.charCodeAt(n);
+			}
+			return new File([u8arr], filename, { type: mime });
 		},
 		handleChange(e) {
 			const files = e.target.files;
