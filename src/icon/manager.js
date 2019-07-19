@@ -56,7 +56,7 @@ class Manager extends VcBasic {
 								let needs = Object.keys(this.sourceStatus); 
 								Object.keys(window.localStorage).forEach((item) => {
 									if (item.includes(prefix) && !needs.includes(key)) {
-										Storage.remove(item);
+										window.localStorage.removeItem(item); // 这里需要使用localStorage
 									}
 								});
 								// 如果还存在溢出，项目内自行处理吧

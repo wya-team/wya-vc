@@ -10,7 +10,6 @@ class PortalCore extends VcBasic {
 
 		let { cName, ...globalOptions } = registerOptions;
 
-
 		if (!wrapper) {
 			throw new VcError('create-portal', '目标组件必传');
 		}
