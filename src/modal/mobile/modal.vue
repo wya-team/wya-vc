@@ -321,6 +321,7 @@ export default {
 		height: 50px;
 		line-height: 50px;
 		word-wrap: break-word;
+		z-index: 1; // android不添加时可能不显示1px描边
 		&:first-child {
 			color: #000;
 			@include commonBorder1PX(right, #ddd);
