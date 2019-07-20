@@ -145,7 +145,7 @@ export default {
 			}
 			
 			// TODO: 考虑用VcInstance注入
-			Device.touch && Device.wechat && this.$wx
+			Device.touch && Device.wechat && Device.webView && this.$wx
 				? this.chooseImageByWechat()
 				: el.click();
 		},
