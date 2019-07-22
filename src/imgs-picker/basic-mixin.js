@@ -203,7 +203,7 @@ export default {
 			
 			let pos = {};
 			try {
-				const target = e.target; // 先得到pos, 否则getThumbBoundsFn再计划，target已变化
+				const target = e.target; // 先得到pos, 否则getThumbBoundsFn再计划，target已变化（比如弹窗transition的影响）
 				const pageYScroll = window.pageYOffset || document.documentElement.scrollTop;
 				const rect = target.getBoundingClientRect();
 

@@ -13,18 +13,13 @@
 				>
 			</template>
 		</vcm-imgs-preview>
-
-		<!-- 自定义 operate -->
-		<vcm-imgs-preview :data-source="dataSource">
-			<template #operate="it">
-				<div @click="it.show($event, it.index)">{{ it.index }}</div>
-			</template>
-		</vcm-imgs-preview>
+		<vcm-imgs-preview :data-source="dataSource" />
+		
 		<span @click="handleClick">自定义预览</span>
 	</div>
 </template>
 <script>
-import ImgsPreview from '../mobile/imgs-preview';
+import ImgsPreview from '../index.m';
 
 export default {
 	name: "vcm-imgs-preview-basic",
