@@ -59,7 +59,7 @@ export default {
 	name: "vc-imgs-crop",
 	props: {
 		src: {
-			type: String | Object | File, // File类型也可以
+			type: [String, Object], // File, Blob类型也可以
 			required: true
 		},
 
@@ -77,7 +77,7 @@ export default {
 
 		// 裁剪的边框 [x, y]
 		border: {
-			type: Number | Array,
+			type: [Number, Array],
 			default: 20
 		},
 
@@ -619,7 +619,7 @@ export default {
 		 * 选择加载图片的方式
 		 */
 		loadImage(image) {
-			if (isFileAPISupported && image instanceof File) {
+			if (isFileAPISupported && image instanceof Blob) {
 				this.loadImageFile(image);
 			} else if (typeof image === 'string') {
 				this.loadImageURL(image);

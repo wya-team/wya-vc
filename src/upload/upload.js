@@ -245,8 +245,7 @@ export default {
 			const before = fileBefore(file, fileList);
 			if (before && before.then) {
 				before.then((processedFile) => {
-					const processedFileType = Object.prototype.toString.call(processedFile);
-					if (processedFileType === '[object File]' || processedFileType === '[object Blob]') {
+					if (processedFile instanceof Blob) {
 						try {
 							const { uid, current, total, percent } = file;
 							processedFile.uid = uid;
