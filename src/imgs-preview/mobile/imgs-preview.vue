@@ -8,6 +8,7 @@
 			:key="index"
 			:class="itemClassName"
 			class="vcm-imgs-preview__item"
+			@click.stop="handleShow($event, index)"
 		>
 			<slot
 				:src="item | getImage" 
