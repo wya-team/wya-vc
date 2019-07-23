@@ -6,6 +6,7 @@ import Message from '../message/index';
 import Toast from '../toast/index';
 import Extends from '../extends';
 import ImgsPreview from '../imgs-preview/index';
+import { VcInstance } from '../vc/index';
 
 export default {
 	mixins: [...Extends.mixins(['emitter'])],
@@ -200,7 +201,10 @@ export default {
 				preview(e, idx);
 				return;
 			}
-			
+			let { onPreview = () => {} } = VcInstance.config.ImgsPreview || {};
+			onPreview(idx, this) || this.previewByPS(e, idx);
+		},
+		previewByPS(e, idx) {
 			let pos = {};
 			try {
 				const target = e.target; // 先得到pos, 否则getThumbBoundsFn再计划，target已变化（比如弹窗transition的影响）

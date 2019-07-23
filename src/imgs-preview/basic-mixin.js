@@ -5,6 +5,7 @@ import { Device } from '@wya/utils';
 import Core, { Func } from './core';
 import Customer from '../customer/index';
 import Icon from '../icon/index';
+import { VcInstance } from '../vc/index';
 
 export default {
 	components: {
@@ -44,22 +45,16 @@ export default {
 		}
 	},
 	methods: {
-		handleShow(e, index) {
-			// TODO: 考虑用VcInstance注入
-			Device.touch && Device.wechat && Device.webView && this.$wx
-				? this.previewByWechat(index)
-				: this.previewByPS(e, index);
+		handleShow(e, idx) {
+			let { preview } = this.$listeners || {};
+			if (preview) {
+				preview(e, idx);
+				return;
+			}
+			let { onPreview = () => {} } = VcInstance.config.ImgsPreview || {};
+			onPreview(idx, this) || this.previewByPS(e, idx);
 		},
-		/**
-		 * 确保已经注入到Vue.prototype.$wx
-		 */
-		previewByWechat(index) {
-			this.$wx.previewImage({
-				current: this.images[index].src, // 当前显示图片的http链接
-				urls: this.images.map((item) => item.src) // 需要预览的图片http链接列表
-			});
-		},
-		previewByPS(e, index) {
+		previewByPS(e, idx) {
 			const { id, dataSource, opts, events, getInstance } = this;
 			let pos = {};
 			try {
@@ -81,7 +76,7 @@ export default {
 				getInstance,
 				opts: {
 					...opts,
-					index,
+					index: idx,
 					history: false,
 					getThumbBoundsFn: (index) => pos,
 				},

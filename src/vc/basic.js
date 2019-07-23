@@ -1,3 +1,4 @@
+import { Device } from '@wya/utils';
 import VcError from './error';
 
 class VcBasic {
@@ -126,6 +127,18 @@ VcBasic.prototype.config = {
 	},
 	ImgsPicker: {
 		gallery: undefined
+	},
+	ImgsPreview: {
+		onPreview: (index, ctx) => {
+			let allow = Device.touch && Device.wechat && Device.webView && ctx.$wx;
+			if (allow) {
+				ctx.$wx.previewImage({
+					current: ctx.images[index].src, // 当前显示图片的http链接
+					urls: ctx.images.map((item) => item.src) // 需要预览的图片http链接列表
+				});
+			}
+			return !allow;
+		}
 	}
 };
 
