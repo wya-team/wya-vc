@@ -1,6 +1,11 @@
 <!-- 仅展示最基本的用法 -->
 <template>
-	<div style="padding: 20px">
+	<div style="padding: 20px; height: 100vh; -webkit-overflow-scrolling: touch; overflow: auto">
+		<br>
+		<br>
+		<br>
+		<br>
+		<br>
 		<div>
 			<vcm-carousel :height="150" :autoplay="true">
 				<vcm-carousel-item v-for="item in 4" :key="item">
@@ -28,6 +33,28 @@
 				</vcm-carousel-item>
 			</vcm-carousel>
 		</div>
+
+		<br>
+		<br>
+		<br>
+		<br>
+		<br>
+		<br>
+		<br>
+		<br>
+		<br>
+		<br>
+		<br>
+		<br>
+		<br>
+		<br>
+		<br>
+		<br>
+		<br>
+		<br>
+		<br>
+		<br>
+		<br>
 	</div>
 </template>
 <script>

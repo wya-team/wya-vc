@@ -3,7 +3,7 @@
 		:class="`is-${direction}`"
 		class="vcm-carousel"
 		@touchstart.stop="e => handleStart(e.touches[0])"
-		@touchmove.prevent.stop="e => handleMove(e.touches[0])"
+		@touchmove.stop="e => _handleMove(e)"
 		@touchend.stop="e => handleEnd(e.changedTouches[0])"
 	>
 		<div
@@ -52,6 +52,20 @@ export default {
 		indicator: {
 			type: Boolean,
 			default: true
+		}
+	},
+	methods: {
+		_handleMove(e) {
+			let absX = Math.abs(e.touches[0].screenX - this.startX);
+			let absY = Math.abs(e.touches[0].screenY - this.startY);
+
+			if (!this.vertical && absX > absY) {
+				e.preventDefault();
+			} else if (this.vertical && absY > absX) {
+				e.preventDefault();
+			}
+
+			this.handleMove(e.touches[0]);
 		}
 	}
 };
