@@ -22,6 +22,7 @@ export default {
 	},
 
 	mounted() {
+		if (this.vm) return; // 避免HRM重复注入
 		this.vm = this.wrapper.popup({
 			$slots: this.$slots,
 			$parent: this.$parent,
