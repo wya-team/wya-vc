@@ -71,7 +71,7 @@ export default {
 		// 上传类型为图片
 		mode: {
 			type: String,
-			default: 'images'
+			default: 'images' // images | files
 		},
 
 		// 给后端的字段名，历史原因 (之前默认Filedata)
@@ -89,7 +89,9 @@ export default {
 		directory: {
 			type: Boolean,
 			default: false
-		}
+		},
+
+		enhancer: Function
 	},
 	data() {
 		return {
@@ -143,38 +145,14 @@ export default {
 			if (!el) {
 				return;
 			}
-			
-			// TODO: 考虑用VcInstance注入
-			Device.touch && Device.wechat && Device.webView && this.$wx
-				? this.chooseImageByWechat()
-				: el.click();
-		},
 
-		chooseImageByWechat() {
-			this.$wx.chooseImage({
-				count: this.max > 9 || this.max === 0 ? 9 : this.max,
-				sizeType: ['original', 'compressed'],
-				sourceType: ['album', 'camera'],
-				success: ({ localIds }) => {
-					let result = localIds.map((localId) => {
-						return new Promise((resolve, reject) => {
-							this.$wx.getLocalImgData({
-								localId,
-								success: ({ localData }) => {
-									let file = Utils.base642Blob(localData, `${getUid()}.png`);
-									resolve(file);
-								}
-							});
-						});
-					});
+			/**
+			 * 渐进增强
+			 */
+			let { enhancer } = VcInstance.config.Upload || {};
 
-					Promise.all(result).then((files) => {
-						this.handleChange({ target: { files } });
-					}).catch(() => {
-						this.$emit('error', { msg: `微信端服务异常，请稍后再试` });
-					});
-				}
-			});
+			enhancer = this.enhancer || enhancer || (() => false);
+			enhancer(this) || el.click();
 		},
 
 		handleChange(e) {

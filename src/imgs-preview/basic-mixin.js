@@ -21,7 +21,8 @@ export default {
 	},
 	props: {
 		...Core.props,
-		itemClassName: String
+		itemClassName: String,
+		enhancer: Function
 	},
 	data() {
 		return {
@@ -46,13 +47,10 @@ export default {
 	},
 	methods: {
 		handleShow(e, index) {
-			let { preview } = this.$listeners || {};
-			if (preview) {
-				preview(e, index);
-				return;
-			}
-			let { onPreview = () => {} } = VcInstance.config.ImgsPreview || {};
-			onPreview(index, this) || this.previewByPS(e, index);
+			let { enhancer } = VcInstance.config.ImgsPreview || {};
+
+			enhancer = this.enhancer || enhancer || (() => false);
+			enhancer(index, this) || this.previewByPS(e, index);
 		},
 		previewByPS(e, index) {
 			const { id, dataSource, opts, events, getInstance } = this;

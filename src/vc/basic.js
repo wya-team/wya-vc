@@ -113,6 +113,7 @@ VcBasic.prototype.config = {
 		FILE_UPLOAD_URL: undefined,
 		onPostBefore: undefined,
 		onPostArter: undefined,
+		enhancer: (ctx) => false
 	},
 	Portal: {
 		aliveRegExp: undefined
@@ -129,7 +130,7 @@ VcBasic.prototype.config = {
 		gallery: undefined
 	},
 	ImgsPreview: {
-		onPreview: (index, ctx) => false,
+		enhancer: (index, ctx) => false,
 	}
 };
 

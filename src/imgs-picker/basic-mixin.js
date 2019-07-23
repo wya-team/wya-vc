@@ -68,7 +68,11 @@ export default {
 		/**
 		 * upload  className
 		 */
-		uploadClassName: String
+		uploadClassName: String,
+		imgsPreviewOpts: {
+			type: Object,
+			default: () => ({})
+		}
 	},
 	data() {
 		return {
@@ -195,14 +199,10 @@ export default {
 			this.dispatch('vc-form-item', 'form-change', dataSource);
 		},
 		handlePreview(e, index) {
-			// 自定义的预览方法， open\close事件不暴露，可由外面控制
-			let { preview } = this.$listeners || {};
-			if (preview) {
-				preview(e, index);
-				return;
-			}
-			let { onPreview = () => {} } = VcInstance.config.ImgsPreview || {};
-			onPreview(index, this) || this.previewByPS(e, index);
+			let { enhancer } = VcInstance.config.ImgsPreview || {};
+
+			enhancer = this.imgsPreviewOpts.enhancer || enhancer || (() => false);
+			enhancer(index, this) || this.previewByPS(e, index);
 		},
 		previewByPS(e, index) {
 			let pos = {};
