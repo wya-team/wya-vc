@@ -137,7 +137,7 @@ VcBasic.prototype.config = {
 					urls: ctx.images.map((item) => item.src) // 需要预览的图片http链接列表
 				});
 			}
-			return !allow;
+			return allow;
 		}
 	}
 };
