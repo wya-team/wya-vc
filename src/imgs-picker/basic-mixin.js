@@ -194,17 +194,17 @@ export default {
 			// form表单
 			this.dispatch('vc-form-item', 'form-change', dataSource);
 		},
-		handlePreview(e, idx) {
+		handlePreview(e, index) {
 			// 自定义的预览方法， open\close事件不暴露，可由外面控制
 			let { preview } = this.$listeners || {};
 			if (preview) {
-				preview(e, idx);
+				preview(e, index);
 				return;
 			}
 			let { onPreview = () => {} } = VcInstance.config.ImgsPreview || {};
-			onPreview(idx, this) || this.previewByPS(e, idx);
+			onPreview(index, this) || this.previewByPS(e, index);
 		},
-		previewByPS(e, idx) {
+		previewByPS(e, index) {
 			let pos = {};
 			try {
 				const target = e.target; // 先得到pos, 否则getThumbBoundsFn再计划，target已变化（比如弹窗transition的影响）
@@ -222,7 +222,7 @@ export default {
 				visible: true,
 				dataSource: this.dataSource,
 				opts: {
-					index: idx,
+					index,
 					history: false,
 					getThumbBoundsFn: (index) => pos
 				},

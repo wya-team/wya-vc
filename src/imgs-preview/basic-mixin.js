@@ -45,16 +45,16 @@ export default {
 		}
 	},
 	methods: {
-		handleShow(e, idx) {
+		handleShow(e, index) {
 			let { preview } = this.$listeners || {};
 			if (preview) {
-				preview(e, idx);
+				preview(e, index);
 				return;
 			}
 			let { onPreview = () => {} } = VcInstance.config.ImgsPreview || {};
-			onPreview(idx, this) || this.previewByPS(e, idx);
+			onPreview(index, this) || this.previewByPS(e, index);
 		},
-		previewByPS(e, idx) {
+		previewByPS(e, index) {
 			const { id, dataSource, opts, events, getInstance } = this;
 			let pos = {};
 			try {
@@ -76,7 +76,7 @@ export default {
 				getInstance,
 				opts: {
 					...opts,
-					index: idx,
+					index,
 					history: false,
 					getThumbBoundsFn: (index) => pos,
 				},
