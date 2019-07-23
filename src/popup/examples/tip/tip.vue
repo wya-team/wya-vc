@@ -37,9 +37,9 @@
 
 <script>
 import MPopup from '../../index.m';
-import CreatePortal from '../../../create-portal/index';
+import Portal from '../../../portal/index';
 
-const config = {
+const wrapperComponent = {
 	name: 'vc-popup-basic-tip',
 	components: {
 		'vcm-popup': MPopup
@@ -71,9 +71,9 @@ const config = {
 	},
 };
 
-export default config;
+export default wrapperComponent;
 
-export const Tip = CreatePortal({}, config);
+export const Tip = new Portal(wrapperComponent, {});
 
 </script>
 

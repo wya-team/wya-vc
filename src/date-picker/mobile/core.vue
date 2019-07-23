@@ -27,9 +27,9 @@
 import { pick } from 'lodash';
 import MPicker from '../../picker/index.m';	
 import MDatePickerView from './date-picker-view';	
-import CreatePortal from '../../create-portal/index';
+import Portal from '../../portal/index';
 
-const config = {
+const wrapperComponent = {
 	name: 'vcm-picker-core',
 	components: {
 		'vcm-picker-popup': MPicker.Popup,
@@ -133,10 +133,10 @@ const config = {
 	},
 };
 
-export default config;
-export const Func = CreatePortal({
+export default wrapperComponent;
+export const Func = new Portal(wrapperComponent, {
 	promise: false
-}, config);
+});
 </script>
 
 <style lang="scss">

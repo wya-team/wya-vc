@@ -30,13 +30,13 @@
 
 <script>
 import posMixin from './pos-mixin';
-import CreateProtal from '../create-portal/index';
+import Portal from '../portal/index';
 import Transition from '../transition/index';
 import Customer from '../customer/index';
 import { VcError } from '../vc/index';
 import { Resize } from '../utils/index';
 
-const popup = {
+const wrapperComponent = {
 	name: 'vc-popover-core',
 	mixins: [posMixin],
 	components: {
@@ -284,11 +284,11 @@ const popup = {
 	},
 };
 
-export default popup;
-export const Func = CreateProtal({
+export default wrapperComponent;
+export const Func = new Portal(wrapperComponent, {
 	promise: false,
 	// multiple: true
-}, popup);
+});
 </script>
 
 <style lang="scss">

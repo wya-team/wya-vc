@@ -145,7 +145,7 @@ import { Clipboard } from 'wya-vc';
 ---|---|---|---
 [Clipboard][Clipboard] | 剪切板 | 1 | -
 [Customer][Customer] | 自定义组件 | 1 | -
-[CreatePortal][CreatePortal] | 传送门组件 | 1 | -
+[Portal][Portal] | 传送门组件 | 1 | -
 [Fragment][Fragment] | 空节点 | 1 | Vue 3.x废除
 [Print][Print] | 打印 | 1 | -
 [Touch][Touch] | 手势 | 1 | -
@@ -190,7 +190,7 @@ import { Clipboard } from 'wya-vc';
 [ColorPicker]: https://github.com/wya-team/wya-vc/tree/master/src/color-picker/
 [Clipboard]: https://github.com/wya-team/wya-vc/tree/master/src/clipboard/
 [Customer]: https://github.com/wya-team/wya-vc/tree/master/src/customer/
-[CreatePortal]: https://github.com/wya-team/wya-vc/tree/master/src/create-portal/
+[Portal]: https://github.com/wya-team/wya-vc/tree/master/src/portal/
 [DatePicker]: https://github.com/wya-team/wya-vc/tree/master/src/date-picker/
 [DebounceClick]: https://github.com/wya-team/wya-vc/tree/master/src/debounce-click/
 [Countdown]: https://github.com/wya-team/wya-vc/tree/master/src/countdown/

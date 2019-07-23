@@ -1,4 +1,4 @@
-## [Demo Basic](https://wya-team.github.io/wya-vc/dist/create-portal/basic.html)
+## [Demo Basic](https://wya-team.github.io/wya-vc/dist/portal/basic.html)
 ## 功能 - 传送门组件
 
 根节点兄弟组件 - `() => Promise` - 传送门组件
@@ -9,7 +9,7 @@
 
 ## API
 
-#### `CreatePortal(opts: Object, wrapper: Object)`
+#### `new Portal(wrapper: Object, opts: Object)`
 
 属性 | 说明 | 类型 | 默认值
 ---|---|---|---
@@ -30,6 +30,20 @@ getInstance | 获取当前组件实例回调 | `(instance) => void` | -
 onBefore | 自定义ajax, 替代先前onBefore | `(opts = {}) => Promise` | -
 cName | 自定义cName, 替代先前cName | `string` | -
 
+#### 组件 - `Portal.View`
+
+```vue
+<template>
+	<vc-portal-view>
+		<div>222</div>
+		<template #content>
+			<p>{{ date }}</p>
+			<p>{{ random }}</p>
+		</template>
+	</vc-portal-view>
+</template>
+```
+
 ## 基础用法
 
 - 例子
@@ -48,9 +62,9 @@ cName | 自定义cName, 替代先前cName | `string` | -
 </template>
 
 <script>
-import { Modal, CreatePortal } from '@wya/vc';
+import { Modal, Portal } from '@wya/vc';
 
-const config = {
+const wrapper = {
 	name: "vc-tpl-basic",
 	components: {
 		'vc-modal': Modal
@@ -80,17 +94,17 @@ const config = {
 		}
 	}
 };
-export default config;
+export default wrapper;
 
-export const PModalWithBefore = CreatePortal({
+export const PModalWithBefore = new Portal(wrapper, {
 	onBefore() {
 		return new Promise((resolve, reject) => {
 			setTimeout(resolve, 1000);
 		});
 	}
-}, config);
+});
 
-export const PModal = CreatePortal({}, config);
+export const PModal = new Portal(wrapper, {});
 
 // babel7 下不能使用module.exports.default
 </script>

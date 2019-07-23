@@ -1,17 +1,17 @@
 import Vue from 'vue';
 import Modal from './modal.vue';
 import { getOption } from '../utils/index';
-import CreatePortal from '../create-portal/index';
+import Portal from '../portal/index';
 
 const registerOptions = {
 	multiple: true,
 	promise: false
 };
 
-class ModalManager extends CreatePortal.Core {
+class ModalManager extends Portal {
 	allowMethod = ['info', 'success', 'error', 'warning']
-	constructor(globalOptions, wrapper) { // eslint-disable-line
-		super(globalOptions, wrapper);
+	constructor(wrapper, globalOptions) { // eslint-disable-line
+		super(wrapper, globalOptions);
 
 		this.allowMethod.forEach(mode => {
 			this[mode] = (opts = {}) => {
@@ -34,4 +34,4 @@ class ModalManager extends CreatePortal.Core {
 		return this.popup(options);
 	}
 }
-export default new ModalManager(registerOptions, Modal);
+export default new ModalManager(Modal, registerOptions);

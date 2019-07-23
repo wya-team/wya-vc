@@ -59,7 +59,7 @@ import Tabs from '../../../tabs';
 import Input from '../../../input';
 import Message from '../../../message';
 import Modal from '../../../modal';
-import CreatePortal from '../../../create-portal';
+import Portal from '../../../portal';
 import Paging from '../../paging';
 import Table from '../../../table';
 import { initPage } from '../utils/utils';
@@ -70,7 +70,7 @@ const initialState = {
 	3: { ...initPage }
 };
 
-const config = {
+const wrapperComponent = {
 	name: "vc-paging-basic",
 	components: {
 		'vc-paging': Paging,
@@ -200,7 +200,7 @@ const config = {
 		}
 	}
 };
-export default config;
+export default wrapperComponent;
 
-export const TabsModal = CreatePortal({ promise: false }, config);
+export const TabsModal = new Portal(wrapperComponent, { promise: false });
 </script>

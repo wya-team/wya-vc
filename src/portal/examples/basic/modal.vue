@@ -13,10 +13,10 @@
 
 <script>
 import Modal from '../../../modal/modal';
-import CreatePortal from '../../index';
+import Portal from '../../index';
 import Basic from '../../../input/examples/basic.vue';
 
-const config = {
+const wrapper = {
 	name: "vc-tpl-basic",
 	components: {
 		'vc-modal': Modal,
@@ -59,15 +59,15 @@ const config = {
 		}
 	}
 };
-export default config;
+export default wrapper;
 
-export const PModalWithBefore = CreatePortal({
+export const PModalWithBefore = new Portal(wrapper, {
 	onBefore() {
 		return new Promise((resolve, reject) => {
 			setTimeout(resolve, 1000);
 		});
 	}
-}, config);
+});
 
-export const PModal = CreatePortal({}, config);
+export const PModal = new Portal(wrapper, {});
 </script>

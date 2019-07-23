@@ -26,10 +26,10 @@
 import { pick } from 'lodash';
 import MPickerPopup from './picker-popup';	
 import MPickerView from './picker-view';	
-import CreatePortal from '../../create-portal/index';
+import Portal from '../../portal/index';
 import { getSelectedData } from '../../utils/index';
 
-const config = {
+const wrapperComponent = {
 	name: 'vcm-picker-core',
 	components: {
 		'vcm-picker-popup': MPickerPopup,
@@ -133,11 +133,8 @@ const config = {
 	},
 };
 
-export default config;
-export const Func = CreatePortal({
+export default wrapperComponent;
+export const Func = new Portal(wrapperComponent, {
 	promise: false
-}, config);
+});
 </script>
-
-<style lang="scss">
-</style>

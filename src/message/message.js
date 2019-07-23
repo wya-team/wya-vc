@@ -1,7 +1,7 @@
 import Vue from 'vue';
 import Message from './message.vue';
 import { getOption } from '../utils/index';
-import CreatePortal from '../create-portal/index';
+import Portal from '../portal/index';
 
 const registerOptions = {
 	multiple: true,
@@ -9,10 +9,9 @@ const registerOptions = {
 	autoDestroy: false
 };
 
-class MessageManager extends CreatePortal.Core {
-	constructor(globalOptions, wrapper) { // eslint-disable-line
-		super(globalOptions, wrapper);
-		// todo
+class MessageManager extends Portal {
+	constructor(wrapper, globalOptions) { // eslint-disable-line
+		super(wrapper, globalOptions);
 	}
 
 	run(params, opts) {
@@ -63,4 +62,4 @@ class MessageManager extends CreatePortal.Core {
 		});
 	}
 }
-export default new MessageManager(registerOptions, Message);
+export default new MessageManager(Message, registerOptions);

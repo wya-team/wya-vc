@@ -17,9 +17,9 @@
 <script>
 import Spin from '../../../spin';
 import Drawer from '../../../drawer';
-import CreatePortal from '../../index';
+import Portal from '../../index';
 
-const config = {
+const wrapper = {
 	name: "vc-tpl-basic-keep-alive",
 	components: {
 		'vc-drawer': Drawer,
@@ -59,9 +59,9 @@ const config = {
 	}
 };
 
-export default config;
+export default wrapper;
 
-export const KeepAliveWithBefore = CreatePortal({
+export const KeepAliveWithBefore = new Portal(wrapper, {
 	alive: true,
 	aliveRegExp: {
 		className: /(vc-btn)/
@@ -71,12 +71,12 @@ export const KeepAliveWithBefore = CreatePortal({
 			setTimeout(resolve, 1000);
 		});
 	}
-}, config);
+});
 
-export const KeepAlive = CreatePortal({ 
+export const KeepAlive = new Portal(wrapper, { 
 	alive: true, 
 	aliveRegExp: {
 		className: /(vc-btn)/
 	}
-}, config);
+});
 </script>

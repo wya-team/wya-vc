@@ -33,7 +33,6 @@
 <script>
 import { pick } from 'lodash';
 import MPopup from '../../popup/index.m';
-import CreatePortal from '../../create-portal/index';
 import { getSelectedData } from '../../utils/index';
 
 export default {

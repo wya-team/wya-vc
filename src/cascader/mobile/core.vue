@@ -24,10 +24,10 @@
 import { pick } from 'lodash';
 import MPicker from '../../picker/index.m';
 import MCascaderView from './cascader-view';
-import CreatePortal from '../../create-portal/index';
+import Portal from '../../portal/index';
 import { getSelectedData } from '../../utils/index';
 
-const config = {
+const wrapperComponent = {
 	name: 'vcm-cascader-core',
 	components: {
 		'vcm-picker-popup': MPicker.Popup,
@@ -129,10 +129,10 @@ const config = {
 	},
 };
 
-export default config;
-export const Func = CreatePortal({
+export default wrapperComponent;
+export const Func = new Portal(wrapperComponent, {
 	promise: false
-}, config);
+});
 </script>
 
 <style lang="scss">

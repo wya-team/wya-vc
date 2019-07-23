@@ -32,10 +32,10 @@
 	</vc-transition-fade>
 </template>
 <script>
-import CreatePortal from '../create-portal/index';
+import Portal from '../portal/index';
 import Transition from '../transition/index';
 
-const config = {
+const wrapperComponent = {
 	name: "vc-upload-tips",
 	components: {
 		'vc-transition-fade': Transition.Fade
@@ -115,9 +115,9 @@ const config = {
 		},
 	}
 };
-export default config;
+export default wrapperComponent;
 
-export const Tips = CreatePortal({}, config);
+export const Tips = new Portal(wrapperComponent, {});
 </script>
 <style lang="scss" scoped>
 @import '../style/index.scss';

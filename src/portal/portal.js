@@ -5,7 +5,7 @@ import { VcBasic, VcError } from '../vc/index';
 import defaultOptions from './default-options';
 
 class PortalCore extends VcBasic {
-	constructor(registerOptions = {}, wrapper) {
+	constructor(wrapper, registerOptions = {}) {
 		super();
 
 		let { cName, ...globalOptions } = registerOptions;
@@ -36,7 +36,7 @@ class PortalCore extends VcBasic {
 			...defaultOptions, 
 			store: this.config.store,
 			router: this.config.router,
-			...this.config.CreatePortal, 
+			...this.config.Portal, 
 			...this.globalOptions,
 		};
 	}

@@ -14,9 +14,9 @@
 
 <script>
 import Modal from '../..';
-import CreatePortal from '../../../create-portal/index';
+import PortalCtor from '../../../portal/index';
 
-const config = {
+const wrapper = {
 	name: "vc-tpl-basic",
 	components: {
 		'vc-modal': Modal
@@ -58,7 +58,7 @@ const config = {
 		}
 	}
 };
-export default config;
+export default wrapper;
 
-export const Portal = CreatePortal({}, config);
+export const Portal = new PortalCtor(wrapper, {});
 </script>

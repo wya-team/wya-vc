@@ -78,7 +78,7 @@ import PhotoswipeUIDefault from 'photoswipe/dist/photoswipe-ui-default';
 import "photoswipe/dist/photoswipe.css";
 import "photoswipe/dist/default-skin/default-skin.css";
 
-import CreatePortal from '../create-portal/index';
+import Portal from '../portal/index';
 import Icon from '../icon/index';
 import { photoSwipeEvents } from './constants';
 
@@ -86,7 +86,7 @@ import { photoSwipeEvents } from './constants';
  * visible 父级传递
  * show 当前组件内
  */
-const config = {
+const wrapperComponent = {
 	name: "vc-imgs-preview-core",
 	components: {
 		'vc-icon': Icon
@@ -250,11 +250,11 @@ const config = {
 		}
 	}
 };
-export default config;
+export default wrapperComponent;
 
-export const Func = CreatePortal({
+export const Func = new Portal(wrapperComponent, {
 	promise: false
-}, config);
+});
 
 </script>
 <style lang='scss'>

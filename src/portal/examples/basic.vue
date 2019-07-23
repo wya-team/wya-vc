@@ -22,26 +22,42 @@
 		<vc-button 
 			@click="handleTestingEnd"
 		>结束测试</vc-button>
+
+		<vc-portal-view>
+			<div>222</div>
+			<template #content>
+				<p>{{ date }}</p>
+				<p>{{ random }}</p>
+			</template>
+		</vc-portal-view>
 	</div>
 </template>
 <script>
+import { random } from 'lodash';
 import Button from '../../button';
 import Message from '../../message';
 import { PModal, PModalWithBefore } from './basic/modal';
 import { KeepAlive, KeepAliveWithBefore } from './basic/keep-alive';
 import { VcInstance } from '../../vc/index';
+import Portal from '../index';
 
 export default {
-	name: "vc-tpl-basic",
+	name: "vc-portal-basic",
 	components: {
-		'vc-button': Button
+		'vc-button': Button,
+		'vc-portal-view': Portal.View
 	},
 	data() {
 		return {
+			date: null,
+			random: null
 		};
 	},
-	computed: {
-		
+	mounted() {
+		setInterval(() => {
+			this.date = new Date();
+			this.random = random(1, 10000);
+		}, 1000);
 	},
 	methods: {
 		handleTestingStart() {

@@ -114,7 +114,7 @@ VcBasic.prototype.config = {
 		onPostBefore: undefined,
 		onPostArter: undefined,
 	},
-	CreatePortal: {
+	Portal: {
 		aliveRegExp: undefined
 	},
 	Paging: {

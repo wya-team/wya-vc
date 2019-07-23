@@ -1,7 +1,7 @@
 import Vue from 'vue';
 import MToast from './toast.vue';
 import { getOption } from '../../utils/index';
-import CreatePortal from '../../create-portal/index';
+import Portal from '../../portal/index';
 
 const registerOptions = {
 	multiple: true,
@@ -9,9 +9,9 @@ const registerOptions = {
 	autoDestroy: false
 };
 
-class MToastManager extends CreatePortal.Core {
-	constructor(globalOptions, wrapper) { // eslint-disable-line
-		super(globalOptions, wrapper);
+class MToastManager extends Portal {
+	constructor(wrapper, globalOptions) { // eslint-disable-line
+		super(wrapper, globalOptions);
 		// todo
 	}
 
@@ -58,4 +58,4 @@ class MToastManager extends CreatePortal.Core {
 		});
 	}
 }
-export default new MToastManager(registerOptions, MToast);
+export default new MToastManager(MToast, registerOptions);
