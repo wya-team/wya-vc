@@ -47,6 +47,9 @@ export default {
 	},
 	methods: {
 		handleShow(e, index) {
+			/**
+			 * 渐进增强
+			 */
 			let { enhancer } = VcInstance.config.ImgsPreview || {};
 
 			enhancer = this.enhancer || enhancer || (() => false);

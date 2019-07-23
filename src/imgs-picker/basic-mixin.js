@@ -199,6 +199,9 @@ export default {
 			this.dispatch('vc-form-item', 'form-change', dataSource);
 		},
 		handlePreview(e, index) {
+			/**
+			 * 渐进增强
+			 */
 			let { enhancer } = VcInstance.config.ImgsPreview || {};
 
 			enhancer = this.imgsPreviewOpts.enhancer || enhancer || (() => false);
