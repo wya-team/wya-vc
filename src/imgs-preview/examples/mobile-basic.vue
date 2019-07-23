@@ -10,6 +10,7 @@
 					:src="it.src" 
 					:key="it.index" 
 					:style="{ width: '100px', height: '100px', borderRadius: '20px' }"
+					@click="it.show"
 				>
 			</template>
 		</vcm-imgs-preview>
@@ -71,12 +72,13 @@ export default {
 	},
 	methods: {
 		renderRow(h, props, parent) {
-			const { src, index } = props; 
+			const { src, index, show } = props; 
 			return (
 				<img 
 					src={src} 
 					key={index} 
-					style={{ width: '100px', height: '100px', borderRadius: '50px' }} 
+					style={{ width: '100px', height: '100px', borderRadius: '50px' }}
+					onClick={show} 
 				/>
 			);
 		},
