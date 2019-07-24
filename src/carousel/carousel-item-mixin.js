@@ -1,4 +1,4 @@
-import { TRANSFORM } from '../../utils';
+import { TRANSFORM } from '../utils';
 import { VcError } from '../vc/index';
 
 const CARD_SCALE = 0.83;

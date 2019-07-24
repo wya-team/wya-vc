@@ -36,6 +36,10 @@ export default {
 		vertical: {
 			type: Boolean,
 			default: false
+		},
+		draggable: {
+			type: Boolean,
+			default: true
 		}
 	},
 	data() {
@@ -175,6 +179,7 @@ export default {
 		},
 
 		handleStart(e) {
+			if (!this.draggable) return;
 			this.pauseTimer();
 
 			this.start = true;
@@ -183,7 +188,7 @@ export default {
 		},
 
 		handleMove(e) {
-			if (!this.start) return;
+			if (!this.start || !this.draggable) return;
 			this.offset = !this.vertical 
 				? (e.screenX - this.startX) 
 				: (e.screenY - this.startY);
@@ -192,6 +197,8 @@ export default {
 		},
 
 		handleEnd() {
+			if (!this.draggable) return;
+
 			this.start = false;
 			this.startTimer();
 			const offset = Math.abs(this.offset);

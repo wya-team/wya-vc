@@ -25,7 +25,7 @@
 
 <script>
 import { cloneDeep } from 'lodash';
-import { TRANSFORM, TRANSFORM_AS_VALUE, TRANSITION } from '../../utils';
+import { TRANSFORM, TRANSFORM_KEBAB, TRANSITION } from '../../utils';
 import Extends from '../../extends';
 
 export default {
@@ -73,7 +73,7 @@ export default {
 		// 结束时添加
 		transition() {
 			return {
-				[TRANSITION]: `${TRANSFORM_AS_VALUE} ${this.scrollEnd ? '500' : '0'}ms ease-out`
+				[TRANSITION]: `${TRANSFORM_KEBAB} ${this.scrollEnd ? '500' : '0'}ms ease-out`
 			};
 		}
 	},
