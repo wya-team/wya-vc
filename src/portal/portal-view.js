@@ -51,7 +51,7 @@ export default {
 			class: 'vc-portal-view' 
 		};
 		let children = [this.$slots.default];
-		if (this.repeat && this.$scopedSlots.content) {
+		if (this.duplicate && this.$scopedSlots.content) {
 			children.push(this.$scopedSlots.content({ outside: false }));
 		}
 
