@@ -5,7 +5,7 @@ const WRAPPER_COMPONENT = {
 	name: 'vc-portal-slot',
 	render(h) {
 		let fn = this.$scopedSlots.content;
-		return h('div', fn && fn({ portal: true }));
+		return h('div', fn && fn({ outside: true }));
 	}
 };
 
@@ -13,7 +13,10 @@ export default {
 	name: 'vc-portal-view',
 	inheritAttrs: true,
 	props: {
-		repeat: {
+		/**
+		 * 特殊场景使用，切换页面时避免抖动（闪白），默认不操作
+		 */
+		duplicate: {
 			type: Boolean,
 			default: false
 		}
@@ -49,7 +52,7 @@ export default {
 		};
 		let children = [this.$slots.default];
 		if (this.repeat && this.$scopedSlots.content) {
-			children.push(this.$scopedSlots.content({ portal: false }));
+			children.push(this.$scopedSlots.content({ outside: false }));
 		}
 
 		return h('div', attrs, children);
