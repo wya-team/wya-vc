@@ -129,6 +129,7 @@ class PortalCore extends VcBasic {
 			// 不推荐使用
 			$slots,
 			$parent,
+			$scopedSlots,
 			...rest
 		} = options;
 
@@ -207,6 +208,7 @@ class PortalCore extends VcBasic {
 
 		// slots 2.6.0+ 的slotx写法会同步更新
 		vm.$slots = $slots;
+		vm.$scopedSlots = $scopedSlots;
 		vm.$parent = $parent;
 
 		// tag

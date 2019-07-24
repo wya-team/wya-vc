@@ -16,4 +16,5 @@ export default {
 	data: null,
 	// 不推荐使用
 	$slots: {},
+	$scopedSlots: {}
 };

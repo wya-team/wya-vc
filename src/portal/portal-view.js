@@ -4,14 +4,20 @@ import { getUid } from '../utils';
 const WRAPPER_COMPONENT = { 
 	name: 'vc-portal-slot',
 	render(h) {
-		return h('div', {
-		}, this.$slots.content);
+		let fn = this.$scopedSlots.content;
+		return h('div', fn && fn({ portal: true }));
 	}
 };
 
 export default {
 	name: 'vc-portal-view',
 	inheritAttrs: true,
+	props: {
+		repeat: {
+			type: Boolean,
+			default: false
+		}
+	},
 	created() {
 		if (this.wrapper) return; // 避免HRM重复注入
 		this.wrapper = new Portal(WRAPPER_COMPONENT, {
@@ -24,7 +30,7 @@ export default {
 	mounted() {
 		if (this.vm) return; // 避免HRM重复注入
 		this.vm = this.wrapper.popup({
-			$slots: this.$slots,
+			$scopedSlots: this.$scopedSlots,
 			$parent: this.$parent,
 		});
 		// 需要触发一次，才可以建立关系
@@ -37,13 +43,15 @@ export default {
 	},
 
 	render(h) {
-		let style = this.$slots.default 
-			? {} 
-			: { display: "none" }; 
-
-		return h('div', { 
-			style, 
+		let attrs = {
+			style: this.$slots.default ? {} : { display: "none" },
 			class: 'vc-portal-view' 
-		}, this.$slots.default);
+		};
+		let children = [this.$slots.default];
+		if (this.repeat && this.$scopedSlots.content) {
+			children.push(this.$scopedSlots.content({ portal: false }));
+		}
+
+		return h('div', attrs, children);
 	}
 };

@@ -23,8 +23,17 @@
 			@click="handleTestingEnd"
 		>结束测试</vc-button>
 
+		<vc-portal-view repeat>
+			<div>placeholder</div>
+			<template #content="{ portal }">
+				<p>portal: {{ portal }}</p>
+				<p>{{ date }}</p>
+				<p>{{ random }}</p>
+			</template>
+		</vc-portal-view>
+
 		<vc-portal-view>
-			<div>222</div>
+			<div>placeholder</div>
 			<template #content>
 				<p>{{ date }}</p>
 				<p>{{ random }}</p>
