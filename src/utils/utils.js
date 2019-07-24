@@ -201,24 +201,6 @@ export const compose = (...funcs) => {
 	return funcs.reduce((a, b) => (...args) => a(b(...args)));
 };
 
-/**
- * js中的样式兼容
- */
-export const autoprefixer = (style) => {
-	if (typeof style !== 'object') return style;
-	const rules = ['transform', 'transition', 'animation'];
-	const prefixes = ['ms-', 'webkit-'];
-	rules.forEach(rule => {
-		const value = style[rule];
-		if (rule && value) {
-			prefixes.forEach(prefix => {
-				style[prefix + rule] = value;
-			});
-		}
-	});
-	return style;
-};
-
 export const placement2mode = {
 	left: 'left',
 	right: 'right',

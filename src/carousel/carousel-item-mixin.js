@@ -1,4 +1,4 @@
-import { autoprefixer } from '../utils';
+import { TRANSFORM } from '../../utils';
 import { VcError } from '../vc/index';
 
 const CARD_SCALE = 0.83;
@@ -34,11 +34,9 @@ export default {
 		},
 		itemStyle() {
 			const translateType = this.isVertical ? 'translateY' : 'translateX';
-			const value = `${translateType}(${this.translate}px) scale(${this.scale})`;
-			const style = {
-				transform: value
+			return {
+				[TRANSFORM]: `${translateType}(${this.translate}px) scale(${this.scale})`
 			};
-			return autoprefixer(style);
 		}
 	},
 	created() {

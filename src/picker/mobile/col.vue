@@ -25,6 +25,7 @@
 
 <script>
 import { cloneDeep } from 'lodash';
+import { TRANSFORM, TRANSFORM_AS_VALUE, TRANSITION } from '../../utils';
 import Extends from '../../extends';
 
 export default {
@@ -66,13 +67,13 @@ export default {
 		transform() {
 			let index = this.dataSource.findIndex(item => item.value === this.value);
 			return {
-				transform: `translate3d(0, ${(index * this.itemH + this.offsetY) * -1}px, 0)`
+				[TRANSFORM]: `translate3d(0, ${(index * this.itemH + this.offsetY) * -1}px, 0)`
 			};
 		},
 		// 结束时添加
 		transition() {
 			return {
-				transition: `transform ${this.scrollEnd ? '500' : '0'}ms ease-out`
+				[TRANSITION]: `${TRANSFORM_AS_VALUE} ${this.scrollEnd ? '500' : '0'}ms ease-out`
 			};
 		}
 	},
