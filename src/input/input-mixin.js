@@ -67,7 +67,7 @@ export default {
 			default: true
 		},
 		// 聚焦时光标是否在文字最后面
-		afterWords: {
+		focusEnd: {
 			type: Boolean,
 			default: false
 		}
@@ -147,7 +147,7 @@ export default {
 		handleFocus(e) {
 			this.isFocus = true;
 			
-			if (this.afterWords) {
+			if (this.focusEnd) {
 				let length = this.currentValue.length;
 				// hack chrome浏览器的BUG：setSelectionRange() for input/textarea during onFocus fails when mouse clicks
 				setTimeout(() => {

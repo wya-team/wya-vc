@@ -19,7 +19,7 @@ autofocus | 自动获取焦点 | `Boolean` | false
 afloat | append,prepend置顶显示，盖住虚线 | `Boolean` | false
 indicator | `vc-input`特有，类型为对象是`{inline: false, inverted: false}`,如果`append`为`true`，则`inline`为`true`无效 | `Boolean | Object` | false
 indicateClassName | 计数文字的样式 | `String` | -
-afterWords | 聚焦时光标是否在文字后面 | `Boolean` | `false`
+focusEnd | 聚焦时光标是否在文字后面 | `Boolean` | `false`
 
 #### 事件
 
