@@ -54,7 +54,7 @@ export default {
 		}
 	},
 	watch: {
-		content: 'refresh',
+		content: 'refresh', // TODO: render和slot下也支持重置
 		speed: 'refresh',
 	},
 	beforeCreate() {
