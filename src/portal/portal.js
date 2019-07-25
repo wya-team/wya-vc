@@ -11,16 +11,15 @@ class PortalCore extends VcBasic {
 		let { cName, ...globalOptions } = registerOptions;
 
 		if (!wrapper) {
-			throw new VcError('create-portal', '目标组件必传');
+			throw new VcError('portal', '目标组件必传');
 		}
 		if (!cName && !wrapper.name) {
-			throw new VcError('create-portal', 'cName 必传');
+			throw new VcError('portal', 'cName 必传');
 		}
 
 		cName = cName || wrapper.name;
 
 		this.waiting = false;
-
 		this.wrapper = wrapper;
 
 		// 与全局配置, 重新生成默认配置
@@ -97,13 +96,10 @@ class PortalCore extends VcBasic {
 	}
 
 	_createCallback(vm, options, callback) {
-
 		const { leaveDelay } = options;
 
 		return (res, opts = {}) => {
-			
 			setTimeout(() => vm && vm.$emit('destroy'), leaveDelay * 1000);
-
 			callback && callback(res);
 		};
 	}
@@ -198,7 +194,7 @@ class PortalCore extends VcBasic {
 								}
 							}
 						} catch (e) {
-							throw new VcError('create-portal', e);
+							throw new VcError('portal', e);
 						}
 						
 					}
@@ -222,9 +218,7 @@ class PortalCore extends VcBasic {
 
 			vm = null;
 		});
-
 		vm.$on('close', this._createCallback(vm, options, onClose));
-
 		vm.$on('sure', this._createCallback(vm, options, onSure));
 
 		// 回调vm实例
@@ -237,7 +231,6 @@ class PortalCore extends VcBasic {
 		vm.$el.parentElement === null && target.appendChild(vm.$el);
 
 		this.waiting = false;
-
 		return vm;
 	}
 	
