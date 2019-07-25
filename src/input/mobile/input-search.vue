@@ -9,6 +9,7 @@
 			:type="type"
 			class="vcm-input-search__content"
 			v-on="hooks"
+			@focus-change="handleFocusChange"
 		>
 			<template #prepend>
 				<slot name="prepend">
@@ -18,7 +19,7 @@
 		</vcm-input>
 		<!-- TODO, 待优化, isFocus隐藏，造成点击事件无效 -->
 		<div 
-			v-if="$refs.input && $refs.input.isFocus" 
+			v-if="isFocus" 
 			class="vcm-input-search__btn"
 			@touchend="handleCancel"
 		>

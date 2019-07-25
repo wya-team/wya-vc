@@ -11,6 +11,7 @@ export default {
 	data() {
 		return {
 			currentValue: this.value,
+			isFocus: false
 		};
 	},
 	computed: {
@@ -39,6 +40,9 @@ export default {
 
 			this.$refs.input.focus();
 			this.$emit('enter', this.currentValue);
+		},
+		handleFocusChange(isFocus) {
+			this.isFocus = isFocus;
 		}
 	}
 	
