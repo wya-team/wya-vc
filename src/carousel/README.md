@@ -1,7 +1,6 @@
-## [Demo Basic](https://wya-team.github.io/wya-vc/dist/marquee/basic.html)
+## [Demo Basic](https://wya-team.github.io/wya-vc/dist/__tpl__/basic.html)
 ## 功能
-
-同marquree
+tpl
 
 ## API
 
@@ -9,19 +8,24 @@
 
 属性 | 说明 | 类型 | 默认值
 ---|---|---|---
-speed | 速度计算（如：每秒移动50px） | `Number` | 50
-content | 内容 | `String, Function` | -
-animated | 动画 | `Boolean` | true
+- | - | `any` | -
+
+
+#### 事件
+
+属性 | 说明 | 参数 | 返回值
+---|---|---|---
+- | - | `any`|---
 
 #### Slot
 
 属性 | 说明
 ---|---
-default | -
+- | -
 
 
 ## 基础用法
 
 ```jsx
-<vc-marquee content="222" />
+
 ```

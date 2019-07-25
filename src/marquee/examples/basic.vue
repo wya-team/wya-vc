@@ -1,10 +1,16 @@
 <!-- 仅展示最基本的用法 -->
 <template>
 	<div style="padding: 20px">
-		<vc-marquee style="background: #f7f7f7" content="222" />
+		<vc-marquee :content="text" style="background: #f7f7f7" />
+		<vc-marquee :content="text" autoplay style="background: #f7f7f7" />
 		<br>
 		<vc-marquee style="background: #f7f7f7">
-			仅展示最基本的用法仅展示最基本的用法仅展示最基本的用法仅展示最基本的用法仅展示最基本的用法仅展示最基本的用法
+			length: 5 - {{ text.repeat(5) }}
+		</vc-marquee>
+		<br>
+		<br>
+		<vc-marquee style="background: #f7f7f7">
+			length: - 10 {{ text.repeat(10) }}
 		</vc-marquee>
 		<br>
 		<vc-carousel 
@@ -32,6 +38,7 @@ export default {
 	},
 	data() {
 		return {
+			text: 'ABCDEFG'
 		};
 	},
 	computed: {

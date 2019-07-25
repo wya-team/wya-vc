@@ -2,7 +2,7 @@
 	<div class="vc-marquee">
 		<div 
 			:style="style" 
-			:class="{ 'is-paused': !animated }" 
+			:class="{ 'is-paused': paused }" 
 			class="vc-marquee__content"
 		>
 			<slot>
@@ -40,16 +40,25 @@ export default {
 			type: Boolean,
 			default: true,
 		},
+		autoplay: {
+			type: Boolean,
+			default: false
+		}
 	},
 	data() {
 		return {
-			duration: 0
+			duration: 0,
+			elW: 0,
+			contentW: 0
 		};
 	},
 	computed: {
+		paused() {
+			return !this.animated || (!this.autoplay && this.contentW < this.elW);
+		},
 		style() {
 			return {
-				[ANIMATION]: `${this.marqueeId} ${this.duration} linear 0s infinite` 
+				[ANIMATION]: `${this.marqueeId} ${this.duration}s linear 0s ${this.paused ? 'paused' : 'running'} infinite` 
 			};
 		}
 	},
@@ -65,15 +74,17 @@ export default {
 	},
 	methods: {
 		refresh() {
-			let elW = this.$el.offsetWidth;
-			let contentW = this.$el.firstChild.offsetWidth;
+			this.elW = this.$el.offsetWidth;
+			this.contentW = this.$el.firstChild.offsetWidth;
 
-			const FROM = `from { ${TRANSFORM_KEBAB}: translateX(${elW}px) }`;
-			const TO = `to { ${TRANSFORM_KEBAB}: translateX(-${contentW}px) }`;
+			if (this.paused) return;
+
+			const FROM = `from { ${TRANSFORM_KEBAB}: translateX(${this.elW}px) }`;
+			const TO = `to { ${TRANSFORM_KEBAB}: translateX(-${this.contentW}px) }`;
 
 			Load.cssCode(`@keyframes ${this.marqueeId} { ${FROM} ${TO} }`);
 
-			this.duration = Math.max(contentW, elW) / this.speed + 's';
+			this.duration = (this.elW + this.contentW) / this.speed;
 		},
 	},
 };
