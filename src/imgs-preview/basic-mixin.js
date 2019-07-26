@@ -53,7 +53,7 @@ export default {
 			let { enhancer } = VcInstance.config.ImgsPreview || {};
 
 			enhancer = this.enhancer || enhancer || (() => false);
-			enhancer(index, this) || this.previewByPS(e, index);
+			enhancer(index, this.images, this) || this.previewByPS(e, index);
 		},
 		previewByPS(e, index) {
 			const { id, dataSource, opts, events, getInstance } = this;

@@ -205,7 +205,8 @@ export default {
 			let { enhancer } = VcInstance.config.ImgsPreview || {};
 
 			enhancer = this.imgsPreviewOpts.enhancer || enhancer || (() => false);
-			enhancer(index, this) || this.previewByPS(e, index);
+			let images = this.dataSource.map(item => ({ src: item }));
+			enhancer(index, images, this) || this.previewByPS(e, index);
 		},
 		previewByPS(e, index) {
 			let pos = {};

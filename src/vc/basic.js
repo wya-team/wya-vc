@@ -130,7 +130,7 @@ VcBasic.prototype.config = {
 		gallery: undefined
 	},
 	ImgsPreview: {
-		enhancer: (index, ctx) => false,
+		enhancer: (index, images, ctx) => false,
 	}
 };
 
