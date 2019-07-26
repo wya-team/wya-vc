@@ -1,7 +1,6 @@
 import { TRANSFORM } from '../utils';
 import { VcError } from '../vc/index';
 
-const CARD_SCALE = 0.83;
 export default {
 	name: 'vc-carousel-item',
 	props: {
@@ -9,12 +8,24 @@ export default {
 		label: {
 			type: [String, Number],
 			default: ''
-		}
+		},
+		width: {
+			type: [Number, String],
+			default: '70%' // card大小
+		},
+		gutter: {
+			type: Number,
+			default: 0 // card之间间距
+		},
+		scale: {
+			type: Number,
+			default: 0.83
+		} // card缩放
 	},
 	data() {
 		return {
 			translate: 0,
-			scale: 1,
+			currentScale: 1,
 			isHover: false,
 			isActive: false,
 			isReady: false,
@@ -34,9 +45,17 @@ export default {
 		},
 		itemStyle() {
 			const translateType = this.isVertical ? 'translateY' : 'translateX';
-			return {
-				[TRANSFORM]: `${translateType}(${this.translate}px) scale(${this.scale})`
-			};
+			if (this.$parent.type === 'card') {
+				return {
+					[TRANSFORM]: `${translateType}(${this.translate}px) scale(${this.currentScale})`,
+					width: this.width
+				};
+			} else {
+				return {
+					[TRANSFORM]: `${translateType}(${this.translate}px) scale(${this.currentScale})`
+				};
+			}
+			
 		}
 	},
 	created() {
@@ -60,19 +79,27 @@ export default {
 		},
 		calcCardTranslate(index, activeIndex) {
 			let value;
+			let widthNumber = parseFloat(this.width) / 100;
 			const parentW = this.$parent.$el.offsetWidth;
-
+			// 修改了计算公式
 			if (this.isInStage) {
-				value = parentW * ((2 - CARD_SCALE) * (index - activeIndex) + 1) / 4;
+				if (index === activeIndex) {
+					value = parentW * (1 - widthNumber) / 2;
+				} else if (index > activeIndex) {
+					value = parentW * (1 + widthNumber * this.scale) / 2 + this.gutter;
+				} else {
+					value = -(parentW * ((widthNumber * this.scale - 1) / 2 + widthNumber)) - this.gutter;
+					console.log(value, 'value');
+				}
 			} else if (index < activeIndex) {
-				value = -(1 + CARD_SCALE) * parentW / 4;
+				value = parentW * (1 - widthNumber) / 2;
 			} else {
-				value = (3 + CARD_SCALE) * parentW / 4;
+				value = parentW * (1 - widthNumber) / 2;
 			}
 			return value;
 		},
 		calcTranslate(index, activeIndex) {
-			const distance = this.$parent.$el[this.isVertical ? 'offsetHeight' : 'offsetWidth'];
+			const distance = this.$parent.$el[this.isVerticl ? 'offsetHeight' : 'offsetWidth'];
 			return distance * (index - activeIndex) + this.$parent.offset;
 		},
 		reset(index, activeIndex, oldIndex) {
@@ -90,7 +117,7 @@ export default {
 				this.isInStage = Math.round(Math.abs(index - activeIndex)) <= 1;
 				this.isActive = index === activeIndex;
 				this.translate = this.calcCardTranslate(index, activeIndex);
-				this.scale = this.isActive ? 1 : CARD_SCALE;
+				this.currentScale = this.isActive ? 1 : this.scale;
 			} else {
 				this.isActive = index === activeIndex;
 				this.translate = this.calcTranslate(index, activeIndex);
