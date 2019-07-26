@@ -48,10 +48,11 @@ class Manager extends VcBasic {
 						});
 						// 等待解析
 						icons = await this.parser(res.data, url);
-						try {
-							Storage.set(key, icons);
-						} catch (e) {
-							// 内存溢出，删除老缓存, 延迟3秒清理，重新设置
+					
+						let response = Storage.set(key, icons);
+
+						// 内存溢出，删除老缓存, 延迟3秒清理，重新设置
+						if (response) {
 							setTimeout(() => {
 								let needs = Object.keys(this.sourceStatus); 
 								Object.keys(window.localStorage).forEach((item) => {
@@ -63,7 +64,6 @@ class Manager extends VcBasic {
 								Storage.set(key, icons);
 							}, 3000);
 						}
-						
 					}
 					// 重构图标
 					this.icons = {
@@ -71,7 +71,8 @@ class Manager extends VcBasic {
 						...icons,
 					};
 					// 执行
-					Object.entries(this.events).forEach(([type, fns]) => {
+					Object.keys(this.events).forEach((type) => {
+						let fns = this.events[type];
 						if (this.icons[type] && fns) {
 							fns.forEach(fn => fn());
 							this.events[type] = null;
