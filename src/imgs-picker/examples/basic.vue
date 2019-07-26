@@ -27,61 +27,41 @@ import Message from '../../message';
 import ImgsPicker from '../imgs-picker';
 import { VcInstance } from '../../vc/index';
 
-const IMAGE_LEGAL_REGEX = /[@#￥%&+ ]/;
-const FILE_LEGAL_REGEX = /[@#￥%&+]/;
 VcInstance.init({
 	Upload: {
-		URL_UPLOAD_IMG_POST: 'https://wyatest.oss-cn-hangzhou.aliyuncs.com',
-		URL_UPLOAD_FILE_POST: 'https://wyatest.oss-cn-hangzhou.aliyuncs.com',
-		onPostBefore: (file = {}) => {
-			let regex = /image/.test(file.type) ? IMAGE_LEGAL_REGEX : FILE_LEGAL_REGEX;
+		URL_UPLOAD_IMG_POST: 'https://api.github.com/users/wya-team',
+		URL_UPLOAD_FILE_POST: 'https://api.github.com/users/wya-team',
+		onPostBefore: ({ options }) => {
 
-			if (regex.test(file.name)) {
-				throw { msg: '文件名称不合法, 不能包含@#￥%&+和空格' } /* eslint-disable-line */;
-			}
+			return new Promise((resolve, reject) => {
+				if (random(0, 10) > 10) {
+					throw new Error('异常处理');
+				}
+				resolve({
+					...options,
+					type: 'GET',
+					credentials: 'omit', //  cors下关闭
+					headers: {
 
-			if (/image/.test(file.type) && file.size > 20971520) {
-					
-				throw { msg: '图片大小不能超过20M' } /* eslint-disable-line */;
-			}
-			/**
-			 * @param  {[type]} res [description]
-			 * @return {[type]}     [description]
-			 */
-			return ajax({
-				url: 'https://gateway.wyawds.com/base/upload/get-sign.json',
-				type: "POST",
-				param: {},
-
-			}).then(res => {
-				return {
-					bucket: res.data.bucket,
-					policy: res.data.policy,
-					OSSAccessKeyId: res.data.OSSAccessKeyId,
-					signature: res.data.signature,
-					success_action_status: 200,
-					key: `${res.data.key}${file.name}`
-				};
-			}).catch(error => {
-				console.error("[vc-upload: onPostBefore]" + error.msg);
-				return {};
+					}
+				});
 			});
 		},
-		onPostAfter: ({ response, options }) => {
-
-			let fileInfo = {
-				type: `.${options.param.file.name.split('.').pop()}`,
-				uid: options.param.file.uid,
-				title: options.param.file.name,
-				size: options.param.file.size
-			};
-			return {
-				status: 1,
-				data: {
-					url: `https://wya-oa.oss-cn-hangzhou.aliyuncs.com/common/file-download.png?v=${new Date().getTime()}`,
-					...fileInfo
-				}
-			};
+		onPostAfter: ({ response, options }) => { // eslint-disable-line
+			const { file } = options.param;
+			return new Promise((resolve) => {
+				// 模拟强制返回
+				resolve({
+					status: 1,
+					data: {
+						url: 'https://avatars2.githubusercontent.com/u/34465004?v=4',
+						type: `.${file.name.split('.').pop()}`,
+						uid: file.uid,
+						title: file.name,
+						size: file.size
+					}
+				});
+			});
 		}
 	}
 });

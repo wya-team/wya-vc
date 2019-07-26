@@ -29,6 +29,7 @@
 </template>
 <script>
 import { ajax } from '@wya/http';
+import { random } from 'lodash';
 import Message from '../../message';
 import Upload from '../index';
 import { VcInstance } from '../../vc/index';
@@ -38,11 +39,15 @@ VcInstance.init({
 		URL_UPLOAD_IMG_POST: 'https://api.github.com/users/wya-team',
 		URL_UPLOAD_FILE_POST: 'https://api.github.com/users/wya-team',
 		onPostBefore: ({ options }) => {
+
 			return new Promise((resolve, reject) => {
+				if (random(0, 10) > 10) {
+					throw new Error('异常处理');
+				}
 				resolve({
 					...options,
 					type: 'GET',
-					credentials: 'omit', // cors下关闭
+					credentials: 'omit', //  cors下关闭
 					headers: {
 
 					}

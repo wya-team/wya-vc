@@ -1,6 +1,6 @@
 <template>
 	<vc-transition-fade @after-leave="hide">
-		<div v-if="visible" ref="target" class="vc-upload-tips">
+		<div v-if="isActive" ref="target" class="vc-upload-tips">
 			<div class="vc-upload-tips__header">
 				<span>当前选择上传进度</span>
 				<span @click="hide">&#10005;</span>
@@ -44,7 +44,7 @@ const wrapperComponent = {
 	},
 	data() {
 		return {
-			visible: false,
+			isActive: false,
 			itemArr: [],
 			itemObj: {},
 			success: 0,
@@ -61,7 +61,7 @@ const wrapperComponent = {
 		this.timer = null;
 	},
 	mounted() {
-		// this.visible = true;
+		// this.isActive = true;
 	},
 	destroyed() {
 		this.timer && clearTimeout(this.timer);
@@ -71,7 +71,7 @@ const wrapperComponent = {
 		 * 外部可调用
 		 */
 		show({ itemArr, itemObj }) {
-			this.visible = true;
+			this.isActive = true;
 			this.itemArr = [
 				...this.itemArr, 
 				...itemArr
@@ -85,7 +85,7 @@ const wrapperComponent = {
 		 * 外部可调用
 		 */
 		hide() {
-			this.visible = false;
+			this.isActive = false;
 		},
 		/**
 		 * 外部调用
@@ -98,6 +98,8 @@ const wrapperComponent = {
 					break;
 				case 'success':
 					this.success++;
+					this.itemObj[uid].percent = 100;
+					this.itemObj[uid].msg = '';
 					break;
 				case 'error':
 					this.error++;
