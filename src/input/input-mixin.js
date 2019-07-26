@@ -139,7 +139,8 @@ export default {
 			this.$emit('keypress', e);
 		},
 		handleKeyup(e) {
-			if (e.keyCode == 13) {
+			// 数字键盘
+			if (e.keyCode == 13 || e.keyCode == 108) {
 				this.$emit('enter', e);
 			}
 			this.$emit('keyup', e);
