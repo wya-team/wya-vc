@@ -191,7 +191,6 @@ export default {
 			
 			// reset
 			this.setDefaultCycle();
-
 			
 			this.$emit('begin', postFiles);
 			
@@ -278,19 +277,8 @@ export default {
 				this.$emit('error', { msg: `上传失败，大小限制为${size}MB` });
 				return;
 			}
-			// onFileStart, onFileProgress, onFileSuccess, onFileError, onComplete 
-			let response = {};
-			try {
-				response = await onBefore(file);
-				if (typeof response !== 'object') {
-					throw new VcError('upload', 'onBefore必须返回对象');
-				}
-			} catch (error) {
-				this.handleReject(error, file);
-				this.handleFinally(file);
-				return;
-			}
 			
+			// onFileStart, onFileProgress, onFileSuccess, onFileError, onComplete 
 			this.$emit('file-start', file);
 			
 			ajax({
@@ -298,12 +286,12 @@ export default {
 				type: "FORM",
 				param: {
 					...extra, 
-					...response,
 					[name || FORM_NAME || 'file']: file, // oss特殊场景, 需要file作为最后一个字段
 				},
 				async,
 				headers,
 				localData,
+				onBefore,
 				onAfter,
 				onProgress: e => {
 					this.$emit('file-progress', e, file);

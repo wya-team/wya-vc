@@ -35,48 +35,36 @@ import { VcInstance } from '../../vc/index';
 
 VcInstance.init({
 	Upload: {
-		URL_UPLOAD_IMG_POST: 'https://wyatest.oss-cn-hangzhou.aliyuncs.com',
-		URL_UPLOAD_FILE_POST: 'https://wyatest.oss-cn-hangzhou.aliyuncs.com',
-		onPostAfter: (response = {}, options = {}, xhr = {}) => { // eslint-disable-line
-			console.log(response, options, xhr);
-			if (xhr.status === 200) {
-				return {
+		URL_UPLOAD_IMG_POST: 'https://api.github.com/users/wya-team',
+		URL_UPLOAD_FILE_POST: 'https://api.github.com/users/wya-team',
+		onPostBefore: ({ options }) => {
+			return new Promise((resolve, reject) => {
+				resolve({
+					...options,
+					type: 'GET',
+					credentials: 'omit', // cors下关闭
+					headers: {
+
+					}
+				});
+			});
+		},
+		onPostAfter: ({ response, options }) => { // eslint-disable-line
+			const { file } = options.param;
+			return new Promise((resolve) => {
+				// 模拟强制返回
+				resolve({
 					status: 1,
 					data: {
-						url: `${options.url}/` + options.param.data.key.replace(/\$\{filename\}/, options.param.file.name),
-						type: '.' + options.param.file.name.split('.').pop(),
-						uid: options.param.file.uid,
-						title: options.param.file.name,
-						size: options.param.file.size
+						url: 'https://avatars2.githubusercontent.com/u/34465004?v=4',
+						type: `.${file.name.split('.').pop()}`,
+						uid: file.uid,
+						title: file.name,
+						size: file.size
 					}
-				};
-			}
-			return response;
-		},
-		onPostBefore: (file = {}) => {
-			if (/[@#￥%&+ ]/.test(file.name)) {
-				return new Promise((resolve, reject) => {
-					reject({ msg: '格式错误' }); // eslint-disable-line
 				});
-			}
-			return ajax({
-				url: 'https://oa2.ruishan666.com/_cms/api/image/get-oss-info.json',
-				type: "POST",
-				param: {},
-				headers: {
-					/* eslint-disable max-len */
-					"-token": 'eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJ0aW1lIjoxNTQzNjUwMTQ1LCJzdGFmZl9pZCI6MTJ9.F5TFc9dIFHiGLAZlwy09jk8RcsfMcChzOR0TaYEsO7E',
-				}
-			}).then(res => {
-				return {
-					...res.data,
-					'success_action_status': '200',
-					key: res.data.dir + "${filename}"   // eslint-disable-line
-				};
-			}).catch(error => {
-				return Promise.reject(error);
 			});
-		} // 必须返回对象或Promise对象
+		}
 	}
 });
 
