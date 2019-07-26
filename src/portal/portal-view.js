@@ -42,11 +42,11 @@ export default {
 	},
 
 	render(h) {
-		let attrs = {
-			style: this.$slots.default ? {} : { display: "none" },
-			class: 'vc-portal-view' 
-		};
-
-		return h('div', attrs, this.$slots.default);
+		/**
+		 * 考虑占位的情况下需要渲染default
+		 */
+		return this.$slots.default
+			 ? h('div', { class: 'vc-portal-view' }, this.$slots.default)
+			 : null;
 	}
 };

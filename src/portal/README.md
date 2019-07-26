@@ -35,7 +35,7 @@ cName | 自定义cName, 替代先前cName | `string` | -
 ```vue
 <template>
 	<vc-portal-view>
-		<div>222</div>
+		<div>placeholder</div>
 		<template #content>
 			<p>{{ date }}</p>
 			<p>{{ random }}</p>

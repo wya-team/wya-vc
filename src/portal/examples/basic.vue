@@ -30,14 +30,13 @@
 				<p>{{ random }}</p>
 			</template>
 		</vc-portal-view>
-
 		<vc-portal-view>
-			<div>placeholder</div>
 			<template #content>
 				<p>{{ date }}</p>
 				<p>{{ random }}</p>
 			</template>
 		</vc-portal-view>
+		
 	</div>
 </template>
 <script>
