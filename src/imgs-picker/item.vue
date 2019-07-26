@@ -46,10 +46,10 @@ export default {
 		'vc-icon': Icon,
 	},
 	props: {
-		imgClassName: String | Object | Array,
+		imgClassName: [String, Object, Array],
 		disabled: Boolean,
 		it: {
-			type: String | Object,
+			type: [String, Object],
 			default: ''
 		}
 	},
