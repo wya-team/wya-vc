@@ -23,10 +23,9 @@
 			@click="handleTestingEnd"
 		>结束测试</vc-button>
 
-		<vc-portal-view duplicate>
+		<vc-portal-view>
 			<div>placeholder</div>
-			<template #content="{ outside }">
-				<p>outside: {{ outside }}</p>
+			<template #content>
 				<p>{{ date }}</p>
 				<p>{{ random }}</p>
 			</template>

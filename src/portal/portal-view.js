@@ -4,8 +4,7 @@ import { getUid } from '../utils';
 const WRAPPER_COMPONENT = { 
 	name: 'vc-portal-slot',
 	render(h) {
-		let fn = this.$scopedSlots.content;
-		return h('div', fn && fn({ outside: true }));
+		return h('div', this.$slots.content);
 	}
 };
 
@@ -13,27 +12,24 @@ export default {
 	name: 'vc-portal-view',
 	inheritAttrs: true,
 	props: {
-		/**
-		 * 特殊场景使用，切换页面时避免抖动（闪白），默认不操作
-		 */
-		duplicate: {
-			type: Boolean,
-			default: false
-		}
+		
 	},
 	created() {
 		if (this.wrapper) return; // 避免HRM重复注入
 		this.wrapper = new Portal(WRAPPER_COMPONENT, {
 			cName: getUid('portal-view'),
 			multiple: false,
-			promise: false
+			promise: false,
+			// 避免在路由切换时被卸载闪白
+			autoDestroy: false
 		});
 	},
 
 	mounted() {
 		if (this.vm) return; // 避免HRM重复注入
 		this.vm = this.wrapper.popup({
-			$scopedSlots: this.$scopedSlots,
+			$slots: this.$slots,
+			// $scopedSlots: this.$scopedSlots,
 			$parent: this.$parent,
 		});
 		// 需要触发一次，才可以建立关系
@@ -50,11 +46,7 @@ export default {
 			style: this.$slots.default ? {} : { display: "none" },
 			class: 'vc-portal-view' 
 		};
-		let children = [this.$slots.default];
-		if (this.duplicate && this.$scopedSlots.content) {
-			children.push(this.$scopedSlots.content({ outside: false }));
-		}
 
-		return h('div', attrs, children);
+		return h('div', attrs, this.$slots.default);
 	}
 };
