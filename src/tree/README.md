@@ -49,7 +49,7 @@ isLeaf | 指定节点是否为叶子节点，仅在指定了 lazy 属性的情�
 
 属性 | 说明 | 参数 | 返回值
 ---|---|---|---
-filter | 对树节点进行筛选操作 | 接收一个任意类型的参数，该参数会在 filter-node-method 中作为第一个参数 | - | -
+filter | 对树节点进行筛选操作 | 接收一个任意类型的参数，该参数会在 filter-node 中作为第一个参数 | - | -
 updateKeyChildren | 通过 keys 设置节点子元素，使用此方法必须设置 node-key 属性 | (key, data) 接收两个参数，1. 节点 key 2. 节点数据的数组 | - | -
 getCheckedNodes | 若节点可被选择（即 `show-checkbox` 为 `true`），则返回目前被选中的节点所组成的数组 | (leafOnly, includeHalfChecked) 接收两个 boolean 类型的参数，1. 是否只是叶子节点，默认值为 `false` 2. 是否包含半选节点，默认值为 `false` | - | -
 setCheckedNodes | 设置目前勾选的节点，使用此方法必须设置 node-key 属性 | (nodes) 接收勾选节点数据的数组 | - | -
