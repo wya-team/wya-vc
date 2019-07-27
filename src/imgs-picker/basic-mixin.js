@@ -205,7 +205,7 @@ export default {
 			let { enhancer } = VcInstance.config.ImgsPreview || {};
 
 			enhancer = this.imgsPreviewOpts.enhancer || enhancer || (() => false);
-			let images = this.dataSource.map(item => ({ src: item }));
+			let images = this.getPreviewData().map(item => ({ src: item }));
 			enhancer(index, images, this) || this.previewByPS(e, index);
 		},
 		previewByPS(e, index) {
@@ -224,7 +224,7 @@ export default {
 			this.$emit('open');
 			ImgsPreview.open({
 				visible: true,
-				dataSource: this.dataSource,
+				dataSource: this.getPreviewData(),
 				opts: {
 					index,
 					history: false,
@@ -238,6 +238,11 @@ export default {
 			return this.formatter 
 				? this.formatter(res) 
 				: res.data.url;
+		},
+
+		// 拿到可预览的图片，供预览组件使用
+		getPreviewData() {
+			return this.currentValue.filter(it => typeof it === 'string').map((src) => src);
 		},
 
 		sync(v) {
