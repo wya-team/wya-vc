@@ -89,7 +89,6 @@ export default {
 					value = parentW * (1 + widthNumber * this.scale) / 2 + this.gutter;
 				} else {
 					value = -(parentW * ((widthNumber * this.scale - 1) / 2 + widthNumber)) - this.gutter;
-					console.log(value, 'value');
 				}
 			} else if (index < activeIndex) {
 				value = parentW * (1 - widthNumber) / 2;
