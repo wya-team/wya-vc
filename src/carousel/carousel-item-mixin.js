@@ -38,14 +38,14 @@ export default {
 			return this.$parent.vertical;
 		},
 		isCard() {
-			return this.$parent.type === 'card';
+			return this.$parent.card;
 		},
 		isMove() {
 			return this.$parent.offset !== 0;
 		},
 		itemStyle() {
 			const translateType = this.isVertical ? 'translateY' : 'translateX';
-			if (this.$parent.type === 'card') {
+			if (this.$parent.card) {
 				return {
 					[TRANSFORM]: `${translateType}(${this.translate}px) scale(${this.currentScale})`,
 					width: this.width

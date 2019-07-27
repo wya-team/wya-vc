@@ -17,7 +17,7 @@
 		<br>
 		<br>
 		<div>
-			<vcm-carousel :t="4" :height="200" type="card">
+			<vcm-carousel :t="4" :height="200" card>
 				<vcm-carousel-item v-for="item in 6" :key="item">
 					<h3 class="medium">{{ item }}</h3>
 				</vcm-carousel-item>

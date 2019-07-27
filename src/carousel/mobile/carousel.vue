@@ -32,7 +32,7 @@
 				</button>
 			</li>
 		</ul>
-		<div v-if="type !== 'card' && indicator" class="vcm-carousel__indicator">
+		<div v-if="!card && indicator" class="vcm-carousel__indicator">
 			{{ activeIndex + 1 }} / {{ items.length }}
 		</div>
 	</div>

@@ -7,7 +7,7 @@ export default {
 			type: Number,
 			default: 3
 		},
-		type: String,
+		card: Boolean,
 		height: [String, Number],
 		initialIndex: {
 			type: Number,
@@ -64,7 +64,7 @@ export default {
 			if (this.hasLabel) {
 				classes.push('is-labels');
 			}
-			if (this.dots === 'outside' || this.type === 'card') {
+			if (this.dots === 'outside' || this.card) {
 				classes.push('is-outside');
 			}
 			return classes;
