@@ -2,9 +2,9 @@
 	<div
 		:class="`is-${direction}`"
 		class="vcm-carousel"
-		@touchstart.stop="e => handleStart(e.touches[0])"
-		@touchmove.stop="e => _handleMove(e)"
-		@touchend.stop="e => handleEnd(e.changedTouches[0])"
+		@touchstart.stop="_handleStart"
+		@touchmove.stop="_handleMove"
+		@touchend.stop="_handleEnd"
 	>
 		<div
 			:style="{ height: height ? `${height}px` : 'auto' }"
@@ -54,18 +54,44 @@ export default {
 			default: true
 		}
 	},
+	data() {
+		return {
+			
+		};
+	},
+	created() {
+		/**
+		 * 0：未滚动
+		 * 1：页面滚动
+		 * 2：轮播滚动
+		 */
+		this.scrollStatus = 0; 
+	},
 	methods: {
+		_handleStart(e) {
+			this.handleStart(e.touches[0]);
+			this.scrollStatus = 0;
+		},
 		_handleMove(e) {
 			let absX = Math.abs(e.touches[0].screenX - this.startX);
 			let absY = Math.abs(e.touches[0].screenY - this.startY);
 
-			if (!this.vertical && absX > absY) {
+			if (!this.vertical && absX > absY && this.scrollStatus != 1) {
 				e.preventDefault();
-			} else if (this.vertical && absY > absX) {
+				this.handleMove(e.touches[0]);
+				this.scrollStatus = 2;
+				return;
+			} else if (this.vertical && absY > absX) { // loop下为false,可以考虑触底
 				e.preventDefault();
+				this.handleMove(e.touches[0]);
+				return;
+			} else if (this.scrollStatus === 0) {
+				this.scrollStatus = 1;
 			}
-
-			this.handleMove(e.touches[0]);
+		},
+		_handleEnd(e) {
+			this.handleEnd(e.changedTouches[0]);
+			this.scrollStatus = 0;
 		}
 	}
 };
