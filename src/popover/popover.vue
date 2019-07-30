@@ -36,7 +36,8 @@ export default {
 			'arrow',
 			'portalClassName',
 			'portalStyle',
-			'autoWidth'
+			'autoWidth',
+			'always'
 		]),
 		trigger: {
 			type: String,
@@ -60,13 +61,13 @@ export default {
 	computed: {
 		// trigger切换, Vue同时会对相关事件卸载
 		isHover() {
-			return this.trigger === 'hover';
+			return this.trigger === 'hover' && !this.always;
 		},
 		isClick() {
-			return this.trigger === 'click';
+			return this.trigger === 'click' && !this.always;
 		},
 		isFocus() {
-			return this.trigger === 'focus';
+			return this.trigger === 'focus' && !this.always;
 		}
 	},
 	watch: {
@@ -132,6 +133,7 @@ export default {
 		 * visible: true, false, undefined(处理 doc click)
 		 */
 		handleChange(e = {}, { visible, context }) {
+			visible = this.always || visible;
 			if (this.disabled) return;
 
 			this.isHover && this.timer && clearTimeout(this.timer);

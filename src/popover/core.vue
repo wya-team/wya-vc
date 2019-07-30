@@ -92,6 +92,7 @@ const wrapperComponent = {
 			default: false
 		},
 		hover: Boolean,
+		always: Boolean,
 		portalClassName: [Object, String, Array],
 		portalStyle: Object,
 	},

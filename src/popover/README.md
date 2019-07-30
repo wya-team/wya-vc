@@ -17,6 +17,7 @@ getPopupContainer | 浮层渲染父节点 | `func` | 无
 portal | 是否渲染到body上，默认body | `boolean` | 无
 arrow | 浮层有无箭头 | `boolean` | `true`
 theme | 颜色主体`light` `dark` | `string` | `light`
+always | 弹层不隐藏 | `boolean` | `false`
 
 
 #### 事件

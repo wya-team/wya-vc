@@ -8,6 +8,7 @@
 					:get-popup-container="getPopupContainer"
 					:visible="true" 
 					:trigger="trigger"
+					always
 					placement="left-top"
 					content="LeftTop"
 					theme="dark"
