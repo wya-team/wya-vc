@@ -70,22 +70,27 @@ export default {
 		normalize(data) {
 			const { childrenColumnName, lazyColumnIdentifier, rowKey, lazy } = this.states;
 			const res = {};
-			walkTreeNode(data, (parent, children, level) => {
-				const parentId = getRowIdentity(parent, rowKey);
-				if (Array.isArray(children)) {
-					res[parentId] = {
-						children: children.map(row => getRowIdentity(row, rowKey)),
-						level
-					};
-				} else if (lazy) {
-					// 当 children 不存在且 lazy 为 true，该节点即为懒加载的节点
-					res[parentId] = {
-						children: [],
-						lazy: true,
-						level
-					};
-				}
-			}, childrenColumnName, lazyColumnIdentifier);
+			walkTreeNode(
+				data, 
+				(parent, children, level) => {
+					const parentId = getRowIdentity(parent, rowKey);
+					if (Array.isArray(children)) {
+						res[parentId] = {
+							children: children.map(row => getRowIdentity(row, rowKey)),
+							level
+						};
+					} else if (lazy) {
+						// 当 children 不存在且 lazy 为 true，该节点即为懒加载的节点
+						res[parentId] = {
+							children: [],
+							lazy: true,
+							level
+						};
+					}
+				}, 
+				childrenColumnName, 
+				lazyColumnIdentifier
+			);
 			return res;
 		},
 
@@ -108,52 +113,54 @@ export default {
 			const nested = this.normalizedData;
 			const normalizedLazyNode = this.normalizedLazyNode;
 			const keys = Object.keys(nested);
-			if (!keys.length) return;
-			const { treeData: oldTreeData, defaultExpandAll, expandRowKeys, lazy } = this.states;
 			const newTreeData = {};
-			const rootLazyRowKeys = [];
-			const getExpanded = (oldValue, key) => {
-				const included = defaultExpandAll || (expandRowKeys && expandRowKeys.indexOf(key) !== -1);
-				return !!((oldValue && oldValue.expanded) || included);
-			};
-			// 合并 expanded 与 display，确保数据刷新后，状态不变
-			keys.forEach(key => {
-				const oldValue = oldTreeData[key];
-				const newValue = { ...nested[key] };
-				newValue.expanded = getExpanded(oldValue, key);
-				if (newValue.lazy) {
-					const { loaded = false, loading = false } = oldValue || {};
-					newValue.loaded = !!loaded;
-					newValue.loading = !!loading;
-					rootLazyRowKeys.push(key);
-				}
-				newTreeData[key] = newValue;
-			});
-			// 根据懒加载数据更新 treeData
-			const lazyKeys = Object.keys(normalizedLazyNode);
-			if (lazy && lazyKeys.length && rootLazyRowKeys.length) {
-				lazyKeys.forEach(key => {
+			if (keys.length) {
+				const { treeData: oldTreeData, defaultExpandAll, expandRowKeys, lazy } = this.states;
+				const rootLazyRowKeys = [];
+				const getExpanded = (oldValue, key) => {
+					const included = defaultExpandAll || (expandRowKeys && expandRowKeys.indexOf(key) !== -1);
+					return !!((oldValue && oldValue.expanded) || included);
+				};
+				// 合并 expanded 与 display，确保数据刷新后，状态不变
+				keys.forEach(key => {
 					const oldValue = oldTreeData[key];
-					const lazyNodeChildren = normalizedLazyNode[key].children;
-					if (rootLazyRowKeys.includes(key)) {
-						// 懒加载的 root 节点，更新一下原有的数据，原来的 children 一定是空数组
-						if (newTreeData[key].children.length !== 0) {
-							throw new VcError('table', 'children需要为空数组');
-						}
-						newTreeData[key].children = lazyNodeChildren;
-					} else {
+					const newValue = { ...nested[key] };
+					newValue.expanded = getExpanded(oldValue, key);
+					if (newValue.lazy) {
 						const { loaded = false, loading = false } = oldValue || {};
-						newTreeData[key] = {
-							lazy: true,
-							loaded: !!loaded,
-							loading: !!loading,
-							expanded: getExpanded(oldValue, key),
-							children: lazyNodeChildren,
-							level: ''
-						};
+						newValue.loaded = !!loaded;
+						newValue.loading = !!loading;
+						rootLazyRowKeys.push(key);
 					}
+					newTreeData[key] = newValue;
 				});
+				// 根据懒加载数据更新 treeData
+				const lazyKeys = Object.keys(normalizedLazyNode);
+				if (lazy && lazyKeys.length && rootLazyRowKeys.length) {
+					lazyKeys.forEach(key => {
+						const oldValue = oldTreeData[key];
+						const lazyNodeChildren = normalizedLazyNode[key].children;
+						if (rootLazyRowKeys.includes(key)) {
+							// 懒加载的 root 节点，更新一下原有的数据，原来的 children 一定是空数组
+							if (newTreeData[key].children.length !== 0) {
+								throw new VcError('table', 'children需要为空数组');
+							}
+							newTreeData[key].children = lazyNodeChildren;
+						} else {
+							const { loaded = false, loading = false } = oldValue || {};
+							newTreeData[key] = {
+								lazy: true,
+								loaded: !!loaded,
+								loading: !!loading,
+								expanded: getExpanded(oldValue, key),
+								children: lazyNodeChildren,
+								level: ''
+							};
+						}
+					});
+				}
 			}
+			
 			this.states.treeData = newTreeData;
 			this.updateTableScrollY();
 		},
@@ -173,7 +180,7 @@ export default {
 			const id = getRowIdentity(row, rowKey);
 			const data = id && treeData[id];
 			const oldExpanded = treeData[id].expanded;
-			if (id && data && ('expanded' in data)) {
+			if (id && data && 'expanded' in data) {
 				expanded = typeof expanded === 'undefined' ? !data.expanded : expanded;
 				treeData[id].expanded = expanded;
 				if (oldExpanded !== expanded) {
@@ -188,7 +195,7 @@ export default {
 			const { lazy, treeData, rowKey } = this.states;
 			const id = getRowIdentity(row, rowKey);
 			const data = treeData[id];
-			if (lazy && data && ('loaded' in data) && !data.loaded) {
+			if (lazy && data && 'loaded' in data && !data.loaded) {
 				this.loadData(row, id, data);
 			} else {
 				this.toggleTreeExpansion(row);
@@ -202,7 +209,7 @@ export default {
 				treeData[key].loading = true;
 				let promise = this.table.loadExpand(row, treeNode);
 
-				let fn = (data) => {
+				let fn = data => {
 					if (!Array.isArray(data)) {
 						throw new VcError('table', 'data必须是数组');
 					}
@@ -231,7 +238,7 @@ export default {
 				};
 
 				if (promise && promise.then) {
-					promise.then((data) => fn(data)).catch(e => {
+					promise.then(data => fn(data)).catch(e => {
 						throw new VcError('table', e);
 					});
 				} else if (Array.isArray(data)) {

@@ -1,12 +1,13 @@
 <template>
 	<div style="padding: 20px">
 		<h1>Tree</h1>
-		<vc-button @click="expandSelectable = !expandSelectable">expandSelectable: {{ expandSelectable }}</vc-button>
+		<vc-button @click="expandSelectable = !expandSelectable, key++">expandSelectable: {{ expandSelectable }}</vc-button>
+		<vc-button @click="handleUpdate">update</vc-button>
 		<br>
 		<br>
 		<vc-table
 			ref="table"
-			:key="expandSelectable"
+			:key="key"
 			:data-source="dataSource"
 			:load-expand="loadExpand"
 			:expand-selectable="expandSelectable"
@@ -56,7 +57,17 @@ export default {
 		return {
 			expandSelectable: true,
 			treeWidth: 180,
-			dataSource: [
+			key: 1,
+			dataSource: this.getData(),
+
+		};
+	},
+	mounted() {
+		window.store = this.$refs.table.store;
+	},
+	methods: {
+		getData() {
+			return [
 				{
 					id: 1,
 					date: `${new Date().getTime()}`,
@@ -97,13 +108,9 @@ export default {
 					name: `代号 - ${random(0, 10000)}`,
 					address: `祥园路${random(0, 10000)}号`,
 				}
-			]
-		};
-	},
-	mounted() {
-		window.store = this.$refs.table.store;
-	},
-	methods: {
+			];
+		},
+
 		loadExpand(tree, treeNode) {
 			console.log(tree, treeNode, /loadExpand/);
 			return new Promise((resolve, reject) => {
@@ -132,6 +139,10 @@ export default {
 		},
 		handleExpandChange(row, expandedRows, maxLevel) {
 			this.treeWidth = 180 + maxLevel * 20;
+		},
+		handleUpdate() {
+			this.key++; 
+			this.dataSource = this.getData();
 		}
 	}
 };
