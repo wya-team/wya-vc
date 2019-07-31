@@ -61,12 +61,12 @@
 							<vc-button
 								v-if="cancelText"
 								style="margin-right: 8px;"
-								@click="handleCancel"
+								@click="handleBefore($event, handleCancel)"
 							>{{ cancelText }}</vc-button>
 							<vc-button 
 								v-if="okText"
 								type="primary"
-								@click="handleOk"
+								@click="handleBefore($event, handleOk)"
 							>{{ okText }}</vc-button>
 						</slot>
 					</div>
@@ -329,20 +329,14 @@ export default {
 				this.handleClose(e, true);
 			}
 		},
-		/**
-		 * 用户点击确定的回调
-		 * 同时sure兼容portal设计
-		 */
-		handleOk(e) {
-			let { $listeners: { ok }, onOk } = this;
-			ok = ok || onOk; // 兼容portal
+
+		handleBefore(e, hook) {
 			let callback = () => {
 				this.isActive = false;
-				this.$emit('sure');
 			};
-			let fn = ok && ok(e, callback);
 
-			// loading效果由vc-btn触发
+			let fn = hook && hook(e, callback);
+
 			if (fn && fn.then) {
 				return fn.then((res) => {
 					return res;
@@ -353,6 +347,28 @@ export default {
 				callback();
 			}
 		},
+
+		/**
+		 * 用户点击确定的回调
+		 * 同时sure兼容portal设计
+		 */
+		handleOk(...rest) {
+			let { $listeners: { ok }, onOk } = this;
+			ok = ok || onOk || (() => {}); // 兼容portal
+
+			return ok(...rest);
+		},
+
+		/**
+		 * 用户点击取消按钮时为取消
+		 */
+		handleCancel(...rest) {
+			let { $listeners: { cancel }, onCancel } = this;
+			cancel = cancel || onCancel || (() => {}); // 兼容portal
+
+			return cancel(...rest);
+		},
+
 		/**
 		 * 关闭事件
 		 */
@@ -363,18 +379,15 @@ export default {
 					&& e.target.classList.contains('vc-modal__wrapper')
 				)
 			) {
-				this.isActive = false;
 				// 用户主要取消与关闭事件关联
-				this.closeWithCancel && this.cancel();
+				if (this.closeWithCancel) {
+					this.handleBefore(e, this.handleCancel);
+				} else {
+					this.isActive = false;
+				}
 			}
 		},
-		/**
-		 * 用户点击取消按钮时为取消
-		 */
-		handleCancel() {
-			this.isActive = false;
-			this.cancel();
-		},
+
 		/**
 		 * 动画执行后关闭, 关闭事件都会被执行
 		 * visible-change 由移除之后触发
@@ -385,13 +398,6 @@ export default {
 				this.$emit('close'),
 				this.$emit('visible-change', false)
 			);
-		},
-		/**
-		 * 取消兼容
-		 */
-		cancel() {
-			const { onCancel } = this;
-			onCancel ? onCancel() : this.$emit('cancel');
 		},
 
 		/**

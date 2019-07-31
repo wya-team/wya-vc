@@ -87,18 +87,22 @@ export default {
 				closeWithCancel: true,
 				portalClassName: 'is-padding-none',
 				// draggable: true,
-				onOk: (e, callback) => {
+				onOk: (e, done) => {
 					console.log('ok');
 					return new Promise((resolve, reject) => {
 						setTimeout(() => {
-							callback();
+							done();
 							resolve();
 						}, 1000);
 					});
 				},
-				onCancel: () => {
-					console.log('cancel');
-				}
+				onCancel: (e, done) => {
+					setTimeout(() => {
+						done();
+						console.log('cancel');
+					}, 3000);
+					return true;
+				},
 			});
 		},
 		handleClose() {

@@ -95,8 +95,12 @@ export default {
 				onOk: () => {
 					console.log('点击确定这个按钮时回调');
 				},
-				onCancel: () => {
-					console.log('点击确定这个按钮时回调');
+				onCancel: (e, done) => {
+					setTimeout(() => {
+						done();
+						console.log('点击确定这个按钮时回调');
+					}, 3000);
+					return true;
 				},
 				onClose: () => {
 					console.log('关闭后都会触发');

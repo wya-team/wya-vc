@@ -49,7 +49,7 @@
 									:key="index"
 									:style="item.style"
 									class="vcm-modal__button"
-									@click="handleClickWithPromise($event, item.onPress)"
+									@click="handleBefore($event, item.onPress)"
 									v-html="item.text"
 								/>
 							</slot>
@@ -63,7 +63,7 @@
 								:style="item.style"
 								:key="index"
 								class="vcm-modal__button"
-								@click="handleClickWithPromise($event, item.onPress)"
+								@click="handleBefore($event, item.onPress)"
 								v-html="item.text"
 							/>
 						</div>
@@ -193,8 +193,7 @@ export default {
 		}
 	},
 	methods: {
-		handleClickWithPromise(e, hook) {
-
+		handleBefore(e, hook) {
 			let callback = () => {
 				this.isActive = false;
 			};
@@ -236,9 +235,12 @@ export default {
 					&& e.target.classList.contains('vcm-modal__wrapper')
 				)
 			) {
-				this.isActive = false;
 				// 用户主要取消与关闭事件关联
-				this.closeWithCancel && this.handleCancel();
+				if (this.closeWithCancel) {
+					this.handleBefore(e, this.handleCancel);
+				} else {
+					this.isActive = false;
+				}
 			}
 		},
 		/**
