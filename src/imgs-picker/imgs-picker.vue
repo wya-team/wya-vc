@@ -18,10 +18,11 @@
 		</template>
 		<vc-sort-list 
 			v-else 
-			v-model="currentValue" 
+			:data-source="currentValue" 
 			:mask="mask" 
 			value-key="uid" 
 			class="is-sort"
+			@change="handleSortChange"
 		>
 			<template #default="{ it, index }">
 				<vc-imgs-picker-item 
@@ -116,6 +117,10 @@ export default {
 					
 				fn(this);
 			} 
+		},
+		handleSortChange(imgs) {
+			this.currentValue = imgs;
+			this.$emit('change', imgs.filter(img => typeof img === 'string'));
 		}
 	}
 
