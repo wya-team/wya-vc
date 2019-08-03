@@ -29,7 +29,23 @@ import Transition from '../../transition';
 import BasicMixin from '../basic-mixin';
 
 polyfill({
-	dragImageTranslateOverride: scrollBehaviourDragImageTranslateOverride
+	dragImageTranslateOverride: scrollBehaviourDragImageTranslateOverride,
+	tryFindDraggableTarget: e => {
+		let el = e.target;
+		/* eslint-disable no-cond-assign, no-continue */
+		do {
+			if (el.draggable === false) {
+				continue;
+			}
+			// img 标签 draggable默认为true, 避免影响
+			// if (el.draggable === true) {
+			// 	return el;
+			// }
+			if (el.getAttribute && el.getAttribute("draggable") === "true") {
+				return el;
+			}
+		} while ((el = el.parentNode) && el !== document.body); 
+	}
 });
 
 /**
