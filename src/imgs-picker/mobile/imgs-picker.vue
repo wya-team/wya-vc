@@ -61,7 +61,6 @@
 import BasicMixin from '../basic-mixin';
 import Upload from '../../upload/index';
 import Icon from '../../icon/index';
-import Progress from '../../progress/index';
 import Spin from '../../spin/index';
 
 export default {
@@ -69,7 +68,6 @@ export default {
 	components: {
 		'vc-upload': Upload,
 		'vc-icon': Icon,
-		'vc-progress': Progress,
 		'vc-spin': Spin
 	},
 	mixins: [BasicMixin],

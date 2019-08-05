@@ -73,14 +73,12 @@ import { Clipboard } from 'wya-vc';
 ---|---|---|---
 [Button][Button] | 按钮 | 1 | -
 [Icon][Icon] | 图标 | 1 | -
-[Dropdown][Dropdown] | 下拉菜单 | 1 | -
 
 - 导航
 
 名称 | 说明 | 开发 | 计划
 ---|---|---|---
 [Affix][Affix] | 图钉 | 0 | -
-[Page][Page] | 分页 | 1 | -
 [BackTop][BackTop] | 回到顶部 | 0 | -
 
 - 数据录入
@@ -105,7 +103,6 @@ import { Clipboard } from 'wya-vc';
 [TimePicker][TimePicker] | 时间选择器 | 1 | -
 [TreeSelect][TreeSelect] | 树选择 | 1 | -
 [Textarea][Textarea] | 多行文本 | 1 | -
-[Upload][Upload] | 上传 | 1 | -
 
 - 数据展示
 
@@ -115,21 +112,20 @@ import { Clipboard } from 'wya-vc';
 [Card][Card] | 卡片 | - | -
 [Carousel][Carousel] | 轮播 | - | -
 [Collapse][Collapse] | 折叠面板 | - | -
-[Customer][Customer] | 折叠面板 | - | -
 [Countdown][Countdown] | 倒计时 | - | -
+[Dropdown][Dropdown] | 下拉菜单 | 1 | -
 [Echarts][Echarts] | 图表 | - | -
 [Expand][Expand] | 展开 | - | -
 [HtmlImg][HtmlImg] | html2canvas | - | -
 [ImgsCrop][ImgsCrop] | 图片裁剪 | - | -
 [ImgsPreview][ImgsPreview] | 图片预览 | - | -
 [List][List] | 列表 | - | -
-[Popup][Popup] | 弹窗 | 1 | -
+[Page][Page] | 分页 | 1 | -
 [Popover][Popover] | 气泡卡片 | - | -
 [Table][Table] | 表格 | - | -
 [Tabs][Tabs] | 选项卡 | - | -
 [Tag][Tag] | 标签 | - | -
 [Tree][Tree] | 树形 | - | -
-
 
 - 组合
 
@@ -145,20 +141,23 @@ import { Clipboard } from 'wya-vc';
 ---|---|---|---
 [Clipboard][Clipboard] | 剪切板 | 1 | -
 [Customer][Customer] | 自定义组件 | 1 | -
-[Portal][Portal] | 传送门组件 | 1 | -
 [Fragment][Fragment] | 空节点 | 1 | Vue 3.x废除
+[Portal][Portal] | 传送门组件 | 1 | -
 [Print][Print] | 打印 | 1 | -
 [Touch][Touch] | 手势 | 1 | -
 [Transition][Transition] | 动画 | 1 | 同animate.css优化api
+[Upload][Upload] | 上传 | 1 | -
 
 - 反馈
 
 名称 | 说明 | 开发 | 计划
 ---|---|---|---
+[Drawer][Drawer] | 抽屉 | 1 | -
+[Marquee][Marquee] | 滚动提示 | - | -
 [Message][Message] | 轻提示 | 1 | -
 [Modal][Modal] | 模态框 | 1 | -
-[Drawer][Drawer] | 抽屉 | 1 | -
 [Popconfirm][Popconfirm] | 气泡确认框 | 1 | -
+[Popup][Popup] | 弹窗 | 1 | -
 [Progress][Progress] | 进度条 | 1 | -
 [Spin][Spin] | 加载中 | 1 | -
 [Skeleton][Skeleton] | 骨架屏 | 0 | -
@@ -241,9 +240,6 @@ import { Clipboard } from 'wya-vc';
 [Carousel]: https://github.com/wya-team/wya-vc/tree/master/src/carousel/
 [HtmlImg]: https://github.com/wya-team/wya-vc/tree/master/src/html-img/
 [List]: https://github.com/wya-team/wya-vc/tree/master/src/list/
-
 [Skeleton]: https://github.com/wya-team/wya-vc/tree/master/src/
 [BackTop]: https://github.com/wya-team/wya-vc/tree/master/src/
-
-
-
+[Marquee]: https://github.com/wya-team/wya-vc/tree/master/src/marquee/

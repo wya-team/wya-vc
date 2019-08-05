@@ -71,7 +71,6 @@ import BasicMixin from './basic-mixin';
 import Upload from '../upload/index';
 import Icon from '../icon/index';
 import { VcInstance } from '../vc/index';
-import Progress from '../progress/index';
 import SortList from '../sort-list/index';
 import Item from "./item";
 
@@ -80,7 +79,6 @@ export default {
 	components: {
 		'vc-upload': Upload,
 		'vc-icon': Icon,
-		'vc-progress': Progress,
 		'vc-sort-list': SortList,
 		'vc-imgs-picker-item': Item
 	},
