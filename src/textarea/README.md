@@ -19,6 +19,7 @@ autosize | textarea 自动是适应高度，可传入对象 {maxRows:2; minRows:
 rows | textarea 默认行数 | `Number` | 1
 indicator | `vc-input`特有，类型为对象是`{inverted: false}` | `Boolean | Object` | false
 indicateClassName | 计数文字的样式 | `String` | -
+bytes | 是否2个字节算一个字 | `Boolean` | false
 
 #### 事件
 

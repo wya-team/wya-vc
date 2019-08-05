@@ -70,6 +70,11 @@ export default {
 		focusEnd: {
 			type: Boolean,
 			default: false
+		},
+		// 是否按字节数计算长度，1个长度 = 2个字节，影响maxlength
+		bytes: {
+			type: Boolean,
+			default: false
 		}
 	},
 	data() {
@@ -98,6 +103,21 @@ export default {
 				'is-disabled': this.disabled
 			};
 		},
+		// 单字节换成双字节 maxlength 需要额外加的长度
+		extraLength() {
+			let charArr = String(this.currentValue).match(/[\x20-\x7e]/g) || [];
+			let charLength = charArr.length;
+			if (charLength % 2 === 0) {
+				return charLength / 2;
+			}
+			return (charLength + 1) / 2;
+		},
+		// 输入框内容允许输入的长度
+		length() {
+			if (!this.maxlength) return undefined;
+			if (!this.bytes) return this.maxlength;
+			return this.maxlength + this.charLength;
+		},
 		hooks() {
 			return {
 				keyup: this.handleKeyup,
@@ -120,7 +140,7 @@ export default {
 				type: this.type,
 				placeholder: this.placeholder,
 				disabled: this.disabled,
-				maxlength: this.maxlength,
+				maxlength: this.length,
 				readonly: this.readonly,
 				name: this.name,
 				// value: this.currentValue, // 频率高
