@@ -32,9 +32,10 @@ export default {
 	computed: {
 		indicatorNum() {
 			let currentLength = (String(this.value) || '').length;
+			let extraLength = this.bytes ? this.extraLength : 0;
 			let length = this.indicator && this.indicator.inverted 
-				? this.maxlength + this.extraLength - currentLength 
-				: currentLength - this.extraLength;
+				? this.maxlength + extraLength - currentLength 
+				: currentLength - extraLength;
 			return `${length}/${this.maxlength}`;
 		},
 		indicateInline() {
