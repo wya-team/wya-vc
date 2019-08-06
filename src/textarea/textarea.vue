@@ -5,6 +5,7 @@
 				<textarea
 					ref="textarea"
 					:value="currentValue"
+					:maxlength="curMaxlength"
 					:style="textareaStyle"
 					v-bind="binds"
 					v-on="hooks"
@@ -32,7 +33,7 @@ export default {
 	computed: {
 		indicatorNum() {
 			let currentLength = (String(this.value) || '').length;
-			let extraLength = this.bytes ? this.extraLength : 0;
+			let extraLength = this.bytes ? this.getExtraLength() || 0 : 0;
 			let length = this.indicator && this.indicator.inverted 
 				? this.maxlength + extraLength - currentLength 
 				: currentLength - extraLength;

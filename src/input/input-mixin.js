@@ -1,9 +1,10 @@
 import Extends from '../extends';
+import BytesMixin from './input-bytes-mixin';
 import Icon from '../icon/index';
 import Transition from '../transition/index';
 
 export default {
-	mixins: [...Extends.mixins(['emitter'])],
+	mixins: [...Extends.mixins(['emitter']), BytesMixin],
 	props: {
 		type: {
 			type: String,
@@ -92,6 +93,7 @@ export default {
 				 * 强制必须使用v-model，所以不需要判断一次
 				 */
 				this.currentValue = v;
+				this.curMaxlength = this.getMaxLength();
 				this.allowDispatch && this.dispatch('vc-form-item', 'form-change', v);
 			}
 		}
@@ -102,21 +104,6 @@ export default {
 				'is-focus': this.isFocus,
 				'is-disabled': this.disabled
 			};
-		},
-		// 单字节换成双字节 maxlength 需要额外加的长度
-		extraLength() {
-			let charArr = String(this.currentValue).match(/[\x20-\x7e]/g) || [];
-			let charLength = charArr.length;
-			if (charLength % 2 === 0) {
-				return charLength / 2;
-			}
-			return (charLength + 1) / 2;
-		},
-		// 输入框内容允许输入的长度
-		length() {
-			if (!this.maxlength) return undefined;
-			if (!this.bytes) return this.maxlength;
-			return this.maxlength + this.extraLength;
 		},
 		hooks() {
 			return {
@@ -130,6 +117,7 @@ export default {
 				compositionend: this.handleComposition,
 				input: this.handleInput,
 				change: this.handleChange,
+				paste: this.handlePaste
 			};
 		},
 		binds() {
@@ -140,7 +128,7 @@ export default {
 				type: this.type,
 				placeholder: this.placeholder,
 				disabled: this.disabled,
-				maxlength: this.length,
+				// maxlength: this.curMaxlength, // 频率高
 				readonly: this.readonly,
 				name: this.name,
 				// value: this.currentValue, // 频率高
@@ -197,7 +185,11 @@ export default {
 		handleInput(e) {
 			if (this.isOnComposition) return;
 			let value = e.target.value;
-
+			if (!this.checkInput(value)) {
+				e.preventDefault();
+				this.$forceUpdate(); // hack
+				return;
+			}
 			this.$emit('input', value, e);
 			this.$emit('change', e);
 			this.$forceUpdate(); // hack

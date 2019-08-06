@@ -1,11 +1,12 @@
 import { pick } from 'lodash';
 import Extends from '../extends';
 import InputMixin from '../input/input-mixin';
+import BytesMixin from '../input/input-bytes-mixin';
 import { calcTextareaHeight } from './utils';
 import { Resize } from '../utils';
 
 export default {
-	mixins: [...Extends.mixins(['emitter'])],
+	mixins: [...Extends.mixins(['emitter']), BytesMixin],
 	props: {
 		...pick(InputMixin.props, [
 			'elementId',  
@@ -51,21 +52,6 @@ export default {
 				'is-disabled': this.disabled
 			};
 		},
-		// 单字节换成双字节 maxlength 需要额外加的长度
-		extraLength() {
-			let charArr = String(this.currentValue).match(/[\x20-\x7e]/g) || [];
-			let charLength = charArr.length;
-			if (charLength % 2 === 0) {
-				return charLength / 2;
-			}
-			return (charLength + 1) / 2;
-		},
-		// 输入框内容允许输入的长度
-		length() {
-			if (!this.maxlength) return undefined;
-			if (!this.bytes) return this.maxlength;
-			return this.maxlength + this.extraLength;
-		},
 		hooks() {
 			return {
 				keyup: this.handleKeyup,
@@ -78,6 +64,7 @@ export default {
 				compositionend: this.handleComposition,
 				input: this.handleInput,
 				change: this.handleChange,
+				paste: this.handlePaste
 			};
 		},
 		binds() {
@@ -87,7 +74,7 @@ export default {
 				spellcheck: this.spellcheck,
 				placeholder: this.placeholder,
 				disabled: this.disabled,
-				maxlength: this.length,
+				// maxlength: this.curMaxlength,
 				readonly: this.readonly,
 				name: this.name,
 				rows: this.rows,
@@ -153,6 +140,12 @@ export default {
 			let value = e.target.value;
 			if (this.isOnComposition || value === this.currentValue) return;
 
+			if (!this.checkInput(value)) {
+				e.preventDefault();
+				this.$forceUpdate(); // hack
+				return;
+			}
+
 			this.currentValue = value;
 
 			this.sync(value, e);
@@ -161,7 +154,6 @@ export default {
 				this.textareaStyle = this.getFitStyle();
 			});
 		},
-
 		getFitStyle() {
 			if (!this.autosize) return;
 

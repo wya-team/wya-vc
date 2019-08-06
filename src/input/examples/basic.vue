@@ -111,8 +111,9 @@
 			<br>
 			<vc-input 
 				v-model="formValidate.value"
-				:maxlength="10"
+				:maxlength="6"
 				:indicator="{inline: 'in', inverted: false}"
+				bytes
 			/>
 		</div>
 		<br>
