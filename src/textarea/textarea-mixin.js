@@ -64,7 +64,7 @@ export default {
 		length() {
 			if (!this.maxlength) return undefined;
 			if (!this.bytes) return this.maxlength;
-			return this.maxlength + this.charLength;
+			return this.maxlength + this.extraLength;
 		},
 		hooks() {
 			return {
