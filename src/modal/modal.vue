@@ -266,14 +266,11 @@ export default {
 	},
 	methods: {
 		handleResize() {
-			if (!this.mode) {
-				const $container = this.$refs.container;
-				let containerHeight = $container.offsetHeight;
-				if (containerHeight % 2 !== 0) {
-					$container.style.height = `${containerHeight - 1}px`;
-				}	
-			}
-					
+			const $container = this.$refs.container;
+			let containerHeight = $container.offsetHeight;
+			if (containerHeight % 2 !== 0) {
+				$container.style.height = `${containerHeight - 1}px`;
+			}	
 		},
 		handleClick(e) {
 			// this.isActive click先触发,后设置后
