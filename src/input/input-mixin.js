@@ -128,7 +128,7 @@ export default {
 				type: this.type,
 				placeholder: this.placeholder,
 				disabled: this.disabled,
-				// maxlength: this.curMaxlength, // 频率高
+				maxlength: this.maxlength, // 频率高
 				readonly: this.readonly,
 				name: this.name,
 				// value: this.currentValue, // 频率高

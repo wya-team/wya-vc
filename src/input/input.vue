@@ -18,10 +18,10 @@
 				<slot name="content">
 					<input
 						ref="input"
+						v-bind="binds"
 						:value="currentValue"
 						:maxlength="curMaxlength"
 						:style="inputStyle"
-						v-bind="binds"
 						v-on="hooks"
 					>
 				</slot>

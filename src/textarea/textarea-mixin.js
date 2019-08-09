@@ -74,7 +74,7 @@ export default {
 				spellcheck: this.spellcheck,
 				placeholder: this.placeholder,
 				disabled: this.disabled,
-				// maxlength: this.curMaxlength,
+				maxlength: this.maxlength,
 				readonly: this.readonly,
 				name: this.name,
 				rows: this.rows,

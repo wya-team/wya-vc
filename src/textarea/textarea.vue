@@ -4,10 +4,10 @@
 			<div :class="classes" :style="contentStyle" class="vc-textarea__content">
 				<textarea
 					ref="textarea"
+					v-bind="binds"
 					:value="currentValue"
 					:maxlength="curMaxlength"
 					:style="textareaStyle"
-					v-bind="binds"
 					v-on="hooks"
 				/>
 			</div>
