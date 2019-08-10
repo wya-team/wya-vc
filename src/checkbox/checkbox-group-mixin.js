@@ -43,14 +43,12 @@ export default {
 			index == -1 
 				? this.currentValue.push(v)
 				: this.currentValue.splice(index, 1);
-
-			this.sync();
 		},
 		/**
 		 * v-model 同步, 外部的数据改变时不会触发
 		 */
-		sync() {
-			this.$emit('change', this.currentValue);
+		sync(e) {
+			this.$emit('change', this.currentValue, e, this.reset);
 			this.dispatch('vc-form-item', 'form-change', this.currentValue);
 		}
 	}
