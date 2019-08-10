@@ -65,15 +65,15 @@ export default {
 		/**
 		 * 外部强制设置内部的值
 		 */
-		handleChangeValue(value, callback) {
-			callback(this.value);
+		handleChangeValue(v, e, forceReset) {
+			forceReset(this.value);
 		},
 
 		/**
 		 * loading
 		 */
 		
-		handleClick(e, callback) {
+		handleClick(e, next, forceReset) {
 			return new Promise((resolve) => {
 				setTimeout(() => {
 					resolve();
