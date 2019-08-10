@@ -66,15 +66,24 @@ export default {
 		}
 	},
 	methods: {
-		handdleToggle(e, callback) {
+		handdleToggle(e) {
 			e.preventDefault();
 
 			if (this.disabled || this.loading) {
 				return false;
 			}
 
+			let callback = () => {
+				let value = this.currentValue === this.trueValue 
+					? this.falseValue 
+					: this.trueValue;
+
+				this.reset(value);
+				this.sync();
+			};
+
 			let { $listeners: { click } } = this;
-			let fn = click && click(e, callback);
+			let fn = click && click(e, callback, this.reset);
 
 			if (fn && fn.then) {
 				this.loading = true;
@@ -85,21 +94,21 @@ export default {
 				}).finally(() => {
 					this.loading = false;
 				});
+			} else if (!fn) {
+				callback();
 			}
-
-
-			this.currentValue = this.currentValue === this.trueValue 
-				? this.falseValue 
-				: this.trueValue;
-
-			this.sync();
 		},
 		/**
 		 * v-model 同步, 外部的数据改变时不会触发
 		 */
 		sync() {
-			this.$emit('change', this.currentValue);
+			this.$emit('change', this.currentValue, this.reset);
 			this.dispatch('vc-form-item', 'form-change', this.currentValue);
-		}
+		},
+		reset(value) {
+			this.currentValue = value === this.trueValue 
+				? this.trueValue
+				: this.falseValue;
+		},
 	}
 };

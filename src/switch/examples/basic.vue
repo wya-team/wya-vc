@@ -2,13 +2,9 @@
 	<div>
 		<vc-switch v-model="single" open="开" close="关" @change="handleChange"/>
 
-		<vc-switch :value="true" loading />
-		<vc-switch :value="false" loading size="small" />
+		<vc-switch :value="true" />
+		<vc-switch :value="false" />
 		
-		<vc-switch size="large" />
-		<vc-switch />
-		<vc-switch size="small" />
-
 		<vc-switch>
 			<span slot="open">开</span>
 			<span slot="close">关</span>
@@ -22,6 +18,23 @@
 			<span slot="open">ON</span>
 			<span slot="close">OFF</span>
 		</vc-switch>
+
+		<br>
+		<br>
+		<br>
+		<br>
+		
+		<!-- 强制设置值 -->
+		<vc-switch
+			:value="value"
+			@change="handleChangeValue"
+		/>
+	
+		<!-- loading -->
+		<vc-switch
+			:v-model="value"
+			@click="handleClick"
+		/>
 	</div>
 </template>
 <script>
@@ -34,7 +47,8 @@ export default {
 	},
 	data() {
 		return {
-			single: false
+			single: false,
+			value: false,
 		};
 	},
 	computed: {
@@ -45,6 +59,26 @@ export default {
 			console.log({
 				single: this.single,
 				other: arguments[0]
+			});
+		},
+
+		/**
+		 * 外部强制设置内部的值
+		 */
+		handleChangeValue(value, callback) {
+			callback(this.value);
+		},
+
+		/**
+		 * loading
+		 */
+		
+		handleClick(e, callback) {
+			return new Promise((resolve) => {
+				setTimeout(() => {
+					resolve();
+					callback();
+				}, 3000);
 			});
 		}
 	}

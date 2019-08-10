@@ -1,14 +1,10 @@
 <template>
 	<div>
-		<vcm-switch v-model="single" open="开" close="关" @change="handleChange" />
+		<vcm-switch v-model="single" open="开" close="关" @change="handleChange"/>
 
-		<vcm-switch :value="true" loading />
-		<vcm-switch :value="false" loading size="small" />
+		<vcm-switch :value="true" />
+		<vcm-switch :value="false" />
 		
-		<vcm-switch size="large" />
-		<vcm-switch />
-		<vcm-switch size="small" />
-
 		<vcm-switch>
 			<span slot="open">开</span>
 			<span slot="close">关</span>
@@ -22,19 +18,37 @@
 			<span slot="open">ON</span>
 			<span slot="close">OFF</span>
 		</vcm-switch>
+
+		<br>
+		<br>
+		<br>
+		<br>
+		
+		<!-- 强制设置值 -->
+		<vcm-switch
+			:value="value"
+			@change="handleChangeValue"
+		/>
+	
+		<!-- loading -->
+		<vcm-switch
+			:v-model="value"
+			@click="handleClick"
+		/>
 	</div>
 </template>
 <script>
-import MSwitch from '../index.m';
+import Switch from '../index.m';
 
 export default {
 	name: "vcm-switch-basic",
 	components: {
-		'vcm-switch': MSwitch
+		'vcm-switch': Switch
 	},
 	data() {
 		return {
-			single: false
+			single: false,
+			value: false,
 		};
 	},
 	computed: {
@@ -45,6 +59,26 @@ export default {
 			console.log({
 				single: this.single,
 				other: arguments[0]
+			});
+		},
+
+		/**
+		 * 外部强制设置内部的值
+		 */
+		handleChangeValue(value, callback) {
+			callback(this.value);
+		},
+
+		/**
+		 * loading
+		 */
+		
+		handleClick(e, callback) {
+			return new Promise((resolve) => {
+				setTimeout(() => {
+					resolve();
+					callback();
+				}, 300000);
 			});
 		}
 	}

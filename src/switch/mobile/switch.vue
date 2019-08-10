@@ -77,8 +77,8 @@ export default {
 		width: 14px;
 		height: 14px;
 		position: absolute;
-		left: 3px;
-		top: 3px;
+		left: 6px;
+		top: 6px;
 		z-index: 1;
 		opacity: .4;
 	}
