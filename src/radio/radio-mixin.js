@@ -84,10 +84,10 @@ export default {
 
 			if (this.group) {
 				this.group.reset(this.label);
+				this.group.sync(e);
 			} else {
-				this.currentValue = checked ? this.trueValue : this.falseValue;
-
-				this.sync();
+				this.reset(checked);
+				this.sync(e);
 			}
 		},
 		handleBlur() {
@@ -100,9 +100,12 @@ export default {
 		/**
 		 * v-model 同步, 外部的数据改变时不会触发
 		 */
-		sync() {
-			this.$emit('change', this.currentValue);
+		sync(e) {
+			this.$emit('change', this.currentValue, e, this.reset);
 			this.dispatch('vc-form-item', 'form-change', this.currentValue);
+		},
+		reset(checked) {
+			this.currentValue = checked ? this.trueValue : this.falseValue;
 		}
 	}
 };
