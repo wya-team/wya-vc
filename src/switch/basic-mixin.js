@@ -79,7 +79,7 @@ export default {
 					: this.trueValue;
 
 				this.reset(value);
-				this.sync();
+				this.sync(e);
 			};
 
 			let { $listeners: { click } } = this;
@@ -101,8 +101,8 @@ export default {
 		/**
 		 * v-model 同步, 外部的数据改变时不会触发
 		 */
-		sync() {
-			this.$emit('change', this.currentValue, this.reset);
+		sync(e) {
+			this.$emit('change', this.currentValue, e, this.reset);
 			this.dispatch('vc-form-item', 'form-change', this.currentValue);
 		},
 		reset(value) {
