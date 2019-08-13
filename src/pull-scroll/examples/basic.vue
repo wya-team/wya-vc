@@ -1,6 +1,5 @@
 <template>
 	<vc-pull-scroll
-		:scroll-text="scrollText"
 		:load-data="loadData"
 		:data-source="dataSource"
 		:total="total"
