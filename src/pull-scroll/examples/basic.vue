@@ -1,5 +1,6 @@
 <template>
 	<vc-pull-scroll
+		:scroll-text="scrollText"
 		:load-data="loadData"
 		:data-source="dataSource"
 		:total="total"
@@ -26,6 +27,14 @@ export default {
 		return {
 			total: 0,
 			dataSource: [],
+			scrollText: {
+				1: (h) => {
+					return (
+						<span>2</span>
+					);
+				},
+				2: "22"
+			}
 			// scrollText: (h, { status }, ctx) => {
 			// 	return <span>{ status }</span>;
 			// },

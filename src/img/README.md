@@ -35,3 +35,4 @@ tpl
 1. 自动计算高度（width.isRequired）
 2. 管理资源宽高
 3. cover/fit等效果
+4. 自动压缩展示的图片

@@ -2,7 +2,7 @@
 	<div style="margin-top: 30px;">
 		<vcm-cascader
 			v-model="value"
-			:data-source="dataSource2"
+			:data-source="dataSource"
 			:load-data="loadData"
 		/>
 		<br>
