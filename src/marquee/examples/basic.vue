@@ -23,11 +23,15 @@
 				<h3>{{ item }}</h3>
 			</vc-carousel-item>
 		</vc-carousel>
+
+		<vc-button @click="handleClick">弹窗动画干扰</vc-button>
 	</div>
 </template>
 <script>
 import Marquee from '..';
 import Carousel from '../../carousel';
+import Button from '../../button';
+import Modal from '../../modal';
 
 export default {
 	name: "vc-marquee-basic",
@@ -35,6 +39,7 @@ export default {
 		'vc-marquee': Marquee,
 		'vc-carousel': Carousel,
 		'vc-carousel-item': Carousel.Item,
+		'vc-button': Button,
 	},
 	data() {
 		return {
@@ -45,6 +50,20 @@ export default {
 		
 	},
 	methods: {
+		handleClick() {
+			console.log(Modal);
+			Modal.success({
+				title: 'test',
+				content: (h) => {
+					return (
+						<Marquee 
+							content={this.text.repeat(10)}
+						/>
+					);
+				}
+			});
+
+		}
 	}
 };
 </script>

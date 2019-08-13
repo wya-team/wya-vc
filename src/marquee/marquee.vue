@@ -70,7 +70,8 @@ export default {
 		this.marqueeId = getUid('marquee');
 	},
 	mounted() {
-		this.refresh();
+		// 兼容Portal前动画延迟
+		setTimeout(this.refresh, 0);
 	},
 	methods: {
 		refresh() {
