@@ -38,15 +38,22 @@ export default {
 	},
 	computed: {
 		renderer() {
-			return merge(this.text, {
-				0: '上拉加载', 
-				1: '加载中', 
-				2: '已全部加载', 
-				3: '网络不稳定，请稍后重试', 
-				4: '没有内容可供显示'
-			}, {
-				4: this.emptyText
-			});
+			if (typeof this.text === 'function') {
+				return this.text;
+			}
+			return merge(
+				{
+					0: '上拉加载', 
+					1: '加载中', 
+					2: '已全部加载', 
+					3: '网络不稳定，请稍后重试', 
+					4: '没有内容可供显示'
+				}, 
+				this.text, 
+				{
+					4: this.emptyText
+				}
+			);
 		}
 	}
 };

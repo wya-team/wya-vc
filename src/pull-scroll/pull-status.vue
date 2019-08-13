@@ -40,12 +40,18 @@ export default {
 	},
 	computed: {
 		renderer() {
-			return merge(this.text, {
-				0: '↓ 下拉刷新', 
-				1: '↓ 下拉刷新', 
-				2: '↑ 释放更新', 
-				3: '加载中...', 
-			});
+			if (typeof this.text === 'function') {
+				return this.text;
+			}
+			return merge(
+				{
+					0: '↓ 下拉刷新', 
+					1: '↓ 下拉刷新', 
+					2: '↑ 释放更新', 
+					3: '加载中...', 
+				},
+				this.text
+			);
 		}
 	}
 };

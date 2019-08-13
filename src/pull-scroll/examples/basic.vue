@@ -26,6 +26,12 @@ export default {
 		return {
 			total: 0,
 			dataSource: [],
+			// scrollText: (h, { status }, ctx) => {
+			// 	return <span>{ status }</span>;
+			// },
+			// pullText: (h, { status }, ctx) => {
+			// 	return <span>{ status }</span>;
+			// }
 		};
 	},
 	computed: {
