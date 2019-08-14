@@ -267,10 +267,17 @@ export default {
 	methods: {
 		handleResize() {
 			const $container = this.$refs.container;
+			const maxheight = window.innerHeight - 20;
 			let containerHeight = $container.offsetHeight;
-			if (containerHeight % 2 !== 0) {
+			if (containerHeight + 1 > maxheight) {
+				if (maxheight % 2 !== 0) {
+					$container.style.height = `${maxheight - 1}px`;
+				}
+			} else if (containerHeight % 2 !== 0) {
 				$container.style.height = `${containerHeight + 1}px`;
-			}	
+				
+			}
+				
 		},
 		handleClick(e) {
 			// this.isActive click先触发,后设置后
