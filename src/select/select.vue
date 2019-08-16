@@ -204,8 +204,7 @@ export default {
 	created() {
 		this.selectId = getUid('select');
 
-		this.hasInit = !(this.currentValue || this.currentValue.length > 0);
-
+		this.hasInit = false; // v-model可能延迟设置且在数据注入之前
 		this.dataSource = []; 
 		this.update();
 	},
