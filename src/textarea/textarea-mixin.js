@@ -93,9 +93,9 @@ export default {
 		}
 	},
 	mounted() {
-		this.textareaStyle = this.getFitStyle();
-
 		Resize.on(this.$refs.textarea, this.handleResize);
+
+		this.textareaStyle = this.getFitStyle();
 	},
 	beforeDestroy() {
 		Resize.off(this.$refs.textarea, this.handleResize);
@@ -169,6 +169,8 @@ export default {
 			this.contentStyle = {
 				height: `${this.$refs.textarea ? this.$refs.textarea.offsetHeight : 0}px`
 			};
+
+			this.$emit('resize', e);
 		}, 
 		focus() {
 			this.$refs.textarea.focus();
