@@ -1,40 +1,45 @@
 <template>
 	<div class="vc-paging">
 		<!-- 原生table -->
-		<table v-if="mode === 'native'" class="vc-paging__native">
-			<thead>
-				<slot v-bind="columns" name="header">
-					<th v-for="item in columns" :key="item">
-						{{ item }}
-					</th>
-				</slot>
-			</thead>
-			<slot :data-source="data" />
-		</table>
+		<!-- TODO loading 包着table -->
+		<vc-paging-loading :loading="loading" v-bind="loadingOpts">
+			<table v-if="mode === 'native'" class="vc-paging__native">
+				<thead>
+					<slot v-bind="columns" name="header">
+						<th v-for="item in columns" :key="item">
+							{{ item }}
+						</th>
+					</slot>
+				</thead>
+				<slot :data-source="data" />
+			</table>
 
-		<!-- 没有头部栏的header -->
-		<!-- 项目中统一使用it, key由slot决定 -->
-		<template v-for="(item, index) in data" v-else-if="mode === 'piece'">
-			<slot :it="item" :index="index" />
-		</template>
+			<!-- 没有头部栏的header -->
+			<!-- 项目中统一使用it, key由slot决定 -->
+			<template v-for="(item, index) in data" v-else-if="mode === 'piece'">
+				<slot :it="item" :index="index" />
+			</template>
 		
-		<vc-table
-			v-else
-			ref="table" 
-			:data-source="data" 
-			v-bind="tableOpts"
-			v-on="tableHooks"
-		>
-			<template #default>
-				<slot />
-			</template>
-			<template #append>
-				<slot name="append" />
-			</template>
-			<template #empty>
-				<slot name="empty" />
-			</template>
-		</vc-table>
+			<!-- TODO loading 包着table -->
+			<vc-table
+				v-else 
+				ref="table" 
+				:data-source="data" 
+				v-bind="tableOpts"
+				v-on="tableHooks"
+			>
+				<template #default>
+					<slot />
+				</template>
+				<template #append>
+					<slot name="append" />
+				</template>
+				<template #empty>
+					<slot name="empty" />
+				</template>
+			</vc-table>
+			<slot slot="loading" name="loading"/>
+		</vc-paging-loading>
 		
 		<div v-if="footer" class="vc-paging__footer">
 			<div>
@@ -67,6 +72,7 @@
 import { URL, Storage } from '@wya/utils';
 import { cloneDeep } from 'lodash';
 
+import PagingLoading from './loading';
 import Page from '../page/index';
 import Table from '../table';
 import { VcInstance } from '../vc/index';
@@ -81,6 +87,7 @@ export default {
 	components: {
 		'vc-table': Table,
 		'vc-page': Page,
+		'vc-paging-loading': PagingLoading
 	},
 	// 不考虑使用
 	// inheritAttrs: false,
@@ -91,6 +98,10 @@ export default {
 			default() {
 				return {};
 			}
+		},
+		loadingOpts: {
+			type: Object,
+			default: () => (VcInstance.config.Paging.loadingOpts || {})
 		},
 		tableOpts: {
 			type: Object,

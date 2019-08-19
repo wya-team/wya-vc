@@ -6,7 +6,7 @@
 			enter-button="搜索" 
 			placeholder="请输入关键字搜索"
 			style="margin: 20px; width: 300px"
-			@search="handleSearch"
+			@enter="handleSearch"
 		/>
 		<vc-tabs 
 			:value="type" 

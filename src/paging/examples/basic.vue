@@ -28,6 +28,9 @@
 				label="地址"
 			/>
 		</vc-table-item>
+		<template #loading>
+			<div>loading</div>
+		</template>
 	</vc-paging>
 </template>
 <script>
@@ -58,32 +61,38 @@ export default {
 	},
 	methods: {
 		loadData(page, pageSize) {
-			return ajax({
-				url: 'test.json',
-				localData: {
-					status: 1,
-					data: {
-						page: {
-							current: page,
-							total: 100,
-							count: pageSize * 100,
-						},
-						list: this.getFakeData(page, pageSize)
-					}
+			return new Promise((reslove, reject) => {
+				setTimeout(() => {
+					reslove();
+				}, 3000);
+			}).then(() => {
+				return ajax({
+					url: 'test.json',
+					localData: {
+						status: 1,
+						data: {
+							page: {
+								current: page,
+								total: 100,
+								count: pageSize * 100,
+							},
+							list: this.getFakeData(page, pageSize)
+						}
 
-				}
-			}).then((res) => {
-				console.log(`page: ${page}@success`);
-				this.listInfo = {
-					...this.listInfo,
-					...res.data.page,
-					data: {
-						...this.listInfo.data,
-						[page]: res.data.list
 					}
-				};
-			}).catch((e) => {
-				console.log(e);
+				}).then((res) => {
+					console.log(`page: ${page}@success`);
+					this.listInfo = {
+						...this.listInfo,
+						...res.data.page,
+						data: {
+							...this.listInfo.data,
+							[page]: res.data.list
+						}
+					};
+				}).catch((e) => {
+					console.log(e);
+				});
 			});
 		},
 		getFakeData(page, pageSize) {
