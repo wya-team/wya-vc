@@ -48,32 +48,31 @@ export default {
 	methods: {
 		loadData(page, isRefresh) {
 			return new Promise((resolve, reject) => {
-				setTimeout(() => {
-					ajax({
-						url: 'test.json',
-						localData: {
-							status: 1,
-							data: {
-								page: {
-									current: page,
-									total: 2,
-								},
-								list: this.getFakeData(page)
-							}
-
+				ajax({
+					url: 'test.json',
+					localData: {
+						status: 1,
+						data: {
+							page: {
+								current: page,
+								total: 2,
+							},
+							list: this.getFakeData(page)
 						}
-					}).then((res) => {
-						console.log('@wya/vc:', page);
-						this.total = res.data.page.total;
-						isRefresh 
-							? (this.dataSource = res.data.list)
-							: this.dataSource.splice(this.dataSource.length, 0, ...res.data.list);
-						resolve();
-					}).catch((e) => {
-						console.log(e);
-						reject();
-					});
-				}, isRefresh ? 3000 : 3000);
+
+					},
+					delay: 3
+				}).then((res) => {
+					console.log('@wya/vc:', page);
+					this.total = res.data.page.total;
+					isRefresh 
+						? (this.dataSource = res.data.list)
+						: this.dataSource.splice(this.dataSource.length, 0, ...res.data.list);
+					resolve();
+				}).catch((e) => {
+					console.log(e);
+					reject();
+				});
 			});
 			
 		},
