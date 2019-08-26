@@ -7,7 +7,7 @@
 import { Utils } from '@wya/utils';
 import { isDataURL } from '../utils/utils';
 
-import VcError from '../vc/error';
+import { VcInstance, VcError } from '../vc/index';
 
 export default {
 	name: "vc-html-img",
@@ -19,6 +19,9 @@ export default {
 			default: 'anonymous',
 			validator: v => /^(|anonymous|use-credentials)$/.test(v),
 		},
+		parser: {
+			type: Function
+		}
 	},
 	data() {
 		return {
@@ -77,23 +80,36 @@ export default {
 		 * 网络的图片如果没有加上crossOrigin，且没有放在第一个就会出现问题（Safari）
 		 */
 		loadImageURL() {
+			let { parser } = VcInstance.config.HtmlImg || {};
+
+			parser = this.parser || parser || (() => false);
+
 			return Promise.all([...this.$refs.target.querySelectorAll('img')].map((node) => {
-				return new Promise((resolve, reject) => {
-					if (isDataURL(node.src)) { // data: base64
-						resolve();
-					} else {
-						let img = new Image();
-						img.crossOrigin = this.crossOrigin;
-						img.src = `${node.src}?=${new Date().getTime()}`; // 强制不缓存
-						img.onload = () => {
-							node.src = img.src;
-							resolve();
-						};
-						img.onerror = () => {
-							// 打印不了该图片
-							resolve();
-						};
+				return new Promise(async (resolve, reject) => {
+					// 解析图片，如将base64图片先上传再显示（iOS 10.2 存在无法转化的情况）
+					let url = node.src;
+					try {
+						url = await parser(node.src) || url;
+					} catch (e) {
+						console.error(e);
 					}
+
+					if (isDataURL(url)) { // data: base64
+						resolve();
+						return;
+					}
+
+					let img = new Image();
+					img.crossOrigin = this.crossOrigin;
+					img.src = `${url}?=${new Date().getTime()}`; // 强制不缓存
+					img.onload = () => {
+						node.src = img.src;
+						resolve();
+					};
+					img.onerror = () => {
+						// 打印不了该图片
+						resolve();
+					};
 				});
 			}));
 		},

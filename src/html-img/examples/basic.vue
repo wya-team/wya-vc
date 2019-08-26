@@ -1,7 +1,7 @@
 <template>
 	<div>
 		<img :src="src">
-		<vc-html-img ref="target">
+		<vc-html-img ref="target" :parser="parser">
 			<div>tpl</div>
 			<div>tpl</div>
 			<div>tpl</div>
@@ -42,6 +42,14 @@ export default {
 		async handleClick() {
 			let res = await this.$refs.target.download();
 			this.src = res.base64Image;
+		},
+		parser(url) {
+			return new Promise((resolve) => {
+				setTimeout(() => {
+					console.log(url);
+					resolve(url);
+				}, 3000);
+			});
 		}
 	}
 };
