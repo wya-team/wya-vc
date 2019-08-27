@@ -319,7 +319,7 @@ export default {
 					this.tips && this.tips.setValue(uid, 'percent', e.percent);
 				},
 				// todo 可优化
-				getInstance: (xhr, cancel) => (this.reqs[uid] = { cancel })
+				getInstance: ({ xhr, cancel }) => (this.reqs[uid] = { cancel })
 			}).then((res) => {
 				delete this.reqs[uid];
 				this.cycle.success++;
