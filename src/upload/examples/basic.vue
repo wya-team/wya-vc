@@ -7,6 +7,7 @@
 			:max="190000"
 			:show-tips="true"
 			:multiple="true"
+			:parallel="false"
 			@error="handleError"
 			@begin="handleBegin"
 			@complete="handleComplete"
@@ -46,6 +47,10 @@ VcInstance.init({
 				}
 				resolve({
 					...options,
+					param: {
+						...options.param,
+						timestamp: new Date()
+					},
 					type: 'GET',
 					credentials: 'omit', //  cors下关闭
 					headers: {
@@ -66,7 +71,8 @@ VcInstance.init({
 						uid: file.uid,
 						title: file.name,
 						size: file.size
-					}
+					},
+					...response
 				});
 			});
 		}

@@ -143,7 +143,8 @@ export default {
 				error: 0,
 				success: 0,
 				total: 0,
-				imgs: []
+				imgs: [],
+				fns: []
 			};
 		},
 
@@ -204,13 +205,20 @@ export default {
 			
 			this.$emit('begin', postFiles);
 			
-			postFiles.forEach((file, index) => {
+			this.cycle.fns = postFiles.map((file, index) => {
 				file.uid = getUid();
 				file.current = index + 1;
 				file.total = length;
 				file.percent = 0;
-				this.upload(file, postFiles);
+				return () => {
+					this.upload(file, postFiles);
+				};
 			});
+
+			// 是否启用并行操作
+			this.parallel 
+				? this.cycle.fns.forEach(fn => fn())
+				: (this.cycle.fns.shift())(); 
 
 			// tips
 			this.tips && this.tips.show(
@@ -285,8 +293,10 @@ export default {
 			const { ajax, size } = this;
 			let localData;
 			if (size && file.size > size * 1024 * 1024) {
-				this.$emit('error', { msg: `上传失败，大小限制为${size}MB` });
-				return;
+				localData = {
+					status: 0,
+					msg: `上传失败，大小限制为${size}MB`
+				};
 			}
 			
 			// onFileStart, onFileProgress, onFileSuccess, onFileError, onComplete 
@@ -319,35 +329,36 @@ export default {
 
 				// tips
 				this.tips && this.tips.setValue(uid, 'success');
-
 			}).catch((res) => {
 				delete this.reqs[uid];
-				this.handleReject(res, file);
-			}).finally(() => {
-				this.handleFinally(file);
-			});
-		},
+				this.cycle.error++;
 
-		handleReject(res, file) {
-			this.cycle.error++;
-
-			this.$emit('file-error', res, file, { ...this.cycle });
-
-			// tips
-			this.tips && this.tips.setValue(file.uid, 'error', res.msg);
-		},
-
-		handleFinally(file) {
-			this.cycle.total++;
-
-			if (this.cycle.total === file.total) {
-
-				this.$emit('complete', { ...this.cycle } || {});
-				this.setDefaultCycle();
+				this.$emit('file-error', res, file, { ...this.cycle });
 
 				// tips
-				this.tips && this.tips.setTipsStatus(true);
-			}
+				this.tips && this.tips.setValue(file.uid, 'error', res.msg);
+			}).finally(() => {
+				this.cycle.total++;
+
+				// 顺序上传
+				if (
+					!this.parallel 
+					&& this.cycle.fns 
+					&& this.cycle.fns.length > 0
+				) {
+					(this.cycle.fns.shift())();
+				}
+
+				// 上传完毕
+				if (this.cycle.total === file.total) {
+
+					this.$emit('complete', { ...this.cycle } || {});
+					this.setDefaultCycle();
+
+					// tips
+					this.tips && this.tips.setTipsStatus(true);
+				}
+			});
 		},
 
 		cancel(file) {
