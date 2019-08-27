@@ -91,7 +91,14 @@ export default {
 			default: false
 		},
 
-		enhancer: Function
+		// 增强器，如：原生选取
+		enhancer: Function,
+
+		// 并行上传
+		parallel: {
+			type: Boolean,
+			default: true
+		},
 	},
 	data() {
 		return {
@@ -161,6 +168,7 @@ export default {
 
 			this.uid = getUid();
 		},
+
 		handleFileDrop(e) {
 			if (e.type === 'dragover') {
 				e.preventDefault();
@@ -173,11 +181,13 @@ export default {
 
 			e.preventDefault();
 		},
+
 		handleKeyDown(e) {
 			if (e.key === 'Enter') {
 				this.handleClick();
 			}
 		},
+
 		uploadFiles(files) {
 			const postFiles = Array.prototype.slice.call(files);
 			const length = postFiles.length;
@@ -207,6 +217,7 @@ export default {
 				initItem(postFiles.map(it => ({ ...it, size: it.size, name: it.name })), 'uid')
 			);
 		},
+
 		upload(file, fileList, index) {
 			// 此处不用this.$emit('xxx')
 			const { 
@@ -244,7 +255,7 @@ export default {
 			}
 		},
 
-		async post(file) {
+		post(file) {
 			if (!this.__isMounted) {
 				return;
 			}
@@ -281,7 +292,7 @@ export default {
 			// onFileStart, onFileProgress, onFileSuccess, onFileError, onComplete 
 			this.$emit('file-start', file);
 			
-			ajax({
+			return ajax({
 				url: url || defaultUrl,
 				type: "FORM",
 				param: {
@@ -312,11 +323,11 @@ export default {
 			}).catch((res) => {
 				delete this.reqs[uid];
 				this.handleReject(res, file);
-
 			}).finally(() => {
 				this.handleFinally(file);
 			});
 		},
+
 		handleReject(res, file) {
 			this.cycle.error++;
 
@@ -325,10 +336,10 @@ export default {
 			// tips
 			this.tips && this.tips.setValue(file.uid, 'error', res.msg);
 		},
+
 		handleFinally(file) {
 			this.cycle.total++;
-				
-			// console.log(`error: ${this.cycle.error}, total: ${this.cycle.total}`);
+
 			if (this.cycle.total === file.total) {
 
 				this.$emit('complete', { ...this.cycle } || {});
@@ -338,6 +349,7 @@ export default {
 				this.tips && this.tips.setTipsStatus(true);
 			}
 		},
+
 		cancel(file) {
 			const { reqs } = this;
 			if (file) {
@@ -361,6 +373,7 @@ export default {
 			}
 		}
 	},
+
 	render(h) {
 		const {
 			disabled,
