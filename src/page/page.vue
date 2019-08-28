@@ -263,6 +263,10 @@ export default {
 		},
 		handleChangePageSize(pageSize) {
 			this.$emit('page-size-change', this.currentPageSize);
+
+			// 切换条数时，强制为第一页
+			this.hackPage = this.totalPage < this.currentPage ? this.totalPage : this.currentPage;
+			this.currentPage = 1;
 		},
 		handleInput(v) {
 			this.hackPage = v > this.totalPage ? this.totalPage : v;
