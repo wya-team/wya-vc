@@ -22,7 +22,7 @@
 			:loading="loading"
 			:columns="columns"
 			:stripe="stripe"
-			v-bind="tableOpts"
+			v-bind="{...tableOptsVC,...tableOpts}"
 			@on-current-change="$emit('current-change', arguments[0], arguments[1])"
 			@on-select="$emit('select', arguments[0], arguments[1])"
 			@on-select-cancel="$emit('select-cancel', arguments[0])"
@@ -200,7 +200,8 @@ export default {
 			pageSize: this.defaultPageSize,
 
 			// 内部不直接修改外部的值
-			rebuildData: {}
+			rebuildData: {},
+			tableOptsVC: VcInstance.config.Paging.tableOpts || {}
 		};
 	},
 	computed: {
