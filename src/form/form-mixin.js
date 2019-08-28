@@ -23,7 +23,7 @@ export default {
 		},
 		scrollIntoError: {
 			type: Boolean,
-			default: true
+			default: false
 		},
 		labelPosition: {
 			validator: v => /^(left|right|top)$/.test(v),
