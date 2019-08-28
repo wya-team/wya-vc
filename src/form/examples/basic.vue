@@ -68,6 +68,7 @@
 		<vc-form-item>
 			<vc-button type="primary" @click="handleSubmit('formValidate')">Submit</vc-button>
 			<vc-button style="margin-left: 8px" @click="handleReset('formValidate')">Reset</vc-button>
+			<vc-button style="margin-left: 8px" @click="handleOnly('formValidate')">Only</vc-button>
 		</vc-form-item>
 	</vc-form>
 </template>
@@ -123,15 +124,26 @@ export default {
 	},
 	methods: {
 		handleSubmit(name) {
+
 			this.$refs[name].validate().then((res) => {
 
 			}).catch((res) => {
 				console.log(res, this.formValidate);
 			});
 		},
+
+		handleOnly(name) {
+			this.$refs[name].validateField('items.0.value').then(() => {
+
+			}).catch((error) => {
+				console.log(error);
+			});
+		},
+
 		handleReset(name) {
 			this.$refs[name].resetFields();
 		},
+
 		handleAdd() {
 			this.index++;
 			this.formValidate.items.push({
@@ -140,6 +152,7 @@ export default {
 				status: 1
 			});
 		},
+
 		handleRemove(index) {
 			this.formValidate.items[index].status = 0;
 		}

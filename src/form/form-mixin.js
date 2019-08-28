@@ -21,6 +21,10 @@ export default {
 			type: Boolean,
 			default: false
 		},
+		scrollIntoError: {
+			type: Boolean,
+			default: true
+		},
 		labelPosition: {
 			validator: v => /^(left|right|top)$/.test(v),
 			default: 'right'
@@ -28,7 +32,7 @@ export default {
 		autocomplete: {
 			validator: v => /^(on|off)$/.test(v),
 			default: 'off'
-		}
+		},
 	},
 	provide() {
 		return { form: this };
@@ -54,39 +58,69 @@ export default {
 				item.resetField();
 			});
 		},
+
 		validate(callback) {
 			return new Promise((resolve, reject) => {
 				let valid = true;
 				let count = 0;
-				let errorsList = [];
+				let originErrors = [];
 				this.fields.forEach(item => {
-					item.validate('', res => {
-						if (res && res.msg) {
-							errorsList.push(res);
+					item.validate('', (res = {}) => {
+						if (res.msg || res.message) {
+							originErrors.push(res);
 							valid = false;
 						}
 						if (++count === this.fields.length) {
-							errorsList = this.sortErrors(errorsList);
-							
+							let errors = this.sortErrors(originErrors);
+
 							// 全部校验完成
-							if (errorsList.length !== 0) {
-								reject(errorsList);
-								this.showMessage 
-									&& this.throwToast 
-									&& this.throwToast(errorsList[0].msg || errorsList[0].message);
+							if (errors.length !== 0) {
+								reject(errors);
+								this.scrollIntoView(errors[0].prop);
+								this._toast(errors[0].msg || errors[0].message);
 							} else {
 								resolve();
 							}
-							callback && callback(valid, errorsList);
+							callback && callback(valid, errors);
 						}
 					});
 				});
 			});
 		},
-		validateField(prop, cb) {
+
+		getField(prop) {
 			const field = this.fields.find(item => item.prop === prop);
 			if (!field) { throw new Error('请选择有用的prop值'); }
-			field.validate('', cb);
+
+			return field;
+		},
+
+		validateField(prop, callback) {
+			return new Promise((resolve, reject) => {
+				let field = this.getField(prop);
+				let valid = true;
+				field.validate('', (res = {}) => {
+					let errorMsg = res.msg || res.message;
+					if (errorMsg) {
+						valid = false;
+						reject(errorMsg);
+						this.scrollIntoView(prop);
+						this._toast(errorMsg);
+					} else {
+						resolve();
+					}
+					callback && callback(valid, errorMsg);
+				});
+			});
+		},
+
+		scrollIntoView(prop, opts = {}) {
+			if (!this.scrollIntoError) return;
+
+			let field = this.getField(prop);
+			field.$el.scrollIntoView({
+				behavior: 'smooth'
+			});
 		},
 
 		/**
@@ -115,6 +149,12 @@ export default {
 
 			errors = sortBy(errors, [(i) => basicSort[i.prop]]);
 			return errors;
+		},
+
+		_toast(msg) {
+			this.showMessage 
+				&& this.throwToast 
+				&& this.throwToast(msg);
 		}
 	}
 };
