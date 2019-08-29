@@ -167,7 +167,7 @@ export default {
 		},
 
 		/**
-		 * 将要废除
+		 * TODO: 将要废除
 		 */
 		_finallyHook(callback, valid, error) {
 			/**
