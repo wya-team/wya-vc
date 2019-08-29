@@ -59,7 +59,7 @@ export default {
 	name: "vc-imgs-crop",
 	props: {
 		src: {
-			type: [String, Object], // File, Blob类型也可以
+			type: [String, Object, File], // File, Blob类型也可以
 			required: true
 		},
 
