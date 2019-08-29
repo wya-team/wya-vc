@@ -125,7 +125,7 @@ export default {
 	methods: {
 		handleSubmit(name) {
 
-			this.$refs[name].validate().then((res) => {
+			this.$refs[name].validate(() => {}).then((res) => {
 
 			}).catch((res) => {
 				console.log(res, this.formValidate);
@@ -133,7 +133,7 @@ export default {
 		},
 
 		handleOnly(name) {
-			this.$refs[name].validateField('items.0.value').then(() => {
+			this.$refs[name].validateField('items.0.value', { scroll: true }).then(() => {
 
 			}).catch((error) => {
 				console.log(error);
