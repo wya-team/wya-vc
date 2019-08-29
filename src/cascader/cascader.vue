@@ -17,28 +17,30 @@
 		@destroy="handleDestroy"
 		@visible-change="$emit('visible-change', isActive)"
 	>
-		<vc-input
-			ref="input"
-			:element-id="elementId"
-			:readonly="true"
-			:disabled="disabled"
-			:value="formatLabel"
-			:placeholder="placeholder || '请选择'"
-			:allow-dispatch="false"
-			class="vc-cascader__input"
-		>
-			<template #append>
-				<!-- down, up, clear -->
-				<div class="vc-cascader__append">
-					<vc-icon
-						:type="showClear ? 'clear' : icon"
-						:class="{ 'is-arrow': !showClear }"
-						class="vc-cascader__icon"
-						@click="handleClear"
-					/>
-				</div>
-			</template>
-		</vc-input>
+		<slot :label="label" :value="currentValue" :active="isActive" name="default">
+			<vc-input
+				ref="input"
+				:element-id="elementId"
+				:readonly="true"
+				:disabled="disabled"
+				:value="formatLabel"
+				:placeholder="placeholder || '请选择'"
+				:allow-dispatch="false"
+				class="vc-cascader__input"
+			>
+				<template #append>
+					<!-- down, up, clear -->
+					<div class="vc-cascader__append">
+						<vc-icon
+							:type="showClear ? 'clear' : icon"
+							:class="{ 'is-arrow': !showClear }"
+							class="vc-cascader__icon"
+							@click="handleClear"
+						/>
+					</div>
+				</template>
+			</vc-input>
+		</slot>
 		<template #content>
 			<div class="vc-cascader__content">
 				<vc-cascader-col

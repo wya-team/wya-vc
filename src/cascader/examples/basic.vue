@@ -8,7 +8,13 @@
 				v-model="value1"
 				clearable
 				@change="handleChange"
-			/>
+			>
+				<template #default="{ label, value }"> 
+					<div>
+						{{ label }}, {{ value }}
+					</div>
+				</template>
+			</vc-cascader>
 		</div>
 		<div style="margin: 40px 0 ">
 			<vc-cascader :data-source="dataSource" v-model="value2" clearable/>
