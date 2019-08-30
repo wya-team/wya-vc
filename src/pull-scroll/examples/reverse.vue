@@ -22,7 +22,7 @@
 					style="padding-bottom: 45px"
 				>
 					<template #header>
-						<div>这是一个window下的滚动</div>
+						<div>这是一个tabs下的滚动</div>
 					</template>
 					<template #default="{ it }">
 						<div style="padding: 20px" @click="handleReset">{{ it }}</div>
@@ -43,7 +43,9 @@ import { URL } from '@wya/utils';
 import PullScroll from '..';
 import Tabs from '../../tabs/index.m';
 import { initScroll } from './utils/utils';
+import HackManager from './utils/hack-manager';
 
+let manager = new HackManager();
 const initialState = {
 	1: { ...initScroll },
 	2: { ...initScroll },
