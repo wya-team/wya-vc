@@ -89,6 +89,7 @@ export default {
 			immediate: true,
 			handler(v, old) {
 				this.currentValue = v;
+				this.curMaxlength = this.getMaxLength();
 				this.refresh();
 			}
 		}

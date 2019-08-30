@@ -4,9 +4,10 @@
 			<div :class="{ 'is-right': right }" :style="contentStyle" class="vcm-textarea__content">
 				<textarea
 					ref="textarea"
-					:value="currentValue"
-					:style="textareaStyle"
 					v-bind="binds"
+					:value="currentValue"
+					:maxlength="curMaxlength"
+					:style="textareaStyle"
 					v-on="hooks"
 				/>
 			</div>
