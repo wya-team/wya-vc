@@ -38,6 +38,8 @@
 
 <script>
 import inputNumberMixin from './input-number-mixin';
+import inputEventMixin from './input-event-mixin';
+
 import Icon from '../icon/index';
 import Input from './input';
 
@@ -47,7 +49,7 @@ export default {
 		'vc-icon': Icon,
 		'vc-input': Input
 	},
-	mixins: [inputNumberMixin]
+	mixins: [inputNumberMixin, inputEventMixin]
 };
 </script>
 

@@ -35,6 +35,7 @@
 
 <script>
 import inputNumberMixin from '../input-number-mixin';
+import inputEventMixin from '../input-event-mixin';
 import MInput from './input';
 
 export default {
@@ -42,7 +43,7 @@ export default {
 	components: {
 		'vcm-input': MInput
 	},
-	mixins: [inputNumberMixin],
+	mixins: [inputNumberMixin, inputEventMixin],
 	props: {
 		clearable: {
 			type: Boolean,

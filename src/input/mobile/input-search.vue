@@ -30,6 +30,7 @@
 
 <script>
 import inputSearchMixin from '../input-search-mixin';
+import inputEventMixin from '../input-event-mixin';
 import MIcon from '../../icon/index.m';
 import MInput from './input';
 
@@ -39,7 +40,7 @@ export default {
 		'vcm-icon': MIcon,
 		'vcm-input': MInput
 	},
-	mixins: [inputSearchMixin],
+	mixins: [inputSearchMixin, inputEventMixin],
 	props: {
 		cancelTxt: {
 			type: String,
