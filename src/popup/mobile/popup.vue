@@ -23,7 +23,7 @@
 <script>
 import MTransition from '../../transition/index.m';
 import Extends from '../../extends';
-import { placement2mode, eleInRegExp } from '../../utils';
+import { placement2mode, eleInRegExp, composedPath } from '../../utils';
 
 export default {
 	name: "vcm-popup",
@@ -145,7 +145,7 @@ export default {
 		handleTouchMove(e) {
 			// 显示状态下才处理滑动
 			if (!this.isActive) return;
-			let path = e.path || (e.composedPath && e.composedPath()) || [];
+			let path = e.path || composedPath(e) || [];
 			let inContainer = path.some((ele) => {
 				if (eleInRegExp(ele, this.scrollRegExp)) {
 					this.scrollContainer = ele;

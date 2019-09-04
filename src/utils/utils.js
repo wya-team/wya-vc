@@ -208,3 +208,19 @@ export const placement2mode = {
 	top: 'down',
 	center: '',
 };
+
+/**
+ * hack event.composedPath
+ * touchevent.composedPath 在ios10.0上返回的是空数组
+ * 跟默认的相比，少了window对象
+ */
+export const composedPath = (e) => {
+	let path = (e.composedPath && e.composedPath()) || [];
+	if (path.length) return path;
+	let parent = e.target.parentNode;
+	while (parent) {
+		path.push(parent);
+		parent = parent.parentNode;
+	}
+	return path;
+};
