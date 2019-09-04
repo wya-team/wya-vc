@@ -7,7 +7,8 @@ export default {
 			states: {
 				indent: 16,
 				// defaultExpandAll 存在于 expand.js 中，这里不重复添加
-				// TODO: 拆分为独立的 TreeTable，在 expand 中，展开行的记录是放在 expandRows 中，统一用法
+				// 在展开行中，expandRowKeys 会被转化成 expandRows，expandRowKeys 这个属性只是记录了 TreeTable 行的展开
+				// TODO: 拆分为独立的 TreeTable，统一用法
 				expandRowKeys: [],
 				expandSelectable: true,
 				treeData: {}, // item的状态，比如loading, loaded
@@ -61,8 +62,6 @@ export default {
 
 	watch: {
 		normalizedData: 'updateTreeData',
-		// expandRowKeys 在 TreeTable 中也有使用
-		expandRowKeys: 'updateTreeData',
 		normalizedLazyNode: 'updateTreeData'
 	},
 
@@ -168,11 +167,8 @@ export default {
 		},
 
 		updateTreeExpandKeys(value) {
-			// 仅仅在包含嵌套数据时才去更新
-			if (Object.keys(this.normalizedData).length) {
-				this.states.expandRowKeys = value;
-				this.updateTreeData();
-			}
+			this.states.expandRowKeys = value;
+			this.updateTreeData();
 		},
 
 		toggleTreeExpansion(row, expanded) {
@@ -181,8 +177,8 @@ export default {
 			const { rowKey, treeData } = this.states;
 			const id = getRowIdentity(row, rowKey);
 			const data = id && treeData[id];
-			const oldExpanded = treeData[id].expanded;
 			if (id && data && 'expanded' in data) {
+				const oldExpanded = data.expanded;
 				expanded = typeof expanded === 'undefined' ? !data.expanded : expanded;
 				treeData[id].expanded = expanded;
 				if (oldExpanded !== expanded) {
