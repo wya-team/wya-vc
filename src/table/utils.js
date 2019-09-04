@@ -40,6 +40,7 @@ export const parseMinWidth = (minWidth) => {
  * 行 -> 唯一key
  */
 export const getRowIdentity = (row, rowKey) => {
+	if (row.__KEY__) return row.__KEY__;
 	if (!row) throw new VcError('table', 'row is required when get row identity');
 	if (typeof rowKey === 'string') {
 		if (!rowKey.includes('.')) {
@@ -59,7 +60,13 @@ export const getRowIdentity = (row, rowKey) => {
 /**
  * 
  */
-export const walkTreeNode = (root, cb, childrenKey = 'children', lazyKey = 'hasChildren') => {
+export const walkTreeNode = (root, cb, opts = {}) => {
+	const {
+		childrenKey = 'children',
+		lazyKey = 'hasChildren',
+		level: baseLevel = 0
+	} = opts;
+
 	const isNil = (array) => !(Array.isArray(array) && array.length);
 
 	function _walker(parent, children, level) {
@@ -78,12 +85,12 @@ export const walkTreeNode = (root, cb, childrenKey = 'children', lazyKey = 'hasC
 
 	root.forEach(item => {
 		if (item[lazyKey]) {
-			cb(item, null, 0);
+			cb(item, null, baseLevel);
 			return;
 		}
 		const children = item[childrenKey];
 		if (!isNil(children)) {
-			_walker(item, children, 0);
+			_walker(item, children, baseLevel);
 		}
 	});
 };

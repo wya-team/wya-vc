@@ -281,17 +281,22 @@ export default {
 			const { treeIndent, columns, firstDefaultColumnIndex } = this;
 			const columnsHidden = columns.map((column, index) => this.isColumnHidden(index));
 			const rowClasses = this.getRowClass(row, $index);
+			const style = this.getRowStyle(row, $index);
+			let key = this.getKeyOfRow(row, $index);
+
 			let display = true;
 			if (treeRowData) {
 				rowClasses.push('vc-table__row--level-' + treeRowData.level);
 				display = treeRowData.display;
+
+				// key = `${key}___${treeRowData.level}`;
 			}
 			return (
 				<tr
 					v-show={display}
-					style={this.getRowStyle(row, $index)}
+					style={style}
 					class={rowClasses}
-					key={this.getKeyOfRow(row, $index)}
+					key={key}
 					onDblclick={($event) => this.handleDoubleClick($event, row)}
 					onClick={($event) => this.handleClick($event, row)}
 					onContextmenu={($event) => this.handleContextMenu($event, row)}
@@ -468,7 +473,7 @@ export default {
 			>
 				<colgroup>
 					{
-						this.columns.map(column => <col name={column.id } key={column.id} />)
+						this.columns.map(column => <col name={column.id} key={column.id} />)
 					}
 				</colgroup>
 				<tbody>

@@ -87,9 +87,11 @@ export default {
 							level
 						};
 					}
-				}, 
-				childrenColumnName, 
-				lazyColumnIdentifier
+				},
+				{
+					childrenKey: childrenColumnName, 
+					lazyKey: lazyColumnIdentifier
+				}
 			);
 			return res;
 		},
@@ -203,12 +205,12 @@ export default {
 		},
 
 		loadData(row, key, treeNode) {
-			const { lazyTreeNodeMap, treeData } = this.states;
+			this.assertRowKey();
+			const { lazyTreeNodeMap, treeData, rowKey, childrenColumnName, lazyColumnIdentifier } = this.states;
 			if (this.table.loadExpand && !treeData[key].loaded) {
 				
 				treeData[key].loading = true;
 				let promise = this.table.loadExpand(row, treeNode);
-
 				let fn = data => {
 					if (!Array.isArray(data)) {
 						throw new VcError('table', 'data必须是数组');
@@ -216,6 +218,26 @@ export default {
 					treeData[key].loading = false;
 					treeData[key].loaded = true;
 					treeData[key].expanded = true;
+
+					/**
+					 * 处理tree中和返回的数据与首次相同的情况，
+					 */
+					walkTreeNode(
+						data, 
+						(parent, children, level) => {
+							let id = getRowIdentity(parent, rowKey);
+							Object.defineProperty(parent, '__KEY__', {
+								value: `${level}__${id}`,
+								writable: false
+							});
+						},
+						{
+							childrenKey: childrenColumnName, 
+							lazyKey: lazyColumnIdentifier,
+							level: treeNode.level
+						}
+					);
+
 					if (data.length) {
 						this.$set(lazyTreeNodeMap, key, data);
 
