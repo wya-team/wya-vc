@@ -106,7 +106,7 @@ export default {
 				const traverse = (source) => {
 					if (!source) return 0;
 					if (source.expanded && source.children.length > 0) {
-						return max(source.children.map((key) => traverse(treeData[key])));
+						return max([source.level, ...source.children.map((key) => traverse(treeData[key]))]);
 					} else {
 						return source.level;
 					}

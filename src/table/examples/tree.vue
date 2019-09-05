@@ -121,14 +121,14 @@ export default {
 							date: `${new Date().getTime()}`,
 							name: `代号 - ${random(0, 10000)}`,
 							address: `祥园路${random(0, 10000)}号`,
-							hasChildren: true
+							hasChildren: !(treeNode.level > 1)
 						}, 
 						{
 							id: random(0, Number.MAX_SAFE_INTEGER),
 							date: `${new Date().getTime()}`,
 							name: `代号 - ${random(0, 10000)}`,
 							address: `祥园路${random(0, 10000)}号`,
-							hasChildren: true
+							hasChildren: !(treeNode.level > 3)
 						}
 					]);
 				}, 1000);
