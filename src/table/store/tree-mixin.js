@@ -1,3 +1,4 @@
+import { max } from 'lodash';
 import { walkTreeNode, getRowIdentity } from '../utils';
 import { VcError } from '../../vc';
 
@@ -99,15 +100,22 @@ export default {
 		 * 获取当前展开最大的level
 		 */
 		getMaxLevel() {
-			let level = 0;
-			Object.keys(this.states.treeData).forEach((item) => {
-				let target = this.states.treeData[item];
-				if (target.expanded && target.level >= level) {
-					level = target.level + 1;
-				}
-			});
+			let { data, treeData, rowKey } = this.states;
 
-			return level;
+			let levels = data.map((item) => {
+				const traverse = (source) => {
+					if (source && source.expanded && source.children.length > 0) {
+						return max(source.children.map((key) => traverse(treeData[key])));
+					} else if (source) {
+						return source.level;
+					} else {
+						return 0;
+					}
+				};
+				let id = getRowIdentity(item, rowKey);
+				return traverse(treeData[id]);
+			});
+			return max(levels) || 0;
 		},
 
 		updateTreeData() {
@@ -161,7 +169,6 @@ export default {
 					});
 				}
 			}
-			
 			this.states.treeData = newTreeData;
 			this.updateTableScrollY();
 		},
@@ -244,7 +251,6 @@ export default {
 							}, []);
 						}
 					}
-					this.table.$emit('expand-change', row, true, this.getMaxLevel());
 
 					// 对异步过来的数据进行选择
 					if (this.isSelected(row)) {
@@ -253,6 +259,14 @@ export default {
 						});
 					}
 					this.updateAllSelected();
+					
+					/**
+					 * 计算最大的level, 有必要添加$nextTick
+					 * TODO: 去除$nextTick, 期间会触发一次updateTreeData
+					 */
+					this.$nextTick(() => {
+						this.table.$emit('expand-change', row, true, this.getMaxLevel());
+					});
 				};
 
 				if (promise && promise.then) {
