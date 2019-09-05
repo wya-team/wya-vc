@@ -104,14 +104,14 @@ export default {
 
 			let levels = data.map((item) => {
 				const traverse = (source) => {
-					if (source && source.expanded && source.children.length > 0) {
+					if (!source) return 0;
+					if (source.expanded && source.children.length > 0) {
 						return max(source.children.map((key) => traverse(treeData[key])));
-					} else if (source) {
-						return source.level;
 					} else {
-						return 0;
+						return source.level;
 					}
 				};
+				
 				let id = getRowIdentity(item, rowKey);
 				return traverse(treeData[id]);
 			});
