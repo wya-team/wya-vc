@@ -1,6 +1,6 @@
 <template>
 	<div :style="[basicStyle]" class="vc-pull-scroll vc-hack-scroll">
-		<div v-if="inverted" :style="style">
+		<div v-if="inverted" :style="[pullStyle, pullAnimateStyle]">
 			<slot :status="rebuildScrollStatus" name="scroll-status">
 				<vc-scroll-status
 					:status="rebuildScrollStatus"
@@ -9,19 +9,21 @@
 				/>
 			</slot>
 		</div>
-		<div v-if="!inverted && pull" :style="style">
-			<slot :status="rebuildScrollStatus" name="pull-status">
-				<vc-pull-status
-					:status="pullStatus"
-					:text="pullText"
+		<div v-if="!inverted && pullDown" :style="[pullStyle, pullAnimateStyle]">
+			<slot :status="pullDownStatus" :pre-status="prePullDownStatus" name="pull-down-status">
+				<vc-pull-down-status
+					:status="pullDownStatus"
+					:pre-status="prePullDownStatus"
+					:text="pullDownText"
 				/>
 			</slot>
 		</div>
 		<vc-core
 			ref="core"
-			:style="style"
+			:style="[pullStyle, pullAnimateStyle]"
 			:show="show"
-			:pull="!inverted && pull"
+			:pull-down="!inverted && pullDown"
+			:pull-up="!inverted && pullUp"
 			:scroll="scroll"
 			:inverted="inverted"
 			:current="currentPage"
@@ -31,13 +33,16 @@
 			:load-data="loadData"
 			:scroll-status="scrollStatus"
 			:y.sync="y"
-			:pull-status.sync="pullStatus" 
+			:pull-down-status.sync="pullDownStatus" 
+			:pull-up-status.sync="pullUpStatus" 
 			:auto="auto"
 			@load-pending="handlePending"
 			@load-success="handleSuccess"
 			@load-finish="handleFinish"
 			@pull-start="handleStart"
 			@pull-end="handleEnd"
+			@pull-down-end="$emit('pull-down-end')"
+			@pull-up-end="$emit('pull-up-end')"
 		>
 			<slot name="header" />
 			<!-- 项目中统一使用it, key由slot决定 -->
@@ -46,7 +51,7 @@
 			</template>
 			<slot name="footer" />
 		</vc-core>
-		<div v-if="!inverted && scroll" :style="style">
+		<div v-if="!inverted && scroll" :style="[pullStyle, pullAnimateStyle]">
 			<slot :status="rebuildScrollStatus" name="scroll-status">
 				<vc-scroll-status
 					:status="rebuildScrollStatus"
@@ -55,19 +60,31 @@
 				/>
 			</slot>
 		</div>
+		<!-- TODO: 上拉 -->
+		<!-- <div v-if="!inverted && pullUp" :style="[pullStyle, pullAnimateStyle]">
+			<slot :status="pullUpStatus" :pre-status="prePullDownStatus" name="pull-up-status">
+				<vc-pull-up-status
+					:status="pullUpStatus"
+					:pre-status="prePullDownStatus"
+					:text="pullUpText"
+				/>
+			</slot>
+		</div> -->
 	</div>
 </template>
 <script>
 import { pick } from 'lodash';
 import Core from './core.vue';
 import ScrollStatus from './scroll-status.vue';
-import PullStatus from './pull-status.vue';
+import PullDownStatus from './pull-down-status.vue';
+import PullUpStatus from './pull-up-status.vue';
 
 export default {
 	name: "vc-pull-scroll",
 	components: {
 		'vc-scroll-status': ScrollStatus,
-		'vc-pull-status': PullStatus,
+		'vc-pull-down-status': PullDownStatus,
+		'vc-pull-up-status': PullUpStatus,
 		'vc-core': Core,
 	},
 	props: {
@@ -75,9 +92,13 @@ export default {
 			type: [String, Number],
 			default: window.innerHeight,
 		},
-		pull: {
+		pullDown: {
 			type: Boolean,
 			default: true
+		},
+		pullUp: {
+			type: Boolean,
+			default: false
 		},
 		scroll: {
 			type: Boolean,
@@ -88,15 +109,40 @@ export default {
 			default: false,
 		},
 		...pick(Core.props, ['scaleY', 'pauseY', 'inverted', 'dataSource', 'show', 'loadData', 'total']),
+		pullDownText: PullDownStatus.props.text,
+		pullUpText: PullUpStatus.props.text,
 		scrollText: ScrollStatus.props.text,
-		pullText: PullStatus.props.text,
 		emptyText: ScrollStatus.props.emptyText,
 	},
 	data() {
 		return {
 			y: 0, // 下拉的距离
-			pullStatus: 0,
+			/**
+			 * 0.未touchstart 
+			 * 1.pulling但未达到pauseY 
+			 * 2.pulling达到pauseY 
+			 * 3.进入pause状态 （loading）
+			 */
+			pullDownStatus: 0,
+			prePullDownStatus: 0,
+
+			/**
+			 * 0: '上拉加载', 
+			 * 1: '加载中', 
+			 * 2: '已全部加载', 
+			 * 3: '网络不稳定，请稍后重试', 
+			 * 4: '没有内容可供显示'
+			 */
 			scrollStatus: 0,
+
+			/**
+			 * 0.未touchstart 
+			 * 1.pulling但未达到pauseY 
+			 * 2.pulling达到pauseY 
+			 * 3.进入pause状态 （loading）
+			 */
+			pullUpStatus: 0,
+			prePullUpStatus: 0,
 
 			pulling: false,
 
@@ -114,14 +160,18 @@ export default {
 		auto() {
 			return this.basicStyle.height === 'auto';
 		},
-		style() {
+		pullStyle() {
 			// 影响内部fixed的为组织
 			// TODO： 写对应的demo, 避免重构时出问题
 			return this.y !== 0 
 				? {
-					transition: `transform ${!this.pulling && (this.pullStatus === 0 || this.pullStatus === 3) ? '300' : '0'}ms ease-out`,
-					transform: `translate3d(0, ${this.y}px, 0)`
+					transform: `translate3d(0, ${this.y}px, 0)`,
 				}
+				: {};
+		},
+		pullAnimateStyle() {
+			return this.pullDownStatus === 3 || this.pullDownStatus === 0
+				? { transition: `transform 300ms ease-out` }
 				: {};
 		},
 		isEmpty() {
@@ -131,6 +181,14 @@ export default {
 			return this.isEmpty ? 4 : this.scrollStatus;
 		}
 	},
+	watch: {
+		pullDownStatus(v, oldV) {
+			this.prePullDownStatus = oldV;
+		},
+		pullUpStatus(v, oldV) {
+			this.prePullUpStatus = oldV;
+		}
+	},
 	mounted() {
 		['scrollTo', 'scrollTop', 'scrollBottom']
 			.forEach(i => this[i] = this.$refs.core[i]);
@@ -138,29 +196,7 @@ export default {
 	methods: {
 		reset() {
 			this.y = 0;
-			this.pullStatus = 0;
-		},
-		handleChange(value) {
-			const { pauseY } = this;
-			/**
-			 * 0.未touchstart 
-			 * 1.pulling但未达到pauseY 
-			 * 2.pulling达到pauseY 
-			 * 3.进入pause状态 （loading）
-			 */
-			switch (value) {
-				case 0:
-					this.y = 0;
-					this.pullStatus = value;
-					break;
-				case 3:
-					this.y = this.pauseY;
-					this.pullStatus = value;
-					break;
-				default:
-					this.pullStatus = value;
-					break;
-			}
+			this.pullDownStatus = 0;
 		},
 		handlePending(res) {
 			this.scrollStatus = 1;
