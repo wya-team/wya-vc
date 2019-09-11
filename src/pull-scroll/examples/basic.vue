@@ -1,16 +1,19 @@
 <template>
-	<vc-pull-scroll
-		:load-data="loadData"
-		:data-source="dataSource"
-		:total="total"
-	>
-		<template #header>
-			<div @click="handleClick">这是一个window下的滚动</div>
-		</template>
-		<template #default="{ it }">
-			<div style="padding: 20px" @click="handleReset">{{ it }}</div>
-		</template>
-	</vc-pull-scroll>
+	<div>
+		22232
+		<vc-pull-scroll
+			:load-data="loadData"
+			:data-source="dataSource"
+			:total="total"
+		>
+			<template #header>
+				<div @click="handleClick">这是一个window下的滚动</div>
+			</template>
+			<template #default="{ it }">
+				<div style="padding: 20px" @click="handleReset">{{ it }}</div>
+			</template>
+		</vc-pull-scroll>
+	</div>
 </template>
 <script>
 import { ajax } from '@wya/http';

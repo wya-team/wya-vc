@@ -1,5 +1,6 @@
 <template>
-	<div class="vc-pull-scroll-pull-up-status">
+	<!-- 样式处理历史问题 -->
+	<div class="vc-pull-scroll-pull-status is-up">
 		<div v-if="typeof renderer[currentStatus] === 'string'">
 			<vc-spin 
 				v-if="currentStatus === 3" 
@@ -72,14 +73,13 @@ export default {
 </script>
 
 <style lang="scss">
-.vc-pull-scroll-pull-up-status {
+.vc-pull-scroll-pull-status.is-up {
 	position: absolute;
 	left: 0;
 	right: 0;
-	bottom: -30px;
-	transform: translateZ(0);
-	background: red;
+	bottom: 0;
 	> div {
+		margin-bottom: -30px;
 		display: flex;
 		align-items: center;
 		justify-content: center;

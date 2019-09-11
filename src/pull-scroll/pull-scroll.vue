@@ -36,13 +36,7 @@
 			:pull-down-status.sync="pullDownStatus" 
 			:pull-up-status.sync="pullUpStatus" 
 			:auto="auto"
-			@load-pending="handlePending"
-			@load-success="handleSuccess"
-			@load-finish="handleFinish"
-			@pull-start="handleStart"
-			@pull-end="handleEnd"
-			@pull-down-end="$emit('pull-down-end')"
-			@pull-up-end="$emit('pull-up-end')"
+			v-on="hooks"
 		>
 			<slot name="header" />
 			<!-- 项目中统一使用it, key由slot决定 -->
@@ -61,7 +55,7 @@
 			</slot>
 		</div>
 		<!-- TODO: 上拉 -->
-		<!-- <div v-if="!inverted && pullUp" :style="[pullStyle, pullAnimateStyle]">
+		<div v-if="!inverted && pullUp" :style="[pullStyle, pullAnimateStyle]">
 			<slot :status="pullUpStatus" :pre-status="prePullDownStatus" name="pull-up-status">
 				<vc-pull-up-status
 					:status="pullUpStatus"
@@ -69,7 +63,7 @@
 					:text="pullUpText"
 				/>
 			</slot>
-		</div> -->
+		</div>
 	</div>
 </template>
 <script>
@@ -127,7 +121,7 @@ export default {
 			prePullDownStatus: 0,
 
 			/**
-			 * 0: '上拉加载', 
+			 * 0: '上滑加载', 
 			 * 1: '加载中', 
 			 * 2: '已全部加载', 
 			 * 3: '网络不稳定，请稍后重试', 
@@ -144,8 +138,6 @@ export default {
 			pullUpStatus: 0,
 			prePullUpStatus: 0,
 
-			pulling: false,
-
 			// 页面
 			currentPage: 0,
 		};
@@ -156,9 +148,6 @@ export default {
 				minHeight: `${this.height}px`, 
 				height: (this.wrapper && this.height) ? `${this.height}px` : "auto" 
 			};
-		},
-		auto() {
-			return this.basicStyle.height === 'auto';
 		},
 		pullStyle() {
 			// 影响内部fixed的为组织
@@ -174,12 +163,29 @@ export default {
 				? { transition: `transform 300ms ease-out` }
 				: {};
 		},
+		rebuildScrollStatus() {
+			return this.isEmpty ? 4 : this.scrollStatus;
+		},
 		isEmpty() {
 			return this.currentPage === 1 && this.dataSource.length === 0;
 		},
-		rebuildScrollStatus() {
-			return this.isEmpty ? 4 : this.scrollStatus;
-		}
+		auto() {
+			return this.basicStyle.height === 'auto';
+		},
+		hooks() {
+			let basic = {
+				'load-pending': this.handlePending,
+				'load-success': this.handleSuccess,
+				'load-finish': this.handleFinish,
+			};
+
+			Object.keys(this.$listeners).forEach((key) => {
+				if (/pull-[a-z]-[a-z]/.test(key)) {
+					basic[key] = this.$listeners[key];
+				}
+			});
+			return basic;
+		},
 	},
 	watch: {
 		pullDownStatus(v, oldV) {
@@ -190,31 +196,35 @@ export default {
 		}
 	},
 	mounted() {
+		/**
+		 * 方法的映射
+		 */
 		['scrollTo', 'scrollTop', 'scrollBottom']
 			.forEach(i => this[i] = this.$refs.core[i]);
 	},
 	methods: {
-		reset() {
-			this.y = 0;
-			this.pullDownStatus = 0;
+		/**
+		 * 加载中
+		 */
+		handlePending({ scroll, type }) {
+			scroll && (this.scrollStatus = 1);
+			this.$emit('load-pending', { type });
 		},
-		handlePending(res) {
-			this.scrollStatus = 1;
-			this.$emit('load-pending', res);
-		},
-		handleSuccess(res, page) {
+
+		/**
+		 * 成功
+		 */
+		handleSuccess({ data, page, type }) {
 			this.currentPage = page;
-			this.$emit('load-success', res);
+			this.$emit('load-success', { data, type });
 		},
-		handleFinish(res) {
+
+		/**
+		 * 结束
+		 */
+		handleFinish({ type }) {
 			this.scrollStatus = this.total < Number(this.currentPage) + 1 ? 2 : 0;
-			this.$emit('load-finish', res);
-		},
-		handleStart() {
-			this.pulling = true;
-		},
-		handleEnd() {
-			this.pulling = false;
+			this.$emit('load-finish', { type });
 		}
 	}
 };

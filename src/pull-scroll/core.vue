@@ -140,7 +140,10 @@ export default {
 			if (!this.show || (this.total != 0 && this.scrollStatus > 0)) { // 禁用，加载完成或者加载中无视
 				return false;
 			}
-			this._loadData(1, false);
+			this._loadData({
+				type: 'scroll', // 默认
+				page: 1,
+			});
 			/**
 			 * 重新清理下高度参数
 			 */
@@ -167,7 +170,10 @@ export default {
 					(!inverted && scrollTop >= totalHeight - containerHeight - this.scrollThreshold)
 					|| (inverted && scrollTop == 0)
 				) {
-					this._loadData(this.current + 1, false);
+					this._loadData({
+						type: 'scroll',
+						page: this.current + 1,
+					});
 				}
 			}, 50); 
 		},
@@ -250,9 +256,11 @@ export default {
 		handleEnd() {
 			if (this.isLoadingForScroll) return;
 
+			let isPullDown = !!this.pullDownStatus;
+			let isPullUp = !!this.pullUpStatus;
+
 			// 下拉逻辑
 			if (this.pullDownStatus) {
-				this.pullDownStatus == 2 && this.$emit('pull-down-end');
 				// 判断是否进入状态3还是回到状态0
 				let isPause; 
 				if (this.pullDown && this.y > this.pauseY) {
@@ -262,7 +270,11 @@ export default {
 					this.getParams().el.scrollTop = 0;
 
 					// 准备去请求数据啦
-					this.shouldLoadForPullDown && this._loadData(1, true);
+					this.shouldLoadForPullDown && this._loadData({
+						type: 'pull-down',
+						page: 1,
+						method: this.$listeners['pull-down-end']
+					});
 
 					// 不允许下拉刷新获取数据
 					this.shouldLoadForPullDown = false;
@@ -276,14 +288,19 @@ export default {
 
 			// 上拉逻辑
 			if (this.pullUpStatus) {
-				this.pullUpStatus == 2 && this.$emit('pull-up-end');
 				// 判断是否进入状态3还是回到状态0
 				let isPause; 
 				if (this.pullUp && -this.y > this.pauseY) {
 					this.$emit('update:pull-up-status', 3);
 
 					// 准备去请求数据啦
-					this.shouldLoadForPullUp && this._loadData(this.current + 1, true);
+					if (this.shouldLoadForPullUp) {
+						this._loadData({
+							type: 'pull-up',
+							page: this.current + 1,
+							method: this.$listeners['pull-up-end']
+						});
+					}
 
 					// 不允许上拉刷新获取数据
 					this.shouldLoadForPullUp = false;
@@ -299,51 +316,67 @@ export default {
 			this.touching = false;
 			this.$emit('pull-end');
 		},
-		reset() {
+
+		resetDefaultStatus() {
 			this.$emit('update:y', 0);
 			this.$emit('update:pull-down-status', 0);
 			this.$emit('update:pull-up-status', 0);
 			this.shouldLoadForPullDown = true;
 			this.shouldLoadForPullUp = true;
 		},
-		_loadData(page, isRefresh) {
-			if (this.isLoadingForScroll) return;
-			!isRefresh && (this.isLoadingForScroll = true);
-			let { loadData } = this;
-			loadData = loadData || (() => Promise.resolve([]));
-			// 请求
-			const load = loadData(page, isRefresh);
-			if (load && load.then) {
-				this.$emit('load-pending');
-				load.then((res) => {
-					this.$emit('load-success', res, page);
-					this.inverted && this.scrollTo(1);
-					return res;
-				}).catch((res) => {
-					this.$emit('load-fail', res);
-					return Promise.reject(res);
-				}).finally(() => {
-					!isRefresh && (this.isLoadingForScroll = false);
 
-					this.reset();
-					this.$emit('load-finish');
-				});
+		_loadData({ page, type, method }) {
+			if (this.isLoadingForScroll) return;
+			let scroll = type === 'scroll';
+
+			scroll && (this.isLoadingForScroll = true);
+
+			let { loadData } = this;
+			loadData = method || loadData || (() => Promise.resolve([]));
+
+			// 请求
+			const load = loadData(page, type === 'pull-down');
+			if (load && load.then) {
+				this.$emit('load-pending', { type, scroll });
+
+				let onSuccess = data => {
+					this.$emit('load-success', { data, page, type });
+					this.inverted && this.scrollTo(30); // status的高度为30
+					return data;
+				};
+
+				let onError = data => {
+					this.$emit('load-fail', { data, type, page });
+					return Promise.reject(data);
+				};
+
+				let onFinally = () => {
+					scroll && (this.isLoadingForScroll = false);
+					this.resetDefaultStatus();
+					this.$emit('load-finish', { type });
+				};
+
+				load.then(onSuccess).catch(onError).finally(onFinally);
 			} else {
-				throw new VcError('pull-scroll', 'loadData 必须是 Promise');
+				throw new VcError('pull-scroll', '方法必须是 Promise');
 			}
 		},
+
 		scrollTo(v) {
 			let isWindow = (this.container === window);
 			let el = (isWindow) ? document.scrollingElement : this.container;
 			// https://stackoverflow.com/questions/12788487/document-scrolltop-always-returns-0
 			el.scrollTop = v;
 		},
+
 		scrollTop() {
 			this.scrollTo(1);
 		},
+
 		scrollBottom() {
 			this.scrollTo(Number.MAX_SAFE_INTEGER);
 		},
+
 		scrollIntoView() {
 			// Todo
 		},
