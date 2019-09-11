@@ -256,9 +256,6 @@ export default {
 		handleEnd() {
 			if (this.isLoadingForScroll) return;
 
-			let isPullDown = !!this.pullDownStatus;
-			let isPullUp = !!this.pullUpStatus;
-
 			// 下拉逻辑
 			if (this.pullDownStatus) {
 				// 判断是否进入状态3还是回到状态0
