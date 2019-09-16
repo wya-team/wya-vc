@@ -87,11 +87,14 @@ export default {
 			let { format } = this;
 
 			v = this.formatter(format, [day, hour, minute, second, ms]);
+			
 
 			// 过来00*
 			if (!this.showZero) {
-				// `00(${this.formatter(format, Array.from({ length: 5 }, () => '|'))})?`
-				let regex = new RegExp('00:', 'g');
+				let regex = new RegExp(
+					`00(${this.formatter(format, Array.from({ length: 5 }, () => '|'))})?`, 
+					'g'
+				);
 				v = v.replace(regex, '');
 			}
 
