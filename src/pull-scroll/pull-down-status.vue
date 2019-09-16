@@ -1,6 +1,6 @@
 <template>
 	<!-- 样式处理历史问题 -->
-	<div class="vc-pull-scroll-pull-status is-down">
+	<div class="vc-pull-scroll-pull-status is-down" name="pull-down">
 		<div v-if="typeof renderer[currentStatus] === 'string'">
 			<vc-spin 
 				v-if="currentStatus === 3" 

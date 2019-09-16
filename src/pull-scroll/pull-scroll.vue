@@ -1,23 +1,33 @@
 <template>
 	<div :style="[basicStyle]" class="vc-pull-scroll vc-hack-scroll">
-		<div v-if="inverted" :style="[pullStyle, pullAnimateStyle]">
-			<slot :status="rebuildScrollStatus" name="scroll-status">
-				<vc-scroll-status
-					:status="rebuildScrollStatus"
-					:text="scrollText"
-					:empty-text="emptyText"
-				/>
-			</slot>
-		</div>
-		<div v-if="!inverted && pullDown" :style="[pullStyle, pullAnimateStyle]">
-			<slot :status="pullDownStatus" :pre-status="prePullDownStatus" name="pull-down-status">
-				<vc-pull-down-status
-					:status="pullDownStatus"
-					:pre-status="prePullDownStatus"
-					:text="pullDownText"
-				/>
-			</slot>
-		</div>
+		<slot 
+			v-if="inverted" 
+			:style="[pullStyle, pullAnimateStyle]"
+			:status="rebuildScrollStatus" 
+			name="scroll-status"
+		>
+
+			<vc-scroll-status
+				:style="[pullStyle, pullAnimateStyle]"
+				:status="rebuildScrollStatus"
+				:text="scrollText"
+				:empty-text="emptyText"
+			/>
+		</slot>
+		<slot
+			v-if="!inverted && pullDown"
+			:style="[pullStyle, pullAnimateStyle]" 
+			:status="pullDownStatus" 
+			:pre-status="prePullDownStatus" 
+			name="pull-down-status"
+		>
+			<vc-pull-down-status
+				:style="[pullStyle, pullAnimateStyle]"
+				:status="pullDownStatus"
+				:pre-status="prePullDownStatus"
+				:text="pullDownText"
+			/>
+		</slot>
 		<vc-core
 			ref="core"
 			:style="[pullStyle, pullAnimateStyle]"
@@ -39,31 +49,41 @@
 			v-on="hooks"
 		>
 			<slot name="header" />
+			<slot name="content" />
 			<!-- 项目中统一使用it, key由slot决定 -->
 			<template v-for="(item, index) in dataSource">
 				<slot :it="item" :index="index"/>
 			</template>
 			<slot name="footer" />
 		</vc-core>
-		<div v-if="!inverted && scroll" :style="[pullStyle, pullAnimateStyle]">
-			<slot :status="rebuildScrollStatus" name="scroll-status">
-				<vc-scroll-status
-					:status="rebuildScrollStatus"
-					:text="scrollText"
-					:empty-text="emptyText"
-				/>
-			</slot>
-		</div>
+		<slot 
+			v-if="!inverted && scroll"
+			:status="rebuildScrollStatus"
+			:style="[pullStyle, pullAnimateStyle]" 
+			name="scroll-status"
+		>
+			<vc-scroll-status
+				:style="[pullStyle, pullAnimateStyle]"
+				:status="rebuildScrollStatus"
+				:text="scrollText"
+				:empty-text="emptyText"
+			/>
+		</slot>
 		<!-- TODO: 上拉 -->
-		<div v-if="!inverted && pullUp" :style="[pullStyle, pullAnimateStyle]">
-			<slot :status="pullUpStatus" :pre-status="prePullDownStatus" name="pull-up-status">
-				<vc-pull-up-status
-					:status="pullUpStatus"
-					:pre-status="prePullDownStatus"
-					:text="pullUpText"
-				/>
-			</slot>
-		</div>
+		<slot
+			v-if="!inverted && pullUp" 
+			:status="pullUpStatus" 
+			:pre-status="prePullDownStatus" 
+			:style="[pullStyle, pullAnimateStyle]"
+			name="pull-up-status"
+		>
+			<vc-pull-up-status
+				:style="[pullStyle, pullAnimateStyle]"
+				:status="pullUpStatus"
+				:pre-status="prePullUpStatus"
+				:text="pullUpText"
+			/>
+		</slot>
 	</div>
 </template>
 <script>
@@ -152,7 +172,7 @@ export default {
 		pullStyle() {
 			// 影响内部fixed的为组织
 			// TODO： 写对应的demo, 避免重构时出问题
-			return this.y !== 0 
+			return this.y !== 0 && this.pullUpStatus != 3
 				? {
 					transform: `translate3d(0, ${this.y}px, 0)`,
 				}
@@ -180,7 +200,7 @@ export default {
 			};
 
 			Object.keys(this.$listeners).forEach((key) => {
-				if (/pull-[a-z]-[a-z]/.test(key)) {
+				if (/pull-[^-]+-[^-]+/.test(key)) {
 					basic[key] = this.$listeners[key];
 				}
 			});

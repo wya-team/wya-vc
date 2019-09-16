@@ -1,6 +1,6 @@
 <template>
 	<!-- 样式处理历史问题 -->
-	<div class="vc-pull-scroll-pull-status is-up">
+	<div class="vc-pull-scroll-pull-status is-up" name="pull-up">
 		<div v-if="typeof renderer[currentStatus] === 'string'">
 			<vc-spin 
 				v-if="currentStatus === 3" 
@@ -41,12 +41,14 @@ export default {
 	computed: {
 		currentStatus() {
 			let status = this.status;
+			if (this.preStatus == 0 && this.status == 0) {
+				status = 1; 
+			}
 			if (this.preStatus == 1 && this.status == 0) {
 				status = 1; 
 			}
-
 			if (this.preStatus == 3 && this.status == 0) {
-				status = 3; 
+				status = 1; 
 			}
 			return status;
 		},
@@ -57,8 +59,8 @@ export default {
 			let result = merge(
 				{
 					0: '~', 
-					1: '↓ 上拉加载更多', 
-					2: '↑ 释放加载更多', 
+					1: '↑ 上拉加载更多', 
+					2: '↓ 释放加载更多', 
 					3: '加载中...', 
 				},
 				this.text
@@ -74,19 +76,22 @@ export default {
 
 <style lang="scss">
 .vc-pull-scroll-pull-status.is-up {
-	position: absolute;
-	left: 0;
-	right: 0;
-	bottom: 0;
 	> div {
-		margin-bottom: -30px;
 		display: flex;
 		align-items: center;
 		justify-content: center;
 		overflow: hidden;
 		line-height: 30px;
 		font-size: 12px;
-		height: 30px;
+	}
+	&.is-lack {
+		position: absolute;
+		left: 0;
+		right: 0;
+		bottom: 0;
+		> {
+			margin-bottom: -30px;
+		}
 	}
 }
 </style>

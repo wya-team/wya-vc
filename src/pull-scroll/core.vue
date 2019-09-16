@@ -36,10 +36,7 @@ export default {
 			type: Array,
 			default: () => []
 		},
-		loadData: {
-			type: Function,
-			default: () => {},
-		},
+		loadData: Function,
 		y: Number,
 		auto: Boolean, // 是否有内部控制滚动
 		current: [String, Number],
@@ -188,7 +185,8 @@ export default {
 			this.$emit('pull-start');
 		},
 		handleMove(e) {
-			this._moveBoundary(e);
+			const { status, direction } = this._moveBoundary(e);
+
 			if (!this.touching || this.isLoadingForScroll) return;
 
 			const eTouchScreenY = e.touches 
@@ -198,58 +196,60 @@ export default {
 			const pulledY = (eTouchScreenY - this.startY) * this.scaleY; // 用scaleY对pull的距离进行缩放
 
 			// 下拉逻辑
-			if (this.pullDownStatus) { // 状态非0时
-				if (pulledY >= 0) { // 进行下拉
-					this.endY = eTouchScreenY;
-					this.$emit('update:y', this.pullDownStatus === 3 && pulledY < this.pauseY ? this.pauseY : pulledY);
+			if (direction === '10') {
+				if (this.pullDownStatus) { // 状态非0时
+					if (pulledY >= 0) { // 进行下拉
+						this.endY = eTouchScreenY;
+						this.$emit('update:y', this.pullDownStatus === 3 && pulledY < this.pauseY ? this.pauseY : pulledY);
 
-					if (this.pullDownStatus !== 3) { // 在状态不为3时，即状态为1或2时
-						if (pulledY > this.pauseY) { // 拉动的值超过设定的，即提示释放刷新
-							if (this.pullDownStatus !== 2) {
-								this.$emit('update:pull-down-status', 2);
+						if (this.pullDownStatus !== 3) { // 在状态不为3时，即状态为1或2时
+							if (pulledY > this.pauseY) { // 拉动的值超过设定的，即提示释放刷新
+								if (this.pullDownStatus !== 2) {
+									this.$emit('update:pull-down-status', 2);
+								}
+							} else if (this.pullDownStatus !== 1) { // 拉动的值不超过设定的，即提示下拉刷新
+								this.$emit('update:pull-down-status', 1);
 							}
-						} else if (this.pullDownStatus !== 1) { // 拉动的值不超过设定的，即提示下拉刷新
-							this.$emit('update:pull-down-status', 1);
 						}
-					}
-				} else { // 上滑，其实只有状态为3时才会进入该逻辑，pulledY < 0时，回到状态0
-					// e.preventDefault(); // 屏蔽滚动
-					this.$emit('update:pull-down-status', 0);
-					this.$emit('update:y', 0);
-				}
-			} else if (this.getParams().scrollTop === 0) { // 状态为0时, scrollTop为0时进入状态1
-				this.startY = eTouchScreenY;
-				this.$emit('update:pull-down-status', 1);
-			}
-
-			const { scrollTop, totalHeight, containerHeight } = this.getParams();
-
-			// 上拉逻辑
-			if (this.pullUpStatus) {
-				if (pulledY < 0) {
-					this.endY = eTouchScreenY;
-					this.$emit('update:y', this.pullUpStatus === 3 && pulledY < -this.pauseY ? -this.pauseY : pulledY);
-
-					if (this.pullUpStatus !== 3) { // 在状态不为3时，即状态为1或2时
-						if (-pulledY > this.pauseY) { // 拉动的值超过设定的，即提示释放刷新
-							if (this.pullUpStatus !== 2) {
-								this.$emit('update:pull-up-status', 2);
-							}
-						} else if (this.pullUpStatus !== 1) { // 拉动的值不超过设定的，即提示下拉刷新
-							this.$emit('update:pull-up-status', 1);
-						}
-					} else {
-						this.$emit('update:pull-up-status', 0);
+					} else { // 上滑，其实只有状态为3时才会进入该逻辑，pulledY < 0时，回到状态0
+						// e.preventDefault(); // 屏蔽滚动
+						this.$emit('update:pull-down-status', 0);
 						this.$emit('update:y', 0);
 					}
-				} 
-			} else if (
-				(this.scrollStatus == 2 || !this.scroll)
-				&& scrollTop + containerHeight === totalHeight
-				&& pulledY < 0
-			) {
-				this.startY = eTouchScreenY;
-				this.$emit('update:pull-up-status', 1);
+				} else if (this.getParams().scrollTop === 0) { // 状态为0时, scrollTop为0时进入状态1
+					this.startY = eTouchScreenY;
+					this.$emit('update:pull-down-status', 1);
+				}
+			} else {
+				const { scrollTop, totalHeight, containerHeight } = this.getParams();
+
+				// 上拉逻辑
+				if (this.pullUpStatus) {
+					if (pulledY < 0) {
+						this.endY = eTouchScreenY;
+						this.$emit('update:y', this.pullUpStatus === 3 && pulledY < -this.pauseY ? -this.pauseY : pulledY);
+
+						if (this.pullUpStatus !== 3) { // 在状态不为3时，即状态为1或2时
+							if (-pulledY > this.pauseY) { // 拉动的值超过设定的，即提示释放刷新
+								if (this.pullUpStatus !== 2) {
+									this.$emit('update:pull-up-status', 2);
+								}
+							} else if (this.pullUpStatus !== 1) { // 拉动的值不超过设定的，即提示下拉刷新
+								this.$emit('update:pull-up-status', 1);
+							}
+						} else {
+							this.$emit('update:pull-up-status', 0);
+							this.$emit('update:y', 0);
+						}
+					} 
+				} else if (
+					(this.scrollStatus == 2 || !this.scroll)
+					&& scrollTop + containerHeight === totalHeight
+					&& pulledY < 0
+				) {
+					this.startY = eTouchScreenY;
+					this.$emit('update:pull-up-status', 1);
+				}
 			}
 		},
 
@@ -338,7 +338,7 @@ export default {
 
 				let onSuccess = data => {
 					this.$emit('load-success', { data, page, type });
-					this.inverted && this.scrollTo(30); // status的高度为30
+					// this.inverted && this.scrollTo(30); // status的高度为30, 不需要做处理
 					return data;
 				};
 
@@ -398,14 +398,20 @@ export default {
 				status = '10';
 			} // 其他情况属于 '11'
 
+			let direction;
 			if (status != '11') {
 				// 判断当前的滚动方向
-				let direction = eTouchScreenY - this.startY > 0 ? '10' : '01';
+				direction = eTouchScreenY - this.startY > 0 ? '10' : '01';
 				// 操作方向和当前允许状态求与运算，运算结果为0，就说明不允许该方向滚动，则禁止默认事件，阻止滚动
 				if (!(parseInt(status, 2) & parseInt(direction, 2))) { // 连着均是'10'或'01' 不阻止滚动
 					e.preventDefault();
 				}
 			}
+
+			return {
+				direction,
+				status
+			};
 		}
 
 	},

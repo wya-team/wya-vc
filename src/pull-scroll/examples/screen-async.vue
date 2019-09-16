@@ -4,7 +4,11 @@
 		:load-data="loadData"
 		:data-source="dataSource"
 		:total="total"
+		:scroll="false"
+		:pull-up="true"
 		wrapper
+		@pull-down-end="handlePre"
+		@pull-up-end="handleNext"
 	>
 		<template #header>
 			<div>这是一个容器下的滚动</div>
@@ -16,6 +20,7 @@
 </template>
 <script>
 import { ajax } from '@wya/http';
+import MToast from '../../toast';
 import PullScroll from '..';
 
 let count = 0;
@@ -30,6 +35,7 @@ export default {
 
 			// 数据源
 			total: 0,
+			current: 1,
 			dataSource: []
 		};
 	},
@@ -37,7 +43,8 @@ export default {
 		
 	},
 	methods: {
-		loadData(page, isRefresh) {
+		loadData(page) {
+			MToast.loading();
 			return new Promise((resolve, reject) => {
 				ajax({
 					url: 'test.json',
@@ -55,13 +62,13 @@ export default {
 				}).then((res) => {
 					console.log('@wya/vc:', page);
 					this.total = res.data.page.total;
-					isRefresh 
-						? (this.dataSource = res.data.list)
-						: this.dataSource.splice(this.dataSource.length, 0, ...res.data.list);
+					this.dataSource = res.data.list;
 					resolve();
 				}).catch((e) => {
 					console.log(e);
 					reject();
+				}).finally(() => {
+					MToast.destroy();
 				});
 			});
 			
@@ -79,8 +86,34 @@ export default {
 			return fakeData;
 		},
 		handleReset() {
-			this.total = 0;
-			this.dataSource = [];
+			return new Promise((resolve, reject) => {
+				this.total = 0;
+				this.dataSource = [];
+				setTimeout(resolve, 0);
+			});
+		},
+
+		handleNext() {
+			return new Promise((resolve) => {
+				setTimeout(() => {
+					this.dataSource = [
+						...this.dataSource,
+						...this.getFakeData(++this.current)
+					];
+					resolve();
+				}, 5000);
+			});
+		},
+		handlePre() {
+			return new Promise((resolve) => {
+				setTimeout(() => {
+					this.dataSource = [
+						...this.getFakeData(++this.current),
+						...this.dataSource
+					];
+					resolve();
+				}, 5000);
+			});
 		}
 	}
 };
