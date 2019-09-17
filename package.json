@@ -1,6 +1,6 @@
 {
     "name": "wya-vc",
-    "version": "0.1.25",
+    "version": "0.1.27",
     "description": "wya for vue components",
     "main": "lib/main.js",
     "files": [

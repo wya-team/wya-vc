@@ -9,6 +9,7 @@
 						accept="image/gif,image/jpeg,image/jpg,image/png" 
 						style="outline: none"
 						@file-success="handleImgSuccess"
+						@file-error="$emit('file-error', arguments[0], arguments[1], arguments[2])"
 					>
 						<vc-icon type="image" />
 					</vc-upload>
