@@ -47,7 +47,9 @@ export default {
 			default: 200,
 		},
 		pullDownStatus: Number,
-		pullUpStatus: Number
+		prePullDownStatus: Number,
+		pullUpStatus: Number,
+		prePullUpStatus: Number
 	},
 	data() {
 		return {
@@ -277,7 +279,7 @@ export default {
 					this.shouldLoadForPullDown = false;
 					isPause = true;
 				} else {
-					this.$emit('update:pull-down-status', 0);
+					this.resetDefaultStatus('pull-down-status');
 					isPause = false;
 				}
 				this.$emit('update:y', isPause ? this.pauseY : 0);
@@ -304,7 +306,7 @@ export default {
 
 					isPause = true;
 				} else {
-					this.$emit('update:pull-up-status', 0);
+					this.resetDefaultStatus('pull-up-status');
 					isPause = false;
 				}
 				this.$emit('update:y', isPause ? -this.pauseY : 0);
@@ -315,11 +317,17 @@ export default {
 		},
 
 		resetDefaultStatus() {
-			this.$emit('update:y', 0);
 			this.$emit('update:pull-down-status', 0);
 			this.$emit('update:pull-up-status', 0);
 			this.shouldLoadForPullDown = true;
 			this.shouldLoadForPullUp = true;
+
+			// 动画结束后
+			this.timer && clearTimeout(this.timer);
+			this.timer = setTimeout(() => {
+				this.$emit('update:pre-pull-down-status', 0);
+				this.$emit('update:pre-pull-up-status', 0);
+			}, 300);
 		},
 
 		_loadData({ page, type, method }) {
@@ -349,6 +357,8 @@ export default {
 
 				let onFinally = () => {
 					scroll && (this.isLoadingForScroll = false);
+
+					this.$emit('update:y', 0);
 					this.resetDefaultStatus();
 					this.$emit('load-finish', { type });
 				};

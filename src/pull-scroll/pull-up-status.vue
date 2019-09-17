@@ -49,7 +49,7 @@ export default {
 				status = 1; 
 			}
 			if (this.preStatus == 3 && this.status == 0) {
-				status = 1; 
+				status = 3; 
 			}
 			return status;
 		},

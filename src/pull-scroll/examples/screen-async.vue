@@ -73,7 +73,7 @@ export default {
 			});
 			
 		},
-		getFakeData(page, pageSize = 20) {
+		getFakeData(page, pageSize = 5) {
 			let fakeData = [];
 			for (let i = 0; i < pageSize; i++) {
 				fakeData.push({

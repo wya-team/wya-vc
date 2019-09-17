@@ -43,7 +43,9 @@
 			:scroll-status="scrollStatus"
 			:y.sync="y"
 			:pull-down-status.sync="pullDownStatus" 
+			:pre-pull-down-status.sync="prePullDownStatus" 
 			:pull-up-status.sync="pullUpStatus" 
+			:pre-pull-up-status.sync="prePullUpStatus" 
 			:auto="auto"
 			v-on="hooks"
 		>
@@ -164,7 +166,8 @@ export default {
 			currentPage: 0,
 
 			// 内容的高度 是否大于 容器的高度，默认false
-			isLack: false
+			isLack: false,
+
 		};
 	},
 	computed: {
@@ -177,14 +180,17 @@ export default {
 		pullStyle() {
 			// 影响内部fixed的为组织
 			// TODO： 写对应的demo, 避免重构时出问题
-			return this.y !== 0 && this.pullUpStatus != 3
+			return this.y !== 0
 				? {
 					transform: `translate3d(0, ${this.y}px, 0)`,
 				}
 				: {};
 		},
 		pullAnimateStyle() {
-			return this.pullDownStatus === 3 || this.pullDownStatus === 0
+			let allowDown = ['10', '23', '30'].includes(`${this.prePullDownStatus}${this.pullDownStatus}`);
+			let allowUp = ['10', '23', '30'].includes(`${this.prePullUpStatus}${this.pullUpStatus}`);
+
+			return (allowDown || allowUp)
 				? { transition: `transform 300ms ease-out` }
 				: {};
 		},
