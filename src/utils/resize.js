@@ -10,6 +10,7 @@ class ResizeManager {
 	}
 
 	on(element, fn) {
+		if (!element) return;
 		if (!element.__resizeListeners__) {
 			element.__resizeListeners__ = [];
 			element.__ro__ = new ResizeObserver(this.handleResize);

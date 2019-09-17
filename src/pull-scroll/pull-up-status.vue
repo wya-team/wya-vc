@@ -1,6 +1,6 @@
 <template>
 	<!-- 样式处理历史问题 -->
-	<div class="vc-pull-scroll-pull-status is-up" name="pull-up">
+	<div :class="{ 'is-lack': lack }" class="vc-pull-scroll-pull-status is-up" name="pull-up">
 		<div v-if="typeof renderer[currentStatus] === 'string'">
 			<vc-spin 
 				v-if="currentStatus === 3" 
@@ -36,7 +36,8 @@ export default {
 		text: {
 			type: [Object, Function],
 			default: () => ({}),
-		}
+		},
+		lack: Boolean
 	},
 	computed: {
 		currentStatus() {
@@ -89,7 +90,7 @@ export default {
 		left: 0;
 		right: 0;
 		bottom: 0;
-		> {
+		> div {
 			margin-bottom: -30px;
 		}
 	}

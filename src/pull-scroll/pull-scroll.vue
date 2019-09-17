@@ -6,7 +6,6 @@
 			:status="rebuildScrollStatus" 
 			name="scroll-status"
 		>
-
 			<vc-scroll-status
 				:style="[pullStyle, pullAnimateStyle]"
 				:status="rebuildScrollStatus"
@@ -75,6 +74,7 @@
 			:status="pullUpStatus" 
 			:pre-status="prePullDownStatus" 
 			:style="[pullStyle, pullAnimateStyle]"
+			:lack="isLack"
 			name="pull-up-status"
 		>
 			<vc-pull-up-status
@@ -82,12 +82,14 @@
 				:status="pullUpStatus"
 				:pre-status="prePullUpStatus"
 				:text="pullUpText"
+				:lack="isLack"
 			/>
 		</slot>
 	</div>
 </template>
 <script>
 import { pick } from 'lodash';
+import { Resize } from '../utils/index';
 import Core from './core.vue';
 import ScrollStatus from './scroll-status.vue';
 import PullDownStatus from './pull-down-status.vue';
@@ -160,6 +162,9 @@ export default {
 
 			// 页面
 			currentPage: 0,
+
+			// 内容的高度 是否大于 容器的高度，默认false
+			isLack: false
 		};
 	},
 	computed: {
@@ -219,10 +224,25 @@ export default {
 		/**
 		 * 方法的映射
 		 */
-		['scrollTo', 'scrollTop', 'scrollBottom']
+		['scrollTo', 'scrollToTop', 'scrollToEnd']
 			.forEach(i => this[i] = this.$refs.core[i]);
+		
+		this.pullUp && Resize.on(this.$refs.core.$el, this.handleResize);
+	},
+	destroyed() {
+		this.pullUp && Resize.off(this.$refs.core.$el, this.handleResize);
 	},
 	methods: {
+		handleResize() {
+			let fn = () => {
+				const { containerHeight } = this.$refs.core.getParams();
+
+				this.isLack = this.$refs.core.$el.offsetHeight < containerHeight;
+			};
+			
+			this.$refs.core.getParams ? fn() : setTimeout(fn, 0);
+		},
+
 		/**
 		 * 加载中
 		 */

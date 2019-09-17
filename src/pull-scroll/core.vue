@@ -366,11 +366,11 @@ export default {
 			el.scrollTop = v;
 		},
 
-		scrollTop() {
+		scrollToTop() {
 			this.scrollTo(1);
 		},
 
-		scrollBottom() {
+		scrollToEnd() {
 			this.scrollTo(Number.MAX_SAFE_INTEGER);
 		},
 
