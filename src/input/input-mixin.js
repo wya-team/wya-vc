@@ -164,13 +164,11 @@ export default {
 					e.srcElement.setSelectionRange(length, length);
 				}, 0);
 			}
-			this.$emit('focus-change', this.isFocus);
 			this.$emit('focus', e);
 		},
 		handleBlur(e) {
 			this.isFocus = false;
 
-			this.$emit('focus-change', this.isFocus);
 			this.$emit('blur', e);
 			this.allowDispatch && this.dispatch('vc-form-item', 'form-blur', this.currentValue);
 		},

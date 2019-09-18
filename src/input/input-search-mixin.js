@@ -19,7 +19,9 @@ export default {
 		hooks() {
 			return {
 				...this.$listeners,
-				input: this.handleInput
+				input: this.handleInput,
+				focus: this.handleFocus,
+				blur: this.handleBlur,
 			};
 		}
 	},
@@ -41,9 +43,20 @@ export default {
 			this.$refs.input.focus();
 			this.$emit('enter', this.currentValue);
 		},
-		handleFocusChange(isFocus) {
-			this.isFocus = isFocus;
+		handleFocus(e) {
+			this.isFocus = true;
+			if (this.focusEnd) {
+				let length = this.currentValue.length;
+				// hack chrome浏览器的BUG：setSelectionRange() for input/textarea during onFocus fails when mouse clicks
+				setTimeout(() => {
+					e.srcElement.setSelectionRange(length, length);
+				}, 0);
+			}
+			this.$emit('focus', e);
+		},
+		handleBlur(e) {
+			this.isFocus = false;
+			this.$emit('blur', e);
 		}
 	}
-	
 };

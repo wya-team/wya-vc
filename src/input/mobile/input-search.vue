@@ -9,7 +9,6 @@
 			:type="type"
 			class="vcm-input-search__content"
 			v-on="hooks"
-			@focus-change="handleFocusChange"
 		>
 			<template #prepend>
 				<slot name="prepend">
