@@ -70,7 +70,6 @@
 				:empty-text="emptyText"
 			/>
 		</slot>
-		<!-- TODO: 上拉 -->
 		<slot
 			v-if="!inverted && pullUp" 
 			:status="pullUpStatus" 
@@ -187,10 +186,11 @@ export default {
 				: {};
 		},
 		pullAnimateStyle() {
-			let allowDown = ['10', '23', '30'].includes(`${this.prePullDownStatus}${this.pullDownStatus}`);
-			let allowUp = ['10', '23', '30'].includes(`${this.prePullUpStatus}${this.pullUpStatus}`);
+			let allow = status => ['10', '23', '30', '20'].includes(status);
+			let down = `${this.prePullDownStatus}${this.pullDownStatus}`;
+			let up = `${this.prePullUpStatus}${this.pullUpStatus}`;
 
-			return (allowDown || allowUp)
+			return (allow(down) || allow(up))
 				? { transition: `transform 300ms ease-out` }
 				: {};
 		},

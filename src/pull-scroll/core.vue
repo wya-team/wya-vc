@@ -159,6 +159,7 @@ export default {
 				}
 
 				const { scrollTop, totalHeight, containerHeight } = this.getParams();
+
 				// 防止向上滚动也拉数据
 				if (!inverted && this.prvScrollTop > scrollTop) {
 					return;
@@ -361,6 +362,9 @@ export default {
 					this.$emit('update:y', 0);
 					this.resetDefaultStatus();
 					this.$emit('load-finish', { type });
+
+					// 下拉逻辑清0
+					type === 'pull-down' && (this.prvScrollTop = 0);
 				};
 
 				load.then(onSuccess).catch(onError).finally(onFinally);
