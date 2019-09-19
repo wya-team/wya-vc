@@ -43,6 +43,15 @@
 						title="向左旋转90度"
 						@click="handleRotate(-90)" 
 					/>
+					<template v-for="(action, index) in actionBar">
+						<vc-icon 
+							:key="index"
+							:type="action.icon" 
+							:title="action.name" 
+							class="vc-imgs-preview-core__button"
+							@click="action.onClick(photoSwipe, dataSource)" 
+						/>
+					</template>
 					<div class="pswp__preloader">
 						<div class="pswp__preloader__icn">
 							<div class="pswp__preloader__cut">
@@ -81,6 +90,7 @@ import "photoswipe/dist/default-skin/default-skin.css";
 import Portal from '../portal/index';
 import Icon from '../icon/index';
 import { photoSwipeEvents } from './constants';
+import { VcInstance } from '../vc/index';
 
 /**
  * visible 父级传递
@@ -109,7 +119,11 @@ const wrapperComponent = {
 
 			})
 		},
-
+		// 工具栏扩展
+		actionBar: {
+			type: Array,
+			default: () => (VcInstance.config.ImgsPreview.actionBar || [])
+		},
 		// 获取实例
 		getInstance: Function
 	},
