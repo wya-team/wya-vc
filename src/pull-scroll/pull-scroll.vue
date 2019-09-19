@@ -53,7 +53,7 @@
 			<slot name="content" />
 			<!-- 项目中统一使用it, key由slot决定 -->
 			<template v-for="(item, index) in dataSource">
-				<slot :it="item" :index="index"/>
+				<slot :it="item" :index="index" />
 			</template>
 			<slot name="footer" />
 		</vc-core>

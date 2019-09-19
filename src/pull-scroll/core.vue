@@ -74,7 +74,8 @@ export default {
 		}
 	},
 	beforeCreate() {
-		this.prvScrollTop = 0;// 当前列表上次滚动到的位置
+		this.preScrollTop = 0;// 当前列表上次滚动到的位置
+		this.preTotalHeight = 0;
 		this.timer = null;
 
 		this.touching = false;
@@ -146,7 +147,7 @@ export default {
 			/**
 			 * 重新清理下高度参数
 			 */
-			this.prvScrollTop = 0;
+			this.preScrollTop = 0;
 		},
 		handleScroll(event) {
 			const { scroll, inverted } = this;
@@ -161,10 +162,10 @@ export default {
 				const { scrollTop, totalHeight, containerHeight } = this.getParams();
 
 				// 防止向上滚动也拉数据
-				if (!inverted && this.prvScrollTop > scrollTop) {
+				if (!inverted && this.preScrollTop > scrollTop) {
 					return;
 				}
-				this.prvScrollTop = scrollTop;
+				this.preScrollTop = scrollTop;
 				
 				if (
 					(!inverted && scrollTop >= totalHeight - containerHeight - this.scrollThreshold)
@@ -257,7 +258,10 @@ export default {
 		},
 
 		handleEnd() {
-			if (this.isLoadingForScroll) return;
+			if (this.isLoadingForScroll) {
+				this.resetDefaultStatus();
+				return;
+			}
 
 			// 下拉逻辑
 			if (this.pullDownStatus) {
@@ -341,13 +345,24 @@ export default {
 			loadData = method || loadData || (() => Promise.resolve([]));
 
 			// 请求
-			const load = loadData(page, type === 'pull-down');
+			const load = loadData(page, type === 'pull-down', this);
 			if (load && load.then) {
 				this.$emit('load-pending', { type, scroll });
 
+
 				let onSuccess = data => {
+					// 滚动到底部(在加载前的位置	)
+					if (this.inverted) {
+						const { scrollTop, totalHeight, containerHeight } = this.getParams();
+						if (page == 1) {
+							this.scrollTo(totalHeight - containerHeight);
+						} else {
+							this.scrollTo(totalHeight - this.preTotalHeight);
+						}
+
+						this.preTotalHeight = totalHeight;
+					}
 					this.$emit('load-success', { data, page, type });
-					// this.inverted && this.scrollTo(30); // status的高度为30, 不需要做处理
 					return data;
 				};
 
@@ -364,7 +379,7 @@ export default {
 					this.$emit('load-finish', { type });
 
 					// 下拉逻辑清0
-					type === 'pull-down' && (this.prvScrollTop = 0);
+					type === 'pull-down' && (this.preScrollTop = 0);
 				};
 
 				load.then(onSuccess).catch(onError).finally(onFinally);
@@ -377,7 +392,7 @@ export default {
 			let isWindow = (this.container === window);
 			let el = (isWindow) ? document.scrollingElement : this.container;
 			// https://stackoverflow.com/questions/12788487/document-scrolltop-always-returns-0
-			el.scrollTop = v;
+			el && (el.scrollTop = v);
 		},
 
 		scrollToTop() {

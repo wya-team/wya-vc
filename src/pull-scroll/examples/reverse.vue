@@ -21,11 +21,10 @@
 					wrapper
 					style="padding-bottom: 45px"
 				>
-					<template #header>
-						<div>这是一个tabs下的滚动</div>
-					</template>
 					<template #default="{ it }">
-						<div style="padding: 20px" @click="handleReset">{{ it }}</div>
+						<!-- 使用key值来规避滚动位置的情况 -->
+						<vc-item :it="it" :key="it.id"/>
+						<!-- <div :key="it.id" style="padding: 20px">{{ it }}</div> -->
 					</template>
 				</vc-pull-scroll>
 			</vc-tabs-pane>
@@ -60,6 +59,10 @@ export default {
 		'vc-pull-scroll': PullScroll,
 		'vc-tabs': Tabs,
 		'vc-tabs-pane': Tabs.Pane,
+		'vc-item': {
+			props: ['it'],
+			template: `<div style="padding: 20px">{{ it }}</div>`
+		}
 	},
 	data() {
 		const { query = {} } = URL.parse() || {};
@@ -82,7 +85,7 @@ export default {
 		
 	},
 	methods: {
-		loadData(page, isRefresh) {
+		loadData(page, isRefresh, ctx) {
 			return new Promise((resolve, reject) => {
 				ajax({
 					url: 'test.json',
