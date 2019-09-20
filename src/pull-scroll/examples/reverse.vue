@@ -21,6 +21,14 @@
 					wrapper
 					style="padding-bottom: 45px"
 				>
+					<template #header>
+						<div>
+							<img 
+								style="width: 200px; height: 200px"
+								src="https://avatars1.githubusercontent.com/u/34465004?s=400&u=25c4b1279b2f092b368102edac8b7b54dc708d00&v=4"
+							>
+						</div>
+					</template>
 					<template #default="{ it }">
 						<!-- 使用key值来规避滚动位置的情况 -->
 						<vc-item :it="it" :key="it.id"/>
@@ -29,7 +37,6 @@
 				</vc-pull-scroll>
 			</vc-tabs-pane>
 		</vc-tabs>
-		
 
 		<div style="position: fixed; bottom: 0; left: 0; right: 0; border: 1px solid red">
 			<input style="width: 100%" type="text">

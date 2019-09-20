@@ -49,13 +49,13 @@
 			:auto="auto"
 			v-on="hooks"
 		>
-			<slot name="header" />
-			<slot name="content" />
+			<div v-if="$slots.header || $scopedSlots.header" ref="header"><slot name="header" /></div>
+			<div v-if="$slots.content || $scopedSlots.content" ref="content"><slot name="content" /></div>
 			<!-- 项目中统一使用it, key由slot决定 -->
 			<template v-for="(item, index) in dataSource">
 				<slot :it="item" :index="index" />
 			</template>
-			<slot name="footer" />
+			<div v-if="$slots.footer || $scopedSlots.footer" ref="footer"><slot name="footer" /></div>
 		</vc-core>
 		<slot 
 			v-if="!inverted && scroll"
