@@ -354,17 +354,18 @@ export default {
 					this.preTotalHeight = this.getParams().totalHeight;
 				}
 				let onSuccess = data => {
-					// 倒致处理: 滚动到加载前的位置(图片需要额外处理，在可视化内图片向下撑开，不可视范围内存在滚动条不影响)
+					// 倒致处理: 滚动到加载前的位置(图片需要额外处理)
 					if (this.inverted) {
 						const { totalHeight, containerHeight } = this.getParams();
 						if (page == 1) {
 							this.scrollTo(totalHeight - containerHeight);
 						} else {
 							let ele = this.$parent.$refs.header;
-							// TODO: 是否有必要添加headers所使用的高度或者让用户自行固定header高度
-							// let offset = ele ? ele.getBoundingClientRect().height : 0;
-							let offset = 0;
-							this.scrollTo(totalHeight - this.preTotalHeight + offset);
+							/**
+							 * 如果存在图片，需要先设置好图片高度
+							 * 导致原因：在可视化内图片向下撑开，不可视范围内存在滚动条不影响
+							 */
+							this.scrollTo(totalHeight - this.preTotalHeight);
 						}
 					}
 					this.$emit('load-success', { data, page, type });
