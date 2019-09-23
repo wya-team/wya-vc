@@ -104,10 +104,10 @@ export default {
 	destroyed() {
 		// 解绑事件
 		this.container.removeEventListener('touchstart', this.handleStart);
-		this.container.removeEventListener('touchmove', this.handleMove);
+		this.container.removeEventListener('touchmove', this.handleMove, { passive: false });
 		this.container.removeEventListener('touchend', this.handleEnd);
 		this.container.removeEventListener('mousedown', this.handleStart);
-		this.container.removeEventListener('mousemove', this.handleMove);
+		this.container.removeEventListener('mousemove', this.handleMove, { passive: false });
 		this.container.removeEventListener('mouseup', this.handleEnd);
 		this.container.removeEventListener('scroll', this.handleScroll);
 	},
