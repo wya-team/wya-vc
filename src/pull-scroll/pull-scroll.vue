@@ -233,10 +233,14 @@ export default {
 		['scrollTo', 'scrollToTop', 'scrollToEnd']
 			.forEach(i => this[i] = this.$refs.core[i]);
 		
-		this.pullUp && Resize.on(this.$refs.core.$el, this.handleResize);
+		this.pullUp 
+			&& this.$refs.core
+			&& Resize.on(this.$refs.core.$el, this.handleResize);
 	},
-	destroyed() {
-		this.pullUp && Resize.off(this.$refs.core.$el, this.handleResize);
+	beforeDestroy() {
+		this.pullUp
+			&& this.$refs.core 
+			&& Resize.off(this.$refs.core.$el, this.handleResize);
 	},
 	methods: {
 		handleResize() {
