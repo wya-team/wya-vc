@@ -134,7 +134,8 @@ export default {
 				name: this.name,
 				// value: this.currentValue, // 频率高
 				number: this.number,
-				autofocus: this.autofocus
+				autofocus: this.autofocus,
+				focusEnd: this.focusEnd
 			};
 		}
 	},
