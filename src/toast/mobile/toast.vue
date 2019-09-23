@@ -2,7 +2,7 @@
 	<div class="vcm-toast">
 		<div 
 			class="vcm-toast__bg" 
-			@click="handleClose" 
+			@click="handleClose"
 		/>
 		<vcm-transition-fade 
 			:duration="{ enter: 0.3, leave: 0.15 }"
@@ -72,6 +72,9 @@ export default {
 			if (this.maskClosable) {
 				this.visible = false;
 			}
+		},
+		handleMove(e) {
+
 		}
 	}
 };
@@ -93,6 +96,10 @@ export default {
 		margin: 0 auto;
 		bottom: 0;
 		opacity: 0;
+		/**
+		 * 禁止触发默认的手势操作
+		 */
+		touch-action: none;
 	}
 	@include element(wrapper) {
 		position: fixed;
