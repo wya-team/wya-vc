@@ -319,6 +319,11 @@ export default {
 
 			this.touching = false;
 			this.$emit('pull-end');
+
+			/**
+			 * Hack, 存在touchend临界值下不会触发scroll
+			 */
+			this.handleScroll();
 		},
 
 		resetDefaultStatus() {
