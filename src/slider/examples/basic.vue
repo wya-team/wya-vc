@@ -12,6 +12,8 @@
 		<p>显示中间断点</p>
 		<vc-slider v-model="value6" :step="10" show-stops/>
 		<vc-slider v-model="value7" :step="10" show-stops range/>
+		<p>带有输入框</p>
+		<vc-slider v-model="value8" show-input/>
 		<p>自定义提示</p>
 		<vc-slider v-model="value9" :tip-format="format"/>
 		<vc-slider v-model="value10" :tip-format="hideFormat"/>

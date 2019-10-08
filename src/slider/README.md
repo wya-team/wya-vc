@@ -14,6 +14,7 @@ max | 最大值 | Number | 100
 step | 步长，取值建议能被（max - min）整除 | Number | 1
 disabled | 是否禁用滑块 | Boolean | false
 range | 是否开启双滑块模式 | Boolean | false
+show-input | 是否显示数字输入框，仅在单滑块模式下有效 | Boolean | false
 show-stops | 是否显示间断点，建议在 step 不密集时使用 | Boolean | false
 show-tip | 提示的显示控制，可选值为 `hover`（悬停，默认）、`always`（总是可见）、`never`（不可见） | String | hover
 tip-format | Slider 会把当前值传给 `tip-format`，并在 Tooltip 中显示 tip-format 的返回值，若为 null，则隐藏 Tooltip | Function | value

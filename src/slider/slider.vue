@@ -73,9 +73,19 @@
 				</vc-popover>
 			</div>
 		</div>
+		<vc-input-number
+			v-if="!range && showInput"
+			:min="min"
+			:max="max"
+			:step="step"
+			:value="String(currentValue[0])"
+			:disabled="disabled"
+			@input="handleInputChange" 
+		/>
 	</div>
 </template>
 <script>
+import InputNumber from '../input/input-number';
 import Popover from '../popover/index';
 import formHack from '../extends/mixins/form-hack';
 import { Resize } from '../utils/index';
@@ -83,6 +93,7 @@ import { Resize } from '../utils/index';
 export default {
 	name: 'vc-slider',
 	components: {
+		'vc-input-number': InputNumber,
 		'vc-popover': Popover
 	},
 	mixins: [formHack],
@@ -121,6 +132,7 @@ export default {
 				return `${val}`;
 			}
 		},
+		showInput: Boolean,
 		showTip: {
 			type: String,
 			default: 'hover',
@@ -146,7 +158,8 @@ export default {
 			return [
 				'vc-slider',
 				{
-					'vc-slider__range': this.range,
+
+					'is-slider-input': this.showInput && !this.range,
 					'is-slider-disabled': this.disabled
 				}
 			];
@@ -229,8 +242,10 @@ export default {
 			return [min, max];
 		},
 		// handle
-		handleInputChange() {
-
+		handleInputChange(value) {
+			let minValue = Number(value || this.min);
+			value = value === 0 ? 0 : minValue > this.max ? this.max : minValue;
+			this.currentValue = [value, this.currentValue[1]];
 		},
 		handleSliderClick() {
 			 if (this.disabled) return;
@@ -400,6 +415,19 @@ $block: vc-slider;
 				border-color: #ccc;
 				cursor: not-allowed;
 			}
+		}
+	}
+	@include when(slider-input) {
+		position: relative;
+		.vc-slider__wrapper {
+			width: auto;
+			margin-right: 100px;
+		}
+		.vc-input-number {
+			position: absolute;
+			top: -12px;
+			right: 0;
+			width: 80px;
 		}
 	}
 }
