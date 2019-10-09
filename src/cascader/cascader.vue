@@ -61,7 +61,7 @@
 
 <script>
 import { pick, cloneDeep, isEqualWith } from 'lodash';
-import { getSelectedData } from '../utils/index';
+import { getSelectedData, scrollIntoView } from '../utils/index';
 import { VcError } from '../vc/index';
 import Extends from '../extends';
 import Input from '../input/index';
@@ -192,6 +192,20 @@ export default {
 			this.rebuildData = this.makeRebuildData();
 
 			this.$emit('ready');
+
+			// 滚动到初始位置
+			this.$nextTick(() => {
+				this.currentValue.forEach((item, index) => {
+					let el = this.$refs.col[index] && this.$refs.col[index].$el;
+					let source = this.rebuildData[index];
+
+					if (source && el) {
+						let instance = source.findIndex(i => item == i.value);
+						scrollIntoView(el.firstChild, { to: instance * 31 });
+					}
+					
+				});
+			});
 		},
 		handleClear(e) {
 			if (!this.showClear) return;
