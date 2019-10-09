@@ -294,10 +294,13 @@ export default {
 			this.sync();
 		},
 
+		/**
+		 * 在关闭的时候，让重新打开的值一致
+		 * 暂时不用this.rebuildData, ready时会再次触发
+		 */
 		handleClose() {
 			if (!isEqualWith(this.currentValue, this.value)) {
-				// 暂时不用this.rebuildData, ready时会再次触发
-				this.currentValue = this.value;
+				this.currentValue = [...this.value];
 			}
 			
 			this.$emit('close');
