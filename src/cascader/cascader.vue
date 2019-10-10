@@ -205,7 +205,7 @@ export default {
 
 					if (source && el) {
 						let instance = source.findIndex(i => item == i.value);
-						scrollIntoView(el.firstChild, { to: instance * 31 });
+						scrollIntoView(el.firstChild, { to: instance * 30 });
 					}
 					
 				});

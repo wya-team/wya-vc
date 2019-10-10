@@ -46,7 +46,7 @@ export default {
 			// 滚动到初始位置
 			let instance = this.dataSource.findIndex(i => this.value == i.value);
 
-			scrollIntoView(this.$el, { to: instance * 41 });
+			scrollIntoView(this.$el, { to: instance * 40 });
 		}
 	},
 	methods: {
@@ -76,6 +76,7 @@ $block: vcm-cascader-col;
 	@include element(label) {
 		flex: 1;
 		font-size: 14px;
+		line-height: 20px;
 		color: #000;
 		overflow: hidden;
 		white-space: nowrap;
