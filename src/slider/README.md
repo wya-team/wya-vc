@@ -13,6 +13,7 @@ min | 最小值 | Number | 0
 max | 最大值 | Number | 100
 step | 步长，取值建议能被（max - min）整除 | Number | 1
 disabled | 是否禁用滑块 | Boolean | false
+clickable | 是否可以通过点击bar来移动滑块 | Boolean | true
 range | 是否开启双滑块模式 | Boolean | false
 show-input | 是否显示数字输入框，仅在单滑块模式下有效 | Boolean | false
 show-stops | 是否显示间断点，建议在 step 不密集时使用 | Boolean | false
@@ -24,8 +25,8 @@ tip-format | Slider 会把当前值传给 `tip-format`，并在 Tooltip 中显�
 
 属性 | 说明 | 参数 | 返回值
 ---|---|---|---
-change | 在松开滑动时触发，返回当前的选值，在滑动过程中不会触发 | value | ---
-input | 滑动条数据变化时触发，返回当前的选值，在滑动过程中实时触发 | value | ---
+change | 在松开滑动时触发，返回当前的选值，在滑动过程中不会触发，会对外暴露`reset`方法 | value | ---
+input | 滑动条数据变化时触发，返回当前的选值，在滑动过程中实时触发，会对外暴露`reset`方法 | value | ---
 
 
 ## 基础用法

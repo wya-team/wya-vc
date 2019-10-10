@@ -2,8 +2,9 @@
 	<div :class="classes">	
 		<div
 			ref="slider"
+			:class="{'is-clickable': clickable}"
 			class="vc-slider__wrapper"
-			@click="handleSliderClick"
+			@click.self="handleSliderClick"
 		>
 			<template v-if="showStops">
 				<div
@@ -11,13 +12,13 @@
 					:key="item"
 					:style="{ 'left': item + '%' }"
 					class="vc-slider__stop"
-					@click="handleSliderClick"
+					@click.self="handleSliderClick"
 				/>
 			</template>
 			<div
 				:style="barStyle"
 				class="vc-slider__bar"
-				@click="handleSliderClick"
+				@click.self="handleSliderClick"
 			/>
 			<div
 				:style="{left: minPosition + '%'}"
@@ -27,7 +28,6 @@
 				<vc-popover
 					ref="minTooltip"
 					:visible="minVisible && !!tipFormat(currentValue[0])"
-					:content="tipFormat(currentValue[0])"
 					:always="showTip === 'always'"
 					:portal="false"
 					trigger="focus"
@@ -43,6 +43,9 @@
 						@mouseenter="handleEnter($event, 'min')"
 						@mouseleave="handleLeave($event, 'min')"
 					/>
+					<template #content>
+						{{ tipFormat(currentValue[0]) }}
+					</template>
 				</vc-popover>
 			</div>
 			<div
@@ -54,7 +57,6 @@
 				<vc-popover
 					ref="maxTooltip"
 					:visible="maxVisible && !!tipFormat(currentValue[1])"
-					:content="tipFormat(currentValue[1])"
 					:always="showTip === 'always'"
 					:portal="false"
 					trigger="focus"
@@ -70,6 +72,9 @@
 						@mouseenter="handleEnter($event, 'max')"
 						@mouseleave="handleLeave($event, 'max')"
 					/>
+					<template #content>
+						{{ tipFormat(currentValue[1]) }}
+					</template>
 				</vc-popover>
 			</div>
 		</div>
@@ -87,7 +92,7 @@
 <script>
 import InputNumber from '../input/input-number';
 import Popover from '../popover/index';
-import formHack from '../extends/mixins/form-hack';
+import Extends from '../extends';
 import { Resize } from '../utils/index';
 
 export default {
@@ -96,7 +101,7 @@ export default {
 		'vc-input-number': InputNumber,
 		'vc-popover': Popover
 	},
-	mixins: [formHack],
+	mixins: [...Extends.mixins(['emitter'])],
 	props: {
 		min: {
 			type: Number,
@@ -121,6 +126,11 @@ export default {
 		disabled: {
 			type: Boolean,
 			default: false
+		},
+		// 是否可以通过点击来移动点
+		clickable: {
+			type: Boolean,
+			default: true
 		},
 		showStops: {
 			type: Boolean,
@@ -206,6 +216,14 @@ export default {
 			return result;
 		},
 	},
+	watch: {
+		value(val) {
+			val = this.checkLimits(Array.isArray(val) ? val : [val]);
+			if ((val[0] !== this.currentValue[0] || val[1] !== this.currentValue[1])) {
+				this.currentValue = val;
+			}
+		}
+	},
 	mounted() {
 		Resize.on(this.$refs.slider, this.handleSetSliderWidth);
 	},
@@ -247,8 +265,8 @@ export default {
 			value = value === 0 ? 0 : minValue > this.max ? this.max : minValue;
 			this.currentValue = [value, this.currentValue[1]];
 		},
-		handleSliderClick() {
-			 if (this.disabled) return;
+		handleSliderClick(event) {
+			if (this.disabled || !this.clickable) return;
 			const currentX = this.getPointerX(event);
 			const sliderOffsetLeft = this.$refs.slider.getBoundingClientRect().left;
 			let newPos = ((currentX - sliderOffsetLeft) / this.sliderWidth * this.valueRange) + this.min;
@@ -285,9 +303,12 @@ export default {
 			this.changeButtonPosition(this.startPos + diff);
 		},
 		handlePointerDragEnd() {
-			this.dragging && (this.dragging = false);
-			this[`${this.pointerDown}Visible`] = false;
-			this.$refs[`${this.pointerDown}Point`].blur();
+			if (this.dragging) {
+				this.dragging = false;
+				this[`${this.pointerDown}Visible`] = false;
+				this.$refs[`${this.pointerDown}Point`].blur();
+				this.sync('change');
+			}
 			this.pointerDown = '';
 
 			window.removeEventListener('mousemove', this.handlePointerDrag);
@@ -311,7 +332,8 @@ export default {
 				if (type === 'min' && value[0] > value[1]) value[1] = value[0];
 				if (type === 'max' && value[0] > value[1]) value[0] = value[1];
 			}
-			this.currentValue = [...value];
+			this.reset([...value]);
+			this.sync('input');
 		},
 		handleFocus(event, type) {
 			this[`${this.pointerDown}Visible`] = this.showTip !== 'never';
@@ -320,17 +342,22 @@ export default {
 			this[`${this.pointerDown}Visible`] = this.showTip === 'always';
 		},
 		handleEnter(event, type) {
-			if (!this.pointerDown) {
-				this[`${type}Visible`] = this.showTip !== 'never';
-			}
+			!this.pointerDown && (this[`${type}Visible`] = this.showTip !== 'never');
 		},
 		handleLeave(event, type) {
-			if (!this.pointerDown) {
-				this[`${type}Visible`] = this.showTip === 'always';
-			}
+			!this.pointerDown && (this[`${type}Visible`] = this.showTip === 'always');
 		},
 		handleSetSliderWidth() {
 			this.sliderWidth = this.$refs.slider.getBoundingClientRect().width;
+		},
+		sync(type) {
+			const value = this.range ? this.currentValue : this.currentValue[0];
+			this.$emit(type, value, this.reset);
+			this.dispatch('vc-form-item', `form-${type === 'change' ? 'blur' : 'change'}`, value);
+		},
+		reset(value) {
+			value = this.checkLimits(Array.isArray(value) ? value : [value]);
+			this.currentValue = value;
 		}
 	}
 };
@@ -351,7 +378,9 @@ $block: vc-slider;
 		border-radius: 3px;
 		vertical-align: middle;
 		position: relative;
-		cursor: pointer;
+		@include when(clickable) {
+			cursor: pointer;
+		}
 	}
 	@include element(bar) {
 		height: 4px;
@@ -360,8 +389,8 @@ $block: vc-slider;
 		position: absolute;
 	}
 	@include element(btn-wrapper) {
-		width: 18px;
-		height: 18px;
+		width: 12px;
+		height: 12px;
 		text-align: center;
 		background-color: transparent;
 		position: absolute;
