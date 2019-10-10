@@ -81,7 +81,7 @@ export default {
 		window.vm = this.$refs.target;
 
 		setTimeout(() => {
-			this.value = ['jiangsu', 'nanjing'];
+			this.value1 = ['jiangsu', 'nanjing'];
 		}, 5000);
 	},
 	methods: {
