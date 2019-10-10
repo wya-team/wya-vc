@@ -17,6 +17,7 @@
 <script>
 import MIcon from '../../icon/index.m';
 import MSpin from '../../spin/index.m';
+import { scrollIntoView } from '../../utils/index';
 
 export default {
 	name: 'vcm-cascader-col',
@@ -40,7 +41,14 @@ export default {
 			type: Number
 		}
 	},
+	watch: {
+		index(v, oldV) {
+			// 滚动到初始位置
+			let instance = this.dataSource.findIndex(i => this.value == i.value);
 
+			scrollIntoView(this.$el, { to: instance * 41 });
+		}
+	},
 	methods: {
 		handleClick(value, rowIndex) {
 			const { index: colIndex } = this;

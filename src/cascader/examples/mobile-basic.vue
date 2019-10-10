@@ -12,7 +12,7 @@
 		<br>
 		<vcm-cascader-view
 			ref="target"
-			v-model="value"
+			v-model="value1"
 			:data-source="dataSource2"
 			:load-data="loadData"
 			@complete="handleComplete"
@@ -74,6 +74,7 @@ export default {
 				}
 			],
 			value: [],
+			value1: [],
 		};
 	},
 	mounted() {

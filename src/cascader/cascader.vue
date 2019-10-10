@@ -193,7 +193,11 @@ export default {
 
 			this.$emit('ready');
 
-			// 滚动到初始位置
+			/**
+			 * 滚动到初始位置
+			 * TODO: 是否移入col单独处理
+			 */
+			
 			this.$nextTick(() => {
 				this.currentValue.forEach((item, index) => {
 					let el = this.$refs.col[index] && this.$refs.col[index].$el;
