@@ -164,8 +164,7 @@ export default {
 		},
 
 		handleChange(e) {
-			const files = e.target.files;
-			this.uploadFiles(files);
+			this.uploadFiles(e.target.files);
 
 			this.uid = getUid();
 		},
@@ -175,10 +174,7 @@ export default {
 				e.preventDefault();
 				return;
 			}
-			const files = Array.prototype.slice.call(e.dataTransfer.files).filter(
-				file => attrAccept(file, this.accept)
-			);
-			this.uploadFiles(files);
+			this.uploadFiles(e.dataTransfer.files);
 
 			e.preventDefault();
 		},
@@ -190,14 +186,23 @@ export default {
 		},
 
 		uploadFiles(files) {
-			const postFiles = Array.prototype.slice.call(files);
+			const postFiles = Array.prototype.slice.call(files).filter(
+				file => attrAccept(file, this.accept)
+			);
+
 			const length = postFiles.length;
-			if (this.multiple && length > this.max) {
-				this.$emit('error', { msg: `可选文件数量不能超过${this.max}个` });
+
+			if (length === 0) {
+				this.$emit('error', { msg: `文件格式限制：${this.accept}` });
 				return;
-			} else if (this.directory && length > this.max) {
-				this.$emit('error', { msg: `文件夹内文件的数量不能超过${this.max}个` });
-				return;
+			} else if (length > this.max) {
+				if (this.multiple) {
+					this.$emit('error', { msg: `可选文件数量不能超过${this.max}个` });
+					return;
+				} else if (this.directory) {
+					this.$emit('error', { msg: `文件夹内文件的数量不能超过${this.max}个` });
+					return;
+				}
 			}
 			
 			// reset
