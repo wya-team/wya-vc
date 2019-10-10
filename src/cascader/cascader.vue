@@ -61,7 +61,7 @@
 
 <script>
 import { pick, cloneDeep, isEqualWith } from 'lodash';
-import { getSelectedData } from '../utils/index';
+import { getSelectedData, scrollIntoView } from '../utils/index';
 import { VcError } from '../vc/index';
 import Extends from '../extends';
 import Input from '../input/index';
@@ -205,8 +205,7 @@ export default {
 
 					if (source && el) {
 						let instance = source.findIndex(i => item == i.value);
-						let node = el.firstChild.children[instance];
-						node && node.scrollIntoView();
+						scrollIntoView(el.firstChild, { to: instance * 31 });
 					}
 					
 				});
