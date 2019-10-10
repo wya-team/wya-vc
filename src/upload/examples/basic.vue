@@ -8,6 +8,7 @@
 			:show-tips="true"
 			:multiple="true"
 			:parallel="false"
+			accept="image/*"
 			@error="handleError"
 			@begin="handleBegin"
 			@complete="handleComplete"
