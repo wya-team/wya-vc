@@ -186,9 +186,14 @@ export default {
 		},
 
 		uploadFiles(files) {
-			const postFiles = Array.prototype.slice.call(files).filter(
-				file => attrAccept(file, this.accept)
-			);
+			let postFiles = Array.prototype.slice.call(files);
+
+			// iOS正常，android无法处理imgage/*(TODO: 修改attrAccept方法)
+			if (!Device.touch) {
+				postFiles = postFiles.filter(
+					file => attrAccept(file, this.accept)
+				);
+			}
 
 			const length = postFiles.length;
 
