@@ -1,5 +1,6 @@
 import Vue from 'vue';
 import { cloneDeep } from 'lodash';
+import { DOM } from '@wya/utils';
 import { getUid, eleInRegExp } from '../utils/index';
 import { VcBasic, VcError } from '../vc/index';
 import defaultOptions from './default-options';
@@ -181,7 +182,7 @@ class PortalCore extends VcBasic {
 					handleExtra(e) {
 						// close默认不传，用户可传递参数判断输入自己的触发的close
 						try {
-							let path = e.path || (e.composedPath && e.composedPath()) || [];
+							let path = e.path || DOM.composedPath(e) || [];
 							if (
 								!this.$el.contains(e.target) 
 								&& !path.some(item => eleInRegExp(item, aliveRegExp))

@@ -15,9 +15,9 @@
 </template>
 
 <script>
+import { DOM } from '@wya/utils';
 import MIcon from '../../icon/index.m';
 import MSpin from '../../spin/index.m';
-import { scrollIntoView } from '../../utils/index';
 
 export default {
 	name: 'vcm-cascader-col',
@@ -46,7 +46,7 @@ export default {
 			// 滚动到初始位置
 			let instance = this.dataSource.findIndex(i => this.value == i.value);
 
-			scrollIntoView(this.$el, { to: instance * 40 });
+			DOM.scrollIntoView(this.$el, { to: instance * 40 });
 		}
 	},
 	methods: {

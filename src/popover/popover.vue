@@ -15,6 +15,7 @@
 
 <script>
 import { pick } from 'lodash';
+import { DOM } from '@wya/utils';
 import { getUid } from '../utils/index';
 import Core, { Func } from './core';
 
@@ -137,7 +138,7 @@ export default {
 			if (this.disabled) return;
 
 			this.isHover && this.timer && clearTimeout(this.timer);
-			let path = e.path || (e.composedPath && e.composedPath()) || [];
+			let path = e.path || DOM.composedPath(e) || [];
 
 			let isPopArea = path.some(item => new RegExp(this.popoverId).test(item.className));
 
