@@ -1,5 +1,5 @@
 import { debounce } from 'lodash';
-import { DOM } from '@wya/utils';
+import { $ } from '@wya/utils';
 import Popover from '../popover';
 import { getCell, getColumnByCell, getRowIdentity } from './utils';
 
@@ -57,12 +57,8 @@ export default {
 				const rows = this.$el.querySelectorAll('.vc-table__row');
 				const oldRow = rows[oldV];
 				const newRow = rows[v];
-				if (oldRow) {
-					DOM.removeClass(oldRow, 'hover-row');
-				}
-				if (newRow) {
-					DOM.addClass(newRow, 'hover-row');
-				}
+				oldRow && $(oldRow).removeClass('hover-row');
+				newRow && $(newRow).addClass('hover-row');
 			});
 		}
 	},
@@ -211,7 +207,7 @@ export default {
 			// 判断是否text-overflow, 如果是就显示tooltip
 			const cellChild = event.target.querySelector('.vc-table__cell');
 
-			if (!(DOM.hasClass(cellChild, 'vc-popover') && cellChild.childNodes.length)) {
+			if (!($(cellChild).hasClass('vc-popover') && cellChild.childNodes.length)) {
 				return;
 			}
 			// 使用范围宽度而不是滚动宽度来确定文本是否溢出，以解决潜在的FireFox bug

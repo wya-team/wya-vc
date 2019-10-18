@@ -19,7 +19,7 @@
 </template>
 
 <script>
-import { DOM } from '@wya/utils';
+import { DOM, $ } from '@wya/utils';
 import { throttle } from 'lodash';
 
 const isSupportObjectFit = document.documentElement.style.objectFit !== undefined;
@@ -118,7 +118,7 @@ export default {
 			this.$emit('error', e);
 		},
 		handleLazyLoad() {
-			if (DOM.contains(this.$el, this._wrapper)) {
+			if ($(this._wrapper).contains(this.$el)) {
 				this.show = true;
 				this.removeLazyLoadListener();
 			}
@@ -134,7 +134,7 @@ export default {
 			} else if (typeof wrapper === 'string') {
 				_wrapper = document.querySelector(wrapper);
 			} else {
-				_wrapper = DOM.getScroller(this.$el);
+				_wrapper = $(this.$el).getScroller();
 			}
 
 			if (_wrapper) {

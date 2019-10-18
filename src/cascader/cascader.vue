@@ -61,7 +61,7 @@
 
 <script>
 import { pick, cloneDeep, isEqualWith } from 'lodash';
-import { DOM } from '@wya/utils';
+import { $ } from '@wya/utils';
 import { getSelectedData } from '../utils/index';
 import { VcError } from '../vc/index';
 import Extends from '../extends';
@@ -206,7 +206,7 @@ export default {
 
 					if (source && el) {
 						let instance = source.findIndex(i => item == i.value);
-						DOM.scrollIntoView(el.firstChild, { to: instance * 30 });
+						$(el.firstChild).scrollIntoView({ to: instance * 30 });
 					}
 					
 				});

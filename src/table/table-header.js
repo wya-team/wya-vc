@@ -1,5 +1,5 @@
 import Vue from 'vue';
-import { Utils, DOM } from '@wya/utils';
+import { Utils, $ } from '@wya/utils';
 import Checkbox from '../checkbox';
 import Layout from './layout/index';
 import { mapStates } from './store';
@@ -214,7 +214,7 @@ export default {
 				const columnRect = columnEl.getBoundingClientRect();
 				const minLeft = columnRect.left - tableLeft + 30;
 
-				DOM.addClass(columnEl, 'noclick');
+				$(columnEl).addClass('noclick');
 
 				this.dragState = {
 					startMouseLeft: event.clientX,
@@ -264,7 +264,7 @@ export default {
 					document.ondragstart = null;
 
 					setTimeout(function () {
-						DOM.removeClass(columnEl, 'noclick');
+						$(columnEl).removeClass('noclick');
 					}, 0);
 				};
 
@@ -288,13 +288,13 @@ export default {
 				const bodyStyle = document.body.style;
 				if (rect.width > 12 && rect.right - event.pageX < 8) {
 					bodyStyle.cursor = 'col-resize';
-					if (DOM.hasClass(target, 'is-sortable')) {
+					if ($(target).hasClass('is-sortable')) {
 						target.style.cursor = 'col-resize';
 					}
 					this.draggingColumn = column;
 				} else if (!this.dragging) {
 					bodyStyle.cursor = '';
-					if (DOM.hasClass(target, 'is-sortable')) {
+					if ($(target).hasClass('is-sortable')) {
 						target.style.cursor = 'pointer';
 					}
 					this.draggingColumn = null;

@@ -15,7 +15,7 @@
 </template>
 
 <script>
-import { DOM } from '@wya/utils';
+import { $ } from '@wya/utils';
 import MIcon from '../../icon/index.m';
 import MSpin from '../../spin/index.m';
 
@@ -46,7 +46,7 @@ export default {
 			// 滚动到初始位置
 			let instance = this.dataSource.findIndex(i => this.value == i.value);
 
-			DOM.scrollIntoView(this.$el, { to: instance * 40 });
+			$(this.$el).scrollIntoView({ to: instance * 40 });
 		}
 	},
 	methods: {
