@@ -45,7 +45,8 @@ export default {
 			return {
 				...this.$listeners,
 				input: this.handleInput,
-				blur: this.handleBlur
+				blur: this.handleBlur,
+				keyup: this.handleKeyup,
 			};
 		},
 		plusDisabled() {
@@ -75,7 +76,30 @@ export default {
 			}
 		}
 	},
+	/**
+	 * TODO: 优化afterHook composeValue
+	 */
 	methods: {
+		async handleKeyup(e) {
+			// 数字键盘
+			if (e.keyCode == 13 || e.keyCode == 108) {
+
+				let value = this.composeValue({
+					value: this.currentValue,
+					tag: 'input'
+				});
+
+				try {
+					let state = await this.afterHook(value);
+					state && this.$emit('input', value);
+					this.$emit('enter', e);
+				} catch (e) {
+					throw new VcError('vc-input-number', e);
+				}
+
+			}
+			this.$emit('keyup', e);
+		},
 		handleInput(value, e) {
 			this.isInput = true;
 
@@ -99,20 +123,17 @@ export default {
 
 			// TODO: 实时边界值计算, 矛盾点考虑加入最小值是100, 无法删除到最小值以下
 			// if (this.min <= 1 && value !== '') {
-			// 	value = this.compareWithBoundary({ value, type: 'input' });
+			// 	value = this.compareWithBoundary({ value, tag: 'input' });
 			// }
 
 			this.$emit('input', value);
 		},
 		async handleBlur(e) {
 			this.isInput = false;
-			// 失焦时，只留一个'-'或为''
-			let value = /^(-|)$/.test(this.currentValue)
-				? '' 
-				: this.compareWithBoundary({ value: this.currentValue, type: 'blur' });
-			value = this.required && !value
-				? this.min
-				: value;
+			let value = this.composeValue({
+				value: this.currentValue, 
+				tag: 'input' 
+			});
 
 			try {
 				let state = await this.afterHook(value);
@@ -122,6 +143,7 @@ export default {
 				throw new VcError('vc-input-number', e);
 			}
 		},
+
 		async handleStepper(base) {
 			let { $listeners: { plus, minus, before } } = this;
 			if (base === 1 && this.plusDisabled) {
@@ -144,7 +166,7 @@ export default {
 			if (base === -1 && minus) { return minus(); }
 
 			let value = +this.currentValue + this.step * base;
-			value = this.compareWithBoundary({ value, type: 'button' });
+			value = this.compareWithBoundary({ value, tag: 'button' });
 
 			let state = true;
 			try {
@@ -158,6 +180,7 @@ export default {
 				throw new VcError('vc-input-number', e);
 			}
 		},
+
 		/**
 		 * 为防止在有after的时候多次触发input事件，返回state
 		 * 没有after时，返回true，有外面自己发射input
@@ -171,6 +194,7 @@ export default {
 				this.timer = null;
 			}, 500);
 		},
+
 		async afterHook(value) {
 			let { $listeners: { after } } = this;
 			if (!after) return true;
@@ -182,6 +206,21 @@ export default {
 			}
 			return state;
 		},
+
+		/**
+		 * 得到一个正确展示的value
+		 */
+		composeValue({ value, tag }) {
+			// 失焦时，只留一个'-'或为''
+			value = /^(-|)$/.test(value)
+				? '' 
+				: this.compareWithBoundary({ value, tag });
+			value = this.required && !value
+				? this.min
+				: value;
+			return value;
+		},
+
 		/**
 		 * @param  {String}  options.value
 		 * @param  {Boolean} options.tag 类型（input | button）

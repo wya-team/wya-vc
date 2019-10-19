@@ -1,7 +1,8 @@
 <template>
-	<div>
-		<div @click="handleClick('normal')">点击</div>
-		<div @click="handleClick('loading')">点击加载中</div>
+	<div style="height: 2000px">
+		<div @click="handleClick('normal', 15)">点击</div>
+		<div @click="handleClick('loading', 1)">点击加载中</div>
+		<div @click="handleClick('loading', 0)">点击加载中, 不销毁</div>
 	</div>
 </template>
 <script>
@@ -35,13 +36,13 @@ export default {
 		MToast.destroy();
 	},
 	methods: {
-		handleClick(v) {
+		handleClick(v, timestamp) {
 			if (v == 'normal') {
-				MToast.info('测试', 15, () => {
+				MToast.info('测试', timestamp, () => {
 					console.log('回调');
 				});
 			} else {
-				MToast.loading('加载中', 1, () => {
+				MToast.loading('加载中', timestamp, () => {
 					console.log('回调');
 				});
 			}

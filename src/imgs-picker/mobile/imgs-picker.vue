@@ -1,38 +1,40 @@
 <template>
 	<component :is="tag" class="vcm-imgs-picker">
-		<div 
-			v-for="(item, index) in currentValue" 
-			:key="typeof item === 'object' ? item.uid : item"
-			:class="[{'is-error': item.status == 0}]"
-			class="vcm-imgs-picker__item"
-		>
-			<slot 
-				:it="item"
-				name="image"
+		<template v-if="thumbnail">
+			<div 
+				v-for="(item, index) in currentValue" 
+				:key="typeof item === 'object' ? item.uid : item"
+				:class="[{'is-error': item.status == 0}]"
+				class="vcm-imgs-picker__item"
 			>
-				<div
-					v-if="typeof item !== 'object'"
-					:style="{backgroundImage: `url('${item}')`}"
-					:class="imgClassName"
-					class="vcm-imgs-picker__img"
-					@click="handlePreview($event, index)"
-				/>
-				<div v-else :class="imgClassName" class="vcm-imgs-picker__img">
-					<vc-spin v-if="typeof item.status === 'undefined'"/>
-					<div v-else-if="item.status == 0" style="padding: 5px">
-						上传失败
-					</div>
-				</div>
-				<!-- 上传失败或者成功后显示 -->
-				<div v-if="!disabled && (typeof item !== 'object' || item.status == 0)" class="vcm-imgs-picker__delete">
-					<vc-icon 
-						type="close" 
-						style="color: white"
-						@click="handleDel(item)" 
+				<slot 
+					:it="item"
+					name="image"
+				>
+					<div
+						v-if="typeof item !== 'object'"
+						:style="{backgroundImage: `url('${item}')`}"
+						:class="imgClassName"
+						class="vcm-imgs-picker__img"
+						@click="handlePreview($event, index)"
 					/>
-				</div>
-			</slot>
-		</div>
+					<div v-else :class="imgClassName" class="vcm-imgs-picker__img">
+						<vc-spin v-if="typeof item.status === 'undefined'"/>
+						<div v-else-if="item.status == 0" style="padding: 5px">
+							上传失败
+						</div>
+					</div>
+					<!-- 上传失败或者成功后显示 -->
+					<div v-if="!disabled && (typeof item !== 'object' || item.status == 0)" class="vcm-imgs-picker__delete">
+						<vc-icon 
+							type="close" 
+							style="color: white"
+							@click="handleDel(item)" 
+						/>
+					</div>
+				</slot>
+			</div>
+		</template>
 		<vc-upload 
 			v-show="!disabled && (currentValue.length < max || max === 0)"
 			v-bind="currentUploadOpts"

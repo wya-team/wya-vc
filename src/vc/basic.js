@@ -131,6 +131,9 @@ VcBasic.prototype.config = {
 	},
 	ImgsPreview: {
 		enhancer: (index, images, ctx) => false,
+	},
+	HtmlImg: {
+		parser: undefined
 	}
 };
 

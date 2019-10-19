@@ -89,13 +89,14 @@ export default {
 			immediate: true,
 			handler(v, old) {
 				this.currentValue = v;
+				this.curMaxlength = this.getMaxLength();
+				this.refresh();
 			}
 		}
 	},
 	mounted() {
 		Resize.on(this.$refs.textarea, this.handleResize);
-
-		this.textareaStyle = this.getFitStyle();
+		this.refresh();
 	},
 	beforeDestroy() {
 		Resize.off(this.$refs.textarea, this.handleResize);
@@ -147,19 +148,18 @@ export default {
 			}
 
 			this.currentValue = value;
+			this.refresh();
 
 			this.sync(value, e);
-
-			this.$nextTick(() => {
-				this.textareaStyle = this.getFitStyle();
-			});
 		},
-		getFitStyle() {
+		refresh() {
 			if (!this.autosize) return;
 
 			const { minRows, maxRows } = this.autosize;
 
-			return calcTextareaHeight(this.$refs.textarea, minRows, maxRows);
+			this.$nextTick(() => {
+				this.textareaStyle = calcTextareaHeight(this.$refs.textarea, minRows, maxRows);
+			});
 		},
 
 		/**

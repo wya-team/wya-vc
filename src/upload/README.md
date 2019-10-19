@@ -37,6 +37,7 @@ extra | ajax需要传递的参数 | `obj` | {}
 headers | ajax: headers | `obj` | {}
 show-tips | 展示显示进度弹窗 | `bool` | `false`
 directory | 是否选取文件夹 | `bool` | `false`
+parallel | 是否并发执行 | `bool` | `true`
 
 
 #### 事件

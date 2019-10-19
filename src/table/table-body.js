@@ -1,5 +1,5 @@
 import { debounce } from 'lodash';
-import { Dom } from '@wya/utils';
+import { $ } from '@wya/utils';
 import Popover from '../popover';
 import { getCell, getColumnByCell, getRowIdentity } from './utils';
 
@@ -57,12 +57,8 @@ export default {
 				const rows = this.$el.querySelectorAll('.vc-table__row');
 				const oldRow = rows[oldV];
 				const newRow = rows[v];
-				if (oldRow) {
-					Dom.removeClass(oldRow, 'hover-row');
-				}
-				if (newRow) {
-					Dom.addClass(newRow, 'hover-row');
-				}
+				oldRow && $(oldRow).removeClass('hover-row');
+				newRow && $(newRow).addClass('hover-row');
 			});
 		}
 	},
@@ -211,7 +207,7 @@ export default {
 			// 判断是否text-overflow, 如果是就显示tooltip
 			const cellChild = event.target.querySelector('.vc-table__cell');
 
-			if (!(Dom.hasClass(cellChild, 'vc-popover') && cellChild.childNodes.length)) {
+			if (!($(cellChild).hasClass('vc-popover') && cellChild.childNodes.length)) {
 				return;
 			}
 			// 使用范围宽度而不是滚动宽度来确定文本是否溢出，以解决潜在的FireFox bug
@@ -281,17 +277,22 @@ export default {
 			const { treeIndent, columns, firstDefaultColumnIndex } = this;
 			const columnsHidden = columns.map((column, index) => this.isColumnHidden(index));
 			const rowClasses = this.getRowClass(row, $index);
+			const style = this.getRowStyle(row, $index);
+			let key = this.getKeyOfRow(row, $index);
+
 			let display = true;
 			if (treeRowData) {
 				rowClasses.push('vc-table__row--level-' + treeRowData.level);
 				display = treeRowData.display;
+
+				// key = `${key}___${treeRowData.level}`;
 			}
 			return (
 				<tr
 					v-show={display}
-					style={this.getRowStyle(row, $index)}
+					style={style}
 					class={rowClasses}
-					key={this.getKeyOfRow(row, $index)}
+					key={key}
 					onDblclick={($event) => this.handleDoubleClick($event, row)}
 					onClick={($event) => this.handleClick($event, row)}
 					onContextmenu={($event) => this.handleContextMenu($event, row)}
@@ -468,7 +469,7 @@ export default {
 			>
 				<colgroup>
 					{
-						this.columns.map(column => <col name={column.id } key={column.id} />)
+						this.columns.map(column => <col name={column.id} key={column.id} />)
 					}
 				</colgroup>
 				<tbody>

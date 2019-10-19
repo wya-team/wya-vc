@@ -1,5 +1,5 @@
 <template>
-	<div class="vc-pull-scroll-scroll-status">
+	<div class="vc-pull-scroll-scroll-status" name="srcoll">
 		<template v-if="typeof renderer[status] === 'string'">
 			<vc-spin 
 				v-if="status === 1" 

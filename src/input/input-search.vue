@@ -29,6 +29,8 @@
 
 <script>
 import inputSearchMixin from './input-search-mixin';
+import inputEventMixin from './input-event-mixin';
+
 import Icon from '../icon/index';
 import Input from './input';
 
@@ -38,7 +40,7 @@ export default {
 		'vc-icon': Icon,
 		'vc-input': Input
 	},
-	mixins: [inputSearchMixin]
+	mixins: [inputSearchMixin, inputEventMixin]
 };
 </script>
 

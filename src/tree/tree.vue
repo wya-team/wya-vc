@@ -32,7 +32,7 @@
 </template>
 
 <script>
-import { Dom } from '@wya/utils';
+import { $ } from '@wya/utils';
 import TreeStore from './model/tree-store';
 import { getNodeKey, findNearestComponent } from './model/util';
 import TreeNode from './tree-node.vue';
@@ -231,7 +231,7 @@ export default {
 			const dropNode = findNearestComponent(event.target, 'vc-tree-node');
 			const oldDropNode = dragState.dropNode;
 			if (oldDropNode && oldDropNode !== dropNode) {
-				Dom.removeClass(oldDropNode.$el, 'is-drop-inner');
+				$(oldDropNode.$el).removeClass('is-drop-inner');
 			}
 			const draggingNode = dragState.draggingNode;
 			if (!draggingNode || !dropNode) return;
@@ -303,9 +303,9 @@ export default {
 			dropIndicator.style.left = (iconPosition.right - treePosition.left) + 'px';
 
 			if (dropType === 'inner') {
-				Dom.addClass(dropNode.$el, 'is-drop-inner');
+				$(dropNode.$el).addClass('is-drop-inner');
 			} else {
-				Dom.removeClass(dropNode.$el, 'is-drop-inner');
+				$(dropNode.$el).removeClass('is-drop-inner');
 			}
 
 			dragState.showDropIndicator = dropType === 'before' || dropType === 'after';
@@ -335,7 +335,7 @@ export default {
 					this.store.registerNode(draggingNodeCopy);
 				}
 
-				Dom.removeClass(dropNode.$el, 'is-drop-inner');
+				$(dropNode.$el).removeClass('is-drop-inner');
 
 				this.$emit('node-drag-end', draggingNode.node, dropNode.node, dropType, event);
 				if (dropType !== 'none') {

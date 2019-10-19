@@ -12,7 +12,7 @@
 		:disabled="disabled"
 		:clearable="clearable"
 		:readonly="readonly"
-		:editable="editable"
+		:editable="false"
 		:transfer="portal"
 		:element-id="elementId"
 		@on-change="$emit('change', arguments[0])"

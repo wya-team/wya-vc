@@ -1,44 +1,46 @@
 <template>
 	<component :is="tag" class="vc-imgs-picker">
-		<template v-if="!sortable">
-			<vc-imgs-picker-item 
-				v-for="(item, index) in currentValue" 
-				:key="typeof item === 'object' ? item.uid : item"
-				:class="[imgClassName, 'vc-imgs-picker__item-img']"
-				:disabled="disabled"
-				:it="item"
-				@delete="handleDel(arguments[0])"
-				@preview="handlePreview(arguments[0], index)"
-			>
-				
-				<template #default="{ it }">
-					<slot :it="it" name="image"/>
-				</template>
-			</vc-imgs-picker-item>
-		</template>
-		<vc-sort-list 
-			v-else 
-			:data-source="currentValue" 
-			:mask="mask" 
-			value-key="uid" 
-			class="is-sort"
-			@change="handleSortChange"
-		>
-			<template #default="{ it, index }">
+		<template v-if="thumbnail">
+			<template v-if="!sortable">
 				<vc-imgs-picker-item 
+					v-for="(item, index) in currentValue" 
+					:key="typeof item === 'object' ? item.uid : item"
 					:class="[imgClassName, 'vc-imgs-picker__item-img']"
 					:disabled="disabled"
-					:it="it"
-					style="margin-right: 0; margin-bottom: 0"
+					:it="item"
 					@delete="handleDel(arguments[0])"
 					@preview="handlePreview(arguments[0], index)"
 				>
+				
 					<template #default="{ it }">
 						<slot :it="it" name="image"/>
 					</template>
 				</vc-imgs-picker-item>
 			</template>
-		</vc-sort-list>
+			<vc-sort-list 
+				v-else 
+				:data-source="currentValue" 
+				:mask="mask" 
+				value-key="uid" 
+				class="is-sort"
+				@change="handleSortChange"
+			>
+				<template #default="{ it, index }">
+					<vc-imgs-picker-item 
+						:class="[imgClassName, 'vc-imgs-picker__item-img']"
+						:disabled="disabled"
+						:it="it"
+						style="margin-right: 0; margin-bottom: 0"
+						@delete="handleDel(arguments[0])"
+						@preview="handlePreview(arguments[0], index)"
+					>
+						<template #default="{ it }">
+							<slot :it="it" name="image"/>
+						</template>
+					</vc-imgs-picker-item>
+				</template>
+			</vc-sort-list>
+		</template>
 		<vc-upload 
 			v-show="!disabled && (currentValue.length < max || max === 0)"
 			v-bind="currentUploadOpts"

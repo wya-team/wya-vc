@@ -1,3 +1,4 @@
+import { max } from 'lodash';
 import { walkTreeNode, getRowIdentity } from '../utils';
 import { VcError } from '../../vc';
 
@@ -7,7 +8,8 @@ export default {
 			states: {
 				indent: 16,
 				// defaultExpandAll 存在于 expand.js 中，这里不重复添加
-				// TODO: 拆分为独立的 TreeTable，在 expand 中，展开行的记录是放在 expandRows 中，统一用法
+				// 在展开行中，expandRowKeys 会被转化成 expandRows，expandRowKeys 这个属性只是记录了 TreeTable 行的展开
+				// TODO: 拆分为独立的 TreeTable，统一用法
 				expandRowKeys: [],
 				expandSelectable: true,
 				treeData: {}, // item的状态，比如loading, loaded
@@ -61,8 +63,6 @@ export default {
 
 	watch: {
 		normalizedData: 'updateTreeData',
-		// expandRowKeys 在 TreeTable 中也有使用
-		expandRowKeys: 'updateTreeData',
 		normalizedLazyNode: 'updateTreeData'
 	},
 
@@ -87,9 +87,11 @@ export default {
 							level
 						};
 					}
-				}, 
-				childrenColumnName, 
-				lazyColumnIdentifier
+				},
+				{
+					childrenKey: childrenColumnName, 
+					lazyKey: lazyColumnIdentifier
+				}
 			);
 			return res;
 		},
@@ -98,15 +100,22 @@ export default {
 		 * 获取当前展开最大的level
 		 */
 		getMaxLevel() {
-			let level = 0;
-			Object.keys(this.states.treeData).forEach((item) => {
-				let target = this.states.treeData[item];
-				if (target.expanded && target.level >= level) {
-					level = target.level + 1;
-				}
-			});
+			let { data, treeData, rowKey } = this.states;
 
-			return level;
+			let levels = data.map((item) => {
+				const traverse = (source) => {
+					if (!source) return 0;
+					if (source.expanded && source.children.length > 0) {
+						return max([source.level, ...source.children.map((key) => traverse(treeData[key]))]);
+					} else {
+						return source.level;
+					}
+				};
+				
+				let id = getRowIdentity(item, rowKey);
+				return traverse(treeData[id]);
+			});
+			return max(levels) || 0;
 		},
 
 		updateTreeData() {
@@ -160,17 +169,13 @@ export default {
 					});
 				}
 			}
-			
 			this.states.treeData = newTreeData;
 			this.updateTableScrollY();
 		},
 
 		updateTreeExpandKeys(value) {
-			// 仅仅在包含嵌套数据时才去更新
-			if (Object.keys(this.normalizedData).length) {
-				this.states.expandRowKeys = value;
-				this.updateTreeData();
-			}
+			this.states.expandRowKeys = value;
+			this.updateTreeData();
 		},
 
 		toggleTreeExpansion(row, expanded) {
@@ -179,8 +184,8 @@ export default {
 			const { rowKey, treeData } = this.states;
 			const id = getRowIdentity(row, rowKey);
 			const data = id && treeData[id];
-			const oldExpanded = treeData[id].expanded;
 			if (id && data && 'expanded' in data) {
+				const oldExpanded = data.expanded;
 				expanded = typeof expanded === 'undefined' ? !data.expanded : expanded;
 				treeData[id].expanded = expanded;
 				if (oldExpanded !== expanded) {
@@ -203,12 +208,12 @@ export default {
 		},
 
 		loadData(row, key, treeNode) {
-			const { lazyTreeNodeMap, treeData } = this.states;
+			this.assertRowKey();
+			const { lazyTreeNodeMap, treeData, rowKey, childrenColumnName, lazyColumnIdentifier } = this.states;
 			if (this.table.loadExpand && !treeData[key].loaded) {
 				
 				treeData[key].loading = true;
 				let promise = this.table.loadExpand(row, treeNode);
-
 				let fn = data => {
 					if (!Array.isArray(data)) {
 						throw new VcError('table', 'data必须是数组');
@@ -216,6 +221,26 @@ export default {
 					treeData[key].loading = false;
 					treeData[key].loaded = true;
 					treeData[key].expanded = true;
+
+					/**
+					 * 处理tree中和返回的数据与首次相同的情况，
+					 */
+					walkTreeNode(
+						data, 
+						(parent, children, level) => {
+							let id = getRowIdentity(parent, rowKey);
+							Object.defineProperty(parent, '__KEY__', {
+								value: `${level}__${id}`,
+								writable: false
+							});
+						},
+						{
+							childrenKey: childrenColumnName, 
+							lazyKey: lazyColumnIdentifier,
+							level: treeNode.level
+						}
+					);
+
 					if (data.length) {
 						this.$set(lazyTreeNodeMap, key, data);
 
@@ -226,7 +251,6 @@ export default {
 							}, []);
 						}
 					}
-					this.table.$emit('expand-change', row, true, this.getMaxLevel());
 
 					// 对异步过来的数据进行选择
 					if (this.isSelected(row)) {
@@ -235,6 +259,14 @@ export default {
 						});
 					}
 					this.updateAllSelected();
+					
+					/**
+					 * 计算最大的level, 有必要添加$nextTick
+					 * TODO: 去除$nextTick, 期间会触发一次updateTreeData
+					 */
+					this.$nextTick(() => {
+						this.table.$emit('expand-change', row, true, this.getMaxLevel());
+					});
 				};
 
 				if (promise && promise.then) {

@@ -2,7 +2,8 @@
 	<div class="vcm-toast">
 		<div 
 			class="vcm-toast__bg" 
-			@click="handleClose" 
+			@click="handleClose"
+			@touchmove.prevent
 		/>
 		<vcm-transition-fade 
 			:duration="{ enter: 0.3, leave: 0.15 }"
@@ -72,6 +73,9 @@ export default {
 			if (this.maskClosable) {
 				this.visible = false;
 			}
+		},
+		handleMove(e) {
+
 		}
 	}
 };

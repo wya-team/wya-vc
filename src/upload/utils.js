@@ -2,16 +2,15 @@ const endsWith = (str, suffix) => {
 	return str.indexOf(suffix, str.length - suffix.length) !== -1;
 };
 
-export const attrAccept = (file, acceptedFiles) => {
-	if (file && acceptedFiles) {
-		const acceptedFilesArray = Array.isArray(acceptedFiles)
-			? acceptedFiles
-			: acceptedFiles.split(',');
+export const attrAccept = (file, accept) => {
+	if (file && file instanceof Blob && accept) {
+		const acceptArr = Array.isArray(accept) ? accept : accept.split(',');
 		const filename = file.name || '';
 		const mimeType = file.type || '';
+		
 		const baseMimeType = mimeType.replace(/\/.*$/, '');
 
-		return acceptedFilesArray.some(type => {
+		return acceptArr.some(type => {
 			const validType = type.trim();
 			if (validType.charAt(0) === '.') {
 				return endsWith(filename.toLowerCase(), validType.toLowerCase());

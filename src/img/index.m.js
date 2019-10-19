@@ -1,1 +1,1 @@
-export { default } from './__tpl__';
+export { default } from './index';

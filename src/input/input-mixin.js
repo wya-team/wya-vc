@@ -1,10 +1,11 @@
 import Extends from '../extends';
 import BytesMixin from './input-bytes-mixin';
+import EventMixin from './input-event-mixin';
 import Icon from '../icon/index';
 import Transition from '../transition/index';
 
 export default {
-	mixins: [...Extends.mixins(['emitter']), BytesMixin],
+	mixins: [...Extends.mixins(['emitter']), BytesMixin, EventMixin],
 	props: {
 		type: {
 			type: String,
@@ -133,7 +134,8 @@ export default {
 				name: this.name,
 				// value: this.currentValue, // 频率高
 				number: this.number,
-				autofocus: this.autofocus
+				autofocus: this.autofocus,
+				focusEnd: this.focusEnd
 			};
 		}
 	},
@@ -163,13 +165,11 @@ export default {
 					e.srcElement.setSelectionRange(length, length);
 				}, 0);
 			}
-			this.$emit('focus-change', this.isFocus);
 			this.$emit('focus', e);
 		},
 		handleBlur(e) {
 			this.isFocus = false;
 
-			this.$emit('focus-change', this.isFocus);
 			this.$emit('blur', e);
 			this.allowDispatch && this.dispatch('vc-form-item', 'form-blur', this.currentValue);
 		},
@@ -202,19 +202,6 @@ export default {
 			this.$emit('input', '');
 			this.$emit('change', e);
 
-			this.focus();
-		},
-		/**
-		 * 外部方法扩展
-		 */
-		focus() {
-			this.$refs.input.focus();
-		},
-		blur() {
-			this.$refs.input.blur();
-		},
-		click() {
-			this.$refs.input.click();
 			this.focus();
 		}
 	},

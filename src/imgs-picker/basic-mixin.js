@@ -44,6 +44,11 @@ export default {
 			type: Boolean,
 			default: false
 		},
+		// 是否显示缩略图
+		thumbnail: {
+			type: Boolean,
+			default: true
+		},
 		/**
 		 * vc-upload组件的属性
 		 */
@@ -88,7 +93,7 @@ export default {
 		dataSource: {
 			immediate: true,
 			handler(newVal) {
-				let arr = this.currentValue.length === 0 ? newVal : this.currentValue;
+				let arr = this.currentValue.length === 0 || newVal.length === 0 ? newVal : this.currentValue;
 				this.currentValue = arr.map((it) => {
 					for (let i = 0; i < newVal.length; i++) {
 						if (typeof it === 'string' && newVal[i] === it) {
@@ -269,6 +274,17 @@ export default {
 			this.currentValue.push(...imgs);
 
 			this.sync(this.currentValue);
+		},
+		/**
+		 * 充值value
+		 */
+		reset(imgs = []) {
+			if (!(imgs instanceof Array)) {
+				throw Error('【imgs-picker】: reset参数要为字符串数组');
+			}
+			this.currentValue = [...imgs];
+			// form表单
+			this.dispatch('vc-form-item', 'form-change', this.currentValue);
 		}
 	}
 };

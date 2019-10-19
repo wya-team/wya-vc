@@ -121,7 +121,7 @@ export default wrapperComponent;
 
 export const Tips = new Portal(wrapperComponent, {});
 </script>
-<style lang="scss" scoped>
+<style lang="scss">
 @import '../style/index.scss';
 
 @include block(vc-upload-tips) {

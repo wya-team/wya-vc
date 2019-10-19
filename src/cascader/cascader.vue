@@ -17,28 +17,30 @@
 		@destroy="handleDestroy"
 		@visible-change="$emit('visible-change', isActive)"
 	>
-		<vc-input
-			ref="input"
-			:element-id="elementId"
-			:readonly="true"
-			:disabled="disabled"
-			:value="formatLabel"
-			:placeholder="placeholder || '请选择'"
-			:allow-dispatch="false"
-			class="vc-cascader__input"
-		>
-			<template #append>
-				<!-- down, up, clear -->
-				<div class="vc-cascader__append">
-					<vc-icon
-						:type="showClear ? 'clear' : icon"
-						:class="{ 'is-arrow': !showClear }"
-						class="vc-cascader__icon"
-						@click="handleClear"
-					/>
-				</div>
-			</template>
-		</vc-input>
+		<slot :label="label" :value="currentValue" :active="isActive" name="default">
+			<vc-input
+				ref="input"
+				:element-id="elementId"
+				:readonly="true"
+				:disabled="disabled"
+				:value="formatLabel"
+				:placeholder="placeholder || '请选择'"
+				:allow-dispatch="false"
+				class="vc-cascader__input"
+			>
+				<template #append>
+					<!-- down, up, clear -->
+					<div class="vc-cascader__append">
+						<vc-icon
+							:type="showClear ? 'clear' : icon"
+							:class="{ 'is-arrow': !showClear }"
+							class="vc-cascader__icon"
+							@click="handleClear"
+						/>
+					</div>
+				</template>
+			</vc-input>
+		</slot>
 		<template #content>
 			<div class="vc-cascader__content">
 				<vc-cascader-col
@@ -59,6 +61,7 @@
 
 <script>
 import { pick, cloneDeep, isEqualWith } from 'lodash';
+import { $ } from '@wya/utils';
 import { getSelectedData } from '../utils/index';
 import { VcError } from '../vc/index';
 import Extends from '../extends';
@@ -190,6 +193,24 @@ export default {
 			this.rebuildData = this.makeRebuildData();
 
 			this.$emit('ready');
+
+			/**
+			 * 滚动到初始位置
+			 * TODO: 是否移入col单独处理
+			 */
+			
+			this.$nextTick(() => {
+				this.currentValue.forEach((item, index) => {
+					let el = this.$refs.col[index] && this.$refs.col[index].$el;
+					let source = this.rebuildData[index];
+
+					if (source && el) {
+						let instance = source.findIndex(i => item == i.value);
+						$(el.firstChild).scrollIntoView({ to: instance * 30 });
+					}
+					
+				});
+			});
 		},
 		handleClear(e) {
 			if (!this.showClear) return;
@@ -292,10 +313,13 @@ export default {
 			this.sync();
 		},
 
+		/**
+		 * 在关闭的时候，让重新打开的值一致
+		 * 暂时不用this.rebuildData, ready时会再次触发
+		 */
 		handleClose() {
 			if (!isEqualWith(this.currentValue, this.value)) {
-				// 暂时不用this.rebuildData, ready时会再次触发
-				this.currentValue = this.value;
+				this.currentValue = [...this.value];
 			}
 			
 			this.$emit('close');

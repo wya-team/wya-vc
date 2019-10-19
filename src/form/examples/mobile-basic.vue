@@ -14,8 +14,6 @@
 			</vcm-form-item>
 		</vcm-form-item>
 
-
-
 		<vcm-form-item prop="input" label="input">
 			<vcm-input v-model="formValidate.input" type="text" placeholder="Enter something..." clearable />
 		</vcm-form-item>

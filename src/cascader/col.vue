@@ -100,6 +100,7 @@ $block: vc-cascader-col;
 		padding: 7px 16px;
 		color: #666;
 		font-size: 12px!important;
+		line-height: 16px;
 		white-space: nowrap;
 		cursor: pointer;
 		@include when(select) {

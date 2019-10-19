@@ -15,6 +15,7 @@
 </template>
 
 <script>
+import { $ } from '@wya/utils';
 import MIcon from '../../icon/index.m';
 import MSpin from '../../spin/index.m';
 
@@ -40,7 +41,14 @@ export default {
 			type: Number
 		}
 	},
+	watch: {
+		index(v, oldV) {
+			// 滚动到初始位置
+			let instance = this.dataSource.findIndex(i => this.value == i.value);
 
+			$(this.$el).scrollIntoView({ to: instance * 40 });
+		}
+	},
 	methods: {
 		handleClick(value, rowIndex) {
 			const { index: colIndex } = this;
@@ -68,6 +76,7 @@ $block: vcm-cascader-col;
 	@include element(label) {
 		flex: 1;
 		font-size: 14px;
+		line-height: 20px;
 		color: #000;
 		overflow: hidden;
 		white-space: nowrap;

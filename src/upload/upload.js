@@ -91,7 +91,14 @@ export default {
 			default: false
 		},
 
-		enhancer: Function
+		// 增强器，如：原生选取
+		enhancer: Function,
+
+		// 并行上传
+		parallel: {
+			type: Boolean,
+			default: true
+		},
 	},
 	data() {
 		return {
@@ -136,7 +143,8 @@ export default {
 				error: 0,
 				success: 0,
 				total: 0,
-				imgs: []
+				imgs: [],
+				fns: []
 			};
 		},
 
@@ -156,37 +164,47 @@ export default {
 		},
 
 		handleChange(e) {
-			const files = e.target.files;
-			this.uploadFiles(files);
+			this.uploadFiles(e.target.files);
 
 			this.uid = getUid();
 		},
+
 		handleFileDrop(e) {
 			if (e.type === 'dragover') {
 				e.preventDefault();
 				return;
 			}
-			const files = Array.prototype.slice.call(e.dataTransfer.files).filter(
-				file => attrAccept(file, this.accept)
-			);
-			this.uploadFiles(files);
+			this.uploadFiles(e.dataTransfer.files);
 
 			e.preventDefault();
 		},
+
 		handleKeyDown(e) {
 			if (e.key === 'Enter') {
 				this.handleClick();
 			}
 		},
+
 		uploadFiles(files) {
-			const postFiles = Array.prototype.slice.call(files);
+			let postFiles = Array.prototype.slice.call(files);
+
+			postFiles = postFiles.filter(
+				file => attrAccept(file, this.accept)
+			);
+
 			const length = postFiles.length;
-			if (this.multiple && length > this.max) {
-				this.$emit('error', { msg: `可选文件数量不能超过${this.max}个` });
+
+			if (length === 0) {
+				this.$emit('error', { msg: `文件格式限制：${this.accept}` });
 				return;
-			} else if (this.directory && length > this.max) {
-				this.$emit('error', { msg: `文件夹内文件的数量不能超过${this.max}个` });
-				return;
+			} else if (length > this.max) {
+				if (this.multiple) {
+					this.$emit('error', { msg: `可选文件数量不能超过${this.max}个` });
+					return;
+				} else if (this.directory) {
+					this.$emit('error', { msg: `文件夹内文件的数量不能超过${this.max}个` });
+					return;
+				}
 			}
 			
 			// reset
@@ -194,19 +212,27 @@ export default {
 			
 			this.$emit('begin', postFiles);
 			
-			postFiles.forEach((file, index) => {
+			this.cycle.fns = postFiles.map((file, index) => {
 				file.uid = getUid();
 				file.current = index + 1;
 				file.total = length;
 				file.percent = 0;
-				this.upload(file, postFiles);
+				return () => {
+					this.upload(file, postFiles);
+				};
 			});
+
+			// 是否启用并行操作
+			this.parallel 
+				? this.cycle.fns.forEach(fn => fn())
+				: (this.cycle.fns.shift())(); 
 
 			// tips
 			this.tips && this.tips.show(
 				initItem(postFiles.map(it => ({ ...it, size: it.size, name: it.name })), 'uid')
 			);
 		},
+
 		upload(file, fileList, index) {
 			// 此处不用this.$emit('xxx')
 			const { 
@@ -244,7 +270,7 @@ export default {
 			}
 		},
 
-		async post(file) {
+		post(file) {
 			if (!this.__isMounted) {
 				return;
 			}
@@ -274,14 +300,16 @@ export default {
 			const { ajax, size } = this;
 			let localData;
 			if (size && file.size > size * 1024 * 1024) {
-				this.$emit('error', { msg: `上传失败，大小限制为${size}MB` });
-				return;
+				localData = {
+					status: 0,
+					msg: `上传失败，大小限制为${size}MB`
+				};
 			}
 			
 			// onFileStart, onFileProgress, onFileSuccess, onFileError, onComplete 
 			this.$emit('file-start', file);
 			
-			ajax({
+			return ajax({
 				url: url || defaultUrl,
 				type: "FORM",
 				param: {
@@ -298,7 +326,7 @@ export default {
 					this.tips && this.tips.setValue(uid, 'percent', e.percent);
 				},
 				// todo 可优化
-				getInstance: (xhr, cancel) => (this.reqs[uid] = { cancel })
+				getInstance: ({ xhr, cancel }) => (this.reqs[uid] = { cancel })
 			}).then((res) => {
 				delete this.reqs[uid];
 				this.cycle.success++;
@@ -308,36 +336,38 @@ export default {
 
 				// tips
 				this.tips && this.tips.setValue(uid, 'success');
-
 			}).catch((res) => {
 				delete this.reqs[uid];
-				this.handleReject(res, file);
+				this.cycle.error++;
 
-			}).finally(() => {
-				this.handleFinally(file);
-			});
-		},
-		handleReject(res, file) {
-			this.cycle.error++;
-
-			this.$emit('file-error', res, file, { ...this.cycle });
-
-			// tips
-			this.tips && this.tips.setValue(file.uid, 'error', res.msg);
-		},
-		handleFinally(file) {
-			this.cycle.total++;
-				
-			// console.log(`error: ${this.cycle.error}, total: ${this.cycle.total}`);
-			if (this.cycle.total === file.total) {
-
-				this.$emit('complete', { ...this.cycle } || {});
-				this.setDefaultCycle();
+				this.$emit('file-error', res, file, { ...this.cycle });
 
 				// tips
-				this.tips && this.tips.setTipsStatus(true);
-			}
+				this.tips && this.tips.setValue(file.uid, 'error', res.msg);
+			}).finally(() => {
+				this.cycle.total++;
+
+				// 顺序上传
+				if (
+					!this.parallel 
+					&& this.cycle.fns 
+					&& this.cycle.fns.length > 0
+				) {
+					(this.cycle.fns.shift())();
+				}
+
+				// 上传完毕
+				if (this.cycle.total === file.total) {
+
+					this.$emit('complete', { ...this.cycle } || {});
+					this.setDefaultCycle();
+
+					// tips
+					this.tips && this.tips.setTipsStatus(true);
+				}
+			});
 		},
+
 		cancel(file) {
 			const { reqs } = this;
 			if (file) {
@@ -361,6 +391,7 @@ export default {
 			}
 		}
 	},
+
 	render(h) {
 		const {
 			disabled,
