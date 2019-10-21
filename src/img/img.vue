@@ -1,17 +1,17 @@
 <template>
 	<div class="vc-img">
-		<slot v-if="loading" name="placeholder">
-			<div class="vc-img__placeholder" />
+		<slot v-if="isLoading" name="placeholder">
+			<div :class="{ 'is-auto': isAuto }" :style="pStyle" class="vc-img__placeholder"/>
 		</slot>
-		<slot v-else-if="error" name="error">
+		<slot v-else-if="isError" name="error">
 			<div class="vc-img__error">加载失败</div>
 		</slot>
 		<img
 			v-else
 			v-bind="$attrs"
 			:src="src"
-			:style="imageStyle"
-			:class="{ 'vc-img__inner--center': alignCenter }"
+			:style="style"
+			:class="{ 'is-center': alignCenter }"
 			class="vc-img__inner"
 			v-on="$listeners"
 		>
@@ -21,6 +21,7 @@
 <script>
 import { DOM, $ } from '@wya/utils';
 import { throttle } from 'lodash';
+import IMGStore from './store';
 
 const isSupportObjectFit = document.documentElement.style.objectFit !== undefined;
 
@@ -44,21 +45,22 @@ export default {
 
 	data() {
 		return {
-			loading: true,
-			error: false,
-			show: !this.lazy,
-			imageWidth: 0,
-			imageHeight: 0
+			isLoading: true,
+			isError: false,
+			isActive: !this.lazy,
+			isAuto: false,
+			originW: 0,
+			originH: 0,
+			pStyle: {}
 		};
 	},
 
 	computed: {
-		imageStyle() {
-			return this.fit 
-				? isSupportObjectFit
-					? { 'object-fit': this.fit }
-					: this.getImageStyle(this.fit)
-				: {};
+		style() {
+			if (!this.fit) return;
+			return isSupportObjectFit
+				? { 'object-fit': this.fit }
+				: this.hackFit(this.fit);
 		},
 		alignCenter() {
 			return !isSupportObjectFit && this.fit !== ObjectFit.FILL;
@@ -66,20 +68,24 @@ export default {
 	},
 
 	watch: {
-		src(val) {
-			this.show && this.loadImage();
+		src(v) {
+			this.isActive && this.loadImage();
 		},
-		show(val) {
-			val && this.loadImage();
+		isActive(v) {
+			v && this.loadImage();
 		}
 	},
 
+	created() {
+		this.scroller = null;
+	},
+
 	mounted() {
-		if (this.lazy) {
-			this.addLazyLoadListener();
-		} else {
-			this.loadImage();
-		}
+		this.setScroller();
+		this.initPlaceholder();
+		this.lazy
+			? this.addLazyLoadListener()
+			: this.loadImage();
 	},
 
 	beforeDestroy() {
@@ -87,88 +93,116 @@ export default {
 	},
 
 	methods: {
-		loadImage() {
-			if (this.$isServer) return;
+		setScroller() {
+			const { wrapper } = this;
 
+			if (typeof wrapper === 'object') {
+				this.scroller = wrapper;
+			} else if (typeof wrapper === 'string') {
+				this.scroller = document.querySelector(wrapper);
+			} else {
+				this.scroller = $(this.$el).getScroller();
+			}
+		},
+
+		initPlaceholder() {
+			this.isAuto = this.$el.clientHeight === 1 || this.$el.clientWidth === 1;
+
+			// el上是否有width和height
+			let { width, height } = this.$el.style;
+
+			if (width && height) return;
+
+			let { w, h } = IMGStore.getSize(this.src, { 
+				clientW: this.$el.clientWidth,
+				clientH: this.$el.clientHeight,
+				style: {
+					width,
+					height
+				},
+				wrapperW: this.scroller.clientWidth,
+				// TODO
+				wrapperH: this.scroller.clientHeight,
+			});
+
+			if (w && h) {
+				this.pStyle = {
+					width: `${w}px`,
+					height: `${h}px`,
+				};
+			}
+		},
+
+		loadImage() {
 			// reset status
-			this.loading = true;
-			this.error = false;
+			this.isLoading = true;
+			this.isError = false;
 
 			const img = new Image();
 			img.onload = e => this.handleLoad(e, img);
-			img.onerror = this.handleError.bind(this);
+			img.onerror = e => this.handleError(e, img);
 
 			// bind html attrs
-			// so it can behave consistently
 			Object.keys(this.$attrs)
-				.forEach((key) => {
-					const value = this.$attrs[key];
-					img.setAttribute(key, value);
-				});
+				.forEach(key => img.setAttribute(key, this.$attrs[key]));
+
 			img.src = this.src;
 		},
+
 		handleLoad(e, img) {
-			this.imageWidth = img.width;
-			this.imageHeight = img.height;
-			this.loading = false;
+			this.originW = img.naturalWidth || img.width;
+			this.originH = img.naturalHeight || img.height;
+
+			this.isLoading = false;
+
+			this.$emit('load', e, img, this);
+
+			IMGStore.add(this.src, {
+				originW: this.originW,
+				originH: this.originH,
+			});
 		},
-		handleError(e) {
-			this.loading = false;
-			this.error = true;
-			this.$emit('error', e);
+
+		handleError(e, img) {
+			this.isLoading = false;
+			this.isError = true;
+			this.$emit('error', e, img, this);
 		},
+
 		handleLazyLoad() {
-			if ($(this._wrapper).contains(this.$el)) {
-				this.show = true;
+			if ($(this.scroller).contains(this.$el)) {
+				this.isActive = true;
 				this.removeLazyLoadListener();
 			}
 		},
 		addLazyLoadListener() {
-			if (this.$isServer) return;
-
-			const { wrapper } = this;
-			let _wrapper = null;
-
-			if (typeof wrapper === 'object') {
-				_wrapper = wrapper;
-			} else if (typeof wrapper === 'string') {
-				_wrapper = document.querySelector(wrapper);
-			} else {
-				_wrapper = $(this.$el).getScroller();
-			}
-
-			if (_wrapper) {
-				this._wrapper = _wrapper;
-				this._lazyLoadHandler = throttle(this.handleLazyLoad, 200);
-				_wrapper.addEventListener('scroll', this._lazyLoadHandler);
+			if (this.scroller) {
+				this.handleLazyLoad = throttle(this.handleLazyLoad, 200);
+				this.scroller.addEventListener('scroll', this.handleLazyLoad);
 				this.handleLazyLoad();
 			}
 		},
 		removeLazyLoadListener() {
-			const { _wrapper, _lazyLoadHandler } = this;
+			if (!this.scroller || !this._lazyLoadHandler) return;
+			scroller.removeEventListener('scroll', this._lazyLoadHandler);
 
-			if (this.$isServer || !_wrapper || !_lazyLoadHandler) return;
-
-			_wrapper.removeEventListener('scroll', _lazyLoadHandler);
-			this._wrapper = null;
+			this.scroller = null;
 			this._lazyLoadHandler = null;
 		},
-		/**
-		 * simulate object-fit behavior to compatible with IE11 and other browsers which not support object-fit
-		 */
-		getImageStyle(fit) {
-			const { imageWidth, imageHeight } = this;
+		
+		hackFit(fit) {
+			const { originW, originH } = this;
 			const {
-				clientWidth: containerWidth,
-				clientHeight: containerHeight
+				clientWidth: elW,
+				clientHeight: elH
 			} = this.$el;
 
-			if (!imageWidth || !imageHeight || !containerWidth || !containerHeight) return {};
+			if (!originW || !originH || !elW || !elH) return {};
 
-			const vertical = imageWidth / imageHeight < 1;
+			const vertical = originW / originH < 1;
 
 			if (fit === ObjectFit.SCALE_DOWN) {
-				const isSmaller = imageWidth < containerWidth && imageHeight < containerHeight;
+				const isSmaller = originW < elW && originH < elH;
 				fit = isSmaller ? ObjectFit.NONE : ObjectFit.CONTAIN;
 			}
 
@@ -200,22 +234,21 @@ export default {
 	display: inline-block;
 	overflow: hidden;
 
-	@include element(inner) {
-		// @extend %size;
-		vertical-align: top;
-
-		@include modifier(center) {
-			position: relative;
-			top: 50%;
-			left: 50%;
-			transform: translate(-50%, -50%);
-			display: block;
-		}
-	}
-
 	@include element(placeholder) {
 		@extend %size;
 		background: #f5f7fa;
+		min-height: inherit;
+		max-height: inherit;
+		@include when(auto) {
+			background: inherit;
+		}
+		&:after {
+			content: "-"; // eslint-disable-line
+			display: block;
+			opacity: 0; 
+			height: 1px;
+			width: 1px;  
+		}
 	}
 
 	@include element(error) {
@@ -226,6 +259,19 @@ export default {
 		font-size: 14px;
 		color: #c0c4cc;
 		vertical-align: middle;
+	}
+
+	@include element(inner) {
+		@extend %size;
+		vertical-align: top;
+
+		@include when(center) {
+			position: relative;
+			top: 50%;
+			left: 50%;
+			transform: translate(-50%, -50%);
+			display: block;
+		}
 	}
 }
 </style>
