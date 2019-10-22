@@ -1,6 +1,8 @@
+import { Storage } from '@wya/utils';
+
 class IMGStore {
 	constructor() {
-		this.map = {};
+		this.map = Storage.get('@wya/vc-img:', { type: 'session' }) || {};
 	}
 
 	add(src, opts = {}) {
@@ -12,6 +14,8 @@ class IMGStore {
 			originW,
 			originH,
 		};
+
+		Storage.set('@wya/vc-img:', this.map, { session: true });
 	}
 
 	getSize(src, opts = {}) {
