@@ -2,7 +2,7 @@ import { Storage } from '@wya/utils';
 
 class IMGStore {
 	constructor() {
-		this.map = Storage.get('@wya/vc-img:', { type: 'session' }) || {};
+		this.map = Storage.get('@wya/vc-img:', { session: true }) || {};
 	}
 
 	add(src, opts = {}) {
