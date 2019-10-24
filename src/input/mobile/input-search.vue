@@ -108,7 +108,7 @@ $size: 54px;
 		padding-left: 8px;
 		height: $size;
 		line-height: $size;
-		font-size: 14px;
+		font-size: 15px;
 		color: #333;
 		text-align: right;
 		white-space: nowrap;
