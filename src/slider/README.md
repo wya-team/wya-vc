@@ -25,7 +25,7 @@ tip-format | Slider 会把当前值传给 `tip-format`，并在 Tooltip 中显�
 
 属性 | 说明 | 参数 | 返回值
 ---|---|---|---
-slider-change | 在松开滑动时触发，返回当前的选值，在滑动过程中不会触发，会对外暴露`reset`方法 | value | ---
+after-change | 在松开滑动时触发，返回当前的选值，在滑动过程中不会触发，会对外暴露`reset`方法 | value | ---
 change | 滑动条数据变化时触发，返回当前的选值，在滑动过程中实时触发，会对外暴露`reset`方法 | value | ---
 
 

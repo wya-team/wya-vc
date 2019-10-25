@@ -310,7 +310,7 @@ export default {
 				this.dragging = false;
 				this[`${this.pointerDown}Visible`] = false;
 				this.$refs[`${this.pointerDown}Point`].blur();
-				this.sync('slider-change');
+				this.sync('after-change');
 			}
 			this.pointerDown = '';
 
@@ -356,7 +356,7 @@ export default {
 		sync(type) {
 			const value = this.range ? this.currentValue : this.currentValue[0];
 			this.$emit(type, value, this.reset);
-			this.dispatch('vc-form-item', `form-${type === 'slider-change' ? 'blur' : 'change'}`, value);
+			this.dispatch('vc-form-item', `form-${type === 'after-change' ? 'blur' : 'change'}`, value);
 		},
 		reset(value) {
 			value = this.checkLimits(Array.isArray(value) ? value : [value]);

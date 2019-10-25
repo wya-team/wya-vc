@@ -5,7 +5,7 @@
 			ref="slider"
 			:value="value1" 
 			show-tip="always"
-			@slider-change="handleChange"
+			@after-change="handleChange"
 		/>
 		<vc-slider v-model="value11" show-tip="never"/>
 		<vc-slider v-model="value12" />
