@@ -102,6 +102,9 @@ export default {
 		'vc-popover': Popover
 	},
 	mixins: [...Extends.mixins(['emitter'])],
+	model: {
+		event: 'change'
+	},
 	props: {
 		min: {
 			type: Number,
@@ -307,7 +310,7 @@ export default {
 				this.dragging = false;
 				this[`${this.pointerDown}Visible`] = false;
 				this.$refs[`${this.pointerDown}Point`].blur();
-				this.sync('change');
+				this.sync('slider-change');
 			}
 			this.pointerDown = '';
 
@@ -333,7 +336,7 @@ export default {
 				if (type === 'max' && value[0] > value[1]) value[0] = value[1];
 			}
 			this.reset([...value]);
-			this.sync('input');
+			this.sync('change');
 		},
 		handleFocus(event, type) {
 			this[`${this.pointerDown}Visible`] = this.showTip !== 'never';
@@ -348,12 +351,12 @@ export default {
 			!this.pointerDown && (this[`${type}Visible`] = this.showTip === 'always');
 		},
 		handleSetSliderWidth() {
-			this.sliderWidth = this.$refs.slider.getBoundingClientRect().width;
+			this.sliderWidth = this.$refs.slider && this.$refs.slider.getBoundingClientRect().width;
 		},
 		sync(type) {
 			const value = this.range ? this.currentValue : this.currentValue[0];
 			this.$emit(type, value, this.reset);
-			this.dispatch('vc-form-item', `form-${type === 'change' ? 'blur' : 'change'}`, value);
+			this.dispatch('vc-form-item', `form-${type === 'slider-change' ? 'blur' : 'change'}`, value);
 		},
 		reset(value) {
 			value = this.checkLimits(Array.isArray(value) ? value : [value]);
