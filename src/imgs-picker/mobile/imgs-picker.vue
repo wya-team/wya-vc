@@ -13,7 +13,7 @@
 				>
 					<div
 						v-if="typeof item !== 'object'"
-						:style="{backgroundImage: `url('${item}')`}"
+						:style="{background: `url('${item}') center no-repeat`}"
 						:class="imgClassName"
 						class="vcm-imgs-picker__img"
 						@click="handlePreview($event, index)"
