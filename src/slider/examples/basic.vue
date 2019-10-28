@@ -12,7 +12,7 @@
 		<vc-slider v-model="value2" range/>
 		<vc-slider v-model="value3" range disabled/>
 		<p>离散值</p>
-		<vc-slider v-model="value4" :step="10"/>
+		<vc-slider v-model="value4" :step="0.01"/>
 		<vc-slider v-model="value5" :step="10" range/>
 		<p>显示中间断点</p>
 		<vc-slider v-model="value6" :step="10" show-stops/>
