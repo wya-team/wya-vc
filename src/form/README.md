@@ -21,7 +21,7 @@ autocomplete | 原生的 autocomplete 属性，可选值为 off 或 on | String 
 
 属性 | 说明 | 参数 | 返回值
 ---|---|---|---
-validate | 对整个表单进行校验，参数为检验完的回调，会返回一个 Boolean 表示成功与失败，支持 Promise | callback | -
+validate | 对整个表单进行校验，参数为检验完的回调，会返回一个 Boolean 表示成功与失败，支持 Promise | callback | - 可传入对象 { scroll: true }，页面定位报错位置
 validateField | 对部分表单字段进行校验的方法，参数1为需校验的 prop，参数2为检验完回调，返回错误信息 | callback | -
 resetFields | 对整个表单进行重置，将所有字段值重置为空并移除校验结果 | - | -
 
