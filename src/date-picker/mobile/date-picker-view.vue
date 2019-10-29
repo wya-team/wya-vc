@@ -172,7 +172,9 @@ export default {
 		compareWithBoundary(arg1 = [], arg2 = [], len = 0) {
 			return arg1.slice(0, len).join('') == arg2.slice(0, len).join('');
 		},
+
 		getMonthEndDay(year, month) {
+			month = Number(month);
 			if (this.isShortMonth(month)) {
 				return 30;
 			} else if (month === 2) {
@@ -181,9 +183,11 @@ export default {
 				return 31;
 			}
 		},
+
 		isShortMonth(month) {
 			return [4, 6, 9, 11].indexOf(month) > -1;
 		},
+		
 		isLeapYear(year) {
 			return (year % 400 === 0) || (year % 100 !== 0 && year % 4 === 0);
 		},

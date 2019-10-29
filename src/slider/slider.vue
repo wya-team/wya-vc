@@ -27,7 +27,7 @@
 				@mousedown="handlePointerDown($event, 'min')">
 				<vc-popover
 					ref="minTooltip"
-					:visible="minVisible && !!tipFormat(currentValue[0])"
+					:visible="minVisible && !!formatter(exportValue[0])"
 					:always="showTip === 'always'"
 					:portal="false"
 					trigger="focus"
@@ -44,7 +44,7 @@
 						@mouseleave="handleLeave($event, 'min')"
 					/>
 					<template #content>
-						{{ tipFormat(currentValue[0]) }}
+						{{ formatter(exportValue[0]) }}
 					</template>
 				</vc-popover>
 			</div>
@@ -56,7 +56,7 @@
 				@mousedown="handlePointerDown($event, 'max')">
 				<vc-popover
 					ref="maxTooltip"
-					:visible="maxVisible && !!tipFormat(currentValue[1])"
+					:visible="maxVisible && !!formatter(exportValue[1])"
 					:always="showTip === 'always'"
 					:portal="false"
 					trigger="focus"
@@ -73,7 +73,7 @@
 						@mouseleave="handleLeave($event, 'max')"
 					/>
 					<template #content>
-						{{ tipFormat(currentValue[1]) }}
+						{{ formatter(exportValue[1]) }}
 					</template>
 				</vc-popover>
 			</div>
@@ -83,7 +83,7 @@
 			:min="min"
 			:max="max"
 			:step="step"
-			:value="String(currentValue[0])"
+			:value="String(exportValue[0])"
 			:disabled="disabled"
 			@input="handleInputChange" 
 		/>
@@ -102,6 +102,9 @@ export default {
 		'vc-popover': Popover
 	},
 	mixins: [...Extends.mixins(['emitter'])],
+	model: {
+		event: 'change'
+	},
 	props: {
 		min: {
 			type: Number,
@@ -136,7 +139,7 @@ export default {
 			type: Boolean,
 			default: false
 		},
-		tipFormat: {
+		formatter: {
 			type: Function,
 			default(val) {
 				return `${val}`;
@@ -188,6 +191,10 @@ export default {
 				'vc-slider__button',
 				{ 'is-dragging': this.pointerDown === 'max' }
 			];
+		},
+		exportValue() {
+			const decimalCases = (String(this.step).split('.')[1] || '').length;
+			return this.currentValue.map(value => Number(value.toFixed(decimalCases)));
 		},
 		minPosition() {
 			return (this.currentValue[0] - this.min) / this.valueRange * 100;
@@ -307,7 +314,7 @@ export default {
 				this.dragging = false;
 				this[`${this.pointerDown}Visible`] = false;
 				this.$refs[`${this.pointerDown}Point`].blur();
-				this.sync('change');
+				this.sync('after-change');
 			}
 			this.pointerDown = '';
 
@@ -333,7 +340,7 @@ export default {
 				if (type === 'max' && value[0] > value[1]) value[0] = value[1];
 			}
 			this.reset([...value]);
-			this.sync('input');
+			this.sync('change');
 		},
 		handleFocus(event, type) {
 			this[`${this.pointerDown}Visible`] = this.showTip !== 'never';
@@ -348,12 +355,12 @@ export default {
 			!this.pointerDown && (this[`${type}Visible`] = this.showTip === 'always');
 		},
 		handleSetSliderWidth() {
-			this.sliderWidth = this.$refs.slider.getBoundingClientRect().width;
+			this.sliderWidth = this.$refs.slider && this.$refs.slider.getBoundingClientRect().width;
 		},
 		sync(type) {
-			const value = this.range ? this.currentValue : this.currentValue[0];
+			const value = this.range ? this.exportValue : this.exportValue[0];
 			this.$emit(type, value, this.reset);
-			this.dispatch('vc-form-item', `form-${type === 'change' ? 'blur' : 'change'}`, value);
+			this.dispatch('vc-form-item', `form-${type === 'after-change' ? 'blur' : 'change'}`, value);
 		},
 		reset(value) {
 			value = this.checkLimits(Array.isArray(value) ? value : [value]);

@@ -2,11 +2,18 @@ const endsWith = (str, suffix) => {
 	return str.indexOf(suffix, str.length - suffix.length) !== -1;
 };
 
+/**
+ * file.type 在某些windows下为空
+ */
 export const attrAccept = (file, accept) => {
-	if (file && file instanceof Blob && accept) {
+	if (file 
+		&& file instanceof Blob 
+		&& file.type 
+		&& accept
+	) {
 		const acceptArr = Array.isArray(accept) ? accept : accept.split(',');
 		const filename = file.name || '';
-		const mimeType = file.type || '';
+		const mimeType = file.type;
 		
 		const baseMimeType = mimeType.replace(/\/.*$/, '');
 

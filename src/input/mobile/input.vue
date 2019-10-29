@@ -20,6 +20,7 @@
 					:value="currentValue"
 					:style="inputStyle"
 					v-bind="binds"
+					:maxlength="curMaxlength"
 					class="vcm-input__input"
 					v-on="hooks"
 				>

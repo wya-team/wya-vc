@@ -13,7 +13,7 @@ let fillReg = /.*fill="([^"]+).*/g;
 let basicUrl = '//at.alicdn.com/t/font_1119857_bkwjw5jbcws.js';
 let prefix = '@wya/vc-icon:';
 
-class Manager extends VcBasic {
+class IconManager extends VcBasic {
 	constructor(basicUrl) {
 		super();
 		this.icons = {};
@@ -149,4 +149,4 @@ class Manager extends VcBasic {
   
 }
 
-export default new Manager(basicUrl);
+export default new IconManager(basicUrl);
