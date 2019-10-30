@@ -52,7 +52,7 @@
 					:class="[uploadClassName, boxClassName]"
 					class="vcm-imgs-picker__upload"
 				>
-					<vc-icon type="add-img" style="font-size: 30px" />
+					<vc-icon type="mini-plus" style="font-size: 30px" />
 				</div>
 			</slot>
 		</vc-upload>

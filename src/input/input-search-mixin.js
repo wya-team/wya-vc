@@ -7,10 +7,6 @@ export default {
 			type: Boolean | String,
 			default: true
 		},
-		showCancel: { // 强制显示取消
-			type: Boolean,
-			default: false,
-		}
 	},
 	data() {
 		return {

@@ -48,6 +48,10 @@ export default {
 		type: {
 			type: String,
 			default: 'search'
+		},
+		showCancel: { // 强制显示取消
+			type: Boolean,
+			default: false,
 		}
 	},
 	methods: {
