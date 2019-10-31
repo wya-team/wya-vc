@@ -30,26 +30,26 @@
 						title="全屏"
 					/>
 					<button class="pswp__button pswp__button--zoom" title="缩放"/>
-					<vc-icon
-						type="rotate-right"
-						class="vc-imgs-preview-core__button"
+					<vc-icon 
+						type="rotate-right" 
+						class="vc-imgs-preview-core__button" 
 						title="向右旋转90度"
-						@click="handleRotate(90)"
+						@click="handleRotate(90)" 
 					/>
 					<!-- icon标签不能直接为svg, 否则会报错 -->
-					<vc-icon
-						type="rotate-left"
-						class="vc-imgs-preview-core__button"
+					<vc-icon 
+						type="rotate-left" 
+						class="vc-imgs-preview-core__button" 
 						title="向左旋转90度"
-						@click="handleRotate(-90)"
+						@click="handleRotate(-90)" 
 					/>
 					<template v-for="(action, index) in actionBar">
-						<vc-icon
+						<vc-icon 
 							:key="index"
-							:type="action.icon"
-							:title="action.name"
+							:type="action.icon" 
+							:title="action.name" 
 							class="vc-imgs-preview-core__button"
-							@click="action.onClick(photoSwipe, dataSource)"
+							@click="action.onClick(photoSwipe, dataSource)" 
 						/>
 					</template>
 					<div class="pswp__preloader">
@@ -72,8 +72,8 @@
 					title="下一张"
 				/>
 				<div class="pswp__caption">
-					<div
-						class="pswp__caption__center"
+					<div 
+						class="pswp__caption__center" 
 						style="text-align: center"
 					/>
 				</div>
@@ -87,7 +87,6 @@ import PhotoswipeUIDefault from 'photoswipe/dist/photoswipe-ui-default';
 import "photoswipe/dist/photoswipe.css";
 import "photoswipe/dist/default-skin/default-skin.css";
 
-import { throttle } from 'lodash';
 import Portal from '../portal/index';
 import Icon from '../icon/index';
 import { photoSwipeEvents } from './constants';
@@ -110,9 +109,7 @@ const wrapperComponent = {
 		// ps 参数
 		opts: {
 			type: Object,
-			default: () => ({
-
-			})
+			default: () => ({})
 		},
 
 		// ps 事件
@@ -132,11 +129,6 @@ const wrapperComponent = {
 	},
 	data() {
 		return {
-			defaultOpts: { // swipe默认参数 
-				closeOnScroll: false, // 禁用鼠标滚动图片消失
-				getDoubleTapZoom: this.disabledMouseClick, // 鼠标点击，左键放大缩小，右键不处理
-			},
-			isMouseRightClick: false, 
 		};
 	},
 	computed: {
@@ -176,37 +168,11 @@ const wrapperComponent = {
 		 * this.initPhotoSwipe(), 会造成动画异常，可能绘制影响
 		 */
 		this.$nextTick(this.initPhotoSwipe);
-		this.listenMouseClick();
 	},
 	destroyed() {
 		this.destroyPhotoSwipe();
 	},
 	methods: {
-		listenMouseClick() { // 监听鼠标左右建
-			window.addEventListener('contextmenu', () => {
-				
-				this.isMouseRightClick = true;
-				console.log('1 :', 1);
-				console.log('this.isMouseRightClick :', this.isMouseRightClick);
-			});
-			window.addEventListener('click', () => {
-				this.isMouseRightClick = false;
-				console.log('12 :', 12);
-				console.log('this.isMouseRightClick :', this.isMouseRightClick);
-			});
-		},
-		disabledMouseClick(isMouseClick, item) {
-			// setTimeout(() => {
-			console.log('this.isMouseRightClick :', this.isMouseRightClick);
-			console.log('item.initialZoomLevel', item.initialZoomLevel);
-			if (!this.isMouseRightClick) {
-				return item.initialZoomLevel < 0.7 ? 1 : 1.5;
-			} else {
-				console.log('111 :', 111);
-				return 1;
-			}
-			// }, 0);
-		},
 		/**
 		 * 事件处理
 		 * 自动适配
@@ -250,14 +216,12 @@ const wrapperComponent = {
 
 			// 实例
 			this.photoSwipe = new Photoswipe(
-				pswpElement,
-				PhotoswipeUIDefault,
-				this.images,
-				{
-					...this.defaultOpts,
-					...this.opts,
-				},
+				pswpElement, 
+				PhotoswipeUIDefault, 
+				this.images, 
+				this.opts
 			);
+
 			this.getInstance && this.getInstance(this.photoSwipe);
 
 			this.photoSwipe.next = () => {
@@ -269,16 +233,6 @@ const wrapperComponent = {
 				this.handleResetAngle();
 				this.photoSwipe.goTo(this.photoSwipe.getCurrentIndex() - 1);
 			};
-			window.addEventListener('mousewheel', throttle((event) => {
-				if (event.deltaY < 0) {
-					this.photoSwipe.init();
-					this.photoSwipe && this.photoSwipe.prev();
-				} else {
-					this.photoSwipe.init();
-					this.photoSwipe && this.photoSwipe.next();
-				}
-			}, 1000), true);
-
 
 			// 绑定事件
 			photoSwipeEvents.forEach((event) => {
@@ -295,6 +249,7 @@ const wrapperComponent = {
 					});
 				}
 			});
+
 			// 初始化
 			this.photoSwipe.init();
 		},
