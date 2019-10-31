@@ -6,7 +6,7 @@ export default {
 		enterTxt: {
 			type: Boolean | String,
 			default: true
-		},
+		}
 	},
 	data() {
 		return {

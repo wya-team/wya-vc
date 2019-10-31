@@ -18,7 +18,7 @@
 		</vcm-input>
 		<!-- TODO, 待优化, isFocus隐藏，造成点击事件无效 -->
 		<div 
-			v-if="isFocus || showCancel" 
+			v-if="isFocus" 
 			class="vcm-input-search__btn"
 			@touchend="handleCancel"
 		>
@@ -48,10 +48,6 @@ export default {
 		type: {
 			type: String,
 			default: 'search'
-		},
-		showCancel: { // 强制显示取消
-			type: Boolean,
-			default: false,
 		}
 	},
 	methods: {
@@ -70,18 +66,18 @@ export default {
  * TODO
  */
 $block: vcm-input-search;
-$size: 54px;
+$size: 56px;
 
 @include block($block) {
 	display: flex;
 	align-items: center;
 	height: $size;
-	padding: 10px;
+	padding: 12px 12px;
 	.vcm-input {
-		height: 34px;
+		height: 32px;
 	}
 	.vcm-input__prepend {
-		line-height: 34px;
+		line-height: 32px;
 	}
 	@include element(content) {
 		background: white;
@@ -93,8 +89,7 @@ $size: 54px;
 			padding-bottom: 5px;
 			font-size: 14px;
 			&::placeholder {
-				font-size: 15px;
-				color: #999;
+				
 			}
 		}
 		@include element(icon){
@@ -112,7 +107,7 @@ $size: 54px;
 		padding-left: 8px;
 		height: $size;
 		line-height: $size;
-		font-size: 15px;
+		font-size: 14px;
 		color: #333;
 		text-align: right;
 		white-space: nowrap;
