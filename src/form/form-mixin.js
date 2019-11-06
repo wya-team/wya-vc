@@ -134,7 +134,8 @@ export default {
 		scrollIntoView(prop, opts = {}) {
 			let field = this.getField(prop);
 			field.$el.scrollIntoView({
-				behavior: 'smooth'
+				behavior: 'smooth',
+				block: 'center',
 			});
 		},
 
