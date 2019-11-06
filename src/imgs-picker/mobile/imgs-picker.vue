@@ -13,7 +13,7 @@
 				>
 					<div
 						v-if="typeof item !== 'object'"
-						:style="{backgroundImage: `url('${item}')`}"
+						:style="{background: `url('${item}') center no-repeat`}"
 						:class="imgClassName"
 						class="vcm-imgs-picker__img"
 						@click="handlePreview($event, index)"
@@ -52,7 +52,7 @@
 					:class="[uploadClassName, boxClassName]"
 					class="vcm-imgs-picker__upload"
 				>
-					<vc-icon type="plus" style="font-size: 30px" />
+					<vc-icon type="mini-plus" style="font-size: 30px" />
 				</div>
 			</slot>
 		</vc-upload>

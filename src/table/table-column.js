@@ -1,4 +1,4 @@
-import { merge } from 'lodash';
+import { merge, isEmpty } from 'lodash';
 import { compose, getUid } from '../utils/index';
 import { cellStarts, cellForced, defaultRenderCell, treeCellPrefix } from './table-column-confg';
 import { parseWidth, parseMinWidth } from './utils';
@@ -249,11 +249,16 @@ export default {
 					} else {
 						children = originRenderCell(h, data);
 					}
-					const prefix = treeCellPrefix(h, data);
+					let prefix = treeCellPrefix(h, data);
 					const props = {
 						class: 'vc-table__cell',
 						style: {}
 					};
+					// 存在树形数组，且当前行无箭头图标且处于当前展开列，表格对齐
+					if (!isEmpty(this.owner.store.states.treeData) && !prefix && data.isExpandColumn) {
+						prefix = <span class="vc-table-un-expand__indent"/>;
+					}	
+					
 					if (column.showPopover) {
 						props.class += ' vc-popover';
 						props.style = { 

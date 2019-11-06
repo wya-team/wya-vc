@@ -33,6 +33,7 @@
 					trigger="focus"
 					placement="top"
 					theme="dark"
+					tag="div"
 				>
 					<div
 						ref="minPoint"
@@ -62,6 +63,7 @@
 					trigger="focus"
 					placement="top"
 					theme="dark"
+					tag="div"
 				>
 					<div
 						ref="maxPoint"
