@@ -278,6 +278,7 @@ export default {
 			const columnsHidden = columns.map((column, index) => this.isColumnHidden(index));
 			const rowClasses = this.getRowClass(row, $index);
 			const style = this.getRowStyle(row, $index);
+			const expandIndex = columns.length > 1 && columns[0].type === 'selection' ? 1 : 0;
 			let key = this.getKeyOfRow(row, $index);
 
 			let display = true;
@@ -346,7 +347,10 @@ export default {
 										column.renderCell.call(
 											this._renderProxy,
 											this.$createElement,
-											data,
+											{
+												...data,
+												isExpandColumn: expandIndex === cellIndex
+											},
 											columnsHidden[cellIndex]
 										)
 									}
