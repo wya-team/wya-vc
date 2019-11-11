@@ -341,7 +341,12 @@ export default {
 		},
 
 		_loadData({ page, type, method }) {
-			if (this.isLoadingForScroll) return;
+			if (
+				this.isLoadingForScroll
+				|| this._isDestroyed 
+				|| this._isBeingDestroyed
+			) return;
+				
 			let scroll = type === 'scroll';
 
 			scroll && (this.isLoadingForScroll = true);
