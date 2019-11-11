@@ -57,7 +57,7 @@ export default {
 		},
 
 		validate(opts = {}) {
-			const { scroll = false } = opts;
+			const { scroll = true } = opts;
 
 			return new Promise((resolve, reject) => {
 				let valid = true;
