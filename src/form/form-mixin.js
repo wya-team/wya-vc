@@ -108,7 +108,7 @@ export default {
 		},
 
 		validateField(prop, opts = {}) {
-			const { scroll = false } = opts;
+			const { scroll = true } = opts;
 
 			return new Promise((resolve, reject) => {
 				let field = this.getField(prop);
