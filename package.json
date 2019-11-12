@@ -15,7 +15,7 @@
         "build:pre": "rollup -c --config ./config/rollup.config.js",
         "build": "cross-env UGLIFY_JS=true npm run dist",
         "build:dev": "cross-env UGLIFY_JS=false npm run dist",
-        "lib": "rm -rf ./lib && cross-env NODE_ENV=production babel src --out-dir lib --copy-files --ignore '**.test.js','**.md','examples/**' && npm publish --access public",
+        "pub": "bash config/publish.sh",
         "remove:dist": "rm -rf ./dist",
         "lint": "esw config ./src --ext .vue,.js",
         "lint:fix": "npm run lint -- --fix",
