@@ -13,9 +13,7 @@ if [[ $REPLY =~ ^[Yy]$ ]]; then
 	echo "Releasing v$VERSION ..."
 
 	# build 
-	# VERSION=$VERSION npm run build
-	rm -rf ./lib
-	cross-env NODE_ENV=production babel src --out-dir lib --copy-files --ignore '**.test.js','**.md','examples/**' 
+	VERSION=$VERSION npm run build
 
 	# version
 	npm version $VERSION --no-git-tag-version 
