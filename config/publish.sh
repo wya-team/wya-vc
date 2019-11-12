@@ -29,5 +29,5 @@ if [[ $REPLY =~ ^[Yy]$ ]]; then
 
 	# push
 	# git push origin refs/tags/v$VERSION
-	git push origin master
+	git push origin
 fi
