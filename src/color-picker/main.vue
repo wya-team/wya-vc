@@ -50,6 +50,10 @@
 					<div v-if="alpha" class="vc-color-picker__alpha">
 						<vc-color-picker-alpha />
 					</div>
+					<vc-color-picker-predefine 
+						v-if="predefine"
+						:colors="predefine"
+						:color="color" /> 
 				</div>
 				<div class="vc-color-picker__confirm">
 					<span class="vc-color-picker__value">
@@ -75,10 +79,10 @@
 </template>
 <script>
 import { pick } from 'lodash';
-import { changeColor, toRGBAString } from './utils';
 import ColorPickerPanel from "./color-picker-panel";
 import COlorPickerHueSlider from "./color-picker-hue-slider";
 import ColorPickerAlpha from "./color-picker-alpha";
+import ColorPickerPredefine from "./color-picker-predefine";
 import Popover from "../popover/index";
 import Icon from '../icon/index';
 import Input from '../input/index';
@@ -94,6 +98,7 @@ export default {
 		'vc-color-picker-panel': ColorPickerPanel,
 		'vc-color-picker-hue-slider': COlorPickerHueSlider,
 		'vc-color-picker-alpha': ColorPickerAlpha,
+		'vc-color-picker-predefine': ColorPickerPredefine,
 	},
 	inheritAttrs: false,
 	props: {
@@ -124,12 +129,19 @@ export default {
 		alpha: {
 			type: Boolean,
 			default: true
+		},
+		predefine: {
+			type: Array,
+			default: () => []
 		}
 	},
 	data() {
 		return {
 			isActive: false,
 			customColor: '',
+			color: {
+				value: '#ff0000'
+			}
 		};
 	},
 	computed: {
