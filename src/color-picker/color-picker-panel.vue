@@ -4,8 +4,8 @@
 		<div class="vc-color-picker-panel__black"/>
 		<div
 			:style="{
-				top: cursorTop + 'px',
-				left: cursorLeft +'px'
+				top: `${cursorTop}px`,
+				left: `${cursorLeft}px`
 			}" 
 			class="vc-color-picker-panel__cursor">
 			<div/>
@@ -45,10 +45,10 @@ export default {
 	},
 	mounted() {
 		draggable(this.$el, {
-			drag: (event) => {
+			drag: event => {
 				this.handleDrag(event);
 			},
-			end: (event) => {
+			end: event => {
 				this.handleDrag(event);
 			}
 		});

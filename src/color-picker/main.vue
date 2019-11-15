@@ -32,7 +32,7 @@
 			<div class="vc-color-picker__picker">
 				<div class="vc-color-picker__wrapper">
 					<vc-color-picker-panel :color="color" />	
-					<vc-color-picker-hue-slider />
+					<vc-color-picker-hue-slider :color="color" />
 					<vc-color-picker-alpha v-if="alpha" />
 					<vc-color-picker-predefine 
 						v-if="predefine"
