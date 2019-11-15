@@ -2,7 +2,7 @@
 	<div>
 		<vc-color-picker v-model="color1" />
 		<vc-color-picker v-model="color2" />
-		<custom-picker v-model="color3" :predefine="predefine" />
+		<custom-picker v-model="color3" />
 	</div>
 </template>
 <script>
@@ -19,7 +19,7 @@ export default {
 		return {
 			color1: '#19be6b',
 			color2: '',
-			color3: 'rgb(19, 206, 102)',
+			color3: '', // rgb(19, 206, 102)
 			predefine: [
 				'#ff4500',
 				'#ff8c00',

@@ -1,19 +1,4 @@
 <template>
-	<!-- <i-color-picker 
-		:value="value"
-		:disabled="disabled"
-		:editable="editable"
-		:alpha="alpha"
-		:hue="hue"
-		:recommend="recommend"
-		:colors="colors"
-		:format="format"
-		:size="size"
-		@on-change="$emit('change', arguments[0])"
-		@on-active-change="$emit('active-change', arguments[0])"
-		@on-open-change="$emit('open-change', arguments[0])"
-		@input="$emit('input', arguments[0])"
-	/> -->
 	<vc-popover
 		v-bind="$attrs"
 		v-model="isActive"
@@ -21,21 +6,24 @@
 		:class="classes"
 		:trigger="trigger"
 		:arrow="arrow"
+		:disabled="disabled"
 		tag="div"
 		class="vc-color-picker"
 		@ready="$emit('ready')"
-		@close="$emit('close')"
+		@close="handleRestColor"
 	>
-		<div class="vc-color-picker__box">
+		<div :class="{ 'vc-color-picker__disabled': disabled }" class="vc-color-picker__box">
 			<input :value="value" type="hidden">
 			<vc-icon type="down" class="vc-color-picker__icon" />
 			<div class="vc-color-picker__container">
-				<div class="vc-color-picker__input">
+				<div 
+					:class="{ 'vc-color-picker__focused': isActive }"
+					class="vc-color-picker__input">
 					<div class="vc-color-picker__color">
-						<div v-show="value === '' && !isActive">
+						<div v-show="value === '' && !showPanelColor">
 							<vc-icon type="close" />
 						</div>
-						<div v-show="value || visible" :style="displayedColorStyle" />
+						<div v-show="value || showPanelColor" :style="{ backgroundColor: displayedColorStyle }" />
 					</div>
 				</div>
 			</div>
@@ -43,13 +31,9 @@
 		<template #content>
 			<div class="vc-color-picker__picker">
 				<div class="vc-color-picker__wrapper">
-					<vc-color-picker-panel />	
-					<div class="vc-color-picker__hue">
-						<vc-color-picker-hue-slider />
-					</div>
-					<div v-if="alpha" class="vc-color-picker__alpha">
-						<vc-color-picker-alpha />
-					</div>
+					<vc-color-picker-panel :color="color" />	
+					<vc-color-picker-hue-slider />
+					<vc-color-picker-alpha v-if="alpha" />
 					<vc-color-picker-predefine 
 						v-if="predefine"
 						:colors="predefine"
@@ -60,16 +44,16 @@
 						<template v-if="editable">
 							<vc-input
 								v-model="customColor"
-								@blur="handleEditColor"
-								@enter="handleEditColor"
+								@blur="handleConfirm"
+								@enter="handleConfirm"
 							/>
 						</template>
-						<template v-else>{{ formatColor }}</template>
+						<template v-else>{{ currentColor }}</template>
 					</span>
-					<vc-button>
+					<vc-button @click="handleClearValue">
 						清空
 					</vc-button>
-					<vc-button type="primary">
+					<vc-button type="primary" @click="handleConfirmValue">
 						确定
 					</vc-button>
 				</div>
@@ -78,15 +62,17 @@
 	</vc-popover>
 </template>
 <script>
-import { pick } from 'lodash';
+import { pick } from "lodash";
+import Extends from "../extends";
+import Color from "./color";
 import ColorPickerPanel from "./color-picker-panel";
 import COlorPickerHueSlider from "./color-picker-hue-slider";
 import ColorPickerAlpha from "./color-picker-alpha";
 import ColorPickerPredefine from "./color-picker-predefine";
 import Popover from "../popover/index";
-import Icon from '../icon/index';
-import Input from '../input/index';
-import Button from '../button/index';
+import Icon from "../icon/index";
+import Input from "../input/index";
+import Button from "../button/index";
 
 export default {
 	name: 'vc-color-picker',
@@ -100,6 +86,7 @@ export default {
 		'vc-color-picker-alpha': ColorPickerAlpha,
 		'vc-color-picker-predefine': ColorPickerPredefine,
 	},
+	mixins: [...Extends.mixins(['emitter'])],
 	inheritAttrs: false,
 	props: {
 		...pick(Popover.props, [
@@ -109,6 +96,10 @@ export default {
 			type: String,
 			default: ''
 		},
+		disabled: {
+			type: Boolean,
+			default: false
+		},
 		trigger: {
 			type: String,
 			default: 'click'
@@ -117,31 +108,37 @@ export default {
 			type: Boolean,
 			default: false
 		},
-		size: {
-			type: String,
-			default: 'default',
-			validator: v => /(large|small|default)/.test(v)
-		},
+		// size: {
+		// 	type: String,
+		// 	default: 'default',
+		// 	validator: v => /(large|small|default)/.test(v)
+		// },
 		editable: {
 			type: Boolean,
 			default: true
 		},
 		alpha: {
 			type: Boolean,
-			default: true
+			default: false
 		},
 		predefine: {
 			type: Array,
-			default: () => []
+		},
+		format: {
+			type: String,
+			validator: v => /(large|small|default)/.test(v),
 		}
 	},
 	data() {
+		const color = new Color({
+			enableAlpha: this.alpha,
+			format: this.format
+		});
 		return {
+			color,
 			isActive: false,
+			showPanelColor: false,
 			customColor: '',
-			color: {
-				value: '#ff0000'
-			}
 		};
 	},
 	computed: {
@@ -152,18 +149,77 @@ export default {
 				'is-default': this.size === 'default'
 			};
 		},
-		formatColor() {
-			// TODO
-			return '';
+		currentColor() {
+			return !this.value && !this.showPanelColor ? '' : this.color.value;
 		},
 		displayedColorStyle() {
-			return { backgroundColor: this.value };
-			// return { backgroundColor: toRGBAString(this.visible ? this.saturationColors.rgba : tinycolor(this.value).toRgb()) };
+			if (!this.value && !this.showPanelColor) {
+				return 'transparent';
+			}
+
+			return this.getColorRgb(this.color, this.alpha);
 		},
 	},
+	watch: {
+		value(val) {
+			if (!val) {
+				this.showPanelColor = false;
+			} else if (val && val !== this.color.value) {
+				this.color.fromString(val);
+			}
+		},
+		color: {
+			deep: true,
+			handler(val) {
+				this.showPanelColor = true;
+			}
+		},
+		currentColor: {
+			immediate: true,
+			handler(val) {
+				this.customColor = val;
+			}
+		},
+	},
+	created() {
+
+	},
 	methods: {
-		handleEditColor() {
-            
+		handleRestColor() {
+			if (this.value) {
+				this.color.fromString(this.value);
+			} else {
+				this.showPanelColor = false;
+			}
+		},
+		handleConfirm() {
+			this.color.fromString(this.customColor);
+		},
+		handleClearValue() {
+			const value = '';
+			this.handleButtons(value);
+			this.showPanelColor = false;
+		},
+		handleConfirmValue() {
+			const value = this.color.value;
+			this.handleButtons(value);
+		},
+		handleButtons(value) {
+			this.$emit('input', value);
+			this.$emit('change', value);
+			this.dispatch('vc-form-item', 'form-change', value);
+			this.isActive = false;
+		},
+		getColorRgb(color, alpha) {
+			if (!(color instanceof Color)) {
+				throw Error('color should be instance of Color Class');
+			}
+			
+			const { r, g, b } = color.toRgb();
+
+			return alpha 
+				? `rgba(${r}, ${g}, ${b}, ${color.get('alpha') / 100})`
+				: `rgb(${r}, ${g}, ${b})`;
 		}
 	}
 };
@@ -180,6 +236,18 @@ $block: vc-color-picker;
 		position: relative;
 		vertical-align: middle;
 		line-height: 0;
+		cursor: pointer;
+		&:hover {
+			@include element(input) {
+				border-color: #57a3f3 !important;
+			}
+		}
+	}
+	@include element(disabled) {
+		background-color: #f3f3f3;
+		opacity: 1;
+		cursor: not-allowed;
+		color: #ccc;
 	}
 	@include element(icon) {
 		width: 32px;
@@ -202,34 +270,37 @@ $block: vc-color-picker;
 		border: 1px solid #dcdee2;
 		border-radius: 4px;
 		color: #515a6e;
-		background-color: #fff;
 		background-image: none;
 		position: relative;
-		cursor: text;
 		transition: border 0.2s ease-in-out, background 0.2s ease-in-out, box-shadow 0.2s ease-in-out;
-		&:focus {
-			border-color: #57a3f3;
-			outline: 0;
-			box-shadow: none;
-		}
+	}
+	@include element(focused) {
+		border-color: #57a3f3;
+		outline: 0;
+		-webkit-box-shadow: 0 0 0 2px rgba(45,140,240,.2);
+		box-shadow: 0 0 0 2px rgba(45,140,240,.2);
 	}
 	@include element(color) {
 		width: 18px;
 		height: 18px;
 		border-radius: 2px;
 		div {
+			display: flex;
+			align-items: center;
+			justify-content: center;
 			width: 100%;
 			height: 100%;
 			box-shadow: inset 0 0 0 1px rgba(0, 0, 0, 0.15);
 			border-radius: 2px;
 		}
+		.vc-icon {
+			font-size: 10px;
+			color: #999;
+			transform: scale(.6);
+		}
 	}
 	@include element(wrapper) {
 		padding: 8px 8px 0;
-	}
-	&__hue, &__alpha {
-		width: 240px;
-		margin-top: 8px;
 	}
 	@include element(confirm) {
 		margin-top: 8px;
@@ -250,6 +321,9 @@ $block: vc-color-picker;
 		float: left;
 		width: 138px;
 		height: 24px;
+		line-height: 24px;
+		font-size: 14px;
+		text-align: left;
 		.vc-input {
 			min-height: 24px;
 			height: 24px;
