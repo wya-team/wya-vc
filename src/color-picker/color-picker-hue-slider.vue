@@ -76,7 +76,7 @@ export default {
 			let hue;
 
 			left = Math.min(left, rect.width - thumb.offsetWidth / 2);
-			left = Math.max(thumb.offsetWidth / 2, left);
+			left = Math.max(left, thumb.offsetWidth / 2);
 			hue = Math.round((left - thumb.offsetWidth / 2) / (rect.width - thumb.offsetWidth) * 360);
 
 			this.color.set('hue', hue);

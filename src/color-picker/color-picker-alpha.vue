@@ -1,27 +1,67 @@
 <template>
 	<div class="vc-color-picker-alpha">
-		<div :style="{ background: background }" class="vc-color-picker-alpha__bar" />
-		<div class="vc-color-picker-alpha__thumb"/>
+		<div 
+			ref="bar"
+			:style="{ background: background }" 
+			class="vc-color-picker-alpha__bar" />
+		<div 
+			ref="thumb" 
+			:style="{
+				top: 0,
+				left: `${thumbLeft}px`
+			}"
+			class="vc-color-picker-alpha__thumb"/>
 	</div>
 </template>
 
 <script>
+import draggable from './draggable';
 
 export default {
 	name: 'vc-color-picker-alpha',
 	props: {
+		color: {
+			required: true,
+			type: Object
+		},
 	},
 	data() {
 		return {
 			background: null,
+			thumbLeft: 0,
 		};
 	},
 	computed: {
 	},
 	mounted() {
+		const { bar, thumb } = this.$refs;
+		const dragConfig = {
+			drag: event => {
+				this.handleDrag(event);
+			},
+			end: event => {
+				this.handleDrag(event);
+			}
+		};
+		
+		draggable(bar, dragConfig);
+		draggable(thumb, dragConfig);
 		this.update();
 	},
 	methods: {
+		handleDrag(event) {
+			const rect = this.$el.getBoundingClientRect();
+			const { thumb } = this.$refs;
+			console.log('rect :', rect);
+			console.log('event :', event);
+			let left = event.clientX - rect.left;
+			left = Math.max(left, thumb.offsetWidth / 2);
+			left = Math.min(left, rect.width - thumb.offsetWidth / 2);
+
+			const alpha = Math.round((left - thumb.offsetWidth / 2) / (rect.width - thumb.offsetWidth) * 100);
+			console.log('alpha :', alpha);
+			this.color.set('alpha', alpha);
+		},
 		getBackground() {
 			let r = 19;
 			let g = 206;

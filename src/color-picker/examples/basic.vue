@@ -2,7 +2,7 @@
 	<div>
 		<vc-color-picker v-model="color1" />
 		<vc-color-picker v-model="color2" />
-		<custom-picker v-model="color3" />
+		<custom-picker v-model="color3" alpha />
 	</div>
 </template>
 <script>
