@@ -31,7 +31,13 @@ export default {
 			thumbLeft: 0,
 		};
 	},
-	computed: {
+	watch: {
+		'color._alpha': function () {
+			this.update();
+		},
+		'color.value': function () {
+			this.update();
+		}
 	},
 	mounted() {
 		const { bar, thumb } = this.$refs;
@@ -52,23 +58,23 @@ export default {
 		handleDrag(event) {
 			const rect = this.$el.getBoundingClientRect();
 			const { thumb } = this.$refs;
-			console.log('rect :', rect);
-			console.log('event :', event);
 			let left = event.clientX - rect.left;
-			left = Math.max(left, thumb.offsetWidth / 2);
-			left = Math.min(left, rect.width - thumb.offsetWidth / 2);
+			
+			left = Math.min(left, rect.width);
+			left = Math.max(left, 0);
+			const alpha = Math.round((left) / (rect.width) * 100);
 
-			const alpha = Math.round((left - thumb.offsetWidth / 2) / (rect.width - thumb.offsetWidth) * 100);
-			console.log('alpha :', alpha);
 			this.color.set('alpha', alpha);
 		},
 		getBackground() {
-			let r = 19;
-			let g = 206;
-			let b = 102;
+			const { r, g, b } = this.color.toRgb();
 			return `linear-gradient(to right, rgba(${r}, ${g}, ${b}, 0) 0%, rgba(${r}, ${g}, ${b}, 1) 100%)`;
 		},
 		update() {
+			if (!this.$el) return;
+
+			const alpha = this.color.get('alpha');
+			this.thumbLeft = Math.round((alpha / 100) * (this.$el.offsetWidth - this.$refs.thumb.offsetWidth));
 			this.background = this.getBackground();
 		}
 	},
@@ -83,15 +89,16 @@ $block: vc-color-picker-alpha;
     position: relative;
     box-sizing: border-box;
     width: 240px;
-    height: 12px;
+    height: 10px;
 	margin-top: 8px;
+	cursor: pointer;
     background: url(data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAwAAAAMCAIAAADZF8uwAAAAGUlEQVQYV2M4gwH+YwCGIasIUwhT25BVBADtzYNYrHvv4gAAAABJRU5ErkJggg==);
     @include element(bar) {
         position: relative;
         height: 100%;
     }
 	@include element(thumb) {
-        position: absolute;
+       position: absolute;
         top: 0;
         left: 100px;
         cursor: pointer;

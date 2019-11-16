@@ -3,8 +3,11 @@
 		<div class="vc-color-picker-predefine__colors">
 			<div 
 				v-for="(item, index) in rgbaColors"
-				:key="colors[index]"
-				:class="{ 'is-selected': item.selected }"
+				:key="index"
+				:class="{ 
+					'is-selected': item.selected,
+					'is-alpha': item._alpha < 100
+				}"
 				class="vc-color-picker-predefine__colors-selector"
 				@click="handleSelect(index)">
 				<div :style="{'background-color': item.value}" />
@@ -21,7 +24,6 @@ export default {
 	props: {
 		colors: {
 		    type: Array,
-		    required: true
 		},
 		color: {
 			type: Object,
@@ -30,30 +32,37 @@ export default {
 	},
 	data() {
 		return {
-			rgbaColors: this.parseColors(this.colors, this.color)
+			rgbaColors: [],
 		};
 	},
+	watch: {
+		'color.value': function () {
+			this.update();
+		},
+		'colors': function () {
+			this.update();
+		}
+	},
+	created() {
+		this.update();
+	},
 	methods: {
-		parseColors(colors, color) {
-			console.log(colors.map(value => {
-				const c = new Color();
-				c.enableAlpha = true;
-				c.format = 'rgba';
-				c.fromString(value);
-				c.selected = c.value === color.value;
-				return c;
-			}));
+		update() {
+			this.rgbaColors = this.formatColors(this.colors, this.color);
+		},
+		formatColors(colors, color) {
 			return colors.map(value => {
-				const c = new Color();
-				c.enableAlpha = true;
-				c.format = 'rgba';
+				let c = new Color({
+					enableAlpha: true,
+					format: 'rgba'
+				});
 				c.fromString(value);
 				c.selected = c.value === color.value;
 				return c;
 			});
 		},
-		handleSelect() {
-    
+		handleSelect(index) {
+			this.color.fromString(this.colors[index]);
 		}
 	},
 };
@@ -86,6 +95,9 @@ $block: vc-color-picker-predefine;
         }
 		.is-selected {
 			box-shadow: 0 0 2px 1px #409EFF;
+		}
+		.is-alpha {
+			background: url(data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAwAAAAMCAIAAADZF8uwAAAAGUlEQVQYV2M4gwH+YwCGIasIUwhT25BVBADtzYNYrHvv4gAAAABJRU5ErkJggg==);
 		}
 	}
 }

@@ -151,39 +151,39 @@ const hsv2rgb = function (h, s, v) {
   
 export default class Color {
 	constructor(options) {
-	  this._hue = 0;
-	  this._saturation = 100;
-	  this._value = 100;
-	  this._alpha = 100;
+		this._hue = 0;
+		this._saturation = 100;
+		this._value = 100;
+		this._alpha = 100;
+	
+		this.enableAlpha = false;
+		this.format = 'hex';
+		this.value = '';
   
-	  this.enableAlpha = false;
-	  this.format = 'hex';
-	  this.value = '';
+	  	options = options || {};
   
-	  options = options || {};
-  
-	  for (let option in options) {
+		for (let option in options) {
 			if (options.hasOwnProperty(option)) {
-		  		this[option] = options[option];
+				this[option] = options[option];
 			}
-	  	}
-  
-	    this.doOnChange();
+		}
+	
+		this.doOnChange();
 	}
   
 	set(prop, value) {
-	  if (arguments.length === 1 && typeof prop === 'object') {
+		if (arguments.length === 1 && typeof prop === 'object') {
 			for (let p in prop) {
-		  		if (prop.hasOwnProperty(p)) {
+				if (prop.hasOwnProperty(p)) {
 					this.set(p, prop[p]);
-		  		}
+				}
 			}
-  
+
 			return;
-	  }
-  
-	  this['_' + prop] = value;
-	  this.doOnChange();
+		}
+	
+		this['_' + prop] = value;
+		this.doOnChange();
 	}
   
 	get(prop) {

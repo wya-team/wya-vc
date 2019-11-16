@@ -35,8 +35,8 @@
 					<vc-color-picker-hue-slider :color="color" />
 					<vc-color-picker-alpha v-if="alpha" :color="color" />
 					<vc-color-picker-predefine 
-						v-if="predefine"
-						:colors="predefine"
+						v-if="colors"
+						:colors="colors"
 						:color="color" /> 
 				</div>
 				<div class="vc-color-picker__confirm">
@@ -121,7 +121,7 @@ export default {
 			type: Boolean,
 			default: false
 		},
-		predefine: {
+		colors: {
 			type: Array,
 		},
 		format: {

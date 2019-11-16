@@ -2,8 +2,7 @@
 	<div class="vc-color-picker-hue-slider">
 		<div 
 			ref="bar" 
-			class="vc-color-picker-hue-slider__bar"
-			@click="handleClick" />
+			class="vc-color-picker-hue-slider__bar" />
 		<div
 			ref="thumb"
 			:style="{
@@ -30,13 +29,8 @@ export default {
 			thumbLeft: 0,
 		};
 	},
-	computed: {
-		hueValue() {
-			return this.color.get('hue');
-		}
-	},
 	watch: {
-		hueValue() {
+		'color.value': function () {
 			this.update();
 		}
 	},
@@ -57,17 +51,9 @@ export default {
 	},
 	methods: {
 		update() {
+			if (!this.$el) return;
 			const hue = this.color.get('hue');
 			this.thumbLeft = Math.round(hue * (this.$el.offsetWidth - this.$refs.thumb.offsetWidth / 2) / 360);
-		},
-		handleClick(event) {
-				
-			const thumb = this.$refs.thumb;
-			const target = event.target;
-
-			if (target !== thumb) {
-				this.handleDrag(event);
-			}
 		},
 		handleDrag(event) {
 			const { thumb } = this.$refs;
@@ -75,9 +61,9 @@ export default {
 			let left = event.clientX - rect.left;
 			let hue;
 
-			left = Math.min(left, rect.width - thumb.offsetWidth / 2);
-			left = Math.max(left, thumb.offsetWidth / 2);
-			hue = Math.round((left - thumb.offsetWidth / 2) / (rect.width - thumb.offsetWidth) * 360);
+			left = Math.min(left, rect.width);
+			left = Math.max(left, 0);
+			hue = Math.round(left / rect.width * 360);
 
 			this.color.set('hue', hue);
 		}
