@@ -3,16 +3,16 @@
 		v-bind="$attrs"
 		v-model="isActive"
 		:portal-class-name="['is-padding-none', portalClassName]"
-		:class="classes"
 		:trigger="trigger"
 		:arrow="arrow"
 		:disabled="disabled"
+		:class="classes"
 		tag="div"
 		class="vc-color-picker"
 		@ready="$emit('ready')"
 		@close="handleRestColor"
 	>
-		<div :class="{ 'vc-color-picker__disabled': disabled }" class="vc-color-picker__box">
+		<div class="vc-color-picker__box">
 			<input :value="value" type="hidden">
 			<vc-icon type="down" class="vc-color-picker__icon" />
 			<div class="vc-color-picker__container">
@@ -108,11 +108,11 @@ export default {
 			type: Boolean,
 			default: false
 		},
-		// size: {
-		// 	type: String,
-		// 	default: 'default',
-		// 	validator: v => /(large|small|default)/.test(v)
-		// },
+		size: {
+			type: String,
+			default: 'default',
+			validator: v => /(large|small|default)/.test(v)
+		},
 		editable: {
 			type: Boolean,
 			default: true
@@ -144,9 +144,8 @@ export default {
 	computed: {
 		classes() {
 			return {
-				'is-large': this.size === 'large',
-				'is-small': this.size === 'small',
-				'is-default': this.size === 'default'
+				[`is-${this.size}`]: true,
+				'is-disabled': this.disabled
 			};
 		},
 		currentColor() {
@@ -180,9 +179,6 @@ export default {
 				this.customColor = val;
 			}
 		},
-	},
-	created() {
-
 	},
 	methods: {
 		handleRestColor() {
@@ -239,15 +235,20 @@ $block: vc-color-picker;
 		cursor: pointer;
 		&:hover {
 			@include element(input) {
-				border-color: #57a3f3 !important;
+				border-color: #57a3f3;
 			}
 		}
 	}
-	@include element(disabled) {
+	@include when(disabled) {
 		background-color: #f3f3f3;
 		opacity: 1;
 		cursor: not-allowed;
 		color: #ccc;
+		&:hover {
+			@include element(input) {
+				border-color: #e3e5e8;
+			}
+		}
 	}
 	@include element(icon) {
 		width: 32px;
@@ -279,6 +280,37 @@ $block: vc-color-picker;
 		outline: 0;
 		-webkit-box-shadow: 0 0 0 2px rgba(45,140,240,.2);
 		box-shadow: 0 0 0 2px rgba(45,140,240,.2);
+	}
+	@include when(large) {
+		@include element(color) {
+			width: 20px;
+			height: 20px;
+		}
+		@include element(input) {
+			font-size: 16px;
+			padding: 9px 32px 6px 7px;
+			height: 40px;
+		}
+		@include element(icon) {
+			font-size: 12px;
+			height: 40px;
+			line-height: 40px;
+		}
+	}
+	@include when(small) {
+		@include element(color) {
+			width: 14px;
+			height: 14px;
+		}
+		@include element(input) {
+			height: 24px;
+			padding: 4px 32px 4px 7px;
+		}
+		@include element(icon) {
+			font-size: 10px;
+			height: 24px;
+			line-height: 24px;
+		}
 	}
 	@include element(color) {
 		width: 18px;
