@@ -219,7 +219,10 @@ const wrapperComponent = {
 				pswpElement, 
 				PhotoswipeUIDefault, 
 				this.images, 
-				this.opts
+				{
+					...this.opts,
+					closeOnScroll: false,
+				}
 			);
 
 			this.getInstance && this.getInstance(this.photoSwipe);
