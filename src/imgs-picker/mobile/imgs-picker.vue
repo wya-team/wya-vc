@@ -11,13 +11,14 @@
 					:it="item"
 					name="image"
 				>
-					<div
-						v-if="typeof item !== 'object'"
-						:style="{background: `url('${item}') center no-repeat`}"
+					<vc-img 
+						v-if="typeof item !== 'object'" 
+						:src="item" 
 						:class="imgClassName"
+						style="height: 78px; width: 78px;"
+						fit="cover"
 						class="vcm-imgs-picker__img"
-						@click="handlePreview($event, index)"
-					/>
+						@click="handlePreview($event, index)"/>
 					<div v-else :class="imgClassName" class="vcm-imgs-picker__img">
 						<vc-spin v-if="typeof item.status === 'undefined'"/>
 						<div v-else-if="item.status == 0" style="padding: 5px">
@@ -64,13 +65,15 @@ import BasicMixin from '../basic-mixin';
 import Upload from '../../upload/index';
 import Icon from '../../icon/index';
 import Spin from '../../spin/index';
+import Img from '../../img';
 
 export default {
 	name: "vc-imgs-picker",
 	components: {
 		'vc-upload': Upload,
 		'vc-icon': Icon,
-		'vc-spin': Spin
+		'vc-spin': Spin,
+		'vc-img': Img
 	},
 	mixins: [BasicMixin],
 	props: {
