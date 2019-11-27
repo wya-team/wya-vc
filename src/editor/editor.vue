@@ -174,15 +174,6 @@ export default {
 					this.handlePreview(ev, 0);
 				}
 			});
-			// 图片预览在非富文本编辑器
-			let dom = document.getElementsByClassName('ql-editor');
-			Array.from(dom).forEach(it => {
-				if (it.parentNode.className === 'vc-quilleditor-view ql-snow') {
-					it.addEventListener('click', (ev) => {
-						this.handlePreview(ev);
-					});
-				}
-			});
 		},
 		getImgs() {
 			let imgs = [];
