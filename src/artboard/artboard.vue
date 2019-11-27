@@ -3,6 +3,8 @@
 		<canvas ref="canvas" />
 		<button @click="handleClear">清除</button>
 		<button @click="handleGetImg">获取图片</button>
+		<button @click="handleRevocation">回退一步</button>
+		<button @click="handleCancel">取消回退</button>
 		<img :src="src" alt="">
 	</div>
 </template>
@@ -30,6 +32,12 @@ export default {
 		this.initCanvas();
 	},
 	methods: {
+		handleRevocation() {
+			this.sign.revocation();
+		},
+		handleCancel() {
+			this.sign.cancel();
+		},
 		initCanvas() {
 			const canvas = this.$refs.canvas;
 			this.sign = new Sign(canvas, this.degree, this.options);
@@ -52,7 +60,6 @@ export default {
 	right: 0;
 	width: 100%;
 	height: 375px;
-	background: #ff0;
 	canvas {
 		width: 100%;
 		height: 100%;

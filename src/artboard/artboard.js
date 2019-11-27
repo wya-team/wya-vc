@@ -12,12 +12,15 @@ export default class Sign {
 		this.height = height;
 		this.left = left;
 		this.top = top;
-		this.degree = degree;
-		this.config = config;
+		this.degree = degree; // 旋转角度
+		this.config = config; // canvas配置参数
 		this.canvas = canvas;
 		this.context = canvas.getContext('2d');
 		this.pressed = false; // 鼠标或手指按压标识
 		this.point = {}; // 存储点信息
+		this.points = []; // 存储每一步的点信息
+		this.preStep = []; // 存储撤销的信息
+		this.steps = []; // 存储所有的点的信息
 		this.touch = Device.touch; // 是否移动端
 
 		const requestAnimationFrame = window.requestAnimationFrame;
@@ -51,7 +54,7 @@ export default class Sign {
 			context.shadowColor = 'black';
 		}
 		
-		context.lineWidth = 6;
+		context.lineWidth = 2;
 		context.strokeStyle = 'black';
 		context.lineCap = 'round';
 		context.lineJoin = 'round';
@@ -83,6 +86,9 @@ export default class Sign {
 			['mouseup', 'mouseleave'].forEach(event => {
 				this.canvas.addEventListener(event, () => {
 					this.pressed = false;
+					if (event === 'mouseup') {
+						this.steps.push(this.points);
+					}
 				});
 			});
 		}
@@ -91,9 +97,11 @@ export default class Sign {
 	start(e) {
 		e.preventDefault();
 		this.pressed = true;
+		this.points = [];
 		this.getPoint(e);
 		this.context.beginPath();
 		this.context.moveTo(this.point.x, this.point.y);
+		this.move(e); // 鼠标点击画点
 	}
 
 	move(e) {
@@ -105,14 +113,21 @@ export default class Sign {
 		}
 	}
 
-
 	getPoint(e) {
 		e = this.touch ? e.touches[0] : e;
 		this.point.x = e.clientX - this.left;
 		this.point.y = e.clientY - this.top;
+		const x = this.point.x;
+		const y = this.point.y;
+		this.points.push({ x, y });
 	}
 	
 	clear() {
+		this.redraw();
+		this.steps = [];
+	}
+
+	redraw() {
 		let width;
 		let height;
 
@@ -127,6 +142,36 @@ export default class Sign {
 				height = this.height; 
 		}
 		this.context.clearRect(0, 0, width, height);
+	}
+
+	revocation() {
+		this.preStep = this.steps.pop();
+		this.redraw();
+		this.steps.forEach(points => {
+			points.forEach((point, index) => {
+				if (index === 0) {
+					this.context.beginPath();
+					this.context.moveTo(point.x, point.y);
+				} else {
+					this.context.lineTo(point.x, point.y);
+					this.context.stroke();
+				}
+			});
+		});
+	}
+
+	cancel() {
+		if (!this.preStep.length) return;
+		this.preStep.forEach((point, index) => {
+			if (index === 0) {
+				this.context.beginPath();
+				this.context.moveTo(point.x, point.y);
+			} else {
+				this.context.lineTo(point.x, point.y);
+				this.context.stroke();
+			}
+		});
+		this.steps.push(this.preStep);
 	}
 
 	getImage({ type, encoderOptions }) {
