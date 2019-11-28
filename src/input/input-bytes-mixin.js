@@ -4,6 +4,14 @@ export default {
 			curMaxlength: this.maxlength
 		};
 	},
+	watch: {
+		maxlength: {
+			immediate: false,
+			handler(v) {
+				this.curMaxlength = v;
+			}
+		}
+	},
 	methods: {
 		handlePaste(e) {
 			// 只有在bytes下,会需要重新计算maxlength
