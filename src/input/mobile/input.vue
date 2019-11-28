@@ -28,7 +28,7 @@
 			<!-- 清除 -->
 			<vcm-transition-fade>
 				<vcm-icon
-					v-if="clearable && currentValue && !disabled" 
+					v-if="!disabled && clearable && currentValue" 
 					class="vcm-input__icon vcm-input__icon-clear" 
 					type="clear" 
 					@touchstart.native="handleClear"
