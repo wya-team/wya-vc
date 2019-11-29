@@ -7,8 +7,13 @@ export default {
 	watch: {
 		maxlength: {
 			immediate: false,
-			handler(v) {
-				this.curMaxlength = v;
+			handler(newVal) {
+				if (!this.bytes) {
+					this.curMaxlength = newVal;
+				} else {
+					let extraLength = this.getExtraLength();
+					this.curMaxlength = newVal + extraLength;
+				}
 			}
 		}
 	},
