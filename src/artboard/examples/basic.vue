@@ -1,6 +1,9 @@
 <template>
 	<div class="v-artboard">
-		<vc-artboard ref="artboard" :config="{ strokeStyle: 'red', shadowColor: 'red' }" />	
+		<vc-artboard 
+			ref="artboard" 
+			:config="{ strokeStyle: 'red', shadowColor: 'red' }"
+			@change="handleChange" />	
 		<div style="margin-top: 20px;">
 			<vc-button @click="handleClear">清除</vc-button>
 			<vc-button @click="handleGetImg">生成图片</vc-button>
@@ -43,6 +46,10 @@ export default {
 		handleGetImg() {
 			this.src = this.$refs.artboard.getImage({ type: this.type, encoderOptions: this.encoderOptions });
 		},
+		handleChange({ steps, index }) {
+			console.log('steps :', steps);
+			console.log('index :', index);
+		}
 	},
 };
 </script>

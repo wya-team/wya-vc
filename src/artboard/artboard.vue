@@ -32,6 +32,11 @@ export default {
 			isClear: false, // 是否清除
 		};
 	},
+	watch: {
+		steps(val) {
+			this.$emit('change', { steps: this.steps, index: this.steps.length });
+		}
+	},
 	mounted() {
 		this.initCanvasConfigs();
 	},
@@ -123,8 +128,8 @@ export default {
 		},
 		end() {
 			this.preStep = [];
-			this.steps.push(this.points);
 			this.isClear = false;
+			this.steps.push(this.points);
 		},
 		getPoint(e) {
 			if (Device.touch) {
@@ -150,6 +155,10 @@ export default {
 			this.context.clearRect(0, 0, this.width, this.height);
 		},
 		undo() { // 回退一笔
+			if (!this.steps.length) {
+				this.$emit('undo-error');
+				return;
+			}
 			this.preStep.unshift(this.steps.pop());
 			this.redraw();
 			this.steps.forEach(step => {
@@ -159,7 +168,8 @@ export default {
 		},
 		redo() { // 取消回退
 			if (!this.preStep.length) {
-				throw new Error('没有回退数据');
+				this.$emit('redo-error');
+				return;
 			}
 			
 			if (this.isClear) { // 如果是清除，回退全部

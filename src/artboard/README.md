@@ -11,6 +11,13 @@ config | canvas配置参数 | Object | -
 type | 生成的图片的类型, 可取 image/png image/jpeg, toDataURL参数 | String | image/png
 encoderOptions | 生成图片的质量, toDataURL参数, 0 - 1之间 | Number | true
 
+#### 事件
+
+属性 | 说明 | 参数 | 返回值
+---|---|---|---
+change | canvas内容发生改变时触发 | - | steps: 笔画数据, index: 当前笔画的顺序
+undo-error | 回退出错 | - | -
+redo-error | 取消回退出错 | - | -
 
 #### 方法
 
