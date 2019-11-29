@@ -1,10 +1,12 @@
 <template>
 	<div class="v-artboard">
 		<vc-artboard ref="artboard" />	
-		<vc-button @click="handleClear">清除</vc-button>
-		<vc-button @click="handleGetImg">生成图片</vc-button>
-		<vc-button @click="handleRevocation">回退一步</vc-button>
-		<vc-button @click="handleCancel">取消回退</vc-button>
+		<div style="margin-top: 20px;">
+			<vc-button @click="handleClear">清除</vc-button>
+			<vc-button @click="handleGetImg">生成图片</vc-button>
+			<vc-button @click="handleRevocation">回退一步</vc-button>
+			<vc-button @click="handleCancel">取消回退</vc-button>
+		</div>
 		<img :src="src" alt="">
 	</div>
 </template>
