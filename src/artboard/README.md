@@ -16,7 +16,7 @@ encoderOptions | 生成图片的质量, toDataURL参数, 0 - 1之间 | Number | 
 
 属性 | 说明 | 参数 | 返回值
 ---|---|---|---
-revocation | 回退一画 | - | -
+undo | 回退一画 | - | -
 cancel | 取消回退 | - | -
 clear | 清除画板内容 | - | -
 getImage | 获取图片 | 查看toDataURL参数 | -
@@ -27,10 +27,10 @@ getImage | 获取图片 | 查看toDataURL参数 | -
 ```vue
 <template>
 	<div class="v-artboard">
-		<vc-artboard ref="artboard" />	
+		<vc-artboard ref="artboard" :config="{ strokeStyle: 'red', shadowColor: 'red' }" />	
 		<vc-button @click="handleClear">清除</vc-button>
 		<vc-button @click="handleGetImg">生成图片</vc-button>
-		<vc-button @click="handleRevocation">回退一步</vc-button>
+		<vc-button @click="handleUndo">回退一步</vc-button>
 		<vc-button @click="handleCancel">取消回退</vc-button>
 		<img :src="src" alt="">
 	</div>
@@ -56,8 +56,8 @@ export default {
 	created() {
 	},
 	methods: {
-		handleRevocation() {
-			this.$refs.artboard.revocation();
+		handleUndo() {
+			this.$refs.artboard.undo();
 		},
 		handleCancel() {
 			this.$refs.artboard.cancel();

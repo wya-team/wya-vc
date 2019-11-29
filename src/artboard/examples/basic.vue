@@ -1,11 +1,11 @@
 <template>
 	<div class="v-artboard">
-		<vc-artboard ref="artboard" />	
+		<vc-artboard ref="artboard" :config="{ strokeStyle: 'red', shadowColor: 'red' }" />	
 		<div style="margin-top: 20px;">
 			<vc-button @click="handleClear">清除</vc-button>
 			<vc-button @click="handleGetImg">生成图片</vc-button>
-			<vc-button @click="handleRevocation">回退一步</vc-button>
-			<vc-button @click="handleCancel">取消回退</vc-button>
+			<vc-button @click="handleUndo">回退一步</vc-button>
+			<vc-button @click="handleRedo">取消回退</vc-button>
 		</div>
 		<img :src="src" alt="">
 	</div>
@@ -31,11 +31,11 @@ export default {
 	created() {
 	},
 	methods: {
-		handleRevocation() {
-			this.$refs.artboard.revocation();
+		handleUndo() {
+			this.$refs.artboard.undo();
 		},
-		handleCancel() {
-			this.$refs.artboard.cancel();
+		handleRedo() {
+			this.$refs.artboard.redo();
 		},
 		handleClear() {
 			this.$refs.artboard.clear();
@@ -50,8 +50,8 @@ export default {
 <style lang="scss">
 .v-artboard {
 	canvas {
-		width: 200px;
-		height: 200px;
+		width: 100%;
+		height: 100%;
 	}
 	img {
 		width: 200px;

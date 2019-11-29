@@ -16,9 +16,9 @@ export default {
 	data() {
 		return {
 			width: 0,
-			height: 0,       
-			left: 0,       
-			top: 0,        
+			height: 0,      
+			top: 0,
+			left: 0,        
 			canvas: null,      
 			context: null,       
 			pressed: false, // 鼠标或手指按压标识
@@ -29,7 +29,8 @@ export default {
 			points: [], // 存储每一步的点信息
 			preStep: [], // 存储撤销的信息
 			steps: [], // 存储所有的点的信息
-			touch: false // 是否移动端
+			isClear: false, // 是否清除
+			touch: false,
 		};
 	},
 	mounted() {
@@ -42,14 +43,14 @@ export default {
 				throw new Error('canvas必传');
 			}
 
-			const { width, height, left, top } = canvas.getBoundingClientRect();
+			const { width, height, top, left } = canvas.getBoundingClientRect();
 			this.width = width;
 			this.height = height;
-			this.left = left;
 			this.top = top;
+			this.left = left;
 			this.canvas = canvas;
 			this.context = canvas.getContext('2d');
-			this.touch = Device.touch; // 是否移动端
+			this.touch = Device.touch;
 
 			const requestAnimationFrame = window.requestAnimationFrame;
 			this.optimizedMove = requestAnimationFrame ? e => {
@@ -76,22 +77,22 @@ export default {
 				canvas.height = this.height;
 			}
 
-			if (!this.touch) {
-				context.shadowBlur = 1;
-				context.shadowColor = 'black';
-			}
-			
+			context.shadowBlur = 1;
+			context.shadowColor = 'black';
 			context.lineWidth = 2;
 			context.strokeStyle = 'black';
 			context.lineCap = 'round';
 			context.lineJoin = 'round';
 			Object.assign(context, this.config);
-			window.context = context;
 		},
 		addEvent() {
+			
 			if (this.touch) {
 				this.canvas.addEventListener('touchstart', this.start.bind(this));
 				this.canvas.addEventListener('touchmove', this.optimizedMove.bind(this));
+				this.canvas.addEventListener('touchend', () => {
+					this.end();
+				});
 			} else {
 				this.canvas.addEventListener('mousedown', this.start.bind(this));
 				this.canvas.addEventListener('mousemove', this.optimizedMove.bind(this));
@@ -99,8 +100,7 @@ export default {
 					this.canvas.addEventListener(event, () => {
 						this.pressed = false;
 						if (event === 'mouseup') {
-							this.preStep = [];
-							this.steps.push(this.points);
+							this.end();
 						}
 					});
 				});
@@ -123,46 +123,68 @@ export default {
 				this.context.stroke();
 			}
 		},
+		end() {
+			this.preStep = [];
+			this.steps.push(this.points);
+			this.isClear = false;
+		},
 		getPoint(e) {
 			e = this.touch ? e.touches[0] : e;
-			this.point.x = e.clientX - this.left;
-			this.point.y = e.clientY - this.top;
+			if (this.touch) {
+				this.point.x = e.clientX - this.left;
+				this.point.y = e.clientY - this.top;
+			} else {
+				this.point.x = e.layerX || e.offsetX;
+				this.point.y = e.layerY || e.offsetY;
+			}
+			
 			const x = this.point.x;
 			const y = this.point.y;
 			this.points.push({ x, y });
 		},
-		clear() {
+		clear() { // 清除
 			this.redraw();
+			this.preStep = this.steps;
 			this.steps = [];
-			this.preStep = [];
+			this.isClear = true;
 		},
 		redraw() { // 清除画布
 			this.context.clearRect(0, 0, this.width, this.height);
 		},
-		revocation() { // 回退一笔
+		undo() { // 回退一笔
 			this.preStep.unshift(this.steps.pop());
 			this.redraw();
-			this.draw(this.steps);
+			this.steps.forEach(step => {
+				this.draw(step);
+			});
+			
 		},
-		cancel() { // 取消回退
+		redo() { // 取消回退
 			if (!this.preStep.length) {
 				throw new Error('没有回退数据');
 			}
-			this.draw(this.preStep);
-			this.steps = this.steps.concat(this.preStep);
-			this.preStep = [];
-		},
-		draw(steps) {
-			steps.forEach(step => {
-				step.forEach((point, index) => {
-					if (index === 0) {
-						this.context.beginPath();
-						this.context.moveTo(point.x, point.y);
-					} else {
-						this.context.lineTo(point.x, point.y);
-						this.context.stroke();
-					}
+			
+			if (this.isClear) { // 如果是清除，回退全部
+				this.steps = this.preStep;
+				this.steps.forEach(step => {
+					this.draw(step);
 				});
+				this.preStep = [];
+			} else { // 
+				const step = this.preStep.shift();
+				this.draw(step);
+				this.steps.push(step);
+			}
+		},
+		draw(step) {
+			step.forEach((point, index) => {
+				if (index === 0) {
+					this.context.beginPath();
+					this.context.moveTo(point.x, point.y);
+				} else {
+					this.context.lineTo(point.x, point.y);
+					this.context.stroke();
+				}
 			});
 		},
 		getImage({ type, encoderOptions }) {
@@ -173,8 +195,8 @@ export default {
 </script>
 <style lang="scss">
 .vc-artboard {
-	width: 200px;
-	height: 200px;
+	width: 100%;
+	height: 100%;
 	canvas {
 		width: 100%;
 		height: 100%;
