@@ -30,7 +30,6 @@ export default {
 			preStep: [], // 存储撤销的信息
 			steps: [], // 存储所有的点的信息
 			isClear: false, // 是否清除
-			touch: false,
 		};
 	},
 	mounted() {
@@ -50,7 +49,6 @@ export default {
 			this.left = left;
 			this.canvas = canvas;
 			this.context = canvas.getContext('2d');
-			this.touch = Device.touch;
 
 			const requestAnimationFrame = window.requestAnimationFrame;
 			this.optimizedMove = requestAnimationFrame ? e => {
@@ -87,7 +85,7 @@ export default {
 		},
 		addEvent() {
 			
-			if (this.touch) {
+			if (Device.touch) {
 				this.canvas.addEventListener('touchstart', this.start.bind(this));
 				this.canvas.addEventListener('touchmove', this.optimizedMove.bind(this));
 				this.canvas.addEventListener('touchend', () => {
@@ -129,8 +127,8 @@ export default {
 			this.isClear = false;
 		},
 		getPoint(e) {
-			e = this.touch ? e.touches[0] : e;
-			if (this.touch) {
+			if (Device.touch) {
+				e = e.touches[0];
 				this.point.x = e.clientX - this.left;
 				this.point.y = e.clientY - this.top;
 			} else {
