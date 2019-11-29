@@ -23,7 +23,7 @@ export default {
 		initListener() {
 			let dom = document.getElementsByClassName('ql-editor');
 			Array.from(dom).forEach(it => {
-				if (it.parentNode.className === 'vc-quilleditor-view ql-snow') {
+				if (it.parentNode.className.indexOf('vc-quilleditor-view ql-snow') !== -1) {
 					it.addEventListener('click', (ev) => {
 						if (ev.target.nodeName === 'IMG') {
 							this.handlePreview(ev, 0);
