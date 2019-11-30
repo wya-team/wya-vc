@@ -1,19 +1,16 @@
 <template>
 	<div>
 		<vc-color-picker v-model="color1" />
-		<vc-color-picker v-model="color2" />
-		<custom-picker v-model="color3" :colors="predefine" alpha />
+		<vc-color-picker v-model="color3" :colors="predefine" alpha />
 	</div>
 </template>
 <script>
-import ColorPicker from '..';
-import CustomPicker from '../main.vue';
+import ColorPicker from '../color-picker';
 
 export default {
 	name: "vc-color-picker-basic",
 	components: {
 		'vc-color-picker': ColorPicker,
-		'custom-picker': CustomPicker
 	},
 	data() {
 		return {
