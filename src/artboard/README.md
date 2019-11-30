@@ -7,7 +7,7 @@ artboard canvas画板
 #### 属性
 属性 | 说明 | 类型 | 默认值
 ---|---|---|---
-config | canvas配置参数 | Object | -
+options | canvas配置参数 | Object | -
 
 #### 事件
 
