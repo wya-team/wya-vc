@@ -8,44 +8,50 @@ artboard canvas画板
 属性 | 说明 | 类型 | 默认值
 ---|---|---|---
 config | canvas配置参数 | Object | -
-type | 生成的图片的类型, 可取 image/png image/jpeg, toDataURL参数 | String | image/png
-encoderOptions | 生成图片的质量, toDataURL参数, 0 - 1之间 | Number | true
 
 #### 事件
 
 属性 | 说明 | 参数 | 返回值
 ---|---|---|---
-change | canvas内容发生改变时触发 | - | steps: 笔画数据, index: 当前笔画的顺序
-undo-error | 回退出错 | - | -
-redo-error | 取消回退出错 | - | -
+change | canvas内容发生改变时触发 | - | snapshots: 所有快照数据, current: 当前快照位置
 
 #### 方法
 
 属性 | 说明 | 参数 | 返回值
 ---|---|---|---
 undo | 回退一画 | - | -
-cancel | 取消回退 | - | -
-clear | 清除画板内容 | - | -
-getImage | 获取图片 | 查看toDataURL参数 | -
+redo | 取消回退 | - | -
+reset | 重置画板 | - | -
 
+## Feature
++ 有初始值
++ options可动态调整
 
 ## 基础用法
 
 ```vue
 <template>
 	<div class="v-artboard">
-		<vc-artboard ref="artboard" :config="{ strokeStyle: 'red', shadowColor: 'red' }" />	
-		<vc-button @click="handleClear">清除</vc-button>
-		<vc-button @click="handleGetImg">生成图片</vc-button>
-		<vc-button @click="handleUndo">回退一步</vc-button>
-		<vc-button @click="handleCancel">取消回退</vc-button>
+		<vc-artboard 
+			ref="artboard" 
+			:options="{ strokeStyle: 'red', shadowColor: 'red' }"
+			:get-instance="getInstance"
+			@change="handleChange" 
+		/>	
+		<div style="margin-top: 20px;">
+			<vc-button @click="handleReset">重置画布</vc-button>
+			<vc-button @click="handleGetImg">生成图片</vc-button>
+			<vc-button @click="handleUndo">回退一步</vc-button>
+			<vc-button @click="handleRedo">取消回退</vc-button>
+		</div>
 		<img :src="src" alt="">
 	</div>
 </template>
 
 <script>
-import artboard from '../artboard.vue';
+import Message from '../../message';
 import button from '../../button';
+import artboard from '../artboard.vue';
 
 export default {
 	name: 'v-artboard',
@@ -58,23 +64,48 @@ export default {
 	data() {
 		return {
 			src: '',
+			instance: null
 		};
 	},
 	created() {
 	},
 	methods: {
+		getInstance(instance) {
+			this.instance = instance;
+		},
 		handleUndo() {
-			this.$refs.artboard.undo();
+			if (!this.undo) {
+				Message.warning("已经没有回退的步骤了");
+				return;
+			}
+			this.instance.undo();
 		},
-		handleCancel() {
-			this.$refs.artboard.cancel();
+		handleRedo() {
+			if (!this.redo) {
+				Message.warning("已经没有撤销的步骤了");
+				return;
+			}
+			this.instance.redo();
 		},
-		handleClear() {
-			this.$refs.artboard.clear();
+		handleReset() {
+			this.instance.reset();
 		},
 		handleGetImg() {
-			this.src = this.$refs.artboard.getImage();
+			this.src = this.instance.canvas.toDataURL({ type: this.type, encoderOptions: this.encoderOptions });
 		},
+		handleChange({ snapshots, current }) {
+			console.log('snapshots :', snapshots);
+			console.log('current :', current);
+			if (current === 0) {
+				this.undo = false;
+			} else if (current === snapshots.length) {
+				this.undo = true;
+				this.redo = false;
+			} else {
+				this.undo = true;
+				this.redo = true;
+			}
+		}
 	},
 };
 </script>
@@ -82,8 +113,8 @@ export default {
 <style lang="scss">
 .v-artboard {
 	canvas {
-		width: 200px;
-		height: 200px;
+		width: 100%;
+		height: 100%;
 	}
 	img {
 		width: 200px;
