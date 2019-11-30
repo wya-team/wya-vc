@@ -1,10 +1,21 @@
 import Vue from 'vue';
-// import Wrapper from '..';
+import Button from '../index';
+import MButton from '../index.m';
 
-describe('Tpl', () => {
-	test('测试传递属性', () => {
-		expect(1).toBe(1);
-		// const component = createComponent(Wrapper, {});
-		// expect(typeof component).toBe('object');
+describe('Button', () => {
+	test('基本测试', () => {
+		expect(typeof Button).toBe('object');
+
+		const vm = createComponent(Button, {});
+		expect(typeof vm).toBe('object');
+	});
+
+	test('create', () => {
+		const vm = createComponent(Button, {
+			type: 'primary'
+		});
+		
+		expect(vm.$el.classList.contains('vc-btn')).toBe(true);
+		expect(vm.$el.classList.contains('is-primary')).toBe(true);
 	});
 });
