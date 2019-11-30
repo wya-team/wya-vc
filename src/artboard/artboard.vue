@@ -35,6 +35,9 @@ export default {
 	mounted() {
 		this.init();
 	},
+	beforeDestroy() {
+		this.removeEvent();
+	},
 	methods: {
 		init() {
 			const canvas = this.$refs.canvas;
