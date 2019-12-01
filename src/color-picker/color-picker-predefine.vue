@@ -1,18 +1,17 @@
 <template>
 	<div class="vc-color-picker-predefine">
-		<div class="vc-color-picker-predefine__colors">
-			<div 
-				v-for="(item, index) in rgbaColors"
-				:key="index"
-				:class="{ 
-					'is-selected': item.selected,
-					'is-alpha': item._alpha < 100
-				}"
-				class="vc-color-picker-predefine__colors-selector"
-				@click="handleSelect(index)">
-				<div :style="{'background-color': item.value}" />
-			</div>            
-		</div>
+		<div 
+			v-for="(item, index) in rgbaColors"
+			:key="index"
+			:class="{ 
+				'is-selected': item.selected,
+				'is-alpha': item._alpha < 100
+			}"
+			class="vc-color-picker-predefine__block"
+			@click="handleSelect(index)"
+		>
+			<div :style="{'background-color': item.value}" />
+		</div>            
 	</div>
 </template>
 
@@ -76,28 +75,27 @@ $block: vc-color-picker-predefine;
     display: flex;
     width: 240px;
     margin-top: 8px;
-    @include element(colors) {
-        display: flex;
-        flex: 1;
-        flex-wrap: wrap;
-        &-selector {
-            width: 18px;
-            height: 18px;
-            margin: 0 0 6px 6px;
-            cursor: pointer;
-            div {
-                height: 100%;
-                border-radius: 2px;
-            }
-			&:nth-child(10n + 1) {
-				margin-left: 3px;
-			}
-        }
-		.is-selected {
+	display: flex;
+	flex: 1;
+	flex-wrap: wrap;
+    @include element(block) {
+		width: 18px;
+		height: 18px;
+		margin: 0 0 6px 6px;
+		cursor: pointer;
+		div {
+			height: 100%;
+			border-radius: 2px;
+			box-shadow: inset 0 0 0 1px rgba(0,0,0,.15)
+		}
+		&:nth-child(10n + 1) {
+			margin-left: 3px;
+		}
+		@include when(selected) {
 			box-shadow: 0 0 2px 1px #409EFF;
 		}
-		.is-alpha {
-			background: url(data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAwAAAAMCAIAAADZF8uwAAAAGUlEQVQYV2M4gwH+YwCGIasIUwhT25BVBADtzYNYrHvv4gAAAABJRU5ErkJggg==);
+		@include when(alpha) {
+			background: url('data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAwAAAAMCAIAAADZF8uwAAAAGUlEQVQYV2M4gwH+YwCGIasIUwhT25BVBADtzYNYrHvv4gAAAABJRU5ErkJggg==');
 		}
 	}
 }
