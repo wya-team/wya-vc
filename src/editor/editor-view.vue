@@ -10,15 +10,25 @@ import ImgsPreview from '../imgs-preview/index';
 export default {
 	name: 'vc-editor-view',
 	props: {
-		content: String
+		content: {
+			type: String,
+			default: ""
+		}
 	},
 	data() {
 		return {
+			allImgUlrs: []
 		};
+	},
+	watch: {
+		content(v) {
+			this.getImgUrls(v);
+		}
 	},
 	mounted() {
 		this.initListener();
 	},
+
 	methods: {
 		initListener() {
 			let dom = document.getElementsByClassName('ql-editor');
@@ -26,11 +36,28 @@ export default {
 				if (it.parentNode.className.indexOf('vc-quilleditor-view ql-snow') !== -1) {
 					it.addEventListener('click', (ev) => {
 						if (ev.target.nodeName === 'IMG') {
-							this.handlePreview(ev, 0);
+							let curSrcIndex = this.allImgUlrs.indexOf(ev.target.currentSrc);
+							this.handlePreview(ev, curSrcIndex);
 						}
 					});
 				}
 			});
+		},
+
+		getImgUrls(str) {
+			let imgReg = /<img.*?(?:>|\/>)/gi;
+			// eslint-disable-next-line
+			let srcReg = /src=[\'\"]?([^\'\"]*)[\'\"]?/i;
+			let arr = str.match(imgReg);
+			let imgUrls = [];
+			for (let i = 0; i < arr.length; i++) {
+				let src = arr[i].match(srcReg);
+				// 获取图片地址
+				if (src[1]) {
+					imgUrls.push(src[1]);
+				}
+			}
+			this.allImgUlrs = imgUrls;
 		},
 
 		handlePreview(e, idx) {
@@ -46,7 +73,7 @@ export default {
 
 			ImgsPreview.open({
 				visible: true,
-				dataSource: [e.target.currentSrc],
+				dataSource: this.allImgUlrs,
 				opts: {
 					index: idx,
 					history: false,
