@@ -88,7 +88,7 @@ export default {
 			if (Device.touch) {
 				this.canvas.addEventListener('touchstart', this.handleStatrt);
 				this.canvas.addEventListener('touchmove', this.optimizedMove);
-				this.canvas.addEventListener('touchend', handleEnd);
+				this.canvas.addEventListener('touchend', this.handleEnd);
 			} else {
 				this.canvas.addEventListener('mousedown', this.handleStatrt);
 				this.canvas.addEventListener('mousemove', this.optimizedMove);
@@ -100,7 +100,7 @@ export default {
 			if (Device.touch) {
 				this.canvas.removeEventListener('touchstart', this.handleStatrt);
 				this.canvas.removeEventListener('touchmove', this.optimizedMove);
-				this.canvas.removeEventListener('touchend', handleEnd);
+				this.canvas.removeEventListener('touchend', this.handleEnd);
 			} else {
 				this.canvas.removeEventListener('mousedown', this.handleStatrt);
 				this.canvas.removeEventListener('mousemove', this.optimizedMove);
