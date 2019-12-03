@@ -1,7 +1,6 @@
 import { JSDOM } from 'jsdom';
 import Vue from 'vue';
 import Enzyme from 'enzyme';
-
 Enzyme.configure({});
 
 // jsdom 失效时添加
@@ -30,17 +29,29 @@ const createEl = () => {
 	return el;
 };
 
+global.createVue = function(Compo, options = {}) {
+	// mounted  - 是否添加到 DOM 上
+	const { mounted = true, ...rest } = options;
+
+	return new Vue(Compo).$mount(mounted === false ? null : createEl());
+};
 /**
  * 创建一个测试组件实例
  * @link http://vuejs.org/guide/unit-testing.html#Writing-Testable-Components
  * @param  {Object}  Compo          - 组件对象
  * @param  {Object}  propsData      - props 数据
- * @param  {Boolean=true} mounted  - 是否添加到 DOM 上
+ * @param  {Object}  options
  * @return {Object} vm
  */
-global.createComponent = (wrapper, propsData, mounted = true) => {
+global.createComponent = (wrapper, propsData, options = {}) => {
+	// mounted  - 是否添加到 DOM 上
+	const { mounted = true, ...rest } = options;
 	const Ctor = Vue.extend(wrapper);
-	return new Ctor({ propsData }).$mount(mounted === false ? null : createEl());
+	const vm = new Ctor({ propsData, ...rest });
+
+	vm.$mount(mounted === false ? null : createEl());
+
+	return vm;
 };
 
 /**
