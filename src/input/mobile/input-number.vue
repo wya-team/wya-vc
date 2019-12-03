@@ -6,10 +6,10 @@
 		:clearable="clearable"
 		:prepend="prepend"
 		:append="append"
+		:type="type"
 		:class="{ 'is-disabled': disabled && step, 'vcm-input-number': step }"
 		:input-style="[inputStyle]"
 		:right="right"
-		type="tel"
 		v-on="hooks"
 	>
 		<template v-if="step" #prepend>
