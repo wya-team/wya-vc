@@ -1,6 +1,6 @@
 {
     "name": "@wya/vc",
-    "version": "1.8.6",
+    "version": "1.9.7",
     "description": "wya for vue components",
     "main": "lib/index.js",
     "files": [
@@ -11,11 +11,9 @@
         "start": "npm run dev",
         "dev": "npm run prompt && npm run all",
         "serve": "node --max_old_space_size=8192 ./node_modules/webpack-dev-server/bin/webpack-dev-server --config  ./config/webpack.config.dev.js --color --progress --hot",
-        "dist": "npm run remove:dist && node --max_old_space_size=8192 ./node_modules/webpack/bin/webpack --config ./config/webpack.config.dist.js --color --progress",
-        "build:pre": "rollup -c --config ./config/rollup.config.js",
-        "build": "cross-env UGLIFY_JS=true npm run dist",
-        "build:dev": "cross-env UGLIFY_JS=false npm run dist",
-        "lib": "rm -rf ./lib && cross-env NODE_ENV=production babel src --out-dir lib --copy-files --ignore '**.test.js','**.md','examples/**' && npm publish --access public",
+        "demo": "npm run remove:dist && cross-env UGLIFY_JS=true node --max_old_space_size=8192 ./node_modules/webpack/bin/webpack --config ./config/webpack.config.dist.js --color --progress",
+        "build": "rm -rf ./lib && cross-env NODE_ENV=production babel src --out-dir lib --copy-files --ignore '**.test.js','**.md','examples/**'",
+        "pub": "bash config/publish.sh",
         "remove:dist": "rm -rf ./dist",
         "lint": "esw config ./src --ext .vue,.js",
         "lint:fix": "npm run lint -- --fix",
