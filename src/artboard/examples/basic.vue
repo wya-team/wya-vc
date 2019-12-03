@@ -3,6 +3,8 @@
 		<vc-artboard 
 			ref="artboard" 
 			:options="{ strokeStyle: 'red', shadowColor: 'red' }"
+			:width="300"
+			:height="200"
 			:get-instance="getInstance"
 			@change="handleChange" 
 		/>	
