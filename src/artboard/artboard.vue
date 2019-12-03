@@ -12,12 +12,20 @@ export default {
 		// canvas配置参数
 		options: Object,
 		// 获取画布实例
-		getInstance: Function
+		getInstance: Function,
+		width: {
+			type: Number,
+			default: 0
+		},
+		height: {
+			type: Number,
+			default: 0
+		},
 	},
 	data() {
 		return {
-			width: 0,
-			height: 0,      
+			w: 0,
+			h: 0,      
 			top: 0,
 			left: 0,        
 			canvas: null,      
@@ -33,7 +41,9 @@ export default {
 		};
 	},
 	mounted() {
-		this.init();
+		setTimeout(() => { // 兼容popup的动画延迟
+			this.init();
+		}, 0);
 	},
 	beforeDestroy() {
 		this.removeEvent();
@@ -41,9 +51,10 @@ export default {
 	methods: {
 		init() {
 			const canvas = this.$refs.canvas;
+			
 			const { width, height, top, left } = canvas.getBoundingClientRect();
-			this.width = width;
-			this.height = height;
+			this.w = this.width || width;
+			this.h = this.height || height;
 			this.top = top;
 			this.left = left;
 			this.canvas = canvas;
@@ -66,14 +77,14 @@ export default {
 			// 根据设备像素比优化canvas绘图
 			const devicePixelRatio = window.devicePixelRatio;
 			if (devicePixelRatio) {
-				canvas.style.width = `${this.width}px`;
-				canvas.style.height = `${this.height}px`;
-				canvas.height = this.height * devicePixelRatio;
-				canvas.width = this.width * devicePixelRatio;
+				canvas.style.width = `${this.w}px`;
+				canvas.style.height = `${this.h}px`;
+				canvas.height = this.h * devicePixelRatio;
+				canvas.width = this.w * devicePixelRatio;
 				context.scale(devicePixelRatio, devicePixelRatio);
 			} else {
-				canvas.width = this.width;
-				canvas.height = this.height;
+				canvas.width = this.w;
+				canvas.height = this.h;
 			}
 
 			context.shadowBlur = 1;
@@ -194,7 +205,7 @@ export default {
 		 * 清空画布
 		 */
 		redraw() {
-			this.context.clearRect(0, 0, this.width, this.height);
+			this.context.clearRect(0, 0, this.w, this.h);
 		},
 		draw(step) {
 			step.forEach((point, index) => {
