@@ -9,9 +9,10 @@ import { Device } from '@wya/utils';
 export default {
 	name: "vc-artboard",
 	props: {
-		config: Object, // canvas配置参数
-		type: String, // 生成的图片的类型, 可取 image/png image/jpeg
-		encoderOptions: Number, // 0 - 1
+		// canvas配置参数
+		options: Object,
+		// 获取画布实例
+		getInstance: Function
 	},
 	data() {
 		return {
@@ -26,27 +27,20 @@ export default {
 				x: 0,
 				y: 0
 			}, // 存储点信息
-			points: [], // 存储每一步的点信息
-			preStep: [], // 存储撤销的信息
-			steps: [], // 存储所有的点的信息
-			isClear: false, // 是否清除
+			points: [], // 存储每一步快照的点信息
+			undoSnapshots: [], // 存储撤销步骤快照的信息
+			curSnapshots: [], // 存储当前步骤快照的信息
 		};
 	},
-	watch: {
-		steps(val) {
-			this.$emit('change', { steps: this.steps, index: this.steps.length });
-		}
-	},
 	mounted() {
-		this.initCanvasConfigs();
+		this.init();
+	},
+	beforeDestroy() {
+		this.removeEvent();
 	},
 	methods: {
-		initCanvasConfigs() {
+		init() {
 			const canvas = this.$refs.canvas;
-			if (!canvas) {
-				throw new Error('canvas必传');
-			}
-
 			const { width, height, top, left } = canvas.getBoundingClientRect();
 			this.width = width;
 			this.height = height;
@@ -58,11 +52,13 @@ export default {
 			const requestAnimationFrame = window.requestAnimationFrame;
 			this.optimizedMove = requestAnimationFrame ? e => {
 				requestAnimationFrame(() => {
-					this.move(e);
+					this.handleMove(e);
 				});
-			} : this.move;
+			} : this.handleMove;
 			this.initCanvas();
 			this.addEvent();
+			// 对外暴露canvas对象
+			this.getInstance && this.getInstance(this);
 		},
 		initCanvas() {
 			const context = this.context;
@@ -86,39 +82,49 @@ export default {
 			context.strokeStyle = 'black';
 			context.lineCap = 'round';
 			context.lineJoin = 'round';
-			Object.assign(context, this.config);
+			Object.assign(context, this.options);
 		},
 		addEvent() {
-			
 			if (Device.touch) {
-				this.canvas.addEventListener('touchstart', this.start.bind(this));
-				this.canvas.addEventListener('touchmove', this.optimizedMove.bind(this));
-				this.canvas.addEventListener('touchend', () => {
-					this.end();
-				});
+				this.canvas.addEventListener('touchstart', this.handleStatrt);
+				this.canvas.addEventListener('touchmove', this.optimizedMove);
+				this.canvas.addEventListener('touchend', this.handleEnd);
 			} else {
-				this.canvas.addEventListener('mousedown', this.start.bind(this));
-				this.canvas.addEventListener('mousemove', this.optimizedMove.bind(this));
-				['mouseup', 'mouseleave'].forEach(event => {
-					this.canvas.addEventListener(event, () => {
-						this.pressed = false;
-						if (event === 'mouseup') {
-							this.end();
-						}
-					});
-				});
+				this.canvas.addEventListener('mousedown', this.handleStatrt);
+				this.canvas.addEventListener('mousemove', this.optimizedMove);
+				this.canvas.addEventListener('mouseup', this.handleDrawEnd);
+				this.canvas.addEventListener('mouseleave', this.handleDrawEnd);
 			}
 		},
-		start(e) {
+		removeEvent() {
+			if (Device.touch) {
+				this.canvas.removeEventListener('touchstart', this.handleStatrt);
+				this.canvas.removeEventListener('touchmove', this.optimizedMove);
+				this.canvas.removeEventListener('touchend', this.handleEnd);
+			} else {
+				this.canvas.removeEventListener('mousedown', this.handleStatrt);
+				this.canvas.removeEventListener('mousemove', this.optimizedMove);
+				this.canvas.removeEventListener('mouseup', this.handleDrawEnd);
+				this.canvas.removeEventListener('mouseleave', this.handleDrawEnd);
+			}
+		},
+		// 步骤发生变化，向外暴露change事件
+		handleChange() {
+			this.$emit('change', { 
+				snapshots: [...this.curSnapshots, ...this.undoSnapshots],
+				current: this.curSnapshots.length 
+			});
+		},
+		handleStatrt(e) {
 			e.preventDefault();
 			this.pressed = true;
 			this.points = [];
 			this.getPoint(e);
 			this.context.beginPath();
 			this.context.moveTo(this.point.x, this.point.y);
-			this.move(e); // 鼠标点击画点
+			this.handleMove(e); // 鼠标点击画点
 		},
-		move(e) {
+		handleMove(e) {
 			e.preventDefault();
 			if (this.pressed) {
 				this.getPoint(e);
@@ -126,13 +132,20 @@ export default {
 				this.context.stroke();
 			}
 		},
-		end() {
-			this.preStep = [];
-			this.isClear = false;
-			this.steps.push(this.points);
+		handleEnd() {
+			this.undoSnapshots = [];
+			this.curSnapshots.push(this.points);
+			this.handleChange();
+		},
+		handleDrawEnd() {
+			if (this.pressed) {
+				this.pressed = false;
+				this.handleEnd();
+			}
 		},
 		getPoint(e) {
 			if (Device.touch) {
+				// 手机端没有e.layerX和e.offsetX
 				e = e.touches[0];
 				this.point.x = e.clientX - this.left;
 				this.point.y = e.clientY - this.top;
@@ -145,44 +158,43 @@ export default {
 			const y = this.point.y;
 			this.points.push({ x, y });
 		},
-		clear() { // 清除
+		/**
+		 * 重置
+		 */
+		reset() {
 			this.redraw();
-			this.preStep = this.steps;
-			this.steps = [];
-			this.isClear = true;
+			this.undoSnapshots = [];
+			this.curSnapshots = [];
+			this.handleChange();
 		},
-		redraw() { // 清除画布
-			this.context.clearRect(0, 0, this.width, this.height);
-		},
-		undo() { // 回退一笔
-			if (!this.steps.length) {
-				this.$emit('undo-error');
-				return;
-			}
-			this.preStep.unshift(this.steps.pop());
+		/**
+		 * 回退
+		 */
+		undo() {
+			if (!this.curSnapshots.length) return;
+			this.undoSnapshots.unshift(this.curSnapshots.pop());
 			this.redraw();
-			this.steps.forEach(step => {
+			this.curSnapshots.forEach(step => {
 				this.draw(step);
 			});
-			
+			this.handleChange();
 		},
-		redo() { // 取消回退
-			if (!this.preStep.length) {
-				this.$emit('redo-error');
-				return;
-			}
+		/**
+		 * 撤销
+		 */
+		redo() {
+			if (!this.undoSnapshots.length) return;
 			
-			if (this.isClear) { // 如果是清除，回退全部
-				this.steps = this.preStep;
-				this.steps.forEach(step => {
-					this.draw(step);
-				});
-				this.preStep = [];
-			} else { // 
-				const step = this.preStep.shift();
-				this.draw(step);
-				this.steps.push(step);
-			}
+			const step = this.undoSnapshots.shift();
+			this.draw(step);
+			this.curSnapshots.push(step);
+			this.handleChange();
+		},
+		/**
+		 * 清空画布
+		 */
+		redraw() {
+			this.context.clearRect(0, 0, this.width, this.height);
 		},
 		draw(step) {
 			step.forEach((point, index) => {
@@ -195,9 +207,6 @@ export default {
 				}
 			});
 		},
-		getImage({ type, encoderOptions }) {
-			return this.canvas.toDataURL(type, encoderOptions);
-		}
 	}
 };
 </script>

@@ -70,7 +70,7 @@
 
 	@include element(placeholder) {
 		display: inline-block;
-		width: 20px;
+		width: 23px;
 	}
 	
 	@include element(append-wrapper) {
@@ -264,6 +264,9 @@
 		&.vc-popover {
 			white-space: nowrap;
 			min-width: 50px;
+		}
+		.vc-table-un-expand__indent {
+			padding-left: 23px;
 		}
 	}
 
@@ -548,6 +551,7 @@
 		.vc-table__expand-icon {
 			display: inline-block;
 			width: 20px;
+			min-width: 20px;
 			line-height: 20px;
 			height: 20px;
 			text-align: center;

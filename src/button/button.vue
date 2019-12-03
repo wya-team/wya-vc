@@ -4,6 +4,7 @@
 		:class="classes" 
 		:disabled="disabled" 
 		:wait="wait"
+		:type="htmlType"
 		class="vc-btn"
 		@click="handleClick"
 	>
@@ -53,6 +54,11 @@ export default {
 		circle: Boolean,
 		round: Boolean,
 		long: Boolean,
+		htmlType: {
+			type: String,
+			default: 'button',
+			validator: v => /(button|submit|reset)/.test(v),
+		},
 	},
 	inject: {
 		group: {

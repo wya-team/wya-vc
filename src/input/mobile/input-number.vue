@@ -65,9 +65,9 @@ $block: vcm-input-number;
 @include block($block) {
 	width: auto;
 	@include share-rule(icon) {
-		width: 27px;
-		height: 25px;
-		line-height: 25px;
+		width: 28px;
+		height: 28px;
+		line-height: 28px;
 		text-align: center;
 		display: block;
 		background-color: #F5F5F5;
@@ -75,7 +75,7 @@ $block: vcm-input-number;
 		&[disabled] {
 			background-color: #FBFBFB!important;
 			cursor: not-allowed;
-			color: #ccc;
+			color: #cbcbcb;
 		}
 		&:active {
 			background-color: rgba(221, 221, 221, 0.616);
@@ -89,6 +89,10 @@ $block: vcm-input-number;
 		right: 0;
 		bottom: 0;
 		margin: auto;
+		background-color: #999;
+		&[disabled] {
+			background-color: #CBCBCB;
+		}
 	}
 
 	@include element(plus) {
@@ -100,14 +104,12 @@ $block: vcm-input-number;
 			content: '';
 			width: 11px;
 			height: 2px;
-			background-color: #CBCBCB;
 		}
 		&:after {
 			@include extend-rule(absolute);
 			content: '';
 			width: 2px;
 			height: 11px;
-			background-color: #CBCBCB;
 		}
 	}
 	@include element(minus) {
@@ -119,15 +121,14 @@ $block: vcm-input-number;
 			content: '';
 			width: 11px;
 			height: 2px;
-			background-color: #CBCBCB;
 		}
 	}
 	@include when(disabled) {
 		opacity: 0.4;
 	}
 	input {
-		width: 40px;
-		height: 25px;
+		width: 49px;
+		height: 28px;
 		font-size: 13px;
 		color: #000;
 		background-color: #F5F5F5;
@@ -138,6 +139,5 @@ $block: vcm-input-number;
 		border-radius: 0; // 不加的话ios端默认带圆角
 	}
 }
+
 </style>
-
-
