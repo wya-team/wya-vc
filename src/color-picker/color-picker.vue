@@ -33,15 +33,15 @@
 		<template #content>
 			<div class="vc-color-picker__picker">
 				<div class="vc-color-picker__wrapper">
-					<vc-color-picker-panel :color="color" />	
-					<vc-color-picker-hue-slider v-if="hue" :color="color" />
-					<vc-color-picker-alpha v-if="alpha" :color="color" />
-					<vc-color-picker-predefine 
+					<vc-panel :color="color" />	
+					<vc-hue-slider v-if="hue" :color="color" />
+					<vc-alpha v-if="alpha" :color="color" />
+					<vc-predefine 
 						v-if="colors.length"
 						:colors="colors"
 						:color="color" 
 					/> 
-					<vc-color-picker-predefine 
+					<vc-predefine 
 						v-if="!colors.length && recommend"
 						:colors="recommendColors"
 						:color="color" 
@@ -74,10 +74,11 @@ import { pick } from "lodash";
 import { recommendColors } from './constants';
 import Extends from "../extends";
 import Color from "./color";
-import ColorPickerPanel from "./color-picker-panel";
-import COlorPickerHueSlider from "./color-picker-hue-slider";
-import ColorPickerAlpha from "./color-picker-alpha";
-import ColorPickerPredefine from "./color-picker-predefine";
+// components
+import Panel from "./panel";
+import HueSlider from "./hue-slider";
+import Alpha from "./alpha";
+import Predefine from "./predefine";
 import Popover from "../popover/index";
 import Icon from "../icon/index";
 import Input from "../input/index";
@@ -90,10 +91,10 @@ export default {
 		'vc-icon': Icon,
 		'vc-input': Input,
 		'vc-button': Button,
-		'vc-color-picker-panel': ColorPickerPanel,
-		'vc-color-picker-hue-slider': COlorPickerHueSlider,
-		'vc-color-picker-alpha': ColorPickerAlpha,
-		'vc-color-picker-predefine': ColorPickerPredefine,
+		'vc-panel': Panel,
+		'vc-hue-slider': HueSlider,
+		'vc-alpha': Alpha,
+		'vc-predefine': Predefine,
 	},
 	mixins: [...Extends.mixins(['emitter'])],
 	inheritAttrs: false,
