@@ -1,20 +1,9 @@
-import { JSDOM } from 'jsdom';
-import Vue from 'vue';
-import Enzyme from 'enzyme';
-Enzyme.configure({});
+const expect = require('expect');
 
-// jsdom 失效时添加
-if (typeof window === 'undefined') {
-	const documentHTML = '<!doctype html><html><body><div id="root"></div></body></html>';
-	global.document = new JSDOM(documentHTML);
-	global.window = document.window;
-	global.window.resizeTo = (width, height) => {
-		global.window.innerWidth = width || global.window.innerWidth;
-		global.window.innerHeight = height || global.window.innerHeight;
-		global.window.dispatchEvent(new Event('resize'));
-	};
-}
+require('jsdom-global')();
+window.Date = Date;
 
+global.expect = expect;
 global.requestAnimationFrame = global.requestAnimationFrame || function (cb) {
 	return setTimeout(cb, 0);
 };
@@ -29,7 +18,7 @@ const createEl = () => {
 	return el;
 };
 
-global.createVue = function(Compo, options = {}) {
+global.createVue = (Compo, options = {}) => {
 	// mounted  - 是否添加到 DOM 上
 	const { mounted = true, ...rest } = options;
 
@@ -128,4 +117,4 @@ global.wait = (s = 0.05) => {
 /**
  * 等待一个 Tick，代替 Vue.nextTick，返回 Promise
  */
-export const waitImmediate = () => wait(0);
+global.waitImmediate = () => wait(0);
