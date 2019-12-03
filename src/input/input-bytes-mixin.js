@@ -4,6 +4,19 @@ export default {
 			curMaxlength: this.maxlength
 		};
 	},
+	watch: {
+		maxlength: {
+			immediate: false,
+			handler(newVal) {
+				if (!this.bytes) {
+					this.curMaxlength = newVal;
+				} else {
+					let extraLength = this.getExtraLength();
+					this.curMaxlength = newVal + extraLength;
+				}
+			}
+		}
+	},
 	methods: {
 		handlePaste(e) {
 			// 只有在bytes下,会需要重新计算maxlength

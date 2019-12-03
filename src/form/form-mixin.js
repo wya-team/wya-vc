@@ -57,7 +57,7 @@ export default {
 		},
 
 		validate(opts = {}) {
-			const { scroll = false } = opts;
+			const { scroll = true } = opts;
 
 			return new Promise((resolve, reject) => {
 				let valid = true;
@@ -108,7 +108,7 @@ export default {
 		},
 
 		validateField(prop, opts = {}) {
-			const { scroll = false } = opts;
+			const { scroll = true } = opts;
 
 			return new Promise((resolve, reject) => {
 				let field = this.getField(prop);
@@ -134,7 +134,8 @@ export default {
 		scrollIntoView(prop, opts = {}) {
 			let field = this.getField(prop);
 			field.$el.scrollIntoView({
-				behavior: 'smooth'
+				behavior: 'smooth',
+				block: 'center',
 			});
 		},
 

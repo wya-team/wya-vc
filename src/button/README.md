@@ -15,6 +15,7 @@ size | 按钮大小:`large`、`medium`、`small` | `String` | `medium`
 icon | 按钮内的图标 | `String` | -
 long | 长按钮 | `Boolean` | `false`
 wait | 阻止重复点击 | `Number` | 250
+htmlType | 按钮的类型: `button`、 `submit`、`reset` [描述](https://www.w3school.com.cn/tags/att_button_type.asp) | `String` | `button`
 
 #### Group 属性
 

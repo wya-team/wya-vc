@@ -9,15 +9,17 @@
 		:class="classes"
 		tag="div"
 		class="vc-color-picker"
+		animation="y"
 		@ready="$emit('ready')"
 		@close="handleRestColor"
+		@visible-change="$emit('visible-change', isActive)"
 	>
 		<div class="vc-color-picker__box">
 			<input :value="value" type="hidden">
 			<vc-icon type="down" class="vc-color-picker__icon" />
 			<div class="vc-color-picker__container">
 				<div 
-					:class="{ 'vc-color-picker__focused': isActive }"
+					:class="{ 'is-focused': isActive }"
 					class="vc-color-picker__input">
 					<div class="vc-color-picker__color">
 						<div v-show="value === '' && !showPanelColor">
@@ -31,13 +33,19 @@
 		<template #content>
 			<div class="vc-color-picker__picker">
 				<div class="vc-color-picker__wrapper">
-					<vc-color-picker-panel :color="color" />	
-					<vc-color-picker-hue-slider :color="color" />
-					<vc-color-picker-alpha v-if="alpha" :color="color" />
-					<vc-color-picker-predefine 
-						v-if="colors"
+					<vc-panel :color="color" />	
+					<vc-hue-slider v-if="hue" :color="color" />
+					<vc-alpha v-if="alpha" :color="color" />
+					<vc-predefine 
+						v-if="colors.length"
 						:colors="colors"
-						:color="color" /> 
+						:color="color" 
+					/> 
+					<vc-predefine 
+						v-if="!colors.length && recommend"
+						:colors="recommendColors"
+						:color="color" 
+					/> 
 				</div>
 				<div class="vc-color-picker__confirm">
 					<span class="vc-color-picker__value">
@@ -63,12 +71,14 @@
 </template>
 <script>
 import { pick } from "lodash";
+import { recommendColors } from './constants';
 import Extends from "../extends";
 import Color from "./color";
-import ColorPickerPanel from "./color-picker-panel";
-import COlorPickerHueSlider from "./color-picker-hue-slider";
-import ColorPickerAlpha from "./color-picker-alpha";
-import ColorPickerPredefine from "./color-picker-predefine";
+// components
+import Panel from "./panel";
+import HueSlider from "./hue-slider";
+import Alpha from "./alpha";
+import Predefine from "./predefine";
 import Popover from "../popover/index";
 import Icon from "../icon/index";
 import Input from "../input/index";
@@ -81,10 +91,10 @@ export default {
 		'vc-icon': Icon,
 		'vc-input': Input,
 		'vc-button': Button,
-		'vc-color-picker-panel': ColorPickerPanel,
-		'vc-color-picker-hue-slider': COlorPickerHueSlider,
-		'vc-color-picker-alpha': ColorPickerAlpha,
-		'vc-color-picker-predefine': ColorPickerPredefine,
+		'vc-panel': Panel,
+		'vc-hue-slider': HueSlider,
+		'vc-alpha': Alpha,
+		'vc-predefine': Predefine,
 	},
 	mixins: [...Extends.mixins(['emitter'])],
 	inheritAttrs: false,
@@ -121,12 +131,21 @@ export default {
 			type: Boolean,
 			default: false
 		},
+		hue: {
+			type: Boolean,
+			default: true
+		},
+		recommend: {
+			type: Boolean,
+			default: false
+		},
 		colors: {
 			type: Array,
+			default: () => ([])
 		},
 		format: {
 			type: String,
-			validator: v => /(large|small|default)/.test(v),
+			validator: v => /(hsl|hsv|hex|rgb)/.test(v),
 		}
 	},
 	data() {
@@ -139,6 +158,7 @@ export default {
 			isActive: false,
 			showPanelColor: false,
 			customColor: '',
+			recommendColors: [...recommendColors]
 		};
 	},
 	computed: {
@@ -177,6 +197,7 @@ export default {
 			immediate: true,
 			handler(val) {
 				this.customColor = val;
+				this.isActive && this.$emit('color-change', val);
 			}
 		},
 	},
@@ -274,12 +295,11 @@ $block: vc-color-picker;
 		background-image: none;
 		position: relative;
 		transition: border 0.2s ease-in-out, background 0.2s ease-in-out, box-shadow 0.2s ease-in-out;
-	}
-	@include element(focused) {
-		border-color: #57a3f3;
-		outline: 0;
-		-webkit-box-shadow: 0 0 0 2px rgba(45,140,240,.2);
-		box-shadow: 0 0 0 2px rgba(45,140,240,.2);
+		@include when(focused) {
+			border-color: #57a3f3;
+			outline: 0;
+			box-shadow: 0 0 0 2px rgba(45, 140, 240, .2);
+		}
 	}
 	@include when(large) {
 		@include element(color) {

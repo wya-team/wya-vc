@@ -69,12 +69,13 @@
 			<vc-button type="primary" @click="handleSubmit('formValidate')">Submit</vc-button>
 			<vc-button style="margin-left: 8px" @click="handleReset('formValidate')">Reset</vc-button>
 			<vc-button style="margin-left: 8px" @click="handleOnly('formValidate')">Only</vc-button>
+			<vc-button style="margin-left: 8px" @click="handleShow">Popop</vc-button>
 		</vc-form-item>
 	</vc-form>
 </template>
 <script>
+import { FormPopup } from './popup/form.vue';
 import Form from '..';
-
 import Tpl from './basic/tpl'; // 可以使用trigger
 import FakeArray from './basic/array'; // 可以使用trigger
 import Input from '../../input';
@@ -116,13 +117,22 @@ export default {
 				array: [{
 					required: true
 				}]
-			}
+			},
 		};
 	},
 	computed: {
 		
 	},
 	methods: {
+		handleShow() {
+			FormPopup.popup({
+
+			}).then(res => {
+
+			}).catch(err => {
+
+			});
+		},
 		handleSubmit(name) {
 
 			this.$refs[name].validate(() => {}).then((res) => {
