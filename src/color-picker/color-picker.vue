@@ -72,6 +72,7 @@
 <script>
 import { pick } from "lodash";
 import { recommendColors } from './constants';
+import { VcError } from '../vc/index';
 import Extends from "../extends";
 import Color from "./color";
 // components
@@ -229,7 +230,7 @@ export default {
 		},
 		getColorRgb(color, alpha) {
 			if (!(color instanceof Color)) {
-				throw Error('color should be instance of Color Class');
+				throw new VcError('color-picker', 'color should be instance of Color Class');
 			}
 			
 			const { r, g, b } = color.toRgb();
