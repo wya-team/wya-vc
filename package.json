@@ -25,8 +25,9 @@
         "lint-staged": "lint-staged",
         "pre-commit:install": "cp .hooks/* .git/hooks/",
         "readme": "node ./config/readme.config.js",
-        "test": "cross-env BABEL_ENV=test karma start tests/karma.config.js --single-run",
-        "test:watch": "cross-env BABEL_ENV=test karma start tests/karma.config.js"
+        "test:common": "node ./tests/prompt.config.js && cross-env BABEL_ENV=test karma start tests/karma.config.js",
+        "test": "npm run test:common -- --single-run",
+        "test:watch": "npm run test:common"
     },
     "author": "wya-team",
     "license": "MIT",

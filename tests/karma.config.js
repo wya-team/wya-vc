@@ -1,10 +1,9 @@
-const webpackConfig = require('../config/webpack.config.test');
+const webpackConfig = require('./webpack.config.test');
 
 module.exports = function (config) {
 	const configuration = {
-		files: [
-			'./setup.js'
-		],
+		files: ['./index.js'],
+
 		browsers: ['ChromeHeadless'],
 
 		// 测试单元/断言
@@ -12,13 +11,18 @@ module.exports = function (config) {
 
 		// 预编译处理
 		preprocessors: {
-		  './setup.js': ['webpack', 'sourcemap'], // 'coverage' 同 istanbul
+		  './index.js': ['webpack', 'sourcemap'], // 'coverage' 同 istanbul
 		},
+
 		webpack: webpackConfig,
+
+		// webpack-dev配置
 		webpackMiddleware: {
 			noInfo: true,
 			stats: 'errors-only'
 		},
+
+		// 设置超时时间30秒
 		client: {
 			mocha: {
 				timeout: 30000

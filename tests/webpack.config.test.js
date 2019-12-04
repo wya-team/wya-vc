@@ -21,7 +21,8 @@ module.exports = {
 		extensions: ['.js', '.vue', '.json', '.scss', '.css'],
 		alias: {
 			'vue$': 'vue/dist/vue.esm.js',
-			'node_modules': path.resolve(APP_ROOT, 'node_modules')
+			'node_modules': path.resolve(APP_ROOT, 'node_modules'),
+			'@tests': path.resolve(APP_ROOT, 'tests')
 		}
 	},
 	module: {
@@ -29,7 +30,7 @@ module.exports = {
 			{
 				test: /\.jsx?$/,
 				include: process.cwd(),
-				exclude: /node_modules/,
+				exclude: /node_modules|tests\/helper.js|tests\/index.js/,
 				use: [
 					{
 						loader: 'babel-loader',
