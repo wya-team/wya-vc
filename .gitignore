@@ -53,6 +53,7 @@ npm-error.log
 # user config
 routes.dev.js
 user.config.js
+/tests/index.js
 
 # lock
 yarn.lock
