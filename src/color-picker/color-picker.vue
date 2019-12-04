@@ -14,22 +14,30 @@
 		@close="handleRestColor"
 		@visible-change="$emit('visible-change', isActive)"
 	>
-		<div class="vc-color-picker__box">
-			<input :value="value" type="hidden">
-			<vc-icon type="down" class="vc-color-picker__icon" />
-			<div class="vc-color-picker__container">
-				<div 
-					:class="{ 'is-focused': isActive }"
-					class="vc-color-picker__input">
-					<div class="vc-color-picker__color">
-						<div v-show="value === '' && !showPanelColor">
-							<vc-icon type="close" />
+		<vc-input
+			ref="input"
+			:class="{ 'is-focus': isActive }"
+			class="vc-color-picker__box"
+		>
+			<template #content>
+				<div>
+					<input :value="value" type="hidden">
+					<div class="vc-color-picker__input">
+						<div class="vc-color-picker__color">
+							<div v-show="value === '' && !showPanelColor">
+								<vc-icon type="close" />
+							</div>
+							<div v-show="value || showPanelColor" :style="{ backgroundColor: displayedColorStyle }" />
 						</div>
-						<div v-show="value || showPanelColor" :style="{ backgroundColor: displayedColorStyle }" />
 					</div>
 				</div>
-			</div>
-		</div>
+			</template>
+			<template #append>
+				<div class="vc-color-picker__append">
+					<vc-icon :type="icon" />
+				</div>
+			</template>
+		</vc-input>
 		<template #content>
 			<div class="vc-color-picker__picker">
 				<div class="vc-color-picker__wrapper">
@@ -72,6 +80,7 @@
 <script>
 import { pick } from "lodash";
 import { recommendColors } from './constants';
+import { VcError } from '../vc/index';
 import Extends from "../extends";
 import Color from "./color";
 // components
@@ -175,16 +184,22 @@ export default {
 			if (!this.value && !this.showPanelColor) {
 				return 'transparent';
 			}
-
+			
 			return this.getColorRgb(this.color, this.alpha);
+		},
+		icon() {
+			return this.isActive ? 'up' : 'down';
 		},
 	},
 	watch: {
-		value(val) {
-			if (!val) {
-				this.showPanelColor = false;
-			} else if (val && val !== this.color.value) {
-				this.color.fromString(val);
+		value: {
+			immediate: true,
+			handler(val) {
+				if (!val) {
+					this.showPanelColor = false;
+				} else if (val && val !== this.color.value) {
+					this.color.fromString(val);
+				}
 			}
 		},
 		color: {
@@ -229,7 +244,7 @@ export default {
 		},
 		getColorRgb(color, alpha) {
 			if (!(color instanceof Color)) {
-				throw Error('color should be instance of Color Class');
+				throw new VcError('color-picker', 'color should be instance of Color Class');
 			}
 			
 			const { r, g, b } = color.toRgb();
@@ -247,6 +262,13 @@ $block: vc-color-picker;
 
 @include block($block) {
 	display: inline-block;
+	.vc-input {
+		min-height: 24px;
+	}
+	.vc-input__append {
+		height: 24px;
+		line-height: 24px;
+	}
 	@include element(box) {
 		display: inline-block;
 		width: 100%;
@@ -271,35 +293,27 @@ $block: vc-color-picker;
 			}
 		}
 	}
-	@include element(icon) {
-		width: 32px;
-		height: 32px;
-		line-height: 32px;
-		font-size: 10px;
-		text-align: center;
+	@include element(append) {
 		color: #808695;
-		position: absolute;
-		right: 0;
-		z-index: 3;
+		padding: 0 10px 0 2px;
+		position: relative;
+		text-align: center;
+		line-height: 24px;
+		font-size: 12px;
+		white-space: nowrap;
 	}
 	@include element(input) {
 		display: inline-block;
 		width: 100%;
 		height: 32px;
 		line-height: 1.5;
-		padding: 6px 32px 6px 7px;
+		padding: 7px 6px 6px 7px;
 		font-size: 14px;
-		border: 1px solid #dcdee2;
 		border-radius: 4px;
 		color: #515a6e;
 		background-image: none;
 		position: relative;
 		transition: border 0.2s ease-in-out, background 0.2s ease-in-out, box-shadow 0.2s ease-in-out;
-		@include when(focused) {
-			border-color: #57a3f3;
-			outline: 0;
-			box-shadow: 0 0 0 2px rgba(45, 140, 240, .2);
-		}
 	}
 	@include when(large) {
 		@include element(color) {
@@ -308,7 +322,7 @@ $block: vc-color-picker;
 		}
 		@include element(input) {
 			font-size: 16px;
-			padding: 9px 32px 6px 7px;
+			padding: 10px 6px 6px 7px;
 			height: 40px;
 		}
 		@include element(icon) {
@@ -324,7 +338,7 @@ $block: vc-color-picker;
 		}
 		@include element(input) {
 			height: 24px;
-			padding: 4px 32px 4px 7px;
+			padding: 5px 6px 4px 7px;
 		}
 		@include element(icon) {
 			font-size: 10px;
