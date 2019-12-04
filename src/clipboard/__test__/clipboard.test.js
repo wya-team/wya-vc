@@ -1,16 +1,8 @@
-import Vue from 'vue';
-import Copy from '..';
+import { createVue } from '@tests/helper';
+import Clipboard from '..';
 
-
-
-describe('Copy', () => {
-	test('测试传递属性', () => {
-		const component = createComponent(
-			Copy, 
-			{
-				value: 'Hello'
-			}
-		);
-		expect(component.value).toBe('Hello');
+describe('Clipboard', () => {
+	it('basic', () => {
+		expect(!!Clipboard).to.equal(true);
 	});
 });

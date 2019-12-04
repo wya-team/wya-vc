@@ -12,7 +12,7 @@
         "dev": "npm run prompt && npm run all",
         "serve": "node --max_old_space_size=8192 ./node_modules/webpack-dev-server/bin/webpack-dev-server --config  ./config/webpack.config.dev.js --color --progress --hot",
         "demo": "npm run remove:dist && cross-env UGLIFY_JS=true node --max_old_space_size=8192 ./node_modules/webpack/bin/webpack --config ./config/webpack.config.dist.js --color --progress",
-        "build": "rm -rf ./lib && cross-env NODE_ENV=production babel src --out-dir lib --copy-files --ignore '**.test.js','**.md','examples/**'",
+        "build": "npm run test && rm -rf ./lib && cross-env NODE_ENV=production babel src --out-dir lib --copy-files --ignore '**.test.js','**.md','examples/**'",
         "pub": "bash config/publish.sh",
         "remove:dist": "rm -rf ./dist",
         "lint": "esw config ./src --ext .vue,.js",

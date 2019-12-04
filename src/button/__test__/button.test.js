@@ -1,4 +1,4 @@
-import Vue from 'vue';
+import { createVue, createComponent } from '@tests/helper';
 import Button from '../index';
 import MButton from '../index.m';
 

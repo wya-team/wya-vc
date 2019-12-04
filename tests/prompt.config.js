@@ -24,7 +24,7 @@ fs.readdirSync(directory).forEach((file) => {
 const question = [
 	{
 		type: 'autocomplete',
-		message: 'Select component:',
+		message: 'Select component【TEST】:',
 		name: 'component',
 		// suggestOnly: true, 开启后可以验证数据且需要使用tab选中
 		default: 'all',
