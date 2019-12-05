@@ -107,6 +107,10 @@ export default {
 	},
 	mixins: [...Extends.mixins(['emitter'])],
 	inheritAttrs: false,
+	model: {
+		prop: 'value',
+		event: 'change'
+	},
 	props: {
 		...pick(Popover.props, [
 			'portalClassName'
@@ -237,7 +241,6 @@ export default {
 			this.handleButtons(value);
 		},
 		handleButtons(value) {
-			this.$emit('input', value);
 			this.$emit('change', value);
 			this.dispatch('vc-form-item', 'form-change', value);
 			this.isActive = false;
@@ -320,6 +323,7 @@ $block: vc-color-picker;
 			width: 20px;
 			height: 20px;
 		}
+		// TODO: 支持Input size, remove;
 		@include element(input) {
 			font-size: 16px;
 			padding: 10px 6px 6px 7px;
@@ -336,6 +340,7 @@ $block: vc-color-picker;
 			width: 14px;
 			height: 14px;
 		}
+		// TODO: 支持Input size, remove;
 		@include element(input) {
 			height: 24px;
 			padding: 5px 6px 4px 7px;
