@@ -233,7 +233,6 @@ export default {
 	position: relative;
 	display: inline-block;
 	overflow: hidden;
-	font-size: 0; // 解决端的白边间隔
 	@include element(placeholder) {
 		@extend %size;
 		background: #f5f7fa;
