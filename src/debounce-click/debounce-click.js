@@ -6,7 +6,7 @@ export default {
 	props: {
 		wait: {
 			type: Number,
-			default: 250
+			default: 0.25
 		},
 		tag: {
 			type: [String, Object, Function],
@@ -24,8 +24,10 @@ export default {
 		handleClick(callback) {
 			const { wait } = this;
 			if (callback) {
-				return debounce(callback, wait, {
-					leading: true
+				// TODO: 时间转换成秒为单位
+				return debounce(callback, wait > 50 ? wait : wait * 1000, {
+					leading: true,
+					trailing: false
 				});
 			}
 		}
