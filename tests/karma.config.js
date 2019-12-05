@@ -22,10 +22,10 @@ module.exports = function (config) {
 			stats: 'errors-only'
 		},
 
-		// 设置超时时间30秒
+		// 设置超时时间5分钟
 		client: {
 			mocha: {
-				timeout: 30000
+				timeout: 5 * 60 * 1000
 			}
 		},
 

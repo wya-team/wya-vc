@@ -113,8 +113,11 @@ export const triggerKeyDown = (el, keyCode) => {
  * @param {Number} s
  */
 
-export const wait = (s = 0.05) => {
-	return new Promise(resolve => setTimeout(() => resolve(), s * 1000));
+export const wait = (s = 0.05, callback) => {
+	return new Promise(resolve => setTimeout(() => {
+		callback && callback();
+		resolve();
+	}, s * 1000));
 };
 
 /**
