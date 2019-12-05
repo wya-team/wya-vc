@@ -100,7 +100,7 @@ $color-block: 'data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAwAAAAMCAIAAADZF8u
 		height: 100%;
 	}
 	@include element(thumb) {
-		 position: absolute;
+		position: absolute;
 		top: 0;
 		left: 100px;
 		cursor: pointer;
