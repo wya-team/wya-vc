@@ -123,22 +123,22 @@ export default {
 		handleChange() {
 			const current = this.curSnapshots.length;
 			const snapshots = [...this.curSnapshots, ...this.undoSnapshots];
-			let canRedo = false;
-			let canUndo = false;
+			let allowRedo = false;
+			let allowUndo = false;
 			
 			if (current !== 0) {
-				canUndo = true;
+				allowUndo = true;
 			}
 			
 			if (current < snapshots.length) {
-				canRedo = true;
+				allowRedo = true;
 			}
 
 			this.$emit('change', { 
 				snapshots,
 				current,
-				canRedo,
-				canUndo
+				allowRedo,
+				allowUndo
 			});
 		},
 		handleStatrt(e) {
