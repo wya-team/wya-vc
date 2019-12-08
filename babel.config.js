@@ -30,6 +30,11 @@ module.exports = (api) => {
 					"loose": true
 				}
 			]
-		]
+		],
+		env: {
+			"test": {
+				"plugins": ["istanbul"]
+			}
+		}
 	};
 };

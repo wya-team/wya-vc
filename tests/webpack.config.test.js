@@ -1,6 +1,7 @@
 const path = require('path');
 const nodeExternals = require('webpack-node-externals');
 const VueLoaderPlugin = require('vue-loader/lib/plugin');
+const ProgressBarPlugin = require('progress-bar-webpack-plugin');
 
 const APP_ROOT = process.cwd();
 
@@ -12,9 +13,7 @@ const postcssLoader = {
 		}
 	}
 };
-
 module.exports = {
-	target: 'web',
 	mode: 'development',
 	resolve: {// 重定向路径
 		mainFiles: ['index'],
@@ -22,13 +21,16 @@ module.exports = {
 		extensions: ['.js', '.vue', '.json', '.scss', '.css'],
 		alias: {
 			'vue$': 'vue/dist/vue.esm.js',
-			'node_modules': path.resolve(APP_ROOT, 'node_modules')
+			'node_modules': path.resolve(APP_ROOT, 'node_modules'),
+			'@tests': path.resolve(APP_ROOT, 'tests')
 		}
 	},
 	module: {
 		rules: [
 			{
 				test: /\.jsx?$/,
+				include: process.cwd(),
+				exclude: /node_modules|tests\/helper.js|tests\/index.js/,
 				use: [
 					{
 						loader: 'babel-loader',
@@ -40,6 +42,7 @@ module.exports = {
 			},
 			{
 				test: /\.vue/,
+				include: process.cwd(),
 				use: [
 					{
 						loader: 'vue-loader',
@@ -63,8 +66,9 @@ module.exports = {
 			}
 		]
 	},
-	externals: [nodeExternals()],
+	externals: [],
 	plugins: [
-		new VueLoaderPlugin()
-	],
+		new VueLoaderPlugin(),
+		new ProgressBarPlugin()
+	]
 };

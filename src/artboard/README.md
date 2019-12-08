@@ -8,6 +8,9 @@ artboard canvas画板
 属性 | 说明 | 类型 | 默认值
 ---|---|---|---
 options | canvas配置参数 | Object | -
+getInstance | 获取画布实例 | Function | -
+width | 设置canvas的宽度,不传则根据容器的宽度来设置 | Number | 0
+height | 设置canvas的高度,不传则根据容器的高度来设置 | Number | 0
 
 #### 事件
 

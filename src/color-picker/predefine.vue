@@ -70,6 +70,7 @@ export default {
 <style lang="scss">
 @import '../style/index.scss';
 $block: vc-color-picker-predefine;
+$url: 'data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAwAAAAMCAIAAADZF8uwAAAAGUlEQVQYV2M4gwH+YwCGIasIUwhT25BVBADtzYNYrHvv4gAAAABJRU5ErkJggg==';
 
 @include block($block) {
     display: flex;
@@ -95,7 +96,7 @@ $block: vc-color-picker-predefine;
 			box-shadow: 0 0 2px 1px #409EFF;
 		}
 		@include when(alpha) {
-			background: url('data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAwAAAAMCAIAAADZF8uwAAAAGUlEQVQYV2M4gwH+YwCGIasIUwhT25BVBADtzYNYrHvv4gAAAABJRU5ErkJggg==');
+			background: url($url);
 		}
 	}
 }

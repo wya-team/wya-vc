@@ -1,13 +1,8 @@
-import Vue from 'vue';
-import FilesPicker from '../files-picker.vue';
-
-
+import { createVue } from '@tests/helper';
+import FilesPicker from '..';
 
 describe('FilesPicker', () => {
-	test('测试传递属性', () => {
-		const component = createComponent(
-			FilesPicker
-		);
-		expect(typeof component).toBe('object');
+	it('basic', () => {
+		expect(!!FilesPicker).to.equal(true);
 	});
 });

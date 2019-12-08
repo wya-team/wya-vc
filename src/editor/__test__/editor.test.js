@@ -1,13 +1,8 @@
-import Vue from 'vue';
-import Editor from '../editor.vue';
-
-
+import { createVue } from '@tests/helper';
+import Editor from '..';
 
 describe('Editor', () => {
-	test('测试传递属性', () => {
-		const component = createComponent(
-			Editor
-		);
-		expect(typeof component).toBe('object');
+	it('basic', () => {
+		expect(!!Editor).to.equal(true);
 	});
 });

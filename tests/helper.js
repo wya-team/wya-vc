@@ -1,13 +1,6 @@
-const expect = require('expect');
+import Vue from 'vue';
 
-require('jsdom-global')();
-window.Date = Date;
-
-global.expect = expect;
-global.requestAnimationFrame = global.requestAnimationFrame || function (cb) {
-	return setTimeout(cb, 0);
-};
-
+const Global = window || global || this || {};
 
 const createEl = () => {
 	const el = document.createElement('div');
@@ -18,7 +11,11 @@ const createEl = () => {
 	return el;
 };
 
-global.createVue = (Compo, options = {}) => {
+export const requestAnimationFrame = Global.requestAnimationFrame || function (cb) {
+	return setTimeout(cb, 0);
+};
+
+export const createVue = (Compo, options = {}) => {
 	// mounted  - 是否添加到 DOM 上
 	const { mounted = true, ...rest } = options;
 
@@ -32,7 +29,8 @@ global.createVue = (Compo, options = {}) => {
  * @param  {Object}  options
  * @return {Object} vm
  */
-global.createComponent = (wrapper, propsData, options = {}) => {
+
+export const createComponent = (wrapper, propsData, options = {}) => {
 	// mounted  - 是否添加到 DOM 上
 	const { mounted = true, ...rest } = options;
 	const Ctor = Vue.extend(wrapper);
@@ -47,7 +45,8 @@ global.createComponent = (wrapper, propsData, options = {}) => {
  * 回收 vm
  * @param  {Object} vm
  */
-global.destroyVM = (vm) => {
+
+export const destroyVM = (vm) => {
 	vm.$destroy && vm.$destroy();
 	vm.$el 
 		&& vm.$el.parentNode 
@@ -62,7 +61,8 @@ global.destroyVM = (vm) => {
  * @param  {String} name
  * @param  {*} opts
  */
-global.triggerEvent = (el, name, ...opts) => {
+
+export const triggerEvent = (el, name, ...opts) => {
 	let eventName;
 
 	if (/^mouse|click/.test(name)) {
@@ -87,7 +87,8 @@ global.triggerEvent = (el, name, ...opts) => {
  * @param {Element} el
  * @param {*} opts
  */
-global.triggerClick = (el, ...opts) => {
+
+export const triggerClick = (el, ...opts) => {
 	triggerEvent(el, 'mousedown', ...opts);
 	triggerEvent(el, 'mouseup', ...opts);
 
@@ -99,7 +100,8 @@ global.triggerClick = (el, ...opts) => {
  * @param {Element} el
  * @param {keyCode} int
  */
-global.triggerKeyDown = (el, keyCode) => {
+
+export const triggerKeyDown = (el, keyCode) => {
 	const evt = document.createEvent('Events');
 	evt.initEvent('keydown', true, true);
 	evt.keyCode = keyCode;
@@ -110,11 +112,21 @@ global.triggerKeyDown = (el, keyCode) => {
  * 等待 s 秒，返回 Promise
  * @param {Number} s
  */
-global.wait = (s = 0.05) => {
-	return new Promise(resolve => setTimeout(() => resolve(), s * 1000));
+
+export const wait = (s = 0.05, callback) => {
+	return new Promise(resolve => setTimeout(() => {
+		callback && callback();
+		resolve();
+	}, s * 1000));
 };
 
 /**
  * 等待一个 Tick，代替 Vue.nextTick，返回 Promise
  */
-global.waitImmediate = () => wait(0);
+export const waitImmediate = () => wait(0);
+
+
+
+
+
+

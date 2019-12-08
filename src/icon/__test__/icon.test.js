@@ -1,13 +1,8 @@
-import Vue from 'vue';
-import Icon from '../icon.vue';
-
-
+import { createVue } from '@tests/helper';
+import Icon from '..';
 
 describe('Icon', () => {
-	test('测试传递属性', () => {
-		const component = createComponent(
-			Icon
-		);
-		expect(typeof component).toBe('object');
+	it('basic', () => {
+		expect(!!Icon).to.equal(true);
 	});
 });

@@ -1,13 +1,8 @@
-import Vue from 'vue';
-import Popover from '../popover.vue';
-
-
+import { createVue } from '@tests/helper';
+import Popover from '..';
 
 describe('Popover', () => {
-	test('测试传递属性', () => {
-		const component = createComponent(
-			Popover
-		);
-		expect(typeof component).toBe('object');
+	it('basic', () => {
+		expect(!!Popover).to.equal(true);
 	});
 });
