@@ -362,6 +362,7 @@ export default {
 		},
 		/**
 		 * 追加瀑布流item
+		 * @params count 追加的个数
 		 */
 		addWaterfallItem(count) {
 			const baseLength = this.itemStyles.length;
