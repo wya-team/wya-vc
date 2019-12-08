@@ -422,7 +422,6 @@ export default {
 	&__waterfall {
 		position: relative;
 		overflow: auto;
-		height: 100%;
 	}
 }
 </style>
