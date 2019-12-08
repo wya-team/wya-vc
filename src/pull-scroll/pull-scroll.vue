@@ -51,9 +51,26 @@
 		>
 			<div v-if="$slots.header || $scopedSlots.header" ref="header"><slot name="header" /></div>
 			<div v-if="$slots.content || $scopedSlots.content" ref="content"><slot name="content" /></div>
-			<!-- 项目中统一使用it, key由slot决定 -->
-			<template v-for="(item, index) in dataSource">
-				<slot :it="item" :index="index" />
+			<div 
+				v-if="waterfall" 
+				ref="waterfall" 
+				:style="{ height: waterfallHeight + 'px' }"
+				class="vc-pull-scroll__waterfall">
+				<!-- 项目中统一使用it, key由slot决定 -->
+				<template v-for="(item, index) in dataSource">
+					<slot 
+						:it="item" 
+						:index="index" 
+						:width="itemWidth"
+						:styles="itemStyles[index]"
+					/>
+				</template>
+			</div>
+			<template v-else>
+				<!-- 项目中统一使用it, key由slot决定 -->
+				<template v-for="(item, index) in dataSource">
+					<slot :it="item" :index="index" />
+				</template>
 			</template>
 			<div v-if="$slots.footer || $scopedSlots.footer" ref="footer"><slot name="footer" /></div>
 		</vc-core>
@@ -89,7 +106,10 @@
 	</div>
 </template>
 <script>
-import { pick } from 'lodash';
+/**
+ * TODO: 长列表优化
+ */
+import { pick, throttle } from 'lodash';
 import { Resize } from '../utils/index';
 import Core from './core.vue';
 import ScrollStatus from './scroll-status.vue';
@@ -124,6 +144,22 @@ export default {
 		wrapper: {
 			type: Boolean,
 			default: false,
+		},
+		waterfall: {
+			type: Boolean,
+			default: false
+		},
+		columns: {
+			type: Number,
+			default: 2
+		},
+		rowGap: {
+			type: Number,
+			default: 10
+		},
+		verticalGap: {
+			type: Number,
+			default: 10
 		},
 		...pick(Core.props, ['scaleY', 'pauseY', 'inverted', 'dataSource', 'show', 'loadData', 'total']),
 		pullDownText: PullDownStatus.props.text,
@@ -167,6 +203,14 @@ export default {
 			// 内容的高度 是否大于 容器的高度，默认false
 			isLack: false,
 
+			// 瀑布流容器元素
+			waterfallContainer: null,
+			// 瀑布流每列的高度数组
+			colHeights: [],
+			// 列表每个item的宽度
+			itemWidth: 0,
+			// 附加给列表每个item的样式
+			itemStyles: []
 		};
 	},
 	computed: {
@@ -217,6 +261,10 @@ export default {
 			});
 			return basic;
 		},
+		// 瀑布流容器高度，因为子元素都是绝对定位，所以需要要用高度撑开
+		waterfallHeight() {
+			return Math.max.apply(null, this.colHeights);
+		}
 	},
 	watch: {
 		pullDownStatus(v, oldV) {
@@ -224,6 +272,9 @@ export default {
 		},
 		pullUpStatus(v, oldV) {
 			this.prePullUpStatus = oldV;
+		},
+		columns() {
+			this.waterfall && this.resetWaterfall();
 		}
 	},
 	mounted() {
@@ -236,11 +287,18 @@ export default {
 		this.pullUp 
 			&& this.$refs.core
 			&& Resize.on(this.$refs.core.$el, this.handleResize);
+		
+		if (this.waterfall) {
+			this.initWaterfall();
+			Resize.on(this.$refs.waterfall, this.handleWaterfallResize);
+		}
 	},
 	beforeDestroy() {
 		this.pullUp
 			&& this.$refs.core 
 			&& Resize.off(this.$refs.core.$el, this.handleResize);
+		
+		this.waterfall && Resize.off(this.$refs.waterfall, this.handleWaterfallResize);
 	},
 	methods: {
 		handleResize() {
@@ -267,6 +325,7 @@ export default {
 		handleSuccess({ data, page, type }) {
 			this.currentPage = page;
 			this.$emit('load-success', { data, type });
+			this.waterfall && this.addWaterfallItem(data.length);
 		},
 
 		/**
@@ -275,15 +334,94 @@ export default {
 		handleFinish({ type }) {
 			this.scrollStatus = this.total < Number(this.currentPage) + 1 ? 2 : 0;
 			this.$emit('load-finish', { type });
-		}
+		},
+		/**
+		 * 初始化瀑布流
+		 */
+		initWaterfall() {
+			this.waterfallContainer = this.$refs.waterfall;
+			this.calcItemWidth();
+		},
+		/**
+		 * 重设瀑布流（原因：列数变化、容器resize）
+		 */
+		resetWaterfall() {
+			this.calcItemWidth();
+			this.itemStyles = [];
+			this.colHeights = [];
+			this.$nextTick(() => {
+				this.addWaterfallItem(this.dataSource.length);
+			});
+		},
+		/**
+		 * 计算瀑布流每个item的宽度
+		 */
+		calcItemWidth() {
+			const containerWidth = this.waterfallContainer.clientWidth;
+			this.itemWidth = (containerWidth - (this.columns + 1) * this.rowGap) / this.columns;
+		},
+		/**
+		 * 追加瀑布流item
+		 */
+		addWaterfallItem(count) {
+			const baseLength = this.itemStyles.length;
+			
+			Array.from({ length: count }).forEach((it, index) => {
+				const realIndex = baseLength + index;
+				const item = this.waterfallContainer.children[realIndex];
+				const height = item ? item.clientHeight : 0;
+				
+				let activeIndex = 0; // 应该追加item的那列的索引（第x列）
+				// 第一行
+				if (realIndex < this.columns) {
+					this.itemStyles.push({
+						position: 'absolute',
+						top: 0,
+						left: this.itemWidth * realIndex + this.rowGap * (realIndex + 1) + 'px',
+						width: this.itemWidth + 'px'
+					});
+					activeIndex = realIndex;
+				} else { // 其它行
+					// 找到当前高度最小的那列的高度和索引
+					const minHeight = this.colHeights.reduce((pre, cur, curIndex) => {
+						if (cur < pre) {
+							activeIndex = curIndex;
+							return cur;
+						} else {
+							return pre;
+						}
+					}, this.colHeights[0]);
+					this.itemStyles.push({
+						position: 'absolute',
+						top: minHeight + this.verticalGap + 'px',
+						left: this.itemWidth * activeIndex + this.rowGap * (activeIndex + 1) + 'px',
+						width: this.itemWidth + 'px'
+					});
+				}
+				// 更新该列的高度
+				this.$set(
+					this.colHeights, 
+					activeIndex, 
+					(this.colHeights[activeIndex] || 0) + height + (realIndex < this.columns ? 0 : this.verticalGap)
+				);
+			});
+		},
+		handleWaterfallResize: throttle(function () {
+			this.resetWaterfall();
+		}, 200)
 	}
 };
 </script>
-<style>
+<style lang="scss">
 .vc-pull-scroll {
 	position: relative;
 	overflow-scrolling: touch;
 	-webkit-overflow-scrolling: touch;
 	overflow: auto;
+	&__waterfall {
+		position: relative;
+		overflow: auto;
+		height: 100%;
+	}
 }
 </style>
