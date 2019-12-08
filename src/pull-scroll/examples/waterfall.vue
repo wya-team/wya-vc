@@ -34,15 +34,13 @@
 import { ajax } from '@wya/http';
 import PullScroll from '..';
 import Img from '../../img';
-import Transition from '../../transition';
 
 let count = 0;
 export default {
 	name: "vc-pull-scroll-basic",
 	components: {
 		'vc-pull-scroll': PullScroll,
-		'vc-img': Img,
-		'vc-transition-fade': Transition.Fade
+		'vc-img': Img
 	},
 	data() {
 		return {
