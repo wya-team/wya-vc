@@ -4,7 +4,7 @@
 			:load-data="loadData"
 			:data-source="dataSource"
 			:total="total"
-			:columns="columns"
+			:cols="columns"
 			waterfall
 		>
 			<template #header>
