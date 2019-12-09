@@ -21,8 +21,11 @@ export default {
 		};
 	},
 	watch: {
-		content(v) {
-			this.getImgUrls(v);
+		content: {
+			immediate: true,
+			handler(v) {
+				v && this.getImgUrls(v);
+			}
 		}
 	},
 	mounted() {
@@ -45,19 +48,22 @@ export default {
 		},
 
 		getImgUrls(str) {
+			let imgs = document.querySelectorAll('img');
 			let imgReg = /<img.*?(?:>|\/>)/gi;
 			// eslint-disable-next-line
 			let srcReg = /src=[\'\"]?([^\'\"]*)[\'\"]?/i;
 			let arr = str.match(imgReg);
-			let imgUrls = [];
-			for (let i = 0; i < arr.length; i++) {
-				let src = arr[i].match(srcReg);
-				// 获取图片地址
-				if (src[1]) {
-					imgUrls.push(src[1]);
+			if (arr) {
+				let imgUrls = [];
+				for (let i = 0; i < arr.length; i++) {
+					let src = arr[i].match(srcReg);
+					// 获取图片地址
+					if (src[1]) {
+						imgUrls.push(src[1]);
+					}
 				}
+				this.allImgUlrs = imgUrls;
 			}
-			this.allImgUlrs = imgUrls;
 		},
 
 		handlePreview(e, idx) {
