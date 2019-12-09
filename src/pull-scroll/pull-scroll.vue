@@ -149,17 +149,15 @@ export default {
 			type: Boolean,
 			default: false
 		},
-		columns: {
+		// 瀑布流的列数
+		cols: {
 			type: Number,
 			default: 2
 		},
-		rowGap: {
-			type: Number,
-			default: 10
-		},
-		verticalGap: {
-			type: Number,
-			default: 10
+		// 瀑布流间距[水平间距, 垂直间距]
+		gutter: {
+			type: Array,
+			default: () => ([10, 10])
 		},
 		...pick(Core.props, ['scaleY', 'pauseY', 'inverted', 'dataSource', 'show', 'loadData', 'total']),
 		pullDownText: PullDownStatus.props.text,
@@ -273,7 +271,7 @@ export default {
 		pullUpStatus(v, oldV) {
 			this.prePullUpStatus = oldV;
 		},
-		columns() {
+		cols() {
 			this.waterfall && this.resetWaterfall();
 		}
 	},
@@ -357,14 +355,16 @@ export default {
 		 * 计算瀑布流每个item的宽度
 		 */
 		calcItemWidth() {
+			const [rowGap] = this.gutter;
 			const containerWidth = this.waterfallContainer.clientWidth;
-			this.itemWidth = (containerWidth - (this.columns + 1) * this.rowGap) / this.columns;
+			this.itemWidth = (containerWidth - (this.cols + 1) * rowGap) / this.cols;
 		},
 		/**
 		 * 追加瀑布流item
 		 * @params count 追加的个数
 		 */
 		addWaterfallItem(count) {
+			const [rowGap, verticalGap] = this.gutter;
 			const baseLength = this.itemStyles.length;
 			
 			Array.from({ length: count }).forEach((it, index) => {
@@ -374,11 +374,11 @@ export default {
 				
 				let activeIndex = 0; // 应该追加item的那列的索引（第x列）
 				// 第一行
-				if (realIndex < this.columns) {
+				if (realIndex < this.cols) {
 					this.itemStyles.push({
 						position: 'absolute',
 						top: 0,
-						left: this.itemWidth * realIndex + this.rowGap * (realIndex + 1) + 'px',
+						left: this.itemWidth * realIndex + rowGap * (realIndex + 1) + 'px',
 						width: this.itemWidth + 'px'
 					});
 					activeIndex = realIndex;
@@ -394,8 +394,8 @@ export default {
 					}, this.colHeights[0]);
 					this.itemStyles.push({
 						position: 'absolute',
-						top: minHeight + this.verticalGap + 'px',
-						left: this.itemWidth * activeIndex + this.rowGap * (activeIndex + 1) + 'px',
+						top: minHeight + verticalGap + 'px',
+						left: this.itemWidth * activeIndex + rowGap * (activeIndex + 1) + 'px',
 						width: this.itemWidth + 'px'
 					});
 				}
@@ -403,7 +403,7 @@ export default {
 				this.$set(
 					this.colHeights, 
 					activeIndex, 
-					(this.colHeights[activeIndex] || 0) + height + (realIndex < this.columns ? 0 : this.verticalGap)
+					(this.colHeights[activeIndex] || 0) + height + (realIndex < this.cols ? 0 : verticalGap)
 				);
 			});
 		},
