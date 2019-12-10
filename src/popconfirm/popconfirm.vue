@@ -13,7 +13,7 @@
 		<template #content>
 			<div 
 				:style="{ width: `${width}px` }" 
-				class="vc-popconfirm__content"
+				class="vc-popconfirm__wrapper"
 			>
 				<div class="vc-popconfirm__title">
 					<slot name="icon">
@@ -27,6 +27,14 @@
 							/>
 						</slot>
 					</div>
+				</div>
+				<div :style="contentStyle" class="vc-popconfirm__content">
+					<slot name="content">
+						<vc-customer 
+							:content="content"
+							:render="renderContent"
+						/>
+					</slot>
 				</div>
 				<div class="vc-popconfirm__footer">
 					<vc-button 
@@ -81,6 +89,7 @@ export default {
 		// 	'arrow'
 		// ]),
 		title: String,
+		content: String,
 		visible: {
 			type: Boolean,
 			default: false
@@ -122,15 +131,29 @@ export default {
 					<div>{props.title}</div>
 				);
 			}
+		},
+		renderContent: {
+			type: Function,
+			default: (h, props, parent) => {
+				return (
+					<div>{props.content}</div>
+				);
+			}
 		}
 	},
 	data() {
 		return {
-			isActive: false
+			isActive: false,
+			hasContentSlot: false
 		};
 	},
 	computed: {
-		
+		contentStyle() {
+			const { content, renderContent, hasContentSlot } = this;
+			return content || renderContent || hasContentSlot 
+				? { marginBottom: '15px' }
+				: {};
+		}
 	},
 	watch: {
 		visible: {
@@ -142,6 +165,9 @@ export default {
 		isActive(v) {
 			// ..
 		}
+	},
+	mounted() {
+		this.hasContentSlot = this.$slots.content || this.$scopedSlots.content;
 	},
 	methods: {
 		handleOk(e) {
@@ -188,7 +214,7 @@ export default {
 @import '../style/index.scss';
 
 @include block(vc-popconfirm) {
-	@include element(content) {
+	@include element(wrapper) {
 		padding: 16px;
 		min-width: 218px;
 	}
