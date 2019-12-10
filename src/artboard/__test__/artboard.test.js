@@ -1,5 +1,5 @@
-import { createVue, createComponent } from '@tests/helper';
-import Artboard from '..';
+import { createVue, createComponent, wait } from '@tests/helper';
+import Artboard from '../index';
 
 describe('Artboard', () => {
 	it('basic', () => {
@@ -10,46 +10,50 @@ describe('Artboard', () => {
 	});
 
 	it('width', async () => {
-		const vm = createVue({
-			template: `
-				<vc-artboard ref="target" :width="100" />
-			`,
-			components: {
-				'vc-artboard': Artboard
-			},
-			methods: {
-			}
-		});
-		expect(vm.$el.getElementsByTagName('canvas')[0].offsetWidth).to.equal(100);
-		await wait(30000);
-	});
-
-	it('height', () => {
 		const vm = createComponent(Artboard, {
-			height: 100
+			width: 100
 		});
-		expect(vm.$el.getElementsByTagName('canvas')[0].offsetHeight).to.equal(100);
+
+		await wait(1);
+		expect(vm.$el.querySelector('canvas').style.width).to.equal('100px');
+
 	});
 
-	it('getInstance', () => {
+	it('height', async () => {
 		const vm = createVue({
 			template: `
-				<vc-artboard :getInstance="getInstance" ref="artboard" />
+				<vc-artboard :height="100" />
 			`,
 			components: {
 				'vc-artboard': Artboard
 			},
-			data() {
-				return {
-					instance: null
-				};
-			},
 			methods: {
-				getInstance(instance) {
-					this.instance = instance;
-				}
+				
 			}
 		});
-		expect(vm.instance).to.equal(vm.$refs.artboard);
+		console.log('vm :', vm);
+		await wait(1);
+		expect(vm.$el.querySelector('canvas').style.height).to.equal('100px');
 	});
+
+	// it('getInstance', () => {
+	// 	const vm = createVue({
+	// 		template: `
+	// 			<vc-artboard :getInstance="getInstance" ref="artboard" />
+	// 		`,
+	// 		components: {
+	// 			'vc-artboard': Artboard
+	// 		},
+	// 		data() {
+	// 			return {
+	// 				instance: null
+	// 			};
+	// 		},
+	// 		methods: {
+	// 			getInstance(instance) {
+	// 				this.instance = instance;
+	// 			}
+	// 		}
+	// 	});
+	// });
 });
