@@ -88,6 +88,7 @@ export default {
 		// 	'portalClassName',
 		// 	'arrow'
 		// ]),
+		// TODO: 直接支持title/content的Function模式，仍保留遗留API(renderTitle, renderContent)
 		title: String,
 		content: String,
 		visible: {
