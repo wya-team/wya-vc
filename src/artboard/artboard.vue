@@ -123,16 +123,8 @@ export default {
 		handleChange() {
 			const current = this.curSnapshots.length;
 			const snapshots = [...this.curSnapshots, ...this.undoSnapshots];
-			let allowRedo = false;
-			let allowUndo = false;
-			
-			if (current !== 0) {
-				allowUndo = true;
-			}
-			
-			if (current < snapshots.length) {
-				allowRedo = true;
-			}
+			let allowRedo = current < snapshots.length;
+			let allowUndo = current !== 0;
 
 			this.$emit('change', { 
 				snapshots,
