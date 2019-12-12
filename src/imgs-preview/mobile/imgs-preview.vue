@@ -27,9 +27,13 @@
 </template>
 <script>
 import BasicMixin from '../basic-mixin';
+import Img from '../../img';
 
 export default {
 	name: "vcm-imgs-preview-row",
+	components: {
+		'vc-img': Img
+	},
 	mixins: [BasicMixin],
 	props: {
 		renderRow: {
@@ -37,13 +41,13 @@ export default {
 			default: (h, props, parent) => {
 				const { src, index, show } = props;
 				return (
-					<img 
+					<vc-img 
 						src={src} 
-						width={78} 
-						height={78} 
+						fit="cover"
 						onClick={(e) => {
 							show(e, index);
 						}}
+						style="width: 78px; height: 78px;"
 					/>
 				);
 			}
