@@ -4,13 +4,14 @@
 		class="vc-imgs-picker-item"
 	>
 		<slot :it="it">
-			<div
-				v-if="typeof it !== 'object'"
-				:style="{backgroundImage: `url('${it}')`}"
+			<vc-img 
+				v-if="typeof it !== 'object'" 
+				:src="it" 
 				:class="imgClassName"
+				style="height: 64px; width: 64px;"
+				fit="cover"
 				class="vc-imgs-picker-item__img"
-				@click="handlePreview"
-			/>
+				@click="handlePreview"/>
 			<div v-else :class="imgClassName" class="vc-imgs-picker-item__img">
 				<vc-progress
 					v-if="it.percent && it.percent != 100" 
@@ -39,11 +40,13 @@
 
 <script>
 import Icon from '../icon/index';
+import Img from '../img';
 
 export default {
 	name: 'vc-imgs-picker-item',
 	components: {
 		'vc-icon': Icon,
+		'vc-img': Img
 	},
 	props: {
 		imgClassName: [String, Object, Array],
