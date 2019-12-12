@@ -17,6 +17,8 @@
 				<vc-customer
 					:src="item | getImage"
 					:index="index"
+					:width="width"
+					:height="height"
 					:render="renderRow"
 				/>
 			</slot>
@@ -35,20 +37,27 @@
 </template>
 <script>
 import BasicMixin from './basic-mixin';
+import Img from '../img';
 
 export default {
 	name: "vc-imgs-preview-row",
+	components: {
+		'vc-img': Img
+	},
 	mixins: [BasicMixin],
 	props: {
 		renderRow: {
 			type: Function,
 			default: (h, props, parent) => {
 				const { src, index } = props;
-				return h('img', {
-					attrs: {
+				return h('vc-img', {
+					props: {
 						src,
-						width: 100,
-						height: 100,
+						fit: "cover"
+					},
+					style: {
+						width: props.width + 'px',
+						height: props.height + 'px'
 					}
 				});
 			}
