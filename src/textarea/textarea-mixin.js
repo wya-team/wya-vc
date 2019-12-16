@@ -2,7 +2,7 @@ import { pick } from 'lodash';
 import Extends from '../extends';
 import InputMixin from '../input/input-mixin';
 import BytesMixin from '../input/input-bytes-mixin';
-import { calcTextareaHeight } from './utils';
+import { getComputedHeight } from './utils';
 import { Resize } from '../utils';
 
 export default {
@@ -158,7 +158,11 @@ export default {
 			const { minRows, maxRows } = this.autosize;
 
 			this.$nextTick(() => {
-				this.textareaStyle = calcTextareaHeight(this.$refs.textarea, minRows, maxRows);
+				this.textareaStyle = getComputedHeight({
+					el: this.$refs.textarea,
+					minRows, 
+					maxRows
+				});
 			});
 		},
 
