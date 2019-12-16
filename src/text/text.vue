@@ -1,17 +1,23 @@
 <template>
 	<component :is="tag" class="vc-text">
-		<span v-if="showText">
-			{{ endIndex > 0 ? `${value.slice(0, endIndex)}${suffix}` : value }}
-		</span>
+		<vc-customer 
+			v-if="isVisible"
+			:value="endIndex > 0 ? `${value.slice(0, endIndex)}${suffix}` : value"
+			:index="endIndex"
+			:render="renderRow"
+		/>
 	</component>
 </template>
 <script>
 import { Resize } from '../utils/resize';
+import Customer from '../customer';
 import { getFitIndex } from './utils';
 
 export default {
 	name: 'vc-text',
-	components: { },
+	components: { 
+		'vc-customer': Customer
+	},
 	props: {
 		tag: {
 			type: String,
@@ -33,11 +39,19 @@ export default {
 		suffix: {
 			type: String,
 			default: '...'
+		},
+		renderRow: {
+			type: Function,
+			// 函数式可以用于高亮显示
+			default: (h, props, parent) => {
+				const { value } = props;
+				return h('span', {}, value);
+			}
 		}
 	},
 	data() {
 		return {
-			showText: false,
+			isVisible: false,
 			endIndex: 0,
 		};
 	},
@@ -69,7 +83,7 @@ export default {
 			const { suffix, line, value, indent } = this;
 			if (line === 0) {
 				this.endIndex = 0;
-				this.showText = true;
+				this.isVisible = true;
 			} else {
 				this.endIndex = getFitIndex({
 					el: this.$el,
@@ -78,7 +92,7 @@ export default {
 					suffix,
 					indent
 				});
-				this.showText = true;
+				this.isVisible = true;
 			}
 			
 		}
