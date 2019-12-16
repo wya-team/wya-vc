@@ -57,6 +57,16 @@ import { Clipboard } from 'wya-vc';
 
 </details>
 
+<details>
+<summary>TODO</summary>
+
+- 预编译 + 抽取样式
+- monorepo
+- 接入[Document](https://github.com/wya-team/wya-doc)
+- 完成测试用例，覆盖率90%+
+- 2.0版本发布
+
+</details>
 
 <details open>
 <summary>组件</summary>
@@ -109,27 +119,27 @@ import { Clipboard } from 'wya-vc';
 
 名称 | 说明 | 开发 | 计划
 ---|---|---|---
-[Calendar][Calendar] | 日历 | - | -
-[Card][Card] | 卡片 | - | -
-[Carousel][Carousel] | 轮播 | - | -
-[Collapse][Collapse] | 折叠面板 | - | -
-[Countdown][Countdown] | 倒计时 | - | -
+[Calendar][Calendar] | 日历 | 1 | -
+[Card][Card] | 卡片 | 1 | -
+[Carousel][Carousel] | 轮播 | 1 | -
+[Collapse][Collapse] | 折叠面板 | 1 | -
+[Countdown][Countdown] | 倒计时 | 1 | -
 [Dropdown][Dropdown] | 下拉菜单 | 1 | -
-[Echarts][Echarts] | 图表 | - | -
-[Expand][Expand] | 展开 | - | -
-[HtmlImg][HtmlImg] | html2canvas | - | -
-[Img][Img] | 图片展示 | - | -
-[ImgsCrop][ImgsCrop] | 图片裁剪 | - | -
-[ImgsPreview][ImgsPreview] | 图片预览 | - | -
-[ImgsProcessing][ImgsProcessing] | 图片优化 | - | -
-[List][List] | 列表 | - | -
+[Echarts][Echarts] | 图表 | 1 | -
+[Expand][Expand] | 展开 | 1 | -
+[HtmlImg][HtmlImg] | html2canvas | 1 | -
+[Img][Img] | 图片展示 | 1 | -
+[ImgsCrop][ImgsCrop] | 图片裁剪 | 1 | -
+[ImgsPreview][ImgsPreview] | 图片预览 | 1 | -
+[ImgsProcessing][ImgsProcessing] | 图片优化 | 1 | -
+[List][List] | 列表 | 1 | -
 [Page][Page] | 分页 | 1 | -
-[Popover][Popover] | 气泡卡片 | - | -
-[Table][Table] | 表格 | - | -
-[Tabs][Tabs] | 选项卡 | - | -
-[Tag][Tag] | 标签 | - | -
-[Text][Text] | 文本自定义行数 | - | -
-[Tree][Tree] | 树形 | - | -
+[Popover][Popover] | 气泡卡片 | 1 | -
+[Table][Table] | 表格 | 1 | -
+[Tabs][Tabs] | 选项卡 | 1 | -
+[Tag][Tag] | 标签 | 1 | -
+[Text][Text] | 文本自定义行数 | 1 | -
+[Tree][Tree] | 树形 | 1 | -
 
 - 组合
 
@@ -149,6 +159,7 @@ import { Clipboard } from 'wya-vc';
 [Fragment][Fragment] | 空节点 | 1 | Vue 3.x废除
 [Portal][Portal] | 传送门组件 | 1 | -
 [Print][Print] | 打印 | 1 | -
+[Scroller][Scroller] | 滚动条自定义 | 0 | -
 [Touch][Touch] | 手势 | 1 | -
 [Transition][Transition] | 动画 | 1 | 同animate.css优化api
 [Upload][Upload] | 上传 | 1 | -
@@ -169,13 +180,6 @@ import { Clipboard } from 'wya-vc';
 [Skeleton][Skeleton] | 骨架屏 | 0 | -
 [Toast][Toast] | 轻提示 | 1 | -
 
-
-<details>
-<summary>TODO</summary>
-
-- 提前编译
-
-</details>
 
 <!--  以下内容无视  -->
 [changelog-image]: https://img.shields.io/badge/changelog-md-blue.svg
@@ -247,6 +251,8 @@ import { Clipboard } from 'wya-vc';
 [HtmlImg]: https://github.com/wya-team/wya-vc/tree/master/src/html-img/
 [List]: https://github.com/wya-team/wya-vc/tree/master/src/list/
 [Skeleton]: https://github.com/wya-team/wya-vc/tree/master/src/
+[Affix]: https://github.com/wya-team/wya-vc/tree/master/src/
+[Scroller]: https://github.com/wya-team/wya-vc/tree/master/src/
 [BackTop]: https://github.com/wya-team/wya-vc/tree/master/src/
 [Marquee]: https://github.com/wya-team/wya-vc/tree/master/src/marquee/
 [Artboard]: https://github.com/wya-team/wya-vc/tree/master/src/artboard/
