@@ -6,7 +6,6 @@
 	</component>
 </template>
 <script>
-import { $ } from '@wya/utils';
 import { Resize } from '../utils/resize';
 import { getFitIndex } from './utils';
 
@@ -38,8 +37,6 @@ export default {
 	},
 	data() {
 		return {
-			lineHeight: 0,
-			padding: {},
 			showText: false,
 			endIndex: 0,
 		};
@@ -53,13 +50,6 @@ export default {
 		this.timer = null;
 	},
 	mounted() {
-		this.lineHeight = parseInt($(this.$el).getStyle('line-height'), 10);
-		this.padding = {
-			paddingTop: $(this.$el).getStyle('paddingTop'),
-			paddingLeft: $(this.$el).getStyle('paddingLeft'),
-			paddingRight: $(this.$el).getStyle('paddingRight'),
-			paddingBottom: $(this.$el).getStyle('paddingBottom'),
-		};
 		setTimeout(this.calcPosition, 0);
 
 		Resize.on(this.$el, this.handleResize);
