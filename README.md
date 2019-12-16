@@ -85,6 +85,7 @@ import { Clipboard } from 'wya-vc';
 
 名称 | 说明 | 开发 | 计划
 ---|---|---|---
+[Artboard][Artboard] | 画板 | 1 | -
 [Cascader][Cascader] | 级联选择 | 1 | -
 [Checkbox][Checkbox] | 多选框 | 1 | -
 [ColorPicker][ColorPicker] | 颜色选择 | 1 | -
@@ -117,14 +118,17 @@ import { Clipboard } from 'wya-vc';
 [Echarts][Echarts] | 图表 | - | -
 [Expand][Expand] | 展开 | - | -
 [HtmlImg][HtmlImg] | html2canvas | - | -
+[Img][Img] | 图片展示 | - | -
 [ImgsCrop][ImgsCrop] | 图片裁剪 | - | -
 [ImgsPreview][ImgsPreview] | 图片预览 | - | -
+[ImgsProcessing][ImgsProcessing] | 图片优化 | - | -
 [List][List] | 列表 | - | -
 [Page][Page] | 分页 | 1 | -
 [Popover][Popover] | 气泡卡片 | - | -
 [Table][Table] | 表格 | - | -
 [Tabs][Tabs] | 选项卡 | - | -
 [Tag][Tag] | 标签 | - | -
+[Text][Text] | 文本自定义行数 | - | -
 [Tree][Tree] | 树形 | - | -
 
 - 组合
@@ -133,6 +137,7 @@ import { Clipboard } from 'wya-vc';
 ---|---|---|---
 [Paging][Paging] | 表格分页 | 1 | -
 [PullScroll][PullScroll] | 列表分页 | 1 | -
+[RecycleList][RecycleList] | 列表分页（性能） | 0 | -
 
 
 - 辅助
@@ -148,7 +153,7 @@ import { Clipboard } from 'wya-vc';
 [Transition][Transition] | 动画 | 1 | 同animate.css优化api
 [Upload][Upload] | 上传 | 1 | -
 
-- 反馈
+- 反馈 
 
 名称 | 说明 | 开发 | 计划
 ---|---|---|---
@@ -156,6 +161,7 @@ import { Clipboard } from 'wya-vc';
 [Marquee][Marquee] | 滚动提示 | - | -
 [Message][Message] | 轻提示 | 1 | -
 [Modal][Modal] | 模态框 | 1 | -
+[Notice][Notice] | 提示框 | 1 | -
 [Popconfirm][Popconfirm] | 气泡确认框 | 1 | -
 [Popup][Popup] | 弹窗 | 1 | -
 [Progress][Progress] | 进度条 | 1 | -
@@ -243,3 +249,9 @@ import { Clipboard } from 'wya-vc';
 [Skeleton]: https://github.com/wya-team/wya-vc/tree/master/src/
 [BackTop]: https://github.com/wya-team/wya-vc/tree/master/src/
 [Marquee]: https://github.com/wya-team/wya-vc/tree/master/src/marquee/
+[Artboard]: https://github.com/wya-team/wya-vc/tree/master/src/artboard/
+[Img]: https://github.com/wya-team/wya-vc/tree/master/src/img/
+[ImgsProcessing]: https://github.com/wya-team/wya-vc/tree/master/src/imgs-processing/
+[Notice]: https://github.com/wya-team/wya-vc/tree/master/src/notice/
+[RecycleList]: https://github.com/wya-team/wya-vc/tree/master/src/recycle-list/
+[Text]: https://github.com/wya-team/wya-vc/tree/master/src/text/
