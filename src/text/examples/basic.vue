@@ -33,7 +33,7 @@
 			<tbody>
 				<tr> 
 					<td><vc-text :value="text10" :line="0" /></td>
-					<td><vc-text :value="text12" :line="1" /></td>
+					<td><vc-text :value="text12" :line="1" style="padding: 9px 15px"/></td>
 					<td><vc-text :value="text14" :line="2" /></td>
 					<td><vc-text :value="text30" :line="3" /></td>
 				</tr>

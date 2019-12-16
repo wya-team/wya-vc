@@ -7,7 +7,8 @@
 			ref="hide"
 			:style="{
 				minHeight: `${lineHeight * line}px`,
-				textIndent: `${indent}px`
+				textIndent: `${indent}px`,
+				...padding
 			}"
 			class="vc-text__hide"
 		/>
@@ -45,6 +46,7 @@ export default {
 	data() {
 		return {
 			lineHeight: 0,
+			padding: {},
 			showText: false,
 			endIndex: 0,
 		};
@@ -59,7 +61,12 @@ export default {
 	},
 	mounted() {
 		this.lineHeight = parseInt($(this.$el).getStyle('line-height'), 10);
-
+		this.padding = {
+			paddingTop: $(this.$el).getStyle('paddingTop'),
+			paddingLeft: $(this.$el).getStyle('paddingLeft'),
+			paddingRight: $(this.$el).getStyle('paddingRight'),
+			paddingBottom: $(this.$el).getStyle('paddingBottom'),
+		};
 		setTimeout(this.calcPosition, 0);
 
 		Resize.on(this.$el, this.handleResize);
@@ -90,9 +97,13 @@ export default {
 				// 后缀必须放入后面计算，前面会造成问题
 				let old = el.innerText;
 				old = old.substring(0, old.length - suffix.length);
-
 				el.innerText = old + item + suffix;
-				if (el.clientHeight > this.lineHeight * this.line && this.endIndex === 0) {
+
+				let { paddingBottom, paddingTop } = this.padding;
+				let h = parseInt(paddingBottom, 10) + parseInt(paddingTop, 10);
+
+				// TODO: 是否考虑边框的情况
+				if (el.clientHeight - h > this.lineHeight * this.line && this.endIndex === 0) {
 					this.endIndex = i;
 				}
 			});
