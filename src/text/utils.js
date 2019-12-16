@@ -30,7 +30,9 @@ const SIZING_STYLE = [
 let hiddenEl;
 
 export const getFitIndex = (options = {}) => {
-	const { el, lineHeight, line, value, suffix, indent } = options;
+	const { el, line, value, suffix, indent } = options;
+	const lineHeight = parseInt($(el).getStyle('line-height'), 10);
+	
 	if (!hiddenEl) {
 		hiddenEl = document.createElement('div');
 		document.body.appendChild(hiddenEl);

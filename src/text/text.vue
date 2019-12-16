@@ -66,14 +66,13 @@ export default {
 		},
 
 		calcPosition() {
-			const { suffix, lineHeight, line, value, indent } = this;
+			const { suffix, line, value, indent } = this;
 			if (line === 0) {
 				this.endIndex = 0;
 				this.showText = true;
 			} else {
 				this.endIndex = getFitIndex({
 					el: this.$el,
-					lineHeight, 
 					line, 
 					value, 
 					suffix,
