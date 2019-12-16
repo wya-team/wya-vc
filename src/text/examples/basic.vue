@@ -2,26 +2,27 @@
 <template>
 	<div style="overflow: auto; width: 100%; padding: 20px">
 		<vc-slider v-model="width" :max="maxWidth" :min="0" style="width: 100px;" />
+		<vc-button @click="handleClick">切换行数</vc-button>
 		<div :style="{ width: width + 'px' }">
-			<h3>line: 0</h3>
-			<vc-text :value="text14" :line="0" />
-			<h3>line: 1</h3>
-			<vc-text :value="text16" :line="1" />
-			<h3>line: 2</h3>
-			<vc-text :value="text18" :line="2" />
-			<h3>line: 3</h3>
-			<vc-text :value="text30" :line="3" />
+			<h3>line: {{ line0 }} </h3>
+			<vc-text :value="text14" :line="line0" />
+			<h3>line: {{ line1 }} </h3>
+			<vc-text :value="text16" :line="line1" />
+			<h3>line: {{ line2 }} </h3>
+			<vc-text :value="text18" :line="line2" />
+			<h3>line: {{ line3 }} </h3>
+			<vc-text :value="text30" :line="line3" />
 		</div>
-		<vc-text :line="3">
+		<vc-text :line="line3">
 			{{ text30 }}
 		</vc-text>
 		<table :style="{ width: width + 'px' }" class="table">
 			<thead>
 				<tr>
-					<th>line: 0</th>
-					<th>line: 1</th>
-					<th>line: 2</th>
-					<th>line: 3</th>
+					<th>line: {{ line0 }}</th>
+					<th>line: {{ line1 }}</th>
+					<th>line: {{ line2 }}</th>
+					<th>line: {{ line3 }}</th>
 				</tr>
 			</thead>
 			<colgroup>
@@ -32,16 +33,16 @@
 			</colgroup>
 			<tbody>
 				<tr> 
-					<td><vc-text :value="text10" :line="0" /></td>
-					<td><vc-text :value="text12" :line="1" style="padding: 9px 15px"/></td>
-					<td><vc-text :value="text14" :line="2" /></td>
-					<td><vc-text :value="text30" :line="3" /></td>
+					<td><vc-text :value="text10" :line="line0" :indent="20" /></td>
+					<td><vc-text :value="text12" :line="line1" :indent="20" style="padding: 9px 15px"/></td>
+					<td><vc-text :value="text14" :line="line2" :indent="20" /></td>
+					<td><vc-text :value="text30" :line="line3" :indent="20" /></td>
 				</tr>
 				<tr>
-					<td><vc-text :value="text10" :line="0" /></td>
-					<td><vc-text :value="text12" :line="1" /></td>
-					<td><vc-text :value="text14" :line="2" /></td>
-					<td><vc-text :value="text30" :line="3" /></td>
+					<td><vc-text :value="text10" :line="line0" /></td>
+					<td><vc-text :value="text12" :line="line1" /></td>
+					<td><vc-text :value="text14" :line="line2" /></td>
+					<td><vc-text :value="text30" :line="line3" /></td>
 				</tr>
 			</tbody>
 		</table>
@@ -50,22 +51,22 @@
 			<vc-table-item>
 				<vc-table-column label="日期">
 					<template #default>
-						<vc-text :value="text10" :line="0" />
+						<vc-text :value="text10" :line="line0" />
 					</template>
 				</vc-table-column>
 				<vc-table-column label="姓名">
 					<template #default>
-						<vc-text :value="text12" :line="1" />
+						<vc-text :value="text12" :line="line1" />
 					</template>
 				</vc-table-column>
 				<vc-table-column label="地址">
 					<template #default>
-						<vc-text :value="text14" :line="2" />
+						<vc-text :value="text14" :line="line2" />
 					</template>
 				</vc-table-column>
 				<vc-table-column label="地址2">
 					<template #default>
-						<vc-text :value="text30" :line="3" />
+						<vc-text :value="text30" :line="line3" />
 					</template>
 				</vc-table-column>
 			</vc-table-item>
@@ -76,6 +77,7 @@
 import Text from '..';
 import Slider from '../../slider';
 import Table from '../../table';
+import Button from '../../button';
 
 export default {
 	name: "vc-tpl-basic",
@@ -85,6 +87,7 @@ export default {
 		'vc-table': Table,
 		'vc-table-column': Table.Column,
 		'vc-table-item': Table.Item,
+		'vc-button': Button,
 	},
 	data() {
 		let text = 'A2，C,我E,';
@@ -99,12 +102,26 @@ export default {
 			text16: text.repeat(16),
 			text18: text.repeat(18) + 'REPEAT_END_18',
 			text30: text.repeat(30) + 'REPEAT_END_30',
+			line0: 0,
+			line1: 1,
+			line2: 2,
+			line3: 3,
 		};
 	},
-	computed: {
-		
-	},
 	methods: {
+		handleClick() {
+			if (this.line0 === 0) {
+				this.line0 = 3;
+				this.line1 = 2;
+				this.line2 = 1;
+				this.line3 = 0;
+			} else {
+				this.line0 = 0;
+				this.line1 = 1;
+				this.line2 = 2;
+				this.line3 = 3;
+			}
+		}
 	}
 };
 </script>

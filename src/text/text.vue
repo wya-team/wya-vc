@@ -3,20 +3,12 @@
 		<span v-if="showText">
 			{{ endIndex > 0 ? `${value.slice(0, endIndex)}${suffix}` : value }}
 		</span>
-		<div
-			ref="hide"
-			:style="{
-				minHeight: `${lineHeight * line}px`,
-				textIndent: `${indent}px`,
-				...padding
-			}"
-			class="vc-text__hide"
-		/>
 	</component>
 </template>
 <script>
 import { $ } from '@wya/utils';
 import { Resize } from '../utils/resize';
+import { getFitIndex } from './utils';
 
 export default {
 	name: 'vc-text',
@@ -34,6 +26,7 @@ export default {
 			type: Number,
 			default: 0
 		},
+		// TODO: 是否改为tail-indent来表示尾部缩进
 		indent: {
 			type: Number,
 			default: 0
@@ -83,31 +76,22 @@ export default {
 		},
 
 		calcPosition() {
-			const { suffix } = this;
-			this.endIndex = 0;
-			if (this.line === 0) {
+			const { suffix, lineHeight, line, value, indent } = this;
+			if (line === 0) {
+				this.endIndex = 0;
 				this.showText = true;
-				return;
+			} else {
+				this.endIndex = getFitIndex({
+					el: this.$el,
+					lineHeight, 
+					line, 
+					value, 
+					suffix,
+					indent
+				});
+				this.showText = true;
 			}
-			let el = this.$refs.hide;
-			el.innerText = suffix;
-
-			// 操作DOM
-			this.value.split('').forEach((item, i) => {
-				// 后缀必须放入后面计算，前面会造成问题
-				let old = el.innerText;
-				old = old.substring(0, old.length - suffix.length);
-				el.innerText = old + item + suffix;
-
-				let { paddingBottom, paddingTop } = this.padding;
-				let h = parseInt(paddingBottom, 10) + parseInt(paddingTop, 10);
-
-				// TODO: 是否考虑边框的情况
-				if (el.clientHeight - h > this.lineHeight * this.line && this.endIndex === 0) {
-					this.endIndex = i;
-				}
-			});
-			this.showText = true;
+			
 		}
 	}
 };
@@ -118,14 +102,6 @@ export default {
 	display: inline-block;
 	word-break: break-all;
 	width: 100%;
-	&__hide {
-		position: absolute;
-		word-break: break-all;
-		width: 100%;
-		overflow: auto;
-		opacity: 0;
-		z-index: -1;
-	}
 	span {
 		word-break: break-all;
 		display: block;
