@@ -21,15 +21,11 @@ export default {
 	},
 	props: {
 		...Core.props,
-		itemClassName: String,
 		enhancer: Function,
-		width: {
-			type: Number,
-			default: 100
-		},
-		height: {
-			type: Number,
-			default: 100
+		itemClassName: String,
+		rowStyle: {
+			type: Object,
+			default: () => ({})
 		}
 	},
 	data() {

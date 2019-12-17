@@ -1,4 +1,4 @@
-## [Demo Basic](https://wya-team.github.io/wya-vc/dist/__tpl__/basic.html)
+## [Demo Basic](https://wya-team.github.io/wya-vc/dist/carousel/basic.html)
 ## 功能
 tpl
 

@@ -1,5 +1,5 @@
 <template>
-	<div ref="target">
+	<div ref="target" class="vc-pull-scroll-content">
 		<slot/>
 	</div>
 </template>

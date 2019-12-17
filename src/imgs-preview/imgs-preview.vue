@@ -56,8 +56,9 @@ export default {
 						fit: "cover"
 					},
 					style: {
-						width: props.width + 'px',
-						height: props.height + 'px'
+						width: '100px',
+						height: '100px',
+						...parent.rowStyle
 					}
 				});
 			}
