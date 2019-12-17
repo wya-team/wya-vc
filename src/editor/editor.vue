@@ -144,7 +144,7 @@ export default {
 			});
 		},
 		initFontSize() {
-			const fontSize = ['12px', '14px', '16px', '18px', '20px', '22px', '24px'];
+			const fontSize = ['12px', '14px', '16px', '18px', '20px', '22px', '24px', '50px'];
 			let Parchment = this.Quill.import('parchment');
 			let SizeClass = new Parchment.Attributor.Class('size', 'ql-size', {
 				scope: Parchment.Scope.INLINE,
