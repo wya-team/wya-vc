@@ -160,8 +160,9 @@ export default {
 				let index = this.dates.findIndex((date) => date.getTime() === value.getTime());
 				this.panelDate = value;
 				if (cell.type === 'normal') {
-					index > -1 ? this.dates.splice(index, 1) : (this.dates = [...this.dates, value]);
-					this.$emit('pick', this.dates);
+					let prevDate = []; // 不要的date
+					index > -1 ? (prevDate = this.dates.splice(index, 1)) : (this.dates = [...this.dates, value]);
+					this.$emit('pick', this.dates, prevDate[0]);
 				}
 			}
 		},

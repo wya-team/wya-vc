@@ -178,6 +178,7 @@ export default {
 		},
 		// 展示的value
 		visibleValue() {
+			// TODO 更新后未出现 ","
 			return this.formatDateText(this.currentValue);
 		},
 		showTime() {
@@ -205,9 +206,9 @@ export default {
 		}
 	},
 	methods: {
-		handlePick(value) {
+		handlePick(value, prevDate) {
 			// 在panel上点击时，同步focusedDate
-			this.focusedDate = value[0];
+			this.focusedDate = value[0] || prevDate || new Date();
 
 			if (!this.isConfirm) {
 				this.handleOK(value);
