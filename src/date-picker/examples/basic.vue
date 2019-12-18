@@ -7,19 +7,21 @@
 			:start-date="new Date('2019', '10', '11')"
 			:type="type"
 			clearable
+			multiple
 			placeholder="Select date" 
 			style="width: 200px"
 			@visible-change="handleVisibleChange"
 			@change="handleChange"
 		/>
 		<vc-date-picker 
-			v-model="valueRange"
+			:value="valueRange"
 			:split-panels="false" 
 			:options="options" 
 			type="datetimerange" 
 			clearable
 			placeholder="Select date"
 			style="width: 300px"
+			@change="handleRangeChange"
 		/>
 		<h2>Year</h2>
 		<vc-date-picker 
@@ -29,6 +31,7 @@
 			confirm
 			placeholder="Select date"
 			style="width: 200px"
+			@change="handleYearChange"
 		/>
 		<h2>Month</h2>
 		<vc-date-picker 
@@ -37,6 +40,7 @@
 			clearable
 			placeholder="Select date"
 			style="width: 200px"
+			@change="handleMonthChange"
 		/>
 		<h2>Quarter</h2>
 		<vc-date-picker 
@@ -46,6 +50,7 @@
 			confirm
 			placeholder="Select date"
 			style="width: 200px"
+			@change="handleQuarterChange"
 		/>
 	</div>
 </template>
@@ -62,7 +67,7 @@ export default {
 	data() {
 		return {
 			value: '',
-			valueRange: '',
+			// valueRange: '',
 			year: '',
 			month: '',
 			quarter: '',
@@ -73,19 +78,37 @@ export default {
 					let month = date.getMonth();
 					return false;
 				}
-			}
+			},
+			rangeStart: '',
+			rangeEnd: ''
 		};
 	},
 	computed: {
-		
+		valueRange() {
+			return [this.rangeStart, this.rangeEnd];
+		}
 	},
 	methods: {
 		handleVisibleChange(v) {
-			console.log('VisibleChange', v);
+			// console.log('VisibleChange', v);
 		},
 		handleChange(v) {
 			console.log(v);
-		}
+		},
+		handleRangeChange(v) {
+			this.rangeStart = v[0];
+			this.rangeEnd = v[1];
+			console.log(v);
+		},
+		handleYearChange(v) {
+			console.log('year-change', v);
+		},
+		handleMonthChange(v) {
+			console.log('month-change', v);
+		},
+		handleQuarterChange(v) {
+			console.log('quarter-change', v);
+		},
 	}
 };
 </script>

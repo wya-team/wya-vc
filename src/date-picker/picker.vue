@@ -114,16 +114,7 @@ export default {
 			'placeholder',
 			'clearable'
 		]),
-		value: {
-			type: [Date, Array, String],
-			validator: (v) => {
-				if (v instanceof Array) {
-					// return v.every((it) => it instanceof Date);
-					return true;
-				}
-				return !v || v instanceof Date;
-			}
-		},
+		value: [Date, Array, String],
 		multiple: Boolean,
 		trigger: {
 			type: String,
@@ -187,13 +178,16 @@ export default {
 		},
 		// 展示的value
 		visibleValue() {
-			return this.formatDate(this.currentValue);
+			return this.formatDateText(this.currentValue);
 		},
 		showTime() {
 			return ['datetime', 'datetimerange'].includes(this.type);
 		},
 		isRange() {
 			return ['daterange', 'datetimerange'].includes(this.type);
+		},
+		isQuarter() {
+			return ['quarter'].includes(this.type);
 		}
 	},
 	watch: {
@@ -202,6 +196,8 @@ export default {
 			handler(val) {
 				if (isEmpty(val)) {
 					val = this.isRange ? [null, null] : [];
+				} else {
+					val = this.parserDate(val);
 				}
 				this.focusedDate = val[0] || this.startDate || new Date();
 				this.currentValue = val;
@@ -225,8 +221,19 @@ export default {
 		handleOK(value) {
 			// ？？是否向外暴露confirm事件，在confirm=true时，内部选择日期是否显示在输入框上
 			this.isActive = false;
-			// TODO 格式化掉，接收value的时候在转回来
-			this.$emit('change', value);
+
+			this.$emit('change', this.formatDate(value));
+		},
+		formatDateText(value) {
+			const format = DEFAULT_FORMATS[this.type];
+			if (this.multiple) {
+				const formatterText = TYPE_VALUE_RESOLVER_MAP.multiple.formatterText;
+				return formatterText(value, this.format || format, this.separator);
+			} else {
+				const { formatter, formatterText } = (TYPE_VALUE_RESOLVER_MAP[this.type] || TYPE_VALUE_RESOLVER_MAP.default);
+				let fn = formatterText || formatter;
+				return fn(value, this.format || format, this.separator);
+			}
 		},
 		formatDate(value) {
 			const format = DEFAULT_FORMATS[this.type];
@@ -238,6 +245,16 @@ export default {
 				return formatter(value, this.format || format, this.separator);
 			}
 		},
+		parserDate(value) {
+			const format = DEFAULT_FORMATS[this.type];
+			if (this.multiple) {
+				const parser = TYPE_VALUE_RESOLVER_MAP.multiple.parser;
+				return parser(value, this.format || format, this.separator);
+			} else {
+				const { parser } = (TYPE_VALUE_RESOLVER_MAP[this.type] || TYPE_VALUE_RESOLVER_MAP.default);
+				return parser(value, this.format || format, this.separator);
+			}
+		}
 	}
 };
 </script>

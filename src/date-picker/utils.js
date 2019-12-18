@@ -118,10 +118,9 @@ const RANGE_FORMATTER = (value, format, RANGE_SEPARATOR) => {
 };
 const RANGE_PARSER = (text, format, RANGE_SEPARATOR) => {
 	const array = Array.isArray(text) ? text : text.split(RANGE_SEPARATOR);
-	if (array.length === 2) {
-		const range1 = array[0];
-		const range2 = array[1];
-
+	const range1 = array[0];
+	const range2 = array[1];
+	if (array.length === 2 && range1 && range2) {
 		return [
 			range1 instanceof Date ? range1 : parseDate(range1, format),
 			range2 instanceof Date ? range2 : parseDate(range2, format)
@@ -139,7 +138,7 @@ export const TYPE_VALUE_RESOLVER_MAP = {
 		parser(text) {
 			if (text === undefined || text === '') return null;
 			return text;
-		}
+		},
 	},
 	date: {
 		formatter: DATE_FORMATTER,
@@ -150,15 +149,27 @@ export const TYPE_VALUE_RESOLVER_MAP = {
 		parser: DATE_PARSER
 	},
 	daterange: {
-		formatter: RANGE_FORMATTER,
+		formatterText: RANGE_FORMATTER,
+		formatter: (value, format, RANGE_SEPARATOR) => {
+			let rangeDate = RANGE_FORMATTER(value, format, RANGE_SEPARATOR);
+			return rangeDate ? rangeDate.split(RANGE_SEPARATOR) : '';
+		},
 		parser: RANGE_PARSER
 	},
 	datetimerange: {
-		formatter: RANGE_FORMATTER,
+		formatterText: RANGE_FORMATTER,
+		formatter: (value, format, RANGE_SEPARATOR) => {
+			let rangeDate = RANGE_FORMATTER(value, format, RANGE_SEPARATOR);
+			return rangeDate ? rangeDate.split(RANGE_SEPARATOR) : '';
+		},
 		parser: RANGE_PARSER
 	},
 	timerange: {
-		formatter: RANGE_FORMATTER,
+		formatterText: RANGE_FORMATTER,
+		formatter: (value, format, RANGE_SEPARATOR) => {
+			let rangeDate = RANGE_FORMATTER(value, format, RANGE_SEPARATOR);
+			return rangeDate ? rangeDate.split(RANGE_SEPARATOR) : '';
+		},
 		parser: RANGE_PARSER
 	},
 	time: {
@@ -167,14 +178,18 @@ export const TYPE_VALUE_RESOLVER_MAP = {
 	},
 	month: {
 		formatter: DATE_FORMATTER,
-		parser: DATE_PARSER
+		parser: (text, format) => {
+			return [DATE_PARSER(text, format)];
+		}
 	},
 	year: {
 		formatter: DATE_FORMATTER,
-		parser: DATE_PARSER
+		parser: (text, format) => {
+			return [DATE_PARSER(text, format)];
+		}
 	},
 	quarter: {
-		formatter: (value, format) => {
+		formatterText: (value, format) => {
 			value = value[0] || [];
 			if (value.length) {
 				let year = value[0].getFullYear();
@@ -191,10 +206,21 @@ export const TYPE_VALUE_RESOLVER_MAP = {
 				}	
 			}
 		},
+		formatter: (value, format) => {
+			value = value[0] || [];
+			return value.map((date) => DATE_FORMATTER(date, format));
+		},
+		parser: (text, format) => {
+			let dates = text.map((str) => DATE_PARSER(str, format));
+			return [dates];
+		}
 	},
 	multiple: {
-		formatter: (value, format) => {
+		formatterText: (value, format) => {
 			return value.filter(Boolean).map(date => formatDate(date, format)).join(',');
+		},
+		formatter: (value, format) => {
+			return value.filter(Boolean).map(date => formatDate(date, format));
 		},
 		parser: (value, format) => {
 			const values = typeof value === 'string' ? value.split(',') : value;

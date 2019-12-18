@@ -1,60 +1,65 @@
 <template>
-	<div :class="{'is-with-seconds': showSeconds}" class="vc-date-panel">
-		<vc-date-header 
-			v-if="currentView !== 'time'"
-			v-model="panelDate"
-			:current-view="currentView"
-		/>
-		<!-- 日历 -->
-		<vc-date-table 
-			v-if="currentView === 'date'"
-			:value="dates"
-			:panel-date="panelDate"
-			:disabled-date="disabledDate"
-			:focused-date="focusedDate"
-			@pick="handlePick"
-		/>
-		<!-- 年 -->
-		<vc-year-table 
-			v-if="currentView === 'year'"
-			:value="dates"
-			:panel-date="panelDate"
-			:disabled-date="disabledDate"
-			@pick="handleYearPick"
-		/>
-		<!-- 月 -->
-		<vc-month-table 
-			v-if="currentView === 'month'"
-			:value="dates"
-			:panel-date="panelDate"
-			:disabled-date="disabledDate"
-			@pick="handleMonthPick"
-		/>
-		<!-- 季度 -->
-		<vc-quarter-table 
-			v-if="currentView === 'quarter'"
-			:value="dates"
-			:panel-date="panelDate"
-			:disabled-date="disabledDate"
-			@pick="handleQuarterPick"
-		/>
-		<!-- time -->
-		<vc-time-select 
-			v-show="currentView === 'time'"
-			:hours="timeSlots[0]"
-			:minutes="timeSlots[1]"
-			:seconds="timeSlots[2]"
-			:show-seconds="showSeconds"
-			@pick="handleTimePick"
-		/>
-		<vc-date-confrim 
-			v-if="confirm"
-			:show-time="showTime && !multiple"
-			:current-view="currentView"
-			@clear="handleClear"
-			@ok="handleOK"
-			@toggle-time="handleToggleTime"
-		/>
+	<div class="vc-date-panel">
+		<div v-if="false" style="width: 100px">
+			<!-- TODO 快捷操作 -->
+		</div>
+		<div :class="{'is-with-seconds': showSeconds}" class="vc-date-panel__body">
+			<vc-date-header 
+				v-if="currentView !== 'time'"
+				v-model="panelDate"
+				:current-view="currentView"
+			/>
+			<!-- 日历 -->
+			<vc-date-table 
+				v-if="currentView === 'date'"
+				:value="dates"
+				:panel-date="panelDate"
+				:disabled-date="disabledDate"
+				:focused-date="focusedDate"
+				@pick="handlePick"
+			/>
+			<!-- 年 -->
+			<vc-year-table 
+				v-if="currentView === 'year'"
+				:value="dates"
+				:panel-date="panelDate"
+				:disabled-date="disabledDate"
+				@pick="handleYearPick"
+			/>
+			<!-- 月 -->
+			<vc-month-table 
+				v-if="currentView === 'month'"
+				:value="dates"
+				:panel-date="panelDate"
+				:disabled-date="disabledDate"
+				@pick="handleMonthPick"
+			/>
+			<!-- 季度 -->
+			<vc-quarter-table 
+				v-if="currentView === 'quarter'"
+				:value="dates"
+				:panel-date="panelDate"
+				:disabled-date="disabledDate"
+				@pick="handleQuarterPick"
+			/>
+			<!-- time -->
+			<vc-time-select 
+				v-show="currentView === 'time'"
+				:hours="timeSlots[0]"
+				:minutes="timeSlots[1]"
+				:seconds="timeSlots[2]"
+				:show-seconds="showSeconds"
+				@pick="handleTimePick"
+			/>
+			<vc-date-confrim 
+				v-if="confirm"
+				:show-time="showTime && !multiple"
+				:current-view="currentView"
+				@clear="handleClear"
+				@ok="handleOK"
+				@toggle-time="handleToggleTime"
+			/>
+		</div>
 	</div>
 </template>
 
@@ -201,12 +206,15 @@ export default {
 $block: vc-date-panel;
 
 @include block($block) {
-	@include when(with-seconds) {
-		.vc-time-select__list {
-			width: 72px;
-			ul li {
-				padding: 0 0 0 28px;
-			} 
+	display: flex;
+	@include element(body) {
+		@include when(with-seconds) {
+			.vc-time-select__list {
+				width: 72px;
+				ul li {
+					padding: 0 0 0 28px;
+				} 
+			}
 		}
 	}
 	.vc-time-select__list {
