@@ -1,0 +1,115 @@
+<template>
+	<div class="vc-date-header">
+		<template v-if="currentView !== 'time'">
+			<vc-icon v-if="showPrev" class="vc-date-header__arrow is-prev is-prev-year" type="d-arrow-left" @click="handlePrevYear" />
+			<vc-icon v-if="showPrev && currentView ==='date'" class="vc-date-header__arrow is-prev" type="arrow-left" @click="handlePrevMonth" />
+			<span>{{ year }}</span>
+			<span v-if="currentView === 'date'">{{ month }}</span>
+			<vc-icon v-if="showNext" class="vc-date-header__arrow is-next is-next-year" type="d-arrow-right" @click="handleNextYear" />
+			<vc-icon v-if="showNext && currentView ==='date'" class="vc-date-header__arrow is-next" type="arrow-right" @click="handleNextMonth" />
+		</template>
+		<template v-else>
+			<span>{{ title }}</span>
+		</template>
+	</div>
+</template>
+
+<script>
+import { Utils } from '@wya/utils';
+import { prevYear, nextYear, prevMonth, nextMonth } from '../../utils/date-utils';
+import Icon from '../../icon/index';
+
+export default {
+	name: 'vc-date-header',
+	components: {
+		'vc-icon': Icon,
+	},
+	model: {
+		prop: 'panelDate',
+		event: 'change'
+	},
+	props: {
+		panelDate: Date,
+		showNext: {
+			type: Boolean,
+			default: true
+		},
+		showPrev: {
+			type: Boolean,
+			default: true
+		},
+		currentView: String,
+		title: String
+	},
+	computed: {
+		year() {
+			return this.panelDate.getFullYear() + '年';
+		},
+		month() {
+			let month = this.panelDate.getMonth() + 1;
+			return Utils.preZero(month) + '月';
+		},
+	},
+	methods: {
+		handlePrevMonth() {
+			let prevM = prevMonth(this.panelDate);
+			this.$emit('change', prevM, 'prev-month');
+		},
+		handlePrevYear() {
+			let amount = this.currentView === 'year' ? 10 : 1;
+			let prevY = prevYear(this.panelDate, amount);
+			this.$emit('change', prevY, 'prev-year');
+		},
+		handleNextMonth() {
+			let nextM = nextMonth(this.panelDate);
+			this.$emit('change', nextM, 'next-month');
+		},
+		handleNextYear() {
+			let amount = this.currentView === 'year' ? 10 : 1;
+			let nextY = nextYear(this.panelDate, amount);
+			this.$emit('change', nextY, 'next-year');
+		},
+	},
+};
+</script>
+
+<style lang="scss">
+@import '../../style/index.scss';
+
+$block: vc-date-header;
+
+@include block($block) {
+	height: 32px;
+	line-height: 32px;
+	text-align: center;
+	border-bottom: 1px solid #e8eaec;
+	user-select: none;
+	@include element(arrow) {
+		display: inline-block;
+		width: 20px;
+		height: 24px;
+		line-height: 26px;
+		margin-top: 2px;
+		text-align: center;
+		cursor: pointer;
+		color: #c5c8ce;
+		vertical-align: unset;
+		transition: color .2s ease-in-out;
+		&:hover {
+			color: #2D8CF0;
+		}
+		@include when(prev) {
+			float: left;
+		}
+		@include when(prev-year) {
+			margin-left: 10px;
+		}
+		@include when(next) {
+			float: right;
+		}
+		@include when(next-year) {
+			margin-right: 10px;
+		}
+	}
+}
+</style>
