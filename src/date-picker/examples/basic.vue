@@ -38,6 +38,15 @@
 			placeholder="Select date"
 			style="width: 200px"
 		/>
+		<h2>Quarter</h2>
+		<vc-date-picker 
+			v-model="quarter"
+			type="quarter" 
+			clearable
+			confirm
+			placeholder="Select date"
+			style="width: 200px"
+		/>
 	</div>
 </template>
 <script>
@@ -56,6 +65,7 @@ export default {
 			valueRange: '',
 			year: '',
 			month: '',
+			quarter: '',
 			type: 'datetime',
 			options: {
 				disabledDate: (date) => {

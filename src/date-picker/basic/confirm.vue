@@ -39,7 +39,7 @@ export default {
 	},
 	computed: {
 		label() {
-			return this.currentView === 'date' ? '选择时间' : '选择日期';
+			return this.currentView.includes('date') ? '选择时间' : '选择日期';
 		}
 	},
 	watch: {
@@ -50,7 +50,24 @@ export default {
 	},
 	methods: {
 		handleToggleTime(e) {
-			this.$emit('toggle-time', this.currentView === 'date' ? 'time' : 'date');
+			let view;
+			switch (this.currentView) {
+				case 'date':
+					view = 'time';
+					break;
+				case 'daterange':
+					view = 'timerange';
+					break;
+				case 'time':
+					view = 'date';
+					break;
+				case 'timerange':
+					view = 'daterange';
+					break;
+				default:
+					break;
+			}
+			this.$emit('toggle-time', view);
 		},
 		handleConfirm(e) {
 			this.$emit('ok', e);

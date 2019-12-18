@@ -1,7 +1,7 @@
 <template>
-	<div class="vc-month-table">
+	<div class="vc-quarter-table">
 		<table 
-			class="vc-month-table__wrapper" 
+			class="vc-quarter-table__wrapper" 
 			cellspacing="0"
 			cellpadding="0"
 		>
@@ -9,18 +9,18 @@
 				<tr
 					v-for="(row, key) in rows"
 					:key="key"
-					class="vc-month-table__row"
+					class="vc-quarter-table__row"
 				>
 					<td
 						v-for="(cell, key) in row"
 						:key="key"
 						:class="getCellClasses(cell)"
-						class="vc-month-table__cell"
-						@click="handleMonthTableClick(cell)"
+						class="vc-quarter-table__cell"
+						@click="handleQuarterTableClick(cell)"
 					>
 						<div>
 							<span>
-								{{ cell.month + 1 }}月
+								第{{ QUARTER_CN[cell.quarter + 1] }}季度
 							</span>
 						</div>
 					</td>
@@ -32,9 +32,10 @@
 
 <script>
 import { value2Array } from '../utils';
+import { QUARTER_CN } from '../constants';
 
 export default {
-	name: 'vc-month-table',
+	name: 'vc-quarter-table',
 	components: {
 
 	},
@@ -45,22 +46,23 @@ export default {
 	},
 	data() {
 		return {
+			QUARTER_CN
 		};
 	},
 	computed: {
 		rows() {
 			let rows = [[], [], [], []];
 			const year = this.panelDate.getFullYear();
-			const selectedMonth = value2Array(this.value);
-			for (let i = 0; i < 4; i++) {
-				for (let j = 0; j < 3; j++) {
+			const selectedQuarter = value2Array(this.value);
+			for (let i = 0; i < 2; i++) {
+				for (let j = 0; j < 2; j++) {
 					let cell = {};
-					cell.month = i * 3 + j;
-					cell.date = new Date(year, cell.month, 1);
-					cell.disabled = typeof this.disabledDate === 'function' && this.disabledDate(cell.month);
-					cell.customClass = typeof cellClassName === 'function' && cellClassName(cell.month);
-					cell.selected = selectedMonth.some(month => {
-						return month && (year === month.getFullYear()) && (cell.month === month.getMonth());
+					cell.quarter = i * 2 + j; // 值为：0，1，2，3
+					cell.dates = this.getMonthRange(cell.quarter);
+					cell.disabled = typeof this.disabledDate === 'function' && this.disabledDate(cell.quarter);
+					cell.customClass = typeof cellClassName === 'function' && cellClassName(cell.quarter);
+					cell.selected = selectedQuarter.some(quarter => {
+						return (year === quarter[0].getFullYear()) && this.getQuarterByMonth(quarter) === cell.quarter;
 					});
 					rows[i][j] = cell;
 				}
@@ -75,18 +77,43 @@ export default {
 		
 	},
 	methods: {
+		/**
+		 * 获取季度对应的月份范围
+		 */
+		getMonthRange(quarter) {
+			let year = this.panelDate.getFullYear();
+			let months = [quarter * 3, quarter * 3 + 2];
+			return [
+				new Date(year, months[0]),
+				new Date(year, months[1])
+			];
+		},
+		getQuarterByMonth(value) {
+			let start = value[0].getMonth();
+			let end = value[1].getMonth();
+			if (start === 0 && end === 2) {
+				return 0;
+			} else if (start === 3 && end === 5) {
+				return 1;
+			} else if (start === 6 && end === 8) {
+				return 2;
+			} else if (start === 9 && end === 11) {
+				return 3;
+			}
+		},
 		getCellClasses(cell) {
 			let classes = [];
 			if (cell.selected) { classes.push('is-selected'); }
 			if (cell.disabled) { classes.push('is-disabled'); }
+			if (cell.empty) { classes.push('is-empty'); }
 
 			// TODO 其他情况的样式
 			return classes.join(' ');
 		},
-		handleMonthTableClick(cell) {
+		handleQuarterTableClick(cell) {
 			if (cell.disabled) return;
 
-			this.$emit('pick', cell.date);
+			this.$emit('pick', cell.dates);
 		}
 	},
 };
@@ -95,7 +122,7 @@ export default {
 <style lang="scss">
 @import '../../style/index.scss';
 
-$block: vc-month-table;
+$block: vc-quarter-table;
 
 @include block($block) {
 	overflow: auto;
@@ -105,7 +132,7 @@ $block: vc-month-table;
 	}
 	@include element(cell) {
 		div {
-			width: 40px;
+			width: 60px;
 			height: 28px;
 			line-height: 28px;
 			margin: 8px 9px;
@@ -113,7 +140,7 @@ $block: vc-month-table;
 			cursor: pointer;
 			span {
 				display: inline-block;
-				width: 40px;
+				width: 60px;
 				height: 28px;
 				line-height: 28px;
 				margin: 0;

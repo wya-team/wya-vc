@@ -7,7 +7,7 @@ export default {
 			default: () => false
 		},
 		startDate: Date,
-		focusedDate: Date,
+		focusedDate: [Date, Array],
 		showTime: {
 			type: Boolean,
 			default: false

@@ -14,7 +14,7 @@
 						@change="handlePanelChange(...arguments, 'left')"
 					/>
 					<vc-date-table 
-						v-if="currentView === 'date'"
+						v-if="currentView === 'daterange'"
 						:value="dates"
 						:panel-date="leftPanelDate"
 						:disabled-date="disabledDate"
@@ -25,7 +25,7 @@
 					/>
 					<!-- time -->
 					<vc-time-select 
-						v-show="currentView === 'time'"
+						v-show="currentView === 'timerange'"
 						:hours="timeSlots.left.hours"
 						:minutes="timeSlots.left.minutes"
 						:seconds="timeSlots.left.seconds"
@@ -42,7 +42,7 @@
 						@change="handlePanelChange(...arguments, 'right')"
 					/>
 					<vc-date-table 
-						v-if="currentView === 'date'"
+						v-if="currentView === 'daterange'"
 						:value="dates"
 						:panel-date="rightPanelDate"
 						:disabled-date="disabledDate"
@@ -53,7 +53,7 @@
 					/>
 					<!-- time -->
 					<vc-time-select 
-						v-show="currentView === 'time'"
+						v-show="currentView === 'timerange'"
 						:hours="timeSlots.right.hours"
 						:minutes="timeSlots.right.minutes"
 						:seconds="timeSlots.right.seconds"
@@ -116,7 +116,7 @@ export default {
 				selecting: false,
 				marker: null, // 第一次点下的日期
 			},
-			currentView: 'date',
+			currentView: 'daterange',
 		};
 	},
 	computed: {
@@ -130,7 +130,7 @@ export default {
 		timeSlots() {
 			let leftDate = this.dates[0];
 			let rightDate = this.dates[1];
-			if (!leftDate || !rightDate || this.currentView !== 'time') {
+			if (!leftDate || !rightDate || this.currentView !== 'timerange') {
 				return {
 					left: {},
 					right: {}

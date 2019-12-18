@@ -1,14 +1,15 @@
 <template>
 	<div class="vc-date-header">
-		<template v-if="currentView !== 'time'">
+		<template v-if="currentView !== 'timerange'">
 			<vc-icon v-if="showPrev" class="vc-date-header__arrow is-prev is-prev-year" type="d-arrow-left" @click="handlePrevYear" />
-			<vc-icon v-if="showPrev && currentView ==='date'" class="vc-date-header__arrow is-prev" type="arrow-left" @click="handlePrevMonth" />
+			<vc-icon v-if="showPrev && currentView === 'date'" class="vc-date-header__arrow is-prev" type="arrow-left" @click="handlePrevMonth" />
 			<span>{{ year }}</span>
 			<span v-if="currentView === 'date'">{{ month }}</span>
 			<vc-icon v-if="showNext" class="vc-date-header__arrow is-next is-next-year" type="d-arrow-right" @click="handleNextYear" />
-			<vc-icon v-if="showNext && currentView ==='date'" class="vc-date-header__arrow is-next" type="arrow-right" @click="handleNextMonth" />
+			<vc-icon v-if="showNext && currentView === 'date'" class="vc-date-header__arrow is-next" type="arrow-right" @click="handleNextMonth" />
 		</template>
 		<template v-else>
+			<!-- 在面板为时间范围的时候才显示 -->
 			<span>{{ title }}</span>
 		</template>
 	</div>

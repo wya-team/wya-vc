@@ -10,3 +10,10 @@ export const DEFAULT_FORMATS = {
 	daterange: 'yyyy-MM-dd',
 	datetimerange: 'yyyy-MM-dd HH:mm:ss'
 };
+
+export const QUARTER_CN = {
+	'1': '一',
+	'2': '二',
+	'3': '三',
+	'4': '四',
+};

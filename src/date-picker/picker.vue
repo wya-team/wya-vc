@@ -118,7 +118,8 @@ export default {
 			type: [Date, Array, String],
 			validator: (v) => {
 				if (v instanceof Array) {
-					return v.every((it) => it instanceof Date);
+					// return v.every((it) => it instanceof Date);
+					return true;
 				}
 				return !v || v instanceof Date;
 			}

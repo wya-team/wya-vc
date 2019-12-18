@@ -1,6 +1,7 @@
 <template>
 	<div :class="{'is-with-seconds': showSeconds}" class="vc-date-panel">
 		<vc-date-header 
+			v-if="currentView !== 'time'"
 			v-model="panelDate"
 			:current-view="currentView"
 		/>
@@ -13,6 +14,7 @@
 			:focused-date="focusedDate"
 			@pick="handlePick"
 		/>
+		<!-- 年 -->
 		<vc-year-table 
 			v-if="currentView === 'year'"
 			:value="dates"
@@ -20,12 +22,21 @@
 			:disabled-date="disabledDate"
 			@pick="handleYearPick"
 		/>
+		<!-- 月 -->
 		<vc-month-table 
 			v-if="currentView === 'month'"
 			:value="dates"
 			:panel-date="panelDate"
 			:disabled-date="disabledDate"
 			@pick="handleMonthPick"
+		/>
+		<!-- 季度 -->
+		<vc-quarter-table 
+			v-if="currentView === 'quarter'"
+			:value="dates"
+			:panel-date="panelDate"
+			:disabled-date="disabledDate"
+			@pick="handleQuarterPick"
 		/>
 		<!-- time -->
 		<vc-time-select 
@@ -52,6 +63,7 @@ import { getDateOfTime } from '../../utils/date-utils';
 import DateMixin from './date-mixin';
 import YearTable from '../basic/year-table';
 import MonthTable from '../basic/month-table';
+import QuarterTable from '../basic/quarter-table';
 import DateTable from '../basic/date-table';
 import DateHeader from '../basic/date-header';
 import Confirm from '../basic/confirm';
@@ -63,6 +75,7 @@ export default {
 		'vc-date-header': DateHeader,
 		'vc-year-table': YearTable,
 		'vc-month-table': MonthTable,
+		'vc-quarter-table': QuarterTable,
 		'vc-date-table': DateTable,
 		'vc-date-confrim': Confirm,
 		'vc-time-select': TimeSelect
@@ -84,7 +97,7 @@ export default {
 	data() {
 		return {
 			dates: this.value,
-			panelDate: this.value[0] || this.startDate || new Date(),
+			panelDate: this.getPanelDate(),
 			currentView: this.getCurrentView(),
 		};
 	},
@@ -109,11 +122,20 @@ export default {
 		
 	},
 	methods: {
+		getPanelDate() {
+			let value = this.value[0];
+			if (this.type === 'quarter' && value) {
+				value = value[0];
+			}
+			return value || this.startDate || new Date();
+		},
 		getCurrentView() {
 			if (this.type === 'year') {
 				return 'year';
 			} else if (this.type === 'month') {
 				return 'month';
+			} else if (this.type === 'quarter') {
+				return 'quarter';
 			}
 			return 'date';
 		},
@@ -153,6 +175,12 @@ export default {
 			let newMonth = [value];
 			this.dates = newMonth;
 			this.$emit('pick', newMonth);
+		},
+		// 季度选择value => 月份的范围
+		handleQuarterPick(value) {
+			let newQuarter = [value];
+			this.dates = newQuarter;
+			this.$emit('pick', newQuarter);
 		},
 		handleToggleTime(view) {
 			this.currentView = view;

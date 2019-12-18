@@ -125,7 +125,7 @@ $block: vc-year-table;
 				margin: 0;
 				border-radius: 3px;
 				text-align: center;
-				transition: all .2s ease-in-out;
+				transition: background .2s ease-in-out;
 			}
 			&:hover {
 				background: #e1f0fe;

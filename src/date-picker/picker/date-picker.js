@@ -9,7 +9,7 @@ export default {
 		type: {
 			type: String,
 			default: 'date',
-			validator: (v) => /(year|month|date|daterange|datetime|datetimerange)/.test(v)
+			validator: (v) => /(year|month|quarter|date|daterange|datetime|datetimerange)/.test(v)
 		},
 	},
 	data() {

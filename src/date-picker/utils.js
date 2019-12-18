@@ -173,6 +173,25 @@ export const TYPE_VALUE_RESOLVER_MAP = {
 		formatter: DATE_FORMATTER,
 		parser: DATE_PARSER
 	},
+	quarter: {
+		formatter: (value, format) => {
+			value = value[0] || [];
+			if (value.length) {
+				let year = value[0].getFullYear();
+				let startMonth = value[0].getMonth();
+				let endMonth = value[1].getMonth();
+				if (startMonth === 0 && endMonth === 2) {
+					return `${year}第一季度`;
+				} else if (startMonth === 3 && endMonth === 5) {
+					return `${year}第二季度`;
+				} else if (startMonth === 6 && endMonth === 8) {
+					return `${year}第三季度`;
+				} else if (startMonth === 9 && endMonth === 11) {
+					return `${year}第四季度`;
+				}	
+			}
+		},
+	},
 	multiple: {
 		formatter: (value, format) => {
 			return value.filter(Boolean).map(date => formatDate(date, format)).join(',');
