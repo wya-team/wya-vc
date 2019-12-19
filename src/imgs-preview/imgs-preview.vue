@@ -17,8 +17,6 @@
 				<vc-customer
 					:src="item | getImage"
 					:index="index"
-					:width="width"
-					:height="height"
 					:render="renderRow"
 				/>
 			</slot>
@@ -56,8 +54,6 @@ export default {
 						fit: "cover"
 					},
 					style: {
-						width: '100px',
-						height: '100px',
 						...parent.rowStyle
 					}
 				});
@@ -70,8 +66,10 @@ export default {
 @import '../style/index.scss';
 
 @include block(vc-imgs-preview) {
-	img {
+	.vc-img .vc-img__inner{
 		display: block;
+		width: 100px;
+		height: 100px;
 	}
 	@include element(item) { 
 		box-sizing: border-box;
@@ -79,10 +77,12 @@ export default {
 		position: relative;
 		margin-bottom: 5px;
 		margin-right: 5px; 
+		font-size: 0;
 		&:hover {
 			@include element(mask) {
 				transition: opacity 0.5s;
 				opacity: 1;
+				font-size: 12px;
 			}
 		}
 	}; 
