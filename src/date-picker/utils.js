@@ -104,13 +104,11 @@ const DATE_PARSER = (text, format) => {
 	return parseDate(text, format);
 };
 const RANGE_FORMATTER = (value, format, RANGE_SEPARATOR) => {
-	if (Array.isArray(value) && value.length === 2) {
-		const start = value[0];
-		const end = value[1];
-
-		if (start && end) {
-			return formatDate(start, format) + RANGE_SEPARATOR + formatDate(end, format);
-		}
+	const start = value[0];
+	const end = value[1];
+		
+	if (Array.isArray(value) && value.length === 2 && start && end) {
+		return formatDate(start, format) + RANGE_SEPARATOR + formatDate(end, format);
 	} else if (!Array.isArray(value) && value instanceof Date) {
 		return formatDate(value, format);
 	}
@@ -264,5 +262,8 @@ export const value2Array = (val) => {
  * @param {*} val 
  */
 export const isEmpty = (val) => {
+	if (val instanceof Array) {
+		return val.some((v) => !v);
+	}
 	return val === '' || val === undefined || val === null || val.length === 0;
 };

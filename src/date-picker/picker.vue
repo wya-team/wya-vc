@@ -28,20 +28,7 @@
 			:allow-dispatch="false"
 			class="vc-picker__input"
 		>
-			<!-- <template v-if="multiple && (currentValue && currentValue.length > 0)" #content>
-				<div :class="classes" class="vc-picker__tags">
-					<vc-tag 
-						v-for="(item, index) in currentValue" 
-						:key="item" 
-						:closable="!disabled"
-						@close="handleClose(item)"
-					>
-						{{ value[index] || '' }}
-					</vc-tag>
-				</div>
-			</template> -->
 			<template #append>
-				<!-- down, up, clear -->
 				<div class="vc-picker__append">
 					<vc-icon
 						:type="showClear ? 'clear' : 'date'"
@@ -178,7 +165,6 @@ export default {
 		},
 		// 展示的value
 		visibleValue() {
-			// TODO 更新后未出现 ","
 			return this.formatDateText(this.currentValue);
 		},
 		showTime() {
