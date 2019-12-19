@@ -38,6 +38,7 @@
 				<option value="20px"/>
 				<option value="22px"/>
 				<option value="24px"/>
+				<option value="50px"/>
 			</select>
 		</span>
 		<span class="ql-formats">
