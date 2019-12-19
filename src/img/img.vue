@@ -262,7 +262,7 @@ export default {
 
 	@include element(inner) {
 		@extend %size;
-		vertical-align: top;
+		display: block;
 
 		@include when(center) {
 			position: relative;
