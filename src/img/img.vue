@@ -233,6 +233,8 @@ export default {
 	position: relative;
 	display: inline-block;
 	overflow: hidden;
+	vertical-align: top;
+	
 	@include element(placeholder) {
 		@extend %size;
 		background: #f5f7fa;
