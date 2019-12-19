@@ -66,7 +66,7 @@ export default {
 @import '../style/index.scss';
 
 @include block(vc-imgs-preview) {
-	.vc-img .vc-img__inner{
+	.vc-img__inner{
 		display: block;
 		width: 100px;
 		height: 100px;
