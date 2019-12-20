@@ -84,9 +84,7 @@ describe('Countdown', () => {
 			targetTime: '2019-12-14',
 			tag: 'div'
 		});
-		console.log(vm.$el);
 		await wait(200);
-		console.log(vm.$el);
 		expect(vm.$el);
 	});
 });

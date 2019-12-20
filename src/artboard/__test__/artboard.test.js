@@ -31,7 +31,6 @@ describe('Artboard', () => {
 				
 			}
 		});
-		console.log('vm :', vm);
 		await wait(1);
 		expect(vm.$el.querySelector('canvas').style.height).to.equal('100px');
 	});
