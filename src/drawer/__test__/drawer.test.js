@@ -1,34 +1,38 @@
-import { createVue, createComponent, wait } from '@tests/helper';
+import { createVue, createComponent, wait, destroyVM } from '@tests/helper';
 import Vue from "Vue";
 import Drawer from '..';
 
 describe('Drawer', () => {
+	let vm;
+	afterEach(() => {
+		destroyVM(vm);
+	});
 	it('basic', () => {
 		expect(typeof Drawer).to.equal('object');
-		const vm = createComponent(Drawer, {});
+		vm = createComponent(Drawer, {});
 		expect(typeof vm).to.equal('object');
 	});
 	it('visiible', () => {
-		const vm = createComponent(Drawer, {
+		vm = createComponent(Drawer, {
 			visible: false
 		});
 		expect(vm.$el.querySelector('.vc-drawer__wrapper').style.display).to.equal('none');
 	});
 	it('mask', () => {
-		const vm = createComponent(Drawer, {
+		vm = createComponent(Drawer, {
 			visible: true,
 			mask: false,
 		});
 		expect(vm.$el.querySelector('.vc-drawer__mask').style.display).to.equal('none');
 	});
 	it('wrapperClassName', () => {
-		const vm = createComponent(Drawer, {
+		vm = createComponent(Drawer, {
 			wrapperClassName: 'newClass'
 		});
 		expect(vm.$el.querySelector('.vc-drawer__wrapper').classList.contains('newClass')).to.equal(true);
 	});
 	it('palcement', () => {
-		const vm = createComponent(Drawer, {
+		vm = createComponent(Drawer, {
 			placement: 'top',
 			height: 400,
 			visible: true,
@@ -36,7 +40,7 @@ describe('Drawer', () => {
 		expect(vm.$el.querySelector('.vc-drawer__wrapper').style.height).to.equal('400px');
 	});
 	it('关闭事件', async () => {
-		let vm = createVue({
+		vm = createVue({
 			template: `
 			<vc-drawer
 				ref="target"
@@ -65,7 +69,7 @@ describe('Drawer', () => {
 
 	});
 	it('动画执行后关闭', () => {
-		let vm = createVue({
+		vm = createVue({
 			template: `
 			<vc-drawer
 				ref="target"
