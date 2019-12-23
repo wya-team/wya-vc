@@ -286,12 +286,18 @@ $block: vc-picker;
 		position: relative;
 		text-align: center;
 		line-height: 28px;
-		font-size: 12px;
+		font-size: 16px;
+		font-weight: 400;
 		white-space: nowrap;
 		cursor: default;
 		@include when(clear) {
+			font-size: 14px;
 			cursor: pointer;
 		}
+		.vc-icon {
+			vertical-align: unset;
+		}
+
 	}
 	@include element(tags) {
 		padding-left: 4px;

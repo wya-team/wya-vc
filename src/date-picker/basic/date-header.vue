@@ -94,6 +94,7 @@ $block: vc-date-header;
 		height: 24px;
 		line-height: 26px;
 		margin-top: 2px;
+		font-size: 14px;
 		text-align: center;
 		cursor: pointer;
 		color: #c5c8ce;

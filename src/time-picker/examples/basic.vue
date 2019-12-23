@@ -3,6 +3,7 @@
 		<h2>基础</h2>
 		<vc-time-picker 
 			v-model="time"
+			clearable
 			placeholder="Select time" 
 			style="width: 168px"
 		/>
