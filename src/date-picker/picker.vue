@@ -29,10 +29,10 @@
 			class="vc-picker__input"
 		>
 			<template #append>
-				<div class="vc-picker__append">
+				<div :class="{'is-clear': showClear}" class="vc-picker__append">
 					<vc-icon
 						:type="showClear ? 'clear' : icon"
-						@click.stop="handleClear"
+						@click.stop="handleIconClear"
 					/>
 				</div>
 			</template>
@@ -151,7 +151,7 @@ export default {
 	},
 	computed: {
 		showClear() {
-			let value = !this.multiple ? this.currentValue : this.currentValue.length > 0;
+			let value = !this.multiple ? !isEmpty(this.currentValue) : this.currentValue.length > 0;
 			let basic = this.clearable && !this.disabled && this.isHover;
 			return value && basic;
 		},
@@ -206,6 +206,9 @@ export default {
 				// 时间选择器的模式下，不管是不是confirm模式，都实时同步
 				this.$emit('change', this.formatDate(value));
 			}
+		},
+		handleIconClear() {
+			this.showClear && this.handleClear();
 		},
 		handleClear() {
 			this.isActive = false;
@@ -280,6 +283,10 @@ $block: vc-picker;
 		line-height: 28px;
 		font-size: 12px;
 		white-space: nowrap;
+		cursor: default;
+		@include when(clear) {
+			cursor: pointer;
+		}
 	}
 	@include element(tags) {
 		padding-left: 4px;

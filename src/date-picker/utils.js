@@ -263,7 +263,10 @@ export const value2Array = (val) => {
  */
 export const isEmpty = (val) => {
 	if (val instanceof Array) {
-		return val.some((v) => !v);
+		if (val.length > 0) {
+			return val.every((v) => !v);
+		}
+		return true;
 	}
 	return val === '' || val === undefined || val === null || val.length === 0;
 };
