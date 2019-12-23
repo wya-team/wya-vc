@@ -184,13 +184,17 @@ export default {
 		},
 	},
 	mounted() {
-		this.$nextTick(() => { this.compiled = true; });
+		this.$nextTick(() => { 
+			this.compiled = true; 
+			this.isFirst = true;
+		});
 	},
 	methods: {
 		preZero: Utils.preZero,
 		handleClick(type, cell) {
 			if (cell.disabled) return;
 			const data = { [type]: cell.text };
+			this.isFirst = false;
 			this.$emit('pick', data);
 		},
 		getCellClasses(cell) {
@@ -209,7 +213,7 @@ export default {
 			$(this.$refs[type]).scrollIntoView({
 				from, 
 				to, 
-				duration: 500, 
+				duration: this.isFirst ? 0 : 500, // 首次展示时不执行滚动动画
 			});
 		},
 		getScrollIndex(type, index) {

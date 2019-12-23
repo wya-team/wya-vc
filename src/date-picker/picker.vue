@@ -31,14 +31,14 @@
 			<template #append>
 				<div class="vc-picker__append">
 					<vc-icon
-						:type="showClear ? 'clear' : 'date'"
+						:type="showClear ? 'clear' : icon"
 						@click.stop="handleClear"
 					/>
 				</div>
 			</template>
 		</vc-input>
 		<template #content>
-			<!-- 要求value 需转成Date类型，panel内流通的都是Date, panel内的数据是否是数组 -->
+			<!-- 要求value 需转成Date类型，panel内流通的都是Date, panel内的数据都是数组 -->
 			<component 
 				:is="panel"
 				:value="currentValue"
@@ -49,8 +49,9 @@
 				:split-panels="splitPanels"
 				:show-time="showTime"
 				:format="format"
+				:steps="steps"
 				:multiple="multiple"
-				v-bind="options" 
+				v-bind="panelOptions" 
 				@pick="handlePick"
 				@clear="handleClear"
 				@ok="handleOK"
@@ -63,7 +64,7 @@
 import { pick, cloneDeep, debounce, isEqualWith } from 'lodash';
 import { getpickeredData, getUid, getLabel } from '../utils/index';
 import { DEFAULT_FORMATS } from './constants';
-import { TYPE_VALUE_RESOLVER_MAP, getDayCountOfMonth, isEmpty } from './utils';
+import { TYPE_VALUE_RESOLVER_MAP, getDayCountOfMonth, isEmpty, value2Array } from './utils';
 import { VcError } from '../vc/index';
 import Extends from '../extends';
 import Input from '../input/index';
@@ -131,13 +132,13 @@ export default {
 		startDate: {
 			type: Date
 		},
-		options: {
-			type: Object,
-			default: (v) => ({})
-		},
 		splitPanels: {
 			type: Boolean,
 			default: false
+		},
+		steps: {
+			type: Array,
+			default: () => ([])
 		}
 	},
 	data() {
@@ -175,6 +176,9 @@ export default {
 		},
 		isQuarter() {
 			return ['quarter'].includes(this.type);
+		},
+		isTime() {
+			return ['time', 'timerange'].includes(this.type);
 		}
 	},
 	watch: {
@@ -187,7 +191,7 @@ export default {
 					val = this.parserDate(val);
 				}
 				this.focusedDate = val[0] || this.startDate || new Date();
-				this.currentValue = val;
+				this.currentValue = value2Array(val);
 			}
 		}
 	},
@@ -196,8 +200,11 @@ export default {
 			// 在panel上点击时，同步focusedDate
 			this.focusedDate = value[0] || prevDate || new Date();
 
-			if (!this.isConfirm) {
+			if (!this.isConfirm && !this.isTime) {
 				this.handleOK(value);
+			} else if (this.isTime && !this.isConfirm) {
+				// 时间选择器的模式下，不管是不是confirm模式，都实时同步
+				this.$emit('change', this.formatDate(value));
 			}
 		},
 		handleClear() {

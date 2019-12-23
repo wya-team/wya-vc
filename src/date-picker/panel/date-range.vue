@@ -76,10 +76,10 @@
 
 <script>
 import { clearTime, nextMonth, prevMonth, nextYear, prevYear, getDateOfTime } from '../../utils/date-utils';
+import DateMixin from '../mixins/date';
 import DateTable from '../basic/date-table';
 import DateHeader from '../basic/date-header';
 import Confirm from '../basic/confirm';
-import DateMixin from './date-mixin';
 import TimeSelect from '../basic/time-select';
 
 export default {
@@ -149,11 +149,6 @@ export default {
 				},
 			};
 		}
-	},
-	watch: {
-		
-	},
-	created() {
 	},
 	methods: {
 		// 判断当前点击的cell是否在当前面板内
@@ -329,7 +324,7 @@ $block: vc-daterange-panel;
 			}
 		}
 	}
-	.vc-daterange-panel__table {
+	@include element(table) {
 		display: flex;
 	}
 	.vc-time-select__list {

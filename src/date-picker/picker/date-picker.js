@@ -11,6 +11,10 @@ export default {
 			default: 'date',
 			validator: (v) => /(year|month|quarter|date|daterange|datetime|datetimerange)/.test(v)
 		},
+		options: {
+			type: Object,
+			default: (v) => ({})
+		},
 	},
 	data() {
 		return {
@@ -19,6 +23,11 @@ export default {
 	},
 	created() {
 		this.panel = this.getPanel(this.type);
+	},
+	computed: {
+		panelOptions() {
+			return this.options;
+		}
 	},
 	methods: {
 		getPanel(type) {

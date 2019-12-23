@@ -65,7 +65,7 @@
 
 <script>
 import { getDateOfTime } from '../../utils/date-utils';
-import DateMixin from './date-mixin';
+import DateMixin from '../mixins/date';
 import YearTable from '../basic/year-table';
 import MonthTable from '../basic/month-table';
 import QuarterTable from '../basic/quarter-table';

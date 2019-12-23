@@ -7,7 +7,6 @@
 			:start-date="new Date('2019', '10', '11')"
 			:type="type"
 			clearable
-			multiple
 			placeholder="Select date" 
 			style="width: 200px"
 			@visible-change="handleVisibleChange"
