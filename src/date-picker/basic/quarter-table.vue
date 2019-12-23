@@ -31,6 +31,7 @@
 </template>
 
 <script>
+import { getDayCountOfMonth } from '../../utils/date-utils';
 import { value2Array } from '../utils';
 import { QUARTER_CN } from '../constants';
 
@@ -83,9 +84,10 @@ export default {
 		getMonthRange(quarter) {
 			let year = this.panelDate.getFullYear();
 			let months = [quarter * 3, quarter * 3 + 2];
+			let endDay = getDayCountOfMonth(year, months[1]);
 			return [
 				new Date(year, months[0]),
-				new Date(year, months[1])
+				new Date(year, months[1], endDay)
 			];
 		},
 		getQuarterByMonth(value) {

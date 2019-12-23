@@ -96,7 +96,6 @@ export default {
 		]),
 		...pick(InputMixin.props, [
 			'elementId', 
-			'readonly', 
 			'disabled', 
 			'size', 
 			'placeholder',
