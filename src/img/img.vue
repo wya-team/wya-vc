@@ -120,9 +120,9 @@ export default {
 					width,
 					height
 				},
-				wrapperW: this.scroller.clientWidth,
+				wrapperW: this.scroller && this.scroller.clientWidth,
 				// TODO
-				wrapperH: this.scroller.clientHeight,
+				wrapperH: this.scroller && this.scroller.clientHeight,
 			});
 
 			if (w && h) {
