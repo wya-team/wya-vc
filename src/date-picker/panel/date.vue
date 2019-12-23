@@ -168,8 +168,7 @@ export default {
 			}
 		},
 		handleTimePick(value) {
-			let newDate = getDateOfTime(this.dates[0], value);
-			this.panelDate = newDate; // TODO 是不是可以去掉
+			let newDate = getDateOfTime(this.dates[0] || this.panelDate, value);
 			this.dates = [newDate];
 			this.$emit('pick', this.dates);
 		},
