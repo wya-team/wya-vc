@@ -51,9 +51,28 @@
 			style="width: 200px"
 			@change="handleQuarterChange"
 		/>
+		<h2>Form表单校验</h2>
+		<vc-form
+			ref="form"
+			:model="formValidate" 
+			:rules="ruleValidate" 
+		>
+			<vc-form-item prop="date">
+				<vc-date-picker 
+					v-model="formValidate.date"
+					type="datetimerange" 
+					clearable
+					placeholder="Select date" 
+					style="width: 300px"
+				/>
+			</vc-form-item>
+			<div @click="handleSubmit">提交</div>
+		</vc-form >
 	</div>
 </template>
 <script>
+import Message from '../../message';
+import Form from '../../form';
 import Button from '../../button/index';
 import DatePicker from '..';
 
@@ -61,7 +80,9 @@ export default {
 	name: "vc-date-picker-basic",
 	components: {
 		'vc-date-picker': DatePicker,
-		'vc-button': Button
+		'vc-button': Button,
+		'vc-form': Form,
+		'vc-form-item': Form.Item,
 	},
 	data() {
 		return {
@@ -79,7 +100,15 @@ export default {
 				}
 			},
 			rangeStart: '',
-			rangeEnd: ''
+			rangeEnd: '',
+			formValidate: {
+				date: ''
+			},
+			ruleValidate: {
+				date: [
+					{ required: true, message: '请选择日期', trigger: 'change' }
+				],
+			}
 		};
 	},
 	computed: {
@@ -107,6 +136,15 @@ export default {
 		},
 		handleQuarterChange(v) {
 			console.log('quarter-change', v);
+		},
+		handleSubmit(name) {
+			this.$refs.form.validate((valid) => {
+				if (valid) {
+					Message.success('Success!');
+				} else {
+					Message.error('Fail!');
+				}
+			});
 		},
 	}
 };

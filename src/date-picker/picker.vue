@@ -204,7 +204,9 @@ export default {
 				this.handleOK(value);
 			} else if (this.isTime && !this.isConfirm) {
 				// 时间选择器的模式下，不管是不是confirm模式，都实时同步
-				this.$emit('change', this.formatDate(value));
+				const date = this.formatDate(value);
+				this.$emit('change', date);
+				this.dispatch('vc-form-item', 'form-change', date);
 			}
 		},
 		handleIconClear() {
@@ -214,12 +216,15 @@ export default {
 			this.isActive = false;
 			this.$emit('clear');
 			this.$emit('change', '');
+			this.dispatch('vc-form-item', 'form-change', '');
 		},
 		handleOK(value) {
 			// ？？是否向外暴露confirm事件，在confirm=true时，内部选择日期是否显示在输入框上
 			this.isActive = false;
 
-			this.$emit('change', this.formatDate(value));
+			const date = this.formatDate(value);
+			this.$emit('change', date);
+			this.dispatch('vc-form-item', 'form-change', date);
 		},
 		formatDateText(value) {
 			const format = DEFAULT_FORMATS[this.type];
