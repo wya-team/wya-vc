@@ -49,6 +49,7 @@
 				:minutes="timeSlots[1]"
 				:seconds="timeSlots[2]"
 				:show-seconds="showSeconds"
+				v-bind="timePickerOptions"
 				@pick="handleTimePick"
 			/>
 			<vc-date-confrim 
@@ -220,6 +221,7 @@ $block: vc-date-panel;
 	}
 	.vc-time-select__list {
 		width: 108px;
+		max-height: 224px;
 		ul li {
 			padding: 0 0 0 46px;
 		} 

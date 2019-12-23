@@ -15,6 +15,10 @@ export default {
 			type: Object,
 			default: (v) => ({})
 		},
+		timePickerOptions: {
+			type: Object,
+			default: (v) => ({})
+		}
 	},
 	data() {
 		return {
@@ -26,7 +30,10 @@ export default {
 	},
 	computed: {
 		panelOptions() {
-			return this.options;
+			return {
+				...this.options,
+				timePickerOptions: this.timePickerOptions
+			};
 		}
 	},
 	methods: {

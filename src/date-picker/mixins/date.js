@@ -12,5 +12,9 @@ export default {
 			type: Boolean,
 			default: false
 		},
+		timePickerOptions: {
+			type: Object,
+			default: () => ({})
+		}
 	},
 };

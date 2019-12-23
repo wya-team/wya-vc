@@ -30,6 +30,7 @@
 						:minutes="timeSlots.left.minutes"
 						:seconds="timeSlots.left.seconds"
 						:show-seconds="showSeconds"
+						v-bind="timePickerOptions"
 						@pick="handleTimePick(...arguments, 'left')"
 					/>
 				</div>
@@ -58,6 +59,7 @@
 						:minutes="timeSlots.right.minutes"
 						:seconds="timeSlots.right.seconds"
 						:show-seconds="showSeconds"
+						v-bind="timePickerOptions"
 						@pick="handleTimePick(...arguments, 'right')"
 					/>
 				</div>
@@ -329,6 +331,7 @@ $block: vc-daterange-panel;
 	}
 	.vc-time-select__list {
 		width: 108px;
+		max-height: 224px;
 		ul li {
 			padding: 0 0 0 46px;
 		} 

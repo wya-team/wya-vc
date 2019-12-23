@@ -240,7 +240,7 @@ $block: vc-time-select;
 	font-size: 14px;
 	@include element(list) {
 		width: 56px; // time-picker
-		max-height: 224px;
+		max-height: 144px;
 		overflow: hidden;
 		border-left: 1px solid #e8eaec;
 		position: relative;
