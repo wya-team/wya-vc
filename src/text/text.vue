@@ -94,7 +94,8 @@ export default {
 				});
 				this.isVisible = true;
 			}
-			
+
+			this.$emit('clip', this.endIndex);
 		}
 	}
 };
