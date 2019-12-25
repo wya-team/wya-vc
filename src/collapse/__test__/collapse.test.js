@@ -19,7 +19,13 @@ describe('Collapse', () => {
 		vm = createVue({
 			template: `
 				<div>
-					<vc-collapse ref="collapse" :accordion="accordion" class="v-collapse" :value="value">
+					<vc-collapse
+						ref="collapse"
+						:accordion="accordion"
+						class="v-collapse"
+						v-model="value"
+						@change=""
+					>
 						<vc-collapse-item ref="collapse-item" name="1" class="item">
 							<div class="_title">
 								title
@@ -57,7 +63,7 @@ describe('Collapse', () => {
 			data() {
 				return {
 					value: '1',
-					accordion: true
+					accordion: true,
 				};
 			}
 		});
@@ -68,16 +74,16 @@ describe('Collapse', () => {
 		let it3 = co.$children[2].$el.firstChild;
 		it2.click();
 		await wait(0.1);
-		expect(co.currentValue.join()).to.equal('2');
+		expect(vm.value.join()).to.equal('2');
 		it1.click();
 		await wait(0.1);
-		expect(co.currentValue.join()).to.equal('1');
+		expect(vm.value.join()).to.equal('1');
 		it1.click();
 		await wait(0.1);
-		expect(co.currentValue.join()).to.equal('');
+		expect(vm.value.join()).to.equal('');
 		it2.click();
 		await wait(0.1);
-		expect(co.currentValue.join()).to.equal('2');
+		expect(vm.value.join()).to.equal('2');
 
 		vm.value = ['1', '2'];
 		await wait(0.1);
@@ -92,18 +98,19 @@ describe('Collapse', () => {
 		await wait(0.1);
 		it1.click();
 		await wait(0.1);
-		expect(co.currentValue.includes('1') && co.currentValue.includes('2')).to.equal(true);
+		expect(vm.value.includes('1') && vm.value.includes('2')).to.equal(true);
 
 		it2.click();
 		await wait(0.1);
-		expect(co.currentValue.join()).to.equal('1');
+		expect(vm.value.join()).to.equal('1');
 
 		it3.click();
 		await wait(0.1);
-		expect(co.currentValue.join()).to.equal('1,2');
+		expect(vm.value.join()).to.equal('1,2');
 
 		it3.click();
 		await wait(0.1);
-		expect(co.currentValue.join()).to.equal('1');
+		expect(vm.value.join()).to.equal('1');
 	});
+
 });

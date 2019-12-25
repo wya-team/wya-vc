@@ -12,10 +12,10 @@
 						{{ extra }}
 					</slot>
 				</div>
-				<vc-icon 
-					v-if="arrow" 
-					:type="icon" 
-					class="vcm-list-item__icon" 
+				<vc-icon
+					v-if="arrow"
+					:type="icon"
+					class="vcm-list-item__icon"
 				/>
 			</div>
 		</div>
@@ -100,11 +100,11 @@ export default {
 			};
 		},
 		icon() {
-			return typeof arrow === 'string' ? arrow : 'right';
+			return typeof this.arrow === 'string' ? this.arrow : 'right';
 		}
 	},
 	watch: {
-		
+
 	},
 	created() {
 	},

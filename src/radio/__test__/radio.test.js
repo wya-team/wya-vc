@@ -12,7 +12,7 @@ describe('Radio', () => {
 
 	it('disabled', () => {
 		const radio = createComponent(Radio, {
-			disabled: 'true'
+			disabled: true
 		});
 		expect(radio.$el.classList.contains('is-disabled')).to.equal(true);
 	});
