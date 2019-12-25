@@ -25,6 +25,9 @@ const getEntryFileContent = (entryPath, fullpath) => {
 	relativePath = upath.normalize(relativePath);
 	let contents = '';
 	contents += `\nimport Vue from 'vue';\n`;
+	if (ENV_IS_DEV) {
+		contents += `\nimport '${path.relative(path.join(entryPath, '../'), 'src/style')}';\n`;
+	}
 	contents += `\nimport App from '${relativePath.replace(/\.vue/, '')}';\n`;
 	contents += `\nVue.config.devtools = true;\n`;
 	contents += `\nconst app = new Vue({`;

@@ -4,17 +4,9 @@
 <head>
 	<meta charset="UTF-8"/>
 	<meta name="viewport" content="width=device-width, initial-scale=1.0, minimum-scale=1.0, maximum-scale=1.0, user-scalable=no"/>
-	<style>
-		* {
-			border: none;
-			padding: 0;
-			margin: 0;
-		}
-		body {
-			background: #f4f4f4
-		}
-	</style>
 	<% if(!htmlWebpackPlugin.options.__DEV__) { %>
+		<!-- 由/src/style/reset.scss生成的静态资源 -->
+		<link rel="stylesheet" href="/wya-vc/dist/reset.css">
 		<script src="//cdn.jsdelivr.net/npm/vue@2.6.10/dist/vue.min.js"></script>
 		<script src="//cdn.jsdelivr.net/npm/lodash@4.17.11/lodash.min.js"></script>
 		<script src="//cdn.jsdelivr.net/npm/eruda@1.5.4/eruda.min.js"></script>

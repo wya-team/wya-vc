@@ -1,4 +1,3 @@
-import "../style/reset.scss";
 import VcManager from './manager';
 
 export { default as VcBasic } from './basic';
