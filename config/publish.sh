@@ -19,13 +19,13 @@ if [[ $REPLY =~ ^[Yy]$ ]]; then
 	npm version $VERSION --no-git-tag-version 
 
 	# commit
-	git add -A
-	git commit -m "[build] v$VERSION"
+	# git add -A
+	# git commit -m "[build] v$VERSION"
 
 	# publish
 	npm publish --access public
 
 	# push
 	# git push origin refs/tags/v$VERSION
-	git push origin
+	# git push origin
 fi
