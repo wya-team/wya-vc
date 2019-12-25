@@ -5,6 +5,10 @@
 
 import { kebabCase } from 'lodash';
 
+// style
+import './style/index';
+
+// basic
 import Artboard from './artboard/index';
 import MArtboard from './artboard/index.m';
 import Button from './button/index';
@@ -138,8 +142,6 @@ import Vc, { VcInstance, VcError, VcBasic } from './vc/index';
 import * as Utils from './utils/index';
 
 export { default as Extends } from './extends/index';
-
-import { version } from '../package.json';
 
 const Components = {
 	// components
@@ -284,7 +286,6 @@ export {
 	VcInstance,
 	VcBasic,
 	VcError,
-	version,
 	Utils,
 
 	// components
@@ -419,7 +420,7 @@ export {
 };
 
 export default {
-	version,
+	version: '2.0.0',
 	install
 };
 
