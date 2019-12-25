@@ -1,7 +1,11 @@
 <template>
 	<div class="vc-popover-basic">
-		<div @click="isHover = !isHover">{{ trigger }}</div>
-		<div @click="handleDynamic">无需插槽，动态创建</div>
+		<div @click="isHover = !isHover">
+			{{ trigger }}
+		</div>
+		<div @click="handleDynamic">
+			无需插槽，动态创建
+		</div>
 		<div ref="parent" class="vc-popover-basic__container">
 			<div class="vc-popover-basic__left" style="margin-top: 32px; margin-bottom: 32px">
 				<vc-popover 
@@ -23,7 +27,6 @@
 							动态改变内容{{ content }}
 						</div>
 					</template>
-					
 				</vc-popover>
 				<vc-popover 
 					v-model="visible"

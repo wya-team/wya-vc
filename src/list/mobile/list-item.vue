@@ -61,7 +61,7 @@ export default {
 			type: Boolean,
 			default: false
 		},
-		to: String | Object,
+		to: [String, Object],
 		method: {
 			type: String,
 			default: 'push',

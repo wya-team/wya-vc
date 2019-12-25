@@ -12,7 +12,7 @@
 		>
 			<template #prepend>
 				<slot name="prepend">
-					<vcm-icon type="search" class="vcm-input-search__icon"/>
+					<vcm-icon type="search" class="vcm-input-search__icon" />
 				</slot>
 			</template>
 		</vcm-input>

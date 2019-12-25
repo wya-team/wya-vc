@@ -2,14 +2,16 @@
 	<div class="vc-color-picker-hue-slider">
 		<div 
 			ref="bar" 
-			class="vc-color-picker-hue-slider__bar" />
+			class="vc-color-picker-hue-slider__bar"
+		/>
 		<div
 			ref="thumb"
 			:style="{
 				top: 0,
 				left: `${thumbLeft}px`
 			}" 
-			class="vc-color-picker-hue-slider__thumb"/>
+			class="vc-color-picker-hue-slider__thumb"
+		/>
 	</div>
 </template>
 

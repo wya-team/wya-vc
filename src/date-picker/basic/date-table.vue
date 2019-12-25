@@ -9,7 +9,9 @@
 		>
 			<tbody>
 				<tr class="vc-date-table__header">
-					<th v-for="(week, key) in WEEKS" :key="key">{{ week }}</th>
+					<th v-for="(week, key) in WEEKS" :key="key">
+						{{ week }}
+					</th>
 				</tr>
 				<tr
 					v-for="(row, key) in rows"

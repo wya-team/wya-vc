@@ -3,14 +3,16 @@
 		<div 
 			ref="bar"
 			:style="{ background: background }" 
-			class="vc-color-picker-alpha__bar" />
+			class="vc-color-picker-alpha__bar"
+		/>
 		<div 
 			ref="thumb" 
 			:style="{
 				top: 0,
 				left: `${thumbLeft}px`
 			}"
-			class="vc-color-picker-alpha__thumb"/>
+			class="vc-color-picker-alpha__thumb"
+		/>
 	</div>
 </template>
 

@@ -16,6 +16,7 @@
 			</div>
 			<div :class="classes" class="vc-input__content">
 				<slot name="content">
+					<!-- maxlength主要用于覆盖v-bind -->
 					<input
 						ref="input"
 						v-bind="binds"
@@ -56,7 +57,7 @@
 				</slot>
 			</div>
 			<!-- hack, 莫名的黑点-->
-			<div class="vc-input__hack"/>
+			<div class="vc-input__hack" />
 		</div>
 		<!-- 计数 -->
 		<span 

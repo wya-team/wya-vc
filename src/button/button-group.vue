@@ -1,6 +1,6 @@
 <template>
 	<div :class="classes" class="vc-btn-group">
-		<slot/>
+		<slot />
 	</div>
 </template>
 <script>

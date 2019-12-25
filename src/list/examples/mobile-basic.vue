@@ -3,7 +3,7 @@
 		<vcm-list :label-width="100" style="margin: 20px 0;">
 			<vcm-list-item :arrow="false" label="姓名">
 				<template #label="">
-					<div/>
+					<div />
 				</template>
 				<template #extra="">
 					<div>2</div>

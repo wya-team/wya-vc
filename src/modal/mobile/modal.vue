@@ -60,8 +60,8 @@
 							<div 
 								v-for="(item, index) in curentActions"
 								v-if="item.text"
-								:style="item.style"
 								:key="index"
+								:style="item.style"
 								class="vcm-modal__button"
 								@click="handleBefore($event, item.onPress)"
 								v-html="item.text"
@@ -71,7 +71,6 @@
 				</div>
 			</vcm-transition-zoom>
 		</div>
-		
 	</div>
 </template>
 <script>

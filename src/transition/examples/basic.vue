@@ -1,13 +1,21 @@
 <template>
 	<div style="padding: 100px">
-		<h3 v-if="!isGroup" @click="handleClick"> 点击触发: {{ visible }} </h3>
+		<h3 v-if="!isGroup" @click="handleClick">
+			点击触发: {{ visible }}
+		</h3>
 		<template v-else-if="isGroup">
-			<h3 @click="handleAdd"> 添加: {{ colors.length }} </h3>
-			<h3 @click="handleDel"> 删除: {{ colors.length }} </h3>
+			<h3 @click="handleAdd">
+				添加: {{ colors.length }}
+			</h3>
+			<h3 @click="handleDel">
+				删除: {{ colors.length }}
+			</h3>
 		</template>
 		
 
-		<h3 @click="handleGroup"> 切换为组合: {{ isGroup }} </h3>
+		<h3 @click="handleGroup">
+			切换为组合: {{ isGroup }}
+		</h3>
 		<div style="display: flex; align-items: center">
 			<select v-model="transitionName">
 				<option 

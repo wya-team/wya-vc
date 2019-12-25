@@ -42,7 +42,7 @@
 					<vc-icon type="right" />
 				</button>
 			</vc-transition-slide>
-			<slot/>
+			<slot />
 		</div>
 		<ul
 			v-if="dots"

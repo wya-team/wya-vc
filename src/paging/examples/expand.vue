@@ -34,10 +34,14 @@
 			<vc-table-column
 				label="操作"
 			>
-				<template #default="{ it }" >
+				<template #default="{ it }">
 					<div>
-						<div @click="handleResetFirst">回到首页刷新</div>
-						<div @click="handleResetCur">当前页刷新</div>
+						<div @click="handleResetFirst">
+							回到首页刷新
+						</div>
+						<div @click="handleResetCur">
+							当前页刷新
+						</div>
 					</div>
 				</template>
 			</vc-table-column>

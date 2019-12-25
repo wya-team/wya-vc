@@ -10,7 +10,7 @@
 			:style="{ height: height ? `${height}px` : 'auto' }"
 			class="vcm-carousel__wrapper"
 		>
-			<slot/>
+			<slot />
 		</div>
 		<ul
 			v-if="dots"

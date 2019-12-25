@@ -1,7 +1,7 @@
 <template>
 	<div class="vc-paging-loading">
 		<div :class="loading ? 'is-loading' : ''" class="vc-paging-loading__container">
-			<slot/>
+			<slot />
 		</div>
 		<div 
 			v-if="loading" 

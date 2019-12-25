@@ -11,9 +11,8 @@
 					@delete="handleDel(arguments[0])"
 					@preview="handlePreview(arguments[0], index)"
 				>
-				
 					<template #default="{ it }">
-						<slot :it="it" name="image"/>
+						<slot :it="it" name="image" />
 					</template>
 				</vc-imgs-picker-item>
 			</template>
@@ -35,7 +34,7 @@
 						@preview="handlePreview(arguments[0], index)"
 					>
 						<template #default="{ it }">
-							<slot :it="it" name="image"/>
+							<slot :it="it" name="image" />
 						</template>
 					</vc-imgs-picker-item>
 				</template>

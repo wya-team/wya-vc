@@ -1,10 +1,12 @@
 <template>
 	<div class="vc-img">
 		<slot v-if="isLoading" name="placeholder">
-			<div :class="{ 'is-auto': isAuto }" :style="pStyle" class="vc-img__placeholder"/>
+			<div :class="{ 'is-auto': isAuto }" :style="pStyle" class="vc-img__placeholder" />
 		</slot>
 		<slot v-else-if="isError" name="error">
-			<div class="vc-img__error">加载失败</div>
+			<div class="vc-img__error">
+				加载失败
+			</div>
 		</slot>
 		<img
 			v-else

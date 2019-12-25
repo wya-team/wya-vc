@@ -21,7 +21,7 @@
 					class="vc-popover-core__arrow"
 				/>
 				<slot v-if="$slots.content || $scopedSlots.content" name="content" />
-				<vc-customer v-else-if="typeof content === 'function'" :render="content"/>
+				<vc-customer v-else-if="typeof content === 'function'" :render="content" />
 				<div v-else v-html="content" />
 			</div>
 		</div>

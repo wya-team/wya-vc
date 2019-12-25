@@ -7,10 +7,16 @@
 		placement="right"
 		@close="handleCancel"
 	>
-		<div v-if="!loading">{{ data }} </div>
-		<vc-spin v-if="loading"/>
-		<div @click="handleCancel">取消</div>
-		<div @click="handleOk">确定</div>
+		<div v-if="!loading">
+			{{ data }}
+		</div>
+		<vc-spin v-if="loading" />
+		<div @click="handleCancel">
+			取消
+		</div>
+		<div @click="handleOk">
+			确定
+		</div>
 	</vc-drawer>
 </template>
 

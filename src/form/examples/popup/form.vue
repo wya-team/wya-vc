@@ -14,36 +14,36 @@
 			class="_form g-m-t-16"
 		>
 			<vc-form-item label="活动名称： " prop="name">
-				<vc-input v-model="formData.name"/>
+				<vc-input v-model="formData.name" />
 			</vc-form-item>
 			<vc-form-item label="活动描述： " prop="remark">
-				<vc-input v-model="formData.remark"/>
+				<vc-input v-model="formData.remark" />
 			</vc-form-item>
 			<vc-form-item label="活动类型： " prop="typeText">
-				<vc-input v-model="formData.typeText"/>
+				<vc-input v-model="formData.typeText" />
 			</vc-form-item>
 			<vc-form-item label="活动地点： " prop="region">
-				<vc-input v-model="formData.region"/>
+				<vc-input v-model="formData.region" />
 			</vc-form-item>
 			<vc-form-item label="活动组织者： " prop="person">
-				<vc-input v-model="formData.person"/>
+				<vc-input v-model="formData.person" />
 			</vc-form-item>
 			<vc-form-item label="活动性质： " prop="type">
 				<vc-checkbox-group v-model="formData.type">
-					<vc-checkbox label="美食/餐厅线上活动" name="type"/>
-					<vc-checkbox label="地推活动" name="type"/>
-					<vc-checkbox label="线下主题活动" name="type"/>
-					<vc-checkbox label="单纯品牌曝光" name="type"/>
+					<vc-checkbox label="美食/餐厅线上活动" name="type" />
+					<vc-checkbox label="地推活动" name="type" />
+					<vc-checkbox label="线下主题活动" name="type" />
+					<vc-checkbox label="单纯品牌曝光" name="type" />
 				</vc-checkbox-group>
 			</vc-form-item>
 			<vc-form-item label="特殊资源： " prop="resource">
 				<vc-radio-group v-model="formData.resource">
-					<vc-radio label="线上品牌商赞助"/>
-					<vc-radio label="线下场地免费"/>
+					<vc-radio label="线上品牌商赞助" />
+					<vc-radio label="线下场地免费" />
 				</vc-radio-group>
 			</vc-form-item>
 			<vc-form-item label="活动形式： " prop="desc">
-				<vc-input v-model="formData.desc" type="textarea"/>
+				<vc-input v-model="formData.desc" type="textarea" />
 			</vc-form-item>
 		</vc-form>
 	</vc-modal>

@@ -2,7 +2,7 @@
 	<div :class="classes" class="vc-tag" @click.stop="handleCheck">
 		<div class="vc-tag__wrapper">
 			<!-- dot -->
-			<div v-if="type === 'dot'" >
+			<div v-if="type === 'dot'">
 				<span class="vc-tag__dot" />
 			</div>
 			

@@ -4,6 +4,7 @@
  */
 
 import { kebabCase } from 'lodash';
+
 import Artboard from './artboard/index';
 import MArtboard from './artboard/index.m';
 import Button from './button/index';
@@ -130,15 +131,15 @@ import Tree from './tree/index';
 import MTree from './tree/index.m';
 import Upload from './upload/index';
 import MUpload from './upload/index.m';
-import Vc from './vc/index';
-
 
 // 功能
-export { VcInstance, VcError, VcBasic } from './vc/index';
-export * as Utils from './utils/index';
-export { Extends } from './extends/index';
+import Vc, { VcInstance, VcError, VcBasic } from './vc/index';
 
-// 弹层
+import * as Utils from './utils/index';
+
+export { default as Extends } from './extends/index';
+
+import { version } from '../package.json';
 
 const Components = {
 	// components
@@ -278,13 +279,134 @@ if (typeof window !== 'undefined' && window.Vue) {
 	install(window.Vue, window.VcOptions);
 }
 
-export default {
-	version: '1.0.0',
-	install,
-	// 实例
+export {
+	Vc,
 	VcInstance,
-	// 工具
+	VcBasic,
+	VcError,
+	version,
 	Utils,
+
+	// components
+	Artboard,
+	MArtboard,
+	Button,
+	MButton,
+	Calendar,
+	MCalendar,
+	Card,
+	MCard,
+	Carousel,
+	MCarousel,
+	Cascader,
+	MCascader,
+	Checkbox,
+	MCheckbox,
+	Clipboard,
+	MClipboard,
+	Collapse,
+	MCollapse,
+	ColorPicker,
+	MColorPicker,
+	Countdown,
+	MCountdown,
+	Customer,
+	MCustomer,
+	DatePicker,
+	MDatePicker,
+	DebounceClick,
+	MDebounceClick,
+	Drawer,
+	MDrawer,
+	Dropdown,
+	MDropdown,
+	Echarts,
+	MEcharts,
+	Editor,
+	MEditor,
+	Expand,
+	MExpand,
+	FilesPicker,
+	MFilesPicker,
+	Form,
+	MForm,
+	Fragment,
+	MFragment,
+	HtmlImg,
+	MHtmlImg,
+	Icon,
+	MIcon,
+	Img,
+	MImg,
+	ImgsCrop,
+	MImgsCrop,
+	ImgsPicker,
+	MImgsPicker,
+	ImgsPreview,
+	MImgsPreview,
+	ImgsProcessing,
+	MImgsProcessing,
+	Input,
+	MInput,
+	List,
+	MList,
+	Marquee,
+	MMarquee,
+	Notice,
+	MNotice,
+	Option,
+	MOption,
+	Page,
+	MPage,
+	Paging,
+	MPaging,
+	Picker,
+	MPicker,
+	Popconfirm,
+	MPopconfirm,
+	Popover,
+	MPopover,
+	Popup,
+	MPopup,
+	Print,
+	MPrint,
+	Progress,
+	MProgress,
+	PullScroll,
+	MPullScroll,
+	Radio,
+	MRadio,
+	RecycleList,
+	MRecycleList,
+	Select,
+	MSelect,
+	Slider,
+	MSlider,
+	SortList,
+	MSortList,
+	Spin,
+	MSpin,
+	Switch,
+	MSwitch,
+	Table,
+	MTable,
+	Tabs,
+	MTabs,
+	Tag,
+	MTag,
+	Textarea,
+	MTextarea,
+	TimePicker,
+	MTimePicker,
+	Touch,
+	MTouch,
+	Transition,
+	MTransition,
+	Tree,
+	MTree,
+	Upload,
+	MUpload,
+
 	// 弹层
 	Message,
 	MMessage,
@@ -293,7 +415,11 @@ export default {
 	Portal,
 	MPortal,
 	Toast,
-	MToast,
-	...Components
+	MToast
+};
+
+export default {
+	version,
+	install
 };
 

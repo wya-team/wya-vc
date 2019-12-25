@@ -1,11 +1,23 @@
 <template>
 	<div>
-		<vc-button :wait="0" @click="handleClick('success')">成功的提示</vc-button>
-		<vc-button :wait="0" @click="handleClick('error')">错误的提示</vc-button>
-		<vc-button :wait="0" @click="handleClick('warn')">警告的提示</vc-button>
-		<vc-button :wait="0" @click="handleClick('loading')">加载中提示</vc-button>
-		<vc-button :wait="0" @click="handleClickClose('info')">手动关闭的提示</vc-button>
-		<vc-button :wait="0" @click="handleClickrender">根据render函数渲染</vc-button>
+		<vc-button :wait="0" @click="handleClick('success')">
+			成功的提示
+		</vc-button>
+		<vc-button :wait="0" @click="handleClick('error')">
+			错误的提示
+		</vc-button>
+		<vc-button :wait="0" @click="handleClick('warn')">
+			警告的提示
+		</vc-button>
+		<vc-button :wait="0" @click="handleClick('loading')">
+			加载中提示
+		</vc-button>
+		<vc-button :wait="0" @click="handleClickClose('info')">
+			手动关闭的提示
+		</vc-button>
+		<vc-button :wait="0" @click="handleClickrender">
+			根据render函数渲染
+		</vc-button>
 	</div>
 </template>
 <script>

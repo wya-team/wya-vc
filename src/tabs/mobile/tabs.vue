@@ -30,7 +30,7 @@
 				</div>
 			</div>
 		</div>
-		<div v-if="isFixed" :style="{ height: `${placeholderH}px` }" class="vcm-tabs__placeholder"/>
+		<div v-if="isFixed" :style="{ height: `${placeholderH}px` }" class="vcm-tabs__placeholder" />
 		<div ref="content" :style="contentStyle" class="vcm-tabs__content">
 			<slot />
 		</div>

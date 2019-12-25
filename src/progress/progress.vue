@@ -5,7 +5,7 @@
 			class="vc-progress__line is-line"
 		>
 			<div :class="{'vc-progress__info': showInfo}" class="vc-progress__wrapper">
-				<div :class="`is-${currentStatus}`" class="vc-progress__box" >
+				<div :class="`is-${currentStatus}`" class="vc-progress__box">
 					<div 
 						:style="innerStyle"
 						:class="`is-${currentStatus}`" 

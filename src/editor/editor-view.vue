@@ -1,6 +1,6 @@
 <template>
 	<div class="vc-quilleditor-view ql-snow">
-		<div class="ql-editor" v-html="content"/>
+		<div class="ql-editor" v-html="content" />
 	</div>
 </template>
 

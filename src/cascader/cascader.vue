@@ -1,7 +1,7 @@
 <template>
 	<vc-popover 
-		v-bind="$attrs"
-		v-model="isActive" 
+		v-model="isActive"
+		v-bind="$attrs" 
 		:arrow="arrow" 
 		:trigger="trigger"
 		:tag="tag"
@@ -47,8 +47,8 @@
 					v-for="(item, index) in cols"
 					v-if="rebuildData[index] && rebuildData[index].length"
 					ref="col"
-					:value="currentValue[index]"
 					:key="index"
+					:value="currentValue[index]"
 					:index="index"
 					:data-source="rebuildData[index]"
 					@change="handleCellChange"

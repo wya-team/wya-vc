@@ -1,22 +1,22 @@
 <template>
 	<div
-		ref="pswpElement"
 		:id="id"
+		ref="pswpElement"
 		class="pswp"
 		tab-index="-1"
 		role="dialog"
 		aria-hidden="true"
 	>
-		<div class="pswp__bg"/>
+		<div class="pswp__bg" />
 		<div class="pswp__scroll-wrap">
 			<div class="pswp__container">
-				<div class="pswp__item"/>
-				<div class="pswp__item"/>
-				<div class="pswp__item"/>
+				<div class="pswp__item" />
+				<div class="pswp__item" />
+				<div class="pswp__item" />
 			</div>
 			<div class="pswp__ui pswp__ui--hidden">
 				<div class="pswp__top-bar">
-					<div class="pswp__counter"/>
+					<div class="pswp__counter" />
 					<button
 						class="pswp__button pswp__button--close"
 						title="关闭(Esc)"
@@ -29,7 +29,7 @@
 						class="pswp__button pswp__button--fs"
 						title="全屏"
 					/>
-					<button class="pswp__button pswp__button--zoom" title="缩放"/>
+					<button class="pswp__button pswp__button--zoom" title="缩放" />
 					<vc-icon 
 						type="rotate-right" 
 						class="vc-imgs-preview-core__button" 
@@ -55,13 +55,13 @@
 					<div class="pswp__preloader">
 						<div class="pswp__preloader__icn">
 							<div class="pswp__preloader__cut">
-								<div class="pswp__preloader__donut"/>
+								<div class="pswp__preloader__donut" />
 							</div>
 						</div>
 					</div>
 				</div>
 				<div class="pswp__share-modal pswp__share-modal--hidden pswp__single-tap">
-					<div class="pswp__share-tooltip"/>
+					<div class="pswp__share-tooltip" />
 				</div>
 				<button
 					class="pswp__button pswp__button--arrow--left"
@@ -202,7 +202,7 @@ const wrapperComponent = {
 			});
 		},
 		handleRotate(newAngle) {
-			this.angle = this.angle + newAngle;
+			this.angle += newAngle;
 			document.querySelectorAll('.pswp__img').forEach(i => {
 				i.style.transform = `rotate(${this.angle}deg)`;
 			});

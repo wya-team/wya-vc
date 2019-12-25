@@ -1,7 +1,9 @@
 <template>
 	<div>
 		<!-- single -->
-		<vc-radio v-model="single" @change="handleChange">{{ single }}</vc-radio>
+		<vc-radio v-model="single" @change="handleChange">
+			{{ single }}
+		</vc-radio>
 
 		<!-- group -->
 		<vc-radio-group v-model="phone">
@@ -16,16 +18,16 @@
 			</vc-radio>
 		</vc-radio-group>
 		<vc-radio-group v-model="animal" vertical>
-			<vc-radio label="金斑蝶"/>
-			<vc-radio label="爪哇犀牛"/>
-			<vc-radio label="印度黑羚"/>
+			<vc-radio label="金斑蝶" />
+			<vc-radio label="爪哇犀牛" />
+			<vc-radio label="印度黑羚" />
 		</vc-radio-group>
 
 		<vc-radio-group v-model="city" type="button" @change="handleChange">
-			<vc-radio label="北京"/>
-			<vc-radio label="上海" disabled/>
+			<vc-radio label="北京" />
+			<vc-radio label="上海" disabled />
 			<vc-radio label="深圳" />
-			<vc-radio label="杭州"/>
+			<vc-radio label="杭州" />
 		</vc-radio-group>
 		<vc-form 
 			ref="formValidate" 
@@ -37,13 +39,13 @@
 		>
 			<vc-form-item prop="animal" label="动物：">
 				<vc-radio-group v-model="formValidate.animal">
-					<vc-radio label="金斑蝶"/>
-					<vc-radio label="爪哇犀牛"/>
-					<vc-radio label="印度黑羚"/>
+					<vc-radio label="金斑蝶" />
+					<vc-radio label="爪哇犀牛" />
+					<vc-radio label="印度黑羚" />
 				</vc-radio-group>
 			</vc-form-item>
 			<vc-form-item prop="animal" label="动物：">
-				<vc-radio label="金斑蝶"/>
+				<vc-radio label="金斑蝶" />
 			</vc-form-item>
 			<vc-form-item prop="input" label="动物：">
 				<vc-input style="width: 300px" />

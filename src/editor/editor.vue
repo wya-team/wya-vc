@@ -2,7 +2,7 @@
 	<div class="vc-quill-editor">
 		<slot name="toolbar">
 			<vc-editor-toolbar v-if="options.modules && options.modules.toolbar === '#toolbar'">
-				<button id="img" style="outline: none; line-height: 1;" >
+				<button id="img" style="outline: none; line-height: 1;">
 					<vc-upload
 						v-bind="uploadOpts"
 						:accept="accept" 
@@ -14,7 +14,7 @@
 				<slot name="extend" />
 			</vc-editor-toolbar>
 		</slot>
-		<div ref="editor"/>
+		<div ref="editor" />
 	</div>
 </template>
 

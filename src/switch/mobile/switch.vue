@@ -15,7 +15,7 @@
 				{{ closeText }}
 			</slot>	
 		</span>
-		<span class="vcm-switch__inner"/>
+		<span class="vcm-switch__inner" />
 		<vcm-spin 
 			v-if="loading" 
 			:size="14"

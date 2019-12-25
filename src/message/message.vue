@@ -19,7 +19,7 @@
 						:size="14"
 						class="vc-message__loading" 
 					/>
-					<vc-icon v-else :type="mode" :class="`is-${mode}`" class="vc-message__icon"/>
+					<vc-icon v-else :type="mode" :class="`is-${mode}`" class="vc-message__icon" />
 					<!-- content -->
 					<p 
 						v-if="typeof content === 'string'"

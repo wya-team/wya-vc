@@ -2,7 +2,7 @@
 	<label :class="classes" class="vc-checkbox">
 		<span class="vc-checkbox__wrapper">
 			<span class="vc-checkbox__border">
-				<span class="vc-checkbox__inner"/>
+				<span class="vc-checkbox__inner" />
 			</span>
 			<input
 				:checked="checked"

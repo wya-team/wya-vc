@@ -21,14 +21,14 @@
 						class="vc-input-number__up"
 						@click="handleStepper(1)"
 					>
-						<vc-icon type="up"/>
+						<vc-icon type="up" />
 					</div>
 					<div 
 						:disabled="minusDisabled" 
 						class="vc-input-number__down"
 						@click="handleStepper(-1)" 
 					>
-						<vc-icon type="down"/>
+						<vc-icon type="down" />
 					</div>	
 				</div>
 			</slot>

@@ -1,6 +1,6 @@
 <template>
 	<div :class="{ 'is-border': border }" class="vcm-list">
-		<slot/>
+		<slot />
 	</div>
 </template>
 <script>

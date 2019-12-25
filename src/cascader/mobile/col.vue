@@ -8,8 +8,8 @@
 			@click="handleClick(item.value, index)"
 		>
 			<span class="vcm-cascader-col__label">{{ item.label }}</span>
-			<vcm-spin v-if="value === item.value && item.loading" :size="16"/>
-			<vcm-icon v-else-if="value === item.value" class="vcm-cascader-col__select" type="select-checked"/>
+			<vcm-spin v-if="value === item.value && item.loading" :size="16" />
+			<vcm-icon v-else-if="value === item.value" class="vcm-cascader-col__select" type="select-checked" />
 		</div>
 	</div>
 </template>

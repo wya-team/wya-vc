@@ -1,8 +1,12 @@
 <template>
 	<div>
 		<h1>点击图标复制</h1>
-		<h1 @click="handleShuffle">乱序测试: <vc-icon :type="items[0]" /></h1>
-		<h2 @click="handleClick">点我切换 prefix: {{ mobile ? 'vcm-' : 'vc-' }}</h2>
+		<h1 @click="handleShuffle">
+			乱序测试: <vc-icon :type="items[0]" />
+		</h1>
+		<h2 @click="handleClick">
+			点我切换 prefix: {{ mobile ? 'vcm-' : 'vc-' }}
+		</h2>
 		<div class="vc-icon-basic">
 			<!-- index 仅用于乱序测试 -->
 			<vc-clipboard v-for="(item, index) in items" :key="index" :value="`<vc${m}-icon type=&quot;${item}&quot; />`">

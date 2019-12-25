@@ -10,7 +10,7 @@
 		@touchstart.prevent
 	>
 		<slot>{{ formatterLabel }}</slot>
-		<vc-icon v-if="isSelect" type="correct"/>
+		<vc-icon v-if="isSelect" type="correct" />
 	</div>
 </template>
 

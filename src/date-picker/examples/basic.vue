@@ -1,6 +1,8 @@
 <template>
 	<div style="margin: 50px">
-		<vc-button @click="type = type === 'date' ? 'datetime' : 'date'">{{ type }}</vc-button>
+		<vc-button @click="type = type === 'date' ? 'datetime' : 'date'">
+			{{ type }}
+		</vc-button>
 		<vc-date-picker 
 			v-model="value"
 			:options="options" 
@@ -66,8 +68,10 @@
 					style="width: 300px"
 				/>
 			</vc-form-item>
-			<div @click="handleSubmit">提交</div>
-		</vc-form >
+			<div @click="handleSubmit">
+				提交
+			</div>
+		</vc-form>
 	</div>
 </template>
 <script>

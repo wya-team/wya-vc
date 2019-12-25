@@ -1,8 +1,12 @@
 <template>
 	<div>
-		<vc-button @click="handleDrawer">点击出现抽屉</vc-button>
-		<vc-button @click="handleDrawer2">点击出现第二个抽屉</vc-button>
-		<div style="height: 1000px"/>
+		<vc-button @click="handleDrawer">
+			点击出现抽屉
+		</vc-button>
+		<vc-button @click="handleDrawer2">
+			点击出现第二个抽屉
+		</vc-button>
+		<div style="height: 1000px" />
 		<vc-drawer
 			v-model="visible"
 			:height="500"

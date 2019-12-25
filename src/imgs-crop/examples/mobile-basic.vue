@@ -18,8 +18,10 @@
 				@position-change="handleFn"
 			/>
 		</vcm-touch>
-		<vcm-icon type="rotate-right" @click="rotate += 90"/>
-		<vcm-button @click="handleSave">保存</vcm-button>
+		<vcm-icon type="rotate-right" @click="rotate += 90" />
+		<vcm-button @click="handleSave">
+			保存
+		</vcm-button>
 		<img :src="result">
 	</div>
 </template>

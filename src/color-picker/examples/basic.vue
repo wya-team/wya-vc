@@ -22,7 +22,7 @@
 		<vc-color-picker v-model="color9" alpha />
 		<h2>格式化</h2>
 		<vc-color-picker v-model="color10" format="hsl" />
-		<vc-color-picker v-model="color11" format="hsl" alpha/>
+		<vc-color-picker v-model="color11" format="hsl" alpha />
 		<h2>事件</h2>
 		<vc-color-picker 
 			v-model="color1" 

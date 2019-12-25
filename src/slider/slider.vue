@@ -24,7 +24,8 @@
 				:style="{left: minPosition + '%'}"
 				class="vc-slider__btn-wrapper"
 				@touchstart="handlePointerDown($event, 'min')"
-				@mousedown="handlePointerDown($event, 'min')">
+				@mousedown="handlePointerDown($event, 'min')"
+			>
 				<vc-popover
 					ref="minTooltip"
 					:visible="minVisible && !!formatter(exportValue[0])"
@@ -54,7 +55,8 @@
 				:style="{left: maxPosition + '%'}"
 				class="vc-slider__btn-wrapper"
 				@touchstart="handlePointerDown($event, 'max')"
-				@mousedown="handlePointerDown($event, 'max')">
+				@mousedown="handlePointerDown($event, 'max')"
+			>
 				<vc-popover
 					ref="maxTooltip"
 					:visible="maxVisible && !!formatter(exportValue[1])"

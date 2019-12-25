@@ -49,13 +49,18 @@
 			:auto="auto"
 			v-on="hooks"
 		>
-			<div v-if="$slots.header || $scopedSlots.header" ref="header"><slot name="header" /></div>
-			<div v-if="$slots.content || $scopedSlots.content" ref="content"><slot name="content" /></div>
+			<div v-if="$slots.header || $scopedSlots.header" ref="header">
+				<slot name="header" />
+			</div>
+			<div v-if="$slots.content || $scopedSlots.content" ref="content">
+				<slot name="content" />
+			</div>
 			<div 
 				v-if="waterfall" 
 				ref="waterfall" 
 				:style="{ height: waterfallHeight + 'px' }"
-				class="vc-pull-scroll__waterfall">
+				class="vc-pull-scroll__waterfall"
+			>
 				<!-- 项目中统一使用it, key由slot决定 -->
 				<template v-for="(item, index) in dataSource">
 					<slot 
@@ -72,7 +77,9 @@
 					<slot :it="item" :index="index" />
 				</template>
 			</template>
-			<div v-if="$slots.footer || $scopedSlots.footer" ref="footer"><slot name="footer" /></div>
+			<div v-if="$slots.footer || $scopedSlots.footer" ref="footer">
+				<slot name="footer" />
+			</div>
 		</vc-core>
 		<slot 
 			v-if="!inverted && scroll"

@@ -17,7 +17,7 @@
 			v-show="!isActive"
 			class="vc-carousel-item__mask"
 		/>
-		<slot/>
+		<slot />
 	</div>
 </template>
 

@@ -17,7 +17,9 @@
 				class="image"
 			>
 		</vc-html-img>
-		<vc-button @click="handleClick">生成</vc-button>
+		<vc-button @click="handleClick">
+			生成
+		</vc-button>
 	</div>
 </template>
 <script>

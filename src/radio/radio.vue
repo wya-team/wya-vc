@@ -2,7 +2,7 @@
 	<label :class="classes" class="vc-radio">
 		<span class="vc-radio__wrapper">
 			<span class="vc-radio__border">
-				<span class="vc-radio__inner"/>
+				<span class="vc-radio__inner" />
 			</span>
 			<input
 				:checked="checked"

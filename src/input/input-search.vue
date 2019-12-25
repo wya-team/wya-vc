@@ -20,7 +20,9 @@
 						v-if="enterTxt === true" 
 						:type="append || 'search'"
 					/>
-					<template v-else>{{ enterTxt }}</template>
+					<template v-else>
+						{{ enterTxt }}
+					</template>
 				</div>
 			</slot>
 		</template>

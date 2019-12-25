@@ -14,8 +14,10 @@
 			/>
 		</vc-form-item>
 		<vc-editor-view :content="formValidate.value" />
-		<vc-button @click="handleSubmit">提交</vc-button>
-	</vc-form >
+		<vc-button @click="handleSubmit">
+			提交
+		</vc-button>
+	</vc-form>
 </template>
 <script>
 import Form from '../../form';

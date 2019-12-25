@@ -17,9 +17,10 @@
 						:class="imgClassName"
 						fit="cover"
 						class="vcm-imgs-picker__img"
-						@click="handlePreview($event, index)"/>
+						@click="handlePreview($event, index)"
+					/>
 					<div v-else :class="imgClassName" class="vcm-imgs-picker__img">
-						<vc-spin v-if="typeof item.status === 'undefined'"/>
+						<vc-spin v-if="typeof item.status === 'undefined'" />
 						<div v-else-if="item.status == 0" style="padding: 5px">
 							上传失败
 						</div>

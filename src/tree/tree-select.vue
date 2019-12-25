@@ -1,7 +1,7 @@
 <template>
 	<vc-popover 
-		v-bind="$attrs"
-		v-model="isActive" 
+		v-model="isActive"
+		v-bind="$attrs" 
 		:arrow="arrow" 
 		:trigger="trigger"
 		:tag="tag"

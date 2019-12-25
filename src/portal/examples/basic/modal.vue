@@ -7,7 +7,7 @@
 		@cancel="handleCancel"
 	>
 		<p> {{ data }} </p>
-		<vc-basic/>
+		<vc-basic />
 	</vc-modal>
 </template>
 

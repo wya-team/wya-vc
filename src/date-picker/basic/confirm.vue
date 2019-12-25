@@ -10,8 +10,12 @@
 		>
 			{{ label }}
 		</vc-button>
-		<vc-button size="small" @click="handleClear">清空</vc-button>
-		<vc-button size="small" type="primary" @click="handleConfirm">确定</vc-button>
+		<vc-button size="small" @click="handleClear">
+			清空
+		</vc-button>
+		<vc-button size="small" type="primary" @click="handleConfirm">
+			确定
+		</vc-button>
 	</div>
 </template>
 

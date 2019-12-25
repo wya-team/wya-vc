@@ -11,11 +11,11 @@
 	>
 		<vc-tree-node
 			v-for="child in root.childNodes"
+			:key="getNodeKey(child)"
 			:node="child"
 			:tree-props="treeProps"
 			:render-after-expand="renderAfterExpand"
 			:show-checkbox="showCheckbox"
-			:key="getNodeKey(child)"
 			:render-content="renderContent"
 			:allow-dispatch="allowDispatch"
 			@node-expand="handleNodeExpand"

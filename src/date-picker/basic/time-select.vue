@@ -9,7 +9,9 @@
 					:class="getCellClasses(item)"
 					class="vc-time-select__li"
 					@click="handleClick('hours', item)"
-				>{{ preZero(item.text) }}</li>
+				>
+					{{ preZero(item.text) }}
+				</li>
 			</ul>
 		</div>
 		<div ref="minutes" class="vc-time-select__list">
@@ -21,7 +23,9 @@
 					:class="getCellClasses(item)"
 					class="vc-time-select__li"
 					@click="handleClick('minutes', item)"
-				>{{ preZero(item.text) }}</li>
+				>
+					{{ preZero(item.text) }}
+				</li>
 			</ul>
 		</div>
 		<div v-show="showSeconds" ref="seconds" class="vc-time-select__list">
@@ -33,7 +37,9 @@
 					:class="getCellClasses(item)"
 					class="vc-time-select__li"
 					@click="handleClick('seconds', item)"
-				>{{ preZero(item.text) }}</li>
+				>
+					{{ preZero(item.text) }}
+				</li>
 			</ul>
 		</div>
 	</div>

@@ -5,7 +5,7 @@
 			ref="target" 
 			class="vc-notice__wrapper"
 		>
-			<vc-icon v-if="mode" :type="`o-${mode}`" :class="`is-${mode}`" class="vc-notice__icon"/>
+			<vc-icon v-if="mode" :type="`o-${mode}`" :class="`is-${mode}`" class="vc-notice__icon" />
 			<div>
 				<!-- title -->
 				<div v-if="title" :style="{marginBottom: content ? '8px' : ''}" class="vc-notice__title">

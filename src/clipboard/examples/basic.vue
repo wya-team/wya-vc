@@ -13,7 +13,9 @@
 		<br>
 		<br>
 		<br>
-		<vc-clipboard :value="msg">简洁版复制</vc-clipboard>
+		<vc-clipboard :value="msg">
+			简洁版复制
+		</vc-clipboard>
 	</div>
 </template>
 <script>

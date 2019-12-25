@@ -29,7 +29,7 @@
 						</div>
 					</td>
 				</tr>
-				<tr >
+				<tr>
 					<td>
 						<div class="_table-cell">
 							回到首页刷新

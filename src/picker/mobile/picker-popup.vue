@@ -1,8 +1,8 @@
 <template>
 	<div class="vcm-picker-popup">
 		<vcm-popup 
-			v-bind="$attrs" 
 			v-model="isActive" 
+			v-bind="$attrs" 
 			:fixed="true"
 			@close="handleClick('close')"
 		>
@@ -11,7 +11,9 @@
 					v-if="cancelText" 
 					class="vcm-picker-popup__item is-left"
 					@click.stop="handleClick('cancel')"
-				>{{ cancelText }}</div>
+				>
+					{{ cancelText }}
+				</div>
 
 				<!-- title -->
 				<div 
@@ -23,7 +25,9 @@
 					v-if="okText" 
 					class="vcm-picker-popup__item is-right" 
 					@click.stop="handleClick('ok')"
-				>{{ okText }}</div>
+				>
+					{{ okText }}
+				</div>
 			</div>
 			<slot />
 		</vcm-popup>

@@ -34,7 +34,7 @@ export default {
 		vShow.value === false && (vShow = { display: 'none' });
 
 		className = `${(staticClass ? `${staticClass} ` : '')}${className}`;
-		style = Object.assign({}, staticStyle, style, vShow);
+		style = { ...staticStyle, ...style, ...vShow };
 		
 		params.className = className;
 		params.style = style;

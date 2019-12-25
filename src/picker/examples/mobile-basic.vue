@@ -1,6 +1,5 @@
 <template>
 	<div class="vcm-picker-basic" style="height: 100%; overflow: auto;">
-	
 		<!-- 使用v-model -->
 		<vcm-picker
 			v-model="value"
@@ -23,11 +22,11 @@
 		<br>
 		<!-- 自定义展示 -->
 		<vcm-picker
+			v-model="valueAsync" 
 			:data-source="dataAsyncSource" 
-			:cascade="true" 
+			:cascade="true"
 			:cols="3"
 			:load-data="loadData"
-			v-model="valueAsync"
 		>
 			<template #default="it">
 				<h2>
@@ -46,17 +45,21 @@
 		<br>
 		<!-- 非联动选择 -->
 		<vcm-picker
+			v-model="valueSeasons" 
 			:data-source="dataSeasons" 
-			:cascade="false" 
+			:cascade="false"
 			:cols="2"
-			v-model="valueSeasons"
 			extra="非联动选择"
 		/>
 		<br>
 		<br>
 		<br>
-		<h3 @click="handleClick">点击直接调用(空数据)</h3>
-		<h3 @click="handleClick1">点击直接调用（默认数据）</h3>
+		<h3 @click="handleClick">
+			点击直接调用(空数据)
+		</h3>
+		<h3 @click="handleClick1">
+			点击直接调用（默认数据）
+		</h3>
 		<br>
 		<br>
 		<br>
@@ -71,22 +74,24 @@
 		>
 			<vcm-form-item prop="addr" label="选择">
 				<vcm-picker
+					v-model="formValidate.addr" 
 					:data-source="dataSource" 
 					:cascade="true" 
-					:cols="3" 
-					v-model="formValidate.addr"
+					:cols="3"
 				/>
 			</vcm-form-item>
 			<vcm-form-item>
-				<vcm-button @click="handleSubmit">提交表单</vcm-button>
+				<vcm-button @click="handleSubmit">
+					提交表单
+				</vcm-button>
 			</vcm-form-item>
 		</vcm-form>
 
 		<vcm-picker-view 
+			v-model="formValidate.addr" 
 			:data-source="dataSource" 
 			:cascade="true" 
-			:cols="3" 
-			v-model="formValidate.addr"
+			:cols="3"
 		/>
 		<br>
 		<br>

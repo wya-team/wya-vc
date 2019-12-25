@@ -8,7 +8,9 @@
 			waterfall
 		>
 			<template #header>
-				<button style="margin-bottom: 20px;" @click="handleClick">切换列，当前列数为 {{ columns }}</button>
+				<button style="margin-bottom: 20px;" @click="handleClick">
+					切换列，当前列数为 {{ columns }}
+				</button>
 			</template>
 			<template #default="{ it, index, width, styles }">
 				<div :style="[styles, { width: width + 'px' }]" class="_water-item">
