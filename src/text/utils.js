@@ -7,6 +7,8 @@ const HIDDEN_TEXT_STYLE = `
 	overflow: auto!important;
 	opacity: 0!important;
 	z-index: -1000!important;
+	top: 0!important;
+	right: 0!important;
 `;
 
 const SIZING_STYLE = [
