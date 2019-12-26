@@ -75,7 +75,7 @@ export const copyToClipboard = (value, opts = {}) => {
 	} catch (err) {
 		// IE
 		try {
-			window.clipboardData.setData('text', value);
+			window.clipboardData && window.clipboardData.setData('text', value);
 			success = true;
 		} catch (err) {
 			console.log(err);
