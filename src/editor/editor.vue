@@ -11,6 +11,22 @@
 						<vc-icon type="image" style="font-size: 15px" @click="handleUploadImg" />
 					</vc-upload>
 				</button>
+				<button id="video" style="outline: none; line-height: 1;" >
+					<vc-upload
+						v-bind="uploadOpts"
+						:gallery="false"
+						:accept="videoAccept"
+						@file-success="handleVideoSuccess"
+					>
+						<vc-icon type="video" style="font-size: 16px"/>
+					</vc-upload>
+				</button>
+				<button id="undo" style="outline: none; line-height: 1;" @click="handleUndo">
+					<vc-icon type="undo" style="font-size: 15px"/>
+				</button>
+				<button id="redo" style="outline: none; line-height: 1;" @click="handleRedo">
+					<vc-icon type="redo" style="font-size: 15px"/>
+				</button>
 				<slot name="extend" />
 			</vc-editor-toolbar>
 		</slot>
@@ -27,6 +43,7 @@ import Icon from '../icon/index';
 import ImgsPreview from '../imgs-preview/index';
 import defaultOptinos from './default-options';
 import { VcInstance } from '../vc/index';
+import VideoBlot from './extends/video';
 
 export default {
 	name: "vc-editor",
@@ -69,6 +86,10 @@ export default {
 		accept: {
 			type: String,
 			default: 'image/gif,image/jpeg,image/jpg,image/png'
+		},
+		videoAccept: {
+			type: String,
+			default: '.mp4,.avi,.rm,.rmvb,.wmv,.mov,.mpg,.mpeg,.3gp'
 		},
 		gallery: {
 			type: [Function, Boolean],
@@ -115,11 +136,12 @@ export default {
 	},
 	methods: {
 		init() {
+			this.Quill.register(VideoBlot);
 			this.initFontSize();
 			this.editor = new this.Quill(this.$refs.editor, { ...defaultOptinos, ...this.options });
 			this.editor.enable(!this.disabled);
 			if (this.value) {
-				this.editor.setText('zhellll');
+				this.editor.setText('');
 				this.editor.clipboard.dangerouslyPasteHTML(this.value);
 			}
 			
@@ -161,7 +183,12 @@ export default {
 			this.Quill.register({
 				'formats/size': SizeClass,
 			}, true);
-		
+		},
+		handleUndo() {
+			this.editor.history.undo();
+		},
+		handleRedo() {
+			this.editor.history.redo();
 		},
 		initListener() {
 			const ImageBlot = this.Quill.import('formats/image');
@@ -192,6 +219,9 @@ export default {
 			}
 			return imgs;
 		},
+		getLength() {
+			return this.editor.getSelection() ? this.editor.getSelection().index : this.editor.getLength();
+		},
 		handleImgSuccess(res) {
 			// 获取光标所在位置
 			let length;
@@ -204,6 +234,18 @@ export default {
 			this.editor.insertEmbed(length, 'image', res.data.url);
 			// 光标向后移动一位
 			this.editor.setSelection(length + 1);
+		},
+		handleVideoSuccess(res) {
+			let len = this.getLength();
+			this.editor.insertEmbed(len, 'simpleVideo', {
+				url: res.data.url,
+				// eslint-disable-next-line max-len
+				// url: 'https://wya-vedio.oss-cn-hangzhou.aliyuncs.com/%E5%AE%98%E7%BD%91%E8%A7%86%E9%A2%91/1-%E5%BE%AE%E4%B8%80%E6%A1%88%E5%AE%A3%E4%BC%A0%E7%89%87-PC%E7%89%882.0.mp4',
+				controls: 'controls',
+				width: '100%',
+				height: 'auto'
+			});
+			this.editor.setSelection(len + 1);
 		},
 		handlePreview(e, idx) {
 			let pos = {};
