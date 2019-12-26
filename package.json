@@ -111,7 +111,6 @@
         "postcss-loader": "^3.0.0",
         "postcss-smart-import": "^0.7.6",
         "pre-commit": "^1.2.2",
-        "precss": "^4.0.0",
         "progress-bar-webpack-plugin": "^1.12.1",
         "rimraf": "^3.0.0",
         "sass-loader": "^8.0.0",

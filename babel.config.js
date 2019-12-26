@@ -3,7 +3,7 @@ const path = require('path');
 
 module.exports = (api) => {
 	// 编译缓存
-	api.cache.forever();
+	api && api.cache.forever();
 
 	return {
 		compact: false,

@@ -106,7 +106,6 @@ const webpackConfig = {
 			// 			}
 			// 		}
 			// 	],
-				
 			// },
 			{
 				test: /\.(png|jpg|gif|eot|ttf|woff|woff2|svg)$/,
