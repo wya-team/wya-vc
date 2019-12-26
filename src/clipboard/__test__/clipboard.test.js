@@ -13,14 +13,12 @@ describe('Clipboard', () => {
 		expect(vm.$el.tagName).to.equal('SPAN');
 	});
 
-	it('should show toast when click trigger', async () => {
+	it('should show toast when click trigger', () => {
 		const vm = createComponent(Clipboard, {
 			value: 'copy'
 		});
 		const trigger = vm.$el;
 		trigger.click();
-		await wait(1);
 		expect(document.querySelector('.vc-message')).to.exist;
-		await wait(1);
 	});
 });
