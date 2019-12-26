@@ -40,7 +40,7 @@ export default {
 };
 </script>
 <style lang="scss">
-@import '../style/index.scss';
+@import '../style/vars.scss';
 
 @include block(vc-sort-list) {
 	@include commonFlex();

@@ -127,7 +127,7 @@ export default {
 </script>
 
 <style lang="scss">
-@import '../style/index.scss';
+@import '../style/vars.scss';
 @include block(vc-imgs-picker) {
 	display: flex;
 	box-sizing: border-box;

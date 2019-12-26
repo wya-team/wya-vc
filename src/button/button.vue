@@ -115,7 +115,7 @@ export default {
 };
 </script>
 <style lang="scss">
-@import '../style/index.scss';
+@import '../style/vars.scss';
 // 定义默认属性
 
 $primary-color: #5495f6;

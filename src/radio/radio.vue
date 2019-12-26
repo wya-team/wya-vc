@@ -29,7 +29,7 @@ export default {
 
 </script>
 <style lang="scss">
-@import '../style/index.scss';
+@import '../style/vars.scss';
 
 @include block(vc-radio) {
 	font-size: 12px;

@@ -293,7 +293,7 @@ export const Func = new Portal(wrapperComponent, {
 </script>
 
 <style lang="scss">
-@import '../style/index.scss';
+@import '../style/vars.scss';
 
 @include block(vc-popover-core) {
 	position: absolute;

@@ -374,7 +374,7 @@ export default {
 };
 </script>
 <style lang="scss">
-@import '../style/index.scss';
+@import '../style/vars.scss';
 
 $block: vc-slider;
 @include block($block) {

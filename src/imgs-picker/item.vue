@@ -82,7 +82,7 @@ export default {
 
 <style lang="scss">
 
-@import '../style/index.scss';
+@import '../style/vars.scss';
 @include block(vc-imgs-picker-item) {
 	position: relative;
 	display: flex;

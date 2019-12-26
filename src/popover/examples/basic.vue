@@ -264,7 +264,7 @@ export default {
 </script>
 
 <style lang="scss">
-@import '../../style/index.scss';
+@import '../../style/vars.scss';
 
 .g-m-lr-10 {
 	margin-right: 10px;

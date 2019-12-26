@@ -99,7 +99,7 @@ export default {
 </script>
 
 <style lang='scss'>
-@import '../../style/index.scss';
+@import '../../style/vars.scss';
 
 @include block(vcm-picker-popup) {
 	@include element(header) {

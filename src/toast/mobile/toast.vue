@@ -83,7 +83,7 @@ export default {
 
 <style lang="scss">
 
-@import '../../style/index.scss';
+@import '../../style/vars.scss';
 
 @include block(vcm-toast) {
 	@include element(bg) {
