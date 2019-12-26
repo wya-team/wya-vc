@@ -24,7 +24,11 @@ export default {
 		content: {
 			immediate: true,
 			handler(v) {
-				v && this.getImgUrls(v);
+				if (v) {
+				 this.getImgUrls(v);
+				} else {
+					this.allImgUlrs = [];
+				}
 			}
 		}
 	},

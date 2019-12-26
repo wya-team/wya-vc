@@ -4,6 +4,7 @@
 			<vc-editor-toolbar v-if="options.modules && options.modules.toolbar === '#toolbar'">
 				<button id="img" style="outline: none; line-height: 1;" >
 					<vc-upload
+						ref="upload"
 						v-bind="uploadOpts"
 						:accept="accept" 
 						@file-success="handleImgSuccess"
@@ -11,22 +12,25 @@
 						<vc-icon type="image" style="font-size: 15px" @click="handleUploadImg" />
 					</vc-upload>
 				</button>
-				<slot name="extend" />
+				<slot name="extend" >
+					<button @click="handleClick">click</button>
+				</slot>
 			</vc-editor-toolbar>
 		</slot>
-		<div ref="editor"/>
+		<div ref="editor" />
 	</div>
 </template>
 
 <script>
 import './style.scss';
+import { random } from 'lodash';
 import Extends from '../extends';
 import EditorToolbar from './toolbar';
 import Upload from '../upload/index';
 import Icon from '../icon/index';
 import ImgsPreview from '../imgs-preview/index';
 import defaultOptinos from './default-options';
-import { VcInstance } from '../vc/index';
+
 
 export default {
 	name: "vc-editor",
@@ -114,13 +118,17 @@ export default {
 		delete this.editor;
 	},
 	methods: {
+		handleClick() {
+			this.handleImgSuccess();
+		},
 		init() {
 			this.initFontSize();
 			this.editor = new this.Quill(this.$refs.editor, { ...defaultOptinos, ...this.options });
 			this.editor.enable(!this.disabled);
 			if (this.value) {
-				this.editor.setText('zhellll');
 				this.editor.clipboard.dangerouslyPasteHTML(this.value);
+				let length = this.editor.getLength();
+				this.editor.setSelection(length + 1); // 光标位置
 			}
 			
 			this.editor.on('selection-change', range => {
@@ -143,6 +151,7 @@ export default {
 				this.dispatch('vc-form-item', 'form-change', this.content);
 			});
 		},
+
 		initFontSize() {
 			const fontSize = ['12px', '14px', '16px', '18px', '20px', '22px', '24px'];
 			let Parchment = this.Quill.import('parchment');
@@ -201,7 +210,10 @@ export default {
 			} else {
 				length = selection.index;
 			}
-			this.editor.insertEmbed(length, 'image', res.data.url);
+			// TODO 待删
+			let url = 'https://wyatest.oss-cn-hangzhou.aliyuncs.com/image/10000000/20191130/1047929739/1.png';
+			// this.editor.insertEmbed(length, 'image', res.data.url);
+			this.editor.insertEmbed(length, 'image', url);
 			// 光标向后移动一位
 			this.editor.setSelection(length + 1);
 		},
@@ -232,7 +244,6 @@ export default {
 			const { ImgsPicker = {} } = VcInstance.config;
 			if (typeof this.gallery === 'function' || (this.gallery && ImgsPicker.gallery)) {
 				e.stopPropagation();
-
 				let fn = typeof this.gallery === 'function' 
 					? this.gallery
 					: ImgsPicker.gallery;
