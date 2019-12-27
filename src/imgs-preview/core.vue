@@ -82,11 +82,6 @@
 	</div>
 </template>
 <script>
-import Photoswipe from 'photoswipe';
-import PhotoswipeUIDefault from 'photoswipe/dist/photoswipe-ui-default';
-import "photoswipe/dist/photoswipe.css";
-import "photoswipe/dist/default-skin/default-skin.css";
-
 import Portal from '../portal/index';
 import Icon from '../icon/index';
 import { photoSwipeEvents } from './constants';
@@ -210,14 +205,26 @@ const wrapperComponent = {
 		/**
 		 * 实例
 		 */
-		initPhotoSwipe() {
+		async initPhotoSwipe() {
 			// 插入的节点
 			let pswpElement = this.$refs.pswpElement;
 
+			/* eslint-disable */
+
+			let PhotoSwipe = window.PhotoSwipe 
+				|| await import("photoswipe");
+			let PhotoSwipeUI_Default = window.PhotoSwipeUI_Default 
+				|| await import("photoswipe/dist/photoswipe-ui-default");
+
+			PhotoSwipe = PhotoSwipe.default ? PhotoSwipe.default : PhotoSwipe;
+			PhotoSwipeUI_Default = PhotoSwipeUI_Default.default ? PhotoSwipeUI_Default.default : PhotoSwipeUI_Default;
+
+			/* eslint-enable */
+
 			// 实例
-			this.photoSwipe = new Photoswipe(
+			this.photoSwipe = new PhotoSwipe(
 				pswpElement, 
-				PhotoswipeUIDefault, 
+				PhotoSwipeUI_Default, 
 				this.images, 
 				{
 					...this.opts,

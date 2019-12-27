@@ -1,4 +1,5 @@
-import './style.scss';
+import './third.scss';
+import './editor.scss';
 
 import EditorView from './editor-view';
 import Editor from './editor';

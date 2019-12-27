@@ -20,6 +20,7 @@
 <script>
 /**
  * 移动端兼容dnd
+ * 不用当做第三方库按需加载
  */
 import { polyfill } from "mobile-drag-drop";
 import { scrollBehaviourDragImageTranslateOverride } from "mobile-drag-drop/scroll-behaviour";
