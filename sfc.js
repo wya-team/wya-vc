@@ -24,45 +24,125 @@ let cssInfo = glob
 		return pre;
 	}, {});
 
+let thirdInfo = [];
+
 const files = glob.sync(`src/**/*.{js,scss,vue}`, {
 	ignore: ['src/**/{__test__,examples,demo}/**', 'src/__tpl__/**']
 });
 
-const exportCss = (data, filepath) => {
-	if (!data) return;
+/**
+ * TODO：
+ * 1. 提示：第三方的third.scss 要放在index.js中
+ * 2. Build js (esm, min, browser)
+ */
+const exportCssFile = (filepath, data, record = true, promise) => {
+
+	if (!data) return promise ? Promise.resolve() : null;
 	let result;
 
-	try {
-		result = sass.renderSync({
-			data,
-			file: filepath
-		});
-	} catch (e) {
-		console.error(filepath, 'sass 解析失败');
-		throw e;
-	}
-	
-	postcss(postcssOpts.plugins)
-		.process(result.css, { 
-			from: filepath
-		})
-		.then(({ css }) => {
-			filepath = resolve(__dirname, filepath.replace(/src/, 'lib').replace(/\.(vue|js|scss)/, '.css'));
-			fs.outputFileSync(
-				filepath, 
-				css
-			);
+	let fn = (onSuccess, onError) => {
+		try {
+			result = sass.renderSync({
+				data,
+				file: filepath
+			});
+		} catch (e) {
+			console.error(filepath, 'sass 解析失败');
+			throw e;
+		}
+		
+		postcss(postcssOpts.plugins)
+			.process(result.css, { 
+				from: filepath
+			})
+			.then(({ css }) => {
+				filepath = resolve(__dirname, filepath.replace(/src/, 'lib').replace(/\.(vue|js|scss)/, '.css'));
+				fs.outputFileSync(
+					filepath, 
+					css
+				);
 
-			let [key, ...rest] = relative(resolve(__dirname, './lib'), filepath).split('/');
-			cssInfo[key].push(rest.join('/'));
-		})
-		.catch((e) => {
-			console.error('css 生成失败');
-			throw new Error(e);
-		});
+				onSuccess && onSuccess();
+				if (!record) return;
+				let [key, ...rest] = relative(resolve(__dirname, './lib'), filepath).split('/');
+				cssInfo[key].push(rest.join('/'));
+
+				if (rest.join('/').includes('third.css')) {
+					thirdInfo.push([key, ...rest].join('/'));
+				}
+			})
+			.catch((e) => {
+				onError && onError(e);
+				console.error('css 生成失败');
+				throw new Error(e);
+			});
+	};
+
+
+	return promise 
+		? new Promise(fn)
+		: fn();
+	
 };
 
-process.on('beforeExit', () => {
+process.on('beforeExit', async () => {
+
+	delete cssInfo.style;
+
+	let totalCss = [];
+	await Promise.all(Object.keys(cssInfo).map((i) => {
+		if (cssInfo[i].length === 0) return;
+		totalCss.push(i);
+		return exportCssFile(
+			resolve(__dirname, './lib', `./${i}/index.css`), 
+			// 如table/index.js -> [table.css, index.css]
+			cssInfo[i]
+				.filter(i => i !== 'index.css' && i.indexOf('third.css') === -1)
+				.map(i => `@import './${i}'`)
+				.filter((i, index, source) => source.indexOf(i) != -1)
+				.join(';\n') || '',
+			false,
+			true
+		);
+	}));
+
+	await exportCssFile(
+		resolve(__dirname, './lib', './vc.reset.css'), 
+		['style']
+			.map(i => `@import './${i}/index.css'`)
+			.join(';\n'),
+		false,
+		true
+	);
+
+	// 第三方资源
+	await exportCssFile(
+		resolve(__dirname, './lib', './vc.third.css'), 
+		thirdInfo
+			.map(i => `@import './${i}'`)
+			.join(';\n'),
+		false,
+		true
+	);
+
+	// 纯组件含有
+	await exportCssFile(
+		resolve(__dirname, './lib', './vc.normal.css'), 
+		totalCss
+			.map(i => `@import './${i}/index.css'`)
+			.join(';\n'),
+		false,
+		true
+	);
+
+	// 全部
+	await exportCssFile(
+		resolve(__dirname, './lib', './vc.min.css'), 
+		[`@import './vc.reset.css'`, `@import './vc.third.css'`, `@import './vc.normal.css'`].join(';\n'),
+		false,
+		true
+	);
+
 	// 异常处理
 	const cssFiles = glob.sync(`src/**/*.m.css`);
 
@@ -70,31 +150,8 @@ process.on('beforeExit', () => {
 		throw new Error('不存在m.css');
 	}
 
-	delete cssInfo.style;
-
-	let totalCss = ['style'];
-	Object.keys(cssInfo).forEach((i) => {
-		if (cssInfo[i].length === 0) return;
-		totalCss.push(i);
-		fs.outputFileSync(
-			resolve(__dirname, './lib', `./${i}/index.css`), 
-			// 如table/index.js -> [table.css, index.css]
-			cssInfo[i]
-				.filter(i => i !== 'index.css')
-				.map(i => `@import './${i}'`)
-				.filter((i, index, source) => source.indexOf(i) != -1)
-				.join(';\n') || ''
-		);
-	});
-
-	fs.outputFileSync(
-		resolve(__dirname, './lib', './index.css'), 
-		totalCss
-			.map(i => `@import './${i}/index.css'`)
-			.join(';\n')
-	);
-
 	console.log('Build Success!!!');
+	process.exit();
 });
 
 files.forEach((filepath) => {
@@ -130,7 +187,7 @@ files.forEach((filepath) => {
 					}
 
 					styleImport.length > 0 && (
-						exportCss(styleImport.join(`\n`), filepath)
+						exportCssFile(filepath, styleImport.join(`\n`))
 					);
 
 					fs.outputFileSync(
@@ -222,7 +279,7 @@ files.forEach((filepath) => {
 				.concat((styles || []).map(i => i.content))
 				.join(`\n`);
 
-			exportCss(styleImport, filepath);
+			exportCssFile(filepath, styleImport);
 
 			fs.outputFileSync(
 				resolve(__dirname, filepath.replace(/src/, 'lib').replace(/\.vue/, '.js')), 
@@ -230,10 +287,10 @@ files.forEach((filepath) => {
 			);
 		},
 		scss: () => {
-			exportCss(FILE_CONTENT, filepath);
+			exportCssFile(filepath, FILE_CONTENT);
 		},
 		css: () => {
-			exportCss(FILE_CONTENT, filepath);
+			exportCssFile(filepath, FILE_CONTENT);
 		}
 	};
 
