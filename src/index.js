@@ -5,9 +5,6 @@
 
 import { kebabCase } from 'lodash';
 
-// style
-import './style/vars';
-
 // basic
 import Artboard from './artboard/index';
 import MArtboard from './artboard/index.m';
