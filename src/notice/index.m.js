@@ -1,1 +1,1 @@
-export { default } from './notic-manager';
+export { default } from './index';

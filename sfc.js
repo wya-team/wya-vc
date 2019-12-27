@@ -1,3 +1,5 @@
+console.log(`NODE_ENV : ${process.env.NODE_ENV}`);
+
 const babel = require('@babel/core');
 const { resolve, relative } = require('path');
 const fs = require('fs-extra');
@@ -91,6 +93,8 @@ process.on('beforeExit', () => {
 			.map(i => `@import './${i}/index.css'`)
 			.join(';\n')
 	);
+
+	console.log('Build Success!!!');
 });
 
 files.forEach((filepath) => {
