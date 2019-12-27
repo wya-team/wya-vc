@@ -62,14 +62,14 @@ process.on('beforeExit', () => {
 
 	delete cssInfo.style;
 
-	let totalCss = ['style/index.css'];
+	let totalCss = ['style'];
 	Object.keys(cssInfo).forEach((i) => {
 		if (cssInfo[i].length === 0) return;
 		totalCss.push(i);
 		fs.outputFileSync(
 			resolve(__dirname, './lib', `./${i}/index.css`), 
 			// 如table/index.js -> [table.css, index.css]
-			cssInfo[i].filter(i => i === 'index.css').map(i => `@import "./${i}"`).join(';\n') || ''
+			cssInfo[i].filter(i => i !== 'index.css').map(i => `@import "./${i}"`).join(';\n') || ''
 		);
 	});
 
