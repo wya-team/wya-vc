@@ -12,6 +12,7 @@
 				v-model="formValidate.value"
 				:disabled="disabled"
 				:options="editorOption"
+				style="width: 100%;height: 500px"
 				@change="handleInput"
 			/>
 		</vc-form-item>
@@ -28,14 +29,6 @@ import Editor, { Quill, ImageExtend } from '../index';
 import Toolbar from '../toolbar';
 import { VcInstance } from '../../vc/index';
 
-// VcInstance.init({
-// 	Upload: {
-// 		URL_UPLOAD_IMG_POST: 'https://wyaoa-new.ruishan666.com/uploadfile/upimg.json?action=uploadimage&encode=utf-8&code=oa',
-// 		URL_UPLOAD_FILE_POST: 'https://wyaoa-new.ruishan666.com/uploadfile/upimg.json?action=uploadimage&encode=utf-8&code=oa',
-// 		FORM_NAME: 'Filedata'
-// 	}
-// });
-
 VcInstance.init({
 	Upload: {
 		URL_UPLOAD_IMG_POST: 'https://api.github.com/users/wya-team',
@@ -43,9 +36,9 @@ VcInstance.init({
 		onPostBefore: ({ options }) => {
 
 			return new Promise((resolve, reject) => {
-				if (random(0, 10) > 10) {
-					throw new Error('异常处理');
-				}
+				// if (random(0, 10) > 10) {
+				// 	throw new Error('异常处理');
+				// }
 				resolve({
 					...options,
 					param: {
@@ -112,9 +105,11 @@ export default {
 			editorOption: {
 				modules: {
 					ImageExtend: {
-						size: 2,
 						uploadProps: {
-							showTips: true
+							showTips: false,
+							size: 88888,
+							max: 2,
+							multiple: false
 						}
 
 					},

@@ -1,44 +1,42 @@
 import Vue from 'vue';
 import upload from '../../upload';
 
-const el = document.querySelector('vc-quill-editor');
-const UploadComp = Vue.extend({ ...upload });
-let vm = new UploadComp().$mount(el);
-console.log(vm, 'sdsd');
-
 class ImageExtend {
 	constructor(editor, options = {}) {
 		this.editor = editor;
 		this.options = options;
+		this.init();
+	}
+
+	init = () => {
+		this.initUploadInstance();
 		this.initListener();
-		vm = { ...vm, ...options.uploadProps };
-		// createVm(options.uploadProps);
+	}
+
+	initUploadInstance = () => {
+		let { uploadProps = {} } = this.options;
+		const el = document.querySelector('vc-quill-editor');
+		const UploadComp = Vue.extend({ ...upload });
+		this.vm = new UploadComp({
+			propsData: {
+				...uploadProps
+			}
+		}).$mount(el);
 	}
 
 	initListener = () => {
 		this.editor.root.addEventListener('paste', this.handlePaste, false);
 		this.editor.root.addEventListener('drop', this.handleDrop, false);
-		vm.$on('file-error', this.handleProgress);
-		vm.$on('file-success', this.handleFileSuccess);
-		vm.$on('file-error', this.handleFileError);
+		this.vm.$on('file-success', this.handleFileSuccess);
+	
 	}
 
 	getLength = () => {
 		return (this.editor.getSelection() || {}).length || this.editor.getLength();
 	}
 
-	handleProgress = (res) => {
-		console.log(res, 'handleProgress');
-		
-	}
-
 	handleFileSuccess = (res) => {
-		console.log(res, 'fileSuccess');
 		this.insert(res.data.url);
-	}
-
-	handleFileError =(res) => {
-		console.log(res, 'handleFileError');
 	}
 
 	handlePaste = (evt) => {
@@ -68,23 +66,14 @@ class ImageExtend {
 			if (!file.type.match(/^image\/(gif|jpe?g|a?png|svg|\.icon)/i)) {
 				return;
 			}
-			console.log(file, 'rerereerer');
-			vm.post(file);
-
-			// const reader = new FileReader();
-			// reader.onload = (evt) => {
-			// 	callback(evt.target.result);
-			// };
-			// const blob = file.getAsFile ? file.getAsFile() : file;
-			// if (blob instanceof Blob) {
-			// 	reader.readAsDataURL(blob);
-			// }
+			this.vm.post(file);
 		});
 	}
 
 	insert = (dataUrl) => {
 		const index = this.getLength();
 		this.editor.insertEmbed(index, 'image', dataUrl, 'user');
+		this.editor.setSelection(index + 1);
 	}
 }
 

@@ -12,9 +12,7 @@
 						<vc-icon type="image" style="font-size: 15px" @click="handleUploadImg" />
 					</vc-upload>
 				</button>
-				<slot name="extend" >
-					<button @click="handleClick">click</button>
-				</slot>
+				<slot name="extend" />
 			</vc-editor-toolbar>
 		</slot>
 		<div ref="editor" />
@@ -118,9 +116,6 @@ export default {
 		delete this.editor;
 	},
 	methods: {
-		handleClick() {
-			this.handleImgSuccess();
-		},
 		init() {
 			this.initFontSize();
 			this.editor = new this.Quill(this.$refs.editor, { ...defaultOptinos, ...this.options });
@@ -210,10 +205,7 @@ export default {
 			} else {
 				length = selection.index;
 			}
-			// TODO 待删
-			let url = 'https://wyatest.oss-cn-hangzhou.aliyuncs.com/image/10000000/20191130/1047929739/1.png';
-			// this.editor.insertEmbed(length, 'image', res.data.url);
-			this.editor.insertEmbed(length, 'image', url);
+			this.editor.insertEmbed(length, 'image', res.data.url);
 			// 光标向后移动一位
 			this.editor.setSelection(length + 1);
 		},
