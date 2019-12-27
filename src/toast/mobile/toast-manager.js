@@ -1,5 +1,5 @@
 import Vue from 'vue';
-import MToast from './toast.vue';
+import MToast from './toast';
 import { getOption } from '../../utils/index';
 import Portal from '../../portal/index';
 

@@ -1,5 +1,5 @@
 import Vue from 'vue';
-import Message from './message.vue';
+import Message from './message';
 import { getOption } from '../utils/index';
 import Portal from '../portal/index';
 

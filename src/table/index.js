@@ -1,5 +1,5 @@
 import './table.scss';
-import Table from './table.vue';
+import Table from './table';
 import TableColumn from './table-column';
 import TableItem from './table-item';
 

@@ -1,15 +1,15 @@
 import Vue from 'vue';
-import Modal from './modal.vue';
-import { getOption } from '../utils/index';
-import Portal from '../portal/index';
+import Modal from './modal';
+import { getOption } from '../../utils/index';
+import Portal from '../../portal/index';
 
 const registerOptions = {
 	multiple: true,
-	promise: false
+	promise: false 
 };
 
 class ModalManager extends Portal {
-	allowMethod = ['info', 'success', 'error', 'warning']
+	allowMethod = ['alert', 'operation']
 	constructor(wrapper, globalOptions) { // eslint-disable-line
 		super(wrapper, globalOptions);
 

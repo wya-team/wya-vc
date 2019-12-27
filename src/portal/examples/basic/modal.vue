@@ -14,7 +14,7 @@
 <script>
 import Modal from '../../../modal/modal';
 import Portal from '../../index';
-import Basic from '../../../input/examples/basic.vue';
+import Basic from '../../../input/examples/basic';
 
 const wrapper = {
 	name: "vc-tpl-basic",

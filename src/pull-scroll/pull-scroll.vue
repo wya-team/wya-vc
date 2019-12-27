@@ -118,10 +118,10 @@
  */
 import { pick, throttle } from 'lodash';
 import { Resize } from '../utils/index';
-import Core from './core.vue';
-import ScrollStatus from './scroll-status.vue';
-import PullDownStatus from './pull-down-status.vue';
-import PullUpStatus from './pull-up-status.vue';
+import Core from './core';
+import ScrollStatus from './scroll-status';
+import PullDownStatus from './pull-down-status';
+import PullUpStatus from './pull-up-status';
 
 export default {
 	name: "vc-pull-scroll",

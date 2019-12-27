@@ -90,7 +90,7 @@
 </template>
 <script>
 import { Device } from '@wya/utils';
-import { Tip } from './tip/tip.vue';
+import { Tip } from './tip/tip';
 import MPopup from '../index.m';
 import MButton from '../../button/index.m';
 import MInput from '../../input/index.m';

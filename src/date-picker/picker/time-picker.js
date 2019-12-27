@@ -1,4 +1,4 @@
-import Picker from '../picker.vue';
+import Picker from '../picker';
 import TimePanel from '../panel/time';
 import TimeRangePanel from '../panel/time-range';
 

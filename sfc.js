@@ -28,10 +28,18 @@ const files = glob.sync(`src/**/*.{js,scss,vue}`, {
 
 const exportCss = (data, filepath) => {
 	if (!data) return;
-	let result = sass.renderSync({
-		data,
-		file: filepath
-	});
+	let result;
+
+	try {
+		result = sass.renderSync({
+			data,
+			file: filepath
+		});
+	} catch (e) {
+		console.error(filepath, 'sass 解析失败');
+		throw e;
+	}
+	
 	postcss(postcssOpts.plugins)
 		.process(result.css, { 
 			from: filepath
@@ -69,13 +77,19 @@ process.on('beforeExit', () => {
 		fs.outputFileSync(
 			resolve(__dirname, './lib', `./${i}/index.css`), 
 			// 如table/index.js -> [table.css, index.css]
-			cssInfo[i].filter(i => i !== 'index.css').map(i => `@import "./${i}"`).join(';\n') || ''
+			cssInfo[i]
+				.filter(i => i !== 'index.css')
+				.map(i => `@import './${i}'`)
+				.filter((i, index, source) => source.indexOf(i) != -1)
+				.join(';\n') || ''
 		);
 	});
 
 	fs.outputFileSync(
 		resolve(__dirname, './lib', './index.css'), 
-		totalCss.map(i => `@import "./${i}/index.css"`).join(';\n')
+		totalCss
+			.map(i => `@import './${i}/index.css'`)
+			.join(';\n')
 	);
 });
 

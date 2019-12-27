@@ -1,4 +1,4 @@
-import MModalManager from './mobile/manager';
+import MModalManager from './mobile/modal-manager';
 import MModal from './mobile/modal';
 
 MModalManager.allowMethod.forEach(m => {

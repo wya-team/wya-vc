@@ -84,7 +84,7 @@
 	</vc-form>
 </template>
 <script>
-import { FormPopup } from './popup/form.vue';
+import { FormPopup } from './popup/form';
 import Form from '..';
 import Tpl from './basic/tpl'; // 可以使用trigger
 import FakeArray from './basic/array'; // 可以使用trigger

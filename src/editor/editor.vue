@@ -35,13 +35,12 @@
 </template>
 
 <script>
-import './style.scss';
 import Extends from '../extends';
 import EditorToolbar from './toolbar';
 import Upload from '../upload/index';
 import Icon from '../icon/index';
 import ImgsPreview from '../imgs-preview/index';
-import defaultOptinos from './default-options';
+import defaultOptions from './default-options';
 import { VcInstance } from '../vc/index';
 import { registVideoBlot } from './extends/video-blot';
 
@@ -136,7 +135,7 @@ export default {
 		init() {
 			registVideoBlot(this.Quill);
 			this.initFontSize();
-			this.editor = new this.Quill(this.$refs.editor, { ...defaultOptinos, ...this.options });
+			this.editor = new this.Quill(this.$refs.editor, { ...defaultOptions, ...this.options });
 			this.editor.enable(!this.disabled);
 			if (this.value) {
 				this.editor.setText('');
@@ -290,7 +289,7 @@ export default {
 </script>
 
 <style lang="scss">
-@import '../style/index.scss';
+@import '../style/vars.scss';
 
 $block: vc-quill-editor;
 

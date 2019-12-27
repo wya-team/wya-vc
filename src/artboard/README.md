@@ -53,14 +53,14 @@ reset | 重置画板 | - | -
 
 <script>
 import Message from '../../message';
-import button from '../../button';
-import artboard from '../artboard.vue';
+import Button from '../../button';
+import Artboard from '../artboard';
 
 export default {
 	name: 'v-artboard',
 	components: {
-		'vc-artboard': artboard,
-		'vc-button': button,
+		'vc-artboard': Artboard,
+		'vc-button': Button,
 	},
 	props: {
 	},

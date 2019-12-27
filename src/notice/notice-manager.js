@@ -1,4 +1,4 @@
-import Notice from './notice.vue';
+import Notice from './notice';
 import Portal from '../portal/index';
 
 const registerOptions = {

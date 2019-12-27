@@ -35,7 +35,7 @@
 import { $ } from '@wya/utils';
 import TreeStore from './model/tree-store';
 import { getNodeKey, findNearestComponent } from './model/util';
-import TreeNode from './tree-node.vue';
+import TreeNode from './tree-node';
 import Extends from '../extends';
 
 export default {
