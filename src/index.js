@@ -1,8 +1,3 @@
-/**
- * TODO: 按需加载的组件如何处理，如echarts
- * 孵化更好的2.0
- */
-
 import { kebabCase } from 'lodash';
 
 // basic
@@ -146,20 +141,29 @@ const Components = {
 	MArtboard,
 	Button,
 	MButton,
+	ButtonGroup: Button.Group,
+	MButtonGroup: MButton.Group,
 	Calendar,
 	MCalendar,
 	Card,
 	MCard,
 	Carousel,
 	MCarousel,
+	CarouselItem: Carousel.Item,
+	MCarouselItem: MCarousel.Item,
 	Cascader,
 	MCascader,
+	MCascaderView: MCascader.View,
 	Checkbox,
 	MCheckbox,
+	CheckboxGroup: Checkbox.Group,
+	MCheckboxGroup: MCheckbox.Group,
 	Clipboard,
 	MClipboard,
 	Collapse,
 	MCollapse,
+	CollapseItem: Collapse.Item,
+	MCollapseItem: MCollapse.Item,
 	ColorPicker,
 	MColorPicker,
 	Countdown,
@@ -168,22 +172,31 @@ const Components = {
 	MCustomer,
 	DatePicker,
 	MDatePicker,
+	MDatePickerView: MDatePicker.View,
 	DebounceClick,
 	MDebounceClick,
 	Drawer,
 	MDrawer,
 	Dropdown,
 	MDropdown,
+	DropdownItem: Dropdown.Item,
+	MDropdownItem: MDropdown.Item,
+	DropdownMenu: Dropdown.Menu,
+	MDropdownMenu: MDropdown.Menu,
 	Echarts,
 	MEcharts,
 	Editor,
 	MEditor,
+	EditorView: Editor.View,
+	MEditorView: MEditor.View,
 	Expand,
 	MExpand,
 	FilesPicker,
 	MFilesPicker,
 	Form,
 	MForm,
+	FormItem: Form.Item,
+	MFormItem: MForm.Item,
 	Fragment,
 	MFragment,
 	HtmlImg,
@@ -202,10 +215,18 @@ const Components = {
 	MImgsProcessing,
 	Input,
 	MInput,
+	InputNumber: Input.Number,
+	MInputNumber: MInput.Number,
+	InputSearch: Input.Search,
+	MInputSearch: MInput.Search,
 	List,
 	MList,
+	ListItem: List.Item,
+	MListItem: MList.Item,
 	Marquee,
 	MMarquee,
+	Modal,
+	MModal,
 	Notice,
 	MNotice,
 	Option,
@@ -216,6 +237,10 @@ const Components = {
 	MPaging,
 	Picker,
 	MPicker,
+	PickerView: Picker.View,
+	MPickerView: MPicker.View,
+	PickerPopup: Picker.Popup,
+	MPickerPopup: MPicker.Popup,
 	Popconfirm,
 	MPopconfirm,
 	Popover,
@@ -230,6 +255,8 @@ const Components = {
 	MPullScroll,
 	Radio,
 	MRadio,
+	RadioGroup: Radio.Group,
+	MRadioGroup: MRadio.Group,
 	RecycleList,
 	MRecycleList,
 	Select,
@@ -246,6 +273,8 @@ const Components = {
 	MTable,
 	Tabs,
 	MTabs,
+	TabsPane: Tabs.Pane,
+	MTabsPane: MTabs.Pane,
 	Tag,
 	MTag,
 	Textarea,
@@ -256,15 +285,33 @@ const Components = {
 	MTouch,
 	Transition,
 	MTransition,
+	TransitionFade: Transition.Fade,
+	MTransitionFade: MTransition.Fade,
+	TransitionScale: Transition.Scale,
+	MTransitionScale: MTransition.Scale,
+	TransitionSlide: Transition.Slide,
+	MTransitionSlide: MTransition.Slide,
+	TransitionZoom: Transition.Zoom,
+	MTransitionZoom: MTransition.Zoom,
+	TransitionCollapse: Transition.Collapse,
+	MTransitionCollapse: MTransition.Collapse,
 	Tree,
 	MTree,
+	TreeSelect: Tree.Select,
+	MTreeSelect: MTree.Select,
 	Upload,
 	MUpload
 };
 
 const install = (Vue, opts = {}) => {
-	Vue.use(Vc, opts);
 
+	// 给vc.browser.js打包使用
+	if (typeof window !== 'undefined') {
+		Vue = Vue || window.Vue || require('vue');
+		window.Vue = Vue;
+	}
+
+	Vue.use(Vc, opts);
 	Object.keys(Components).forEach(key => {
 		let comp = kebabCase(key);
 		comp = comp.includes('m-') ? `vc${comp}` : `vc-${comp}`;
@@ -278,146 +325,194 @@ if (typeof window !== 'undefined' && window.Vue) {
 	install(window.Vue, window.VcOptions);
 }
 
-export {
-	Vc,
-	VcInstance,
-	VcBasic,
-	VcError,
-	Utils,
+/**
+ * @babel/plugin-proposal-export-namespace-from
+ * export { xxx }; 编译存在问题
+ */
+exports.Vc = Vc;
+exports.VcInstance = VcInstance;
+exports.VcBasic = VcBasic;
+exports.VcError = VcError;
+exports.Utils = Utils;
+// component
+exports.Artboard = Artboard;
+exports.MArtboard = MArtboard;
+exports.Button = Button;
+exports.MButton = MButton;
+exports.ButtonGroup = Button.Group;
+exports.MButtonGroup = MButton.Group;
+exports.Calendar = Calendar;
+exports.MCalendar = MCalendar;
+exports.Card = Card;
+exports.MCard = MCard;
+exports.Carousel = Carousel;
+exports.MCarousel = MCarousel;
+exports.CarouselItem = Carousel.Item;
+exports.MCarouselItem = MCarousel.Item;
+exports.Cascader = Cascader;
+exports.MCascader = MCascader;
+exports.MCascaderView = MCascader.View;
+exports.Checkbox = Checkbox;
+exports.MCheckbox = MCheckbox;
+exports.CheckboxGroup = Checkbox.Group;
+exports.MCheckboxGroup = MCheckbox.Group;
+exports.Clipboard = Clipboard;
+exports.MClipboard = MClipboard;
+exports.Collapse = Collapse;
+exports.MCollapse = MCollapse;
+exports.CollapseItem = Collapse.Item;
+exports.MCollapseItem = MCollapse.Item;
+exports.ColorPicker = ColorPicker;
+exports.MColorPicker = MColorPicker;
+exports.Countdown = Countdown;
+exports.MCountdown = MCountdown;
+exports.Customer = Customer;
+exports.MCustomer = MCustomer;
+exports.DatePicker = DatePicker;
+exports.MDatePicker = MDatePicker;
+exports.MDatePickerView = MDatePicker.View;
+exports.DebounceClick = DebounceClick;
+exports.MDebounceClick = MDebounceClick;
+exports.Drawer = Drawer;
+exports.MDrawer = MDrawer;
+exports.Dropdown = Dropdown;
+exports.MDropdown = MDropdown;
+exports.DropdownItem = Dropdown.Item;
+exports.MDropdownItem = MDropdown.Item;
+exports.DropdownMenu = Dropdown.Menu;
+exports.MDropdownMenu = MDropdown.Menu;
+exports.Echarts = Echarts;
+exports.MEcharts = MEcharts;
+exports.Editor = Editor;
+exports.MEditor = MEditor;
+exports.EditorView = Editor.View;
+exports.MEditorView = MEditor.View;
+exports.Expand = Expand;
+exports.MExpand = MExpand;
+exports.FilesPicker = FilesPicker;
+exports.MFilesPicker = MFilesPicker;
+exports.Form = Form;
+exports.MForm = MForm;
+exports.FormItem = Form.Item;
+exports.MFormItem = MForm.Item;
+exports.Fragment = Fragment;
+exports.MFragment = MFragment;
+exports.HtmlImg = HtmlImg;
+exports.MHtmlImg = MHtmlImg;
+exports.Icon = Icon;
+exports.MIcon = MIcon;
+exports.Img = Img;
+exports.MImg = MImg;
+exports.ImgsCrop = ImgsCrop;
+exports.MImgsCrop = MImgsCrop;
+exports.ImgsPicker = ImgsPicker;
+exports.MImgsPicker = MImgsPicker;
+exports.ImgsPreview = ImgsPreview;
+exports.MImgsPreview = MImgsPreview;
+exports.ImgsProcessing = ImgsProcessing;
+exports.MImgsProcessing = MImgsProcessing;
+exports.Input = Input;
+exports.MInput = MInput;
+exports.InputNumber = Input.Number;
+exports.MInputNumber = MInput.Number;
+exports.InputSearch = Input.Search;
+exports.MInputSearch = MInput.Search;
+exports.List = List;
+exports.MList = MList;
+exports.ListItem = List.Item;
+exports.MListItem = MList.Item;
+exports.Marquee = Marquee;
+exports.MMarquee = MMarquee;
+exports.Notice = Notice;
+exports.MNotice = MNotice;
+exports.Option = Option;
+exports.MOption = MOption;
+exports.Page = Page;
+exports.MPage = MPage;
+exports.Paging = Paging;
+exports.MPaging = MPaging;
+exports.Picker = Picker;
+exports.MPicker = MPicker;
+exports.PickerView = Picker.View;
+exports.MPickerView = MPicker.View;
+exports.PickerPopup = Picker.Popup;
+exports.MPickerPopup = MPicker.Popup;
+exports.Popconfirm = Popconfirm;
+exports.MPopconfirm = MPopconfirm;
+exports.Popover = Popover;
+exports.MPopover = MPopover;
+exports.Popup = Popup;
+exports.MPopup = MPopup;
+exports.Print = Print;
+exports.MPrint = MPrint;
+exports.Progress = Progress;
+exports.MProgress = MProgress;
+exports.PullScroll = PullScroll;
+exports.MPullScroll = MPullScroll;
+exports.Radio = Radio;
+exports.MRadio = MRadio;
+exports.RadioGroup = Radio.Group;
+exports.MRadioGroup = MRadio.Group;
+exports.RecycleList = RecycleList;
+exports.MRecycleList = MRecycleList;
+exports.Select = Select;
+exports.MSelect = MSelect;
+exports.Slider = Slider;
+exports.MSlider = MSlider;
+exports.SortList = SortList;
+exports.MSortList = MSortList;
+exports.Spin = Spin;
+exports.MSpin = MSpin;
+exports.Switch = Switch;
+exports.MSwitch = MSwitch;
+exports.Table = Table;
+exports.MTable = MTable;
+exports.Tabs = Tabs;
+exports.MTabs = MTabs;
+exports.TabsPane = Tabs.Pane;
+exports.MTabsPane = MTabs.Pane;
+exports.Tag = Tag;
+exports.MTag = MTag;
+exports.Textarea = Textarea;
+exports.MTextarea = MTextarea;
+exports.TimePicker = TimePicker;
+exports.MTimePicker = MTimePicker;
+exports.Touch = Touch;
+exports.MTouch = MTouch;
+exports.Transition = Transition;
+exports.MTransition = MTransition;
+exports.TransitionFade = Transition.Fade;
+exports.MTransitionFade = MTransition.Fade;
+exports.TransitionScale = Transition.Scale;
+exports.MTransitionScale = MTransition.Scale;
+exports.TransitionSlide = Transition.Slide;
+exports.MTransitionSlide = MTransition.Slide;
+exports.TransitionZoom = Transition.Zoom;
+exports.MTransitionZoom = MTransition.Zoom;
+exports.TransitionCollapse = Transition.Collapse;
+exports.MTransitionCollapse = MTransition.Collapse;
+exports.Tree = Tree;
+exports.MTree = MTree;
+exports.TreeSelect = Tree.Select;
+exports.MTreeSelect = MTree.Select;
+exports.Upload = Upload;
+exports.MUpload = MUpload;
+// 弹
+exports.Message = Message;
+exports.MMessage = MMessage;
+exports.Modal = Modal;
+exports.MModal = MModal;
+exports.Portal = Portal;
+exports.MPortal = MPortal;
+exports.Toast = Toast;
+exports.MToast = MToast;
 
-	// components
-	Artboard,
-	MArtboard,
-	Button,
-	MButton,
-	Calendar,
-	MCalendar,
-	Card,
-	MCard,
-	Carousel,
-	MCarousel,
-	Cascader,
-	MCascader,
-	Checkbox,
-	MCheckbox,
-	Clipboard,
-	MClipboard,
-	Collapse,
-	MCollapse,
-	ColorPicker,
-	MColorPicker,
-	Countdown,
-	MCountdown,
-	Customer,
-	MCustomer,
-	DatePicker,
-	MDatePicker,
-	DebounceClick,
-	MDebounceClick,
-	Drawer,
-	MDrawer,
-	Dropdown,
-	MDropdown,
-	Echarts,
-	MEcharts,
-	Editor,
-	MEditor,
-	Expand,
-	MExpand,
-	FilesPicker,
-	MFilesPicker,
-	Form,
-	MForm,
-	Fragment,
-	MFragment,
-	HtmlImg,
-	MHtmlImg,
-	Icon,
-	MIcon,
-	Img,
-	MImg,
-	ImgsCrop,
-	MImgsCrop,
-	ImgsPicker,
-	MImgsPicker,
-	ImgsPreview,
-	MImgsPreview,
-	ImgsProcessing,
-	MImgsProcessing,
-	Input,
-	MInput,
-	List,
-	MList,
-	Marquee,
-	MMarquee,
-	Notice,
-	MNotice,
-	Option,
-	MOption,
-	Page,
-	MPage,
-	Paging,
-	MPaging,
-	Picker,
-	MPicker,
-	Popconfirm,
-	MPopconfirm,
-	Popover,
-	MPopover,
-	Popup,
-	MPopup,
-	Print,
-	MPrint,
-	Progress,
-	MProgress,
-	PullScroll,
-	MPullScroll,
-	Radio,
-	MRadio,
-	RecycleList,
-	MRecycleList,
-	Select,
-	MSelect,
-	Slider,
-	MSlider,
-	SortList,
-	MSortList,
-	Spin,
-	MSpin,
-	Switch,
-	MSwitch,
-	Table,
-	MTable,
-	Tabs,
-	MTabs,
-	Tag,
-	MTag,
-	Textarea,
-	MTextarea,
-	TimePicker,
-	MTimePicker,
-	Touch,
-	MTouch,
-	Transition,
-	MTransition,
-	Tree,
-	MTree,
-	Upload,
-	MUpload,
-
-	// 弹层
-	Message,
-	MMessage,
-	Modal,
-	MModal,
-	Portal,
-	MPortal,
-	Toast,
-	MToast
-};
-
+// 用于打包映射
+exports.version = '__VC_VERSION__';
+exports.install = install;
 export default {
-	version: '2.0.0',
+	// 由babel注入
+	version: '__VC_VERSION__',
 	install
 };
 

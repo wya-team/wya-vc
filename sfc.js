@@ -1,3 +1,4 @@
+process.env.NODE_ENV = process.env.NODE_ENV || 'production';
 console.log(`NODE_ENV : ${process.env.NODE_ENV}`);
 
 const babel = require('@babel/core');
@@ -13,6 +14,14 @@ const generate = require('@babel/generator').default;
 const types = require('@babel/types');
 const postcss = require('postcss');
 const sass = require('node-sass');
+const { rollup } = require('rollup');
+const replace = require('@rollup/plugin-replace');
+const buble = require('@rollup/plugin-buble');
+const commonjs = require('@rollup/plugin-commonjs');
+const nodeResolve = require('@rollup/plugin-node-resolve');
+const alias = require('@rollup/plugin-alias');
+const { uglify } = require('rollup-plugin-uglify');
+
 const postcssOpts = require('./config/postcss.config.js');
 
 let cssInfo = glob
@@ -143,6 +152,111 @@ process.on('beforeExit', async () => {
 		true
 	);
 
+
+	// 含Vue
+	let browserJS = await rollup({
+		input: 'lib/index.js',
+		plugins: [
+			alias({
+				entries: [{
+					find: /^vue$/, 
+					replacement: 'vue/dist/vue.esm.js'
+				}]
+			}),
+			nodeResolve(), 
+			commonjs({}), 
+			replace({
+				'__VC_VERSION__': process.env.VERSION || require('./package.json').version,
+				'process.env.NODE_ENV': JSON.stringify(process.env.NODE_ENV || 'development')
+			}),
+			buble(),
+			uglify()
+		]
+	});
+	await browserJS.write({
+		output: {
+			file: `lib/vc.browser.js`,
+			format: 'umd',
+			name: 'WYA_VC',
+			exports: 'named'
+		}
+	});
+
+	// 不含Vue
+	let minJS = await rollup({
+		input: 'lib/index.js',
+		external: filename => {
+			let regex = ['^vue$'].join('|');
+
+			return new RegExp(`(${regex})`).test(filename);
+		},
+		plugins: [
+			nodeResolve(), 
+			commonjs({}), 
+			replace({
+				'__VC_VERSION__': process.env.VERSION || require('./package.json').version,
+				'process.env.NODE_ENV': JSON.stringify(process.env.NODE_ENV || 'development')
+			}),
+			buble(),
+			uglify()
+		]
+	});
+	await minJS.write({
+		output: {
+			file: `lib/vc.min.js`,
+			format: 'umd',
+			name: 'WYA_VC',
+			exports: 'named',
+			globals: {
+				vue: 'Vue'
+			},
+		}
+	});
+
+	// 不含第三方
+	let commonJS = await rollup({
+		input: 'lib/index.js',
+		external: filename => {
+			let regex = [
+				'^vue$', 
+				'^html2canvas$', 
+				'^echarts$', 
+				'^quill$',
+				'^photoswipe$',
+				'^photoswipe/dist/photoswipe-ui-default$'
+			].join('|');
+
+			return new RegExp(`(${regex})`).test(filename);
+		},
+		plugins: [
+			nodeResolve(), 
+			commonjs({}), 
+			replace({
+				'__VC_VERSION__': process.env.VERSION || require('./package.json').version,
+				'process.env.NODE_ENV': JSON.stringify(process.env.NODE_ENV || 'development')
+			}),
+			buble(),
+			uglify()
+		]
+	});
+	await commonJS.write({
+		output: {
+			file: `lib/vc.common.js`,
+			format: 'umd',
+			name: 'WYA_VC',
+			exports: 'named',
+			globals: {
+				vue: 'Vue',
+				echarts: 'echarts',
+				photoswipe: 'PhotoSwipe',
+				'photoswipe/dist/photoswipe-ui-default': 'PhotoSwipeUI_Default',
+				quill: 'Quill',
+				html2canvas: 'html2canvas',
+			},
+		}
+	});
+
+
 	// 异常处理
 	const cssFiles = glob.sync(`src/**/*.m.css`);
 
@@ -240,7 +354,7 @@ files.forEach((filepath) => {
 			let result;
 			let styleImport = [];
 			result = babel.transform(
-				script && script.content || '',
+				script && script.content || 'export default {};',
 				{
 					babelrc: true,
 					plugins: [

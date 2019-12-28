@@ -97,8 +97,9 @@ class IconManager extends VcBasic {
 	parser(svgStr, url) {
 		return new Promise((resolve, reject) => {
 			let icons = {};
-			try {
-				setTimeout(() => {
+			setTimeout(() => {
+				try {
+
 					this.config.debug && console.time(url);
 					svgStr.replace(svgReg, '$1').match(symbolReg).forEach( 
 						i => i.replace(basicReg, (_, $1, $2, $3) => {
@@ -113,11 +114,11 @@ class IconManager extends VcBasic {
 					);
 					this.config.debug && console.timeEnd(url);
 					resolve(icons);
-				}, 0);
-			} catch (e) {
-				reject();
-				throw new VcError('icon', e);
-			}
+				} catch (e) {
+					reject();
+					throw new VcError('icon', e);
+				}
+			}, 0);
 		});
 	}
 
