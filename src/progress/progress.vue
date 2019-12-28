@@ -65,7 +65,7 @@ export default {
 			default: 'line'
 		},
 		percent: {
-			type: Number || String,
+			type: [Number, String],
 			default: 0
 		},
 		status: {
@@ -151,9 +151,6 @@ export default {
 		}
 	},
 	watch: {
-		percent(val) {
-			console.log(val);
-		},
 		currentStatus(val) {
 			this.oColor = this.lineTheme[val];
 		},
