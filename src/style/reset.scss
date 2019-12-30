@@ -1,12 +1,15 @@
 @import "normalize.css";
 
 * {
-	box-sizing: border-box;
 	-webkit-tap-highlight-color: rgba(0, 0, 0, 0);
 }
 
-*:before,
-*:after {
+*,
+:before,
+:after, {
+	margin: 0;
+	padding: 0;
+	border: none;
 	box-sizing: border-box;
 }
 
