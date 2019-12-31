@@ -113,6 +113,8 @@ import Tabs from './tabs/index';
 import MTabs from './tabs/index.m';
 import Tag from './tag/index';
 import MTag from './tag/index.m';
+import Text from './text/index';
+import MText from './text/index.m';
 import Textarea from './textarea/index';
 import MTextarea from './textarea/index.m';
 import TimePicker from './time-picker/index';
@@ -277,6 +279,8 @@ const Components = {
 	MTabsPane: MTabs.Pane,
 	Tag,
 	MTag,
+	Text,
+	MText,
 	Textarea,
 	MTextarea,
 	TimePicker,
@@ -473,6 +477,8 @@ exports.TabsPane = Tabs.Pane;
 exports.MTabsPane = MTabs.Pane;
 exports.Tag = Tag;
 exports.MTag = MTag;
+exports.Text = Text;
+exports.MText = MText;
 exports.Textarea = Textarea;
 exports.MTextarea = MTextarea;
 exports.TimePicker = TimePicker;
