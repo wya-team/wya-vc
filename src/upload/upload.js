@@ -263,6 +263,9 @@ export default {
 						this.post(file);
 					}
 				}).catch(e => {
+					// tips
+					this.tips && this.tips.setValue(file.uid, 'error', e.msg || '上传失败');
+
 					throw new VcError('upload', e);
 				});
 			} else if (before !== false) {
@@ -336,14 +339,14 @@ export default {
 
 				// tips
 				this.tips && this.tips.setValue(uid, 'success');
-			}).catch((res) => {
+			}).catch((e) => {
 				delete this.reqs[uid];
 				this.cycle.error++;
 
-				this.$emit('file-error', res, file, { ...this.cycle });
+				this.$emit('file-error', e, file, { ...this.cycle });
 
 				// tips
-				this.tips && this.tips.setValue(file.uid, 'error', res.msg);
+				this.tips && this.tips.setValue(file.uid, 'error', e.msg || '上传失败');
 			}).finally(() => {
 				this.cycle.total++;
 
