@@ -22,14 +22,14 @@ export default {
 			type: Number,
 			default: 1
 		},
-		beforeText: {
-			type: String,
-			default: ""
-		},
-		afterText: {
-			type: String,
-			default: ""
-		},
+		// beforeText: {
+		// 	type: String,
+		// 	default: ""
+		// },
+		// afterText: {
+		// 	type: String,
+		// 	default: ""
+		// },
 		// iOS时间不要使用xxxx-xx -> xxxx/xx
 		targetTime: {
 			type: [String, Number, Date],
