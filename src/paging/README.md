@@ -18,6 +18,7 @@ count | **总条数** | `number` | 0
 reset | 刷新时候使用，当前页刷新（true）,首页刷新（false） | `boolean` | -
 tableOpts | 表格额外参数, 参考table组件 | `obj` | -
 pageOpts | 分页额外参数, 参考page组件 | `obj` | -
+selectionKey | 数据的key，用于翻页选中判断 | `str` | -
 `current.sync` | 分页参数同步 | `str/num` | -
 
 #### 事件
@@ -28,6 +29,7 @@ pageOpts | 分页额外参数, 参考page组件 | `obj` | -
 @load-success | 加载成功 | - | -
 @load-error | 加载失败 | - | -
 @load-finish | 加载结束（都会触发） | - | -
+@all-selection-change | 所有页选中的数据 | - | allSelection
 
 #### 方法
 
