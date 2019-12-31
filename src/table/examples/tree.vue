@@ -15,6 +15,7 @@
 			style="width: 100%"
 			row-key="id"
 			@expand-change="handleExpandChange"
+			@selection-change="handleSelectionChange"
 		>
 			<vc-table-item>
 				<vc-table-column
@@ -139,6 +140,9 @@ export default {
 		},
 		handleExpandChange(row, expandedRows, maxLevel) {
 			this.treeWidth = 180 + maxLevel * 20;
+		},
+		handleSelectionChange(selection) {
+			console.log(selection);
 		},
 		handleUpdate() {
 			this.key++; 
