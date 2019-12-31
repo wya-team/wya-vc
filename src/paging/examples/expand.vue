@@ -9,7 +9,7 @@
 		:table-opts="table"
 		:history="true"
 		:show="show"
-		selection-key="id"
+		row-key="id"
 		style="width: 100%"
 		@page-size-change="handleResetFirst"
 		@all-selection-change="handleAllSeleChange"
