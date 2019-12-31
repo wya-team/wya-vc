@@ -94,20 +94,22 @@ const wrapperComponent = {
 			switch (key) {
 				case 'percent':
 					// File对象实例
-					this.itemObj[uid].percent = value;
+					this.$set(this.itemObj[uid], 'percent', value);
 					break;
 				case 'success':
 					this.success++;
-					this.itemObj[uid].percent = 100;
-					this.itemObj[uid].msg = '';
+					this.$set(this.itemObj[uid], 'percent', 100);
+					this.$set(this.itemObj[uid], 'msg', '');
 					break;
 				case 'error':
 					this.error++;
-					this.itemObj[uid].msg = value;
+					this.$set(this.itemObj[uid], 'msg', value);
 					break;
 				default:
 					break;
 			}
+
+			this.$forceUpdate();
 		},
 		/**
 		 * 外部调用
