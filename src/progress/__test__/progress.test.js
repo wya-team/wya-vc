@@ -16,13 +16,13 @@ describe('Progress', () => {
 			template: `
 				<div>
 					<vc-progress
-						ref="error"
+						ref="errorLine"
 						:percent="50"
 						status="error"
 						:strokeWidth="7"
 					/>
 					<vc-progress
-						ref="success"
+						ref="successLine"
 						:percent="100"
 						:strokeWidth="7"
 					/>
@@ -32,14 +32,14 @@ describe('Progress', () => {
 				'vc-progress': Progress
 			}
 		});
-		expect(vm.$refs.error.$el.querySelector('.vc-progress__line')).to.exist;
-		expect(vm.$refs.error.$el.querySelector('.vc-progress__percent')).to.exist;
+		expect(vm.$refs.errorLine.$el.querySelector('.vc-progress__line')).to.exist;
+		expect(vm.$refs.errorLine.$el.querySelector('.vc-progress__percent')).to.exist;
 		setTimeout(() => {
-			expect(vm.$refs.error.$el.querySelector('.vc-progress__inner').style.height).to.equal('7px');
-			expect(vm.$refs.error.$el.querySelector('.vc-progress__inner').style.width).to.equal('50%');
-			expect(vm.$refs.error.$el.querySelector('.vc-progress__icon').style.color).to.equal('rgb(245, 34, 45)');
-			expect(vm.$refs.success.$el.querySelector('.vc-progress__inner').style.width).to.equal('100%');
-			expect(vm.$refs.success.$el.querySelector('.vc-progress__icon').style.color).to.equal('rgb(82, 196, 26)');
+			expect(vm.$refs.errorLine.$el.querySelector('.vc-progress__inner').style.height).to.equal('7px');
+			expect(vm.$refs.errorLine.$el.querySelector('.vc-progress__inner').style.width).to.equal('50%');
+			expect(vm.$refs.errorLine.$el.querySelector('.vc-progress__icon').style.color).to.equal('rgb(245, 34, 45)');
+			expect(vm.$refs.successLine.$el.querySelector('.vc-progress__inner').style.width).to.equal('100%');
+			expect(vm.$refs.successLine.$el.querySelector('.vc-progress__icon').style.color).to.equal('rgb(82, 196, 26)');
 			done();
 		}, 1000);
 	});
@@ -49,7 +49,7 @@ describe('Progress', () => {
 				<div>
 					<vc-progress
 						type="circle"
-						ref="error"
+						ref="errorCircle"
 						percent="50"
 						:size="100"
 						status="error"
@@ -62,9 +62,9 @@ describe('Progress', () => {
 				'vc-progress': Progress
 			}
 		});
-		expect(vm.$refs.error.$el.querySelector('.vc-progress__circle')).to.exist;
+		expect(vm.$refs.errorCircle.$el.querySelector('.vc-progress__circle')).to.exist;
 		setTimeout(() => {
-			expect(vm.$refs.error.$el.querySelector('.vc-progress__box').style.width).to.equal('100px');
+			expect(vm.$refs.errorCircle.$el.querySelector('.vc-progress__box').style.width).to.equal('100px');
 			done();
 		}, 1000);
 	});

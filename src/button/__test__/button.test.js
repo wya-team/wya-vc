@@ -3,18 +3,22 @@ import Button from '../index';
 import MButton from '../index.m';
 
 describe('Button', () => {
+	let vm;
+	afterEach(() => {
+		vm && destroyVM(vm);
+	});
 	// 基础设置
 	it('basic', () => {
 		expect(typeof Button).to.equal('object');
 		expect(typeof MButton).to.equal('object');
 
-		const vm = createComponent(Button, {});
+		vm = createComponent(Button, {});
 		expect(typeof vm).to.equal('object');
 
 	});
 
 	it('type', () => {
-		const vm = createComponent(Button, {
+		vm = createComponent(Button, {
 			type: 'primary'
 		});
 		expect(vm.$el.classList.contains('vc-btn')).to.equal(true);
@@ -22,7 +26,7 @@ describe('Button', () => {
 	});
 
 	it('disabled', () => {
-		const vm = createComponent(Button, {
+		vm = createComponent(Button, {
 			disabled: true
 		});
 		
@@ -30,7 +34,7 @@ describe('Button', () => {
 	});
 
 	it('circle', () => {
-		const vm = createComponent(Button, {
+		vm = createComponent(Button, {
 			circle: true
 		});
 		
@@ -38,7 +42,7 @@ describe('Button', () => {
 	});
 
 	it('size', () => {
-		const vm = createComponent(Button, {
+		vm = createComponent(Button, {
 			size: 'medium'
 		});
 		
@@ -46,7 +50,7 @@ describe('Button', () => {
 	});
 
 	it('icon', () => {
-		const vm = createComponent(Button, {
+		vm = createComponent(Button, {
 			icon: 'm-search'
 		});
 		
@@ -55,7 +59,7 @@ describe('Button', () => {
 	});
 
 	it('long', () => {
-		const vm = createComponent(Button, {
+		vm = createComponent(Button, {
 			long: true
 		});
 		
@@ -63,7 +67,7 @@ describe('Button', () => {
 	});
 
 	it('htmlType', async () => {
-		const vm = createComponent(Button, {
+		vm = createComponent(Button, {
 			htmlType: 'submit'
 		});
 		
@@ -72,7 +76,7 @@ describe('Button', () => {
 
 	it('wait', async () => {
 		let count = 0;
-		const vm = createVue({
+		vm = createVue({
 			template: `
 				<vc-button @click="handleClick" :wait="0.25">测试</vc-button>
 			`,
@@ -101,7 +105,7 @@ describe('Button', () => {
 
 	it('promise resolve', async () => {
 		let count = 0;
-		let vm = createVue({
+		vm = createVue({
 			template: `
 				<vc-button ref="target" @click="handleClick" :wait="0.25">测试</vc-button>
 			`,
@@ -125,7 +129,7 @@ describe('Button', () => {
 
 	it('promise reject', async () => {
 		let count = 0;
-		let vm = createVue({
+		vm = createVue({
 			template: `
 				<vc-button ref="target" @click="handleClick" :wait="0.25">测试</vc-button>
 			`,
@@ -149,7 +153,7 @@ describe('Button', () => {
 
 	it('group', async () => {
 		let count = 0;
-		let vm = createVue({
+		vm = createVue({
 			template: `
 				<vc-button-group ref="target" size="small" circle vertical>
 					<vc-button>small</vc-button>

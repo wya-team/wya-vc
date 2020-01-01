@@ -31,26 +31,6 @@ describe('Message', () => {
 			done();
 		}, 3000);
 	});
-	it('close message', (done) => {
-		Message.loading({
-			content: '啦啦啦，啦啦啦，我是买包的小行家',
-			mask: true,
-			closable: true,
-			maskClosable: true
-		});
-		const messageWrapper = document.querySelector('.vc-message__wrapper');
-		expect(messageWrapper).to.exist;
-		setTimeout(() => {
-			expect(messageWrapper.style.display).to.not.equal('none');
-			expect(document.querySelector('.vc-icon')).to.exist;
-			triggerEvent(document.querySelector('.vc-icon'), 'click');
-			setTimeout(() => {
-				expect(messageWrapper.style.display).to.equal('none');
-				done();
-			}, 2000);
-			done();
-		}, 2000);
-	});
 	it('not close message', (done) => {
 		Message.info({
 			content: '啦啦啦，啦啦啦，我是买包的小行家',
@@ -93,6 +73,19 @@ describe('Message', () => {
 			done();
 		}, 1500);
 	});
+	it('close message', (done) => {
+		Message.loading({
+			content: '啦啦啦，啦啦啦，我是买包的小行家',
+			mask: true,
+			duration: 1
+		});
+		setTimeout(() => {
+			const messageWrapper = document.querySelector('.vc-message__wrapper');
+			expect(messageWrapper).to.exist;
+			expect(messageWrapper.style.display).to.not.equal('none');
+			done();
+		}, 1500);
+	});
 	it('render 验证', (done) => {
 		Message.info({
 			content: h => {
@@ -101,12 +94,21 @@ describe('Message', () => {
 					h('a', 'render'),
 					' function'
 				]);
-			}
+			},
+			duration: 0,
+			closable: true,
+			maskClosable: true
 		});
+		const messageWrapper = document.querySelector('.vc-message__wrapper');
 		const messageRender = document.querySelectorAll('a');
 		setTimeout(() => {
 			expect(messageRender.length).to.equal(1);
-			done();
+			expect(document.querySelector('.vc-icon')).to.exist;
+			triggerEvent(document.querySelectorAll('.vc-icon')[1], 'click');
+			setTimeout(() => {
+				expect(messageWrapper.style.display).to.equal('none');
+				done();
+			}, 2000);
 		}, 1500);
 	});
 });
