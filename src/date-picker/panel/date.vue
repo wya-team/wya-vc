@@ -184,7 +184,7 @@ export default {
 		},
 		// 季度选择value => 月份的范围
 		handleQuarterPick(value) {
-			let newQuarter = [value];
+			let newQuarter = value;
 			this.dates = newQuarter;
 			this.$emit('pick', newQuarter);
 		},

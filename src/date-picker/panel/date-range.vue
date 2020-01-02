@@ -105,7 +105,7 @@ export default {
 	},
 	data() {
 		const leftPanelDate = this.value[0] || this.startDate || new Date();
-		const rightPanelDate = this.splitPanels ? this.value[1] || nextMonth(leftPanelDate) : nextMonth(leftPanelDate);
+		const rightPanelDate = this.splitPanels && !this.isEqualYearAndMonth() ? this.value[1] || nextMonth(leftPanelDate) : nextMonth(leftPanelDate);
 		const minDate = this.value[0] || '';
 		const maxDate = this.value[1] || '';
 		return {
@@ -153,6 +153,14 @@ export default {
 		}
 	},
 	methods: {
+		isEqualYearAndMonth() {
+			if (!this.value[0] || !this.value[1]) { return false; }
+			let startYear = this.value[0].getFullYear();
+			let startMonth = this.value[0].getMonth();
+			let endYear = this.value[1].getFullYear();
+			let endMonth = this.value[1].getMonth();
+			return startYear === endYear && startMonth === endMonth;
+		},
 		// 判断当前点击的cell是否在当前面板内
 		getDateIsInRange(value, type) {
 			let month = value.getMonth();
@@ -168,23 +176,40 @@ export default {
 			}
 			return true;
 		},
+		isOverRightPanel(panelDate) {
+			let panelYear = panelDate.getFullYear();
+			let panelMonth = panelDate.getMonth();
+			let rightPanelYear = this.rightPanelDate.getFullYear();
+			let rightPanelMonth = this.rightPanelDate.getMonth();
+			return panelYear > rightPanelYear || (panelYear === rightPanelYear && panelMonth >= rightPanelMonth);
+		},
+		isOverLeftPanel(panelDate) {
+			let panelYear = panelDate.getFullYear();
+			let panelMonth = panelDate.getMonth();
+			let leftPanelYear = this.leftPanelDate.getFullYear();
+			let leftPanelMonth = this.leftPanelDate.getMonth();
+			return panelYear < leftPanelYear || (panelYear === leftPanelYear && panelMonth <= leftPanelMonth);
+		},
 		handlePanelChange(panelDate, type, position) {
 			this[`${position}PanelDate`] = panelDate;
 			if (this.splitPanels) { // 左右面板不联动
+				let isOverRightPanel = this.isOverRightPanel(panelDate);
+				let isOverLeftPanel = this.isOverLeftPanel(panelDate);
+
 				switch (type) {
 					case 'prev-month':
 					case 'next-month':
-						if (position === 'left' && panelDate > this.rightPanelDate) {
+						if (position === 'left' && isOverRightPanel) {
 							this.rightPanelDate = nextMonth(this.rightPanelDate);
-						} else if (position === 'right' && panelDate < this.leftPanelDate) {
+						} else if (position === 'right' && isOverLeftPanel) {
 							this.leftPanelDate = prevMonth(this.leftPanelDate);
 						}
 						break;
 					case 'prev-year':
 					case 'next-year':
-						if (position === 'left' && panelDate > this.rightPanelDate) {
+						if (position === 'left' && isOverRightPanel) {
 							this.rightPanelDate = nextYear(this.rightPanelDate);
-						} else if (position === 'right' && panelDate < this.leftPanelDate) {
+						} else if (position === 'right' && isOverLeftPanel) {
 							this.leftPanelDate = prevYear(this.leftPanelDate);
 						}
 						break;

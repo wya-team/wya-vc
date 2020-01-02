@@ -188,29 +188,57 @@ export const TYPE_VALUE_RESOLVER_MAP = {
 	},
 	quarter: {
 		formatterText: (value, format) => {
-			value = value[0] || [];
-			if (value.length) {
+			if (value.length && value[0] && value[1]) {
 				let year = value[0].getFullYear();
 				let startMonth = value[0].getMonth();
 				let endMonth = value[1].getMonth();
 				if (startMonth === 0 && endMonth === 2) {
-					return `${year}第一季度`;
+					return `${year}年第一季度`;
 				} else if (startMonth === 3 && endMonth === 5) {
-					return `${year}第二季度`;
+					return `${year}年第二季度`;
 				} else if (startMonth === 6 && endMonth === 8) {
-					return `${year}第三季度`;
+					return `${year}年第三季度`;
 				} else if (startMonth === 9 && endMonth === 11) {
-					return `${year}第四季度`;
+					return `${year}年第四季度`;
 				}	
 			}
 		},
-		formatter: (value, format) => {
-			value = value[0] || [];
+		formatter: (value = [], format) => {
 			return value.map((date) => DATE_FORMATTER(date, format));
 		},
 		parser: (text, format) => {
 			let dates = text.map((str) => DATE_PARSER(str, format));
-			return [dates];
+			return dates;
+		}
+	},
+	quarterrange: {
+		formatterText: (value, format, RANGE_SEPARATOR) => {
+			const startQuarter = {
+				0: '第一季度',
+				3: '第二季度',
+				6: '第三季度',
+				9: '第四季度',
+			};
+			const endQuarter = {
+				2: '第一季度',
+				5: '第二季度',
+				8: '第三季度',
+				11: '第四季度',
+			};
+			if (value.length && value[0] && value[1]) {
+				let startYear = value[0].getFullYear();
+				let startMonth = value[0].getMonth();
+				let endYear = value[1].getFullYear();
+				let endMonth = value[1].getMonth();
+				return `${startYear}年${startQuarter[startMonth]}${RANGE_SEPARATOR}${endYear}年${endQuarter[endMonth]}`;	
+			}
+		},
+		formatter: (value = [], format) => {
+			return value.map((date) => DATE_FORMATTER(date, format));
+		},
+		parser: (text, format) => {
+			let dates = text.map((str) => DATE_PARSER(str, format));
+			return dates;
 		}
 	},
 	multiple: {

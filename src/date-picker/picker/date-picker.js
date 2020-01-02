@@ -1,6 +1,7 @@
 import Picker from '../picker';
 import DatePanel from '../panel/date';
 import DateRangePanel from '../panel/date-range';
+import QuarterRangePanel from '../panel/quarter-range';
 
 export default {
 	name: 'vc-date-picker',
@@ -9,7 +10,7 @@ export default {
 		type: {
 			type: String,
 			default: 'date',
-			validator: (v) => /(year|month|quarter|date|daterange|datetime|datetimerange)/.test(v)
+			validator: (v) => /(year|month|quarter|date|daterange|datetime|datetimerange|quarterrange)/.test(v)
 		},
 		options: {
 			type: Object,
@@ -38,8 +39,10 @@ export default {
 	},
 	methods: {
 		getPanel(type) {
-			if (type === 'daterange' || type === 'datetimerange') {
+			if (['daterange', 'datetimerange'].includes(type)) {
 				return DateRangePanel;
+			} else if (type === 'quarterrange') {
+				return QuarterRangePanel;
 			}
 			return DatePanel;
 		}

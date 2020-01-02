@@ -53,6 +53,15 @@
 			style="width: 200px"
 			@change="handleQuarterChange"
 		/>
+		<h2>QuarterRange</h2>
+		<vc-date-picker 
+			v-model="quarterrange"
+			type="quarterrange" 
+			clearable
+			placeholder="Select date"
+			style="width: 250px"
+			@change="handleQuarterChange"
+		/>
 		<h2>Form表单校验</h2>
 		<vc-form
 			ref="form"
@@ -95,6 +104,7 @@ export default {
 			year: '',
 			month: '',
 			quarter: '',
+			quarterrange: '',
 			type: 'datetime',
 			options: {
 				disabledDate: (date) => {
