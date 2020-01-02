@@ -45,10 +45,10 @@ export default {
 					console.log('回调');
 				});
 			} else if (type === 'error') {
-				Message.error('测试错误的提示', {
-					onClose: () => {
-						console.log('回调2');
-					}
+				Message.error({
+					content: '33333',
+					mask: false,
+					duration: 0
 				});
 			} else if (type === 'warn') {
 				Message.warning('测试警告的提示');
@@ -60,6 +60,7 @@ export default {
 			Message.info('可关闭的提示', 3, {
 				closable: true,
 				duration: 0,
+				top: 200
 			});
 		},
 		handleClickrender() {
