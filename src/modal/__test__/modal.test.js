@@ -1,4 +1,4 @@
-import { createVue, destroyVM } from '@tests/helper';
+import { createVue, destroyVM, triggerClick } from '@tests/helper';
 import Modal from '../index';
 import MModal from '../index.m';
 
@@ -117,5 +117,22 @@ describe('Modal', () => {
 		expect(smallRef.style.width).to.equal('480px');
 		expect(mediumRef.style.width).to.equal('640px');
 		expect(largeRef.style.width).to.equal('864px');
+	});
+	it('拖动弹框', (done) => {
+		vm = createVue({
+			template: `
+			<vc-modal
+				ref="newmodal"
+				:visible="visible"
+				draggable
+			>
+				<template slot="header">
+					<div class="__newHeader">222</div>
+				</template>
+			</vc-modal>
+			`
+		});
+		const headerRef = vm.$refs.newmodal.$refs.header;
+		triggerClick(headerRef.$el, 'mousedown');
 	});
 });
