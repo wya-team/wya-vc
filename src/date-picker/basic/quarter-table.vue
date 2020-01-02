@@ -100,11 +100,11 @@ export default {
 		 */
 		getMonthRange(quarter) {
 			let year = this.panelDate.getFullYear();
-			let months = [quarter * 3, quarter * 3 + 2];
-			let endDay = getDayCountOfMonth(year, months[1]);
+			let [startMonth, endMonth] = [quarter * 3, quarter * 3 + 2];
+			let endDay = getDayCountOfMonth(year, endMonth);
 			return [
-				new Date(year, months[0]),
-				new Date(year, months[1], endDay)
+				new Date(year, startMonth),
+				new Date(year, endMonth, endDay)
 			];
 		},
 		getQuarterRangeByMonth(value) {

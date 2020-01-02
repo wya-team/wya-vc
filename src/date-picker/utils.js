@@ -188,10 +188,11 @@ export const TYPE_VALUE_RESOLVER_MAP = {
 	},
 	quarter: {
 		formatterText: (value, format) => {
-			if (value.length && value[0] && value[1]) {
-				let year = value[0].getFullYear();
-				let startMonth = value[0].getMonth();
-				let endMonth = value[1].getMonth();
+			let [startDate, endDate] = value;
+			if (startDate && endDate) {
+				let year = startDate.getFullYear();
+				let startMonth = startDate.getMonth();
+				let endMonth = endDate.getMonth();
 				if (startMonth === 0 && endMonth === 2) {
 					return `${year}年第一季度`;
 				} else if (startMonth === 3 && endMonth === 5) {
@@ -213,24 +214,25 @@ export const TYPE_VALUE_RESOLVER_MAP = {
 	},
 	quarterrange: {
 		formatterText: (value, format, RANGE_SEPARATOR) => {
-			const startQuarter = {
+			const startQuarterMap = {
 				0: '第一季度',
 				3: '第二季度',
 				6: '第三季度',
 				9: '第四季度',
 			};
-			const endQuarter = {
+			const endQuarterMap = {
 				2: '第一季度',
 				5: '第二季度',
 				8: '第三季度',
 				11: '第四季度',
 			};
-			if (value.length && value[0] && value[1]) {
-				let startYear = value[0].getFullYear();
-				let startMonth = value[0].getMonth();
-				let endYear = value[1].getFullYear();
-				let endMonth = value[1].getMonth();
-				return `${startYear}年${startQuarter[startMonth]}${RANGE_SEPARATOR}${endYear}年${endQuarter[endMonth]}`;	
+			let [startDate, endDate] = value;
+			if (startDate && endDate) {
+				let startYear = startDate.getFullYear();
+				let startMonth = startDate.getMonth();
+				let endYear = endDate.getFullYear();
+				let endMonth = endDate.getMonth();
+				return `${startYear}年${startQuarterMap[startMonth]}${RANGE_SEPARATOR}${endYear}年${endQuarterMap[endMonth]}`;	
 			}
 		},
 		formatter: (value = [], format) => {
