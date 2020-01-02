@@ -1,7 +1,7 @@
 export default {
 	name: "vc-print",
 	props: {
-		value: String,
+		// value: String,
 		tag: {
 			type: [String, Object, Function],
 			default: 'div'
