@@ -1,8 +1,7 @@
-import { createVue, createComponent, destroyVM } from '@tests/helper';
+import { createVue, destroyVM } from '@tests/helper';
 import Transition from '../index';
 
 const getStyleValue = (el, property) => {
-	// console.log(window.getComputedStyle(el, null));
 	return window.getComputedStyle(el, null)[property];
 };
 
