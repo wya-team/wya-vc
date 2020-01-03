@@ -9,6 +9,8 @@ describe('Marquee', () => {
 
 		const vm = createComponent(Marquee, {});
 		expect(typeof vm).to.equal('object');
+
+		destroyVM(vm);
 	});
 
 	it('paused', () => {
@@ -16,6 +18,8 @@ describe('Marquee', () => {
 			animated: false
 		});
 		expect(vm.paused).to.be.equal(true);
+
+		destroyVM(vm);
 	});
 
 	it('fresh', () => {
@@ -52,5 +56,7 @@ describe('Marquee', () => {
 		ma = vm.$refs.marqueen;
 		ma.refresh();
 		expect(ma.duration > 0).to.be.equal(false);
+
+		destroyVM(vm);
 	});
 });

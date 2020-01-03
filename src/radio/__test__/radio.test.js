@@ -11,10 +11,12 @@ describe('Radio', () => {
 	});
 
 	it('disabled', () => {
-		const radio = createComponent(Radio, {
+		const vm = createComponent(Radio, {
 			disabled: true
 		});
-		expect(radio.$el.classList.contains('is-disabled')).to.equal(true);
+		expect(vm.$el.classList.contains('is-disabled')).to.equal(true);
+
+		destroyVM(vm);
 	});
 
 	it('vertical', () => {
@@ -37,6 +39,8 @@ describe('Radio', () => {
 			}
 		});
 		expect(vm.$el.classList.contains('is-vertical')).to.equal(true);
+
+		destroyVM(vm);
 	});
 
 	it('group', () => {
@@ -76,6 +80,8 @@ describe('Radio', () => {
 		radio1.$el.click();
 		radio2.$el.click();
 		expect(vm.phone === 'android').to.equal(true);
+
+		destroyVM(vm);
 	});
 
 	it('single', () => {
@@ -121,6 +127,8 @@ describe('Radio', () => {
 		expect(vm.single2).to.equal(false);
 		radio1.reset(false);
 		expect(vm.single1 === '').to.equal(false);
+		
+		destroyVM(vm);
 	});
 
 });

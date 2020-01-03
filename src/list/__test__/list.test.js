@@ -12,6 +12,8 @@ describe('List', () => {
 	it('border', () => {
 		const vm = createComponent(MList, {});
 		expect(vm.$el.classList.contains('is-border')).to.equal(true);
+
+		destroyVM(vm);
 	});
 
 	it('arrow-icon', async () => {
@@ -47,6 +49,8 @@ describe('List', () => {
 		vm.arrow = 'left';
 		await wait(0.1);
 		expect(it.icon).to.equal('left');
+
+		destroyVM(vm);
 	});
 
 	it('click', async () => {
@@ -78,6 +82,7 @@ describe('List', () => {
 		expect(vm.count).to.equal(1);
 
 		// 内部重定向无法测试 暂不测试
+		destroyVM(vm);
 	});
 
 	it('label-width', async () => {
@@ -109,6 +114,8 @@ describe('List', () => {
 		vm.labelWidth = 0;
 		await wait(0.1);
 		expect(it.labelStyle.width).to.equal('auto');
+
+		destroyVM(vm);
 	});
 
 	it('form-list', () => {
@@ -141,5 +148,7 @@ describe('List', () => {
 		expect(it.classes['is-alone']).to.equal(true);
 		expect(it.classes['is-line']).to.equal(true);
 		expect(it.classes['is-multi']).to.equal(false);
+		
+		destroyVM(vm);
 	});
 });

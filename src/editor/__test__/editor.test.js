@@ -6,6 +6,8 @@ describe('Editor', () => {
 		expect(!!Editor).to.equal(true);
 		const vm = createComponent(Editor, {});
 		expect(typeof vm).to.equal('object');
+		
+		destroyVM(vm);
 	});
 
 	it('disabled', async () => {
@@ -32,5 +34,7 @@ describe('Editor', () => {
 		editor.disabled = true;
 		editor.value = '<p>123</p>';
 		await wait(0.1);
+
+		destroyVM(vm);
 	});
 });

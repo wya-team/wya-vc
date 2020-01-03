@@ -1,4 +1,4 @@
-import { createVue, createComponent, wait, triggerKeyDown } from '@tests/helper';
+import { createVue, createComponent, wait, triggerKeyDown, destroyVM } from '@tests/helper';
 import Switch from '../index';
 import MSwitch from '../index.m';
 
@@ -9,6 +9,8 @@ describe('Switch', () => {
 
 		const vm = createComponent(Switch, {});
 		expect(typeof vm).to.equal('object');
+
+		destroyVM(vm);
 	});
 
 	it('value', () => {
@@ -17,6 +19,8 @@ describe('Switch', () => {
 		});
 		expect(vm.currentValue).to.equal(true);
 		expect(vm.$el.classList.contains('is-checked')).to.equal(true);
+
+		destroyVM(vm);
 	});
 
 	it('trueValue', () => {
@@ -26,6 +30,8 @@ describe('Switch', () => {
 		});
 
 		expect(vm.$el.classList.contains('is-checked')).to.equal(true);
+
+		destroyVM(vm);
 	});
 	it('falseValue', () => {
 		const vm = createComponent(Switch, {
@@ -33,6 +39,8 @@ describe('Switch', () => {
 		});
 
 		expect(vm.falseValue).to.equal(true);
+
+		destroyVM(vm);
 	});
 
 	it('openText', () => {
@@ -42,6 +50,7 @@ describe('Switch', () => {
 		});
 
 		expect(vm.$el.outerText).to.equal('ok');
+		destroyVM(vm);
 	});
 
 	it('closeText', () => {
@@ -51,6 +60,7 @@ describe('Switch', () => {
 		});
 
 		expect(vm.$el.outerText).to.equal('close');
+		destroyVM(vm);
 	});
 
 	it('toggle true', () => {
@@ -78,6 +88,7 @@ describe('Switch', () => {
 
 		expect(vm.currentValue).to.equal(true);
 		expect(count).to.equal(1);
+		destroyVM(vm);
 	});
 
 	it('toggle false', () => {
@@ -103,6 +114,8 @@ describe('Switch', () => {
 		});
 		vm.$el.click();
 		expect(vm.currentValue).to.equal(false);
+
+		destroyVM(vm);
 	});
 
 	it('disabled', () => {
@@ -128,6 +141,7 @@ describe('Switch', () => {
 		vm.$el.click();
 
 		expect(vm.currentValue).to.equal(false);
+		destroyVM(vm);
 	});
 
 	it('reset', () => {
@@ -156,6 +170,7 @@ describe('Switch', () => {
 
 		expect(vm.currentValue).to.equal(1);
 
+		destroyVM(vm);
 	});
 
 	it("reset false", () => {
@@ -180,6 +195,8 @@ describe('Switch', () => {
 		});
 		vm.$el.click();
 		expect(vm.value).to.equal(1);
+
+		destroyVM(vm);
 	});
 
 	it("space to toggle", () => {
@@ -199,6 +216,8 @@ describe('Switch', () => {
 		});
 		triggerKeyDown(vm.$el, 32);
 		expect(vm.value).to.equal(false);
+
+		destroyVM(vm);
 	});
 
 	it("trueValue equal false", () => {
@@ -227,10 +246,12 @@ describe('Switch', () => {
 		});
 		vm.$el.click();
 		expect(vm.value).to.equal(false);
+
+		destroyVM(vm);
 	});
 	it("切换，但是不是异步执行的", async () => {
 		let count = 0;
-		let vmReso = createVue({
+		let vm = createVue({
 			template: `
 				<vc-switch ref="target" @click="handleToggle" ></vc-switch>
 			`,
@@ -249,13 +270,15 @@ describe('Switch', () => {
 				}
 			}
 		});
-		vmReso = vmReso.$refs.target;
-		vmReso.$el.click();
+		vm = vm.$refs.target;
+		vm.$el.click();
 		expect(count).to.be.equal(1);
+
+		destroyVM(vm);
 	});
 
 	it('promise resolve', async () => {
-		let vmReso = createVue({
+		let vm = createVue({
 			template: `
 				<vc-switch ref="target" @click="handleToggle" :wait="0.25" ></vc-switch>
 			`,
@@ -275,11 +298,13 @@ describe('Switch', () => {
 				}
 			}
 		});
-		vmReso = vmReso.$refs.target;
-		vmReso.$el.click();
-		expect(vmReso.loading).to.be.equal(true);
+		vm = vm.$refs.target;
+		vm.$el.click();
+		expect(vm.loading).to.be.equal(true);
 		await wait(2);
-		expect(vmReso.loading).to.be.equal(false);
+		expect(vm.loading).to.be.equal(false);
+
+		destroyVM(vm);
 	});
 
 
@@ -309,9 +334,7 @@ describe('Switch', () => {
 		expect(vm.loading).to.be.equal(true);
 		await wait(2);
 		expect(vm.loading).to.be.equal(false);
+		
+		destroyVM(vm);
 	});
-
-
-
-
 });

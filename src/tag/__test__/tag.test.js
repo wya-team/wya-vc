@@ -1,4 +1,4 @@
-import { createVue, createComponent } from '@tests/helper';
+import { createVue, createComponent, destroyVM } from '@tests/helper';
 import Tag from '../index';
 
 describe('Tag', () => {
@@ -7,6 +7,8 @@ describe('Tag', () => {
 
 		const vm = createComponent(Tag, {});
 		expect(typeof vm).to.equal('object');
+
+		destroyVM(vm);
 	});
 
 	it('closable', () => {
@@ -32,6 +34,8 @@ describe('Tag', () => {
 
 		vm.$el.querySelector('.vc-tag__close').click();
 		expect(count).to.equal(1);
+
+		destroyVM(vm);
 	});
 	it('check', () => {
 		let count = 0;
@@ -56,6 +60,8 @@ describe('Tag', () => {
 
 		vm.$el.click();
 		expect(count).to.equal(1);
+
+		destroyVM(vm);
 	});
 	it('checkable', () => {
 		let count = 0;
@@ -80,5 +86,7 @@ describe('Tag', () => {
 
 		vm.$el.click();
 		expect(count).to.equal(0);
+
+		destroyVM(vm);
 	});
 });

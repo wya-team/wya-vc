@@ -1,4 +1,4 @@
-import { createComponent } from "@tests/helper";
+import { createComponent, destroyVM } from "@tests/helper";
 import Card from '../index';
 
 describe('Card', () => {
@@ -8,6 +8,8 @@ describe('Card', () => {
 
 		const vm = createComponent(Card, {});
 		expect(typeof vm).to.equal("object");
+
+		destroyVM(vm);
 	});
 
 	it("border", () => {
@@ -16,5 +18,7 @@ describe('Card', () => {
 		});
 
 		expect(vm.$el.classList.contains("is-border")).to.equal(true);
+
+		destroyVM(vm);
 	});
 });

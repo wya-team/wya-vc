@@ -4,7 +4,8 @@ import {
 	triggerEvent,
 	triggerKeyDown,
 	wait,
-	triggerKeyUp
+	triggerKeyUp,
+	destroyVM
 } from "@tests/helper";
 import Page from '../index';
 
@@ -14,6 +15,8 @@ describe('Page', () => {
 
 		const vm = createComponent(Page, {});
 		expect(typeof vm).to.equal('object');
+
+		destroyVM(vm);
 	});
 	it('pageSizeOpts', () => {
 		const vm = createComponent(Page, {
@@ -21,6 +24,8 @@ describe('Page', () => {
 		});
 
 		expect(typeof vm.$el.getAttribute('page-size-opts')).to.equal('object');
+
+		destroyVM(vm);
 	});
 
 	it("count", async () => {
@@ -53,6 +58,8 @@ describe('Page', () => {
 		expect(page.$el.querySelector(".vc-page__item.is-active"))
 			.to.property("title")
 			.to.equal('2');
+
+		destroyVM(vm);
 	});
 
 	it("count change ", async () => {
@@ -90,6 +97,8 @@ describe('Page', () => {
 		expect(page.$el.querySelector(".vc-page__item.is-active"))
 			.to.property("title")
 			.to.equal("1");
+
+		destroyVM(vm);
 	});
 
 	it("event: prev and next click", () => {
@@ -124,6 +133,8 @@ describe('Page', () => {
 		expect(vm.current).to.equal(2);
 		next.click();
 		expect(vm.current).to.equal(3);
+
+		destroyVM(vm);
 	});
 	it("event: prev to first and next to end ", () => {
 		let vm = createVue({
@@ -155,6 +166,8 @@ describe('Page', () => {
 		next.click();
 		next.click();
 		expect(vm.current).to.equal(2);
+
+		destroyVM(vm);
 	});
 	it("event: fast prev and next click", () => {
 		let vm = createVue({
@@ -184,6 +197,8 @@ describe('Page', () => {
 		expect(vm.current).to.equal(1);
 		fastNext.click();
 		expect(vm.current).to.equal(6);
+
+		destroyVM(vm);
 	});
 	it("event: fast prev and next click", () => {
 		let vm = createVue({
@@ -213,6 +228,8 @@ describe('Page', () => {
 		expect(vm.current).to.equal(1);
 		fastNext.click();
 		expect(vm.current).to.equal(6);
+
+		destroyVM(vm);
 	});
 	it("event: fast prev to first and next to end", () => {
 		let vm = createVue({
@@ -246,6 +263,8 @@ describe('Page', () => {
 		fastNext.click();
 		fastNext.click();
 		expect(vm.current).to.equal(12);
+
+		destroyVM(vm);
 	});
 	it("event: input and enter", async () => {
 		let vm = createVue({
@@ -281,6 +300,7 @@ describe('Page', () => {
 		triggerKeyUp(inputer, 13);
 		expect(inputer.value).to.equal('1');
 
+		destroyVM(vm);
 	});
 
 	it("change page size", async () => {
@@ -326,6 +346,8 @@ describe('Page', () => {
 		parent.querySelectorAll(".vc-select-option")[2].click();
 		page.currentPage = 2;
 		expect(count).to.equal(2);
+
+		destroyVM(vm);
 	});
 
 	it("force change pageSize", async () => {
@@ -355,5 +377,7 @@ describe('Page', () => {
 		await wait(2);
 		let page = vm.$refs.target;
 		expect(page.currentPage).to.equal(1);
+		
+		destroyVM(vm);
 	});
 });

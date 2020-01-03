@@ -1,4 +1,4 @@
-import { createVue, createComponent, wait } from '@tests/helper';
+import { createVue, createComponent, wait, destroyVM } from '@tests/helper';
 import Countdown from '../index';
 
 describe('Countdown', () => {
@@ -12,6 +12,8 @@ describe('Countdown', () => {
 			targetTime: '2019-12-24'
 		});
 		expect(vm.$el.tagName).to.equal('DIV');
+
+		destroyVM(vm);
 	});
 
 	it('showZero', async () => {
@@ -22,6 +24,8 @@ describe('Countdown', () => {
 		});
 		await wait(2);
 		expect(vm.$el.innerHTML).to.equal('00天00小时00分00秒00');
+
+		destroyVM(vm);
 	}); 
 
 	it('format', async () => {
@@ -32,6 +36,8 @@ describe('Countdown', () => {
 		});
 		await wait(2);
 		expect(vm.$el.innerHTML).to.equal('00天00小时00分');
+
+		destroyVM(vm);
 	});
 
 	it('t', async () => {
@@ -45,6 +51,8 @@ describe('Countdown', () => {
 		await wait(2);
 		// 每3s跳一次
 		expect(vm.$el.innerHTML).to.equal('天小时分秒');
+
+		destroyVM(vm);
 	});
 	
 	it('targetTime', async () => {
@@ -60,6 +68,8 @@ describe('Countdown', () => {
 		let str = vm.$el.innerHTML;
 		str = str.split('分')[0];
 		expect(str).to.equal('00天23小时59');
+
+		destroyVM(vm);
 	});
 	
 	it('serverTime', async () => {
@@ -76,15 +86,7 @@ describe('Countdown', () => {
 		let str = vm.$el.innerHTML;
 		str = str.split('分')[0];
 		expect(str).to.equal('02天00小时00');
-	});
-
-	
-	it('延迟作用', async () => {
-		const vm = createComponent(Countdown, {
-			targetTime: '2019-12-14',
-			tag: 'div'
-		});
-		await wait(200);
-		expect(vm.$el);
+		
+		destroyVM(vm);
 	});
 });
