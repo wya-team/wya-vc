@@ -9,7 +9,7 @@
 属性 | 说明 | 类型 | 默认值
 ---|---|---|---
 type | 按钮的样式选择:`default`、`primary`、`text`、`success`、`error`、`warning` |`String` | `default`
-default | 禁止点击 | `Boolean` | `false`
+disabled | 禁止点击 | `Boolean` | `false`
 circle | 按钮是否圆角 | `Boolean` | `false`
 size | 按钮大小:`large`、`medium`、`small` | `String` | `medium`
 icon | 按钮内的图标 | `String` | -

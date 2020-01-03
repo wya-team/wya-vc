@@ -1,11 +1,8 @@
-import Vue from 'vue';
-import Tpl from '../paging.vue';
+import { createVue } from '@tests/helper';
+import Paging from '..';
 
-
-
-describe('Tpl', () => {
-	test('测试传递属性', () => {
-		const component = createComponent(Wrapper, {});
-		expect(typeof component).toBe('object');
+describe('Paging', () => {
+	it('basic', () => {
+		expect(!!Paging).to.equal(true);
 	});
 });

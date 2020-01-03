@@ -120,9 +120,9 @@ export default {
 					width,
 					height
 				},
-				wrapperW: this.scroller.clientWidth,
+				wrapperW: this.scroller && this.scroller.clientWidth,
 				// TODO
-				wrapperH: this.scroller.clientHeight,
+				wrapperH: this.scroller && this.scroller.clientHeight,
 			});
 
 			if (w && h) {
@@ -233,7 +233,8 @@ export default {
 	position: relative;
 	display: inline-block;
 	overflow: hidden;
-
+	vertical-align: top;
+	
 	@include element(placeholder) {
 		@extend %size;
 		background: #f5f7fa;
@@ -263,7 +264,7 @@ export default {
 
 	@include element(inner) {
 		@extend %size;
-		vertical-align: top;
+		display: block;
 
 		@include when(center) {
 			position: relative;

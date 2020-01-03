@@ -35,20 +35,26 @@
 </template>
 <script>
 import BasicMixin from './basic-mixin';
+import Img from '../img';
 
 export default {
 	name: "vc-imgs-preview-row",
+	components: {
+		'vc-img': Img
+	},
 	mixins: [BasicMixin],
 	props: {
 		renderRow: {
 			type: Function,
 			default: (h, props, parent) => {
 				const { src, index } = props;
-				return h('img', {
-					attrs: {
+				return h('vc-img', {
+					props: {
 						src,
-						width: 100,
-						height: 100,
+						fit: "cover"
+					},
+					style: {
+						...parent.rowStyle
 					}
 				});
 			}
@@ -60,8 +66,10 @@ export default {
 @import '../style/index.scss';
 
 @include block(vc-imgs-preview) {
-	img {
+	.vc-img__inner{
 		display: block;
+		width: 100px;
+		height: 100px;
 	}
 	@include element(item) { 
 		box-sizing: border-box;
@@ -69,10 +77,12 @@ export default {
 		position: relative;
 		margin-bottom: 5px;
 		margin-right: 5px; 
+		font-size: 0;
 		&:hover {
 			@include element(mask) {
 				transition: opacity 0.5s;
 				opacity: 1;
+				font-size: 12px;
 			}
 		}
 	}; 

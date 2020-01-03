@@ -1,4 +1,4 @@
-## [Demo Basic](https://wya-team.github.io/wya-vc/dist/__tpl__/basic.html)
+## [Demo Basic](https://wya-team.github.io/wya-vc/dist/popconfirm/basic.html)
 ## 功能
 验证类型的气泡弹框
 
@@ -9,6 +9,7 @@
 属性 | 说明 | 类型 | 默认值
 ---|---|---|---
 title | 验证弹层的标题 | `string` | -
+content | 验证弹层的标题 | `string` | -
 okText | 确定按钮的文字 | `string` | `确定`
 cancelText | 取消按钮的文字 | `string` | `取消`
 okType | 确定按钮的样式类型（其他值参考`button`的`type`） | `string` | `primary`
@@ -16,6 +17,7 @@ cancelType | 确定按钮的样式类型（其他值参考`button`的`type`） |
 type | 类型`warn` `success` `info` `error` | `string` | `warn`
 width | 弹宽的宽度，最小`218px`, 只需传数字，`px`已在内部添加 | `string` | `number` | -
 renderTitle | `title` 自定义 | `function` | `(h, props, parent) => (<div>{props.title}</div>)`
+renderContent | `content` 自定义 | `function` | `(h, props, parent) => (<div>{props.content}</div>)`
 其他属性请参考Popover
 
 #### 事件
@@ -34,6 +36,7 @@ ready | 弹层出来时回调 | - | -
 ---|---
 title | 弹层标题的插槽
 icon | 弹层icon的插槽
+content | 内容的插槽
 
 
 ## 基础用法

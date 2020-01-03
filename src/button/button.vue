@@ -10,7 +10,7 @@
 	>
 		<vc-icon v-if="!!icon" :type="icon"/>
 		<vc-spin 
-			v-if="loading" 
+			v-if="isLoading" 
 			:size="12" 
 			:foreground="type === 'default' ? '#ccc' : '#fff'" 
 			class="vc-btn__loading"
@@ -73,7 +73,7 @@ export default {
 	data() {
 		return {
 			hasSlot: true,
-			loading: false
+			isLoading: false
 		};
 	},
 	computed: {
@@ -101,13 +101,13 @@ export default {
 			let fn = click && click(e, callback);
 
 			if (fn && fn.then) {
-				this.loading = true;
+				this.isLoading = true;
 				fn.then((res) => {
 					return res;
 				}).catch((res) => {
 					return Promise.reject(res);
 				}).finally(() => {
-					this.loading = false;
+					this.isLoading = false;
 				});
 			}
 		}

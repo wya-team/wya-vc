@@ -34,7 +34,6 @@ VcInstance.init({
 		URL_UPLOAD_IMG_POST: 'https://api.github.com/users/wya-team',
 		URL_UPLOAD_FILE_POST: 'https://api.github.com/users/wya-team',
 		onPostBefore: ({ options }) => {
-
 			return new Promise((resolve, reject) => {
 				// if (random(0, 10) > 10) {
 				// 	throw new Error('异常处理');
@@ -48,7 +47,6 @@ VcInstance.init({
 					type: 'GET',
 					credentials: 'omit', //  cors下关闭
 					headers: {
-
 					}
 				});
 			});
@@ -56,6 +54,7 @@ VcInstance.init({
 		onPostAfter: ({ response, options }) => { // eslint-disable-line
 			const { file } = options.param;
 			return new Promise((resolve) => {
+				
 				// 模拟强制返回
 				resolve({
 					status: 1,

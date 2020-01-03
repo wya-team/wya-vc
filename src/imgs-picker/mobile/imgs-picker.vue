@@ -15,7 +15,6 @@
 						v-if="typeof item !== 'object'" 
 						:src="item" 
 						:class="imgClassName"
-						style="height: 78px; width: 78px;"
 						fit="cover"
 						class="vcm-imgs-picker__img"
 						@click="handlePreview($event, index)"/>

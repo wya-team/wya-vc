@@ -2,7 +2,7 @@
 @import 'quill/dist/quill.snow.css';
 @import 'quill/dist/quill.bubble.css';
 
-$fontSize: '12px', '14px', '16px', '18px', '20px', '22px', '24px' !default;
+$fontSize: '12px', '14px', '16px', '18px', '20px', '22px', '24px', '50px' !default;
 
 @mixin qlFontSize($fontSize, $prefix) {
 	@for $i from 1 through length($fontSize) {

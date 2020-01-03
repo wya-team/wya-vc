@@ -1,8 +1,8 @@
-import Vue from 'vue';
-import Wrapper from '..';
+import { createVue } from '@tests/helper';
+import Message from '..';
 
-describe('Tpl', () => {
-	test('测试传递属性', () => {
-		expect(typeof Wrapper).toBe('object');
+describe('Message', () => {
+	it('basic', () => {
+		expect(!!Message).to.equal(true);
 	});
 });

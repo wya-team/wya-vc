@@ -43,9 +43,9 @@ export default {
 	mounted() {
 		Promise.all([
 			IconManager.basicStatus,
-			IconManager.load('//at.alicdn.com/t/font_1096960_mfllg2fv23r.js'),
-			IconManager.load('//at.alicdn.com/t/font_1096957_mlwz0ycyaln.js'),
-			IconManager.load('//at.alicdn.com/t/font_1169912_pa6aa8abxnr.js')
+			IconManager.load('//at.alicdn.com/t/font_1169912_ith92i2hims.js'),
+			IconManager.load('//at.alicdn.com/t/font_1096960_8zo6tsnmj3p.js'),
+			IconManager.load('//at.alicdn.com/t/font_1096957_cypkws8poed.js')
 		]).then(() => {
 			this.items = Object.keys(IconManager.icons);
 			console.log(1);

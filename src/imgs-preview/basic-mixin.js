@@ -2,7 +2,7 @@
  * imgs-picker的核心js
  */
 import { Device } from '@wya/utils';
-import Core, { Func } from './core';
+import Core, { Func } from './core.vue';
 import Customer from '../customer/index';
 import Icon from '../icon/index';
 import { VcInstance } from '../vc/index';
@@ -21,8 +21,12 @@ export default {
 	},
 	props: {
 		...Core.props,
+		enhancer: Function,
 		itemClassName: String,
-		enhancer: Function
+		rowStyle: {
+			type: Object,
+			default: () => ({})
+		}
 	},
 	data() {
 		return {

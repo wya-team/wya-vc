@@ -87,6 +87,12 @@ VcBasic.prototype.config = {
 	 * 用于过时的缓存, 如icon的缓存解析
 	 */
 	version: '1.4.0',
+
+	/**
+	 * 国际化
+	 */
+	// lang: 'zh-CN',
+	// i18n: i18nHandler,
 	/**
 	 * vuex + vue-router
 	 */
