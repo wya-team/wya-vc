@@ -25,7 +25,7 @@ import { random } from 'lodash';
 import Form from '../../form';
 import Input from '../../input';
 import Button from '../../button';
-import Editor, { Quill, ImageExtend } from '../index';
+import Editor from '../index';
 import Toolbar from '../toolbar';
 import { VcInstance } from '../../vc/index';
 
@@ -71,8 +71,6 @@ VcInstance.init({
 		}
 	}
 });
-
-Quill.register('modules/ImageExtend', ImageExtend);
 
 export default {
 	name: "vc-editor-basic",

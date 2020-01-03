@@ -36,16 +36,15 @@
 
 <script>
 import './style.scss';
-import { random } from 'lodash';
 import Extends from '../extends';
 import EditorToolbar from './toolbar';
 import Upload from '../upload/index';
 import Icon from '../icon/index';
 import ImgsPreview from '../imgs-preview/index';
 import defaultOptinos from './default-options';
-
 import { VcInstance } from '../vc/index';
 import { registVideoBlot } from './extends/video-blot';
+import ImageExtend from './extends/image-extend';
 
 export default {
 	name: "vc-editor",
@@ -137,6 +136,7 @@ export default {
 	methods: {
 		init() {
 			registVideoBlot(this.Quill);
+			this.Quill.register('modules/ImageExtend', ImageExtend);
 			this.initFontSize();
 			this.editor = new this.Quill(this.$refs.editor, { ...defaultOptinos, ...this.options });
 			this.editor.enable(!this.disabled);
@@ -241,8 +241,17 @@ export default {
 			let { ImageBlot, Parchment } = this;
 			let image = Parchment.find(e.target);
 			if (image instanceof ImageBlot) {
-				// TODO 多图预览
+				// 多图预览
 				// let imgs = this.getImgs();
+				let index;
+				let imgsArr = Array.from(document.querySelectorAll('.ql-container img'));
+				let allImgUrls = imgsArr.map((it, idx) => {
+					if (it === e.target) {
+						index = idx;
+					}
+					return it.src;
+				});
+
 				let pos = {};
 				try {
 					const target = e.target; // 先得到pos, 否则getThumbBoundsFn再计划，target已变化（比如弹窗transition的影响）
@@ -257,9 +266,9 @@ export default {
 
 				ImgsPreview.open({
 					visible: true,
-					dataSource: [e.target.currentSrc],
+					dataSource: [...allImgUrls],
 					opts: {
-						index: 0,
+						index,
 						history: false,
 						getThumbBoundsFn: (index) => pos
 					}
