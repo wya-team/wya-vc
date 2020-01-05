@@ -180,6 +180,14 @@ export const TYPE_VALUE_RESOLVER_MAP = {
 			return [DATE_PARSER(text, format)];
 		}
 	},
+	monthrange: {
+		formatterText: RANGE_FORMATTER,
+		formatter: (value, format, RANGE_SEPARATOR) => {
+			let rangeDate = RANGE_FORMATTER(value, format, RANGE_SEPARATOR);
+			return rangeDate ? rangeDate.split(RANGE_SEPARATOR) : '';
+		},
+		parser: RANGE_PARSER
+	},
 	year: {
 		formatter: DATE_FORMATTER,
 		parser: (text, format) => {

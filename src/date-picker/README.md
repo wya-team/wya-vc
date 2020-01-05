@@ -14,7 +14,7 @@
 属性 | 说明 | 类型 | 默认值
 ---|---|---|---
 属性	说明	类型	默认值
-type | 显示类型，可选值为 `date`、`daterange`、`datetime`、`datetimerange`、`year`、`month`、`quarter`、`quarterrange` | String | date
+type | 显示类型，可选值为 `date`、`daterange`、`datetime`、`datetimerange`、`year`、`month`、`quarter`、`quarterrange`、`monthrange` | String | date
 value | 日期，可以是 JavaScript 的 Date，例如 new Date()，也可以是标准的日期格式，点击右边查看
 注意：value 使用 v-model 时，值是 Date 类型，可以配合 @change 使用 |  Date | -
 format | 展示的日期格式 |  Date | date, daterange(yyyy-MM-dd), datetime, datetimerange(yyyy-MM-dd, HH:mm:ss), year(yyyy), month(yyyy-MM)

@@ -43,6 +43,16 @@
 			style="width: 200px"
 			@change="handleMonthChange"
 		/>
+		<h2>MonthRange</h2>
+		<vc-date-picker 
+			v-model="monthrange"
+			type="monthrange" 
+			clearable
+			confirm
+			placeholder="Select date"
+			style="width: 200px"
+			@change="handleMonthChange"
+		/>
 		<h2>Quarter</h2>
 		<vc-date-picker 
 			v-model="quarter"
@@ -103,6 +113,7 @@ export default {
 			// valueRange: '',
 			year: '',
 			month: '',
+			monthrange: '',
 			quarter: '',
 			quarterrange: '',
 			type: 'datetime',

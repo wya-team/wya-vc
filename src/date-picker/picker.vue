@@ -161,7 +161,7 @@ export default {
 		},
 		isConfirm() {
 			//  加上multiple
-			return this.confirm || this.type === 'datetime' || this.type === 'datetimerange' || this.type === 'quarterrange';
+			return this.confirm || this.type === 'datetime' || this.type === 'datetimerange';
 		},
 		// 展示的value
 		visibleValue() {
@@ -171,7 +171,7 @@ export default {
 			return ['datetime', 'datetimerange'].includes(this.type);
 		},
 		isRange() {
-			return ['daterange', 'datetimerange', 'quarterrange'].includes(this.type);
+			return ['daterange', 'datetimerange', 'quarterrange', 'monthrange'].includes(this.type);
 		},
 		isQuarter() {
 			return ['quarter'].includes(this.type);
