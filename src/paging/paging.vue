@@ -27,6 +27,7 @@
 			:data-source="data" 
 			v-bind="tableOpts"
 			v-on="tableHooks"
+			@selection-change="handleSelectionChange"
 		>
 			<template #default>
 				<slot />
@@ -72,7 +73,7 @@
 import { URL, Storage } from '@wya/utils';
 import { cloneDeep } from 'lodash';
 
-import PagingLoading from './loading';
+// import PagingLoading from './loading';
 import Page from '../page/index';
 import Table from '../table';
 import { VcInstance } from '../vc/index';
@@ -87,7 +88,7 @@ export default {
 	components: {
 		'vc-table': Table,
 		'vc-page': Page,
-		'vc-paging-loading': PagingLoading
+		// 'vc-paging-loading': PagingLoading
 	},
 	// 不考虑使用
 	// inheritAttrs: false,
@@ -165,6 +166,9 @@ export default {
 			default: () => ({
 				pageSize: true
 			})
+		},
+		rowKey: {
+			type: String
 		}
 	},
 	data() {
@@ -180,6 +184,7 @@ export default {
 			loading: false,
 			currentPage: this.show ? Number(page) : 1,
 			pageSize: this.defaultPageSize,
+			selection: [],
 		};
 	},
 	computed: {
@@ -188,8 +193,11 @@ export default {
 			return result || [];
 		},
 		tableHooks() {
+			let listeners = cloneDeep(this.$listeners);
+			// 由paging内部触发
+			delete listeners['selection-change'];
 			return {
-				...this.$listeners,
+				...listeners,
 				change: () => {},
 				pageSizeChange: () => {}
 			};
@@ -239,6 +247,8 @@ export default {
 		}
 	},
 	created() {
+		this.reSelecting = false;
+
 		let { query: { page = 1 } } = URL.parse();
 		/**
 		 * 首次加载的时候特殊处理
@@ -259,6 +269,46 @@ export default {
 		}
 	},
 	methods: {
+		handleSelectionChange(selection) {
+			if (!this.rowKey) return this.$emit('selection-change', selection);
+
+			const dataSelectionValues = this.data.map(item => item[this.rowKey]);
+			const rowKeyValues = selection.map(item => item[this.rowKey]);
+			// 过滤掉当前页面的选择的数据，再合并当前页面选择的数据
+			this.selection = this.selection.filter(item => {
+				return !dataSelectionValues.includes(item[this.rowKey]);
+			}).filter(item => {
+				return !rowKeyValues.includes(item[this.rowKey]);
+			}).concat(selection);
+
+			!this.reSelecting && this.$emit('selection-change', this.selection);
+		},
+
+		/**
+		 * 翻页后重选
+		 */
+		resetSelection() {
+			if (!this.rowKey) return;
+			if (this.data.length && this.selection.length) {
+				let rows = [];
+				const rowKeyValues = this.selection.map(item => item[this.rowKey]);
+				this.data.forEach((row, index) => {
+					if (rowKeyValues.includes(row[this.rowKey])) {
+						rows.push(row);
+					}
+				});
+
+				this.reSelecting = true;
+				for (let i = 0; i < rows.length; i++) {
+					this.$nextTick(() => {
+						this.$refs.table.toggleRowSelection(rows[i], true);
+						if (i === rows.length - 1) {
+							this.reSelecting = false;
+						}
+					});
+				}
+			}
+		},
 		handleChangePageSize(pageSize) {
 			this.$emit('page-size-change', pageSize); // 清理数据
 			this.pageSize = pageSize;
@@ -295,7 +345,10 @@ export default {
 
 			// 是否已有数据
 			let arr = this.dataSource[page];
-			if (arr && typeof arr.length === 'number') return;
+			if (arr && typeof arr.length === 'number') {
+				this.resetSelection();
+				return;
+			}
 
 			// 请求
 			const load = this.loadData(page, this.pageSize);
@@ -304,6 +357,7 @@ export default {
 				this.$emit('load-pending');
 				load.then((res) => {
 					this.$emit('load-success', res);
+					this.resetSelection();
 					return res;
 				}).catch((res) => {
 					this.$emit('load-fail', res);

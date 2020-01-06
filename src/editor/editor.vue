@@ -2,7 +2,7 @@
 	<div class="vc-quill-editor">
 		<slot name="toolbar">
 			<vc-editor-toolbar v-if="options.modules && options.modules.toolbar === '#toolbar'">
-				<button id="img" class="vc-quill-editor__icon">
+				<button class="vc-quill-editor__icon" >
 					<vc-upload
 						v-bind="imgUploadOpts"
 						@file-success="handleImgSuccess"
@@ -10,23 +10,23 @@
 						<vc-icon type="image" style="font-size: 15px" @click="handleUploadImg" />
 					</vc-upload>
 				</button>
-				<button id="video" class="vc-quill-editor__icon">
+				<button class="vc-quill-editor__icon" >
 					<vc-upload
 						v-bind="videoUploadOpts"
 						:gallery="false"
 						@file-success="handleVideoSuccess"
 					>
-						<vc-icon type="video" style="font-size: 16px" />
+						<vc-icon type="video" style="font-size: 16px"/>
 					</vc-upload>
 				</button>
 				
 				<slot name="extend" />
 
-				<button id="undo" class="vc-quill-editor__icon" @click="handleUndo">
-					<vc-icon type="undo" style="font-size: 15px" />
+				<button class="vc-quill-editor__icon" @click="handleUndo">
+					<vc-icon type="undo" style="font-size: 15px"/>
 				</button>
-				<button id="redo" class="vc-quill-editor__icon" @click="handleRedo">
-					<vc-icon type="redo" style="font-size: 15px" />
+				<button class="vc-quill-editor__icon" @click="handleRedo">
+					<vc-icon type="redo" style="font-size: 15px"/>
 				</button>
 			</vc-editor-toolbar>
 		</slot>

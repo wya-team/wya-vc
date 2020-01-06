@@ -9,8 +9,10 @@
 		:table-opts="table"
 		:history="true"
 		:show="show"
+		row-key="id"
 		style="width: 100%"
 		@page-size-change="handleResetFirst"
+		@selection-change="handleSeleChange"
 	>
 		<vc-table-item>
 			<vc-table-column
@@ -122,6 +124,9 @@ export default {
 				});
 			}
 			return fakeData;
+		},
+		handleSeleChange(selection) {
+			console.log('selection :', selection, 1);
 		},
 		/**
 		 * 回到首页刷新
