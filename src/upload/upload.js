@@ -229,7 +229,11 @@ export default {
 
 			// tips
 			this.tips && this.tips.show(
-				initItem(postFiles.map(it => ({ ...it, size: it.size, name: it.name })), 'uid')
+				initItem(postFiles.map(it => ({ 
+					...it, 
+					size: it.size, 
+					name: it.name, 
+				})), 'uid')
 			);
 		},
 
@@ -263,6 +267,11 @@ export default {
 						this.post(file);
 					}
 				}).catch(e => {
+					this.cycle.error++;
+					// tips
+					this.tips && this.tips.setValue(file.uid, 'error', e.msg || '上传失败');
+					this.done(file);
+
 					throw new VcError('upload', e);
 				});
 			} else if (before !== false) {
@@ -336,36 +345,38 @@ export default {
 
 				// tips
 				this.tips && this.tips.setValue(uid, 'success');
-			}).catch((res) => {
+			}).catch((e) => {
 				delete this.reqs[uid];
 				this.cycle.error++;
 
-				this.$emit('file-error', res, file, { ...this.cycle });
+				this.$emit('file-error', e, file, { ...this.cycle });
 
 				// tips
-				this.tips && this.tips.setValue(file.uid, 'error', res.msg);
-			}).finally(() => {
-				this.cycle.total++;
+				this.tips && this.tips.setValue(file.uid, 'error', e.msg || '上传失败');
+			}).finally(() => this.done(file));
+		},
 
-				// 顺序上传
-				if (
-					!this.parallel 
-					&& this.cycle.fns 
-					&& this.cycle.fns.length > 0
-				) {
-					(this.cycle.fns.shift())();
-				}
+		done(file) {
+			this.cycle.total++;
 
-				// 上传完毕
-				if (this.cycle.total === file.total) {
+			// 顺序上传
+			if (
+				!this.parallel 
+				&& this.cycle.fns 
+				&& this.cycle.fns.length > 0
+			) {
+				(this.cycle.fns.shift())();
+			}
 
-					this.$emit('complete', { ...this.cycle } || {});
-					this.setDefaultCycle();
+			// 上传完毕
+			if (this.cycle.total === file.total) {
 
-					// tips
-					this.tips && this.tips.setTipsStatus(true);
-				}
-			});
+				this.$emit('complete', { ...this.cycle } || {});
+				this.setDefaultCycle();
+
+				// tips
+				this.tips && this.tips.setTipsStatus(true);
+			}
 		},
 
 		cancel(file) {
