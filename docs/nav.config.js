@@ -37,64 +37,175 @@ module.exports = [
 	},	
 	{
 		"name": {
-			'zh-CN': "组合",
-			'en-US': "Group",
+			'zh-CN': "组件",
+			'en-US': "Component",
 		},
 		"group": [
 			{
 				"name": {
-					'zh-CN': "组合 1",
-					'en-US': "Group 1",
+					'zh-CN': "实例",
+					'en-US': "Global Instance",
 				},
 				list: [
 					{
-						"path": "/children-group-11",
+						"path": "/vc",
 						"name": {
-							'zh-CN': "子 1 - 1",
-							'en-US': "children 1 - 1",
-						}
-					},
-					{
-						"path": "/children-group-12",
-						"name": {
-							'zh-CN': "子 1 - 2",
-							'en-US': "children 1 - 2",
-						}
-					},
-					{
-						"path": "/children-group-13",
-						"name": {
-							'zh-CN': "子 1 - 3",
-							'en-US': "children 1 - 3",
+							'zh-CN': "Vc",
+							'en-US': "Vc",
 						}
 					}
 				]
 			},
 			{
 				"name": {
-					'zh-CN': "组合 2",
-					'en-US': "Group 2",
+					'zh-CN': "通用",
+					'en-US': "General",
 				},
 				list: [
 					{
-						"path": "/children-group-21",
+						"path": "/button",
 						"name": {
-							'zh-CN': "子 2 - 1",
-							'en-US': "children 2 - 1",
+							'zh-CN': "Button",
+							'en-US': "Button",
 						}
 					},
 					{
-						"path": "/children-group-22",
+						"path": "/icon",
 						"name": {
-							'zh-CN': "子 2 - 2",
-							'en-US': "children 2 - 2",
+							'zh-CN': "Icon",
+							'en-US': "Icon",
+						}
+					}
+				]
+			},
+			{
+				"name": {
+					'zh-CN': "导航",
+					'en-US': "Navigation",
+				},
+				list: [
+					{
+						"path": "/affix",
+						"name": {
+							'zh-CN': "Affix",
+							'en-US': "Affix",
 						}
 					},
 					{
-						"path": "/children-group-23",
+						"path": "/back-top",
 						"name": {
-							'zh-CN': "子 2 - 3",
-							'en-US': "children 2 - 3",
+							'zh-CN': "BackTop",
+							'en-US': "BackTop",
+						}
+					}
+				]
+			},
+			{
+				"name": {
+					'zh-CN': "数据录入",
+					'en-US': "Data Entry ",
+				},
+				list: [
+					{
+						"path": "/artboard",
+						"name": {
+							'zh-CN': "Artboard",
+							'en-US': "Artboard",
+						}
+					},
+					{
+						"path": "/cascader",
+						"name": {
+							'zh-CN': "Cascader",
+							'en-US': "Cascader",
+						}
+					}
+				]
+			},
+			{
+				"name": {
+					'zh-CN': "数据展示",
+					'en-US': "Data Display",
+				},
+				list: [
+					{
+						"path": "/calendar",
+						"name": {
+							'zh-CN': "Calendar",
+							'en-US': "Calendar",
+						}
+					},
+					{
+						"path": "/card",
+						"name": {
+							'zh-CN': "Card",
+							'en-US': "Card",
+						}
+					}
+				]
+			},
+			{
+				"name": {
+					'zh-CN': "组合",
+					'en-US': "Combo",
+				},
+				list: [
+					{
+						"path": "/paging",
+						"name": {
+							'zh-CN': "Paging",
+							'en-US': "Paging",
+						}
+					},
+					{
+						"path": "/pull-scroll",
+						"name": {
+							'zh-CN': "PullScroll",
+							'en-US': "PullScroll",
+						}
+					}
+				]
+			},
+			{
+				"name": {
+					'zh-CN': "辅助",
+					'en-US': "Assist",
+				},
+				list: [
+					{
+						"path": "/clipboard",
+						"name": {
+							'zh-CN': "Clipboard",
+							'en-US': "Clipboard",
+						}
+					},
+					{
+						"path": "/customer",
+						"name": {
+							'zh-CN': "Customer",
+							'en-US': "Customer",
+						}
+					}
+				]
+			},
+			{
+				"name": {
+					'zh-CN': "操作反馈",
+					'en-US': "Feedback",
+				},
+				list: [
+					{
+						"path": "/drawer",
+						"name": {
+							'zh-CN': "Drawer",
+							'en-US': "Drawer",
+						}
+					},
+					{
+						"path": "/marquee",
+						"name": {
+							'zh-CN': "Marquee",
+							'en-US': "Marquee",
 						}
 					}
 				]
