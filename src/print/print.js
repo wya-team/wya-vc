@@ -1,7 +1,7 @@
 export default {
 	name: "vc-print",
 	props: {
-		// value: String,
+		value: String,
 		tag: {
 			type: [String, Object, Function],
 			default: 'div'
@@ -38,7 +38,9 @@ export default {
 	},
 	render(h) {
 		return h(this.tag, {
-			
+			domProps: {
+				innerHTML: this.value
+			},
 		}, this.$slots.default);
 	}
 };
