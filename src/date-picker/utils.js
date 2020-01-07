@@ -90,11 +90,11 @@ export const toDate = (date) => {
 export const formatDate = (date, format) => {
 	date = toDate(date);
 	if (!date) return '';
-	return DateUtil.format(date, format || 'yyyy-MM-dd');
+	return DateUtil.format(date, format || 'YYYY-MM-DD');
 };
 
 export const parseDate = (string, format) => {
-	return DateUtil.parse(string, format || 'yyyy-MM-dd');
+	return DateUtil.parse(string, format || 'YYYY-MM-DD');
 };
 
 const DATE_FORMATTER = (value, format) => {

@@ -9,6 +9,7 @@
 			:start-date="new Date('2019', '10', '11')"
 			:type="type"
 			clearable
+			format="YYYY-MM-DD"
 			placeholder="Select date" 
 			style="width: 200px"
 			@visible-change="handleVisibleChange"
@@ -116,7 +117,7 @@ export default {
 			monthrange: '',
 			quarter: '',
 			quarterrange: '',
-			type: 'datetime',
+			type: 'date',
 			options: {
 				disabledDate: (date) => {
 					let year = date.getFullYear();
@@ -146,7 +147,7 @@ export default {
 			// console.log('VisibleChange', v);
 		},
 		handleChange(v) {
-			console.log(v);
+			// console.log('change', v);
 		},
 		handleRangeChange(v) {
 			this.rangeStart = v[0];

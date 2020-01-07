@@ -148,7 +148,7 @@ export default {
 			};
 		},
 
-		handleClick() {
+		async handleClick() {
 			const el = this.$refs.input;
 			if (!el) {
 				return;
@@ -160,7 +160,9 @@ export default {
 			let { enhancer } = VcInstance.config.Upload || {};
 
 			enhancer = this.enhancer || enhancer || (() => false);
-			enhancer(this) || el.click();
+			let result = enhancer(this);
+			result instanceof Promise && (result = await result);
+			result || el.click();
 		},
 
 		handleChange(e) {
