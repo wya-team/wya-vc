@@ -1,8 +1,11 @@
 <template>
 	<div class="vc-quill-editor">
 		<slot name="toolbar">
-			<vc-editor-toolbar v-if="options.modules && options.modules.toolbar === '#toolbar'">
-				<button class="vc-quill-editor__icon" >
+			<vc-editor-toolbar 
+				ref="toolbar"
+				:toolbar="options.modules.toolbar"
+			>
+				<button class="vc-quill-editor__icon">
 					<vc-upload
 						v-bind="imgUploadOpts"
 						@file-success="handleImgSuccess"
@@ -10,24 +13,24 @@
 						<vc-icon type="image" style="font-size: 15px" @click="handleUploadImg" />
 					</vc-upload>
 				</button>
-				<button class="vc-quill-editor__icon" >
+				<button class="vc-quill-editor__icon">
 					<vc-upload
 						v-bind="videoUploadOpts"
 						:gallery="false"
 						@file-success="handleVideoSuccess"
 					>
-						<vc-icon type="video" style="font-size: 16px"/>
+						<vc-icon type="video" style="font-size: 16px" />
 					</vc-upload>
 				</button>
-				
-				<slot name="extend" />
-
 				<button class="vc-quill-editor__icon" @click="handleUndo">
-					<vc-icon type="undo" style="font-size: 15px"/>
+					<vc-icon type="undo" style="font-size: 15px" />
 				</button>
 				<button class="vc-quill-editor__icon" @click="handleRedo">
-					<vc-icon type="redo" style="font-size: 15px"/>
+					<vc-icon type="redo" style="font-size: 15px" />
 				</button>
+				<template #extend>
+					<slot name="extend" />
+				</template>
 			</vc-editor-toolbar>
 		</slot>
 		<div ref="editor" />
@@ -43,6 +46,7 @@ import ImgsPreview from '../imgs-preview/index';
 import defaultOptions from './default-options';
 import { VcInstance } from '../vc/index';
 import { registVideoBlot } from './extends/video-blot';
+import ImageExtend from './extends/image-extend';
 
 export default {
 	name: "vc-editor",
@@ -90,7 +94,9 @@ export default {
 		gallery: {
 			type: [Function, Boolean],
 			default: true
-		}
+		},
+		// 注册扩展
+		register: Function
 	},
 	data() {
 		return {
@@ -98,7 +104,15 @@ export default {
 		};
 	},
 	computed: {
-		
+		curOptions() {
+			return {
+				...this.options,
+				modules: {
+					...this.options.modules,
+					toolbar: '#toolbar'
+				}
+			};
+		},
 	},
 	watch: {
 		disabled(newVal, oldVal) {
@@ -133,13 +147,17 @@ export default {
 	},
 	methods: {
 		init() {
-			registVideoBlot(this.Quill);
+			const { Quill } = this;
+			this._register();
 			this.initFontSize();
-			this.editor = new this.Quill(this.$refs.editor, { ...defaultOptions, ...this.options });
+			this.editor = new Quill(this.$refs.editor, { ...defaultOptions, ...this.curOptions });
+			
 			this.editor.enable(!this.disabled);
 			if (this.value) {
 				this.editor.setText('');
 				this.editor.clipboard.dangerouslyPasteHTML(this.value);
+				let length = this.editor.getLength();
+				this.editor.setSelection(length + 1); // 光标位置
 			}
 			
 			this.editor.on('selection-change', range => {
@@ -163,7 +181,7 @@ export default {
 			});
 		},
 		initFontSize() {
-			const fontSize = ['12px', '14px', '16px', '18px', '20px', '22px', '24px', '50px'];
+			let fontSize = this.$refs.toolbar ? this.$refs.toolbar.fontSize : ['12px', '14px', '16px', '18px', '20px', '22px', '24px', '50px'];
 			let Parchment = this.Quill.import('parchment');
 			let SizeClass = new Parchment.Attributor.Class('size', 'ql-size', {
 				scope: Parchment.Scope.INLINE,
@@ -235,8 +253,13 @@ export default {
 			let { ImageBlot, Parchment } = this;
 			let image = Parchment.find(e.target);
 			if (image instanceof ImageBlot) {
-				// TODO 多图预览
-				// let imgs = this.getImgs();
+				let index;
+				let imgs = Array.from(document.querySelectorAll('.ql-container img'));
+				let imgSource = imgs.map((it, idx) => {
+					it === e.target && (index = idx);
+					return it.src;
+				});
+
 				let pos = {};
 				try {
 					const target = e.target; // 先得到pos, 否则getThumbBoundsFn再计划，target已变化（比如弹窗transition的影响）
@@ -251,9 +274,9 @@ export default {
 
 				ImgsPreview.open({
 					visible: true,
-					dataSource: [e.target.currentSrc],
+					dataSource: imgSource,
 					opts: {
-						index: 0,
+						index,
 						history: false,
 						getThumbBoundsFn: (index) => pos
 					}
@@ -283,6 +306,12 @@ export default {
 			imgs.forEach(image => {
 				this.handleImgSuccess({ data: { url: image } });
 			});
+		},
+		_register() {
+			const { Quill, register } = this;
+			Quill.register('modules/ImageExtend', ImageExtend);
+			registVideoBlot(Quill);
+			register && register(Quill);
 		}
 	}
 };

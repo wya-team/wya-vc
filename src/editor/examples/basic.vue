@@ -11,6 +11,9 @@
 				ref="editor"
 				v-model="formValidate.value"
 				:disabled="disabled"
+				:options="editorOption"
+				style="width: 100%;height: 500px"
+				@change="handleInput"
 			/>
 		</vc-form-item>
 		<vc-editor-view :content="formValidate.value" />
@@ -96,6 +99,19 @@ export default {
 					},
 				}
 			},
+			editorOption: {
+				modules: {
+					ImageExtend: {
+						upload: {
+							showTips: false,
+							size: 88888,
+							max: 2,
+							multiple: false
+						}
+					},
+					toolbar: "#toolbar",
+				}
+			},
 			disabled: false,
 			formValidate: {
 				value: ''
@@ -126,6 +142,8 @@ export default {
 				}
 			});
 		},
+		handleInput() {
+		}
 	}
 };
 </script>

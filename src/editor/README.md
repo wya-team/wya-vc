@@ -75,7 +75,17 @@ export default {
     data() {
         return {
             options: {
-                toolbar: '#toolbar',
+                modules: {
+					ImageExtend: {
+						upload: {
+							showTips: false,
+							size: 88888,
+							max: 2,
+							multiple: false
+						}
+					},
+					toolbar: "#toolbar",
+				}
             },
             disabled: false,
             value: ''
