@@ -15,6 +15,7 @@ options | 富文本toolbar（优先级最高） | `Object` | -
 disabled | 富文本是否不可编辑 | `Boolean` | false
 imgUploadOpts | 上传图片的配置项 | `Object` | `{accept: 'image/gif,image/jpeg,image/jpg,image/png'}`
 videoUploadOpts | 上传视频的配置项 | `Object` | `{accept: 'video/mp4,video/webm,video/ogg'}`
+register | Quill扩展注册 | `Function` | -
 
 ##### Editor.View
 属性 | 说明 | 类型 | 默认值
