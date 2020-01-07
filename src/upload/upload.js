@@ -160,9 +160,9 @@ export default {
 			let { enhancer } = VcInstance.config.Upload || {};
 
 			enhancer = this.enhancer || enhancer || (() => false);
-			let result = enhancer(this);
-			result instanceof Promise && (result = await result);
-			result || el.click();
+			let allow = enhancer(this);
+			allow instanceof Promise && (allow = await allow);
+			allow || el.click();
 		},
 
 		handleChange(e) {

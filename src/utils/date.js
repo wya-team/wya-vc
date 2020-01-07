@@ -1,5 +1,4 @@
-// 把 YYYY-MM-DD 改成了 yyyy-MM-dd
-const TOKEN_REGEX = /d{1,4}|M{1,4}|yy(?:yy)?|S{1,3}|Do|ZZ|([HhMsDm])\1?|[aA]|"[^"]*"|'[^']*'/g;
+const TOKEN_REGEX = /d{1,4}|M{1,4}|YY(?:YY)?|S{1,3}|Do|ZZ|([HhMsDm])\1?|[aA]|"[^"]*"|'[^']*'/g;
 const TWO_DIGITS_REGEX = /\d\d?/;
 const THREE_DIGITS_REGEX = /\d{3}/;
 const FOUR_DIGITS_REGEX = /\d{4}/;
@@ -37,11 +36,11 @@ class DateUtil {
 
 	_createMasks() {
 		this.masks = {
-			'default': 'ddd MMM dd yyyy HH:mm:ss',
-			shortDate: 'M/D/yy',
-			mediumDate: 'MMM d, yyyy',
-			longDate: 'MMMM d, yyyy',
-			fullDate: 'dddd, MMMM d, yyyy',
+			'default': 'ddd MMM dd YYYY HH:mm:ss',
+			shortDate: 'M/D/YY',
+			mediumDate: 'MMM d, YYYY',
+			longDate: 'MMMM d, YYYY',
+			fullDate: 'dddd, MMMM d, YYYY',
 			shortTime: 'HH:mm',
 			mediumTime: 'HH:mm:ss',
 			longTime: 'HH:mm:ss.SSS'
@@ -60,9 +59,9 @@ class DateUtil {
 			if (Object.prototype.toString.call(dateObj) !== '[object Date]' || isNaN(dateObj.getTime())) {
 				throw new Error('Invalid Date in fecha.format');
 			}
-    
+			
 			mask = this.masks[mask] || mask || this.masks.default;
-    
+
 			return mask.replace(TOKEN_REGEX, ($0) => {
 				return $0 in this.formatFlags ? this.formatFlags[$0](dateObj, i18n) : $0.slice(1, $0.length - 1);
 			});
@@ -109,7 +108,7 @@ class DateUtil {
 			if (!isValid) {
 				return false;
 			}
-    
+
 			let today = new Date();
 			if (dateInfo.isPm === true && dateInfo.hour != null && +dateInfo.hour !== 12) {
 				dateInfo.hour = +dateInfo.hour + 12;
@@ -132,25 +131,25 @@ class DateUtil {
 
 	_initFormatFlags() {
 		this.formatFlags = {
-			D: (dateObj) => {
-				return dateObj.getDay();
-			},
-			DD: (dateObj) => {
-				return this.pad(dateObj.getDay());
-			},
+			// D: (dateObj) => {
+			// 	return dateObj.getDay();
+			// },
+			// DD: (dateObj) => {
+			// 	return this.pad(dateObj.getDay());
+			// },
 			Do: (dateObj, i18n) => {
 				return i18n.DoFn(dateObj.getDate());
 			},
-			d: (dateObj) => {
+			D: (dateObj) => {
 				return dateObj.getDate();
 			},
-			dd: (dateObj) => {
+			DD: (dateObj) => {
 				return this.pad(dateObj.getDate());
 			},
-			ddd: (dateObj, i18n) => {
+			DDD: (dateObj, i18n) => {
 				return i18n.dayNamesShort[dateObj.getDay()];
 			},
-			dddd: (dateObj, i18n) => {
+			DDDD: (dateObj, i18n) => {
 				return i18n.dayNames[dateObj.getDay()];
 			},
 			M: (dateObj) => {
@@ -165,10 +164,10 @@ class DateUtil {
 			MMMM: (dateObj, i18n) => {
 				return i18n.monthNames[dateObj.getMonth()];
 			},
-			yy: (dateObj) => {
+			YY: (dateObj) => {
 				return String(dateObj.getFullYear()).substr(2);
 			},
-			yyyy: (dateObj) => {
+			YYYY: (dateObj) => {
 				return dateObj.getFullYear();
 			},
 			h: (dateObj) => {
@@ -226,7 +225,7 @@ class DateUtil {
 			M: [TWO_DIGITS_REGEX, (d, v) => {
 				d.month = v - 1;
 			}],
-			yy: [TWO_DIGITS_REGEX, (d, v) => {
+			YY: [TWO_DIGITS_REGEX, (d, v) => {
 				let da = new Date();
 				let cent = +('' + da.getFullYear()).substr(0, 2);
 				d.year = '' + (v > 68 ? cent - 1 : cent) + v;
@@ -240,7 +239,7 @@ class DateUtil {
 			s: [TWO_DIGITS_REGEX, (d, v) => {
 				d.second = v;
 			}],
-			yyyy: [FOUR_DIGITS_REGEX, (d, v) => {
+			YYYY: [FOUR_DIGITS_REGEX, (d, v) => {
 				d.year = v;
 			}],
 			S: [/\d/, (d, v) => {
@@ -276,7 +275,7 @@ class DateUtil {
             }]
             /* eslint-enable */
 		};
-		this.parseFlags.DD = this.parseFlags.DD;
+		this.parseFlags.DD = this.parseFlags.d;
 		this.parseFlags.dddd = this.parseFlags.ddd;
 		// eslint-disable-next-line no-multi-assign
 		this.parseFlags.Do = this.parseFlags.dd = this.parseFlags.d;
