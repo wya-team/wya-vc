@@ -11,6 +11,7 @@
 				ref="editor"
 				v-model="formValidate.value"
 				:disabled="disabled"
+				:options="options"
 			/>
 		</vc-form-item>
 		<vc-editor-view :content="formValidate.value" />
