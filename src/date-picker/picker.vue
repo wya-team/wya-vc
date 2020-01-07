@@ -98,9 +98,12 @@ export default {
 			'elementId', 
 			'disabled', 
 			'size', 
-			'placeholder',
-			'clearable'
+			'placeholder'
 		]),
+		clearable: {
+			type: Boolean,
+			default: true
+		},
 		value: [Date, Array, String],
 		multiple: Boolean,
 		trigger: {
