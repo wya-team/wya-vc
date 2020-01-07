@@ -137,7 +137,7 @@ process.on('beforeExit', async () => {
 	// 纯组件含有
 	await exportCssFile(
 		resolve(__dirname, './lib', './vc.normal.css'), 
-		totalCss
+		[...new Set(['icon', 'img', 'button', 'input', 'spin', ...totalCss])]
 			.map(i => `@import './${i}/index.css'`)
 			.join(';\n'),
 		false,
