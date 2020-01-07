@@ -148,7 +148,7 @@ export default {
 			};
 		},
 
-		async handleClick() {
+		handleClick() {
 			const el = this.$refs.input;
 			if (!el) {
 				return;
@@ -161,7 +161,12 @@ export default {
 
 			enhancer = this.enhancer || enhancer || (() => false);
 			let allow = enhancer(this);
-			allow instanceof Promise && (allow = await allow);
+			if (allow && allow.then) {
+				allow.catch(() => {
+					el.click();
+				});
+				return;
+			}
 			allow || el.click();
 		},
 
