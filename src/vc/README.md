@@ -4,10 +4,10 @@
 
 ## 方法
 
-方法 | 说明 | 类型 | 默认值
+方法 | 说明 | 类型
 ---|---|---|---
-init | 初始化 | `any` | -
-clear | 删除api式组件 | `func` | `(cName, focre){}`
+init | 初始化 | `() => void`
+clear | 删除api式组件 | `Function` | `(cName: String?, focre: Boolean?) => void`
 
 > clear() 清理需要自动销毁的组件，clear(null, true), 强制清除所有组件；clear('xxx'), 清理单个
 
