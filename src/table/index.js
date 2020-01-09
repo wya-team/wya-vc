@@ -1,4 +1,5 @@
-import './table.scss';
+import './combine.scss';
+
 import Table from './table';
 import TableColumn from './table-column';
 import TableItem from './table-item';

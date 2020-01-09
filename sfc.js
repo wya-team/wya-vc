@@ -39,6 +39,21 @@ const files = glob.sync(`src/**/*.{js,scss,vue}`, {
 	ignore: ['src/**/{__test__,examples,demo}/**', 'src/__tpl__/**']
 });
 
+const _files = files.map((file) => file.replace(/\.(vue|js|scss)/, ''));
+if (files.length !== [...new Set(_files)].length) {
+	_files.forEach((file, index, source) => {
+
+	});
+
+	let reject;
+	for (let i = 0; i < _files.length; i++) {
+		if (i != _files.indexOf(_files[i])) {
+			reject = _files[i];
+			break;
+		}
+	}
+	throw new Error(`${reject} + 文件存在重复, 不区分{js,scss,vue}`);
+} 
 /**
  * TODO：
  * 1. 提示：第三方的third.scss 要放在index.js中
