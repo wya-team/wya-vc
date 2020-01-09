@@ -1,4 +1,5 @@
 import { Load } from '@wya/utils';
+import { getUid } from '../utils/utils';
 import defaultOptions from './default-options';
 
 const toolMap = {
@@ -51,6 +52,10 @@ export default {
 	},
 	created() {
 		this.fontSize = [];
+		this.uuid = getUid('editor-toolbar');
+	},
+	destroyed() {
+		Load.removeCSSCode(this.uuid);
 	},
 	render(h) {
 		const { buttons } = this;
@@ -101,7 +106,7 @@ export default {
 										}`;
 								return pre;
 							}, '');
-							Load.cssCode(code, { id: 'vc-editor-fontsize' });
+							Load.cssCode(code, { id: this.uuid });
 						}
 						
 						return (
