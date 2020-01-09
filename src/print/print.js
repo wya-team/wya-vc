@@ -37,10 +37,12 @@ export default {
 		}
 	},
 	render(h) {
-		return h(this.tag, {
-			domProps: {
-				innerHTML: this.value
-			},
-		}, this.$slots.default);
+		return this.value 
+			? h(this.tag, {
+				domProps: {
+					innerHTML: this.value
+				},
+			})
+			: h(this.tag, {}, this.$slots.default);
 	}
 };
