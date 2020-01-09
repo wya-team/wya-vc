@@ -185,11 +185,11 @@ export default {
 			}
 		},
 		removeLazyLoadListener() {
-			if (!this.scroller || !this._lazyLoadHandler) return;
-			scroller.removeEventListener('scroll', this._lazyLoadHandler);
+			if (!this.scroller || !this.handleLazyLoad) return;
+			scroller.removeEventListener('scroll', this.handleLazyLoad);
 
 			this.scroller = null;
-			this._lazyLoadHandler = null;
+			this.handleLazyLoad = null;
 		},
 		
 		hackFit(fit) {
