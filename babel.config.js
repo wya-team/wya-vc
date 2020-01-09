@@ -15,6 +15,7 @@ module.exports = (api) => {
 			"@babel/plugin-proposal-export-default-from",
 			"@babel/plugin-proposal-function-bind",
 			"@babel/plugin-syntax-dynamic-import",
+			"@babel/plugin-transform-modules-commonjs",
 			"@babel/plugin-syntax-jsx",
 			"@babel/plugin-transform-runtime",
 			"transform-vue-jsx",
