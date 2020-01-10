@@ -150,7 +150,7 @@ export default {
 
 		handleClick() {
 			const el = this.$refs.input;
-			if (!el) {
+			if (e.target.tagName === 'INPUT' || !el) {
 				return;
 			}
 
