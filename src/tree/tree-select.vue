@@ -54,7 +54,7 @@
 		</vc-input>
 		<template #content>
 			<div class="vc-tree-select__content">
-				<div v-if="search" class="vc-tree-select__search">
+				<div v-if="searchable" class="vc-tree-select__search">
 					<vc-input-search 
 						v-model="searchValue" 
 						:placeholder="searchPlaceholder"
@@ -163,7 +163,7 @@ export default {
 			default: 1,
 			validator: v => v >= 1,
 		},
-		search: {
+		searchable: {
 			type: Boolean,
 			default: false
 		},

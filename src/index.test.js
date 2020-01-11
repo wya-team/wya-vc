@@ -11,10 +11,16 @@ describe('Index', () => {
 			if (
 				typeof component === 'object' 
 				&& typeof component.props === 'object'
-			) {
-				let result = Array.isArray(component.props) 
-					? component.props
-					: Object.keys(component.props);
+			) {	
+				let result = [component].concat(component.mixins || []).reduce((pre, cur) => {
+					let v = cur.props 
+						? Array.isArray(cur.props) 
+							? cur.props
+							: Object.keys(cur.props)
+						: [];
+					pre = pre.concat(v);
+					return pre;
+				}, []);
 
 				result = result.sort();
 
@@ -25,5 +31,6 @@ describe('Index', () => {
 
 		// 临时
 		console.log(JSON.stringify([...new Set(props.sort())], null, '\t'));
+		console.log(JSON.stringify(components, null, '\t'));
 	});
 });
