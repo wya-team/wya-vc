@@ -18,25 +18,27 @@
 		@close="$emit('close')"
 		@visible-change="$emit('visible-change', isActive)"
 	>
-		<vc-input
-			ref="input"
-			:element-id="elementId"
-			:readonly="true"
-			:disabled="disabled"
-			:value="visibleValue"
-			:placeholder="placeholder || '请选择'"
-			:allow-dispatch="false"
-			class="vc-picker__input"
-		>
-			<template #append>
-				<div :class="{'is-clear': showClear}" class="vc-picker__append">
-					<vc-icon
-						:type="showClear ? 'clear' : icon"
-						@click.stop="handleIconClear"
-					/>
-				</div>
-			</template>
-		</vc-input>
+		<slot>
+			<vc-input
+				ref="input"
+				:element-id="elementId"
+				:readonly="true"
+				:disabled="disabled"
+				:value="visibleValue"
+				:placeholder="placeholder || '请选择'"
+				:allow-dispatch="false"
+				class="vc-picker__input"
+			>
+				<template #append>
+					<div :class="{'is-clear': showClear}" class="vc-picker__append">
+						<vc-icon
+							:type="showClear ? 'clear' : icon"
+							@click.stop="handleIconClear"
+						/>
+					</div>
+				</template>
+			</vc-input>
+		</slot>
 		<template #content>
 			<!-- 要求value 需转成Date类型，panel内流通的都是Date, panel内的数据都是数组 -->
 			<component 
@@ -106,6 +108,7 @@ export default {
 		},
 		value: [Date, Array, String],
 		multiple: Boolean,
+		open: Boolean,
 		trigger: {
 			type: String,
 			default: 'click'
@@ -146,7 +149,7 @@ export default {
 	data() {
 		return {
 			isHover: false,
-			isActive: false,
+			isActive: this.open,
 			currentValue: '',
 			focusedDate: null
 		};
@@ -163,8 +166,7 @@ export default {
 			};
 		},
 		isConfirm() {
-			//  加上multiple
-			return this.confirm || this.type === 'datetime' || this.type === 'datetimerange';
+			return this.confirm || this.type === 'datetime' || this.type === 'datetimerange' || this.multiple;
 		},
 		// 展示的value
 		visibleValue() {
@@ -174,14 +176,14 @@ export default {
 			return ['datetime', 'datetimerange'].includes(this.type);
 		},
 		isRange() {
-			return ['daterange', 'datetimerange', 'quarterrange', 'monthrange'].includes(this.type);
+			return this.type.includes('range');
 		},
 		isQuarter() {
 			return ['quarter'].includes(this.type);
 		},
 		isTime() {
 			return ['time', 'timerange'].includes(this.type);
-		}
+		},
 	},
 	watch: {
 		value: {
@@ -195,6 +197,12 @@ export default {
 				this.focusedDate = val[0] || this.startDate || new Date();
 				this.currentValue = value2Array(val);
 			}
+		},
+		open: {
+			immediate: true,
+			handler(val) {
+				this.isActive = val;
+			}
 		}
 	},
 	methods: {
@@ -202,31 +210,26 @@ export default {
 			// 在panel上点击时，同步focusedDate
 			this.focusedDate = value[0] || prevDate || new Date();
 
-			if (!this.isConfirm && !this.isTime) {
-				this.handleOK(value);
-			} else if (this.isTime && !this.isConfirm) {
-				// 时间选择器的模式下，不管是不是confirm模式，都实时同步
-				const date = this.formatDate(value);
-				this.$emit('change', date);
-				this.dispatch('vc-form-item', 'form-change', date);
-			}
+			if (!this.isConfirm && !this.isTime) { this.isActive = false; }
+			const date = this.formatDate(value);
+			this.currentValue = value;
+			this.sync('change', date);
 		},
 		handleIconClear() {
 			this.showClear && this.handleClear();
 		},
 		handleClear() {
+			const date = this.isRange ? [] : '';
 			this.isActive = false;
-			this.$emit('clear');
-			this.$emit('change', '');
-			this.dispatch('vc-form-item', 'form-change', '');
+			this.currentValue = date;
+			this.$emit('clear', date);
+			this.sync('change', date);
 		},
 		handleOK(value) {
-			// ？？是否向外暴露confirm事件，在confirm=true时，内部选择日期是否显示在输入框上
 			this.isActive = false;
 
 			const date = this.formatDate(value);
-			this.$emit('change', date);
-			this.dispatch('vc-form-item', 'form-change', date);
+			this.sync('ok', date);
 		},
 		formatDateText(value) {
 			const format = DEFAULT_FORMATS[this.type];
@@ -258,6 +261,13 @@ export default {
 				const { parser } = (TYPE_VALUE_RESOLVER_MAP[this.type] || TYPE_VALUE_RESOLVER_MAP.default);
 				return parser(value, this.format || format, this.separator);
 			}
+		},
+		sync(eventName, date) {
+			this.$emit(eventName, date, this.rest);
+			this.dispatch('vc-form-item', 'form-change', date);
+		},
+		rest(date) {
+			this.currentValue = date;
 		}
 	}
 };

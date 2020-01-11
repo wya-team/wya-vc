@@ -94,6 +94,7 @@ export const formatDate = (date, format) => {
 };
 
 export const parseDate = (string, format) => {
+	if (string instanceof Date) return string;
 	return DateUtil.parse(string, format || 'YYYY-MM-DD');
 };
 
@@ -307,4 +308,9 @@ export const isEmpty = (val) => {
 		return true;
 	}
 	return val === '' || val === undefined || val === null || val.length === 0;
+};
+
+export const setNewYear = (currentDate, sourceDate) => {
+	let year = currentDate.getFullYear();
+	return new Date(sourceDate.setYear(year));
 };
