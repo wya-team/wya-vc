@@ -148,9 +148,9 @@ export default {
 			};
 		},
 
-		handleClick() {
+		handleClick(e) {
 			const el = this.$refs.input;
-			if (!el) {
+			if (e.target.tagName === 'INPUT' || !el) {
 				return;
 			}
 
