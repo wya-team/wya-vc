@@ -33,6 +33,10 @@ export default {
 			type: [Array, Object, String],
 			default: '#toolbar'
 		},
+		toolbarId: {
+			type: String,
+			default: 'toolbar'
+		},
 		initFontSize: Function
 	},
 	data() {
@@ -127,7 +131,7 @@ export default {
 		};
 
 		return (
-			<div id="toolbar">
+			<div id={`${this.toolbarId}`}>
 				{renderGroup(buttons)}
 				{this.$slots.extend}
 			</div>

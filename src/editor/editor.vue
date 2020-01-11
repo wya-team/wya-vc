@@ -4,6 +4,7 @@
 			<vc-editor-toolbar 
 				ref="toolbar"
 				:toolbar="options.modules.toolbar"
+				:toolbar-id="toolbarId"
 			>
 				<button class="vc-quill-editor__icon">
 					<vc-upload
@@ -75,6 +76,10 @@ export default {
 				};
 			}
 		},
+		toolbarId: {
+			type: String,
+			default: 'toolbar'
+		},
 		disabled: {
 			type: Boolean,
 			default: false
@@ -109,7 +114,7 @@ export default {
 				...this.options,
 				modules: {
 					...this.options.modules,
-					toolbar: '#toolbar'
+					toolbar: `#${this.toolbarId}`
 				}
 			};
 		},
