@@ -81,8 +81,8 @@ export default {
 		
 	},
 	methods: {
-		handleSeleChange(allSelection) {
-			console.log('allSelection :', allSelection);
+		handleSeleChange(selection, curSelection) {
+			console.log('selection :', selection, curSelection, 1);
 		},
 		loadData(page, pageSize) {
 			return ajax({

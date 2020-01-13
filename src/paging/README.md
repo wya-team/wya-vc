@@ -29,7 +29,7 @@ rowKey | 行数据的 Key，在使用翻页多选时必填 | `str` | -
 @load-success | 加载成功 | - | -
 @load-error | 加载失败 | - | -
 @load-finish | 加载结束（都会触发） | - | -
-@selection-change | 所有页选中的数据 | - | selection
+@selection-change | 所有页选中的数据 | - | selection(全部选中的数据), curPageSelection(当前页选中的数据)
 
 #### 方法
 
