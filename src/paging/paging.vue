@@ -27,6 +27,7 @@
 			:data-source="data" 
 			v-bind="tableOpts"
 			v-on="tableHooks"
+			@selection-change="handleSelectionChange"
 		>
 			<template #default>
 				<slot />
@@ -165,6 +166,9 @@ export default {
 			default: () => ({
 				pageSize: true
 			})
+		},
+		rowKey: {
+			type: String
 		}
 	},
 	data() {
@@ -180,6 +184,7 @@ export default {
 			loading: false,
 			currentPage: this.show ? Number(page) : 1,
 			pageSize: this.defaultPageSize,
+			allSelection: [],
 		};
 	},
 	computed: {
@@ -191,7 +196,7 @@ export default {
 			return {
 				...this.$listeners,
 				change: () => {},
-				pageSizeChange: () => {}
+				pageSizeChange: () => {},
 			};
 		},
 		/**
@@ -259,6 +264,36 @@ export default {
 		}
 	},
 	methods: {
+		handleSelectionChange(selection) {
+			if (this.rowKey) {
+				const dataSelectionValues = this.data.map(item => item[this.rowKey]);
+				const rowKeyValues = selection.map(item => item[this.rowKey]);
+				// 过滤掉当前页面的选择的数据，再合并当前页面选择的数据
+				this.allSelection = this.allSelection.filter(item => {
+					return !dataSelectionValues.includes(item[this.rowKey]);
+				}).filter(item => {
+					return !rowKeyValues.includes(item[this.rowKey]);
+				}).concat(selection);
+				this.$emit('all-selection-change', this.allSelection);
+			}
+			this.$emit('selection-change', selection);
+		},
+		handleSetSelection() {
+			if (this.rowKey && this.data.length && this.allSelection.length) {
+				let rows = [];
+				const rowKeyValues = this.allSelection.map(item => item[this.rowKey]);
+				this.data.forEach((row, index) => {
+					if (rowKeyValues.includes(row[this.rowKey])) {
+						rows.push(row);
+					}
+				});
+				rows.forEach(row => {
+					this.$nextTick(() => {
+						this.$refs.table.toggleRowSelection(row, true);
+					});
+				});
+			}
+		},
 		handleChangePageSize(pageSize) {
 			this.$emit('page-size-change', pageSize); // 清理数据
 			this.pageSize = pageSize;
@@ -295,7 +330,10 @@ export default {
 
 			// 是否已有数据
 			let arr = this.dataSource[page];
-			if (arr && typeof arr.length === 'number') return;
+			if (arr && typeof arr.length === 'number') {
+				this.rowKey && this.handleSetSelection();
+				return;
+			}
 
 			// 请求
 			const load = this.loadData(page, this.pageSize);
@@ -304,6 +342,7 @@ export default {
 				this.$emit('load-pending');
 				load.then((res) => {
 					this.$emit('load-success', res);
+					this.rowKey && this.handleSetSelection();
 					return res;
 				}).catch((res) => {
 					this.$emit('load-fail', res);

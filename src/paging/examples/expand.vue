@@ -9,8 +9,10 @@
 		:table-opts="table"
 		:history="true"
 		:show="show"
+		row-key="id"
 		style="width: 100%"
 		@page-size-change="handleResetFirst"
+		@all-selection-change="handleAllSeleChange"
 	>
 		<vc-table-item>
 			<vc-table-column
@@ -75,6 +77,9 @@ export default {
 		
 	},
 	methods: {
+		handleAllSeleChange(allSelection) {
+			console.log('allSelection :', allSelection);
+		},
 		loadData(page, pageSize) {
 			return ajax({
 				url: 'test.json',
