@@ -125,8 +125,8 @@ export default {
 			}
 			return fakeData;
 		},
-		handleSeleChange(selection) {
-			console.log('selection :', selection, 1);
+		handleSeleChange(selection, curSelection) {
+			console.log('selection :', selection, curSelection, 1);
 		},
 		/**
 		 * 回到首页刷新
