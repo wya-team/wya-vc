@@ -298,7 +298,7 @@ export default {
 					}
 				});
 
-				this.reSelecting = true;
+				this.reSelecting = !!rows.length;
 				for (let i = 0; i < rows.length; i++) {
 					this.$nextTick(() => {
 						this.$refs.table.toggleRowSelection(rows[i], true);
