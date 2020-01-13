@@ -4,7 +4,7 @@
 			<vc-editor-toolbar 
 				ref="toolbar"
 				:toolbar="options.modules.toolbar"
-				:toolbar-id="toolbarId"
+				:uid="uid"
 			>
 				<button class="vc-quill-editor__icon">
 					<vc-upload
@@ -39,6 +39,7 @@
 </template>
 
 <script>
+import { getUid } from '../utils/utils';
 import Extends from '../extends';
 import EditorToolbar from './toolbar';
 import Upload from '../upload/index';
@@ -76,10 +77,6 @@ export default {
 				};
 			}
 		},
-		toolbarId: {
-			type: String,
-			default: 'toolbar'
-		},
 		disabled: {
 			type: Boolean,
 			default: false
@@ -105,7 +102,8 @@ export default {
 	},
 	data() {
 		return {
-			content: ''
+			content: '',
+			uid: getUid('editor-toolbar')
 		};
 	},
 	computed: {
@@ -114,7 +112,7 @@ export default {
 				...this.options,
 				modules: {
 					...this.options.modules,
-					toolbar: `#${this.toolbarId}`
+					toolbar: `#${this.uid}`
 				}
 			};
 		},
