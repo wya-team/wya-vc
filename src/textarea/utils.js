@@ -1,3 +1,5 @@
+import { getComputedStyle } from '../utils';
+
 const HIDDEN_TEXTAREA_STYLE = `
 	min-height:0 !important;
 	max-height:none !important;
@@ -28,77 +30,38 @@ const SIZING_STYLE = [
 	'box-sizing'
 ];
 
-let computedStyleCache = {};
-let hiddenTextarea;
+let hiddenEl;
 
-const calculateNodeStyling = (node, useCache = false) => {
-	const nodeRef = node.getAttribute('id') 
-		|| node.getAttribute('data-reactid') 
-		|| node.getAttribute('name');
-
-	if (useCache && computedStyleCache[nodeRef]) {
-		return computedStyleCache[nodeRef];
-	}
-
-	const style = window.getComputedStyle(node);
-
-	const boxSizing = style.getPropertyValue('box-sizing') 
-		|| style.getPropertyValue('-moz-box-sizing') 
-		|| style.getPropertyValue('-webkit-box-sizing');
-
-	const paddingSize = parseFloat(style.getPropertyValue('padding-bottom')) 
-		+ parseFloat(style.getPropertyValue('padding-top'));
-
-	const borderSize = parseFloat(style.getPropertyValue('border-bottom-width')) 
-		+ parseFloat(style.getPropertyValue('border-top-width'));
-
-	const sizingStyle = SIZING_STYLE
-		.map(name => `${name}:${style.getPropertyValue(name)}`)
-		.join(';');
-
-	const nodeInfo = {
-		sizingStyle,
-		paddingSize,
-		borderSize,
-		boxSizing,
-	};
-
-	if (useCache && nodeRef) {
-		computedStyleCache[nodeRef] = nodeInfo;
-	}
-	return nodeInfo;
-};
-
-export const calcTextareaHeight = (uiTextNode, minRows = null, maxRows = null, useCache = false) => {
-	if (!hiddenTextarea) {
-		hiddenTextarea = document.createElement('textarea');
-		document.body.appendChild(hiddenTextarea);
+export const getComputedHeight = (options = {}) => {
+	const { el, minRows = null, maxRows = null } = options;
+	if (!hiddenEl) {
+		hiddenEl = document.createElement('textarea');
+		document.body.appendChild(hiddenEl);
 	}
 
 	// Fix wrap="off" issue
 	// https://github.com/ant-design/ant-design/issues/6577
-	if (uiTextNode.getAttribute('wrap')) {
-		hiddenTextarea.setAttribute('wrap', uiTextNode.getAttribute('wrap'));
-	} else {
-		hiddenTextarea.removeAttribute('wrap');
-	}
+	el.getAttribute('wrap') 
+		? hiddenEl.setAttribute('wrap', el.getAttribute('wrap'))
+		: hiddenEl.removeAttribute('wrap');
+
 
 	// Copy all CSS properties that have an impact on the height of the content in
 	// the textbox
 	let {
 		paddingSize, borderSize,
 		boxSizing, sizingStyle,
-	} = calculateNodeStyling(uiTextNode, useCache);
+	} = getComputedStyle(el, SIZING_STYLE);
 
 	// Need to have the overflow attribute to hide the scrollbar otherwise
 	// text-lines will not calculated properly as the shadow will technically be
 	// narrower for content
-	hiddenTextarea.setAttribute('style', `${sizingStyle};${HIDDEN_TEXTAREA_STYLE}`);
-	hiddenTextarea.value = uiTextNode.value || uiTextNode.placeholder || '';
+	hiddenEl.setAttribute('style', `${sizingStyle};${HIDDEN_TEXTAREA_STYLE}`);
+	hiddenEl.value = el.value || el.placeholder || '';
 
 	let minHeight = Number.MIN_SAFE_INTEGER;
 	let maxHeight = Number.MAX_SAFE_INTEGER;
-	let height = hiddenTextarea.scrollHeight;
+	let height = hiddenEl.scrollHeight;
 	let overflowY;
 
 	if (boxSizing === 'border-box') {
@@ -111,8 +74,8 @@ export const calcTextareaHeight = (uiTextNode, minRows = null, maxRows = null, u
 
 	if (minRows !== null || maxRows !== null) {
 		// measure height of a textarea with a single row
-		hiddenTextarea.value = ' ';
-		let singleRowHeight = hiddenTextarea.scrollHeight - paddingSize;
+		hiddenEl.value = ' ';
+		let singleRowHeight = hiddenEl.scrollHeight - paddingSize;
 		if (minRows !== null) {
 			minHeight = singleRowHeight * minRows;
 			if (boxSizing === 'border-box') {

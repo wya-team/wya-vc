@@ -53,6 +53,11 @@ class IMGStore {
 					h: wrapperW / originW * originH,
 				};
 			}
+		} else {
+			return {
+				w: originW,
+				h: originH,
+			};
 		}
 	}
 }

@@ -121,9 +121,16 @@ export default {
 		},
 		// 步骤发生变化，向外暴露change事件
 		handleChange() {
+			const current = this.curSnapshots.length;
+			const snapshots = [...this.curSnapshots, ...this.undoSnapshots];
+			let allowRedo = current < snapshots.length;
+			let allowUndo = current !== 0;
+
 			this.$emit('change', { 
-				snapshots: [...this.curSnapshots, ...this.undoSnapshots],
-				current: this.curSnapshots.length 
+				snapshots,
+				current,
+				allowRedo,
+				allowUndo
 			});
 		},
 		handleStatrt(e) {

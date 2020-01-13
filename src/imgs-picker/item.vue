@@ -8,7 +8,6 @@
 				v-if="typeof it !== 'object'" 
 				:src="it" 
 				:class="imgClassName"
-				style="height: 64px; width: 64px;"
 				fit="cover"
 				class="vc-imgs-picker-item__img"
 				@click="handlePreview"/>
