@@ -233,6 +233,8 @@ export default {
 	position: relative;
 	display: inline-block;
 	overflow: hidden;
+	vertical-align: top;
+	
 	@include element(placeholder) {
 		@extend %size;
 		background: #f5f7fa;
@@ -262,7 +264,7 @@ export default {
 
 	@include element(inner) {
 		@extend %size;
-		vertical-align: top;
+		display: block;
 
 		@include when(center) {
 			position: relative;
