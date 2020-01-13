@@ -12,7 +12,7 @@
 		row-key="id"
 		style="width: 100%"
 		@page-size-change="handleResetFirst"
-		@all-selection-change="handleAllSeleChange"
+		@selection-change="handleSeleChange"
 	>
 		<vc-table-item>
 			<vc-table-column
@@ -36,10 +36,14 @@
 			<vc-table-column
 				label="操作"
 			>
-				<template #default="{ it }" >
+				<template #default="{ it }">
 					<div>
-						<div @click="handleResetFirst">回到首页刷新</div>
-						<div @click="handleResetCur">当前页刷新</div>
+						<div @click="handleResetFirst">
+							回到首页刷新
+						</div>
+						<div @click="handleResetCur">
+							当前页刷新
+						</div>
 					</div>
 				</template>
 			</vc-table-column>
@@ -77,7 +81,7 @@ export default {
 		
 	},
 	methods: {
-		handleAllSeleChange(allSelection) {
+		handleSeleChange(allSelection) {
 			console.log('allSelection :', allSelection);
 		},
 		loadData(page, pageSize) {
