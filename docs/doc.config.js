@@ -84,12 +84,12 @@ module.exports = {
 					}
 					: (lang, name) => { 
 						if (['i18n', 'installation', 'quickstart'].includes(name)) {
-							return `${location.origin}/wya-vc/docs/${lang ? `${lang}/` : ''}${name}.md`; 
+							return `https://raw.githubusercontent.com/wya-team/wya-vc/2.x/docs/${lang ? `${lang}/` : ''}${name}.md`; 
 						}
 						if (name === 'changelog') {
-							return `${location.origin}/wya-vc/CHANGELOG.md`; 
+							return `https://raw.githubusercontent.com/wya-team/wya-vc/2.x/CHANGELOG.md`; 
 						}
-						return `${location.origin}/wya-vc/src/${name}/README${lang != 'zh-CN' ? `_${lang}` : ''}.md`; 
+						return `https://raw.githubusercontent.com/wya-team/wya-vc/2.x/src/${name}/README${lang != 'zh-CN' ? `_${lang}` : ''}.md`; 
 					}
 		}
 	}
