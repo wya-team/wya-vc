@@ -15,7 +15,7 @@
 		@mouseenter.native="isHover = true"
 		@mouseleave.native="isHover = false"
 		@ready="$emit('ready')"
-		@close="$emit('close')"
+		@close="handleClose"
 		@visible-change="$emit('visible-change', isActive)"
 	>
 		<slot>
@@ -33,7 +33,7 @@
 					<div :class="{'is-clear': showClear}" class="vc-picker__append">
 						<vc-icon
 							:type="showClear ? 'clear' : icon"
-							@click.stop="handleIconClear"
+							@click="handleIconClick"
 						/>
 					</div>
 				</template>
@@ -144,6 +144,11 @@ export default {
 		steps: {
 			type: Array,
 			default: () => ([])
+		},
+		// 选择即触发change
+		changeOnSelect: {
+			type: Boolean,
+			default: false
 		}
 	},
 	data() {
@@ -189,11 +194,7 @@ export default {
 		value: {
 			immediate: true,
 			handler(val) {
-				if (isEmpty(val)) {
-					val = this.isRange ? [null, null] : [];
-				} else {
-					val = this.parserDate(val);
-				}
+				val = this.parseValue(val);
 				this.focusedDate = val[0] || this.startDate || new Date();
 				this.currentValue = value2Array(val);
 			}
@@ -210,13 +211,17 @@ export default {
 			// 在panel上点击时，同步focusedDate
 			this.focusedDate = value[0] || prevDate || new Date();
 
-			if (!this.isConfirm && !this.isTime) { this.isActive = false; }
+			if (!this.isConfirm && !this.isTime || this.changeOnSelect) { 
+				setTimeout(() => { this.isActive = false; }, 100); // 添加延迟，可以让使用者看到选中效果后再关闭弹层
+			}
 			const date = this.formatDate(value);
 			this.currentValue = value;
-			this.sync('change', date);
+			(!this.isConfirm || this.changeOnSelect) && this.sync('change', date);
 		},
-		handleIconClear() {
-			this.showClear && this.handleClear();
+		handleIconClick(e) {
+			if (!this.showClear) return;
+			e.stopPropagation();
+			this.handleClear();
 		},
 		handleClear() {
 			const date = this.isRange ? [] : '';
@@ -227,9 +232,15 @@ export default {
 		},
 		handleOK(value) {
 			this.isActive = false;
-
 			const date = this.formatDate(value);
-			this.sync('ok', date);
+			this.sync(['ok', 'change'], date);
+		},
+		handleClose() {
+			let val = this.parseValue(this.value);
+			if (!isEqualWith(this.currentValue, val)) {
+				this.currentValue = value2Array(val);
+			}
+			this.$emit('close');
 		},
 		formatDateText(value) {
 			const format = DEFAULT_FORMATS[this.type];
@@ -262,8 +273,17 @@ export default {
 				return parser(value, this.format || format, this.separator);
 			}
 		},
+		parseValue(val) {
+			if (isEmpty(val)) {
+				return this.isRange ? [null, null] : [];
+			}
+			return this.parserDate(val);
+		},
 		sync(eventName, date) {
-			this.$emit(eventName, date, this.rest);
+			eventName = typeof eventName === 'string' ? [eventName] : eventName;
+			eventName.forEach(name => {
+				this.$emit(name, date, this.rest);
+			});
 			this.dispatch('vc-form-item', 'form-change', date);
 		},
 		rest(date) {
@@ -281,7 +301,7 @@ $block: vc-picker;
 @include block($block) {
 	display: inline-block;
 	position: relative;
-	width: 100%;
+	width: auto;
 	line-height: 1;
 	@include element(input) {
 		cursor: pointer;

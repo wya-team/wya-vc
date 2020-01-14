@@ -11,7 +11,6 @@
 			clearable
 			format="YYYY-MM-DD"
 			placeholder="Select date" 
-			style="width: 200px"
 			@change="handleChange"
 			@clear="handleClear"
 		/>
@@ -24,7 +23,6 @@
 			placeholder="Select date"
 			style="width: 300px"
 			@change="handleRangeChange"
-			@clear="handleClear"
 		/>
 		<h2>Year</h2>
 		<vc-date-picker 
@@ -166,7 +164,7 @@ export default {
 			console.log('clear', v);
 		},
 		handleChange(v) {
-			// console.log('change', v);
+			console.log('change', v);
 		},
 		handleRangeChange(v) {
 			this.rangeStart = v[0];
