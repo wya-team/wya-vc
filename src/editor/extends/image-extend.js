@@ -38,14 +38,21 @@ class ImageExtend {
 
 	handleUploadStart = () => {
 		// TODO
+		this.handleChangeLoadingState('');
 	}
 
 	handleUploadSuccess = (res) => {
 		this.insert(res.data.url);
+		this.handleChangeLoadingState('none');
 	}
 
 	handleUploadComplete = () => {
 		// TODO
+	}
+
+	handleChangeLoadingState = (state) => {
+		const spin = document.querySelector('.vc-quill-editor__spin');
+		spin.style.display = state;
 	}
 
 	handlePaste = (e) => {
