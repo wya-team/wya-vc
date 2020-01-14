@@ -20,10 +20,10 @@
 						<p class="vc-drawer__title" v-html="title || '我是标题' " />
 					</slot>
 					<a class="vc-drawer__close" @click="handleClose($event, true)">
-						<vc-icon type="close"/>
+						<vc-icon type="close" />
 					</a>
 				</div>
-				<slot/>
+				<slot />
 			</div>
 		</vc-transition-slide>
 	</div>
@@ -141,7 +141,7 @@ export default {
 };
 </script>
 <style lang="scss">
-@import '../style/index.scss';
+@import '../style/vars.scss';
 $block: vc-drawer;
 
 @include block($block) {

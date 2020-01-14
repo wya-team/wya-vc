@@ -9,8 +9,10 @@
 		:table-opts="table"
 		:history="true"
 		:show="show"
+		row-key="id"
 		style="width: 100%"
 		@page-size-change="handleResetFirst"
+		@selection-change="handleSeleChange"
 	>
 		<vc-table-item>
 			<vc-table-column
@@ -34,10 +36,14 @@
 			<vc-table-column
 				label="操作"
 			>
-				<template #default="{ it }" >
+				<template #default="{ it }">
 					<div>
-						<div @click="handleResetFirst">回到首页刷新</div>
-						<div @click="handleResetCur">当前页刷新</div>
+						<div @click="handleResetFirst">
+							回到首页刷新
+						</div>
+						<div @click="handleResetCur">
+							当前页刷新
+						</div>
 					</div>
 				</template>
 			</vc-table-column>
@@ -118,6 +124,9 @@ export default {
 				});
 			}
 			return fakeData;
+		},
+		handleSeleChange(selection, curSelection) {
+			console.log('selection :', selection, curSelection, 1);
 		},
 		/**
 		 * 回到首页刷新

@@ -5,7 +5,7 @@
 			class="vc-progress__line is-line"
 		>
 			<div :class="{'vc-progress__info': showInfo}" class="vc-progress__wrapper">
-				<div :class="`is-${currentStatus}`" class="vc-progress__box" >
+				<div :class="`is-${currentStatus}`" class="vc-progress__box">
 					<div 
 						:style="innerStyle"
 						:class="`is-${currentStatus}`" 
@@ -65,7 +65,7 @@ export default {
 			default: 'line'
 		},
 		percent: {
-			type: Number || String,
+			type: [Number, String],
 			default: 0
 		},
 		status: {
@@ -151,9 +151,6 @@ export default {
 		}
 	},
 	watch: {
-		percent(val) {
-			console.log(val);
-		},
 		currentStatus(val) {
 			this.oColor = this.lineTheme[val];
 		},
@@ -177,7 +174,7 @@ export default {
 };
 </script>
 <style lang="scss">
-@import '../style/index.scss';
+@import '../style/vars.scss';
 
 @include block(vc-progress) {
 	@include element(line) {

@@ -10,7 +10,8 @@
 				:class="imgClassName"
 				fit="cover"
 				class="vc-imgs-picker-item__img"
-				@click="handlePreview"/>
+				@click="handlePreview"
+			/>
 			<div v-else :class="imgClassName" class="vc-imgs-picker-item__img">
 				<vc-progress
 					v-if="it.percent && it.percent != 100" 
@@ -81,7 +82,7 @@ export default {
 
 <style lang="scss">
 
-@import '../style/index.scss';
+@import '../style/vars.scss';
 @include block(vc-imgs-picker-item) {
 	position: relative;
 	display: flex;

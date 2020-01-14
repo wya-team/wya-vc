@@ -1,1 +1,1 @@
-export { default } from './mobile/touch.vue';
+export { default } from './mobile/touch';

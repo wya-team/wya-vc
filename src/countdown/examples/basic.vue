@@ -53,7 +53,9 @@
 			@change="handleChange(arguments[0], 2)"
 			@end="handleEnd(2)"
 		> 
-			<template #default="it">{{ it.seconds }}</template>
+			<template #default="it">
+				{{ it.seconds }}
+			</template>
 		</vc-countdown>
 		<vc-countdown
 			target-time="2020-10-15 10:10:10"
@@ -66,8 +68,12 @@
 				test
 			</div>
 		</vc-countdown>
-		<div @click="handleTarget">点我targetTime: Data.now() + 1</div>
-		<div @click="handleServer">点我serverTime: Data.now() - 1</div>
+		<div @click="handleTarget">
+			点我targetTime: Data.now() + 1
+		</div>
+		<div @click="handleServer">
+			点我serverTime: Data.now() - 1
+		</div>
 	</div>
 </template>
 <script>

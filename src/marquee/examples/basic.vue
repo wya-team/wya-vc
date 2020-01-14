@@ -18,13 +18,16 @@
 			:draggable="false" 
 			:t="1" 
 			vertical 
-			style="background: #f7f7f7">
+			style="background: #f7f7f7"
+		>
 			<vc-carousel-item v-for="item in 3" :key="item">
 				<h3>{{ item }}</h3>
 			</vc-carousel-item>
 		</vc-carousel>
 
-		<vc-button @click="handleClick">弹窗动画干扰</vc-button>
+		<vc-button @click="handleClick">
+			弹窗动画干扰
+		</vc-button>
 	</div>
 </template>
 <script>

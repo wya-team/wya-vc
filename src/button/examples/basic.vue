@@ -1,13 +1,27 @@
 <template>
 	<div style="width: 100%;text-align: center">
 		<div class="box-wrapper">
-			<vc-button :wait="5000" type="default" @click="handleClick">default</vc-button>
-			<vc-button type="primary" @click="handleClick">primary</vc-button>
-			<vc-button type="text" size="small">text</vc-button>
-			<vc-button type="success" size="large">success</vc-button>
-			<vc-button type="error" size="small">error</vc-button>
-			<vc-button type="warning">warning</vc-button>
-			<vc-button disabled type="primary">Primary</vc-button>
+			<vc-button :wait="5000" type="default" @click="handleClick">
+				default
+			</vc-button>
+			<vc-button type="primary" @click="handleClick">
+				primary
+			</vc-button>
+			<vc-button type="text" size="small">
+				text
+			</vc-button>
+			<vc-button type="success" size="large">
+				success
+			</vc-button>
+			<vc-button type="error" size="small">
+				error
+			</vc-button>
+			<vc-button type="warning">
+				warning
+			</vc-button>
+			<vc-button disabled type="primary">
+				Primary
+			</vc-button>
 		</div>
 		<div class="box-wrapper">
 			<vc-button long>
@@ -15,27 +29,53 @@
 			</vc-button>
 		</div>
 		<div class="box-wrapper">
-			<vc-button type="default" circle>default</vc-button>
-			<vc-button type="primary" circle>primary</vc-button>
-			<vc-button type="success" circle>success</vc-button>
-			<vc-button type="error" circle>error</vc-button>
-			<vc-button type="warning" circle>warning</vc-button>
-			<vc-button disabled type="primary" circle>Primary</vc-button>
+			<vc-button type="default" circle>
+				default
+			</vc-button>
+			<vc-button type="primary" circle>
+				primary
+			</vc-button>
+			<vc-button type="success" circle>
+				success
+			</vc-button>
+			<vc-button type="error" circle>
+				error
+			</vc-button>
+			<vc-button type="warning" circle>
+				warning
+			</vc-button>
+			<vc-button disabled type="primary" circle>
+				Primary
+			</vc-button>
 		</div>
 		<div class="box-wrapper">
-			<vc-button size="large">large</vc-button>
-			<vc-button size="medium">default</vc-button>
-			<vc-button size="small">large</vc-button>
+			<vc-button size="large">
+				large
+			</vc-button>
+			<vc-button size="medium">
+				default
+			</vc-button>
+			<vc-button size="small">
+				large
+			</vc-button>
 		</div>
 		<div class="box-wrapper">
-			<vc-button size="large" icon="success">large</vc-button>
-			<vc-button type="success" size="large" icon="search" round/>
+			<vc-button size="large" icon="success">
+				large
+			</vc-button>
+			<vc-button type="success" size="large" icon="search" round />
 		</div>
 		<div>
 			<vc-button-group size="large">
-				<vc-button type="success">large</vc-button>
-				<vc-button type="success">large</vc-button>
-				<vc-button type="success">large</vc-button>
+				<vc-button type="success">
+					large
+				</vc-button>
+				<vc-button type="success">
+					large
+				</vc-button>
+				<vc-button type="success">
+					large
+				</vc-button>
 			</vc-button-group>
 			<vc-button-group size="medium">
 				<vc-button>medium</vc-button>
@@ -75,16 +115,20 @@
 				<vc-button>测试</vc-button>
 			</vc-button-group>
 			<vc-button-group size="small" circle vertical>
-				<vc-button icon="up"/>
-				<vc-button icon="up"/>
-				<vc-button icon="up"/>
+				<vc-button icon="up" />
+				<vc-button icon="up" />
+				<vc-button icon="up" />
 			</vc-button-group>
 		</div>
 		<div>
 			<br>
 			<vc-button-group>
-				<vc-button type="primary" @click="handlePromise1">Promise1</vc-button>
-				<vc-button type="success" @click="handlePromise2">Promise2</vc-button>
+				<vc-button type="primary" @click="handlePromise1">
+					Promise1
+				</vc-button>
+				<vc-button type="success" @click="handlePromise2">
+					Promise2
+				</vc-button>
 			</vc-button-group>
 		</div>
 	</div>

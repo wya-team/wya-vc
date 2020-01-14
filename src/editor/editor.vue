@@ -1,32 +1,54 @@
 <template>
 	<div class="vc-quill-editor">
 		<slot name="toolbar">
-			<vc-editor-toolbar v-if="options.modules && options.modules.toolbar === '#toolbar'">
-				<button id="img" style="outline: none; line-height: 1;" >
+			<vc-editor-toolbar 
+				ref="toolbar"
+				:toolbar="options.modules.toolbar"
+				:uid="uid"
+			>
+				<button class="vc-quill-editor__icon">
 					<vc-upload
-						v-bind="uploadOpts"
-						:accept="accept" 
+						v-bind="imgUploadOpts"
 						@file-success="handleImgSuccess"
 					>
 						<vc-icon type="image" style="font-size: 15px" @click="handleUploadImg" />
 					</vc-upload>
 				</button>
-				<slot name="extend" />
+				<button class="vc-quill-editor__icon">
+					<vc-upload
+						v-bind="videoUploadOpts"
+						:gallery="false"
+						@file-success="handleVideoSuccess"
+					>
+						<vc-icon type="video" style="font-size: 16px" />
+					</vc-upload>
+				</button>
+				<button class="vc-quill-editor__icon" @click="handleUndo">
+					<vc-icon type="undo" style="font-size: 15px" />
+				</button>
+				<button class="vc-quill-editor__icon" @click="handleRedo">
+					<vc-icon type="redo" style="font-size: 15px" />
+				</button>
+				<template #extend>
+					<slot name="extend" />
+				</template>
 			</vc-editor-toolbar>
 		</slot>
-		<div ref="editor"/>
+		<div ref="editor" />
 	</div>
 </template>
 
 <script>
-import './style.scss';
+import { getUid } from '../utils/utils';
 import Extends from '../extends';
 import EditorToolbar from './toolbar';
 import Upload from '../upload/index';
 import Icon from '../icon/index';
 import ImgsPreview from '../imgs-preview/index';
-import defaultOptinos from './default-options';
+import defaultOptions from './default-options';
 import { VcInstance } from '../vc/index';
+import { registVideoBlot } from './extends/video-blot';
+import ImageExtend from './extends/image-extend';
 
 export default {
 	name: "vc-editor",
@@ -59,29 +81,41 @@ export default {
 			type: Boolean,
 			default: false
 		},
-		uploadOpts: {
+		imgUploadOpts: {
 			type: Object,
-			default: () => ({})
+			default: () => ({
+				accept: 'image/gif,image/jpeg,image/jpg,image/png', // 手机端建议用image/*，避免Android端选不了
+			})
 		},
-		/**
-		 * 手机端建议用image/*，避免Android端选不了
-		 */
-		accept: {
-			type: String,
-			default: 'image/gif,image/jpeg,image/jpg,image/png'
+		videoUploadOpts: {
+			type: Object,
+			default: () => ({
+				accept: 'video/mp4,video/webm,video/ogg', // video标签目前只支持这些类型的视频
+			})
 		},
 		gallery: {
 			type: [Function, Boolean],
 			default: true
-		}
+		},
+		// 注册扩展
+		register: Function
 	},
 	data() {
 		return {
-			content: ''
+			content: '',
+			uid: getUid('editor-toolbar')
 		};
 	},
 	computed: {
-		
+		curOptions() {
+			return {
+				...this.options,
+				modules: {
+					...this.options.modules,
+					toolbar: `#${this.uid}`
+				}
+			};
+		},
 	},
 	watch: {
 		disabled(newVal, oldVal) {
@@ -101,7 +135,7 @@ export default {
 		},
 	},
 	async mounted() {
-		let Quill = await import('quill');
+		let Quill = window.Quill || await import('quill');
 		// 兼容webpack 3.0/4.0 写法
 		this.Quill = Quill.default ? Quill.default : Quill;
 
@@ -110,17 +144,23 @@ export default {
 		this.$emit('ready');
 	},
 	beforeDestroy() {
+		this.removeListener();
 		this.editor = null;
 		delete this.editor;
 	},
 	methods: {
 		init() {
+			const { Quill } = this;
+			this._register();
 			this.initFontSize();
-			this.editor = new this.Quill(this.$refs.editor, { ...defaultOptinos, ...this.options });
+			this.editor = new Quill(this.$refs.editor, { ...defaultOptions, ...this.curOptions });
+			
 			this.editor.enable(!this.disabled);
 			if (this.value) {
-				this.editor.setText('zhellll');
+				this.editor.setText('');
 				this.editor.clipboard.dangerouslyPasteHTML(this.value);
+				let length = this.editor.getLength();
+				this.editor.setSelection(length + 1); // 光标位置
 			}
 			
 			this.editor.on('selection-change', range => {
@@ -144,7 +184,7 @@ export default {
 			});
 		},
 		initFontSize() {
-			const fontSize = ['12px', '14px', '16px', '18px', '20px', '22px', '24px', '50px'];
+			let fontSize = this.$refs.toolbar ? this.$refs.toolbar.fontSize : ['12px', '14px', '16px', '18px', '20px', '22px', '24px', '50px'];
 			let Parchment = this.Quill.import('parchment');
 			let SizeClass = new Parchment.Attributor.Class('size', 'ql-size', {
 				scope: Parchment.Scope.INLINE,
@@ -164,16 +204,12 @@ export default {
 		
 		},
 		initListener() {
-			const ImageBlot = this.Quill.import('formats/image');
-			const Parchment = this.Quill.import('parchment');
-			this.editor.root.addEventListener('click', (ev) => {
-				let image = Parchment.find(ev.target);
-				if (image instanceof ImageBlot) {
-					
-					let imgs = this.getImgs();
-					this.handlePreview(ev, 0);
-				}
-			});
+			this.ImageBlot = this.Quill.import('formats/image');
+			this.Parchment = this.Quill.import('parchment');
+			this.editor.root.addEventListener('click', this.handlePreview);
+		},
+		removeListener() {
+			this.editor.root.removeEventListener('click', this.handlePreview);
 		},
 		getImgs() {
 			let imgs = [];
@@ -192,41 +228,63 @@ export default {
 			}
 			return imgs;
 		},
+		getLength() {
+			let selection = this.editor.getSelection();
+			return selection ? selection.index : this.editor.getLength();
+		},
 		handleImgSuccess(res) {
 			// 获取光标所在位置
-			let length;
-			let selection = this.editor.getSelection();
-			if (!selection) {
-				length = this.editor.getLength();
-			} else {
-				length = selection.index;
-			}
+			let length = this.getLength();
 			this.editor.insertEmbed(length, 'image', res.data.url);
 			// 光标向后移动一位
 			this.editor.setSelection(length + 1);
 		},
-		handlePreview(e, idx) {
-			let pos = {};
-			try {
-				const target = e.target; // 先得到pos, 否则getThumbBoundsFn再计划，target已变化（比如弹窗transition的影响）
-				const pageYScroll = window.pageYOffset || document.documentElement.scrollTop;
-				const rect = target.getBoundingClientRect();
-
-				pos = { x: rect.left, y: rect.top + pageYScroll, w: rect.width };
-
-			} catch (e) {
-				// console.log(e);
-			}
-
-			ImgsPreview.open({
-				visible: true,
-				dataSource: [e.target.currentSrc],
-				opts: {
-					index: idx,
-					history: false,
-					getThumbBoundsFn: (index) => pos
-				}
+		handleVideoSuccess(res) {
+			let length = this.getLength();
+			this.editor.insertEmbed(length, 'vc-video', {
+				url: res.data.url,
+				controls: 'controls',
+				style: "max-width: 100%",
+				width: 'auto',
+				height: 'auto',
 			});
+			// 光标向后移动一位
+			this.editor.insertText(length + 1, '');
+			this.editor.setSelection(length + 2);
+		},
+		handlePreview(e) {
+			let { ImageBlot, Parchment } = this;
+			let image = Parchment.find(e.target);
+			if (image instanceof ImageBlot) {
+				let index;
+				let imgs = Array.from(document.querySelectorAll('.ql-container img'));
+				let imgSource = imgs.map((it, idx) => {
+					it === e.target && (index = idx);
+					return it.src;
+				});
+
+				let pos = {};
+				try {
+					const target = e.target; // 先得到pos, 否则getThumbBoundsFn再计划，target已变化（比如弹窗transition的影响）
+					const pageYScroll = window.pageYOffset || document.documentElement.scrollTop;
+					const rect = target.getBoundingClientRect();
+
+					pos = { x: rect.left, y: rect.top + pageYScroll, w: rect.width };
+
+				} catch (e) {
+				// console.log(e);
+				}
+
+				ImgsPreview.open({
+					visible: true,
+					dataSource: imgSource,
+					opts: {
+						index,
+						history: false,
+						getThumbBoundsFn: (index) => pos
+					}
+				});
+			}
 		},
 		handleUploadImg(e) {
 			const { ImgsPicker = {} } = VcInstance.config;
@@ -240,23 +298,40 @@ export default {
 				fn(this);
 			} 
 		},
+		handleUndo() {
+			this.editor.history.undo();
+		},
+		handleRedo() {
+			this.editor.history.redo();
+		},
 		// 跟imgs-picker 对外暴露的增加方法保持同名
 		add(imgs = []) {
 			imgs.forEach(image => {
 				this.handleImgSuccess({ data: { url: image } });
 			});
+		},
+		_register() {
+			const { Quill, register } = this;
+			Quill.register('modules/ImageExtend', ImageExtend);
+			registVideoBlot(Quill);
+			register && register(Quill);
 		}
 	}
 };
 </script>
 
 <style lang="scss">
-.vc-quill-editor {
+@import '../style/vars.scss';
+
+$block: vc-quill-editor;
+
+@include block($block) {
 	color: #333 !important;
 	display: flex;
 	flex-direction: column;
-	.vc-editor-size {
-		width: 78px;
+	@include element(icon) {
+		outline: none; 
+		line-height: 1;
 	}
 	.ql-container {
 		flex: 1;

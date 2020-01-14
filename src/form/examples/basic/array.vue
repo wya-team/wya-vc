@@ -5,7 +5,9 @@
 			:key="item"
 			:class="{ 'red': value.includes(item) }"
 			@click="handleClick($event, item)"
-		>{{ item }}</div>
+		>
+			{{ item }}
+		</div>
 	</section>
 </template>
 

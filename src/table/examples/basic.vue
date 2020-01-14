@@ -11,7 +11,8 @@
 				<vc-table-column
 					prop="name"
 					label="姓名"
-					width="180"/>
+					width="180"
+				/>
 				<vc-table-column
 					prop="address"
 					label="地址"

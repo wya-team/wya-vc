@@ -1,5 +1,5 @@
-import MCheckbox from './mobile/checkbox.vue';
-import MCheckboxGroup from './mobile/checkbox-group.vue';
+import MCheckbox from './mobile/checkbox';
+import MCheckboxGroup from './mobile/checkbox-group';
 
 MCheckbox.Group = MCheckboxGroup;
 export default MCheckbox;

@@ -136,7 +136,7 @@ export const Func = new Portal(wrapperComponent, {
 </script>
 
 <style lang="scss">
-@import '../../style/index.scss';
+@import '../../style/vars.scss';
 
 @include block(vcm-cascader-picker-popup) {
 	.vcm-popup__wrapper {

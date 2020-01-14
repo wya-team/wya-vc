@@ -1,7 +1,7 @@
 <template>
 	<!-- 用于占位，默认使用一个div, 利于动画 -->
 	<div :style="style" :name="currentName" class="vcm-tabs-pane">
-		<slot v-if="isReady"/>
+		<slot v-if="isReady" />
 	</div>
 </template>
 <script>

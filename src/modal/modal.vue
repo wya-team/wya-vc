@@ -42,8 +42,9 @@
 							<div 
 								v-if="closable && !mode" 
 								class="vc-modal__close" 
-								@click="handleClose($event, true)">
-								<vc-icon type="close"/>
+								@click="handleClose($event, true)"
+							>
+								<vc-icon type="close" />
 							</div>
 						</slot>
 					</div>
@@ -62,18 +63,21 @@
 								v-if="cancelText"
 								style="margin-right: 8px;"
 								@click="handleBefore($event, handleCancel)"
-							>{{ cancelText }}</vc-button>
+							>
+								{{ cancelText }}
+							</vc-button>
 							<vc-button 
 								v-if="okText"
 								type="primary"
 								@click="handleBefore($event, handleOk)"
-							>{{ okText }}</vc-button>
+							>
+								{{ okText }}
+							</vc-button>
 						</slot>
 					</div>
 				</div>
 			</vc-transition-scale>
 		</div>
-		
 	</div>
 </template>
 <script>
@@ -427,7 +431,7 @@ export default {
 };
 </script>
 <style lang="scss">
-@import '../style/index.scss';
+@import '../style/vars.scss';
 
 @include block(vc-modal) {
 	@include element(mask) {

@@ -19,7 +19,9 @@
 		<div>
 			<vcm-carousel :t="4" :height="200" card>
 				<vcm-carousel-item v-for="item in 6" :key="item">
-					<h3 class="medium">{{ item }}</h3>
+					<h3 class="medium">
+						{{ item }}
+					</h3>
 				</vcm-carousel-item>
 			</vcm-carousel>
 		</div>
@@ -29,7 +31,9 @@
 		<div>
 			<vcm-carousel :autoplay="false" :height="200" vertical dots="bottom">
 				<vcm-carousel-item v-for="item in 3" :key="item">
-					<h3 class="medium">{{ item }}</h3>
+					<h3 class="medium">
+						{{ item }}
+					</h3>
 				</vcm-carousel-item>
 			</vcm-carousel>
 		</div>

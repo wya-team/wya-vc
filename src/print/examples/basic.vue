@@ -7,7 +7,9 @@
 			打印的内容
 			打印的内容
 		</vc-print>
-		<div @click="handleClick">点我打印</div>
+		<div @click="handleClick">
+			点我打印
+		</div>
 	</div>
 </template>
 <script>

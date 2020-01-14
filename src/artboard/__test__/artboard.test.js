@@ -1,4 +1,4 @@
-import { createVue, createComponent, wait } from '@tests/helper';
+import { createVue, createComponent, wait, destroyVM } from '@tests/helper';
 import Artboard from '../index';
 
 describe('Artboard', () => {
@@ -7,6 +7,8 @@ describe('Artboard', () => {
 
 		const vm = createComponent(Artboard, {});
 		expect(typeof vm).to.equal('object');
+
+		destroyVM(vm);
 	});
 
 	it('width', async () => {
@@ -17,6 +19,7 @@ describe('Artboard', () => {
 		await wait(1);
 		expect(vm.$el.querySelector('canvas').style.width).to.equal('100px');
 
+		destroyVM(vm);
 	});
 
 	it('height', async () => {
@@ -31,9 +34,10 @@ describe('Artboard', () => {
 				
 			}
 		});
-		console.log('vm :', vm);
 		await wait(1);
 		expect(vm.$el.querySelector('canvas').style.height).to.equal('100px');
+
+		destroyVM(vm);
 	});
 
 	// it('getInstance', () => {

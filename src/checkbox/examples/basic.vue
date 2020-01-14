@@ -1,6 +1,8 @@
 <template>
 	<div>
-		<vc-checkbox v-model="single">{{ single }}</vc-checkbox>
+		<vc-checkbox v-model="single">
+			{{ single }}
+		</vc-checkbox>
 		<vc-checkbox-group v-model="social">
 			<vc-checkbox label="twitter">
 				<span>Twitter</span>
@@ -16,9 +18,9 @@
 			</vc-checkbox>
 		</vc-checkbox-group>
 		<vc-checkbox-group v-model="fruit">
-			<vc-checkbox label="香蕉"/>
-			<vc-checkbox label="苹果"/>
-			<vc-checkbox label="西瓜"/>
+			<vc-checkbox label="香蕉" />
+			<vc-checkbox label="苹果" />
+			<vc-checkbox label="西瓜" />
 		</vc-checkbox-group>
 
 		<!-- indeterminate -->
@@ -27,12 +29,14 @@
 				:indeterminate="indeterminate"
 				:value="checkAll"
 				@click.prevent.native="handleCheckAll"
-			>全选</vc-checkbox>
+			>
+				全选
+			</vc-checkbox>
 		</div>
 		<vc-checkbox-group v-model="checkAllGroup" @change="handleChange">
-			<vc-checkbox label="香蕉"/>
-			<vc-checkbox label="苹果"/>
-			<vc-checkbox label="西瓜"/>
+			<vc-checkbox label="香蕉" />
+			<vc-checkbox label="苹果" />
+			<vc-checkbox label="西瓜" />
 		</vc-checkbox-group>
 	</div>
 </template>

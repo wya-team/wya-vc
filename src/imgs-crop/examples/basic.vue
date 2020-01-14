@@ -17,14 +17,15 @@
 			@mouse-move="handleFn"
 			@position-change="handleFn"
 		/>
-		<vc-slider :min="0.3" :max="3" :step="0.01" v-model="scale" />
-		<vc-slider :min="0" :max="360" v-model="rotate" />
+		<vc-slider v-model="scale" :min="0.3" :max="3" :step="0.01" />
+		<vc-slider v-model="rotate" :min="0" :max="360" />
 		
-		<div @click="handleSave">保存</div>
+		<div @click="handleSave">
+			保存
+		</div>
 
 		<img :src="result" width="200">
 	</div>
-	
 </template>
 <script>
 import Slider from '../../slider';

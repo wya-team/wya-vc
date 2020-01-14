@@ -241,7 +241,7 @@ export default {
 </script>
 
 <style lang="scss">
-@import '../../style/index.scss';
+@import '../../style/vars.scss';
 
 @include block(vcm-cascader-view) {
 	overflow: hidden;

@@ -1,5 +1,5 @@
 <template>
-	<canvas :width="width" :height="height"/>
+	<canvas :width="width" :height="height" />
 </template>
 <script>
 import Processing from './core';

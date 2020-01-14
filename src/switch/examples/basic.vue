@@ -1,6 +1,6 @@
 <template>
 	<div>
-		<vc-switch v-model="single" open="开" close="关" @change="handleChange"/>
+		<vc-switch v-model="single" open="开" close="关" @change="handleChange" />
 
 		<vc-switch :value="true" />
 		<vc-switch :value="false" />

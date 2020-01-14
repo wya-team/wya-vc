@@ -7,8 +7,8 @@
 		<vc-imgs-preview :data-source="dataSource">
 			<template #row="it">
 				<img 
-					:src="it.src" 
 					:key="it.index" 
+					:src="it.src" 
 					:style="{ width: '100px', height: '100px', borderRadius: '20px' }"
 				>
 			</template>
@@ -17,7 +17,9 @@
 		<!-- 自定义 operate -->
 		<vc-imgs-preview :data-source="dataSource">
 			<template #operate="it">
-				<div @click="it.show($event, it.index)">{{ it.index }}</div>
+				<div @click="it.show($event, it.index)">
+					{{ it.index }}
+				</div>
 			</template>
 		</vc-imgs-preview>
 		<span @click="handleClick">自定义预览</span>

@@ -3,14 +3,16 @@
 		<div 
 			ref="bar"
 			:style="{ background: background }" 
-			class="vc-color-picker-alpha__bar" />
+			class="vc-color-picker-alpha__bar"
+		/>
 		<div 
 			ref="thumb" 
 			:style="{
 				top: 0,
 				left: `${thumbLeft}px`
 			}"
-			class="vc-color-picker-alpha__thumb"/>
+			class="vc-color-picker-alpha__thumb"
+		/>
 	</div>
 </template>
 
@@ -83,7 +85,7 @@ export default {
 
 <!-- eslint-disable -->
 <style lang="scss">
-@import '../style/index.scss';
+@import '../style/vars.scss';
 $block: vc-color-picker-alpha;
 $color-block: 'data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAwAAAAMCAIAAADZF8uwAAAAGUlEQVQYV2M4gwH+YwCGIasIUwhT25BVBADtzYNYrHvv4gAAAABJRU5ErkJggg==';
 

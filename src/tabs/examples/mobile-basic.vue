@@ -1,9 +1,15 @@
 <template>
 	<div style="background: #f7f6f6">
-		<div :style="{ height: `${height}px` }"/>
-		<vcm-button @click="animated = !animated"> animated: {{ animated }}</vcm-button>
-		<vcm-button @click="theme = theme === 'light' ? 'dark' : 'light'"> theme: {{ theme }}</vcm-button>
-		<vcm-button @click="handleClear">清除定时器</vcm-button>
+		<div :style="{ height: `${height}px` }" />
+		<vcm-button @click="animated = !animated">
+			animated: {{ animated }}
+		</vcm-button>
+		<vcm-button @click="theme = theme === 'light' ? 'dark' : 'light'">
+			theme: {{ theme }}
+		</vcm-button>
+		<vcm-button @click="handleClear">
+			清除定时器
+		</vcm-button>
 		<br>
 		<vcm-tabs 
 			v-model="value"

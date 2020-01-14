@@ -1,6 +1,6 @@
 <template>
 	<div :class="classes" class="vc-btn-group">
-		<slot/>
+		<slot />
 	</div>
 </template>
 <script>
@@ -43,7 +43,7 @@ export default {
 };
 </script>
 <style lang="scss">
-@import '../style/index.scss';
+@import '../style/vars.scss';
 
 @include block(vc-btn-group) {
 	display: inline-block;

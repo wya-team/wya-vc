@@ -12,11 +12,15 @@
 		class="v-paging-piece"
 		@page-size-change="handleResetFirst"
 	>
-		<template #default="{ it }" >
+		<template #default="{ it }">
 			<div :key="it.id" class="_item">
 				<div>{{ it.name }}</div>
-				<div @click="handleResetFirst">回到首页刷新</div>
-				<div @click="handleResetCur">当前页刷新</div>
+				<div @click="handleResetFirst">
+					回到首页刷新
+				</div>
+				<div @click="handleResetCur">
+					当前页刷新
+				</div>
 			</div>
 		</template>
 	</vc-paging>

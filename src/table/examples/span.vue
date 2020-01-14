@@ -6,7 +6,9 @@
 			</div>
 			<div 
 				@click="handleAddCategory"
-			>👌添加分类👌</div>
+			>
+				👌添加分类👌
+			</div>
 			<div v-for="(i, iindex) in sku" :key="i.value">
 				<div style="display: flex; align-items: center;">
 					<h2>- 分类-{{ i.label }}</h2>

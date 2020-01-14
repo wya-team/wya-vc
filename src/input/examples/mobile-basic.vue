@@ -23,12 +23,14 @@
 					@blur="handleBlur"
 					@enter="handleEnter"
 				>
-					<p slot="append">ico2222n</p>
+					<p slot="append">
+						ico2222n
+					</p>
 				</vcm-input>
 			</div>
 			<br>
 			<br>
-			<vcm-input-number :value="value2" :max="10" @input="handleInput"/>
+			<vcm-input-number :value="value2" :max="10" @input="handleInput" />
 			<br>
 			<br>
 			<vcm-form>
@@ -41,7 +43,7 @@
 					/>
 				</vcm-form-item>
 				<vcm-form-item>
-					<vcm-input-number v-model="value3" :step="false"/>
+					<vcm-input-number v-model="value3" :step="false" />
 				</vcm-form-item>
 			</vcm-form>
 			<br>

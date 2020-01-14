@@ -12,7 +12,7 @@
 		>
 			<template #prepend>
 				<slot name="prepend">
-					<vcm-icon type="search" class="vcm-input-search__icon"/>
+					<vcm-icon type="search" class="vcm-input-search__icon" />
 				</slot>
 			</template>
 		</vcm-input>
@@ -22,7 +22,7 @@
 			class="vcm-input-search__btn"
 			@touchend="handleCancel"
 		>
-			{{ cancelTxt }}
+			{{ cancelText }}
 		</div>
 	</div>
 </template>
@@ -41,7 +41,7 @@ export default {
 	},
 	mixins: [inputSearchMixin, inputEventMixin],
 	props: {
-		cancelTxt: {
+		cancelText: {
 			type: String,
 			default: '取消'
 		},
@@ -64,7 +64,7 @@ export default {
 </script>
 
 <style lang="scss">
-@import '../../style/index.scss';
+@import '../../style/vars.scss';
 
 /**
  * TODO

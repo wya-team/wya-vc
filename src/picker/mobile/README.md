@@ -110,7 +110,7 @@ MPicker.open({
 <script>
 import { cloneDeep } from 'lodash';
 import MToast from '../../m-toast/index';
-import MPicker from '../m-picker.vue';
+import MPicker from '../m-picker';
 import { cascadeData, seasons } from './basic/mock';
 
 export default {

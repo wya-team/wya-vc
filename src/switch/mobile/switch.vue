@@ -15,7 +15,7 @@
 				{{ closeText }}
 			</slot>	
 		</span>
-		<span class="vcm-switch__inner"/>
+		<span class="vcm-switch__inner" />
 		<vcm-spin 
 			v-if="loading" 
 			:size="14"
@@ -37,7 +37,7 @@ export default {
 };
 </script>
 <style lang="scss">
-@import '../../style/index.scss';
+@import '../../style/vars.scss';
 
 @include block(vcm-switch) {
 	display: inline-block;

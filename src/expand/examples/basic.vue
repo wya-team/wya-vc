@@ -3,7 +3,7 @@
 		<span @click="handleToggle">
 			更多搜索条件{{ visible ? `up` : `down` }}
 		</span>
-		<vc-icon :type="`triangle-${visible ? `up2` : `down2`}`"/>
+		<vc-icon :type="`triangle-${visible ? `up2` : `down2`}`" />
 		<vc-expand 
 			ref="expand"
 			v-model="visible"

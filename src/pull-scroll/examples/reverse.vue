@@ -31,7 +31,7 @@
 					</template>
 					<template #default="{ it }">
 						<!-- 使用key值来规避滚动位置的情况 -->
-						<vc-item :it="it" :key="it.id"/>
+						<vc-item :key="it.id" :it="it" />
 						<!-- <div :key="it.id" style="padding: 20px">{{ it }}</div> -->
 					</template>
 				</vc-pull-scroll>

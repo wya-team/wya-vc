@@ -1,8 +1,8 @@
 <template>
 	<div>
-		<vc-spin :size="15"/>
-		<vc-spin/>
-		<vc-spin :size="45"/>
+		<vc-spin :size="15" />
+		<vc-spin />
+		<vc-spin :size="45" />
 		<br>
 		<br>
 		<br>

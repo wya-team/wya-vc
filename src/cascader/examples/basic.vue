@@ -1,11 +1,15 @@
 <template>
 	<div style="margin: 40px">
-		<vc-button @click="handleTestingStart">内存测试</vc-button>
-		<vc-button @click="handleTestingEnd">取消测试</vc-button>
+		<vc-button @click="handleTestingStart">
+			内存测试
+		</vc-button>
+		<vc-button @click="handleTestingEnd">
+			取消测试
+		</vc-button>
 		<div style="margin: 40px 0 ">
 			<vc-cascader 
-				:data-source="bigData" 
-				v-model="value1"
+				v-model="value1" 
+				:data-source="bigData"
 				clearable
 				@change="handleChange"
 			>
@@ -17,16 +21,16 @@
 			</vc-cascader>
 		</div>
 		<div style="margin: 40px 0 ">
-			<vc-cascader :data-source="dataSource" v-model="value2" clearable/>
+			<vc-cascader v-model="value2" :data-source="dataSource" clearable />
 		</div>
 		<div style="margin: 40px 0 ">
-			<vc-cascader :data-source="dataSourceAlone" v-model="valueAlone" clearable/>
+			<vc-cascader v-model="valueAlone" :data-source="dataSourceAlone" clearable />
 		</div>
 		<div style="margin: 40px 0 ">
-			<vc-cascader :data-source="dataAsyncSource1" v-model="value3" clearable/>
+			<vc-cascader v-model="value3" :data-source="dataAsyncSource1" clearable />
 		</div>
 		<div style="margin: 40px 0 ">
-			<vc-cascader :data-source="dataAsyncSource2" v-model="value4" :load-data="loadData" clearable/>
+			<vc-cascader v-model="value4" :data-source="dataAsyncSource2" :load-data="loadData" clearable />
 		</div>
 		<!-- form -->
 		<div style="margin: 40px 0 ">
@@ -39,10 +43,10 @@
 				@submit.native.prevent
 			>
 				<vc-form-item label="设置1：" prop="value">
-					<vc-cascader :data-source="dataSource" v-model="formValidate.value" clearable/>
+					<vc-cascader v-model="formValidate.value" :data-source="dataSource" clearable />
 				</vc-form-item>
 				<vc-form-item label="设置2：" prop="value1">
-					<vc-cascader :data-source="dataSource" v-model="formValidate.value1" clearable/>
+					<vc-cascader v-model="formValidate.value1" :data-source="dataSource" clearable />
 				</vc-form-item>
 			</vc-form>
 		</div>

@@ -10,7 +10,7 @@
 		@touchstart.prevent
 	>
 		<slot>{{ formatterLabel }}</slot>
-		<vc-icon v-if="isSelect" type="correct"/>
+		<vc-icon v-if="isSelect" type="correct" />
 	</div>
 </template>
 
@@ -101,7 +101,7 @@ export default {
 </script>
 
 <style lang="scss">
-@import '../style/index.scss';
+@import '../style/vars.scss';
 
 $block: vc-select-option;
 

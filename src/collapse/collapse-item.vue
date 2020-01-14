@@ -6,7 +6,7 @@
 		</div>
 		<vc-expand v-model="isActive">
 			<div>
-				<slot name="content"/>
+				<slot name="content" />
 			</div>
 		</vc-expand>
 	</component>

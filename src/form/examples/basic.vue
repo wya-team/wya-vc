@@ -15,40 +15,40 @@
 		</vc-form-item>
 		<vc-form-item prop="array" label="水果：">
 			<vc-checkbox-group>
-				<vc-checkbox label="香蕉"/>
-				<vc-checkbox label="苹果"/>
-				<vc-checkbox label="西瓜"/>
+				<vc-checkbox label="香蕉" />
+				<vc-checkbox label="苹果" />
+				<vc-checkbox label="西瓜" />
 			</vc-checkbox-group>
 		</vc-form-item>
 		<vc-form-item prop="array" label="水果：">
-			<vc-checkbox label="香蕉"/>
+			<vc-checkbox label="香蕉" />
 		</vc-form-item>
 		<vc-form-item prop="animal" label="动物：">
-			<vc-checkbox label="香蕉"/>
+			<vc-checkbox label="香蕉" />
 			<vc-form-item>
 				<vc-radio-group v-model="formValidate.animal" vertical>
-					<vc-radio label="金斑蝶"/>
-					<vc-radio label="爪哇犀牛"/>
-					<vc-radio label="印度黑羚"/>
+					<vc-radio label="金斑蝶" />
+					<vc-radio label="爪哇犀牛" />
+					<vc-radio label="印度黑羚" />
 				</vc-radio-group>
 			</vc-form-item>
 		</vc-form-item>
 		<vc-form-item prop="animal" label="动物：">
 			<vc-radio-group v-model="formValidate.animal" vertical>
-				<vc-radio label="金斑蝶"/>
-				<vc-radio label="爪哇犀牛"/>
-				<vc-radio label="印度黑羚"/>
+				<vc-radio label="金斑蝶" />
+				<vc-radio label="爪哇犀牛" />
+				<vc-radio label="印度黑羚" />
 			</vc-radio-group>
 		</vc-form-item>
 		<vc-form-item prop="animal" label="动物：">
 			<vc-radio-group v-model="formValidate.animal">
-				<vc-radio label="金斑蝶"/>
-				<vc-radio label="爪哇犀牛"/>
-				<vc-radio label="印度黑羚"/>
+				<vc-radio label="金斑蝶" />
+				<vc-radio label="爪哇犀牛" />
+				<vc-radio label="印度黑羚" />
 			</vc-radio-group>
 		</vc-form-item>
 		<vc-form-item prop="animal" label="动物：">
-			<vc-radio label="金斑蝶"/>
+			<vc-radio label="金斑蝶" />
 		</vc-form-item>
 		<vc-form-item
 			v-for="(item, index) in formValidate.items"
@@ -58,23 +58,33 @@
 			:prop="'items.' + index + '.value'"
 			:rules="{required: true, message: 'Item ' + item.index +' can not be empty', trigger: 'change'}"
 		>
-			<vc-tpl v-model="item.value" type="text" placeholder="Enter something..." >
+			<vc-tpl v-model="item.value" type="text" placeholder="Enter something...">
 				<span @click="handleRemove(index)">Delete</span>
 			</vc-tpl>
 		</vc-form-item>
 		<vc-form-item>
-			<div @click="handleAdd">Add item</div>
+			<div @click="handleAdd">
+				Add item
+			</div>
 		</vc-form-item>
 		<vc-form-item>
-			<vc-button type="primary" @click="handleSubmit('formValidate')">Submit</vc-button>
-			<vc-button style="margin-left: 8px" @click="handleReset('formValidate')">Reset</vc-button>
-			<vc-button style="margin-left: 8px" @click="handleOnly('formValidate')">Only</vc-button>
-			<vc-button style="margin-left: 8px" @click="handleShow">Popop</vc-button>
+			<vc-button type="primary" @click="handleSubmit('formValidate')">
+				Submit
+			</vc-button>
+			<vc-button style="margin-left: 8px" @click="handleReset('formValidate')">
+				Reset
+			</vc-button>
+			<vc-button style="margin-left: 8px" @click="handleOnly('formValidate')">
+				Only
+			</vc-button>
+			<vc-button style="margin-left: 8px" @click="handleShow">
+				Popop
+			</vc-button>
 		</vc-form-item>
 	</vc-form>
 </template>
 <script>
-import { FormPopup } from './popup/form.vue';
+import { FormPopup } from './popup/form';
 import Form from '..';
 import Tpl from './basic/tpl'; // 可以使用trigger
 import FakeArray from './basic/array'; // 可以使用trigger
