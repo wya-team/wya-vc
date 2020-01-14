@@ -1,7 +1,7 @@
 <template>
 	<div class="v-index">
 		<router-link to="/zh-CN/components/installation">
-			<h1>Hello @wya/doc - zh-CN</h1>
+			<h1>Hello @wya/vc - 开始使用</h1>
 		</router-link>
 	</div>
 </template>
