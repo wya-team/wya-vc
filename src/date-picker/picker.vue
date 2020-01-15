@@ -227,8 +227,8 @@ export default {
 			const date = this.isRange ? [] : '';
 			this.isActive = false;
 			this.currentValue = date;
-			this.$emit('clear', date);
 			this.sync('change', date);
+			this.$emit('clear', date);
 		},
 		handleOK(value) {
 			this.isActive = false;
