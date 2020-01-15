@@ -37,11 +37,11 @@ describe('Tag', () => {
 
 		destroyVM(vm);
 	});
-	it('check', () => {
+	it('checkable true', () => {
 		let count = 0;
 		let vm = createVue({
 			template: `
-				<vc-tag checkable @click="handleClick"></vc-tag>
+				<vc-tag checkable ref="target">checkable true</vc-tag>
 			`,
 			components: {
 				'vc-tag': Tag
@@ -57,35 +57,29 @@ describe('Tag', () => {
 				}
 			}
 		});
-
+		vm = vm.$refs.target;
+		expect(vm.isChecked).to.equal(true);
 		vm.$el.click();
-		expect(count).to.equal(1);
-
+		expect(vm.isChecked).to.equal(false);
 		destroyVM(vm);
 	});
-	it('checkable', () => {
+	it('checkable false', () => {
 		let count = 0;
 		let vm = createVue({
 			template: `
-				<vc-tag :checkable="false" @click="handleClick"></vc-tag>
+				<vc-tag :checkable="false" ref="target"></vc-tag>
 			`,
 			components: {
-				'vc-tag': Tag
+				"vc-tag": Tag
 			},
 			data() {
-				return {
-
-				};
-			},
-			methods: {
-				handleClose() {
-					count++;
-				}
+				return {};
 			}
 		});
-
+		vm = vm.$refs.target;
+		expect(vm.isChecked).to.equal(true);
 		vm.$el.click();
-		expect(count).to.equal(0);
+		expect(vm.isChecked).to.equal(true);
 
 		destroyVM(vm);
 	});
