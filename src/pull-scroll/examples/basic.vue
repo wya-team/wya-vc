@@ -7,10 +7,14 @@
 			:total="total"
 		>
 			<template #header>
-				<div @click="handleClick">这是一个window下的滚动</div>
+				<div @click="handleClick">
+					这是一个window下的滚动
+				</div>
 			</template>
 			<template #default="{ it }">
-				<div style="padding: 20px" @click="handleReset">{{ it }}</div>
+				<div style="padding: 20px" @click="handleReset">
+					{{ it }}
+				</div>
 			</template>
 		</vc-pull-scroll>
 	</div>

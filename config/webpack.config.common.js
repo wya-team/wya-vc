@@ -39,12 +39,11 @@ const postcssLoader = {
 	}
 };
 const loaderPath = [
-	path.resolve(APP_ROOT, "node_modules/iview"),
 	path.resolve(APP_ROOT, "src"),
 	path.resolve(APP_ROOT, "temp")
 ];
 const webpackConfig = {
-	resolve: {// 重定向路径
+	resolve: { // 重定向路径
 		mainFiles: ['index'],
 		modules: [path.resolve(APP_ROOT, 'src'), 'node_modules'],
 		extensions: ['.js', '.vue', '.json', '.scss', '.css'],
@@ -53,15 +52,15 @@ const webpackConfig = {
 			'node_modules': path.resolve(APP_ROOT, 'node_modules')
 		}
 	},
-	entry: Object.assign({}, entry),
+	entry: { ...entry },
 	output: {
-		path: path.resolve(APP_ROOT, 'dist'),
+		path: path.resolve(APP_ROOT, 'demo'),
 		filename: '[name].js',
 		libraryTarget: 'umd',
 		/**
 		 * html引用路径,github展示用
 		 */
-		publicPath: ENV_IS_DEV ? '/' : '/wya-vc/dist/'
+		publicPath: ENV_IS_DEV ? '/' : '/'
 	},
 	module: {
 		rules: [
@@ -94,21 +93,20 @@ const webpackConfig = {
 					path.resolve(APP_ROOT, "src/")
 				]
 			},
-			{
-				test: /\.less$/,
-				use: [
-					'vue-style-loader', 
-					'css-loader', 
-					postcssLoader, 
-					{
-						loader: "less-loader",
-						options: { 
-							javascriptEnabled: true 
-						}
-					}
-				],
-				
-			},
+			// {
+			// 	test: /\.less$/,
+			// 	use: [
+			// 		'vue-style-loader', 
+			// 		'css-loader', 
+			// 		postcssLoader, 
+			// 		{
+			// 			loader: "less-loader",
+			// 			options: { 
+			// 				javascriptEnabled: true 
+			// 			}
+			// 		}
+			// 	],
+			// },
 			{
 				test: /\.(png|jpg|gif|eot|ttf|woff|woff2|svg)$/,
 				loader: 'url-loader',

@@ -28,7 +28,9 @@
 		<br>
 		<br>
 		<br>
-		<h3 @click="handleClick">点击直接调用</h3>
+		<h3 @click="handleClick">
+			点击直接调用
+		</h3>
 		<br>
 		<br>
 		<!-- 表单 -->
@@ -59,8 +61,8 @@
 					提交表单
 				</vcm-button>
 			</vcm-form-item>
-		</vcm-form >
-		<vcm-date-picker-view v-model="valueView" @change="handleChange"/>
+		</vcm-form>
+		<vcm-date-picker-view v-model="valueView" @change="handleChange" />
 	</div>
 </template>
 <script>

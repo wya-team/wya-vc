@@ -1,4 +1,4 @@
-import { createVue, createComponent, wait } from '@tests/helper';
+import { createVue, createComponent, wait, destroyVM } from '@tests/helper';
 import Clipboard from '..';
 
 describe('Clipboard', () => {
@@ -11,6 +11,8 @@ describe('Clipboard', () => {
 			tag: 'span',
 		});
 		expect(vm.$el.tagName).to.equal('SPAN');
+
+		destroyVM(vm);
 	});
 
 	it('should show toast when click trigger', () => {
@@ -20,5 +22,7 @@ describe('Clipboard', () => {
 		const trigger = vm.$el;
 		trigger.click();
 		expect(document.querySelector('.vc-message')).to.exist;
+
+		destroyVM(vm);
 	});
 });

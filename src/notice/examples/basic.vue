@@ -2,16 +2,30 @@
 	<div>
 		<h3>无图标</h3>
 		<div style="margin-bottom: 12px">
-			<vc-button :wait="0" @click="handleClick('open')">Normal</vc-button>
-			<vc-button :wait="0" @click="handleClickTitle('open')">仅标题</vc-button>
+			<vc-button :wait="0" @click="handleClick('open')">
+				Normal
+			</vc-button>
+			<vc-button :wait="0" @click="handleClickTitle('open')">
+				仅标题
+			</vc-button>
 		</div>
 		<h3>有图标</h3>
 		<div>
-			<vc-button :wait="0" @click="handleClick('success')">成功的提示</vc-button>
-			<vc-button :wait="0" @click="handleClick('error')">错误的提示</vc-button>
-			<vc-button :wait="0" @click="handleClick('warn')">警告的提示</vc-button>
-			<vc-button :wait="0" @click="handleClickClose('info')">手动关闭的提示</vc-button>
-			<vc-button :wait="0" @click="handleClickrender">根据render函数渲染</vc-button>
+			<vc-button :wait="0" @click="handleClick('success')">
+				成功的提示
+			</vc-button>
+			<vc-button :wait="0" @click="handleClick('error')">
+				错误的提示
+			</vc-button>
+			<vc-button :wait="0" @click="handleClick('warn')">
+				警告的提示
+			</vc-button>
+			<vc-button :wait="0" @click="handleClickClose('info')">
+				手动关闭的提示
+			</vc-button>
+			<vc-button :wait="0" @click="handleClickrender">
+				根据render函数渲染
+			</vc-button>
 		</div>
 	</div>
 </template>

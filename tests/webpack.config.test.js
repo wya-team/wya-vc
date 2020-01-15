@@ -1,5 +1,5 @@
 const path = require('path');
-const nodeExternals = require('webpack-node-externals');
+// const nodeExternals = require('webpack-node-externals');
 const VueLoaderPlugin = require('vue-loader/lib/plugin');
 const ProgressBarPlugin = require('progress-bar-webpack-plugin');
 

@@ -7,7 +7,9 @@
 		/>
 		<br>
 		<br>
-		<div @click="handleClick">直接调用</div>
+		<div @click="handleClick">
+			直接调用
+		</div>
 		<br>
 		<br>
 		<vcm-cascader-view

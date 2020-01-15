@@ -47,6 +47,7 @@ export const createComponent = (wrapper, propsData, options = {}) => {
  */
 
 export const destroyVM = (vm) => {
+	if (!vm) return;
 	vm.$destroy && vm.$destroy();
 	vm.$el 
 		&& vm.$el.parentNode 
@@ -104,6 +105,19 @@ export const triggerClick = (el, ...opts) => {
 export const triggerKeyDown = (el, keyCode) => {
 	const evt = document.createEvent('Events');
 	evt.initEvent('keydown', true, true);
+	evt.keyCode = keyCode;
+	el.dispatchEvent(evt);
+};
+
+/**
+ * 触发 keyup 事件
+ * @param {Element} el
+ * @param {keyCode} int
+ */
+
+export const triggerKeyUp = (el, keyCode) => {
+	const evt = document.createEvent('Events');
+	evt.initEvent('keyup', true, true);
 	evt.keyCode = keyCode;
 	el.dispatchEvent(evt);
 };

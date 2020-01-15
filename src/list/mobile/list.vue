@@ -1,6 +1,6 @@
 <template>
 	<div :class="{ 'is-border': border }" class="vcm-list">
-		<slot/>
+		<slot />
 	</div>
 </template>
 <script>
@@ -34,7 +34,7 @@ export default {
 };
 </script>
 <style lang="scss">
-@import '../../style/index.scss';
+@import '../../style/vars.scss';
 @include block(vcm-list) {
 	@include when(border) {
 		@include commonBorder1PX(top);

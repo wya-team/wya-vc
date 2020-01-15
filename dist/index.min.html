@@ -1,0 +1,23 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<meta charset="UTF-8">
+	<title>Document</title>
+	<link rel="stylesheet" href="../lib/vc.min.css"></link>
+</head>
+<body>
+	<h1>除vue以外的资源</h1>
+	<div id="app"></div>
+	<script src="https://cdn.jsdelivr.net/npm/vue@2.6.8/dist/vue.js"></script>
+	<script src="../lib/vc.min.js"></script>
+	<script>
+		let vm = new Vue({
+			el: '#app',
+			data: {
+				val: '222'
+			},
+			template: '<vc-editor style="width: 100%"/>'
+		});
+	</script>
+</body>
+</html>

@@ -1,0 +1,122 @@
+@import '../style/vars.scss';
+
+@include block(vc-tree) {
+	position: relative;
+	cursor: default;
+	background: #fff;
+	color: #666;
+
+	@include element(empty-block) {
+		position: relative;
+		min-height: 60px;
+		text-align: center;
+		width: 100%;
+		height: 100%;
+	}
+
+	@include element(empty-text) {
+		position: absolute;
+		left: 50%;
+		top: 50%;
+		transform: translate(-50%, -50%);
+		color: #999;
+	}
+
+	@include element(drop-indicator) {
+		position: absolute;
+		left: 0;
+		right: 0;
+		height: 1px;
+		background-color: #409eff;
+	}
+}
+
+@include block(vc-tree-node) {
+	white-space: nowrap;
+	outline: none;
+	&:focus { /* focus */
+		> .vc-tree-node__content {
+			background-color: #f5f7fa;
+		}
+	}
+
+	@include when(drop-inner) {
+		> .vc-tree-node__content .vc-tree-node__label {
+			background-color: #409eff;
+			color: #fff;
+		}
+	}
+
+	@include element(content) {
+		display: flex;
+		align-items: center;
+		height: 26px;
+		cursor: pointer;
+
+		& > .vc-tree-node__expand-icon {
+			padding: 6px;
+		}
+		& > .vc-checkbox {
+			margin-right: 8px;
+		}
+		&:hover {
+			background-color: #f5f7fa;
+		}
+
+		.vc-tree.is-dragging & {
+			cursor: move;
+
+			& * {
+				pointer-events: none;
+			}
+		}
+
+		.vc-tree.is-dragging.is-drop-not-allow & {
+			cursor: not-allowed;
+		}
+	}
+
+	@include element(expand-icon) {
+		cursor: pointer;
+		color: #666;
+		font-size: 12px;
+		.vc-icon {
+			transform: rotate(90deg);
+			transition: transform 0.2s ease-in-out;
+		}
+
+		&.is-expand {
+			.vc-icon {
+				transform: rotate(180deg);
+			}
+		}
+
+		&.is-leaf {
+			color: transparent;
+			cursor: default;
+		}
+	}
+
+	@include element(label) {
+		font-size: 14px;
+	}
+
+	@include element(loading-icon) {
+		margin-right: 8px;
+		font-size: 14px;
+		color: #999;
+	}
+
+	& > .vc-tree-node__children {
+		overflow: hidden;
+		background-color: transparent;
+	}
+
+	&.is-expanded > .vc-tree-node__children {
+		display: block;
+	}
+}
+
+.vc-tree--highlight-current .vc-tree-node.is-current > .vc-tree-node__content {
+	background-color: mix(#fff, #409eff, 92%);
+}

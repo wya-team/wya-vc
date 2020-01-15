@@ -8,8 +8,8 @@
 		@visible-change="handleVisibleChange"
 	>
 		<span>
-			<slot/>
-			<vc-icon :style="{ 'color': !isAllSelected ? '#ccc' : 'blue' }" type="filter"/>
+			<slot />
+			<vc-icon :style="{ 'color': !isAllSelected ? '#ccc' : 'blue' }" type="filter" />
 		</span>
 		<template #list>
 			<vc-dropdown-menu>
@@ -36,7 +36,9 @@
 					</vc-checkbox-group>
 				</vc-dropdown-item>
 				<vc-dropdown-item :closable="false">
-					<vc-button @click="visible = false">取消</vc-button>
+					<vc-button @click="visible = false">
+						取消
+					</vc-button>
 					<vc-button
 						type="primary"
 						@click="handleConfirm"

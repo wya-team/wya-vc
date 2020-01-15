@@ -14,7 +14,9 @@
 			<div>这是一个容器下的滚动</div>
 		</template>
 		<template #default="{ it }">
-			<div style="padding: 20px">{{ it }}</div>
+			<div style="padding: 20px">
+				{{ it }}
+			</div>
 		</template>
 	</vc-pull-scroll>
 </template>

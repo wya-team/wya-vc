@@ -7,8 +7,8 @@
 		<vcm-imgs-preview :data-source="dataSource">
 			<template #row="it">
 				<img 
-					:src="it.src" 
 					:key="it.index" 
+					:src="it.src" 
 					:style="{ width: '100px', height: '100px', borderRadius: '20px' }"
 					@click="it.show"
 				>

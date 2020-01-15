@@ -2,7 +2,7 @@
  * imgs-picker的核心js
  */
 import { Device } from '@wya/utils';
-import Core, { Func } from './core.vue';
+import Core, { Func } from './core';
 import Customer from '../customer/index';
 import Icon from '../icon/index';
 import { VcInstance } from '../vc/index';

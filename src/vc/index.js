@@ -1,7 +1,3 @@
-/**
- * 组件库设计完毕，此css会被移除
- */
-import 'iview/dist/styles/iview.css';
 import VcManager from './manager';
 
 export { default as VcBasic } from './basic';

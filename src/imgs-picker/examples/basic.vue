@@ -15,8 +15,10 @@
 				@error="handleError"
 			/>
 		</vc-form-item>
-		<div @click="handleSubmit">提交</div>
-	</vc-form >
+		<div @click="handleSubmit">
+			提交
+		</div>
+	</vc-form>
 </template>
 <script>
 import { ajax } from '@wya/http';

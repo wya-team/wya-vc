@@ -1,1 +1,1 @@
-export { default } from './message';
+export { default } from './message-manager';

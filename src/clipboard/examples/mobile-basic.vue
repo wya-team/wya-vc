@@ -13,7 +13,9 @@
 		<br>
 		<br>
 		<br>
-		<vcm-clipboard :value="msg">简洁版复制</vcm-clipboard>
+		<vcm-clipboard :value="msg">
+			简洁版复制
+		</vcm-clipboard>
 	</div>
 </template>
 <script>

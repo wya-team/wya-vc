@@ -1,7 +1,7 @@
 <template>
 	<vc-popover 
-		v-bind="$attrs"
-		v-model="isActive" 
+		v-model="isActive"
+		v-bind="$attrs" 
 		:arrow="arrow" 
 		:trigger="trigger"
 		:tag="tag"
@@ -54,7 +54,7 @@
 		</vc-input>
 		<template #content>
 			<div class="vc-tree-select__content">
-				<div v-if="search" class="vc-tree-select__search">
+				<div v-if="searchable" class="vc-tree-select__search">
 					<vc-input-search 
 						v-model="searchValue" 
 						:placeholder="searchPlaceholder"
@@ -163,7 +163,7 @@ export default {
 			default: 1,
 			validator: v => v >= 1,
 		},
-		search: {
+		searchable: {
 			type: Boolean,
 			default: false
 		},
@@ -291,7 +291,7 @@ export default {
 </script>
 
 <style lang='scss'>
-@import '../style/index.scss';
+@import '../style/vars.scss';
 
 $block: vc-tree-select;
 

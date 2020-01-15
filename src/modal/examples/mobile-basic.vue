@@ -18,8 +18,10 @@
 			@cancel="handleCancel"
 			@ok="handleOk"
 		>
-			<div @click="handleClick4">portal: 确定，取消</div>
-			<vcm-input v-model="value"/>
+			<div @click="handleClick4">
+				portal: 确定，取消
+			</div>
+			<vcm-input v-model="value" />
 		</vcm-modal>
 		<vcm-modal 
 			v-model="visible3"
@@ -32,12 +34,24 @@
 			@cancel="handleCancel"
 			@ok="handleOk"
 		/>
-		<div @click="handleClick1">normal: 基本</div>		
-		<div @click="handleClick2">normal: 自定义slot content</div>
-		<div @click="handleClick3">normal: 1个按钮</div>
-		<div @click="handleClick4">portal: 确定，取消</div>
-		<div @click="handleClick5">portal: 多个按钮</div>
-		<div @click="handleClick6">portal: operation</div>
+		<div @click="handleClick1">
+			normal: 基本
+		</div>		
+		<div @click="handleClick2">
+			normal: 自定义slot content
+		</div>
+		<div @click="handleClick3">
+			normal: 1个按钮
+		</div>
+		<div @click="handleClick4">
+			portal: 确定，取消
+		</div>
+		<div @click="handleClick5">
+			portal: 多个按钮
+		</div>
+		<div @click="handleClick6">
+			portal: operation
+		</div>
 	</div>
 </template>
 <script>

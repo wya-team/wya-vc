@@ -2,7 +2,7 @@
 <template>
 	<div style="padding: 20px; display: flex; flex-direction: column-reverse;">
 		<!-- 组件展示 -->
-		<vc-tpl v-bind="attrs" v-on="hooks"/>
+		<vc-tpl v-bind="attrs" v-on="hooks" />
 		<br>
 		<!-- 控制区域 -->
 		<div>

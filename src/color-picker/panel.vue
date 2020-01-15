@@ -1,14 +1,15 @@
 <template>
 	<div :style="{ background: background }" class="vc-color-picker-panel">
-		<div class="vc-color-picker-panel__white"/>
-		<div class="vc-color-picker-panel__black"/>
+		<div class="vc-color-picker-panel__white" />
+		<div class="vc-color-picker-panel__black" />
 		<div
 			:style="{
 				top: `${cursorTop}px`,
 				left: `${cursorLeft}px`
 			}" 
-			class="vc-color-picker-panel__cursor">
-			<div/>
+			class="vc-color-picker-panel__cursor"
+		>
+			<div />
 		</div>
 	</div>
 </template>
@@ -86,7 +87,7 @@ export default {
 </script>
 
 <style lang="scss">
-@import '../style/index.scss';
+@import '../style/vars.scss';
 $block: vc-color-picker-panel;
 
 @include block($block) {

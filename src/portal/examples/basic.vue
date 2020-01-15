@@ -18,10 +18,14 @@
 
 		<vc-button 
 			@click="handleTestingStart"
-		>压力测试</vc-button>
+		>
+			压力测试
+		</vc-button>
 		<vc-button 
 			@click="handleTestingEnd"
-		>结束测试</vc-button>
+		>
+			结束测试
+		</vc-button>
 
 		<vc-portal-view>
 			<div>placeholder</div>
@@ -36,7 +40,6 @@
 				<p>{{ random }}</p>
 			</template>
 		</vc-portal-view>
-		
 	</div>
 </template>
 <script>

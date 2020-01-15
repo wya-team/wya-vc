@@ -19,39 +19,51 @@
 			class="vc-page__item"
 			title="1"
 			@click="handleChangePage(1)"
-		><span>1</span></div>
+		>
+			<span>1</span>
+		</div>
 		<div 
 			v-if="currentPage > 5" 
 			title="向前 5 页" 
 			class="vc-page__item is-jump"
 			@click="handleFastPre"
-		>...</div>
+		>
+			...
+		</div>
 		<div 
 			v-if="currentPage === 5" 
 			:title="currentPage - 3"
 			class="vc-page__item" 
 			@click="handleChangePage(currentPage - 3)"
-		><span>{{ currentPage - 3 }}</span></div>
+		>
+			<span>{{ currentPage - 3 }}</span>
+		</div>
 
 		<div 
 			v-if="currentPage - 2 > 1" 
 			:title="currentPage - 2"
 			class="vc-page__item" 
 			@click="handleChangePage(currentPage - 2)"
-		><span>{{ currentPage - 2 }}</span></div>
+		>
+			<span>{{ currentPage - 2 }}</span>
+		</div>
 		<div 
 			v-if="currentPage - 1 > 1" 
 			:title="currentPage - 1"
 			class="vc-page__item" 
 			@click="handleChangePage(currentPage - 1)"
-		><span>{{ currentPage - 1 }}</span></div>
+		>
+			<span>{{ currentPage - 1 }}</span>
+		</div>
 	
 		<!-- 当前页 -->
 		<div 
 			v-if="currentPage != 1 && currentPage != totalPage" 
 			:title="currentPage"
 			class="vc-page__item is-active"
-		><span>{{ currentPage }}</span></div>
+		>
+			<span>{{ currentPage }}</span>
+		</div>
 		<!-- 分割线 -->
 
 		<div 
@@ -59,32 +71,42 @@
 			:title="currentPage + 1"
 			class="vc-page__item" 
 			@click="handleChangePage(currentPage + 1)"
-		><span>{{ currentPage + 1 }}</span></div>
+		>
+			<span>{{ currentPage + 1 }}</span>
+		</div>
 		<div 
 			v-if="currentPage + 2 < totalPage" 
 			:title="currentPage + 2"
 			class="vc-page__item" 
 			@click="handleChangePage(currentPage + 2)"
-		><span>{{ currentPage + 2 }}</span></div>
+		>
+			<span>{{ currentPage + 2 }}</span>
+		</div>
 		<div 
 			v-if="totalPage - currentPage === 4" 
 			:title="currentPage + 3"
 			class="vc-page__item" 
 			@click="handleChangePage(currentPage + 3)"
-		><span>{{ currentPage + 3 }}</span></div>
+		>
+			<span>{{ currentPage + 3 }}</span>
+		</div>
 		<div 
 			v-if="totalPage - currentPage >= 5" 
 			title="向后 5 页"
 			class="vc-page__item is-jump"
 			@click="handleFastNext"
-		>...</div>
+		>
+			...
+		</div>
 		<div 
 			v-if="totalPage > 1" 
 			:title="totalPage" 
 			:class="{'is-active': currentPage == totalPage }"
 			class="vc-page__item"
 			@click="handleChangePage(totalPage)"
-		><span>{{ totalPage }}</span></div>
+		>
+			<span>{{ totalPage }}</span>
+		</div>
 		<div
 			:class="{'is-disabled': currentPage == totalPage }"
 			title="next"
@@ -109,7 +131,9 @@
 						:key="item" 
 						:value="item"
 						:label="item"
-					>{{ item }} 条/页</vc-option>
+					>
+						{{ item }} 条/页
+					</vc-option>
 				</vc-select>
 			</div>
 			<div v-if="showElevator">
@@ -278,7 +302,7 @@ export default {
 };
 </script>
 <style lang="scss">
-@import '../style/index.scss';
+@import '../style/vars.scss';
 $block: vc-page;
 $size: 28px;
 

@@ -1,1 +1,1 @@
-export { default } from './date-picker.vue';
+export { default } from './picker/date-picker';

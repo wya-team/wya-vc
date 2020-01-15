@@ -1,8 +1,14 @@
 <template>
 	<div style="height: 2000px">
-		<div @click="handleClick('normal', 15)">点击</div>
-		<div @click="handleClick('loading', 1)">点击加载中</div>
-		<div @click="handleClick('loading', 0)">点击加载中, 不销毁</div>
+		<div @click="handleClick('normal', 15)">
+			点击
+		</div>
+		<div @click="handleClick('loading', 1)">
+			点击加载中
+		</div>
+		<div @click="handleClick('loading', 0)">
+			点击加载中, 不销毁
+		</div>
 	</div>
 </template>
 <script>

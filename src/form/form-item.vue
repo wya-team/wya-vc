@@ -9,7 +9,9 @@
 			<div class="vc-form-item__content">
 				<slot />
 				<vc-transition-fade>
-					<div v-if="showError" class="vc-form-item__tip">{{ validateMessage }}</div>
+					<div v-if="showError" class="vc-form-item__tip">
+						{{ validateMessage }}
+					</div>
 				</vc-transition-fade>
 			</div>
 		</div>
@@ -33,7 +35,7 @@ export default {
 </script>
 
 <style lang='scss'>
-@import '../style/index.scss';
+@import '../style/vars.scss';
 
 $block: vc-form-item;
 

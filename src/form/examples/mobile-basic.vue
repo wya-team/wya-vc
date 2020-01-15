@@ -18,7 +18,7 @@
 			<vcm-input v-model="formValidate.input" type="text" placeholder="Enter something..." clearable />
 		</vcm-form-item>
 		<vcm-form-item prop="input" label="input">
-			<vcm-input v-model="formValidate.input" type="text" placeholder="Enter something..." right/>
+			<vcm-input v-model="formValidate.input" type="text" placeholder="Enter something..." right />
 		</vcm-form-item>
 		<vcm-form-item prop="array" label="array">
 			<vcm-array v-model="formValidate.array" />
@@ -32,17 +32,25 @@
 			:prop="'items.' + index + '.value'"
 			:rules="{required: true, message: 'Item ' + item.index +' can not be empty', trigger: 'change'}"
 		>
-			<vcm-tpl v-model="item.value" type="text" placeholder="Enter something..." >
+			<vcm-tpl v-model="item.value" type="text" placeholder="Enter something...">
 				<span @click="handleRemove(index)">Delete</span>
 			</vcm-tpl>
 		</vcm-form-item>
 		<vcm-form-item>
-			<div @click="handleAdd">Add item</div>
+			<div @click="handleAdd">
+				Add item
+			</div>
 		</vcm-form-item>
 		<vcm-form-item>
-			<vcm-button type="primary" @click="handleSubmit('formValidate')">Submit</vcm-button>
-			<vcm-button style="margin-left: 8px" @click="handleReset('formValidate')">Reset</vcm-button>
-			<vcm-button style="margin-left: 8px" @click="visible = !visible">显示/隐藏</vcm-button>
+			<vcm-button type="primary" @click="handleSubmit('formValidate')">
+				Submit
+			</vcm-button>
+			<vcm-button style="margin-left: 8px" @click="handleReset('formValidate')">
+				Reset
+			</vcm-button>
+			<vcm-button style="margin-left: 8px" @click="visible = !visible">
+				显示/隐藏
+			</vcm-button>
 		</vcm-form-item>
 	</vcm-form>
 </template>

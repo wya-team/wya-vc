@@ -1,13 +1,17 @@
 <template>
 	<div>
-		<vc-button @click="lazy = !lazy">lazy {{ lazy }}</vc-button>
-		<vc-button @click="checkStrictly = !checkStrictly">单选独立 {{ checkStrictly }}</vc-button>
+		<vc-button @click="lazy = !lazy">
+			lazy {{ lazy }}
+		</vc-button>
+		<vc-button @click="checkStrictly = !checkStrictly">
+			单选独立 {{ checkStrictly }}
+		</vc-button>
 		<vc-tree 
-			v-model="value"
-			:data-source="data"
-			:load-data="loadData" 
-			:lazy="lazy"
 			:key="lazy"
+			v-model="value"
+			:data-source="data" 
+			:load-data="loadData"
+			:lazy="lazy"
 			:check-strictly="checkStrictly"
 			:render-content="renderContent"
 			show-checkbox 

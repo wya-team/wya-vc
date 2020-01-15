@@ -1,9 +1,9 @@
 <template>
 	<vcm-transtion-fade tag="div" class="vcm-sort-list" group>
 		<component 
-			v-for="(item, index) in currentValue" 
+			:is="tag" 
+			v-for="(item, index) in currentValue"
 			:key="typeof item === 'object' ? item[valueKey] : item"
-			:is="tag"
 			:draggable="getDraggable(item)"
 			class="vcm-sort-list__item"
 			@touchmove.prevent
@@ -20,6 +20,7 @@
 <script>
 /**
  * 移动端兼容dnd
+ * 不用当做第三方库按需加载
  */
 import { polyfill } from "mobile-drag-drop";
 import { scrollBehaviourDragImageTranslateOverride } from "mobile-drag-drop/scroll-behaviour";
@@ -64,7 +65,7 @@ export default {
 </script>
 <style lang="scss">
 
-@import '../../style/index.scss';
+@import '../../style/vars.scss';
 
 @include block(vcm-sort-list) {
 	@include commonFlex();

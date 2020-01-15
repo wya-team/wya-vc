@@ -1,7 +1,11 @@
 <template>
 	<div style="background: #f7f6f6">
-		<vc-button @click="animated = !animated"> animated: {{ animated }}</vc-button>
-		<vc-button @click="type = type === 'line' ? 'card' : 'line'"> type: {{ type }}</vc-button>
+		<vc-button @click="animated = !animated">
+			animated: {{ animated }}
+		</vc-button>
+		<vc-button @click="type = type === 'line' ? 'card' : 'line'">
+			type: {{ type }}
+		</vc-button>
 		<br>
 		<br>
 		<vc-tabs 
