@@ -1,10 +1,12 @@
 import Vue from 'vue';
 import Upload from '../../upload';
+import Message from '../../message';
 
 class ImageExtend {
 	constructor(editor, options = {}) {
 		this.editor = editor;
 		this.options = options;
+		this.spin = null;
 		this.init();
 	}
 
@@ -30,32 +32,65 @@ class ImageExtend {
 		this.vm.$on('file-start', this.handleUploadStart);
 		this.vm.$on('file-success', this.handleUploadSuccess);
 		this.vm.$on('complete', this.handleUploadComplete);
+		this.vm.$on('file-error', this.handleUploadError);
 	}
 
 	getLength = () => {
 		return (this.editor.getSelection() || {}).length || this.editor.getLength();
 	}
 
-	handleUploadStart = () => {
-		// TODO
+	handleUploadStart = (e) => {
+		this.handleChangeLoadingState('');
 	}
 
 	handleUploadSuccess = (res) => {
 		this.insert(res.data.url);
+		this.handleChangeLoadingState('none');
 	}
 
 	handleUploadComplete = () => {
-		// TODO
+		// Todo 拖拽和粘贴时file 没有total属性，不会触发此回调
+	}
+
+	handleUploadError = (e) => {
+		this.handleChangeLoadingState('none');
+		Message.info(e.msg);
+	}
+
+	handleChangeLoadingState = (state) => {
+		this.spin.style.display = state;
 	}
 
 	handlePaste = (e) => {
+		this.handleSearchSpin(e.target);
+		
 		if (e.clipboardData && e.clipboardData.files && e.clipboardData.files.length) {
 			e.preventDefault();
 			this.readFiles(e.clipboardData.files);
 		}
 	}
 
+	handleSearchSpin(node) {
+		let temp = this.getParent(node, 'vc-quill-editor');
+		temp && Array.from(temp.children).forEach(it => {
+			if (it.className.includes('vc-quill-editor__spin')) {
+				this.spin = it;
+			}
+		});
+	}
+
+	// 对多个的editor组件时找到对应的父级
+	getParent(currentNode, targetParent) {
+		if (currentNode.parentNode.className.includes(targetParent)) {
+			return currentNode.parentNode;
+		} else {
+			return this.getParent(currentNode.parentNode, targetParent);
+		}
+	}
+
 	handleDrop = (e) => {
+		this.handleSearchSpin(e.target);
+		
 		e.preventDefault();
 		if (e.dataTransfer && e.dataTransfer.files && e.dataTransfer.files.length) {
 			if (document.caretRangeFromPoint) {
