@@ -7,36 +7,23 @@ describe('Modal', () => {
 	afterEach(() => {
 		let el = document.querySelectorAll('.vc-modal');
 		vm && destroyVM(vm);
-		if (!el) return;
-		setTimeout(() => {
-			el.forEach((res, i) => {
-				if (el[i].parentNode) {
-					el[i].parentNode.removeChild(el[i]);
-				}
-				if (el[i].__vue__) {
-					el[i].__vue__.$destroy();
-				}
-			});
-		}, 500);
 	});
 	it('basic', () => {
 		expect(!!Modal).to.equal(true);
 		expect(!!MModal).to.equal(true);
 	});
-	it('创建多种mode的弹框', (done) => {
+	it('创建多种mode的弹框', () => {
 		Modal.info();
 		Modal.success();
 		Modal.error({
 			size: 'large'
 		});
 		Modal.warning();
-		setTimeout(() => {
-			expect(document.querySelector('.is-success')).to.exist;
-			expect(document.querySelector('.is-info')).to.exist;
-			expect(document.querySelector('.is-error')).to.exist;
-			expect(document.querySelector('.is-warning')).to.exist;
-			done();
-		}, 50);
+		expect(document.querySelector('.is-success')).to.exist;
+		expect(document.querySelector('.is-info')).to.exist;
+		expect(document.querySelector('.is-error')).to.exist;
+		expect(document.querySelector('.is-warning')).to.exist;
+		Modal.destroy();
 	});
 	it('自定义header和footer', () => {
 		vm = createVue({
