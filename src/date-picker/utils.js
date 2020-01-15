@@ -151,7 +151,7 @@ export const TYPE_VALUE_RESOLVER_MAP = {
 		formatterText: RANGE_FORMATTER,
 		formatter: (value, format, RANGE_SEPARATOR) => {
 			let rangeDate = RANGE_FORMATTER(value, format, RANGE_SEPARATOR);
-			return rangeDate ? rangeDate.split(RANGE_SEPARATOR) : '';
+			return rangeDate ? rangeDate.split(RANGE_SEPARATOR) : [];
 		},
 		parser: RANGE_PARSER
 	},
@@ -159,7 +159,7 @@ export const TYPE_VALUE_RESOLVER_MAP = {
 		formatterText: RANGE_FORMATTER,
 		formatter: (value, format, RANGE_SEPARATOR) => {
 			let rangeDate = RANGE_FORMATTER(value, format, RANGE_SEPARATOR);
-			return rangeDate ? rangeDate.split(RANGE_SEPARATOR) : '';
+			return rangeDate ? rangeDate.split(RANGE_SEPARATOR) : [];
 		},
 		parser: RANGE_PARSER
 	},
@@ -167,7 +167,7 @@ export const TYPE_VALUE_RESOLVER_MAP = {
 		formatterText: RANGE_FORMATTER,
 		formatter: (value, format, RANGE_SEPARATOR) => {
 			let rangeDate = RANGE_FORMATTER(value, format, RANGE_SEPARATOR);
-			return rangeDate ? rangeDate.split(RANGE_SEPARATOR) : '';
+			return rangeDate ? rangeDate.split(RANGE_SEPARATOR) : [];
 		},
 		parser: RANGE_PARSER
 	},
@@ -185,7 +185,7 @@ export const TYPE_VALUE_RESOLVER_MAP = {
 		formatterText: RANGE_FORMATTER,
 		formatter: (value, format, RANGE_SEPARATOR) => {
 			let rangeDate = RANGE_FORMATTER(value, format, RANGE_SEPARATOR);
-			return rangeDate ? rangeDate.split(RANGE_SEPARATOR) : '';
+			return rangeDate ? rangeDate.split(RANGE_SEPARATOR) : [];
 		},
 		parser: RANGE_PARSER
 	},
