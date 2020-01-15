@@ -233,7 +233,7 @@ export default {
 		handleOK(value) {
 			this.isActive = false;
 			const date = this.formatDate(value);
-			this.sync(['ok', 'change'], date);
+			this.sync(['change', 'ok'], date);
 		},
 		handleClose() {
 			let val = this.parseValue(this.value);
