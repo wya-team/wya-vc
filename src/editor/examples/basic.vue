@@ -20,6 +20,7 @@
 	</vc-form >
 </template>
 <script>
+import { random } from 'lodash';
 import Form from '../../form';
 import Input from '../../input';
 import Button from '../../button';
@@ -33,9 +34,9 @@ VcInstance.init({
 		URL_UPLOAD_FILE_POST: 'https://api.github.com/users/wya-team',
 		onPostBefore: ({ options }) => {
 			return new Promise((resolve, reject) => {
-				// if (random(0, 10) > 10) {
-				// 	throw new Error('异常处理');
-				// }
+				if (random(0, 10) > 10) {
+					throw new Error('异常处理');
+				}
 				resolve({
 					...options,
 					param: {

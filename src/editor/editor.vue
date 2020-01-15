@@ -12,6 +12,7 @@
 						@file-success="handleImgSuccess"
 						@file-start="handleUploadStart"
 						@file-error="handleUploadError"
+						@complete="handleComplete"
 					>
 						<vc-icon type="image" style="font-size: 15px" @click="handleUploadImg" />
 					</vc-upload>
@@ -23,6 +24,7 @@
 						@file-success="handleVideoSuccess"
 						@file-start="handleUploadStart"
 						@file-error="handleUploadError"
+						@complete="handleComplete"
 					>
 						<vc-icon type="video" style="font-size: 16px" />
 					</vc-upload>
@@ -59,6 +61,7 @@ import { VcInstance } from '../vc/index';
 import { registVideoBlot } from './extends/video-blot';
 import ImageExtend from './extends/image-extend';
 import Spin from '../spin';
+import Message from '../message';
 
 export default {
 	name: "vc-editor",
@@ -253,7 +256,6 @@ export default {
 			this.editor.insertEmbed(length, 'image', res.data.url);
 			// 光标向后移动一位
 			this.editor.setSelection(length + 1);
-			this.loading = false;
 		},
 		handleVideoSuccess(res) {
 			let length = this.getLength();
@@ -271,9 +273,14 @@ export default {
 		handleUploadStart() {
 			this.loading = true;
 		},
-		handleUploadError() {
+		handleUploadError(e) {
+			this.loading = false;
+			Message.error(e.msg);
+		},
+		handleComplete() {
 			this.loading = false;
 		},
+
 		handlePreview(e) {
 			let { ImageBlot, Parchment } = this;
 			let image = Parchment.find(e.target);
@@ -348,6 +355,7 @@ export default {
 $block: vc-quill-editor;
 
 @include block($block) {
+	position: relative;
 	color: #333 !important;
 	display: flex;
 	flex-direction: column;
