@@ -237,7 +237,9 @@ export default {
 		},
 		handleClose() {
 			let val = this.parseValue(this.value);
-			if (!isEqualWith(this.currentValue, val)) {
+			// 是否有传value值，如果没传currentValue不回滚
+			let isSetValueProp = this.$options.propsData.hasOwnProperty('value'); /* eslint-disable-line */
+			if (!isEqualWith(this.currentValue, val) && isSetValueProp) {
 				this.currentValue = value2Array(val);
 			}
 			this.$emit('close');

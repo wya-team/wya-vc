@@ -15,6 +15,16 @@
 			@clear="handleClear"
 		/>
 		<vc-date-picker 
+			:options="options" 
+			:start-date="new Date('2019', '10', '11')"
+			:type="type"
+			clearable
+			confirm
+			format="YYYY-MM-DD"
+			placeholder="Select date" 
+			@change="handleChange"
+		/>
+		<vc-date-picker 
 			:value="valueRange"
 			:split-panels="false" 
 			:options="options" 
