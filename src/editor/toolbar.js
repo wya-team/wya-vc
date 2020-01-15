@@ -33,7 +33,7 @@ export default {
 			type: [Array, Object, String],
 			default: '#toolbar'
 		},
-		toolbarId: {
+		uid: {
 			type: String,
 			default: 'toolbar'
 		},
@@ -56,10 +56,10 @@ export default {
 	},
 	created() {
 		this.fontSize = [];
-		this.uuid = getUid('editor-toolbar');
+		this.styleId = getUid('editor-toolbar-style');
 	},
 	destroyed() {
-		Load.removeCSSCode(this.uuid);
+		Load.removeCSSCode(this.styleId);
 	},
 	render(h) {
 		const { buttons } = this;
@@ -110,7 +110,7 @@ export default {
 										}`;
 								return pre;
 							}, '');
-							Load.cssCode(code, { id: this.uuid });
+							Load.cssCode(code, { id: this.styleId });
 						}
 						
 						return (
@@ -131,7 +131,7 @@ export default {
 		};
 
 		return (
-			<div id={`${this.toolbarId}`}>
+			<div id={`${this.uid}`}>
 				{renderGroup(buttons)}
 				{this.$slots.extend}
 			</div>

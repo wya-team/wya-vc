@@ -31,8 +31,8 @@ class ImageExtend {
 		this.editor.root.addEventListener('drop', this.handleDrop, false);
 		this.vm.$on('file-start', this.handleUploadStart);
 		this.vm.$on('file-success', this.handleUploadSuccess);
-		this.vm.$on('complete', this.handleUploadComplete);
 		this.vm.$on('file-error', this.handleUploadError);
+		this.vm.$on('complete', this.handleUploadComplete);
 	}
 
 	getLength = () => {
@@ -45,16 +45,14 @@ class ImageExtend {
 
 	handleUploadSuccess = (res) => {
 		this.insert(res.data.url);
-		this.handleChangeLoadingState('none');
-	}
-
-	handleUploadComplete = () => {
-		// Todo 拖拽和粘贴时file 没有total属性，不会触发此回调
 	}
 
 	handleUploadError = (e) => {
-		this.handleChangeLoadingState('none');
 		Message.info(e.msg);
+	}
+
+	handleUploadComplete = () => {
+		this.handleChangeLoadingState('none');
 	}
 
 	handleChangeLoadingState = (state) => {
@@ -109,7 +107,7 @@ class ImageExtend {
 			if (!file.type.match(/^image\/(gif|jpe?g|a?png|svg|\.icon)/i)) {
 				return;
 			}
-			this.vm.post(file);
+			this.vm.uploadFiles([file]);
 		});
 	}
 
