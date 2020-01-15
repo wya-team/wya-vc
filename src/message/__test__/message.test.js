@@ -3,17 +3,6 @@ import Message from '../index';
 import MMessage from '../index.m';
 
 describe('Message', () => {
-	afterEach(() => {
-		const el = document.querySelector('.vc-message');
-		if (!el) return;
-		if (el.parentNode) {
-		  el.parentNode.removeChild(el);
-		}
-		if (el.__vue__) {
-		  el.__vue__.$destroy();
-		}
-	});
-	
 	it('basic', () => {
 		expect(!!Message).to.equal(true);
 	});
@@ -28,6 +17,7 @@ describe('Message', () => {
 		expect(messageWrapper).to.exist;
 		setTimeout(() => {
 			expect(messageWrapper.style.display).to.equal('none');
+			Message.destroy();
 			done();
 		}, 3000);
 	});
@@ -43,6 +33,7 @@ describe('Message', () => {
 		setTimeout(() => {
 			triggerEvent(document.querySelector('.vc-message__mask'), 'click');
 			expect(messageWrapper.style.display).to.not.equal('none');
+			Message.destroy();
 			done();
 		}, 1500);
 	});
@@ -55,6 +46,7 @@ describe('Message', () => {
 		const messageMask = document.querySelector('.vc-message__mask');
 		setTimeout(() => {
 			expect(messageMask).to.not.exist;
+			Message.destroy();
 			done();
 		}, 1500);
 	});
@@ -70,6 +62,7 @@ describe('Message', () => {
 		const message = document.querySelectorAll('.vc-message');
 		setTimeout(() => {
 			expect(message.length).to.equal(2);
+			Message.destroy();
 			done();
 		}, 1500);
 	});
@@ -77,12 +70,13 @@ describe('Message', () => {
 		Message.loading({
 			content: '啦啦啦，啦啦啦，我是买包的小行家',
 			mask: true,
-			duration: 1
+			duration: 0
 		});
 		setTimeout(() => {
 			const messageWrapper = document.querySelector('.vc-message__wrapper');
 			expect(messageWrapper).to.exist;
 			expect(messageWrapper.style.display).to.not.equal('none');
+			Message.destroy();
 			done();
 		}, 1500);
 	});
@@ -107,6 +101,7 @@ describe('Message', () => {
 			triggerEvent(document.querySelectorAll('.vc-icon')[1], 'click');
 			setTimeout(() => {
 				expect(messageWrapper.style.display).to.equal('none');
+				Message.destroy();
 				done();
 			}, 2000);
 		}, 1500);
