@@ -30,7 +30,7 @@ describe('Index', () => {
 		});
 
 		// 临时
-		console.log(JSON.stringify([...new Set(props.sort())], null, '\t'));
-		console.log(JSON.stringify(components, null, '\t'));
+		// console.log(JSON.stringify([...new Set(props.sort())], null, '\t'));
+		// console.log(JSON.stringify(components, null, '\t'));
 	});
 });
