@@ -1,4 +1,4 @@
-import { createVue, destroyVM } from '@tests/helper';
+import { createVue, destroyVM, wait } from '@tests/helper';
 import Echarts from '..';
 
 let getOptions = () => {
@@ -11,42 +11,38 @@ let getOptions = () => {
 	}
 
 	return {
-		polar: {
-			title: {
-				text: '极坐标双数值轴'
-			},
-			legend: {
-				data: ['line']
-			},
-			polar: {
-				center: ['50%', '54%']
-			},
-			tooltip: {
-				trigger: 'axis',
-				axisPointer: {
-					type: 'cross'
-				}
-			},
-			angleAxis: {
-				type: 'value',
-				startAngle: 0
-			},
-			radiusAxis: {
-				min: 0
-			},
-			series: [
-				{
-					coordinateSystem: 'polar',
-					name: 'line',
-					type: 'line',
-					showSymbol: false,
-					data
-				}
-			],
-			animationDuration: 2000
+		title: {
+			text: '极坐标双数值轴'
 		},
-		width: '400px',
-		height: '400px'
+		legend: {
+			data: ['line']
+		},
+		polar: {
+			center: ['50%', '54%']
+		},
+		tooltip: {
+			trigger: 'axis',
+			axisPointer: {
+				type: 'cross'
+			}
+		},
+		angleAxis: {
+			type: 'value',
+			startAngle: 0
+		},
+		radiusAxis: {
+			min: 0
+		},
+		series: [
+			{
+				coordinateSystem: 'polar',
+				name: 'line',
+				type: 'line',
+				showSymbol: false,
+				data
+			}
+		],
+		animationDuration: 2000
 	};
 };
 const DEFAULT_OPTIONS = getOptions();
@@ -56,7 +52,7 @@ describe('Echarts', () => {
 		expect(!!Echarts).to.equal(true);
 	});
 
-	it('options', () => {
+	it('options', async () => {
 		let vm = createVue({
 			render(h) {
 				return (
@@ -67,6 +63,8 @@ describe('Echarts', () => {
 			}
 		});
 
+		// echarts 按需加载需要花费一定时间
+		await wait(0.2);
 		destroyVM(vm);
 	});
 });

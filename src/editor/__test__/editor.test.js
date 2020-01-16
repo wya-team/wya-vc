@@ -2,11 +2,13 @@ import { createVue, createComponent, destroyVM, wait } from '@tests/helper';
 import Editor from '..';
 
 describe('Editor', () => {
-	it('basic', () => {
+	it('basic', async () => {
 		expect(!!Editor).to.equal(true);
 		const vm = createComponent(Editor, {});
 		expect(typeof vm).to.equal('object');
-		
+
+		// Quill 按需加载需要花费一定时间
+		await wait(0.2);
 		destroyVM(vm);
 	});
 
@@ -29,12 +31,12 @@ describe('Editor', () => {
 				};
 			}
 		});
-		let editor = vm.$refs.editor;
-		await wait(3);
-		editor.disabled = true;
-		editor.value = '<p>123</p>';
+		// Quill 按需加载需要花费一定时间
+		await wait(0.2);
+		vm.disabled = true;
+		vm.value = '<p>123</p>';
+		
 		await wait(0.1);
-
 		destroyVM(vm);
 	});
 });
