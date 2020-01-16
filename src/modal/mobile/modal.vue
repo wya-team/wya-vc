@@ -322,6 +322,8 @@ export default {
 		color: #666;
 		line-height: 1.5;
 		text-align: center;
+		word-break: break-all;
+		word-wrap: break-word;
 	}
 	@include element(button) {
 		position: relative;
