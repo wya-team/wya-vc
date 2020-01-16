@@ -25,8 +25,8 @@ describe('Textarea', () => {
 				'vc-textarea': Textarea
 			}
 		});
-		expect(document.querySelector('.vc-textarea')).to.exist;
-		expect(document.querySelector('.vc-textarea__indicator')).to.exist;
+		expect(vm.$refs.textarea.$el).to.exist;
+		expect(vm.$refs.textarea.$el.querySelector('.vc-textarea__indicator')).to.exist;
 		expect(vm.$refs.textarea.indicatorNum).to.equal('6/10');
 	});
 	it('bytes 两个字母算一个字节,indicator为true，还能输入多少字节的内容', () => {
@@ -45,8 +45,8 @@ describe('Textarea', () => {
 				'vc-textarea': Textarea
 			}
 		});
-		expect(document.querySelector('.vc-textarea')).to.exist;
-		expect(document.querySelector('.vc-textarea__indicator')).to.exist;
+		expect(vm.$refs.textarea.$el).to.exist;
+		expect(vm.$refs.textarea.$el.querySelector('.vc-textarea__indicator')).to.exist;
 		expect(vm.$refs.textarea.indicatorNum).to.equal('88/100');
 	});
 	it('textarea focus 和 blur', async () => {

@@ -81,7 +81,7 @@ describe('Message', () => {
 		}, 1500);
 	});
 	it('render 验证', (done) => {
-		Message.info({
+		let vm = Message.info({
 			content: h => {
 				return h('span', [
 					'This is created by ',
@@ -93,12 +93,12 @@ describe('Message', () => {
 			closable: true,
 			maskClosable: true
 		});
-		const messageWrapper = document.querySelector('.vc-message__wrapper');
-		const messageRender = document.querySelectorAll('a');
+		const messageWrapper = vm.$el.querySelector('.vc-message__wrapper');
+		const messageRender = vm.$el.querySelectorAll('a');
 		setTimeout(() => {
 			expect(messageRender.length).to.equal(1);
-			expect(document.querySelector('.vc-icon')).to.exist;
-			triggerEvent(document.querySelectorAll('.vc-icon')[1], 'click');
+			expect(vm.$el.querySelector('.vc-icon')).to.exist;
+			triggerEvent(vm.$el.querySelectorAll('.vc-icon')[1], 'click');
 			setTimeout(() => {
 				expect(messageWrapper.style.display).to.equal('none');
 				Message.destroy();
