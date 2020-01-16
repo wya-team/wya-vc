@@ -4,7 +4,7 @@
 			v-model="visible1"
 			:mask-closable="true"
 			title="标题1"
-			content="啦啦啦啦"
+			content="账号密码不一致，请重试"
 			@close="handleClose"
 			@cancel="handleCancel"
 			@ok="handleOk"
@@ -34,6 +34,14 @@
 			@cancel="handleCancel"
 			@ok="handleOk"
 		/>
+		<vcm-modal 
+			v-model="visible4"
+			:mask-closable="true"
+			content="账号密码不一致，请重试"
+			@close="handleClose"
+			@cancel="handleCancel"
+			@ok="handleOk"
+		/>
 		<div @click="handleClick1">
 			normal: 基本
 		</div>		
@@ -51,6 +59,9 @@
 		</div>
 		<div @click="handleClick6">
 			portal: operation
+		</div>	
+		<div @click="handleClick7">
+			normal: 无标题
 		</div>
 	</div>
 </template>
@@ -73,6 +84,7 @@ export default {
 			visible1: false,			
 			visible2: false,
 			visible3: false,
+			visible4: false
 		};
 	},
 	computed: {
@@ -158,6 +170,9 @@ export default {
 					}
 				]
 			});
+		},
+		handleClick7() {
+			this.visible4 = !this.visible4;
 		}
 	}
 };

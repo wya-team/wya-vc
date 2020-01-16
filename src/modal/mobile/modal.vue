@@ -22,18 +22,21 @@
 						</div>
 						<div 
 							v-if="content || $slots.default" 
+							:class="{ 'vcm-modal__no-title': !title }"
 							class="vcm-modal__content"
 						>
-							<p 
-								v-if="typeof content === 'string'"
+							<div 
+								v-if="$slots.default || typeof content === 'string'"
 								class="vcm-modal__html" 
-								v-html="content"
-							/>
+							>	
+								<p v-if="typeof content === 'string'" v-html="content" />
+								<slot #default />
+							</div>
+							
 							<vcm-customer 
 								v-else-if="typeof content === 'function'" 
 								:render="content" 
 							/>
-							<slot v-if="$slots.default" />
 						</div>
 
 						<!-- confirm -->
@@ -105,7 +108,7 @@ export default {
 		content: [String, Function, Boolean], // false 不显示头部
 		width: {
 			type: Number,
-			default: 275
+			default: 270
 		},
 		visible: {
 			type: Boolean,
@@ -290,7 +293,7 @@ export default {
 	}
 
 	@include element(header) {
-		padding: 21px 15px 15px 15px;
+		padding: 24px 15px 12px;
 	}
 	@include element(title) {
 		margin: 0;
@@ -299,13 +302,20 @@ export default {
 		color: #000;
 		text-align: center;
 		word-wrap: break-word;
-		font-weight: 400;
+		font-weight: bold;
 	}
 
 	@include element(content) { 
 		overflow-y: auto;
-		padding: 0 15px 15px 15px;
+		padding: 0 24px 25px;
 		position: relative;
+	}
+	@include element(no-title) {
+		padding-top: 32px;
+		padding-bottom: 32px;
+		.vcm-modal__html {
+			color: #000;
+		}
 	}
 	@include element(html) {
 		font-size: 15px;
@@ -317,7 +327,7 @@ export default {
 		position: relative;
 		flex: 1;
 		text-align: center;
-		color: #4787f2;
+		color: #108DE7;
 		font-size: 17px;
 		height: 50px;
 		line-height: 50px;
@@ -336,7 +346,7 @@ export default {
 			flex-direction: column;
 			@include element(button) { 
 				&:first-child {
-					color: #4787f2;
+					color: #108DE7;
 					&:before, &:after {
 						border: none;
 					}
@@ -348,7 +358,7 @@ export default {
 		}
 		@include when(alone) {
 			@include element(button) { 
-				color: #4787f2;
+				color: #108DE7;
 				&:first-child {
 					&:before, &:after {
 						border: none;
