@@ -214,9 +214,9 @@ export default {
 			if (!this.isConfirm && !this.isTime || this.changeOnSelect) { 
 				setTimeout(() => { this.isActive = false; }, 100); // 添加延迟，可以让使用者看到选中效果后再关闭弹层
 			}
-			const date = this.formatDate(value);
+			
 			this.currentValue = value;
-			(!this.isConfirm || this.changeOnSelect) && this.sync('change', date);
+			(!this.isConfirm || this.changeOnSelect) && this.sync('change', value);
 		},
 		handleIconClick(e) {
 			if (!this.showClear) return;
@@ -232,8 +232,7 @@ export default {
 		},
 		handleOK(value) {
 			this.isActive = false;
-			const date = this.formatDate(value);
-			this.sync(['change', 'ok'], date);
+			this.sync(['change', 'ok'], value);
 		},
 		handleClose() {
 			let val = this.parseValue(this.value);
@@ -281,12 +280,14 @@ export default {
 			}
 			return this.parserDate(val);
 		},
-		sync(eventName, date) {
+		sync(eventName, value) {
+			const date = this.isRange ? value : value[0];
+			const dateString = this.formatDate(value);
 			eventName = typeof eventName === 'string' ? [eventName] : eventName;
 			eventName.forEach(name => {
-				this.$emit(name, date, this.rest);
+				this.$emit(name, dateString, date, this.rest);
 			});
-			this.dispatch('vc-form-item', 'form-change', date);
+			this.dispatch('vc-form-item', 'form-change', dateString);
 		},
 		rest(date) {
 			this.currentValue = date;
