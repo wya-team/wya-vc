@@ -1,4 +1,4 @@
-import { createVue, destroyVM } from '@tests/helper';
+import { createVue, destroyVM, wait } from '@tests/helper';
 import ImgsPreview from '..';
 import MImgsPreview from '../index.m';
 
@@ -12,7 +12,6 @@ describe('ImgsPreview', () => {
 
 	it('basic', () => {
 		expect(!!ImgsPreview).to.equal(true);
-		expect(!!MImgsPreview).to.equal(true);
 	});
 
 	it('should work', () => {
@@ -230,5 +229,55 @@ describe('ImgsPreview', () => {
 				done();
 			}, ANIMATION_TIME);
 		}, ANIMATION_TIME);
+	});
+});
+
+describe('MImgsPreview', () => {
+	let vm;
+	const ANIMATION_TIME = 300;
+
+	afterEach(() => {
+		destroyVM(vm);
+	});
+
+	it('basic', () => {
+		expect(!!MImgsPreview).to.equal(true);
+	});
+
+	it('show img', (done) => {
+		const vm = createVue({
+			template: `<vcm-imgs-preview :data-source="dataSource" />`,
+			components: {
+				'vcm-imgs-preview': MImgsPreview
+			},
+			data() {
+				return {
+					dataSource: [
+						{
+							src: 'https://oss.ruishan666.com/image/xcx/180228/803943951788/裤子.png',
+							title: 'Image 1',
+							w: 1200,
+							h: 900
+						},
+						{
+							src: 'https://oss.ruishan666.com/image/xcx/180313/942990884682/10053600,2880,1800.jpg',
+							title: 'Image 2',
+							w: 1200,
+							h: 900
+						}
+					],
+				};
+			},
+		});
+		setTimeout(() => {
+			const trigger = document.querySelector('.vc-img img');
+			trigger.click();
+			setTimeout(() => {
+				const showImg = document.querySelector('.pswp__img');
+				expect(showImg).to.exist;
+				destroyVM(vm);
+				done();
+			}, 1000);
+		}, 1000);
 	});
 });
