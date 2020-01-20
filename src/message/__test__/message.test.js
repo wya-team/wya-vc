@@ -7,11 +7,11 @@ describe('Message', () => {
 		expect(!!Message).to.equal(true);
 	});
 	it('message open', (done) => {
-		Message.success({
+		let vm = Message.success({
 			content: '测试',
 			duration: 2
 		});
-		const messageEle = document.querySelector('.vc-message__content'); 
+		const messageEle = vm.$el.querySelector('.vc-message__content'); 
 		const messageWrapper = document.querySelector('.vc-message__wrapper');
 		expect(messageEle.textContent).to.equal('测试');
 		expect(messageWrapper).to.exist;
@@ -22,28 +22,28 @@ describe('Message', () => {
 		}, 3000);
 	});
 	it('not close message', (done) => {
-		Message.info({
+		let vm = Message.info({
 			content: '啦啦啦，啦啦啦，我是买包的小行家',
 			duration: 0,
 			maskClosable: false,
 			closable: true
 		});
-		const messageWrapper = document.querySelector('.vc-message__wrapper');
+		const messageWrapper = vm.$el.querySelector('.vc-message__wrapper');
 		expect(messageWrapper).to.exist;
 		setTimeout(() => {
-			triggerEvent(document.querySelector('.vc-message__mask'), 'click');
+			triggerEvent(vm.$el.querySelector('.vc-message__mask'), 'click');
 			expect(messageWrapper.style.display).to.not.equal('none');
 			Message.destroy();
 			done();
 		}, 1500);
 	});
 	it('mask 是否开启', (done) => {
-		Message.error({
+		let vm = Message.error({
 			content: '啦啦啦，啦啦啦，我是买包的小行家',
 			mask: false,
 			duration: 0
 		});
-		const messageMask = document.querySelector('.vc-message__mask');
+		const messageMask = vm.$el.querySelector('.vc-message__mask');
 		setTimeout(() => {
 			expect(messageMask).to.not.exist;
 			Message.destroy();
@@ -51,29 +51,30 @@ describe('Message', () => {
 		}, 1500);
 	});
 	it('多个message', (done) => {
-		Message.error({
+		let vm1 = Message.error({
 			content: '啦啦啦，啦啦啦，我是买包的小行家',
 			duration: 0
 		});
-		Message.warning({
+		let vm2 = Message.warning({
 			content: '啦啦啦，啦啦啦，我是买包的小行家',
 			duration: 0
 		});
-		const message = document.querySelectorAll('.vc-message');
+		const messageVm1 = vm1.querySelectorAll('.vc-message').length;
+		const messageVm2 = vm2.querySelectorAll('.vc-message').length;
 		setTimeout(() => {
-			expect(message.length).to.equal(2);
+			expect(messageVm1 + messageVm2).to.equal(2);
 			Message.destroy();
 			done();
 		}, 1500);
 	});
 	it('close message', (done) => {
-		Message.loading({
+		let vm = Message.loading({
 			content: '啦啦啦，啦啦啦，我是买包的小行家',
 			mask: true,
 			duration: 0
 		});
 		setTimeout(() => {
-			const messageWrapper = document.querySelector('.vc-message__wrapper');
+			const messageWrapper = vm.$el.querySelector('.vc-message__wrapper');
 			expect(messageWrapper).to.exist;
 			expect(messageWrapper.style.display).to.not.equal('none');
 			Message.destroy();
