@@ -192,23 +192,22 @@ export default {
 
 
 
-## API
+### API
 
-#### 属性
+### 基础属性
 
-属性 | 说明 | 类型 | 默认值
----|---|---|---
-closable | 标签是否可以关闭 | Boolean | false
-checkable | 标签是否可以选择 | Boolean | false
-checked | 标签的选中状态 | Boolean | true
-type | 标签的样式类型，可选值为 `border`、`dot` | String | default
-color | 标签颜色，预设颜色值为`default`、`primary`、`success`、`warning`、`error`，你也可以自定义颜色值。 | String | default
-name | 当前标签的名称，使用 v-for，并支持关闭时，会比较有用 | String  |  Number | -
+属性 | 说明 | 类型 | 可选值 | 默认值
+---|---|---|---|---
+closable | 标签是否可以关闭 | `Boolean` | - | `false`
+checkable | 标签是否可以选择 | `Boolean` | - | `false`
+checked | 标签的选中状态 | `Boolean` | - | `true`
+type | 标签的样式类型 | `String` | `default`、`border`、`dot` | `default`
+color | 标签颜色，你也可以自定义颜色值。 | `String` | `default`、`primary`、`success`、`warning`、`error` | `default`
+name | 当前标签的名称，使用 v-for，并支持关闭时，会比较有用 | `String`、`Number` | - | -
 
+### 事件/方法
 
-#### 事件
-
-属性 | 说明 | 参数 | 返回值
----|---|---|---
-close | 关闭时触发 |  `event, name` | ---
-change | 切换选中状态时触发	 |  `checked, name` | ---
+属性 | 说明 | 类型 | 参数
+---|---|---|---|---
+close | 关闭时触发 | `event, name` | ---
+change | 切换选中状态时触发 | `checked, name` | ---

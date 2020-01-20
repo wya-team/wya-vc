@@ -182,13 +182,13 @@ export default {
 ```
 :::
 
-## API
+### API
 
-#### 属性
+### 基础属性
 
-属性 | 说明 | 类型 | 默认值
----|---|---|---
-render-date | 渲染每个日期 | (h, { date, curDateStr }) | renderDefaultDate
-render-month | 渲染月 |  (h, { month, year, lan, monthNames }) | renderDefaultMonth
-render-week | 渲染周 |  (h, { weekNames, lan }) | renderDefaultWeek
-lang="en" | 语言（'ch'或'en'）| String | 'ch'
+属性 | 说明 | 类型 | 可选值 | 默认值
+---|---|---|---|---
+render-date | 渲染每个日期 | `(h, { date, curDateStr })` | - | `renderDefaultDate`
+render-month | 渲染月 | `(h, { month, year, lan, monthNames })` | - | `renderDefaultMonth`
+render-week | 渲染周 | `(h, { weekNames, lan })` | - | `renderDefaultWeek`
+lang | 语言 | `String` | `ch`、`en` | `ch`

@@ -168,24 +168,24 @@ export default {
 
 
 
-## API
+### API
 
-#### 属性
+### 基础属性
 
-属性 | 说明 | 类型 | 默认值
----|---|---|---
-value | 指定当前是否选中，可以使用 v-model 双向绑定数据 | String, Number, Boolean | false
-disabled | 禁用开关 | Boolean | false
-true-value | 选中时的值，当使用类似 1 和 0 来判断是否选中时会很有用 | String, Number, Boolean | true
-false-value | 没有选中时的值，当使用类似 1 和 0 来判断是否选中时会很有用 | String, Number, Boolean | false
-open-text | 选中时的文案 | String | --
-close-text | 没有选中时的文案 | String | --
-name | 内部input标签name值 | String | --
+属性 | 说明 | 类型 | 可选值 | 默认值
+---|---|---|---|---
+value | 指定当前是否选中，可以使用 v-model 双向绑定数据 | `String`、 `Number`、 `Boolean` | - | `false`
+disabled | 禁用开关 | `Boolean` | - | `false`
+true-value | 选中时的值，当使用类似 1 和 0 来判断是否选中时会很有用 | `String`、 `Number`、 `Boolean` | - | `true`
+false-value | 没有选中时的值，当使用类似 1 和 0 来判断是否选中时会很有用 | `String`、`Number`、 `Boolean` | - | `false`
+open-text | 选中时的文案 | `String` | - | -
+close-text | 没有选中时的文案 | `String` | - | -
+name | 内部input标签name值 | `String` | - | -
 
-#### 事件
+### 事件/方法
 
-属性 | 说明 | 参数 | 返回值
----|---|---|---
+属性 | 说明 | 类型 | 参数
+---|---|---|---|---
 change | 开关变化时触发，返回当前的状态	 | `(value) => value` | ---
 click | ->Promise可触发loading	 | `(value) => Promise` | ---
 
