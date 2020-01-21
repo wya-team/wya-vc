@@ -1,6 +1,119 @@
-## [Demo Basic](https://wya-team.github.io/wya-vc/dist/collapse/basic.html)
-## 功能
-折叠板
+## 折叠板（collapse）
+### 基础用法
+
+:::RUNTIME
+```html
+<template>
+	<div class="v-collapse-basic">
+		<vc-collapse class="v-collapse" v-model="value" accordion>
+			<vc-collapse-item name="2" class="item">
+				<div class="_title">
+					{{ value.includes('2') ? '点我收起' : '点我展开' }}
+				</div>
+				<div slot="content" class="_content">
+					内容
+				</div>
+			</vc-collapse-item>
+		</vc-collapse>
+	</div>
+</template>
+
+<script>
+import { Collapse } from '@wya/vc';
+export default {
+	components: {
+		"vc-collapse": Collapse,
+		"vc-collapse-item": Collapse.Item
+	},
+	data() {
+		return {
+			value: '1'
+		}
+	},
+	mounted() {
+	},
+	methods: {
+	}
+};
+</script>
+<style>
+
+</style>
+```
+:::
+
+### 展开
+展开方式
+
+:::RUNTIME
+```html
+<template>
+	<div class="v-collapse-accordion">
+		<vc-collapse class="v-collapse" v-model="value1" accordion>
+			<vc-collapse-item name="2" class="item">
+				<div class="_title">
+					{{ value1.includes('2') ? '点我收起' : '点我展开' }}
+				</div>
+				<div slot="content" class="_content">
+					内容2
+				</div>
+			</vc-collapse-item>
+			<vc-collapse-item name="3" class="item">
+				<div class="_title">
+					{{ value1.includes('3') ? '点我收起' : '点我展开' }}
+				</div>
+				<div slot="content" class="_content">
+					内容3
+				</div>
+			</vc-collapse-item>
+		</vc-collapse>
+		<br/>
+		<br/>
+		<vc-collapse class="v-collapse" v-model="value2">
+			<vc-collapse-item name="2" class="item">
+				<div class="_title">
+					{{ value2.includes('2') ? '点我收起' : '点我展开' }}
+				</div>
+				<div slot="content" class="_content">
+					内容4
+				</div>
+			</vc-collapse-item>
+			<vc-collapse-item name="3 " class="item">
+				<div class="_title">
+					{{ value2.includes('3') ? '点我收起' : '点我展开' }}
+				</div>
+				<div slot="content" class="_content">
+					内容5
+				</div>
+			</vc-collapse-item>
+		</vc-collapse>
+	</div>
+</template>
+
+<script>
+import { Collapse } from '@wya/vc';
+export default {
+	components: {
+		"vc-collapse": Collapse,
+		"vc-collapse-item": Collapse.Item
+	},
+	data() {
+		return {
+			value1: '1',
+			value2: '1'
+		}
+	},
+	mounted() {
+	},
+	methods: {
+	}
+};
+</script>
+<style>
+
+</style>
+```
+:::
 
 ## API
 
@@ -25,86 +138,3 @@ name | 当前面板的 `name`，与 `Collapse` 的 `value` 对应，不填为索
 属性 | 说明 | 类型 | 默认值
 ---|---|---|---
 @change | 切换面板时触发，返回当前已展开的面板的 key，格式为数组 | (valye: Array) | -
-
-
-
-## 基础用法
-
-```html
-<template>
-	<vc-collapse class="v-collapse" value="1" accordion>
-		<vc-collapse-item name="1" class="item">
-			<div class="_title">
-				title
-			</div>
-			<span slot="icon" slot-scope="it" class="_icon">
-				{{ it.isExpend }}
-			</span>
-			<div slot="content" class="_content">
-				content
-			</div>
-		</vc-collapse-item>
-		<vc-collapse-item name="2" class="item">
-			<div class="_title">
-				title
-			</div>
-			<div slot="content" class="_content">
-				content
-			</div>
-		</vc-collapse-item>
-	</vc-collapse>
-</template>
-
-<script>
-import Collapse from '..';
-
-export default {
-	name: "vc-collapse-basic",
-	components: {
-		"vc-collapse": Collapse,
-		"vc-collapse-item": Collapse.Item
-	},
-	data() {
-		return {
-		};
-	},
-	computed: {
-		
-	},
-	methods: {
-		handleShow() {
-
-		}
-	}
-};
-</script>
-
-<style lang="scss">
-.v-collapse {
-	.item {
-		._title {
-			height: 36px; 
-			line-height: 36px; 
-			background: #e4e4e4;
-			font-size: 18px;
-			padding: 0 10px
-		}
-		._icon {
-			position: absolute;
-			right: 10px;
-			top: 0;
-			bottom: 0;
-			margin: auto 0;
-			display: flex;
-			align-items: center;
-			justify-content: center;
-		}
-		._content {
-			height: 100px;
-			padding: 20px;
-			background: #e98252
-		} 
-	}
-}
-</style>
-```
