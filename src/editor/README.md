@@ -1,8 +1,88 @@
-## [Demo Basic](https://wya-team.github.io/wya-vc/dist/editor/basic.html)
-## 功能
-富文本
+## 富文本 (editor)
 
-- Editor.View: 富文本预览组件
+- 常用的富文本编辑器，可扩展；
+- 请用 Editor.View: 富文本预览组件来显示富文本内容；
+
+### 基本用法
+
+:::RUNTIME
+```html
+<template>
+	<div class="v-editor-basic">
+		<vc-editor style="height: 200px" v-model="text" />
+
+        <vc-editor-view :content="text" />
+	</div>
+</template>
+
+<script>
+import { Editor, VcInstance } from '@wya/vc';
+
+// VcInstance.init({
+// 	Upload: {
+// 		URL_UPLOAD_IMG_POST: 'https://api.github.com/users/wya-team',
+// 		URL_UPLOAD_FILE_POST: 'https://api.github.com/users/wya-team',
+// 		onPostBefore: ({ options }) => {
+// 			return new Promise((resolve, reject) => {
+// 				// if (random(0, 10) > 10) {
+// 				// 	throw new Error('异常处理');
+// 				// }
+// 				resolve({
+// 					...options,
+// 					param: {
+// 						...options.param,
+// 						timestamp: new Date()
+// 					},
+// 					type: 'GET',
+// 					credentials: 'omit', //  cors下关闭
+// 					headers: {
+// 					}
+// 				});
+// 			});
+// 		},
+// 		onPostAfter: ({ response, options }) => { // eslint-disable-line
+// 			const { file } = options.param;
+// 			return new Promise((resolve) => {
+				
+// 				// 模拟强制返回
+// 				resolve({
+// 					status: 1,
+// 					data: {
+// 						url: 'https://avatars2.githubusercontent.com/u/34465004?v=4',
+// 						type: `.${file.name.split('.').pop()}`,
+// 						uid: file.uid,
+// 						title: file.name,
+// 						size: file.size
+// 					},
+// 					...response
+// 				});
+// 			});
+// 		}
+// 	}
+// });
+
+export default {
+	components: {
+        "vc-editor": Editor,
+        "vc-editor-view": Editor.View
+    },
+    data() {
+        return {
+            text: ''
+        }
+    },
+	mounted() {
+        console.log(VcInstance, '-=-=-==' )
+	},
+	methods: {
+	}
+};
+</script>
+<style>
+
+</style>
+```
+:::
 
 ## API
 
@@ -39,7 +119,7 @@ extend | 组件提供的工具栏上的尾部工具拓展(和`toolbar`插槽不�
 
 ## 基础用法
 
-```vue
+<!-- ```vue
 <template>
     <vc-editor 
         ref="editor"
@@ -62,7 +142,7 @@ extend | 组件提供的工具栏上的尾部工具拓展(和`toolbar`插槽不�
                 <button class="ql-strike"/>
             </span>
         </div>
-    </vc-editor>
+    </vc-editor-view>
 </template>
 <script>
 import Editor from '../editor';
@@ -104,4 +184,4 @@ export default {
 };
 </script>
 
-```
+``` -->
