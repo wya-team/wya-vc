@@ -93,7 +93,6 @@ export default {
 			type: Boolean,
 			default: false
 		},
-		format: String,
 		// 在type === 'date' 下才有效
 		multiple: {
 			type: Boolean,

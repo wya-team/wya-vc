@@ -88,10 +88,6 @@ export default {
 	},
 	mixins: [...Extends.mixins(['emitter'])],
 	inheritAttrs: false,
-	model: {
-		prop: 'value',
-		event: 'change'
-	},
 	props: {
 		...pick(Popover.props, [
 			'portalClassName'
@@ -281,13 +277,15 @@ export default {
 			return this.parserDate(val);
 		},
 		sync(eventName, value) {
-			const date = this.isRange ? value : value[0];
+			const date = this.isRange || this.isQuarter ? value : value[0];
 			const dateString = this.formatDate(value);
+
+			this.$emit('input', date);
 			eventName = typeof eventName === 'string' ? [eventName] : eventName;
 			eventName.forEach(name => {
-				this.$emit(name, dateString, date, this.rest);
+				this.$emit(name, dateString, this.rest);
 			});
-			this.dispatch('vc-form-item', 'form-change', dateString);
+			this.dispatch('vc-form-item', 'form-change', date);
 		},
 		rest(date) {
 			this.currentValue = date;
