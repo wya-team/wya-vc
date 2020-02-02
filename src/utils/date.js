@@ -104,7 +104,7 @@ class DateUtil {
     
 				return this.parseFlags[$0] ? '' : $0.slice(1, $0.length - 1);
 			});
-    
+
 			if (!isValid) {
 				return false;
 			}

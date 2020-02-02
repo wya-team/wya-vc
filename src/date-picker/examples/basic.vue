@@ -11,8 +11,17 @@
 			clearable
 			format="YYYY-MM-DD"
 			placeholder="Select date" 
-			style="width: 200px"
-			@visible-change="handleVisibleChange"
+			@change="handleChange"
+			@clear="handleClear"
+		/>
+		<vc-date-picker 
+			:options="options" 
+			:start-date="new Date('2019', '10', '11')"
+			:type="type"
+			clearable
+			confirm
+			format="YYYY-MM-DD"
+			placeholder="Select date" 
 			@change="handleChange"
 		/>
 		<vc-date-picker 
@@ -44,6 +53,21 @@
 			style="width: 200px"
 			@change="handleMonthChange"
 		/>
+		<h2>自定义</h2>
+		<vc-date-picker 
+			v-model="month"
+			:open="dateOpen"
+			type="month" 
+			clearable
+			placeholder="Select date"
+			style="width: 200px"
+			@change="handleMonthChange"
+			@visible-change="handleVisibleChange"
+		>
+			<span @click.stop="handleSelectMonth">
+				{{ month || '请选择' }}
+			</span>
+		</vc-date-picker>
 		<h2>MonthRange</h2>
 		<vc-date-picker 
 			v-model="monthrange"
@@ -52,7 +76,6 @@
 			confirm
 			placeholder="Select date"
 			style="width: 200px"
-			@change="handleMonthChange"
 		/>
 		<h2>Quarter</h2>
 		<vc-date-picker 
@@ -110,14 +133,14 @@ export default {
 	},
 	data() {
 		return {
-			value: '',
-			// valueRange: '',
+			value: '2010-10-10',
 			year: '',
 			month: '',
 			monthrange: '',
 			quarter: '',
 			quarterrange: '',
 			type: 'date',
+			dateOpen: false,
 			options: {
 				disabledDate: (date) => {
 					let year = date.getFullYear();
@@ -144,21 +167,29 @@ export default {
 	},
 	methods: {
 		handleVisibleChange(v) {
-			// console.log('VisibleChange', v);
+			console.log('VisibleChange', v);
+			this.dateOpen = v;
+		},
+		handleClear(v) {
+			console.log('clear', v);
 		},
 		handleChange(v) {
-			// console.log('change', v);
+			console.log('change', v);
 		},
 		handleRangeChange(v) {
 			this.rangeStart = v[0];
 			this.rangeEnd = v[1];
-			console.log(v);
+			console.log('range-change', v);
 		},
 		handleYearChange(v) {
 			console.log('year-change', v);
 		},
-		handleMonthChange(v) {
-			console.log('month-change', v);
+		handleSelectMonth() {
+			this.dateOpen = !this.dateOpen;
+		},
+		handleMonthChange(month) {
+			this.month = month;
+			this.dateOpen = false;
 		},
 		handleQuarterChange(v) {
 			console.log('quarter-change', v);

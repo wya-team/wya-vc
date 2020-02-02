@@ -360,13 +360,6 @@ module.exports = [
 						}
 					},
 					{
-						"path": "/carousel",
-						"name": {
-							'zh-CN': "Carousel",
-							'en-US': "Carousel",
-						}
-					},
-					{
 						"path": "/table",
 						"name": {
 							'zh-CN': "Table",

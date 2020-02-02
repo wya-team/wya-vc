@@ -49,18 +49,20 @@ const webpackConfig = {
 		extensions: ['.js', '.vue', '.json', '.scss', '.css'],
 		alias: {
 			'vue$': 'vue/dist/vue.esm.js',
-			'node_modules': path.resolve(APP_ROOT, 'node_modules')
+			'node_modules': path.resolve(APP_ROOT, 'node_modules'),
+			// 特殊处理，因为与vc下同名
+			'echarts': path.resolve(APP_ROOT, 'node_modules/echarts'),
 		}
 	},
 	entry: { ...entry },
 	output: {
-		path: path.resolve(APP_ROOT, 'dist'),
+		path: path.resolve(APP_ROOT, 'demo'),
 		filename: '[name].js',
 		libraryTarget: 'umd',
 		/**
 		 * html引用路径,github展示用
 		 */
-		publicPath: ENV_IS_DEV ? '/' : '/wya-vc/dist/'
+		publicPath: ENV_IS_DEV ? '/' : '/'
 	},
 	module: {
 		rules: [

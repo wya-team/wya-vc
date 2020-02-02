@@ -139,11 +139,13 @@ export default {
 			);
 		},
 		handleTouchStart(e) {
+			// console.log(e, 'touchstart');
 			if (this.isActive) {
 				this.startY = e.touches[0].pageY;
 			}
 		},
 		handleTouchMove(e) {
+			console.log(e);
 			// 显示状态下才处理滑动
 			if (!this.isActive) return;
 			let path = e.path || DOM.composedPath(e) || [];
@@ -161,6 +163,7 @@ export default {
 			const top = this.scrollContainer.scrollTop;
 			const ch = this.scrollContainer.clientHeight;
 			const sh = this.scrollContainer.scrollHeight;
+			console.log('moveY:', moveY, '\n', 'startY:', this.startY, '\n', 'top:', top, '\n', 'ch:', ch, '\n', 'sh:', sh);
 			if ((top === 0 && moveY > this.startY) || (top + ch === sh && moveY < this.startY)) {
 				// 到底或到头都禁止
 				e.preventDefault();

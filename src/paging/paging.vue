@@ -270,7 +270,7 @@ export default {
 	},
 	methods: {
 		handleSelectionChange(selection) {
-			if (!this.rowKey) return this.$emit('selection-change', selection);
+			if (!this.rowKey) return this.$emit('selection-change', selection, selection);
 
 			const dataSelectionValues = this.data.map(item => item[this.rowKey]);
 			const rowKeyValues = selection.map(item => item[this.rowKey]);
@@ -281,13 +281,13 @@ export default {
 				return !rowKeyValues.includes(item[this.rowKey]);
 			}).concat(selection);
 
-			!this.reSelecting && this.$emit('selection-change', this.selection);
+			!this.reSelecting && this.$emit('selection-change', this.selection, selection);
 		},
 
 		/**
 		 * 翻页后重选
 		 */
-		resetSelection() {
+		resetSelection(isLoaded) {
 			if (!this.rowKey) return;
 			if (this.data.length && this.selection.length) {
 				let rows = [];
@@ -298,7 +298,8 @@ export default {
 					}
 				});
 
-				this.reSelecting = true;
+				this.reSelecting = !!rows.length;
+				isLoaded && this.$emit('selection-change', this.selection, rows);
 				for (let i = 0; i < rows.length; i++) {
 					this.$nextTick(() => {
 						this.$refs.table.toggleRowSelection(rows[i], true);
@@ -346,7 +347,7 @@ export default {
 			// 是否已有数据
 			let arr = this.dataSource[page];
 			if (arr && typeof arr.length === 'number') {
-				this.resetSelection();
+				this.resetSelection(true);
 				return;
 			}
 
@@ -357,7 +358,7 @@ export default {
 				this.$emit('load-pending');
 				load.then((res) => {
 					this.$emit('load-success', res);
-					this.resetSelection();
+					this.resetSelection(false);
 					return res;
 				}).catch((res) => {
 					this.$emit('load-fail', res);

@@ -186,7 +186,7 @@ export default {
 		},
 		removeLazyLoadListener() {
 			if (!this.scroller || !this.handleLazyLoad) return;
-			scroller.removeEventListener('scroll', this.handleLazyLoad);
+			this.scroller.removeEventListener('scroll', this.handleLazyLoad);
 
 			this.scroller = null;
 			this.handleLazyLoad = null;

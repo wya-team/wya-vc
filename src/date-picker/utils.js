@@ -94,6 +94,7 @@ export const formatDate = (date, format) => {
 };
 
 export const parseDate = (string, format) => {
+	if (string instanceof Date) return string;
 	return DateUtil.parse(string, format || 'YYYY-MM-DD');
 };
 
@@ -150,7 +151,7 @@ export const TYPE_VALUE_RESOLVER_MAP = {
 		formatterText: RANGE_FORMATTER,
 		formatter: (value, format, RANGE_SEPARATOR) => {
 			let rangeDate = RANGE_FORMATTER(value, format, RANGE_SEPARATOR);
-			return rangeDate ? rangeDate.split(RANGE_SEPARATOR) : '';
+			return rangeDate ? rangeDate.split(RANGE_SEPARATOR) : [];
 		},
 		parser: RANGE_PARSER
 	},
@@ -158,7 +159,7 @@ export const TYPE_VALUE_RESOLVER_MAP = {
 		formatterText: RANGE_FORMATTER,
 		formatter: (value, format, RANGE_SEPARATOR) => {
 			let rangeDate = RANGE_FORMATTER(value, format, RANGE_SEPARATOR);
-			return rangeDate ? rangeDate.split(RANGE_SEPARATOR) : '';
+			return rangeDate ? rangeDate.split(RANGE_SEPARATOR) : [];
 		},
 		parser: RANGE_PARSER
 	},
@@ -166,7 +167,7 @@ export const TYPE_VALUE_RESOLVER_MAP = {
 		formatterText: RANGE_FORMATTER,
 		formatter: (value, format, RANGE_SEPARATOR) => {
 			let rangeDate = RANGE_FORMATTER(value, format, RANGE_SEPARATOR);
-			return rangeDate ? rangeDate.split(RANGE_SEPARATOR) : '';
+			return rangeDate ? rangeDate.split(RANGE_SEPARATOR) : [];
 		},
 		parser: RANGE_PARSER
 	},
@@ -184,7 +185,7 @@ export const TYPE_VALUE_RESOLVER_MAP = {
 		formatterText: RANGE_FORMATTER,
 		formatter: (value, format, RANGE_SEPARATOR) => {
 			let rangeDate = RANGE_FORMATTER(value, format, RANGE_SEPARATOR);
-			return rangeDate ? rangeDate.split(RANGE_SEPARATOR) : '';
+			return rangeDate ? rangeDate.split(RANGE_SEPARATOR) : [];
 		},
 		parser: RANGE_PARSER
 	},
@@ -307,4 +308,9 @@ export const isEmpty = (val) => {
 		return true;
 	}
 	return val === '' || val === undefined || val === null || val.length === 0;
+};
+
+export const setNewYear = (currentDate, sourceDate) => {
+	let year = currentDate.getFullYear();
+	return new Date(sourceDate.setYear(year));
 };

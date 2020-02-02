@@ -1,6 +1,6 @@
 {
     "name": "@wya/vc",
-    "version": "2.0.0-alpha.15",
+    "version": "2.0.0-alpha.19",
     "description": "wya for vue components",
     "main": "lib/index.js",
     "files": [
@@ -10,10 +10,10 @@
         "start": "npm run dev",
         "dev": "npm run prompt && npm run all",
         "serve": "node --max_old_space_size=8192 ./node_modules/webpack-dev-server/bin/webpack-dev-server --config  ./config/webpack.config.dev.js --color --progress --hot",
-        "demo": "npm run remove:dist && cross-env UGLIFY_JS=true node --max_old_space_size=8192 ./node_modules/webpack/bin/webpack --config ./config/webpack.config.dist.js --color --progress",
+        "demo": "npm run remove:demo && cross-env UGLIFY_JS=true node --max_old_space_size=8192 ./node_modules/webpack/bin/webpack --config ./config/webpack.config.dist.js --color --progress",
         "build": "npm run test && rm -rf ./lib && cross-env NODE_ENV=production node --max_old_space_size=8192 sfc.js",
         "pub": "bash config/publish.sh",
-        "remove:dist": "rm -rf ./dist",
+        "remove:demo": "rm -rf ./demo",
         "lint": "esw config ./src --ext .vue,.js --color",
         "lint:fix": "npm run lint -- --fix",
         "lint:watch": "npm run lint -- --fix --watch",

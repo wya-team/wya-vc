@@ -22,7 +22,7 @@
 			class="vcm-input-search__btn"
 			@touchend="handleCancel"
 		>
-			{{ cancelTxt }}
+			{{ cancelText }}
 		</div>
 	</div>
 </template>
@@ -41,7 +41,7 @@ export default {
 	},
 	mixins: [inputSearchMixin, inputEventMixin],
 	props: {
-		cancelTxt: {
+		cancelText: {
 			type: String,
 			default: '取消'
 		},

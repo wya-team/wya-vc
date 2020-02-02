@@ -31,22 +31,24 @@ disabled | 是否禁用选择器 | Boolean | false
 clearable | 是否显示清除按钮 | Boolean | true
 portal | 是否将弹层放置于 body 内，在 Tabs、带有 fixed 的 Table 列内使用时，建议添加此属性，它将不受父级样式影响，从而达到更好的效果 | Boolean | true
 time-picker-options | 可以在 mode 为 `datetime` 和 `datetimerange` 下，配置 `TimePicker` 的属性，比如时间间隔 `:time-picker-options="{steps: [1, 10, 10]}"` | Object | {}
-separator | 两个日期间的分隔符 | String | -	
+separator | 两个日期间的分隔符 | String | `-`	
+change-on-select | 选中即触发`change`时间 | Boolean | `false`
 
-
-> typpe -> mode 
 
 #### 事件
 
 属性 | 说明 | 参数 | 返回值
 ---|---|---|---
-- | - | `any`|---
+ok | `confirm`模式下点击确定按钮的回调 | `date`、`dateArray`|---
+clear | 点击清除按钮的回调 | `date`、`dateArray`|---
+change | 点击面板时的回调 | `date`、`dateArray`|---
+visible-change | 面板显示隐藏时的回调 | `visible`|---
 
 #### Slot
 
 属性 | 说明
 ---|---
-- | -
+default | 自定义选择器的显示内容，建议与 open 等参数一起使用
 
 
 

@@ -1,15 +1,14 @@
-
+import { isDataURL } from '../utils/utils';
 
 export default class Manager {
 	static getImageData(options) {
-		let { context, dataSource, width, height } = options;
+		let { context, dataSource, width, height, crossOrigin } = options;
 		if (!context || !(context instanceof CanvasRenderingContext2D)) {
 			throw new Error('【wya-process】需要传入 CanvasRenderingContext2D 对象');
 		}
 
 		return new Promise((resolve, reject) => {
 			const image = new Image();
-			image.crossOrigin = 'anonymous';
 			image.onload = () => {
 				context.drawImage(image, 0, 0, width, height);
 				// 获取像素信息数据
@@ -18,7 +17,12 @@ export default class Manager {
 			image.onerror = (err) => {
 				console.error(err);
 			};
-			image.src = dataSource;
+			if (isDataURL(dataSource)) {
+				image.src = dataSource;
+			} else {
+				image.crossOrigin = crossOrigin;
+				image.src = `${dataSource}?=${new Date().getTime()}`; // 强制不缓存
+			}
 		});
 	}
 

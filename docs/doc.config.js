@@ -28,6 +28,33 @@ module.exports = {
 			return '/zh-CN/index';
 		}
 	},
+	layout: {
+		header: {
+			name: '@wya/vc',
+			logo: 'https://avatars3.githubusercontent.com/u/34465004?s=200&v=4',
+			path: '/index',
+			nav: [
+				{
+					"name": {
+						'zh-CN': "首页",
+						'en-US': "Home",
+					},
+					path: '/index'
+				},
+				{
+					"name": {
+						'zh-CN': "团队地址",
+						'en-US': "Team Site",
+					},
+					path: 'https://github.com/wya-team',
+					// _blank | _self 
+					target: '_blank',
+					// referrer
+					rel: ''
+				}
+			]
+		}
+	},
 	locales: {
 		'zh-CN': '简体中文'
 	},
@@ -42,15 +69,28 @@ module.exports = {
 	},
 	runtime: { 
 		define: {
-			__DOC_SITE_DIR__: `'${ENV_IS_DEV ? '/' : '/wya-vc/site/'}'`,
-			__DOC_MD_DIR__: ENV_IS_DEV 
-				? () => (lang, name) => { 
-					return `/src/${name}/README${lang != 'zh-CN' ? `_${lang}` : ''}.md`; 
-				}
-				: (lang, name) => { 
-					return `/wya-vc/src/${name}/README${lang != 'zh-CN' ? `_${lang}` : ''}.md`; 
-				},
-			__DOC_VERSION__: "'1.0.0'",
+			__DOC_SITE_DIR__: ENV_IS_DEV ? '/' : '/wya-vc/site/',
+			__DOC_VERSION__: '1.0.0',
+			__DOC_MD_DIR__: 
+				ENV_IS_DEV 
+					? (lang, name) => { 
+						if (['i18n', 'installation', 'quickstart'].includes(name)) {
+							return `${location.origin}/docs/${lang ? `${lang}/` : ''}${name}.md`; 
+						}
+						if (name === 'changelog') {
+							return `${location.origin}/CHANGELOG.md`; 
+						}
+						return `${location.origin}/src/${name}/README${lang != 'zh-CN' ? `_${lang}` : ''}.md`; 
+					}
+					: (lang, name) => { 
+						if (['i18n', 'installation', 'quickstart'].includes(name)) {
+							return `https://raw.githubusercontent.com/wya-team/wya-vc/2.x/docs/${lang ? `${lang}/` : ''}${name}.md`; 
+						}
+						if (name === 'changelog') {
+							return `https://raw.githubusercontent.com/wya-team/wya-vc/2.x/CHANGELOG.md`; 
+						}
+						return `https://raw.githubusercontent.com/wya-team/wya-vc/2.x/src/${name}/README${lang != 'zh-CN' ? `_${lang}` : ''}.md`; 
+					}
 		}
 	}
 };

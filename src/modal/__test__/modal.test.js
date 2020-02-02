@@ -5,38 +5,24 @@ import MModal from '../index.m';
 describe('Modal', () => {
 	let vm;
 	afterEach(() => {
-		let el = document.querySelectorAll('.vc-modal');
 		vm && destroyVM(vm);
-		if (!el) return;
-		setTimeout(() => {
-			el.forEach((res, i) => {
-				if (el[i].parentNode) {
-					el[i].parentNode.removeChild(el[i]);
-				}
-				if (el[i].__vue__) {
-					el[i].__vue__.$destroy();
-				}
-			});
-		}, 500);
 	});
 	it('basic', () => {
 		expect(!!Modal).to.equal(true);
 		expect(!!MModal).to.equal(true);
 	});
-	it('创建多种mode的弹框', (done) => {
-		Modal.info();
-		Modal.success();
-		Modal.error({
+	it('创建多种mode的弹框', () => {
+		let vm1 = Modal.info();
+		let vm2 = Modal.success();
+		let vm3 = Modal.error({
 			size: 'large'
 		});
-		Modal.warning();
-		setTimeout(() => {
-			expect(document.querySelector('.is-success')).to.exist;
-			expect(document.querySelector('.is-info')).to.exist;
-			expect(document.querySelector('.is-error')).to.exist;
-			expect(document.querySelector('.is-warning')).to.exist;
-			done();
-		}, 50);
+		let vm4 = Modal.warning();
+		expect(vm1.$el.querySelector('.is-info')).to.exist;
+		expect(vm2.$el.querySelector('.is-success')).to.exist;
+		expect(vm3.$el.querySelector('.is-error')).to.exist;
+		expect(vm4.$el.querySelector('.is-warning')).to.exist;
+		Modal.destroy();
 	});
 	it('自定义header和footer', () => {
 		vm = createVue({
@@ -61,8 +47,8 @@ describe('Modal', () => {
 				};
 			}
 		});
-		expect(document.querySelector('.__newHeader')).to.exist;
-		expect(document.querySelector('.__newFooter')).to.exist;
+		expect(vm.$el.querySelector('.__newHeader')).to.exist;
+		expect(vm.$el.querySelector('.__newFooter')).to.exist;
 	});
 	it('创建不同size的modal', () => {
 		vm = createVue({
@@ -121,21 +107,29 @@ describe('Modal', () => {
 		expect(mediumRef.style.width).to.equal('640px');
 		expect(largeRef.style.width).to.equal('864px');
 	});
-	// it('拖动弹框', (done) => {
-	// 	vm = createVue({
-	// 		template: `
-	// 		<vc-modal
-	// 			ref="newmodal"
-	// 			:visible="visible"
-	// 			draggable
-	// 		>
-	// 			<template slot="header">
-	// 				<div class="__newHeader">222</div>
-	// 			</template>
-	// 		</vc-modal>
-	// 		`
-	// 	});
-	// 	const headerRef = vm.$refs.newmodal.$refs.header;
-	// 	triggerClick(headerRef.$el, 'mousedown');
-	// });
+	it('拖动弹框', () => {
+		vm = createVue({
+			template: `
+			<vc-modal
+				ref="newmodal"
+				:visible="visible"
+				draggable
+			>
+				<template slot="header">
+					<div class="__newHeader">222</div>
+				</template>
+			</vc-modal>
+			`,
+			components: {
+				'vc-modal': Modal
+			},
+			data() {
+				return {
+					visible: true
+				};
+			}
+		});
+		const headerRef = vm.$refs.newmodal.$refs.header;
+		triggerClick(headerRef, 'mousedown');
+	});
 });

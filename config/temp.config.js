@@ -26,7 +26,9 @@ const getEntryFileContent = (entryPath, fullpath) => {
 	let contents = '';
 	contents += `\nimport Vue from 'vue';\n`;
 	if (ENV_IS_DEV) {
-		contents += `\nimport '${path.relative(path.join(entryPath, '../'), 'src/style')}';\n`;
+		let stylePath = path.relative(path.join(entryPath, '../'), 'src/style');
+		stylePath = upath.normalize(stylePath);
+		contents += `\nimport '${stylePath}';\n`;
 	}
 	contents += `\nimport App from '${relativePath.replace(/\.vue/, '')}';\n`;
 	contents += `\nVue.config.devtools = true;\n`;
@@ -98,7 +100,7 @@ const getHTMLConfig = () => {
 		fullpath = upath.normalize(fullpath);
 		if (!/(__tpl__|__test__)/.test(fullpath)) {
 			let chunk = fullpath.replace(/temp\//, '').replace(/^(.*)\.js$/, '$1');
-			let filename = path.join(APP_ROOT, fullpath.replace(/temp\//, 'dist/').replace(/\.js/, '.html'));
+			let filename = path.join(APP_ROOT, fullpath.replace(/temp\//, 'demo/').replace(/\.js/, '.html'));
 			openPage[chunk] = path.join(fullpath.replace(/temp\//, '/').replace(/\.js/, '.html'));
 			ret.push(
 				new HtmlWebpackPlugin({
@@ -115,7 +117,7 @@ const getHTMLConfig = () => {
 		new HtmlWebpackPlugin({
 			inject: false,
 			title: `${component || 'All'} Demo`,
-			publicPath: ENV_IS_DEV ? '' : '/wya-vc/dist',
+			publicPath: ENV_IS_DEV ? '' : '',
 			openPage,
 			template: path.resolve(APP_ROOT, 'templates/index.ejs'),
 			// filename: path.join(APP_ROOT, 'dist/index.html')

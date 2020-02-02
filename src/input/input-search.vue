@@ -17,11 +17,11 @@
 			<slot name="append">
 				<div :class="{ 'is-disabled': binds.disabled }" class="vc-input-search__content">
 					<vc-icon 
-						v-if="enterTxt === true" 
+						v-if="enterText === true" 
 						:type="append || 'search'"
 					/>
 					<template v-else>
-						{{ enterTxt }}
+						{{ enterText }}
 					</template>
 				</div>
 			</slot>

@@ -160,6 +160,7 @@ export default {
 			if (this.chart || !this.echartsInstance) {
 				return;
 			}
+
 			// this.echartsInstance = await import("echarts");
 			// console.log(this.echartsInstance);
 			let chart = this.echartsInstance.init(this.$el, this.theme, this.initOptions);

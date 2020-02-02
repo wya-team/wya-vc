@@ -6,5 +6,6 @@ ModalManager.allowMethod.forEach(m => {
 		return ModalManager[m](userOptions);
 	};
 });
+Modal.destroy = ModalManager.destroy;
 
 export default Modal;

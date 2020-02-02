@@ -15,28 +15,30 @@
 		@mouseenter.native="isHover = true"
 		@mouseleave.native="isHover = false"
 		@ready="$emit('ready')"
-		@close="$emit('close')"
+		@close="handleClose"
 		@visible-change="$emit('visible-change', isActive)"
 	>
-		<vc-input
-			ref="input"
-			:element-id="elementId"
-			:readonly="true"
-			:disabled="disabled"
-			:value="visibleValue"
-			:placeholder="placeholder || '请选择'"
-			:allow-dispatch="false"
-			class="vc-picker__input"
-		>
-			<template #append>
-				<div :class="{'is-clear': showClear}" class="vc-picker__append">
-					<vc-icon
-						:type="showClear ? 'clear' : icon"
-						@click.stop="handleIconClear"
-					/>
-				</div>
-			</template>
-		</vc-input>
+		<slot>
+			<vc-input
+				ref="input"
+				:element-id="elementId"
+				:readonly="true"
+				:disabled="disabled"
+				:value="visibleValue"
+				:placeholder="placeholder || '请选择'"
+				:allow-dispatch="false"
+				class="vc-picker__input"
+			>
+				<template #append>
+					<div :class="{'is-clear': showClear}" class="vc-picker__append">
+						<vc-icon
+							:type="showClear ? 'clear' : icon"
+							@click="handleIconClick"
+						/>
+					</div>
+				</template>
+			</vc-input>
+		</slot>
 		<template #content>
 			<!-- 要求value 需转成Date类型，panel内流通的都是Date, panel内的数据都是数组 -->
 			<component 
@@ -106,6 +108,7 @@ export default {
 		},
 		value: [Date, Array, String],
 		multiple: Boolean,
+		open: Boolean,
 		trigger: {
 			type: String,
 			default: 'click'
@@ -141,12 +144,17 @@ export default {
 		steps: {
 			type: Array,
 			default: () => ([])
+		},
+		// 选择即触发change
+		changeOnSelect: {
+			type: Boolean,
+			default: false
 		}
 	},
 	data() {
 		return {
 			isHover: false,
-			isActive: false,
+			isActive: this.open,
 			currentValue: '',
 			focusedDate: null
 		};
@@ -163,8 +171,7 @@ export default {
 			};
 		},
 		isConfirm() {
-			//  加上multiple
-			return this.confirm || this.type === 'datetime' || this.type === 'datetimerange';
+			return this.confirm || this.type === 'datetime' || this.type === 'datetimerange' || this.multiple;
 		},
 		// 展示的value
 		visibleValue() {
@@ -174,26 +181,28 @@ export default {
 			return ['datetime', 'datetimerange'].includes(this.type);
 		},
 		isRange() {
-			return ['daterange', 'datetimerange', 'quarterrange', 'monthrange'].includes(this.type);
+			return this.type.includes('range');
 		},
 		isQuarter() {
 			return ['quarter'].includes(this.type);
 		},
 		isTime() {
 			return ['time', 'timerange'].includes(this.type);
-		}
+		},
 	},
 	watch: {
 		value: {
 			immediate: true,
 			handler(val) {
-				if (isEmpty(val)) {
-					val = this.isRange ? [null, null] : [];
-				} else {
-					val = this.parserDate(val);
-				}
+				val = this.parseValue(val);
 				this.focusedDate = val[0] || this.startDate || new Date();
 				this.currentValue = value2Array(val);
+			}
+		},
+		open: {
+			immediate: true,
+			handler(val) {
+				this.isActive = val;
 			}
 		}
 	},
@@ -202,31 +211,38 @@ export default {
 			// 在panel上点击时，同步focusedDate
 			this.focusedDate = value[0] || prevDate || new Date();
 
-			if (!this.isConfirm && !this.isTime) {
-				this.handleOK(value);
-			} else if (this.isTime && !this.isConfirm) {
-				// 时间选择器的模式下，不管是不是confirm模式，都实时同步
-				const date = this.formatDate(value);
-				this.$emit('change', date);
-				this.dispatch('vc-form-item', 'form-change', date);
+			if (!this.isConfirm && !this.isTime || this.changeOnSelect) { 
+				setTimeout(() => { this.isActive = false; }, 100); // 添加延迟，可以让使用者看到选中效果后再关闭弹层
 			}
+			const date = this.formatDate(value);
+			this.currentValue = value;
+			(!this.isConfirm || this.changeOnSelect) && this.sync('change', date);
 		},
-		handleIconClear() {
-			this.showClear && this.handleClear();
+		handleIconClick(e) {
+			if (!this.showClear) return;
+			e.stopPropagation();
+			this.handleClear();
 		},
 		handleClear() {
+			const date = this.isRange ? [] : '';
 			this.isActive = false;
-			this.$emit('clear');
-			this.$emit('change', '');
-			this.dispatch('vc-form-item', 'form-change', '');
+			this.currentValue = date;
+			this.sync('change', date);
+			this.$emit('clear', date);
 		},
 		handleOK(value) {
-			// ？？是否向外暴露confirm事件，在confirm=true时，内部选择日期是否显示在输入框上
 			this.isActive = false;
-
 			const date = this.formatDate(value);
-			this.$emit('change', date);
-			this.dispatch('vc-form-item', 'form-change', date);
+			this.sync(['change', 'ok'], date);
+		},
+		handleClose() {
+			let val = this.parseValue(this.value);
+			// 是否有传value值，如果没传currentValue不回滚
+			let isSetValueProp = this.$options.propsData.hasOwnProperty('value'); /* eslint-disable-line */
+			if (!isEqualWith(this.currentValue, val) && isSetValueProp) {
+				this.currentValue = value2Array(val);
+			}
+			this.$emit('close');
 		},
 		formatDateText(value) {
 			const format = DEFAULT_FORMATS[this.type];
@@ -258,6 +274,22 @@ export default {
 				const { parser } = (TYPE_VALUE_RESOLVER_MAP[this.type] || TYPE_VALUE_RESOLVER_MAP.default);
 				return parser(value, this.format || format, this.separator);
 			}
+		},
+		parseValue(val) {
+			if (isEmpty(val)) {
+				return this.isRange ? [null, null] : [];
+			}
+			return this.parserDate(val);
+		},
+		sync(eventName, date) {
+			eventName = typeof eventName === 'string' ? [eventName] : eventName;
+			eventName.forEach(name => {
+				this.$emit(name, date, this.rest);
+			});
+			this.dispatch('vc-form-item', 'form-change', date);
+		},
+		rest(date) {
+			this.currentValue = date;
 		}
 	}
 };
@@ -271,7 +303,7 @@ $block: vc-picker;
 @include block($block) {
 	display: inline-block;
 	position: relative;
-	width: 100%;
+	width: auto;
 	line-height: 1;
 	@include element(input) {
 		cursor: pointer;
