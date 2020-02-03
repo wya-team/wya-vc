@@ -84,16 +84,16 @@ export default {
 属性 | 说明 | 类型  | 可选值 | 默认值
 ---|---|---|---|---
 src | 图片地址 | `Any` | - | -
-scale | 缩放值 | `Number` | - | 1
-rotate | 旋转角度 | `Number` | - | 0
-border | 裁剪的边框 [x, y] | `Number`、 `Array` | - | 20
-borderRadius | 裁剪的边框圆角 | `Number` | - | 0
-width | 裁剪区域宽 | `Number` | - | 200
-height | 裁剪区域高 | `Number` | - | 200
+scale | 缩放值 | `Number` | - | `1`
+rotate | 旋转角度 | `Number` | - | `0`
+border | 裁剪的边框 [x, y] | `Number`、 `Array` | - | `20`
+borderRadius | 裁剪的边框圆角 | `Number` | - | `0`
+width | 裁剪区域宽 | `Number` | - | `200`
+height | 裁剪区域高 | `Number` | - | `200`
 position | 裁剪区域定位 | `Object` | - | -
-color | 边框的背景色RGBA | `Array` | - | [0, 0, 0, 0.5]
-cross-origin | 跨域来源 | `string` | `anonymous`、 `use-credentials` | anonymous
-disableDrop | 是否支持拖拽图片进来编辑 | `Boolean` | - | false
+color | 边框的背景色RGBA | `Array` | - | `[0, 0, 0, 0.5]`
+cross-origin | 跨域来源 | `string` | `anonymous`、 `use-credentials` | `anonymous`
+disableDrop | 是否支持拖拽图片进来编辑 | `Boolean` | - | `false`
 
 
 #### 事件
