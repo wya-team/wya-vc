@@ -51,18 +51,16 @@ describe('Message', () => {
 		}, 1500);
 	});
 	it('多个message', (done) => {
-		let vm1 = Message.error({
+		Message.error({
 			content: '啦啦啦，啦啦啦，我是买包的小行家',
 			duration: 0
 		});
-		let vm2 = Message.warning({
+		Message.warning({
 			content: '啦啦啦，啦啦啦，我是买包的小行家',
 			duration: 0
 		});
-		const messageVm1 = vm1.querySelectorAll('.vc-message').length;
-		const messageVm2 = vm2.querySelectorAll('.vc-message').length;
 		setTimeout(() => {
-			expect(messageVm1 + messageVm2).to.equal(2);
+			expect(document.querySelectorAll('.vc-message').length).to.equal(2);
 			Message.destroy();
 			done();
 		}, 1500);
