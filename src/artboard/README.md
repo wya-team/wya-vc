@@ -119,16 +119,16 @@ export default {
 #### 属性
 属性 | 说明 | 类型 | 可选值 | 默认值
 ---|---|---|---|---
-options | canvas配置参数 | Object | - | -
-getInstance | 获取画布实例 | Function | - | -
-width | 设置canvas的宽度,不传则根据容器的宽度来设置 | Number | - | 0
-height | 设置canvas的高度,不传则根据容器的高度来设置 | Number | - | 0
+options | canvas配置参数 | `Object` | - | -
+getInstance | 获取画布实例 | `Function` | - | -
+width | 设置canvas的宽度,不传则根据容器的宽度来设置 | `Number` | - | 0
+height | 设置canvas的高度,不传则根据容器的高度来设置 | `Number` | - | 0
 
 #### 事件
 
 属性 | 说明 | 参数 | 返回值
 ---|---|---|---
-change | canvas内容发生改变时触发 | - | snapshots: 所有快照数据, current: 当前快照位置, allowUndo: 是否能够回退, allowRedo: 是否能够撤销
+change | canvas内容发生改变时触发 | - | `snapshots`: 所有快照数据, `current`: 当前快照位置, `allowUndo`: 是否能够回退, `allowRedo`: 是否能够撤销
 
 #### 方法
 
