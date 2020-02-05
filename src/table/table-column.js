@@ -265,10 +265,12 @@ export default {
 							width: (data.column.realWidth || data.column.width) - 1 + 'px' 
 						};
 					}
+					const { placeholder } = this.owner;
+					const contentPlaceholder = typeof placeholder === 'function' ? placeholder() : placeholder;
 					return (
 						<div {...props}>
 							{prefix}
-							{children}
+							{children === undefined || children === '' || children === null ? contentPlaceholder : children}
 						</div>
 					);
 				};

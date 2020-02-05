@@ -15,13 +15,15 @@ const postcssLoader = {
 };
 module.exports = {
 	mode: 'development',
-	resolve: {// 重定向路径
+	resolve: { // 重定向路径
 		mainFiles: ['index'],
 		modules: [path.resolve(APP_ROOT, 'src'), 'node_modules'],
 		extensions: ['.js', '.vue', '.json', '.scss', '.css'],
 		alias: {
 			'vue$': 'vue/dist/vue.esm.js',
 			'node_modules': path.resolve(APP_ROOT, 'node_modules'),
+			// 特殊处理，因为与vc下同名
+			'echarts': path.resolve(APP_ROOT, 'node_modules/echarts'),
 			'@tests': path.resolve(APP_ROOT, 'tests')
 		}
 	},

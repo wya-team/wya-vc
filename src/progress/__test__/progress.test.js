@@ -44,9 +44,8 @@ describe('Progress', () => {
 		}, 1000);
 	});
 	it('type为circle的进度条', (done) => {
-		vm = createVue({
+		let vm = createVue({
 			template: `
-				<div>
 					<vc-progress
 						type="circle"
 						ref="errorCircle"
@@ -56,15 +55,15 @@ describe('Progress', () => {
 						:strokeWidth="7"
 						
 					/>
-				</div>
 			`,
 			components: {
 				'vc-progress': Progress
 			}
 		});
-		expect(vm.$refs.errorCircle.$el.querySelector('.vc-progress__circle')).to.exist;
+		expect(vm.$el.querySelector('.vc-progress__circle')).to.exist;
 		setTimeout(() => {
-			expect(vm.$refs.errorCircle.$el.querySelector('.vc-progress__box').style.width).to.equal('100px');
+			expect(vm.$el.querySelector('.vc-progress__box').style.width).to.equal('100px');
+			destroyVM(vm);
 			done();
 		}, 1000);
 	});

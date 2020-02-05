@@ -8,9 +8,6 @@ describe('ColorPicker', () => {
 	afterEach(() => {
 		vm.$destroy(true);
 		destroyVM(vm);
-		
-		// const popover = document.querySelector('.vc-popover-core');
-		// if (popover && popover.parentNode) popover.parentNode.removeChild(popover);
 	});
 
 	it('should work', () => {

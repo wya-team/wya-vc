@@ -1,6 +1,97 @@
-## [Demo Basic](https://wya-team.github.io/wya-vc/dist/files-picker/basic.html)
-## 功能
-文件选择
+## 文件选择（files-picker）
+
+通过点击或者拖拽上传文件
+
+### 基础用法
+
+:::RUNTIME
+```html
+<template>
+	<div class="v-files-picker">
+		<vc-files-picker 
+			v-model="files"
+		>
+			<template #upload>
+				<vc-button>
+					上传
+				</vc-button>
+			</template>
+		</vc-files-picker>
+	</div>
+</template>
+
+<script>
+import { FilesPicker, Button } from '@wya/vc';
+
+export default {
+	components: {
+		"vc-files-picker": FilesPicker,
+		"vc-button": Button
+	},
+	data() {
+		return {
+			files: [],
+        }
+    },
+};
+</script>
+<style>
+.v-files-picker {
+	margin: 40px; 
+	display: flex;
+	align-items: center;
+	justify-content: center;
+}
+</style>
+```
+:::
+
+### 限制上传文件数量
+通过`max`属性限制上传文件数量
+
+:::RUNTIME
+```html
+<template>
+	<div class="v-files-picker">
+		<vc-files-picker 
+			v-model="files"
+			:max="2"
+		>
+			<template #upload>
+				<vc-button>
+					上传
+				</vc-button>
+			</template>
+		</vc-files-picker>
+	</div>
+</template>
+
+<script>
+import { FilesPicker, Button } from '@wya/vc';
+
+export default {
+	components: {
+		"vc-files-picker": FilesPicker,
+		"vc-button": Button
+	},
+	data() {
+		return {
+			files: [],
+        }
+    },
+};
+</script>
+<style>
+.v-files-picker {
+	margin: 40px; 
+	display: flex;
+	align-items: center;
+	justify-content: center;
+}
+</style>
+```
+:::
+
 #### 备注
 上传错误的文件数据不会传递给外层
 
@@ -8,15 +99,15 @@
 
 #### 属性
 
-属性 | 说明 | 类型 | 默认值
----|---|---|---
-dataSource | 上传的文件 | `Array` | []
-max | 文件的最大数量 | `Number` | 0（不限制）
-disabled | 是否禁止上传 | `Boolean` | false
-upload | upload组件的属性 | `Object` | {}
-accept | 文件接收类型 | `String` | -
-urlKey | 文件的线上地址字段 | `String` | `url`
-formatter | 自定义返回数据格式 | `Function` | -
+属性 | 说明 | 类型 | 可选值 | 默认值
+---|---|---|---|---|---
+dataSource | 上传的文件 | `Array` | - | `[]`
+max | 文件的最大数量 | `Number` | - | `0`（不限制）
+disabled | 是否禁止上传 | `Boolean` | - | `false`
+upload | upload组件的属性 | `Object` | - | {}
+accept | 文件接收类型 | `String` | - | -
+urlKey | 文件的线上地址字段 | `String` | - | `url`
+formatter | 自定义返回数据格式 | `Function` | - | -
 
 
 #### 事件

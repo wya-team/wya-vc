@@ -105,7 +105,7 @@
 			<vc-form-item prop="date">
 				<vc-date-picker 
 					v-model="formValidate.date"
-					type="datetimerange" 
+					type="datetime" 
 					clearable
 					placeholder="Select date" 
 					style="width: 300px"
@@ -155,7 +155,7 @@ export default {
 			},
 			ruleValidate: {
 				date: [
-					{ required: true, message: '请选择日期', trigger: 'change' }
+					{ required: true, type: 'date', message: '请选择日期', trigger: 'change' }
 				],
 			}
 		};

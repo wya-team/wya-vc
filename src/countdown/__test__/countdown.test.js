@@ -81,11 +81,11 @@ describe('Countdown', () => {
 			serverTime: new Date(),
 			tag: 'div'
 		});
-		await wait(1);
+		await wait(2);
 		// 这个等待时间，由于延迟导致后面的数值会有毫秒级的偏差
 		let str = vm.$el.innerHTML;
 		str = str.split('分')[0];
-		expect(str).to.equal('02天00小时00');
+		expect(str).to.equal('01天23小时59');
 		
 		destroyVM(vm);
 	});

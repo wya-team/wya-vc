@@ -1,5 +1,7 @@
 import { createVue, createComponent, destroyVM, wait, waitImmediate, triggerEvent } from '@tests/helper';
 import Cascader from '..';
+import dataSource from '../examples/basic/big-data';
+import MCascader from '../index.m';
 
 const options = [{
 	value: 'zhejiang',
@@ -40,7 +42,7 @@ const options = [{
 	}]
 }];
 
-const ANIMATION_TIME = 200; 
+const ANIMATION_TIME = 1000; 
 const getMenus = () => document.querySelectorAll('.vc-cascader-col');
 const getOptions = (menuIndex) => getMenus()[menuIndex].querySelectorAll('.vc-cascader-col__item');
 const selectedValue = ['zhejiang', 'hangzhou', 'xihu'];
@@ -197,6 +199,31 @@ describe('Cascader', () => {
 		destroyVM(vm);
 	});
 
+	it('empty data when dataSource is empty', async () => {
+		const vm = createComponent({
+			template: `
+				<vc-cascader 
+					v-model="value"
+					/>
+			`,
+			components: {
+				'vc-cascader': Cascader
+			},
+			data() {
+				return {
+					value: [],
+				};
+			}
+		});
+		const el = vm.$el;
+		const trigger = el.querySelector('.vc-input');
+		trigger.click();
+		await waitImmediate();
+		const content = document.querySelector('.vc-cascader__content');
+		expect(content.innerText).to.be.empty;
+		destroyVM(vm);
+	});
+
 	it('async set selected value', async () => {
 		const vm = createComponent({
 			template: `
@@ -319,4 +346,319 @@ describe('Cascader', () => {
 		expect(getMenus().length).to.equal(2);
 		destroyVM(vm);
 	});
+});
+
+describe('MCascader', () => {
+	let vm;
+
+	it('create', () => {
+		vm = createComponent(MCascader);
+		expect(vm.$el).to.exist;
+	});
+
+	afterEach(() => {
+		vm.$destroy(true);
+		destroyVM(vm);
+	});
+
+	it('basic', () => {
+		expect(!!MCascader).to.equal(true);
+	});
+
+	it('show popover when click', (done) => {
+		const vm = createComponent({
+			template: `
+				<vcm-cascader
+				v-model="value"
+				:data-source="dataSource"
+				@ok="handleOk"
+			/>`,
+			components: {
+				'vcm-cascader': MCascader
+			},
+			data() {
+				return {
+					dataSource,
+					value: [],
+					okValue: false,
+				};
+			},
+			methods: {
+				handleOk() {
+					this.okValue = true;
+				},
+			}
+		});
+		const trigger = document.querySelector('.vcm-picker');
+		trigger.click();
+		setTimeout(() => {
+			let popoverEl = document.querySelector('.vcm-cascader-picker-popup');
+			expect(popoverEl).to.exist;
+			const confirmBtn = document.querySelector('.vcm-cascader-picker-popup .vcm-picker-popup__item.is-right');
+			confirmBtn.click();
+			setTimeout(() => {	
+				expect(vm.okValue).to.be.true;
+				destroyVM(vm);
+				done();
+			}, 1500);
+			destroyVM(vm);
+			done();
+		}, ANIMATION_TIME);
+	});
+
+	it('use cascader-view', (done) => {
+		const vm = createComponent({
+			template: `
+				<vcm-cascader-view
+				ref="target"
+				v-model="value"
+				:data-source="dataSource"
+				changeOnSelect
+			/>`,
+			components: {
+				'vcm-cascader-view': MCascader.View
+			},
+			data() {
+				return {
+					dataSource: [
+						{
+							value: 'beijing',
+							label: '北京',
+							children: [
+								{
+									value: 'gugong',
+									label: '故宫'
+								},
+								{
+									value: 'tiantan',
+									label: '天坛'
+								},
+								{
+									value: 'wangfujing',
+									label: '王府井'
+								}
+							]
+						}, 
+						{
+							value: 'jiangsu',
+							label: '江苏',
+							children: [
+								{
+									value: 'nanjing',
+									label: '南京',
+									children: [
+										{
+											value: 'fuzimiao',
+											label: '夫子庙',
+										}
+									]
+								},
+								{
+									value: 'suzhou',
+									label: '苏州'
+								}
+							],
+						}
+					],
+					value: [],
+				};
+			},
+			mounted() {
+				setTimeout(() => {
+					this.value = ['jiangsu', 'nanjing'];
+				}, 0);
+			},
+		});
+
+		setTimeout(() => {
+			expect(vm).to.exist;
+			destroyVM(vm);
+			done();
+		}, 2000);
+	});
+
+	it('use function open', (done) => {
+		MCascader.open({
+			dataSource: options,
+			value: ['jiangsu', 'nanjing'],
+		});
+		setTimeout(() => {
+			let popoverEl = document.querySelector('.vcm-cascader-picker-popup');
+			expect(popoverEl).to.exist;
+			const valueTrigger = document.querySelector('.vcm-cascader-picker-popup .vcm-cascader-col__item');
+			valueTrigger.click();
+			setTimeout(() => {
+				const selectIcon = document.querySelector('.vcm-cascader-picker-popup .vcm-cascader-col__select');
+				expect(selectIcon).to.exist;
+				const confirmBtn = document.querySelector('.vcm-cascader-picker-popup .vcm-picker-popup__item.is-right');
+				confirmBtn.click();
+				setTimeout(() => {	
+					popoverEl = document.querySelector('.vcm-cascader-picker-popup');
+					expect(popoverEl).to.not.exist;
+					destroyVM(vm);
+					done();
+				}, 2000);
+			}, 1500);
+		}, 1500);
+	});
+
+	it('should close popup when click', (done) => {
+		MCascader.open({
+			dataSource: options,
+			value: [],
+			onOk: () => {},
+			onCancel: () => {}
+		});
+		setTimeout(() => {
+			const closeBtn = document.querySelector('.vcm-cascader-picker-popup .vcm-picker-popup__item.is-left');
+			closeBtn.click();
+			setTimeout(() => {	
+				const popoverEl = document.querySelector('.vcm-cascader-picker-popup');
+				expect(popoverEl).to.not.exist;
+				destroyVM(vm);
+				done();
+			}, 1500);
+		}, ANIMATION_TIME);
+	});
+
+	it('async load data', (done) => {
+		const vm = createComponent({
+			template: `
+				<vcm-cascader
+				v-model="value"
+				:data-source="options"
+				:load-data="loadData"
+				@cancel="handleCancel"
+			/>`,
+			components: {
+				'vcm-cascader': MCascader
+			},
+			data() {
+				return {
+					options: [],
+					value: [],
+					cancelValue: false
+				};
+			},
+			methods: {
+				loadData() {
+					this.options = [
+						{
+							value: 'gugong',
+							label: '故宫'
+						},
+						{
+							value: 'tiantan',
+							label: '天坛'
+						},
+						{
+							value: 'wangfujing',
+							label: '王府井'
+						}
+					];
+				},
+				handleCancel() {
+					this.cancelValue = true;
+				}
+			}
+		});
+		const trigger = document.querySelector('.vcm-picker');
+		trigger.click();
+		setTimeout(() => {
+			let popoverEl = document.querySelector('.vcm-cascader-col__item');
+			expect(popoverEl.innerText).to.equal('故宫');
+			popoverEl.click();
+			setTimeout(() => {
+				expect(vm.options.length).to.equal(3);
+				const closeBtn = document.querySelector('.vcm-cascader-picker-popup .vcm-picker-popup__item.is-left');
+				closeBtn.click();
+				setTimeout(() => {
+					expect(vm.cancelValue).to.be.true;
+					destroyVM(vm);
+					done();
+				}, 1500);
+			}, 3000);
+		}, 3000);
+	});
+
+	it('vcm-cascader-view default value', () => {
+		const vm = createComponent({
+			template: `
+				<vcm-cascader-view
+				ref="target"
+				v-model="value"
+				:data-source="dataSource"
+				changeOnSelect
+			/>`,
+			components: {
+				'vcm-cascader-view': MCascader.View
+			},
+			data() {
+				return {
+					dataSource: [],
+					value: [],
+				};
+			},
+		});
+		const col = document.querySelector('vcm-cascader-col');
+		expect(col).to.be.null;
+		destroyVM(vm);
+	});
+
+	it('vcm-cascader-view async load data', (done) => {
+		const vm = createComponent({
+			template: `
+				<vcm-cascader-view
+				ref="target"
+				v-model="value"
+				:data-source="dataSource"
+				:load-data="loadData"
+			/>`,
+			components: {
+				'vcm-cascader-view': MCascader.View
+			},
+			data() {
+				return {
+					dataSource: [{
+						value: 'beijing',
+						label: '北京',
+						children: [],
+						loading: false
+					}],
+					value: [],
+				};
+			},
+			methods: {
+				loadData() {
+					return new Promise((resolve) => {
+						setTimeout(() => {
+							resolve([
+								{
+									value: 'gugong',
+									label: '故宫'
+								},
+								{
+									value: 'tiantan',
+									label: '天坛'
+								},
+								{
+									value: 'wangfujing',
+									label: '王府井'
+								}
+							]);
+						}, 0);
+					});
+				}
+			}
+		});
+		const trigger = document.querySelector('.vcm-cascader-col__item');
+		trigger.click();
+		
+		setTimeout(() => {
+			expect(vm.dataSource[0].children.length).to.equal(3);
+			destroyVM(vm);
+			done();
+		}, ANIMATION_TIME);
+	});
+
 });
