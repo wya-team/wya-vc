@@ -17,6 +17,7 @@ describe('Img', () => {
 					<vc-img
 						v-for="(item, index) in fits"
 						:src="urls[index % 2]"
+						:key="index"
 						ref="img"
 						:fit="item"
 					/>
@@ -57,10 +58,6 @@ describe('Img', () => {
 	});
 
 	it('img-style-scene', () => {
-		IMGStore.add('https://oss.ruishan666.com/image/xcx/180228/803943951788/裤子.png', {
-			originW: 200,
-			originH: 200
-		});
 		IMGStore.add('https://oss.ruishan666.com/image/xcx/180228/803943951788/裤子.png', {
 			originW: 200,
 			originH: 200
@@ -127,6 +124,8 @@ describe('Img', () => {
 
 		expect(+img5.pStyle.width.replace('px', '')).to.equal(200);
 		expect((+img5.pStyle.height.replace('px', ''))).to.equal(200);
+
+		destroyVM(vm);
 	});
 
 	it('wrap', async () => {
@@ -173,32 +172,65 @@ describe('Img', () => {
 
 		expect(img.scroller === vm.wrapper).to.equal(true);
 		expect(img2.scroller === document.querySelector('.wrap')).to.equal(true);
+
+		destroyVM(vm);
 	});
 
-	it('error', async () => {
+	it('error', (done) => {
 		let vm = createVue({
 			template: `
 				<div class="wrap" style="width: 100px; height: 100px; overflow: auto;">
 					<vc-img
 						src="https://oss.ruishan666.com/image/xcx/180228/1223/裤子.png"
 						ref="img"
-						@error="count++"
+						@error="$emit('error')"
 					/>
 				</div>
 			`,
 			components: {
 				'vc-img': Img,
 			},
-			data() {
-				return {
-					count: 0
-				};
+		});
+
+
+		let timer = setTimeout(() => {
+			done();
+			destroyVM(vm);
+		}, 5000);
+		vm.$on('error', () => {
+			clearTimeout(timer);
+			done();
+			destroyVM(vm);
+		});
+	});
+
+	it('load', (done) => {
+		let vm = createVue({
+			template: `
+				<div class="wrap" style="width: 100px; height: 100px; overflow: auto;">
+					<vc-img
+						src="https://oss.ruishan666.com/image/xcx/180228/803943951788/裤子.png"
+						ref="img"
+						@load="$emit('load')"
+					/>
+				</div>
+			`,
+			components: {
+				'vc-img': Img,
 			},
 		});
 
-		await wait(1);
 
-		expect(vm.count).to.equal(1);
+		let timer = setTimeout(() => {
+			expect(false).to.equal(true);
+			done();
+			destroyVM(vm);
+		}, 5000);
+		vm.$on('load', () => {
+			clearTimeout(timer);
+			done();
+			destroyVM(vm);
+		});
 	});
 
 	it('lazy-load-extra-scene', async () => {
@@ -232,30 +264,42 @@ describe('Img', () => {
 		destroyVM(vm);
 	});
 
-	it('hackFit', async () => {
-		IMGStore.add('https://oss.ruishan666.com/image/xcx/180228/803943951788/裤子.png', {
-			originW: 200,
-			originH: 200
-		});
-		IMGStore.add('https://wyatest.oss-cn-hangzhou.aliyuncs.com/image/1/20190724/100046/AD441A36-DD3D-4593-9642-D0C0006F1908.png!1-0', {
-			originW: 640,
-			originH: 731
-		});
+	it('hackFit', (done) => {
 		let vm = createVue({
 			template: `
-				<div class="wrap" style="width: 100px; height: 100px; overflow: auto;">
+				<div>
+					<div class="wrap" style="width: 100px; height: 100px; overflow: auto;">
+						<vc-img
+							src="https://wyatest.oss-cn-hangzhou.aliyuncs.com/image/1/20190724/100046/AD441A36-DD3D-4593-9642-D0C0006F1908.png!1-0"
+							ref="img"
+							:fit="fit"
+							:lazy="true"
+							style="width: 100%;"
+							@load="$emit('load1')"
+						/>
+						<vc-img
+							:src="src"
+							ref="img2"
+							:fit="fit"
+							:lazy="true"
+							:style="style"
+							@load="$emit('load2')"
+						/>
+						<vc-img
+							src="https://wyatest.oss-cn-hangzhou.aliyuncs.com/image/1/20190724/100046/AD441A36-DD3D-4593-9642-D0C0006F1908.png!1-0"
+							ref="img3"
+							fit="scale-down"
+							:lazy="true"
+							:style="style"
+							@load="$emit('load3')"
+						/>
+					</div>
 					<vc-img
-						src="https://oss.ruishan666.com/image/xcx/180228/803943951788/裤子.png"
-						ref="img"
-						:fit="fit"
-						:lazy="true"
-					/>
-					<vc-img
-						:src="src"
-						ref="img2"
-						:fit="fit"
-						:lazy="true"
-						:style="style"
+						src="https://wyatest.oss-cn-hangzhou.aliyuncs.com/image/1/20190724/100046/AD441A36-DD3D-4593-9642-D0C0006F1908.png!1-0"
+						ref="img4"
+						fit="scale-down"
+						@load="$emit('load4')"
+						style="width: 1000px; height: 1000px"
 					/>
 				</div>
 			`,
@@ -274,30 +318,53 @@ describe('Img', () => {
 			},
 		});
 
+		let result = [true, false, false, false];
+
+		let next = () => {
+			if (result.every(v => v)) {
+				done();
+				destroyVM(vm);
+			}
+		};
+
 		let hackFit = vm.$refs.img.hackFit;
 		expect(JSON.stringify(hackFit('fill')) === '{}').to.equal(true);
 
-		await wait(1);
-		let target = vm.$refs.img2;
-		hackFit = target.hackFit;
-		expect(JSON.stringify(hackFit('fill')) === '{}').to.equal(true);
-		expect(hackFit('contain').height === 'auto').to.equal(true);
-		expect(hackFit('cover').width === 'auto').to.equal(true);
-		expect(hackFit('none').width === 'auto').to.equal(true);
-		expect(hackFit('none').height === 'auto').to.equal(true);
+		let timer = setTimeout(() => {
+			expect(false).to.equal(true);
+			done();
+			destroyVM(vm);
+		}, 5000);
 
-		vm.src = 'https://wyatest.oss-cn-hangzhou.aliyuncs.com/image/1/20190724/100046/AD441A36-DD3D-4593-9642-D0C0006F1908.png!1-0';
-		await wait(0.1);
-		expect(hackFit('contain').width === 'auto').to.equal(true);
-		expect(hackFit('cover').height === 'auto').to.equal(true);
+		vm.$on('load2', () => {
+			result[1] = true;
+			let target = vm.$refs.img2;
+			hackFit = target.hackFit;
+			expect(JSON.stringify(hackFit('fill')) === '{}').to.equal(true);
+			expect(hackFit('contain').height === 'auto').to.equal(true);
+			expect(hackFit('cover').width === 'auto').to.equal(true);
+			expect(hackFit('none').width === 'auto').to.equal(true);
+			expect(hackFit('none').height === 'auto').to.equal(true);
+			next();
+		});
 
-		expect(hackFit('scale-down').width === 'auto').to.equal(true);
-		vm.style = {
-			width: '1000px',
-			height: '1000px'
-		};
-		await wait(0.1);
-		expect(hackFit('scale-down').width === 'auto').to.equal(true);
-		expect(hackFit('scale-down').height === 'auto').to.equal(true);
+		vm.$on('load3', () => {
+			result[2] = true;
+			let target = vm.$refs.img3;
+			hackFit = target.hackFit;
+			expect(hackFit('contain').width === 'auto').to.equal(true);
+			expect(hackFit('cover').height === 'auto').to.equal(true);
+			expect(hackFit('scale-down').width === 'auto').to.equal(true);
+			next();
+		});
+
+		vm.$on('load4', () => {
+			result[3] = true;
+			let target = vm.$refs.img3;
+			hackFit = vm.$refs.img4.hackFit;
+			expect(hackFit('scale-down').width === 'auto').to.equal(true);
+			expect(hackFit('scale-down').height === 'auto').to.equal(true);
+			next();
+		});
 	});
 });

@@ -1,12 +1,14 @@
-import { createVue, createComponent, destroyVM } from '@tests/helper';
+import { createVue, destroyVM, wait } from '@tests/helper';
 import ImgsPreview from '..';
+import MImgsPreview from '../index.m';
 
 describe('ImgsPreview', () => {
 	let vm;
+	const ANIMATION_TIME = 300;
 
-	// afterEach(() => {
-	// 	destroyVM(vm);
-	// });
+	afterEach(() => {
+		destroyVM(vm);
+	});
 
 	it('basic', () => {
 		expect(!!ImgsPreview).to.equal(true);
@@ -40,11 +42,10 @@ describe('ImgsPreview', () => {
 		expect(vm.$el).to.exist;
 	});
 
-	const ANIMATION_TIME = 300;
 
 	it('should show big img when click', (done) => {
 		const vm = createVue({
-			template: `<vc-imgs-preview :data-source="dataSource" />`,
+			template: `<vc-imgs-preview :data-source="dataSource" :getInstance="getInstance" />`,
 			components: {
 				'vc-imgs-preview': ImgsPreview
 			},
@@ -54,8 +55,14 @@ describe('ImgsPreview', () => {
 						'https://oss.ruishan666.com/image/xcx/180228/803943951788/裤子.png',
 						'https://oss.ruishan666.com/image/xcx/180313/942990884682/10053600,2880,1800.jpg'
 					],
+					photoSwipe: null
 				};
 			},
+			methods: {
+				getInstance(instance) {
+					this.photoSwipe = instance;
+				}
+			}
 		});
 
 		const trigger = vm.$el.querySelector('.vc-icon');
@@ -72,6 +79,7 @@ describe('ImgsPreview', () => {
 			const Item = document.querySelector('.pswp__item');
 			const style = Item.style;
 			expect(preStyle).not.equal('style');
+			expect(vm.photoSwipe).to.exist;
 
 			done();
 			destroyVM(vm);
@@ -157,7 +165,45 @@ describe('ImgsPreview', () => {
 
 	it('should show rotate img when click', (done) => {
 		const vm = createVue({
-			template: `<vc-imgs-preview :data-source="dataSource" />`,
+			template: `<vc-imgs-preview ref="preview" :data-source="dataSource" />`,
+			components: {
+				'vc-imgs-preview': ImgsPreview
+			},
+			data() {
+				return {
+					dataSource: [{
+						src: 'https://oss.ruishan666.com/image/xcx/180228/803943951788/裤子.png',
+					}, {
+						src: 'https://oss.ruishan666.com/image/xcx/180313/942990884682/10053600,2880,1800.jpg'
+					}],
+				};
+			},
+		});
+
+		const trigger = vm.$el.querySelector('.vc-icon');
+		trigger.click();
+
+		setTimeout(() => {
+			const currentItem = document.querySelector('.pswp__item .pswp__img');
+			const currentStyle = currentItem.style.transform;
+			setTimeout(() => {
+				const rotateBtn = document.querySelector('.vc-imgs-preview-core__button');
+				rotateBtn.click();
+				setTimeout(() => {
+					const nextItem = document.querySelector('.pswp__item .pswp__img');
+					const nextStyle = nextItem.style.transform;
+					expect(currentStyle).not.equal(nextStyle);
+					done();
+					destroyVM(vm);
+				}, ANIMATION_TIME);
+			}, ANIMATION_TIME);
+			
+		}, ANIMATION_TIME);
+	});
+
+	it('should destroy photoSwipe when component destroy', (done) => {
+		const vm = createVue({
+			template: `<vc-imgs-preview ref="preview" :data-source="dataSource" />`,
 			components: {
 				'vc-imgs-preview': ImgsPreview
 			},
@@ -175,23 +221,63 @@ describe('ImgsPreview', () => {
 		trigger.click();
 
 		setTimeout(() => {
-			const currentItem = document.querySelector('.pswp__item .pswp__img');
-			const currentStyle = currentItem.style.transform;
+			const closeTrigger = document.querySelector('.pswp__bg');
+			closeTrigger.click();
 			setTimeout(() => {
-				const rotateBtn = document.querySelector('.vc-imgs-preview-core__button');
-				rotateBtn.click();
-				setTimeout(() => {
-	
-					const nextItem = document.querySelector('.pswp__item .pswp__img');
-					const nextStyle = nextItem.style.transform;
-					expect(currentStyle).not.equal(nextStyle);
-	
-					done();
-					destroyVM(vm);
-				}, ANIMATION_TIME);
+				expect(vm.$refs.preview.photoSwipe).to.not.exist;
+				destroyVM(vm);
+				done();
 			}, ANIMATION_TIME);
-			
 		}, ANIMATION_TIME);
 	});
+});
 
+describe('MImgsPreview', () => {
+	let vm;
+	const ANIMATION_TIME = 300;
+
+	afterEach(() => {
+		destroyVM(vm);
+	});
+
+	it('basic', () => {
+		expect(!!MImgsPreview).to.equal(true);
+	});
+
+	it('show img', (done) => {
+		const vm = createVue({
+			template: `<vcm-imgs-preview :data-source="dataSource" />`,
+			components: {
+				'vcm-imgs-preview': MImgsPreview
+			},
+			data() {
+				return {
+					dataSource: [
+						{
+							src: 'https://oss.ruishan666.com/image/xcx/180228/803943951788/裤子.png',
+							title: 'Image 1',
+							w: 1200,
+							h: 900
+						},
+						{
+							src: 'https://oss.ruishan666.com/image/xcx/180313/942990884682/10053600,2880,1800.jpg',
+							title: 'Image 2',
+							w: 1200,
+							h: 900
+						}
+					],
+				};
+			},
+		});
+		setTimeout(() => {
+			const trigger = document.querySelector('.vc-img img');
+			trigger.click();
+			setTimeout(() => {
+				const showImg = document.querySelector('.pswp__img');
+				expect(showImg).to.exist;
+				destroyVM(vm);
+				done();
+			}, 1000);
+		}, 1000);
+	});
 });

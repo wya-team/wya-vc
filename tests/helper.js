@@ -140,7 +140,17 @@ export const wait = (s = 0.05, callback) => {
 export const waitImmediate = () => wait(0);
 
 
-
+export const dragEvent = (el, event, oCss) => {
+	let evt;
+	if (/^mouse/.test(event)) {
+		evt = new MouseEvent(event, { ...oCss });
+	} else if (/^drag/.test(event)) {
+		evt = new DragEvent(event, { ...oCss });
+	} else if (/^touch/.test(event)) {
+		evt = new TouchEvent(event, { ...oCss });
+	}
+	el.dispatchEvent(evt);
+};
 
 
 

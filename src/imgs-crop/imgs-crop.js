@@ -640,7 +640,6 @@ export default {
 			if (!isDataURL(imageURL)) { 
 				this.crossOrigin && (imageObj.crossOrigin = this.crossOrigin); 
 				imageObj.src = `${imageURL}?=${new Date().getTime()}`; // 强制不缓存
-				console.log(imageObj);
 			} else {
 				imageObj.src = imageURL;
 			}
