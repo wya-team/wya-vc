@@ -312,7 +312,11 @@ export default {
 			default: true
 		},
 		loadExpand: Function,
-		getSpan: Function
+		getSpan: Function,
+		placeholder: {
+			type: [String, Function],
+			default: '--'
+		}
 	},
 
 	data() {
