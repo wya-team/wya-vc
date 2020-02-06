@@ -25,7 +25,36 @@ describe('Form', () => {
 		vm = createVue({
 			template: `
 				<vc-form ref="form" :model="form" :label-width="80">
-					<vc-form-item label="活动名称">
+					<vc-form-item label="活动名称" >
+						<vc-input v-model="form.name"></vc-input>
+					</vc-form-item>
+				</vc-form>
+			`,
+			components: {
+				'vc-form': Form,
+				'vc-form-item': Form.Item,
+				'vc-input': Input
+			},
+			data() {
+				return {
+					form: {
+						name: ''
+					}
+				};
+			}
+		});
+		setTimeout(() => {
+			expect(vm.$el.querySelector('.vc-form-item__label').style.width).to.equal('80px');
+			expect(vm.$el.querySelector('.vc-form-item__wrapper').style.marginLeft).to.equal('80px');
+			done();
+		}, DELAY);
+	});
+
+	it('form item label width', done => {
+		vm = createVue({
+			template: `
+				<vc-form ref="form" :model="form">
+					<vc-form-item label="活动名称" :label-width="80">
 						<vc-input v-model="form.name"></vc-input>
 					</vc-form-item>
 				</vc-form>
@@ -344,7 +373,7 @@ describe('Form', () => {
 						date: ''
 					},
 					rules: {
-						date: [{type: 'date', required: true, message: '请选择日期', trigger: 'change' }]
+						date: [{ type: 'date', required: true, message: '请选择日期', trigger: 'change' }]
 					}
 				};
 			},
@@ -533,16 +562,17 @@ describe('Form', () => {
 		let field = vm.$refs.field;
 		vm.$refs.form.validateField('name').then().catch(err => {
 			expect(err).to.equal('请输入活动名称');
-       		done();
 		});
+		
+		done();
 	});
 
 	it('custom validate', done => {
 		let checkName = (rule, value, callback) => {
 			if (value.length < 5) {
-			  	callback(new Error('长度至少为5'));
+				callback(new Error('长度至少为5'));
 			} else {
-			  	callback();
+				callback();
 			}
 		};
 		vm = createVue({
@@ -580,7 +610,7 @@ describe('Form', () => {
 		vm.$refs.form.validate();
 		setTimeout(() => {
 			expect(field.validateMessage).to.equal('长度至少为5');
-			vm.setValue('我大于长度5')
+			vm.setValue('我大于长度5');
 			vm.$refs.form.validate();
 			setTimeout(() => {
 				expect(field.validateMessage).to.equal('');
@@ -629,6 +659,58 @@ describe('Form', () => {
 			expect(field.validateState).to.equal('error');
 			expect(field.validateMessage).to.equal('输入不合法');
 			done();
+		}, DELAY);
+	});
+
+	it('invalid fields', done => {
+		let checkName = (rule, value, callback) => {
+			if (value.length < 5) {
+				callback(new Error('长度至少为5'));
+			} else {
+				callback();
+			}
+		};
+		vm = createVue({
+			template: `
+				<vc-form ref="form" :model="form" :rules="rules">
+					<vc-form-item label="活动名称" prop="name" ref="field">
+						<vc-input v-model="form.name"></vc-input>
+					</vc-form-item>
+				</vc-form>
+			`,
+			components: {
+				'vc-form': Form,
+				'vc-form-item': Form.Item,
+				'vc-input': Input
+			},
+			data() {
+				return {
+					form: {
+						name: ''
+					},
+					rules: {
+						name: [{
+							validator: checkName, trigger: 'change' 
+						}]
+					}
+				};
+			},
+			methods: {
+				setValue(value) {
+					this.form.name = value;
+				}
+			}
+		});
+		let field = vm.$refs.field;
+		vm.$refs.form.validate();
+		setTimeout(() => {
+			expect(field.validateMessage).to.equal('长度至少为5');
+			vm.setValue('我大于长度5');
+			vm.$refs.form.validate();
+			setTimeout(() => {
+				expect(field.validateMessage).to.equal('');
+				done();
+			}, DELAY);
 		}, DELAY);
 	});
 });
