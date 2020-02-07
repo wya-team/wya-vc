@@ -73,10 +73,3 @@ content | 弹出层内容 | `Function` `String` | - |-
 maskClosable | 点击遮罩层关闭 | `Boolean` | - | true
 duration | 弹出层显示时间 | `Number` | - | 3
 mode | 弹出层类型 | `String` | `info` `loading` | info
-
-
-#### 事件
-
-属性 | 说明 | 参数 | 返回值
----|---|---|---
-- | - | `any`|---
