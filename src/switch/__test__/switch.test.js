@@ -270,8 +270,8 @@ describe('Switch', () => {
 				}
 			}
 		});
-		vm = vm.$refs.target;
-		vm.$el.click();
+		let switchVM = vm.$refs.target;
+		switchVM.$el.click();
 		expect(count).to.be.equal(1);
 
 		destroyVM(vm);
@@ -292,18 +292,25 @@ describe('Switch', () => {
 			},
 			methods: {
 				handleToggle() {
+					console.log('click imm');
 					return new Promise((resolve, reject) => {
-						setTimeout(resolve, 2000);
+						setTimeout(() => {
+							console.log('click resolve');
+							resolve();
+						}, 2000);
 					});
 				}
 			}
 		});
-		vm = vm.$refs.target;
-		vm.$el.click();
-		expect(vm.loading).to.be.equal(true);
+		let switchVM = vm.$refs.target;
+		switchVM.$el.click();
+		setTimeout(() => {
+			console.log(switchVM.loading);
+		}, 1000);
+		await wait(1);
+		expect(switchVM.loading).to.be.equal(true);
 		await wait(2);
-		expect(vm.loading).to.be.equal(false);
-
+		expect(switchVM.loading).to.be.equal(false);
 		destroyVM(vm);
 	});
 
@@ -329,11 +336,12 @@ describe('Switch', () => {
 				}
 			}
 		});
-		vm = vm.$refs.target;
-		vm.$el.click();
-		expect(vm.loading).to.be.equal(true);
+		let switchVM = vm.$refs.target;
+		switchVM.$el.click();
+		await wait(1);
+		expect(switchVM.loading).to.be.equal(true);
 		await wait(2);
-		expect(vm.loading).to.be.equal(false);
+		expect(switchVM.loading).to.be.equal(false);
 		
 		destroyVM(vm);
 	});
