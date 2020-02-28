@@ -307,7 +307,7 @@ export const isEmpty = (val) => {
 		}
 		return true;
 	}
-	return val === '' || val === undefined || val === null || val.length === 0;
+	return val === 0 || val === '' || val === undefined || val === null || val.length === 0;
 };
 
 export const setNewYear = (currentDate, sourceDate) => {
