@@ -9,7 +9,10 @@
 		>
 			<div ref="scroll" class="vcm-tabs__scroll">
 				<div ref="nav" class="vcm-tabs__nav">
-					<div :style="afloatStyle" class="vcm-tabs__afloat" />
+					<div 
+						v-if="showAfloat" 
+						:style="afloatStyle" 
+						class="vcm-tabs__afloat" />
 					<div
 						v-for="(item, index) in list"
 						:key="index"

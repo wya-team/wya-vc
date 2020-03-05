@@ -263,6 +263,7 @@ closable | 是否可以关闭页签，仅在 `type="card"` 时有效 | `boolean`
 animated | 是否使用 CSS3 动画 | `boolean` | true
 name | 当嵌套使用 Tabs，指定 name 区分层级 | `string` | -
 average | navbar 是否均分 | `boolean` | true
+showAfloat | 是否显示下划线 | `boolean` | true
 
 
 #### 事件

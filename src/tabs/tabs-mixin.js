@@ -13,6 +13,10 @@ export default {
 			type: Boolean,
 			default: false
 		},
+		showAfloat: {
+			type: Boolean,
+			default: true
+		},
 	},
 	data() {
 		return {
