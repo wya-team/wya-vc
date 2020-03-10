@@ -34,6 +34,13 @@ time-picker-options | 可以在 mode 为 `datetime` 和 `datetimerange` 下，�
 separator | 两个日期间的分隔符 | String | `-`	
 change-on-select | 选中即触发`change`时间 | Boolean | `false`
 
+#### Options
+
+参数 | 说明 | 类型 | 可选值 | 默认值
+---|---|---|---|---
+disabledDate | 设置日期禁用状态，参数为当前日期，要求返回`Boolean` | `Function`| ---
+disabledTime | 设置时分秒禁用状态，参数为当前日期，要求返回`Boolean` | `Function`| ---
+
 
 #### 事件
 

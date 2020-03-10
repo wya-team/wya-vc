@@ -96,6 +96,19 @@
 			style="width: 250px"
 			@change="handleQuarterChange"
 		/>
+		<h2>datetime校验选择时间不可以大于当前时间，精确到时分秒</h2>
+		<!-- new Date().getTime() + 24*60*60*1000 -->
+		<vc-date-picker
+			v-model="formValidate.date"
+			:start-date="new Date()"
+			:options="disableDate"
+			:time-picker-options="timeOpts"
+			type="datetime"
+			format="YYYY-MM-DD HH:mm:ss"
+			class="g-w-300"
+			placeholder="请选择"
+			@change="handleChangeTime"
+		/>
 		<h2>Form表单校验</h2>
 		<vc-form
 			ref="form"
@@ -141,6 +154,18 @@ export default {
 			quarterrange: '',
 			type: 'date',
 			dateOpen: false,
+			disableDate: {
+				disabledDate(date) {
+					return date && (date.valueOf() < Date.now() - 86400000 || date.valueOf() > Date.now() + 864000000);
+				},
+				disabledTime(date) {
+					return date && (date.valueOf() < Date.now() || date.valueOf() > Date.now() + 864000000);
+				}
+			},
+			timeOpts: {
+				disabledHours: [],
+				disabledMinutes: []
+			},
 			options: {
 				disabledDate: (date) => {
 					let year = date.getFullYear();
@@ -166,6 +191,9 @@ export default {
 		}
 	},
 	methods: {
+		handleChangeTime(val) {
+			console.log('val :', val);
+		},
 		handleVisibleChange(v) {
 			console.log('VisibleChange', v);
 			this.dateOpen = v;

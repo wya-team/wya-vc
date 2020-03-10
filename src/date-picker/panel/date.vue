@@ -45,11 +45,14 @@
 			<!-- time -->
 			<vc-time-select 
 				v-show="currentView === 'time'"
+				:value="dates"
 				:hours="timeSlots[0]"
 				:minutes="timeSlots[1]"
 				:seconds="timeSlots[2]"
 				:show-seconds="showSeconds"
 				v-bind="timePickerOptions"
+				:disabled-time="disabledTime"
+				:focused-date="focusedDate"
 				@pick="handleTimePick"
 			/>
 			<vc-date-confrim 

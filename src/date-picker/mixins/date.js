@@ -7,6 +7,7 @@ export default {
 			type: Function,
 			default: () => false
 		},
+		disabledTime: Function,
 		startDate: Date,
 		focusedDate: [Date, Array],
 		showTime: {
