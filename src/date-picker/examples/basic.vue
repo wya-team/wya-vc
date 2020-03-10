@@ -158,13 +158,13 @@ export default {
 				disabledDate(date) {
 					return date && (date.valueOf() < Date.now() - 86400000 || date.valueOf() > Date.now() + 864000000);
 				},
-				disabledTime(date) {
-					return date && (date.valueOf() < Date.now() || date.valueOf() > Date.now() + 864000000);
-				}
 			},
 			timeOpts: {
 				disabledHours: [],
-				disabledMinutes: []
+				disabledMinutes: [],
+				disabledTime(date) {
+					return date && (date.valueOf() < Date.now() || date.valueOf() > Date.now() + 864000000);
+				}
 			},
 			options: {
 				disabledDate: (date) => {

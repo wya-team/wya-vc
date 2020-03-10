@@ -39,6 +39,11 @@ change-on-select | 选中即触发`change`时间 | Boolean | `false`
 参数 | 说明 | 类型 | 可选值 | 默认值
 ---|---|---|---|---
 disabledDate | 设置日期禁用状态，参数为当前日期，要求返回`Boolean` | `Function`| ---
+
+#### timePickerOptions
+
+参数 | 说明 | 类型 | 可选值 | 默认值
+---|---|---|---|---
 disabledTime | 设置时分秒禁用状态，参数为当前日期，要求返回`Boolean` | `Function`| ---
 
 

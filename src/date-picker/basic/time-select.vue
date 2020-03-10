@@ -235,7 +235,7 @@ export default {
 					time.hours = date.getHours();
 					time.minutes = minute;
 					const computedTime = getDateOfTime(startDate, time);
-					if (typeof this.disabledTime === 'function' && this.disabledTime(computedTime)) {
+					if (this.disabledTime(computedTime)) {
 						this.customdisabledMinutes.push(minute);
 					}
 				}

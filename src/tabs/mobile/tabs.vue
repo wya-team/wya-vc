@@ -12,7 +12,8 @@
 					<div 
 						v-if="showAfloat" 
 						:style="afloatStyle" 
-						class="vcm-tabs__afloat" />
+						class="vcm-tabs__afloat"
+					/>
 					<div
 						v-for="(item, index) in list"
 						:key="index"

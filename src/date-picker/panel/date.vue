@@ -51,7 +51,6 @@
 				:seconds="timeSlots[2]"
 				:show-seconds="showSeconds"
 				v-bind="timePickerOptions"
-				:disabled-time="disabledTime"
 				:focused-date="focusedDate"
 				@pick="handleTimePick"
 			/>
