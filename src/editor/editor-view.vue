@@ -5,7 +5,10 @@
 </template>
 
 <script>
+import { Load } from '@wya/utils';
+import { getUid } from '../utils/utils';
 import ImgsPreview from '../imgs-preview/index';
+import { insertFontStyle } from './utils'; 
 	
 export default {
 	name: 'vc-editor-view',
@@ -13,6 +16,10 @@ export default {
 		content: {
 			type: String,
 			default: ""
+		},
+		fontSize: {
+			type: Array,
+			default: () => ['12px', '14px', '16px', '18px', '20px', '22px', '24px', '50px']
 		}
 	},
 	data() {
@@ -27,8 +34,15 @@ export default {
 			}
 		}
 	},
+	created() {
+		this.styleId = getUid('editor-view-style');
+		insertFontStyle(this.fontSize, this.styleId);
+	},
 	mounted() {
 		this.initListener();
+	},
+	destroyed() {
+		Load.removeCSSCode(this.styleId);
 	},
 	methods: {
 		initListener() {
