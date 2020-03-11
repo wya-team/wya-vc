@@ -7,7 +7,7 @@
 			<vc-date-header 
 				v-if="currentView !== 'time'"
 				v-model="panelDate"
-				:current-view="currentView"
+				:current-view.sync="currentView"
 			/>
 			<!-- 日历 -->
 			<vc-date-table 
@@ -67,7 +67,7 @@
 </template>
 
 <script>
-import { getDateOfTime } from '../../utils/date-utils';
+import { getDateOfTime, changeYearMonthAndClampDate } from '../../utils/date-utils';
 import DateMixin from '../mixins/date';
 import YearTable from '../basic/year-table';
 import MonthTable from '../basic/month-table';
@@ -120,7 +120,13 @@ export default {
 			let date = this.dates[0];
 			if (!date || this.currentView !== 'time') return [];
 			return [date.getHours(), date.getMinutes(), date.getSeconds()];
-		}
+		},
+		month() {
+			return this.panelDate.getMonth();
+		},
+		year() {
+			return this.panelDate.getFullYear();
+		},
 	},
 	watch: {
 		
@@ -174,14 +180,27 @@ export default {
 			this.$emit('pick', this.dates);
 		},
 		handleYearPick(value) {
-			let newYear = [value];
-			this.dates = newYear;
-			this.$emit('pick', newYear);
+			if (this.type === 'year') {
+				let newYear = [value];
+				this.dates = newYear;
+				this.$emit('pick', newYear);
+			} else {
+				const newDate = changeYearMonthAndClampDate(this.dates[0] || this.panelDate, value.getFullYear(), this.month);
+				this.panelDate = newDate;
+				// this.dates = [newDate];
+				this.currentView = 'month';
+			}
 		},
 		handleMonthPick(value) {
-			let newMonth = [value];
-			this.dates = newMonth;
-			this.$emit('pick', newMonth);
+			if (this.type === 'month') {
+				let newMonth = [value];
+				this.dates = newMonth;
+				this.$emit('pick', newMonth);
+			} else {
+				const newDate = changeYearMonthAndClampDate(this.dates[0] || this.panelDate, this.year, value.getMonth());
+				this.panelDate = newDate;
+				this.currentView = 'date';
+			}
 		},
 		// 季度选择value => 月份的范围
 		handleQuarterPick(value) {

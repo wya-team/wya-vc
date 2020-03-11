@@ -168,8 +168,6 @@ export default {
 			},
 			options: {
 				disabledDate: (date) => {
-					let year = date.getFullYear();
-					let month = date.getMonth();
 					return false;
 				}
 			},

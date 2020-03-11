@@ -3,8 +3,8 @@
 		<template v-if="currentView !== 'timerange'">
 			<vc-icon v-if="showPrev" class="vc-date-header__arrow is-prev is-prev-year" type="d-arrow-left" @click="handlePrevYear" />
 			<vc-icon v-if="showPrev && isDate" class="vc-date-header__arrow is-prev" type="arrow-left" @click="handlePrevMonth" />
-			<span>{{ year }}</span>
-			<span v-if="isDate">{{ month }}</span>
+			<span class="vc-date-header__label" @click="handleShowYearPicker">{{ year }}</span>
+			<span v-if="isDate" class="vc-date-header__label" @click="handleShowMonthPicker">{{ month }}</span>
 			<vc-icon v-if="showNext" class="vc-date-header__arrow is-next is-next-year" type="d-arrow-right" @click="handleNextYear" />
 			<vc-icon v-if="showNext && isDate" class="vc-date-header__arrow is-next" type="arrow-right" @click="handleNextMonth" />
 		</template>
@@ -55,6 +55,12 @@ export default {
 		}
 	},
 	methods: {
+		handleShowYearPicker() {
+			this.$emit('update:currentView', 'year');
+		},
+		handleShowMonthPicker() {
+			this.$emit('update:currentView', 'month');
+		},
 		handlePrevMonth() {
 			let prevM = prevMonth(this.panelDate);
 			this.$emit('change', prevM, 'prev-month');
@@ -114,6 +120,12 @@ $block: vc-date-header;
 		}
 		@include when(next-year) {
 			margin-right: 10px;
+		}
+	}
+	@include element(label) {
+		cursor: pointer;
+		&:hover {
+			color: #2D8CF0;
 		}
 	}
 }
