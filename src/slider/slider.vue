@@ -226,6 +226,12 @@ export default {
 			}
 			return result;
 		},
+		firstPosition() {
+			return this.currentValue[0];
+		},
+		secondPosition() {
+			return this.currentValue[1];
+		}
 	},
 	watch: {
 		value(val) {
