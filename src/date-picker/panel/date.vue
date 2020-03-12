@@ -181,7 +181,11 @@ export default {
 			this.$emit('pick', this.dates);
 		},
 		handleChangeCurrentView(currentView) {
-			this.currentView = currentView;
+			if (this.currentView === currentView) {
+				this.currentView = 'date';
+			} else {
+				this.currentView = currentView;
+			}
 		},
 		handleYearPick(value) {
 			if (this.type === 'year') {
@@ -191,7 +195,6 @@ export default {
 			} else {
 				const newDate = changeYearMonthAndClampDate(this.dates[0] || this.panelDate, value.getFullYear(), this.month);
 				this.panelDate = newDate;
-				// this.dates = [newDate];
 				this.currentView = 'month';
 			}
 		},

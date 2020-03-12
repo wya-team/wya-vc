@@ -206,7 +206,11 @@ export default {
 	},
 	methods: {
 		handleChangeLeftCurrentView(currentView) {
-			this.leftCurrentView = currentView;
+			if (this.leftCurrentView === currentView) {
+				this.leftCurrentView = 'daterange';
+			} else {
+				this.leftCurrentView = currentView;
+			}
 		},
 		handleLeftYearPick(value) {
 			const leftDate = changeYearMonthAndClampDate(this.dates[0] || this.leftPanelDate, value.getFullYear(), this.leftMonth);
@@ -227,7 +231,11 @@ export default {
 			}
 		},
 		handleChangeRightCurrentView(currentView) {
-			this.rightCurrentView = currentView;
+			if (this.rightCurrentView === currentView) {
+				this.rightCurrentView = 'daterange';
+			} else {
+				this.rightCurrentView = currentView;
+			}
 		},
 		handleRightYearPick(value) {
 			const rightDate = changeYearMonthAndClampDate(this.dates[1] || this.rightPanelDate, value.getFullYear(), this.rightMonth);
