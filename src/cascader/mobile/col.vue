@@ -3,8 +3,8 @@
 		<div class="vcm-cascader-col__list vc-hack-scroll">
 			<div 
 				v-for="(item, index) in dataSource"
-				:key="index"
 				:id="item.isFirst && item[alphabetKey]"
+				:key="index"
 				:class="{ 'is-select': value === item.value }"
 				class="vcm-cascader-col__item"
 				@click="handleClick(item.value, index)"
@@ -117,7 +117,9 @@ $block: vcm-cascader-col;
 	overflow-scrolling: touch;
 	background-color: #fff;
 	@include when(alphabetical) {
-		padding-right: 36px;
+		@include element(list) {
+			padding-right: 36px;
+		}
 	}
 	@include element(list) {
 		overflow: auto;

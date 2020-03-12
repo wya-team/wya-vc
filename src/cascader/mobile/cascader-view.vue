@@ -223,7 +223,11 @@ export default {
 					children.splice(0, 0, ...res);
 				}
 				
-				children && this.rebuildData.splice(colIndex + 1, len, this.makeData(children).data);
+				if (children) {
+					const { data, alphabet } = this.makeData(children);
+					this.rebuildData.splice(colIndex + 1, len, data);
+					this.alphabetData.splice(colIndex + 1, len, alphabet);
+				}
 				
 				if ((!children || children.length === 0) && colIndex < this.rebuildData.length) {
 					this.currentValue.splice(colIndex + 1, len);

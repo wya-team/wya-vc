@@ -5,11 +5,13 @@
 			:data-source="cascaderData"
 			:alphabetical="true"
 		/>
-		<vcm-cascader-view
-			v-model="value"
-			:data-source="cascaderData"
-			:alphabetical="true"
-		/>
+		<div class="cascader-view-wrapper">
+			<vcm-cascader-view
+				v-model="value"
+				:data-source="cascaderData"
+				:alphabetical="true"
+			/>
+		</div>
 	</div>
 </template>
 
@@ -125,5 +127,10 @@ export default {
 		height: 85vh;
 		max-height: 85vh;                                                                
 	}
+}
+.cascader-view-wrapper {
+	display: flex;
+	flex-direction: column;
+	height: 300px;
 }
 </style>
