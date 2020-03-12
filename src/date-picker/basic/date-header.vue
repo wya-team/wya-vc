@@ -56,10 +56,10 @@ export default {
 	},
 	methods: {
 		handleShowYearPicker() {
-			this.$emit('update:currentView', 'year');
+			this.$emit('change-current-view', 'year');
 		},
 		handleShowMonthPicker() {
-			this.$emit('update:currentView', 'month');
+			this.$emit('change-current-view', 'month');
 		},
 		handlePrevMonth() {
 			let prevM = prevMonth(this.panelDate);

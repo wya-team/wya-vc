@@ -33,7 +33,7 @@ export default {
 			default: false
 		},
 		currentView: {
-			type: String,
+			type: String | Array,
 			default: 'date'
 		}
 	},
@@ -55,23 +55,35 @@ export default {
 	methods: {
 		handleToggleTime(e) {
 			let view;
-			switch (this.currentView) {
+
+			if (Array.isArray(this.currentView)) {
+				view = [this.handleGetTimeType(this.currentView[0]), this.handleGetTimeType(this.currentView[1])];
+			} else {
+				view = this.handleGetTimeType(this.currentView);
+			}
+			this.$emit('toggle-time', view);
+		},
+		handleGetTimeType(type) {
+			let view;
+			switch (type) {
 				case 'date':
 					view = 'time';
 					break;
+				case 'month':
+				case 'year':
 				case 'daterange':
 					view = 'timerange';
 					break;
 				case 'time':
 					view = 'date';
 					break;
-				case 'timerange':
+				case 'timerange':	
 					view = 'daterange';
 					break;
 				default:
 					break;
 			}
-			this.$emit('toggle-time', view);
+			return view;
 		},
 		handleConfirm(e) {
 			this.$emit('ok', e);

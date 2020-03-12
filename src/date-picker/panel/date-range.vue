@@ -7,14 +7,15 @@
 			<div class="vc-daterange-panel__table">
 				<div class="vc-daterange-panel__content is-left">
 					<vc-date-header 
-						:current-view="currentView"
+						:current-view="leftCurrentView"
 						:panel-date="leftPanelDate"
 						:show-next="splitPanels"
 						title="开始时间"
 						@change="handlePanelChange(...arguments, 'left')"
+						@change-current-view="handleChangeLeftCurrentView"
 					/>
 					<vc-date-table 
-						v-if="currentView === 'daterange'"
+						v-if="leftCurrentView === 'daterange'"
 						:value="dates"
 						:panel-date="leftPanelDate"
 						:disabled-date="disabledDate"
@@ -23,9 +24,25 @@
 						@pick="handlePick(...arguments, 'left')"
 						@range-change="handleRangeChange"
 					/>
+					<!-- 年 -->
+					<vc-year-table 
+						v-if="leftCurrentView === 'year'"
+						:value="[dates[0]]"
+						:panel-date="leftPanelDate"
+						:disabled-date="disabledDate"
+						@pick="handleLeftYearPick"
+					/>
+					<!-- 月 -->
+					<vc-month-table 
+						v-if="leftCurrentView === 'month'"
+						:value="[dates[0]]"
+						:panel-date="leftPanelDate"
+						:disabled-date="disabledDate"
+						@pick="handleLeftMonthPick"
+					/>
 					<!-- time -->
 					<vc-time-select 
-						v-show="currentView === 'timerange'"
+						v-show="leftCurrentView === 'timerange'"
 						:hours="timeSlots.left.hours"
 						:minutes="timeSlots.left.minutes"
 						:seconds="timeSlots.left.seconds"
@@ -36,14 +53,15 @@
 				</div>
 				<div class="vc-daterange-panel__content is-right">
 					<vc-date-header
-						:current-view="currentView"
+						:current-view="rightCurrentView"
 						:panel-date="rightPanelDate"
 						:show-prev="splitPanels"
 						title="结束时间"
 						@change="handlePanelChange(...arguments, 'right')"
+						@change-current-view="handleChangeRightCurrentView"
 					/>
 					<vc-date-table 
-						v-if="currentView === 'daterange'"
+						v-if="rightCurrentView === 'daterange'"
 						:value="dates"
 						:panel-date="rightPanelDate"
 						:disabled-date="disabledDate"
@@ -52,9 +70,25 @@
 						@pick="handlePick(...arguments, 'right')"
 						@range-change="handleRangeChange"
 					/>
+					<!-- 年 -->
+					<vc-year-table 
+						v-if="rightCurrentView === 'year'"
+						:value="[dates[1]]"
+						:panel-date="rightPanelDate"
+						:disabled-date="disabledDate"
+						@pick="handleRightYearPick"
+					/>
+					<!-- 月 -->
+					<vc-month-table 
+						v-if="rightCurrentView === 'month'"
+						:value="[dates[1]]"
+						:panel-date="rightPanelDate"
+						:disabled-date="disabledDate"
+						@pick="handleRightMonthPick"
+					/>
 					<!-- time -->
 					<vc-time-select 
-						v-show="currentView === 'timerange'"
+						v-show="rightCurrentView === 'timerange'"
 						:hours="timeSlots.right.hours"
 						:minutes="timeSlots.right.minutes"
 						:seconds="timeSlots.right.seconds"
@@ -67,7 +101,7 @@
 			<vc-date-confrim 
 				v-if="confirm"
 				:show-time="canSelectTime"
-				:current-view="currentView"
+				:current-view="[leftCurrentView, rightCurrentView]"
 				@clear="handleClear"
 				@ok="handleOK"
 				@toggle-time="handleToggleTime"
@@ -77,8 +111,10 @@
 </template>
 
 <script>
-import { clearTime, nextMonth, prevMonth, nextYear, prevYear, getDateOfTime } from '../../utils/date-utils';
+import { clearTime, nextMonth, prevMonth, nextYear, prevYear, getDateOfTime, changeYearMonthAndClampDate } from '../../utils/date-utils';
 import DateMixin from '../mixins/date';
+import YearTable from '../basic/year-table';
+import MonthTable from '../basic/month-table';
 import DateTable from '../basic/date-table';
 import DateHeader from '../basic/date-header';
 import Confirm from '../basic/confirm';
@@ -88,6 +124,8 @@ export default {
 	name: 'vc-date-range-panel',
 	components: {
 		'vc-date-header': DateHeader,
+		'vc-year-table': YearTable,
+		'vc-month-table': MonthTable,
 		'vc-date-table': DateTable,
 		'vc-date-confrim': Confirm,
 		'vc-time-select': TimeSelect
@@ -119,6 +157,8 @@ export default {
 				marker: null, // 第一次点下的日期
 			},
 			currentView: 'daterange',
+			rightCurrentView: 'daterange',
+			leftCurrentView: 'daterange',
 		};
 	},
 	computed: {
@@ -150,9 +190,68 @@ export default {
 					seconds: rightDate.getSeconds()
 				},
 			};
-		}
+		},
+		leftMonth() {
+			return this.leftPanelDate.getMonth();
+		},
+		leftYear() {
+			return this.leftPanelDate.getFullYear();
+		},
+		rightMonth() {
+			return this.rightPanelDate.getMonth();
+		},
+		rightYear() {
+			return this.rightPanelDate.getFullYear();
+		},
 	},
 	methods: {
+		handleChangeLeftCurrentView(currentView) {
+			this.leftCurrentView = currentView;
+		},
+		handleLeftYearPick(value) {
+			const leftDate = changeYearMonthAndClampDate(this.dates[0] || this.leftPanelDate, value.getFullYear(), this.leftMonth);
+			this.leftPanelDate = leftDate;
+			this.leftCurrentView = 'month';
+			if (!this.splitPanels) {
+				const rightDate = changeYearMonthAndClampDate(this.dates[1] || this.rightPanelDate, value.getFullYear(), this.rightMonth);
+				this.rightPanelDate = rightDate;
+			}
+		},
+		handleLeftMonthPick(value) {
+			const leftDate = changeYearMonthAndClampDate(this.dates[0] || this.leftPanelDate, this.leftYear, value.getMonth());
+			this.leftPanelDate = leftDate;
+			this.leftCurrentView = 'daterange';
+			if (!this.splitPanels) {
+				const rightDate = changeYearMonthAndClampDate(this.dates[1] || this.rightPanelDate, this.leftYear, this.leftMonth + 1);
+				this.rightPanelDate = rightDate;
+			}
+		},
+		handleChangeRightCurrentView(currentView) {
+			this.rightCurrentView = currentView;
+		},
+		handleRightYearPick(value) {
+			const rightDate = changeYearMonthAndClampDate(this.dates[1] || this.rightPanelDate, value.getFullYear(), this.rightMonth);
+			this.rightPanelDate = rightDate;
+			this.rightCurrentView = 'month';
+			if (!this.splitPanels) {
+				const leftDate = changeYearMonthAndClampDate(this.dates[0] || this.leftPanelDate, value.getFullYear(), this.leftMonth);
+				this.leftPanelDate = leftDate;
+			}
+		},
+		handleRightMonthPick(value) {
+			const newDate = changeYearMonthAndClampDate(this.dates[1] || this.rightPanelDate, this.rightYear, value.getMonth());
+			this.rightPanelDate = newDate;
+			this.rightCurrentView = 'daterange';
+			if (!this.splitPanels) {
+				const leftDate = changeYearMonthAndClampDate(this.dates[1] || this.leftPanelDate, this.rightYear, this.rightMonth - 1);
+				this.leftPanelDate = leftDate;
+			}
+		},
+		setRightHeaderDate() {
+			if (!this.splitPanels) {
+				this.rightPanelDate = newDate;
+			}
+		},
 		isEqualYearAndMonth() {
 			if (!this.value[0] || !this.value[1]) { return false; }
 			let startYear = this.value[0].getFullYear();
@@ -293,7 +392,8 @@ export default {
 			}
 		},
 		handleToggleTime(view) {
-			this.currentView = view;
+			this.leftCurrentView = view[0];
+			this.rightCurrentView = view[1];
 		},
 		handleClear() {
 			this.$emit('clear');

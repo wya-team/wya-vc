@@ -7,7 +7,8 @@
 			<vc-date-header 
 				v-if="currentView !== 'time'"
 				v-model="panelDate"
-				:current-view.sync="currentView"
+				:current-view="currentView"
+				@change-current-view="handleChangeCurrentView"
 			/>
 			<!-- 日历 -->
 			<vc-date-table 
@@ -178,6 +179,9 @@ export default {
 			let newDate = getDateOfTime(this.dates[0] || this.panelDate, value);
 			this.dates = [newDate];
 			this.$emit('pick', this.dates);
+		},
+		handleChangeCurrentView(currentView) {
+			this.currentView = currentView;
 		},
 		handleYearPick(value) {
 			if (this.type === 'year') {
