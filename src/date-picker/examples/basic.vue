@@ -26,7 +26,6 @@
 		/>
 		<vc-date-picker 
 			:value="valueRange"
-			:split-panels="false" 
 			:options="options" 
 			type="datetimerange" 
 			clearable

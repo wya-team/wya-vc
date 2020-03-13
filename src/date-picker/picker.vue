@@ -135,7 +135,7 @@ export default {
 		},
 		splitPanels: {
 			type: Boolean,
-			default: false
+			default: true
 		},
 		steps: {
 			type: Array,

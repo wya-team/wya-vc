@@ -73,7 +73,7 @@ export default {
 		},
 		splitPanels: {
 			type: Boolean,
-			default: false
+			default: true
 		},
 	},
 	data() {
