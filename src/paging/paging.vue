@@ -238,11 +238,9 @@ export default {
 			let page = this.reset === true 
 				? this.currentPage // 当前页刷新
 				: 1; // 首页刷新
-			if (this.count === 0 && this.show) {
-				this.currentPage = 0;
-				this.handleChange(page);
-			} else if (this.count === 0) {
-				this.currentPage = 0;
+			if (this.count === 0) {
+				this.currentPage = 1;
+				this.show && this.handleChange(page);
 			}
 		}
 	},
@@ -342,7 +340,7 @@ export default {
 		},
 		_loadData(page, pageSize = this.pageSize) {
 			// set-page
-			this.currentPage !== 0 && this.setCurrentPage(page);
+			this.setCurrentPage(page);
 
 			// 是否已有数据
 			let arr = this.dataSource[page];
@@ -365,7 +363,6 @@ export default {
 					return Promise.reject(res);
 				}).finally(() => {
 					this.loading = false;
-					this.currentPage === 0 && this.setCurrentPage(page);
 					this.$emit('load-finish');
 				});
 			} else {
@@ -378,7 +375,6 @@ export default {
 		setCurrentPage(page) {
 			this.currentPage = page;
 			this.$emit('update:current', page);
-
 
 			// 给外部触发
 			this.$emit('page-change', page);
