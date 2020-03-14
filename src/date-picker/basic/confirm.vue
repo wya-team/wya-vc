@@ -43,6 +43,9 @@ export default {
 	},
 	computed: {
 		label() {
+			if (Array.isArray(this.currentView)) {
+				return this.currentView.every(view => view.includes('time')) ? '选择日期' : '选择时间';
+			}
 			return this.currentView.includes('date') ? '选择时间' : '选择日期';
 		}
 	},
