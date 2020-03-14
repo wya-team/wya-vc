@@ -156,7 +156,6 @@ export default {
 				selecting: false,
 				marker: null, // 第一次点下的日期
 			},
-			currentView: 'daterange',
 			rightCurrentView: 'daterange',
 			leftCurrentView: 'daterange',
 		};
@@ -172,7 +171,7 @@ export default {
 		timeSlots() {
 			let leftDate = this.dates[0];
 			let rightDate = this.dates[1];
-			if (!leftDate || !rightDate || this.currentView !== 'timerange') {
+			if (!leftDate || !rightDate || (this.rightCurrentView !== 'timerange' && this.leftCurrentView !== 'timerange')) {
 				return {
 					left: {},
 					right: {}
@@ -300,6 +299,7 @@ export default {
 		handlePanelChange(panelDate, type, position) {
 			this[`${position}PanelDate`] = panelDate;
 			if (this.splitPanels) { // 左右面板不联动
+
 				let isOverRightPanel = this.isOverRightPanel(panelDate);
 				let isOverLeftPanel = this.isOverLeftPanel(panelDate);
 
@@ -307,17 +307,41 @@ export default {
 					case 'prev-month':
 					case 'next-month':
 						if (position === 'left' && isOverRightPanel) {
-							this.rightPanelDate = nextMonth(this.rightPanelDate);
+							// 判断如果右边下个月的日期还是小于左边的日期，则将右边日期改成比左边日期大一个月
+							const rightPanelDate = nextMonth(this.rightPanelDate);
+							if (rightPanelDate < this.leftPanelDate) {
+								this.rightPanelDate = changeYearMonthAndClampDate(this.leftPanelDate, this.leftYear, this.leftMonth + 1);
+							} else {
+								this.rightPanelDate = nextMonth(this.rightPanelDate);
+							}
 						} else if (position === 'right' && isOverLeftPanel) {
-							this.leftPanelDate = prevMonth(this.leftPanelDate);
+							// 判断如果左边上个月的日期还是大于右边的日期，则将左边日期改成比右边日期小一个月
+							const leftPanelDate = prevMonth(this.leftPanelDate);
+							if (leftPanelDate < this.leftPanelDate) {
+								this.leftPanelDate = changeYearMonthAndClampDate(this.rightPanelDate, this.rightYear, this.rightMonth - 1);
+							} else {
+								this.leftPanelDate = prevMonth(this.leftPanelDate);
+							}
 						}
 						break;
 					case 'prev-year':
 					case 'next-year':
-						if (position === 'left' && isOverRightPanel) {
-							this.rightPanelDate = nextYear(this.rightPanelDate);
-						} else if (position === 'right' && isOverLeftPanel) {
-							this.leftPanelDate = prevYear(this.leftPanelDate);
+						if (position === 'left' && isOverRightPanel && this.leftCurrentView !== 'year') {
+							// 判断如果右边下年的日期还是小于左边的日期，则将右边日期改成比左边日期大一月
+							const rightPanelDate = nextYear(this.rightPanelDate);
+							if (rightPanelDate < this.leftPanelDate) {
+								this.rightPanelDate = changeYearMonthAndClampDate(this.leftPanelDate, this.leftYear, this.leftMonth + 1);
+							} else {
+								this.rightPanelDate = nextYear(this.rightPanelDate);
+							}
+						} else if (position === 'right' && isOverLeftPanel && this.rightCurrentView !== 'year') {
+							// 判断如果左边上个月的日期还是大于右边的日期，则将左边日期改成比右边日期小一个月
+							const leftPanelDate = prevYear(this.leftPanelDate);
+							if (leftPanelDate < this.leftPanelDate) {
+								this.leftPanelDate = changeYearMonthAndClampDate(this.rightPanelDate, this.rightYear, this.rightMonth - 1);
+							} else {
+								this.leftPanelDate = prevYear(this.leftPanelDate);
+							}
 						}
 						break;
 					default:

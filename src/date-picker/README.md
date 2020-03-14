@@ -21,7 +21,7 @@ format | 展示的日期格式 |  Date | date, daterange(YYYY-MM-DD), datetime, 
 placement | 日期选择器出现的位置，可选值为 `top` `top-start` `top-end` `bottom` `bottom-start` `bottom-end` `left` `left-start` `left-end` `right` `right-start` `right-end`，2.12.0 版本开始支持自动识别 | String | bottom-start
 placeholder | 占位文本 | String | 空
 options | 选择器额外配置，比如不可选日期与快捷选项，具体项详见下表 | Object | -
-split-panels | 开启后，左右面板不联动，仅在 daterange 和 datetimerange 下可用。 | Boolean | false
+split-panels | 开启后，左右面板不联动，仅在 daterange 和 datetimerange 下可用。 | Boolean | true
 multiple | 开启后，可以选择多个日期，仅在 `date` 下可用。 | Boolean | false
 <!-- show-week-numbers | 开启后，可以显示星期数。 | Boolean | false -->
 start-date | 设置默认显示的起始日期。 | Date | -
