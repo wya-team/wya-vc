@@ -24,7 +24,6 @@
 				v-if="currentView === 'year'"
 				:value="dates"
 				:panel-date="panelDate"
-				:disabled-date="disabledDate"
 				@pick="handleYearPick"
 			/>
 			<!-- 月 -->
@@ -32,7 +31,6 @@
 				v-if="currentView === 'month'"
 				:value="dates"
 				:panel-date="panelDate"
-				:disabled-date="disabledDate"
 				@pick="handleMonthPick"
 			/>
 			<!-- 季度 -->

@@ -29,7 +29,6 @@
 						v-if="leftCurrentView === 'year'"
 						:value="[dates[0]]"
 						:panel-date="leftPanelDate"
-						:disabled-date="disabledDate"
 						@pick="handleLeftYearPick"
 					/>
 					<!-- 月 -->
@@ -37,7 +36,6 @@
 						v-if="leftCurrentView === 'month'"
 						:value="[dates[0]]"
 						:panel-date="leftPanelDate"
-						:disabled-date="disabledDate"
 						@pick="handleLeftMonthPick"
 					/>
 					<!-- time -->
@@ -75,7 +73,6 @@
 						v-if="rightCurrentView === 'year'"
 						:value="[dates[1]]"
 						:panel-date="rightPanelDate"
-						:disabled-date="disabledDate"
 						@pick="handleRightYearPick"
 					/>
 					<!-- 月 -->
@@ -83,7 +80,6 @@
 						v-if="rightCurrentView === 'month'"
 						:value="[dates[1]]"
 						:panel-date="rightPanelDate"
-						:disabled-date="disabledDate"
 						@pick="handleRightMonthPick"
 					/>
 					<!-- time -->
