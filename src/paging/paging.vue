@@ -343,6 +343,7 @@ export default {
 			// 是否已有数据
 			let arr = this.dataSource[page];
 			if (arr && typeof arr.length === 'number') {
+				this.setCurrentPage(page);
 				this.resetSelection(true);
 				return;
 			}
