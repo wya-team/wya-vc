@@ -239,7 +239,7 @@ export default {
 				? this.currentPage // 当前页刷新
 				: 1; // 首页刷新
 			if (this.count === 0) {
-				this.currentPage = 1;
+				this.currentPage = 0;
 				this.show && this.handleChange(page);
 			}
 		}
