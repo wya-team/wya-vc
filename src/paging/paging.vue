@@ -339,11 +339,12 @@ export default {
 			this._loadData(page, pageSize);
 		},
 		_loadData(page, pageSize = this.pageSize) {
+			// set-page
+			this.currentPage !== 0 && this.setCurrentPage(page);
 
 			// 是否已有数据
 			let arr = this.dataSource[page];
 			if (arr && typeof arr.length === 'number') {
-				this.setCurrentPage(page);
 				this.resetSelection(true);
 				return;
 			}
@@ -361,9 +362,8 @@ export default {
 					this.$emit('load-fail', res);
 					return Promise.reject(res);
 				}).finally(() => {
-					// set-page
-					this.setCurrentPage(page);
 					this.loading = false;
+					this.currentPage === 0 && this.setCurrentPage(page);
 					this.$emit('load-finish');
 				});
 			} else {
