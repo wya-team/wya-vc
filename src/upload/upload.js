@@ -27,8 +27,10 @@ export default {
 		},
 
 		// 选择文件时最多选择文件数量， 在multiple为true 或者 directory为true的情况下有效
+		// 为Object时可指定图片、视频、其他文件的最大个数 { image: 1, video: 1, file: 1 }，不想支持某个类型文件上传通过accept去控制
+		// 如果accept中支持某种文件上传，但max中未指定该类型文件上传最大个数，则不做最大个数限制
 		max: {
-			type: Number,
+			type: [Number, Object],
 			default: 1
 		},
 
@@ -195,21 +197,46 @@ export default {
 		uploadFiles(files) {
 			let postFiles = Array.prototype.slice.call(files);
 
-			postFiles = postFiles.filter(
-				file => attrAccept(file, this.accept)
-			);
-
+			postFiles = postFiles.filter(file => attrAccept(file, this.accept));
+			postFiles.forEach(file => {
+				file.mode = attrAccept(file, 'image/*,video/*') ? 'images' : 'files';
+			});
+				
 			const length = postFiles.length;
 
 			if (length === 0) {
 				this.$emit('error', { msg: `文件格式限制：${this.accept}` });
 				return;
-			} else if (length > this.max) {
-				if (this.multiple) {
-					this.$emit('error', { msg: `可选文件数量不能超过${this.max}个` });
-					return;
-				} else if (this.directory) {
-					this.$emit('error', { msg: `文件夹内文件的数量不能超过${this.max}个` });
+			} else if (typeof this.max === 'number') {
+				if (length > this.max) {
+					if (this.multiple) {
+						this.$emit('error', { msg: `可选文件数量不能超过${this.max}个` });
+						return;
+					} else if (this.directory) {
+						this.$emit('error', { msg: `文件夹内文件的数量不能超过${this.max}个` });
+						return;
+					}
+				}
+			} else if (typeof this.max === 'object') {
+				const { image, video, file } = this.max;
+				let imageCount = 0;
+				let videoCount = 0;
+				let fileCount = 0;
+				postFiles.forEach(file => {
+					if (attrAccept(file, 'image/*')) {
+						imageCount++;
+					} else if (attrAccept(file, 'video/*')) {
+						videoCount++;
+					} else {
+						fileCount++;
+					}
+				});
+				const msgList = [];
+				typeof image !== 'undefined' && imageCount > image && msgList.push(`可选图片不可超过${image}张`);
+				typeof video !== 'undefined' && videoCount > video && msgList.push(`可选视频不可超过${video}个`);
+				typeof file !== 'undefined' && fileCount > file && msgList.push(`可选其他文件不可超过${file}个`);
+				if (msgList.length) {
+					this.$emit('error', { msg: msgList.join('，') });
 					return;
 				}
 			}
@@ -304,7 +331,7 @@ export default {
 				onPostAfter 
 			} = VcInstance.config.Upload || {};
 
-			const defaultUrl = mode === 'images' 
+			const defaultUrl = file.mode === 'images' 
 				? URL_UPLOAD_IMG_POST 
 				: URL_UPLOAD_FILE_POST;
 
