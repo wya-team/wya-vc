@@ -3,7 +3,6 @@
 		ref="form"
 		:model="formValidate" 
 		:rules="ruleValidate" 
-		@click.native.prevent
 	>
 		<vc-form-item prop="files">
 			<vc-files-picker 

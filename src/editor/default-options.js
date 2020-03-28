@@ -16,7 +16,7 @@ export default {
 			[{ 'font': [] }],
 			[{ 'align': [] }],
 			// ['clean'],
-			['link', 'vc-image', 'vc-video', 'vc-undo', 'vc-redo']
+			['link', 'vc-image', 'vc-undo', 'vc-redo']
 		],
 	},
 	placeholder: '请输入内容',
