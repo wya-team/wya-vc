@@ -29,8 +29,7 @@
 	</div>
 </template>
 <script>
-import Notice from '..';
-import Button from '../../button';
+import { Button, Notice } from '@wya/vc';
 
 window.Notice = Notice;
 
@@ -112,8 +111,7 @@ export default {
 	</div>
 </template>
 <script>
-import Notice from '..';
-import Button from '../../button';
+import { Button, Notice } from '@wya/vc';
 
 window.Notice = Notice;
 
@@ -152,8 +150,7 @@ export default {
 	</div>
 </template>
 <script>
-import Notice from '..';
-import Button from '../../button';
+import { Button, Notice } from '@wya/vc';
 
 window.Notice = Notice;
 
