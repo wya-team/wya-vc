@@ -101,7 +101,7 @@
 		"no-tabs": 0,
 		"quotes": 0,
 		"no-console": 0,
-		"no-debugger": 1,
+		"no-debugger": 0,
 		"no-var": 1,
 		"import/named": 0,
 		"semi": [

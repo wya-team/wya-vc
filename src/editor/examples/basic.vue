@@ -12,6 +12,7 @@
 				v-model="formValidate.value"
 				:disabled="disabled"
 				:options="options"
+				style="width: 100%; height: 500px"
 			/>
 		</vc-form-item>
 		<vc-editor-view :content="formValidate.value" />
@@ -19,6 +20,7 @@
 	</vc-form >
 </template>
 <script>
+import { random } from 'lodash';
 import Form from '../../form';
 import Input from '../../input';
 import Button from '../../button';
@@ -32,9 +34,9 @@ VcInstance.init({
 		URL_UPLOAD_FILE_POST: 'https://api.github.com/users/wya-team',
 		onPostBefore: ({ options }) => {
 			return new Promise((resolve, reject) => {
-				// if (random(0, 10) > 10) {
-				// 	throw new Error('异常处理');
-				// }
+				if (random(0, 10) > 10) {
+					throw new Error('异常处理');
+				}
 				resolve({
 					...options,
 					param: {
@@ -84,16 +86,18 @@ export default {
 		return {
 			options: {
 				modules: {
-					toolbar: {
-						container: [
-							['bold', 'italic', 'underline', 'strike'],
-							[{ 'header': [1, 2, 3, 4, 5, 6, false] }],
-							['link'],
-							[{ 'color': [] }, { 'background': [] }],
-							[{ 'align': [] }]
-						],
-					},
-				}
+					// toolbar: {
+					// 	container: [
+					// 		['bold', 'italic', 'underline', 'strike'],
+					// 		[{ 'header': [1, 2, 3, 4, 5, 6, false] }],
+					// 		['link'],
+					// 		[{ 'color': [] }, { 'background': [] }],
+					// 		[{ 'align': [] }]
+					// 	],
+					// },
+					ImageExtend: {}
+				},
+				
 			},
 			disabled: false,
 			formValidate: {

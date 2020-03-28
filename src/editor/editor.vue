@@ -4,12 +4,15 @@
 			<vc-editor-toolbar 
 				ref="toolbar"
 				:toolbar="options.modules.toolbar"
-				:toolbar-id="toolbarId"
+				:uid="uid"
 			>
 				<button class="vc-quill-editor__icon">
 					<vc-upload
 						v-bind="imgUploadOpts"
 						@file-success="handleImgSuccess"
+						@file-start="handleUploadStart"
+						@file-error="handleUploadError"
+						@complete="handleComplete"
 					>
 						<vc-icon type="image" style="font-size: 15px" @click="handleUploadImg" />
 					</vc-upload>
@@ -19,6 +22,9 @@
 						v-bind="videoUploadOpts"
 						:gallery="false"
 						@file-success="handleVideoSuccess"
+						@file-start="handleUploadStart"
+						@file-error="handleUploadError"
+						@complete="handleComplete"
 					>
 						<vc-icon type="video" style="font-size: 16px" />
 					</vc-upload>
@@ -35,11 +41,17 @@
 			</vc-editor-toolbar>
 		</slot>
 		<div ref="editor" />
+		<div 
+			v-show="loading"
+			class="vc-quill-editor__spin">
+			<vc-spin />
+		</div>
 	</div>
 </template>
 
 <script>
 import './style.scss';
+import { getUid } from '../utils/utils';
 import Extends from '../extends';
 import EditorToolbar from './toolbar';
 import Upload from '../upload/index';
@@ -49,13 +61,16 @@ import defaultOptions from './default-options';
 import { VcInstance } from '../vc/index';
 import { registVideoBlot } from './extends/video-blot';
 import ImageExtend from './extends/image-extend';
+import Spin from '../spin';
+import Message from '../message';
 
 export default {
 	name: "vc-editor",
 	components: {
 		'vc-editor-toolbar': EditorToolbar,
 		'vc-upload': Upload,
-		'vc-icon': Icon
+		'vc-icon': Icon,
+		'vc-spin': Spin
 	},
 	mixins: [...Extends.mixins(['emitter'])],
 	model: {
@@ -76,10 +91,6 @@ export default {
 					}
 				};
 			}
-		},
-		toolbarId: {
-			type: String,
-			default: 'toolbar'
 		},
 		disabled: {
 			type: Boolean,
@@ -106,7 +117,9 @@ export default {
 	},
 	data() {
 		return {
-			content: ''
+			content: '',
+			uid: getUid('editor-toolbar'),
+			loading: false
 		};
 	},
 	computed: {
@@ -115,7 +128,7 @@ export default {
 				...this.options,
 				modules: {
 					...this.options.modules,
-					toolbar: `#${this.toolbarId}`
+					toolbar: `#${this.uid}`
 				}
 			};
 		},
@@ -255,6 +268,16 @@ export default {
 			this.editor.insertText(length + 1, '');
 			this.editor.setSelection(length + 2);
 		},
+		handleUploadStart() {
+			this.loading = true;
+		},
+		handleUploadError(e) {
+			Message.error(e.msg);
+		},
+		handleComplete() {
+			this.loading = false;
+		},
+
 		handlePreview(e) {
 			let { ImageBlot, Parchment } = this;
 			let image = Parchment.find(e.target);
@@ -329,12 +352,24 @@ export default {
 $block: vc-quill-editor;
 
 @include block($block) {
+	position: relative;
 	color: #333 !important;
 	display: flex;
 	flex-direction: column;
 	@include element(icon) {
 		outline: none; 
 		line-height: 1;
+	}
+	@include element(spin) {
+		position: absolute;
+		top: 0;
+		left: 0;
+		bottom: 0;
+		right: 0;
+		display: flex;
+		align-items: center;
+		justify-content: center;
+		background: #ffffffaa
 	}
 	.ql-container {
 		flex: 1;
