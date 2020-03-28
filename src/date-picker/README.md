@@ -239,6 +239,76 @@ export default {
 </style>
 ```
 :::
+
+### 移动端日期时间选择
+
+:::RUNTIME
+```html
+<template>
+	<div class="v-data-picker-basic">
+		<h2>日期时间</h2>
+		<vcm-date-picker 
+			v-model="value"
+			:arrow="false"
+			mode="datetime"
+		>
+			<template #default="it">
+				<h2>
+					{{ it.label }}
+				</h2>
+			</template>
+		</vcm-date-picker>
+		<h2>年月</h2>
+		<vcm-date-picker 
+			v-model="yearmonth"
+			:arrow="false"
+			mode="yearmonth"
+		>
+			<template #default="it">
+				<h2>
+					{{ it.label }}
+				</h2>
+			</template>
+		</vcm-date-picker>
+		<h2>时分</h2>
+		<vcm-date-picker 
+			v-model="time"
+			:arrow="false"
+			mode="time"
+		>
+			<template #default="it">
+				<h2>
+					{{ it.label }}
+				</h2>
+			</template>
+		</vcm-date-picker>
+	</div>
+</template>
+
+<script>
+import { MDatePicker } from '@wya/vc';
+export default {
+	components: {
+		'vcm-date-picker': MDatePicker,
+	},
+	data() {
+		return  {
+			value: new Date(),
+			yearmonth: new Date(),
+			time: undefined
+		}
+	},
+	mounted() {
+	},
+	methods: {
+	}
+};
+</script>
+<style>
+
+</style>
+```
+:::
 ### API
 
 ### 基础属性
@@ -294,7 +364,38 @@ default | 自定义选择器的显示内容，建议与 open 等参数一起使�
 
 
 
-## Feature
+### Feature
 + 农历
 + 快捷操作
 + show-week-numbers
+
+
+### 移动端（vcm-date-picker）属性
+属性 | 说明 | 类型 | 可选值 | 默认值
+---|---|---|---|---
+loadData | 异步加载数据函数 | `Function` | - |-
+extra | 占位符 | `String` | - | -
+formatter | 格式化 | `Function` | - | -
+
+### 移动端（vcm-date-picke-view）属性
+属性 | 说明 | 类型 | 可选值 | 默认值
+---|---|---|---|---
+value | 返回值(v-model) | `Date` | - | -
+mode | 日期选择器类型 | `String` | `datetime` `date` `time` |-
+minDate | 最小日期 | `Date` | - | new Date('1990')
+maxDate | 最大日期 | `Date` | - | new Date('2020')
+
+### 移动端（vcm-date-picker）事件
+
+属性 | 说明 | 类型 | 默认值
+---|---|---|---
+change | 组件关闭时候触发出来的一个事件，返回值为当前选中的值以及每一列的数据 | `function` | -
+ok | - | `function` | -
+cancel | - | `function` | -
+
+### 移动端（vcm-date-picker-view）事件
+
+属性 | 说明 | 类型 | 默认值
+---|---|---|---
+change | - | `function` | -
+picker-change | - | `function` | -
