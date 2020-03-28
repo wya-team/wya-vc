@@ -90,7 +90,7 @@ export default {
 				/**
 				 * 有待优化，dataSource源数据异步
 				 */
-				let { dataSource, loadData, title, cancelText, okText, showToolbar, value, show } = this;
+				let { dataSource, loadData, title, cancelText, okText, showToolbar, value, show, alphabetical, alphabetKey } = this;
 				Func.popup({
 					dataSource,
 					title,
@@ -100,6 +100,8 @@ export default {
 					okText,
 					value,
 					loadData,
+					alphabetical,
+					alphabetKey,
 					onOk: (v, label, data) => {
 						this.currentValue = v;
 						this.$emit('ok', v, label, data);
