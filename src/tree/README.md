@@ -1,7 +1,591 @@
-## [Demo Basic](https://wya-team.github.io/wya-vc/dist/tree/basic.html)
-## 功能
-树选择
+## 树形控件（tree）
 
+用清晰的层级结构展示信息，可展开或折叠。
+
+### 何时使用
+
+比较常用的场景是权限控制
+
+### 基础用法
+:::RUNTIME
+```html
+<template>
+	<div>
+		<vc-tree 
+            :data-source="data"
+            @node-click="handleNodeClick"  />
+	</div>
+</template>
+<script>
+import { Tree } from '@wya/vc';
+
+export default {
+	name: "vc-tree-basic",
+	components: {
+		"vc-tree": Tree,
+	},
+	data() {
+		return {
+			data: [{
+                label: '一级 1',
+                children: [{
+                    label: '二级 1-1',
+                    children: [{
+                        label: '三级 1-1-1'
+                    }]
+                }]
+            }, {
+                label: '一级 2',
+                children: [{
+                    label: '二级 2-1',
+                    children: [{
+                    label: '三级 2-1-1'
+                    }]
+                }, {
+                    label: '二级 2-2',
+                    children: [{
+                    label: '三级 2-2-1'
+                    }]
+                }]
+            }, {
+                label: '一级 3',
+                children: [{
+                    label: '二级 3-1',
+                    children: [{
+                        label: '三级 3-1-1'
+                    }]
+                }, {
+                    label: '二级 3-2',
+                    children: [{
+                        label: '三级 3-2-1'
+                    }]
+                }]
+            }],
+		};
+	},
+	methods: {
+		handleNodeClick(data) {
+            console.log(data);
+        }
+	}
+};
+</script>
+```
+:::
+
+### 可选择
+适用于需要选择层级时使用。
+:::RUNTIME
+```html
+<template>
+	<div>
+		<vc-tree 
+            :data-source="data"
+            show-checkbox
+            @check-change="handleCheckChange"  />
+	</div>
+</template>
+<script>
+import { Tree } from '@wya/vc';
+
+export default {
+	name: "vc-tree-basic",
+	components: {
+		"vc-tree": Tree,
+	},
+	data() {
+		return {
+			data: [{
+                label: '一级 1',
+                children: [{
+                    label: '二级 1-1',
+                    children: [{
+                        label: '三级 1-1-1'
+                    }]
+                }]
+            }, {
+                label: '一级 2',
+                children: [{
+                    label: '二级 2-1',
+                    children: [{
+                    label: '三级 2-1-1'
+                    }]
+                }, {
+                    label: '二级 2-2',
+                    children: [{
+                    label: '三级 2-2-1'
+                    }]
+                }]
+            }, {
+                label: '一级 3',
+                children: [{
+                    label: '二级 3-1',
+                    children: [{
+                        label: '三级 3-1-1'
+                    }]
+                }, {
+                    label: '二级 3-2',
+                    children: [{
+                        label: '三级 3-2-1'
+                    }]
+                }]
+            }],
+		};
+	},
+	methods: {
+		handleCheckChange(data, checked, indeterminate) {
+			console.log(data, checked, indeterminate);
+        }
+	}
+};
+</script>
+```
+:::
+
+### 懒加载自定义叶子节点
+由于在点击节点时才进行该层数据的获取，默认情况下 Tree 无法预知某个节点是否为叶子节点，所以会为每个节点添加一个下拉按钮，如果节点没有下层数据，则点击后下拉按钮会消失。同时，你也可以提前告知 Tree 某个节点是否为叶子节点，从而避免在叶子节点前渲染下拉按钮。
+:::RUNTIME
+```html
+<template>
+	<div>
+		<vc-tree 
+            :data-source="data"
+			:load-data="loadData"
+			lazy
+            show-checkbox
+            @check-change="handleCheckChange"  />
+	</div>
+</template>
+<script>
+import { Tree } from '@wya/vc';
+
+export default {
+	name: "vc-tree-basic",
+	components: {
+		"vc-tree": Tree,
+	},
+	data() {
+		return {
+			data: [{
+                label: '一级 1',
+                children: [{
+                    label: '二级 1-1',
+                    children: [{
+                        label: '三级 1-1-1'
+                    }]
+                }]
+            }, {
+                label: '一级 2',
+                children: [{
+                    label: '二级 2-1',
+                    children: [{
+                    label: '三级 2-1-1'
+                    }]
+                }, {
+                    label: '二级 2-2',
+                    children: [{
+                    label: '三级 2-2-1'
+                    }]
+                }]
+            }, {
+                label: '一级 3',
+                children: [{
+                    label: '二级 3-1',
+                    children: [{
+                        label: '三级 3-1-1'
+                    }]
+                }, {
+                    label: '二级 3-2',
+                    children: [{
+                        label: '三级 3-2-1'
+                    }]
+                }]
+            }],
+		};
+	},
+	methods: {
+        loadData(parent) {
+			return new Promise((resolve) => {
+				setTimeout(() => {
+					resolve([{
+						value: '4-1',
+						label: '二级 4-1',
+						children: [{
+							value: '4-1-1',
+							label: '三级 4-1-1'
+						}],
+					}, {
+						value: '4-2',
+						label: '二级 4-2',
+						isLeaf: true
+					}, {
+						value: '4-3',
+						label: '二级 4-3'
+					}]);
+				}, 3000);
+			});
+		},
+		handleCheckChange(data, checked, indeterminate) {
+			console.log(data, checked, indeterminate);
+        }
+	}
+};
+</script>
+```
+:::
+
+
+
+
+### 禁用状态
+可将 Tree 的某些节点通过`disabled`设置为禁用状态
+:::RUNTIME
+```html
+<template>
+	<div>
+		<vc-tree 
+            :data-source="data"
+            show-checkbox/>
+	</div>
+</template>
+<script>
+import { Tree } from '@wya/vc';
+
+export default {
+	name: "vc-tree-basic",
+	components: {
+		"vc-tree": Tree,
+	},
+	data() {
+		return {
+			data: [{
+                id: 1,
+                label: '一级 1',
+                disabled: true,
+                children: [{
+                    id: 4,
+                    label: '二级 1-1',
+                    children: [{
+                        id: 9,
+                        label: '三级 1-1-1'
+                    }, {
+                        id: 10,
+                        label: '三级 1-1-2',
+                        disabled: true
+                    }]
+                }]
+            }, {
+                id: 2,
+                label: '一级 2',
+                children: [{
+                    id: 5,
+                    label: '二级 2-1',
+                    disabled: true
+                }, {
+                    id: 6,
+                    label: '二级 2-2'
+                }]
+            }, {
+                id: 3,
+                label: '一级 3',
+                children: [{
+                    id: 7,
+                    label: '二级 3-1'
+                }, {
+                    id: 8,
+                    label: '二级 3-2'
+                }]
+            }],
+		};
+	},
+};
+</script>
+```
+:::
+
+### 树节点的选择
+本例展示如何获取和设置选中节点。获取和设置各有两种方式：通过 node 或通过 key。如果需要通过 key 来获取或设置，则必须设置`node-key`, 通过key获取目前还不支持。
+:::RUNTIME
+```html
+<template>
+	<div>
+		<vc-tree 
+            ref="tree"
+            :data-source="data"
+            :render-content="renderContent"
+            show-checkbox
+            default-expand-all
+            nodeKey="id"
+            highlight-current />
+        <div class="buttons">
+            <vc-button @click="getCheckedNodes">通过 node 获取</vc-button>
+            <!-- <vc-button @click="getCheckedKeys">通过 key 获取</vc-button>
+            <vc-button @click="setCheckedNodes">通过 node 设置</vc-button>
+            <vc-button @click="setCheckedKeys">通过 key 设置</vc-button>
+            <vc-button @click="resetChecked">清空</vc-button> -->
+        </div>
+	</div>
+</template>
+<script>
+import { Tree, Button } from '@wya/vc';
+// import Tree from './tree';
+
+export default {
+	name: "vc-tree-basic",
+	components: {
+        "vc-tree": Tree,
+        "vc-button": Button
+	},
+	data() {
+		return {
+			data: [{
+                id: 1,
+                label: '一级 1',
+                children: [{
+                    id: 4,
+                    label: '二级 1-1',
+                    children: [{
+                        id: 9,
+                        label: '三级 1-1-1'
+                    }, {
+                        id: 10,
+                        label: '三级 1-1-2',
+                    }]
+                }]
+            }, {
+                id: 2,
+                label: '一级 2',
+                children: [{
+                    id: 5,
+                    label: '二级 2-1',
+                }, {
+                    id: 6,
+                    label: '二级 2-2'
+                }]
+            }, {
+                id: 3,
+                label: '一级 3',
+                children: [{
+                    id: 7,
+                    label: '二级 3-1'
+                }, {
+                    id: 8,
+                    label: '二级 3-2'
+                }]
+            }],
+		};
+    },
+    methods: {
+        getCheckedNodes() {
+            console.log(this.$refs.tree.getCheckedNodes());
+        },
+		renderContent(h, { it, node }) {
+			return (
+				<span>{it.label} 自定义渲染</span>
+			);
+		},
+        getCheckedKeys() {
+            console.log(this.$refs.tree.getCheckedKeys());
+        },
+        setCheckedNodes() {
+            this.$refs.tree.setCheckedNodes([{
+                id: 5,
+                label: '二级 2-1'
+            }, {
+                id: 9,
+                label: '三级 1-1-1'
+            }]);
+        },
+        setCheckedKeys() {
+            this.$refs.tree.setCheckedKeys([3]);
+        },
+        resetChecked() {
+            this.$refs.tree.setCheckedKeys([]);
+        }
+    }
+};
+</script>
+<style>
+.buttons {
+    margin: 10px 0;
+}
+</style>
+```
+:::
+
+
+
+### 手风琴模式
+对于同一级的节点，每次只能展开一个
+:::RUNTIME
+```html
+<template>
+	<div>
+		<vc-tree 
+            :data-source="data"
+            accordion
+            @node-click="handleNodeClick"  />
+	</div>
+</template>
+<script>
+import { Tree } from '@wya/vc';
+
+export default {
+	name: "vc-tree-basic",
+	components: {
+		"vc-tree": Tree,
+	},
+	data() {
+		return {
+			data: [{
+                label: '一级 1',
+                children: [{
+                    label: '二级 1-1',
+                    children: [{
+                        label: '三级 1-1-1'
+                    }]
+                }]
+            }, {
+                label: '一级 2',
+                children: [{
+                    label: '二级 2-1',
+                    children: [{
+                    label: '三级 2-1-1'
+                    }]
+                }, {
+                    label: '二级 2-2',
+                    children: [{
+                    label: '三级 2-2-1'
+                    }]
+                }]
+            }, {
+                label: '一级 3',
+                children: [{
+                    label: '二级 3-1',
+                    children: [{
+                        label: '三级 3-1-1'
+                    }]
+                }, {
+                    label: '二级 3-2',
+                    children: [{
+                        label: '三级 3-2-1'
+                    }]
+                }]
+            }],
+		};
+	},
+	methods: {
+		handleNodeClick(data) {
+            console.log(data);
+        }
+	}
+};
+</script>
+```
+:::
+
+### 可拖拽节点
+通过 `draggable` 属性可让节点变为可拖拽。
+
+:::RUNTIME
+```html
+<template>
+	<div>
+		<vc-tree 
+            :data-source="data"
+            default-expand-all
+            draggable
+            @node-drag-start="handleDragStart"
+            @node-drag-enter="handleDragEnter"
+            @node-drag-leave="handleDragLeave"
+            @node-drag-over="handleDragOver"
+            @node-drag-end="handleDragEnd"
+            @node-drop="handleDrop"
+            :allow-drop="allowDrop"
+            :allow-drag="allowDrag" />
+	</div>
+</template>
+<script>
+import { Tree } from '@wya/vc';
+
+export default {
+	name: "vc-tree-basic",
+	components: {
+		"vc-tree": Tree,
+	},
+	data() {
+		return {
+			data: [{
+                label: '一级 1',
+                children: [{
+                    label: '二级 1-1',
+                    children: [{
+                        label: '三级 1-1-1'
+                    }]
+                }]
+            }, {
+                label: '一级 2',
+                children: [{
+                    label: '二级 2-1',
+                    children: [{
+                    label: '三级 2-1-1'
+                    }]
+                }, {
+                    label: '二级 2-2',
+                    children: [{
+                    label: '三级 2-2-1'
+                    }]
+                }]
+            }, {
+                label: '一级 3',
+                children: [{
+                    label: '二级 3-1',
+                    children: [{
+                        label: '三级 3-1-1'
+                    }]
+                }, {
+                    label: '二级 3-2',
+                    children: [{
+                        label: '三级 3-2-1'
+                    }]
+                }]
+            }],
+		};
+	},
+	methods: {
+		handleDragStart(node, ev) {
+            console.log('drag start', node);
+        },
+        handleDragEnter(draggingNode, dropNode, ev) {
+            console.log('tree drag enter: ', dropNode.label);
+        },
+        handleDragLeave(draggingNode, dropNode, ev) {
+            console.log('tree drag leave: ', dropNode.label);
+        },
+        handleDragOver(draggingNode, dropNode, ev) {
+            console.log('tree drag over: ', dropNode.label);
+        },
+        handleDragEnd(draggingNode, dropNode, dropType, ev) {
+            console.log('tree drag end: ', dropNode && dropNode.label, dropType);
+        },
+        handleDrop(draggingNode, dropNode, dropType, ev) {
+            console.log('tree drop: ', dropNode.label, dropType);
+        },
+        allowDrop(draggingNode, dropNode, type) {
+            if (dropNode.data.label === '二级 3-1') {
+                return type !== 'inner';
+            } else {
+                return true;
+            }
+        },
+        allowDrag(draggingNode) {
+            return draggingNode.data.label.indexOf('三级 3-2-2') === -1;
+        }
+	}
+};
+</script>
+```
+:::
 ## API
 
 #### 属性
@@ -19,10 +603,8 @@ default-expand-all | 是否默认展开所有节点 | boolean | false
 expand-on-click-node | 是否在点击节点的时候展开或者收缩节点， 默认值为 true，如果为 false，则只有点箭头图标的时候才会展开或者收缩节点。 | boolean | true 
 check-on-click-node | 是否在点击节点的时候选中节点，默认值为 false，即只有在点击复选框时才会选中节点。 | boolean | false 
 auto-expand-parent | 展开子节点的时候是否自动展开父节点 | boolean | true 
-default-expanded-keys | 默认展开的节点的 key 的数组 | array | —
 show-checkbox | 节点是否可被选择 | boolean | false 
 check-strictly | 在显示复选框的情况下，是否严格的遵循父子不互相关联的做法，默认为 false | boolean | false 
-default-checked-keys | 默认勾选的节点的 key 的数组 | array | —
 current-node-key | 当前选中的节点 | string, number | —
 filter-node | 对树节点进行筛选时执行的方法，返回 true 表示这个节点可以显示，返回 false 则表示这个节点会被隐藏 | Function(value, it, node) | —
 accordion | 是否每次只打开一个同级树节点展开 | boolean | false 
@@ -37,7 +619,7 @@ allow-drop | 拖拽时判定目标节点能否被放置。`type` 参数有三种
 
 #### tree-props
 
-属性 | 说明 | 参数 | 返回值
+属性 | 说明 | 类型 | 返回值
 ---|---|---|---
 label | 指定节点标签为节点对象的某个属性值 | string, function(it, node) | — 
 value | 指定节点标签为节点对象的某个属性值 | string | — 
