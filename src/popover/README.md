@@ -1,23 +1,389 @@
-## [Demo Basic](https://wya-team.github.io/wya-vc/dist/popover/basic.html)
-## 功能
-Popover
+## Popover 弹出框
 
+### 基础用法
+:::RUNTIME
+```html
+<template>
+	<div>
+		<vc-popover 
+			:trigger="trigger" 
+			content="这是一段内容,这是一段内容,这是一段内容,这是一段内容"
+			trigger="hover"
+		>
+			<vc-button>
+				hover 激活
+			</vc-button>
+		</vc-popover>
+		<vc-popover 
+			:trigger="trigger" 
+			content="这是一段内容,这是一段内容,这是一段内容,这是一段内容"
+			trigger="click"
+		>
+			<vc-button>
+				click 激活
+			</vc-button>
+		</vc-popover>
+		<vc-popover 
+			:trigger="trigger" 
+			content="这是一段内容,这是一段内容,这是一段内容,这是一段内容"
+			trigger="focus"
+		>
+			<vc-button>
+				focus 激活
+			</vc-button>
+		</vc-popover>
+	</div>
+</template>
+<script>
+import { Popover, Button } from '@wya/vc';
+
+export default {
+	name: "vc-popover-basic",
+	components: {
+		'vc-popover': Popover,
+		'vc-button': Button,
+	},
+};
+
+</script>
+```
+:::
+
+### 定位
+在这里我们提供 9 种不同方向的展示方式，可以通过以下完整示例来理解，选择你要的效果。
+:::RUNTIME
+```html
+<template>
+	<div class="vc-popover-basic">
+		<div class="top">
+			<vc-popover 
+				:get-popup-container="getPopupContainer"
+				:trigger="trigger" 
+				placement="top-left" 
+				content="TopLeft"
+				class=" g-m-lr-10"
+			>
+				<vc-button class="g-btn">
+					TL
+				</vc-button>
+				<template #content>
+					<div style="height: 100px; width: 200px">
+						getPopupContainer
+					</div>
+				</template>
+			</vc-popover>
+			<vc-popover 
+				:portal="false"
+				:trigger="trigger" 
+				placement="top" 
+				content="Top"
+				class=" g-m-lr-10"
+			>
+				<vc-button class="g-btn">
+					Top
+				</vc-button>
+				<template #content>
+					<div style="height: 100px; width: 200px">
+						portal="false"
+					</div>
+				</template>
+			</vc-popover>
+			<vc-popover 
+				:trigger="trigger" 
+				placement="top-right" 
+				content="TopRight"
+				class=" g-m-lr-10"
+			>
+				<vc-button class="g-btn">
+					TR
+				</vc-button>
+				<template #content>
+					<div style="height: 100px; width: 200px">
+						Body
+					</div>
+				</template>
+			</vc-popover>
+		</div>
+		<div class="left">
+			<vc-popover 
+				:get-popup-container="getPopupContainer"
+				:trigger="trigger" 
+				placement="left-top" 
+				content="LeftTop"
+			>
+				<vc-button class="g-btn g-m-tb-10">
+					LT
+				</vc-button>
+				<template #content>
+					<div style="height: 100px; width: 200px">
+						getPopupContainer
+					</div>
+				</template>
+			</vc-popover>
+			<vc-popover 
+				:portal="false"
+				:trigger="trigger" 
+				placement="left" 
+				content="Left"
+			>
+				<vc-button class="g-btn g-m-tb-10">
+					Left
+				</vc-button>
+				<template #content>
+					<div style="height: 100px; width: 200px">
+						portal="false"
+					</div>
+				</template>
+			</vc-popover>
+			<vc-popover 
+				:trigger="trigger" 
+				placement="left-bottom" 
+				content="leftBottom"
+			>
+				<vc-button class="g-btn g-m-tb-10">
+					LB
+				</vc-button>
+				<template #content>
+					<div style="height: 100px; width: 200px">
+						Body
+					</div>
+				</template>
+			</vc-popover>
+		</div>
+		<div class="right">
+			<vc-popover 
+				:get-popup-container="getPopupContainer"
+				:trigger="trigger" 
+				placement="right-top" 
+				content="RightTop"
+			>
+				<vc-button class="g-btn g-m-tb-10">
+					RT
+				</vc-button>
+				<template #content>
+					<div style="height: 100px; width: 200px">
+						getPopupContainer
+					</div>
+				</template>
+			</vc-popover>
+			<vc-popover 
+				:portal="false"
+				:trigger="trigger" 
+				placement="right" 
+				content="Right"
+			>
+				<vc-button class="g-btn g-m-tb-10">
+					Right
+				</vc-button>
+				<template #content>
+					<div style="height: 100px; width: 200px">
+						portal="false"
+					</div>
+				</template>
+			</vc-popover>
+			<vc-popover 
+				:trigger="trigger" 
+				placement="right-bottom" 
+				content="RightBottom"
+			>
+				<vc-button class="g-btn g-m-tb-10">
+					RB
+				</vc-button>
+				<template #content>
+					<div style="height: 100px; width: 200px">
+						Body
+					</div>
+				</template>
+			</vc-popover>
+		</div>
+		<div class="bottom">
+			<vc-popover 
+				:get-popup-container="getPopupContainer"
+				:trigger="trigger" 
+				placement="bottom-left"
+				content="BottomLeft"
+				class=" g-m-lr-10"
+			>
+				<vc-button class="g-btn">
+					BL
+				</vc-button>
+				<template #content>
+					<div style="height: 100px; width: 200px">
+						getPopupContainer
+					</div>
+				</template>
+			</vc-popover>
+			<vc-popover 
+				:portal="false"
+				:trigger="trigger" 
+				placement="bottom" 
+				content="Bottom"
+				class=" g-m-lr-10"
+			>
+				<vc-button class="g-btn">
+					Bottom
+				</vc-button>
+				<template #content>
+					<div style="height: 100px; width: 200px">
+						portal="false"
+					</div>
+				</template>
+			</vc-popover>
+			<vc-popover 
+				:trigger="trigger" 
+				placement="bottom-right"
+				content="BottomRight"
+				class=" g-m-lr-10"
+			>
+				<vc-button class="g-btn">
+					BR
+				</vc-button>
+				<template #content>
+					<div style="height: 100px; width: 200px">
+						Body
+					</div>
+				</template>
+			</vc-popover>
+		</div>
+	</div>
+</template>
+<script>
+import { Popover, Button } from '@wya/vc';
+
+export default {
+	name: "vc-popover-basic",
+	components: {
+		'vcm-popover': Popover,
+		'vcm-button': Button,
+	},
+};
+
+</script>
+<style>
+.vc-popover-basic {
+    width: 400px;
+}
+
+.vc-popover-basic .top {
+	text-align: center;
+}
+
+.vc-popover-basic .left {
+	float: left;
+	width: 60px;
+}
+
+.vc-popover-basic .right {
+	float: right;
+	width: 60px;
+}
+.vc-popover-basic .bottom {
+	clear: both;
+	text-align: center;
+}
+.vc-popover-basic .item {
+	margin: 4px;
+}
+
+</style>
+```
+:::
+
+### 嵌套内容
+通过slot content嵌套内容
+:::RUNTIME
+```html
+<template>
+	<div>
+		<vc-popover 
+			:trigger="trigger" 
+			content="这是一段内容,这是一段内容,这是一段内容,这是一段内容"
+			trigger="click"
+		>
+			<vc-button>
+				click 激活
+			</vc-button>
+			<template #content>
+				<div style="height: 100px; width: 200px">
+					我是嵌套的内容
+				</div>
+			</template>
+		</vc-popover>
+	</div>
+</template>
+<script>
+import { Popover, Button } from '@wya/vc';
+
+export default {
+	name: "vc-popover-basic",
+	components: {
+		'vc-popover': Popover,
+		'vc-button': Button,
+	},
+};
+
+</script>
+```
+:::
+
+### 主题
+提供了两个不同的主题：`dark`和`light`
+:::RUNTIME
+```html
+<template>
+	<div>
+		<vc-popover 
+			:trigger="trigger" 
+			content="这是一段内容,这是一段内容,这是一段内容,这是一段内容"
+			trigger="click"
+			theme="dark"
+		>
+			<vc-button>
+				dark
+			</vc-button>
+		</vc-popover>
+		<vc-popover 
+			:trigger="trigger" 
+			content="这是一段内容,这是一段内容,这是一段内容,这是一段内容"
+			trigger="click"
+			theme="light"
+		>
+			<vc-button>
+				light
+			</vc-button>
+		</vc-popover>
+	</div>
+</template>
+<script>
+import { Popover, Button } from '@wya/vc';
+
+export default {
+	name: "vc-popover-basic",
+	components: {
+		'vc-popover': Popover,
+		'vc-button': Button,
+	},
+};
+
+</script>
+```
+:::
 ## API
 
 #### 属性
 
-属性 | 说明 | 类型 | 默认值
----|---|---|---
-visible | 显示popover | `boolean` | `false`
-animation | 自定义的动画效果 | `string` | 无
-placement | 弹层的位置(`top` `left` `right` `bottom` `bottom-left` `bottom-right` `top-left` `top-right` `right-top` `right-bottom` `left-top` `left-bottom`) | `string` | `bottom`
-trigger | 触发的行为`hover` `click` `focus` | `string` | `hover`
-content | 显示的内容 | `string` | 无
-getPopupContainer | 浮层渲染父节点 | `func` | 无
-portal | 是否渲染到body上，默认body | `boolean` | 无
-arrow | 浮层有无箭头 | `boolean` | `true`
-theme | 颜色主体`light` `dark` | `string` | `light`
-always | 弹层不隐藏 | `boolean` | `false`
+属性 | 说明 | 类型 | 可选值 | 默认值
+---|---|---|---|---
+visible | 显示popover | `boolean` | - | `false`
+animation | 自定义的动画效果 | `string` | - | 无
+placement | 弹层的位置 | `string` | `top`、`left`、`right`、`bottom`、`bottom-left`、`bottom-right`、`top-left`、`top-right`、`right-top`、`right-bottom`、`left-top`、`left-bottom` | `bottom`
+trigger | 触发的行为 | `string` | `hover`、`click`、`focus` | `hover`
+content | 显示的内容 | `string` | - | 无
+getPopupContainer | 浮层渲染父节点 | `func` | - | 无
+portal | 是否渲染到body上，默认body | `boolean` | - | 无
+arrow | 浮层有无箭头 | `boolean` | - | `true`
+theme | 颜色主体 | `string` | `light`、`dark` | `light`
+always | 弹层不隐藏 | `boolean` | - | `false`
 
 
 #### 事件
@@ -50,200 +416,6 @@ Popover.open({
 });
 ```
 
-## 基础用法
-
-```html
-<div class="vc1-popover-basic" style="background: #f2f2f2; height: 3000px">
-	<div ref="parent" class="_btn-container">
-		<div class="__left" style="margin-top: 32px; margin-bottom: 32px">
-			<vc-popover 
-				:get-popup-container="getPopupContainer"
-				trigger="click" 
-				placement="left-top"
-				content="LeftTop"
-				@visible-change="handleVisibleChange"
-			>
-				<vc-button class="_btn _m-tb-10">
-					LT
-				</vc-button>
-				<template #content>
-					<div style="height: 100px; width: 200px">
-						动态改变内容{{ content }}
-					</div>
-				</template>
-				
-			</vc-popover>
-			<vc-popover 
-				v-model="visible"
-				:portal="false"
-				trigger="click" 
-				placement="left" 
-				content="Left"
-			>
-				<vc-button class="_btn _m-tb-10">
-					Left
-				</vc-button>
-				<template #content>
-					<div style="height: 100px; width: 200px">
-						跟随父节点
-						<span @click="visible = false">点击我关闭弹窗</span>
-					</div>
-				</template>
-			</vc-popover>
-			<vc-popover trigger="click" placement="left-bottom" content="LeftBottom">
-				<vc-button class="_btn _m-tb-10">
-					LB
-				</vc-button>
-				<template #content>
-					<div style="height: 100px; width: 200px">
-						Body
-					</div>
-				</template>
-			</vc-popover>
-		</div>
-		<div class="__middle">
-			<div class="_flex-jc-sb">
-				<vc-popover 
-					:get-popup-container="getPopupContainer"
-					trigger="click" 
-					placement="top-left" 
-					content="TopLeft"
-				>
-					<vc-button class="_btn _m-lr-10">
-						TL
-					</vc-button>
-					<template #content>
-						<div style="height: 100px; width: 200px">
-							getPopupContainer
-						</div>
-					</template>
-				</vc-popover>
-				<vc-popover 
-					:portal="false"
-					trigger="click" 
-					placement="top" 
-					content="Top"
-				>
-					<vc-button class="_btn _m-lr-10">
-						Top
-					</vc-button>
-					<template #content>
-						<div style="height: 100px; width: 200px">
-							portal="false"
-						</div>
-					</template>
-				</vc-popover>
-				<vc-popover 
-					trigger="click" 
-					placement="top-right" 
-					content="TopRight"
-				>
-					<vc-button class="_btn _m-lr-10">
-						TR
-					</vc-button>
-					<template #content>
-						<div style="height: 100px; width: 200px">
-							Body
-						</div>
-					</template>
-				</vc-popover>
-			</div>
-			<div class="_flex-jc-sb">
-				<vc-popover 
-					:get-popup-container="getPopupContainer"
-					trigger="click" 
-					placement="bottom-left"
-					content="BottomLeft"
-				>
-					<vc-button class="_btn _m-lr-10">
-						BL
-					</vc-button>
-					<template #content>
-						<div style="height: 100px; width: 200px">
-							getPopupContainer
-						</div>
-					</template>
-				</vc-popover>
-				<vc-popover 
-					:portal="false"
-					trigger="click" 
-					placement="bottom" 
-					content="Bottom"
-				>
-					<vc-button class="_btn _m-lr-10">
-						Bottom
-					</vc-button>
-					<template #content>
-						<div style="height: 100px; width: 200px">
-							portal="false"
-						</div>
-					</template>
-				</vc-popover>
-				<vc-popover 
-					trigger="click" 
-					placement="bottom-right"
-					content="BottomRight"
-				>
-					<vc-button class="_btn _m-lr-10">
-						BR
-					</vc-button>
-					<template #content>
-						<div style="height: 100px; width: 200px">
-							Body
-						</div>
-					</template>
-				</vc-popover>
-			</div>
-		</div>
-		<div class="__right" style="margin-top: 32px; margin-bottom: 32px">
-			<vc-popover 
-				:get-popup-container="getPopupContainer"
-				trigger="click" 
-				placement="right-top" 
-				content="RightTop"
-			>
-				<vc-button class="_btn _m-tb-10">
-					RT
-				</vc-button>
-				<template #content>
-					<div style="height: 100px; width: 200px">
-						getPopupContainer
-					</div>
-				</template>
-			</vc-popover>
-			<vc-popover 
-				:portal="false"
-				trigger="click" 
-				placement="right" 
-				content="Right"
-			>
-				<vc-button class="_btn _m-tb-10">
-					Right
-				</vc-button>
-				<template #content>
-					<div style="height: 100px; width: 200px">
-						portal="false"
-					</div>
-				</template>
-			</vc-popover>
-			<vc-popover 
-				trigger="click" 
-				placement="right-bottom" 
-				content="RightBottom"
-			>
-				<vc-button class="_btn _m-tb-10">
-					RB
-				</vc-button>
-				<template #content>
-					<div style="height: 100px; width: 200px">
-						Body
-					</div>
-				</template>
-			</vc-popover>
-		</div>
-	</div>
-</div>
-```
 
 ## 注意事项
 - 不要在引用的地方带有vc-popover的className
