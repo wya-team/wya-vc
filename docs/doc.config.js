@@ -59,6 +59,12 @@ module.exports = {
 		'zh-CN': '简体中文'
 	},
 	webpackConfig: {
+		resolve: { // 重定向路径
+			alias: {
+				'@wya/vc$': path.resolve(__dirname, '../src/index'),
+				'@wya/vc/src/style/reset.scss': path.resolve(__dirname, '../src/style/reset.scss'),
+			}
+		},
 		output: {
 			path: path.resolve(__dirname, '../site/'),
 			publicPath: ENV_IS_DEV
