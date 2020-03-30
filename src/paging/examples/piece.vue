@@ -2,6 +2,7 @@
 	<vc-paging
 		:data-source="listInfo.data"
 		:total="listInfo.total" 
+		:count="listInfo.count"
 		:reset="listInfo.reset"
 		:page-opts="page"
 		:table-opts="table"
