@@ -368,6 +368,45 @@ export default {
 </script>
 ```
 :::
+### API方法调用
+:::RUNTIME
+```html
+<template>
+	<div>
+		<vc-button ref="btn" @click="handleClick">
+			点我调用
+		</vc-button>
+	</div>
+</template>
+<script>
+import { Popover, Button } from '@wya/vc';
+
+export default {
+	name: "vc-popover-basic",
+	components: {
+		'vc-button': Button,
+	},
+	methods: {
+		handleClick() {
+			Popover.open({
+				el: document.body,
+				cName: 'vc-popover',
+				triggerEl: this.$refs.btn.$el,
+				hover: true,
+				alone: true, // 需要开启
+				theme: 'dark',
+				placement: "top",
+				content: '我是API调用内容',
+			});
+		}
+	}
+};
+
+</script>
+```
+:::
+## API
+
 ## API
 
 #### 属性
@@ -400,21 +439,6 @@ always | 弹层不隐藏 | `boolean` | - | `false`
 ---|---
 default | 触发器
 content | 弹层内容
-
-### API方法调用
-
-```
-Popover.open({
-	el: document.body,
-	cName: 'vc-table-popover',
-	triggerEl: el,
-	hover: true,
-	alone: true, // 需要开启
-	theme: 'dark',
-	placement: "top",
-	content: '222',
-});
-```
 
 
 ## 注意事项
