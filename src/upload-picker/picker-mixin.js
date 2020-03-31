@@ -134,6 +134,21 @@ export default {
 				file: file >= 1,
 			};
 		},
+		// hooks() {
+		// 	return (type) => {
+		// 		const hooks = {};
+		// 		this.$listeners.begin && (hooks.begin = (...param) => {
+		// 			this.$emit('begin', ...param, type);
+		// 		});
+		// 		this.$listeners['post-before'] && (hooks['post-before'] = (...param) => {
+		// 			this.$emit('post-before', ...param, type);
+		// 		});
+		// 		this.$listeners['post-after'] && (hooks['post-after'] = (...param) => {
+		// 			this.$emit('post-after', ...param, type);
+		// 		});
+		// 		return hooks;
+		// 	};
+		// },
 	},
 	watch: {
 		dataSource: {
@@ -203,6 +218,7 @@ export default {
 		handleFileStart(res, type) {
 			res.title = res.name;
 			this.currentValue[type].push(res);
+			this.$emit('file-start', res, type);
 		},
 		handleFileProgress(e, file, type) {
 			if (parseInt(e.percent, 10) <= 100) {
@@ -234,10 +250,10 @@ export default {
 			// 将已经上传成功的文件传递给外部
 			dataSource = this.currentValue[type].filter((it) => !it.errorFlag && this.getUrl(res));
 			dataSource = this.formatDataSource(dataSource, type);
+			this.$emit('success', res, file, cycle, type);
 			this.sync(dataSource);
 		},
 		handleFileError(res, file, cycle, type) {
-			console.log(res, file, cycle, type);
 			// 内部保存上传失败的文件，不传递给外层
 			this.currentValue[type] = this.currentValue[type].map((item) => {
 				if (item.uid === file.uid) {
@@ -251,15 +267,15 @@ export default {
 				}
 				return item;
 			});
-			this.handleError(res);
+			this.handleError(res, type, file);
 		},
-		handleError(err) {
+		handleError(err, type, file) {
 			let { $listeners: { error } } = this;
 			!error && (Device.touch ? Toast.info(err.msg, 2) : Message.error(err.msg, 2));
-			this.$emit('error', err);
+			this.$emit('error', err, type, file);
 		},
-		handleFileComplete(res) {
-			this.$emit('complete', res);
+		handleFileComplete(res, type) {
+			this.$emit('complete', res, type);
 		},
 		handleDel(index, type) {
 			const target = this.currentValue[type];

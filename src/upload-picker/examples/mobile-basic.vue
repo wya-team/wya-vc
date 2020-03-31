@@ -4,6 +4,7 @@
 			v-model="dataSource"
 			:max="5"
 			:picker="['video', 'image', 'file']"
+			@success="handleSuccess"
 		>
 			<!-- 限制大小上传以及api -->
 		</vc-upload-picker>
@@ -112,6 +113,10 @@ export default {
 			]
 		};
 	},
+	methods: {
+		handleSuccess(res, file, cycle, type) {
+		}
+	}
 };
 </script>
 <style lang="scss">
