@@ -21,7 +21,7 @@
 						@delete="handleDel(i, picker.type)"
 					>
 						<template #default="{ it }">
-							<slot :it="it" :name="picker.type" />
+							<slot :it="it" :index="i" :name="picker.type" />
 						</template>
 					</component>
 				</template>
@@ -50,7 +50,7 @@
 							@delete="handleDel(index, picker.type)"
 						>
 							<template #default="{ it }">
-								<slot :it="it" :name="picker.type" />
+								<slot :it="it" :index="index" :name="picker.type" />
 							</template>
 						</component>
 					</template>
