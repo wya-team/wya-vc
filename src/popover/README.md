@@ -417,12 +417,16 @@ visible | 显示popover | `boolean` | - | `false`
 animation | 自定义的动画效果 | `string` | - | 无
 placement | 弹层的位置 | `string` | `top`、`left`、`right`、`bottom`、`bottom-left`、`bottom-right`、`top-left`、`top-right`、`right-top`、`right-bottom`、`left-top`、`left-bottom` | `bottom`
 trigger | 触发的行为 | `string` | `hover`、`click`、`focus` | `hover`
-content | 显示的内容 | `string` | - | 无
-getPopupContainer | 浮层渲染父节点 | `func` | - | 无
+content | 显示的内容 | `string`、`function` | - | 无
+getPopupContainer | 浮层渲染父节点 | `function` | - | 无
 portal | 是否渲染到body上，默认body | `boolean` | - | 无
 arrow | 浮层有无箭头 | `boolean` | - | `true`
 theme | 颜色主体 | `string` | `light`、`dark` | `light`
 always | 弹层不隐藏 | `boolean` | - | `false`
+tag | 渲染的节点类型 | `string` | - | `span`
+disabled | 是否禁用 | `boolean` | - | `false`
+autoWidth | 宽度自适应 | `boolean` | - | `false`
+portalStyle | 样式 | `object` | - | - 
 
 
 #### 事件

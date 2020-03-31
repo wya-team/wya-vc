@@ -699,18 +699,22 @@ export default {
 
 属性 | 说明 | 类型 | 可选值 | 默认值
 ---|---|---|---|---
-show | 展示 | `bool` | - | true
-history | url表示 | `boolean` | - | false
-sync | 同步`vuex/vue-router`（this.$route） | `bool` | - | false
+show | 展示 | `boolean` | - | true
+history | url表示,是否从url中获取page | `boolean` | - | false
+sync | 同步`vuex/vue-router`（this.$route） | `boolean` | - | false
+mode | 表格模式 | `string` | `native`、 `piece`、 `table` | `table` 
+loadData | 数据加载 | `function` | - | -
 dataSource | 数据源 | `obj:{ str: arr }` | - | -
-columns | item | `arr` | - | -
+columns | item, mode为`native`时生效 | `arr` | - | -
 total | 总页数 | `number` | - | 0
-count | **总条数** | `number` | - | 0
+count | 总条数 | `number` | - | 0
 reset | 刷新时候使用，当前页刷新（true）,首页刷新（false） | `boolean` | - | -
-tableOpts | 表格额外参数, 参考table组件 | `obj` | - | -
-pageOpts | 分页额外参数, 参考page组件 | `obj` | - | -
-rowKey | 行数据的 Key，在使用翻页多选时必填 | `str` | - | -
-`current.sync` | 分页参数同步 | `str/num` | - | -
+tableOpts | 表格额外参数, 参考table组件 | `object` | - | -
+pageOpts | 分页额外参数, 参考page组件 | `object` | - | -
+loadingOpts | 加载额外参数,加载暂时不用 | - | - | 
+rowKey | 行数据的 Key，在使用翻页多选时必填 | `string` | - | -
+`current.sync` | 分页参数同步 | `string`、`number` | - | -
+footer | 是否显示分页 | `boolean` | - | true
 
 #### 事件
 
@@ -721,6 +725,8 @@ rowKey | 行数据的 Key，在使用翻页多选时必填 | `str` | - | -
 @load-error | 加载失败 | - | -
 @load-finish | 加载结束（都会触发） | - | -
 @selection-change | 所有页选中的数据 | - | selection(全部选中的数据), curPageSelection(当前页选中的数据)
+@page-size-change | 分页size改变 | - | 改变后的分页size
+@page-change | 页码改变 | - | 改变后的页码
 
 #### 方法
 
