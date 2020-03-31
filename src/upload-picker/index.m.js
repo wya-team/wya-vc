@@ -1,3 +1,3 @@
-import UploadPicker from './mobile/picker.vue';
+import UploadPicker from './mobile/picker';
 
 export default UploadPicker;
