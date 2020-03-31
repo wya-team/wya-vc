@@ -30,7 +30,7 @@ import Portal from '../portal';
 import Popup from '../popup/index';
 import Icon from '../icon';
 
-const config = {
+const wrapperComponent = {
 	name: 'vc-video-preview',
 	components: {
 		'vc-popup': Popup,
@@ -71,8 +71,8 @@ const config = {
 	},
 };
 
-export default config;
-export const VideoPreview = new Portal(config, {
+export default wrapperComponent;
+export const VideoPreview = new Portal(wrapperComponent, {
 	promise: false
 });
 </script>
