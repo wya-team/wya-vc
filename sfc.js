@@ -52,6 +52,8 @@ if (files.length !== [...new Set(_files)].length) {
 			break;
 		}
 	}
+	
+	// ⚠️
 	throw new Error(`${reject} + 文件存在重复, 不区分{js,scss,vue}`);
 } 
 /**
@@ -305,6 +307,14 @@ files.forEach((filepath) => {
 										styleImport.push(`@import "${value}";`);
 										path.remove();
 									}
+
+									// ⚠️
+									if (/\.(vue)$/.test(value)) {
+										throw new Error(`
+											\n文件中不允许出现.vue文件后缀
+											\n文件: ${FILE_PATH}
+										`);
+									}
 								}
 							}
 						}
@@ -363,6 +373,7 @@ files.forEach((filepath) => {
 				} catch (e) {
 					console.log(filepath, '编译失败');
 					throw new Error(e);
+					
 				}
 				
 			}
@@ -382,6 +393,13 @@ files.forEach((filepath) => {
 										styleImport.push(`@import "${value}";`);
 										path.remove();
 									}
+
+									if (/\.(vue)$/.test(value)) {
+										throw new Error(`
+											\n文件中不允许出现.vue文件后缀
+											\n文件: ${FILE_PATH}
+										`);
+									}
 								},
 								// portal【portal, 只能是wrapperComponent】
 								VariableDeclarator(path) {
@@ -397,6 +415,21 @@ files.forEach((filepath) => {
 									if (!path.node.declaration.properties) return;
 									newRenderAst && path.node.declaration.properties.push(newRenderAst);
 									newStaticRenderAst && path.node.declaration.properties.push(newStaticRenderAst);
+								},
+
+								// ⚠️
+								NewExpression(path) {
+									if (path.node.callee.name === 'Portal') {
+										let arg0 = path.node.arguments[0].name;
+										if (arg0 !== 'wrapperComponent') {
+											throw new Error(`
+												\nPortal第一个参数应该命名为wrapperComponent
+												\n当前值: ${arg0}
+												\n文件: ${FILE_PATH}
+											`);
+										}
+										
+									}
 								}
 							}
 						}
