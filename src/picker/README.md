@@ -5,7 +5,7 @@
 组件通过cascade属性判断picker是否为层级联动。
 
 :::RUNTIME
-```html
+```vue
 <template>
 	<div class="vcm-picker-basic">
 		<vcm-picker
@@ -31,7 +31,7 @@
 			</template>
 		</vcm-picker>
 		<vcm-picker
-			:data-source="dataSeasons"
+			:dataSource="dataSeasons"
 			:cascade="false"
 			:cols="2"
 			v-model="valueSeasons"
@@ -41,9 +41,7 @@
 </template>
 <script>
 import { cloneDeep } from 'lodash';
-import MToast from '../../m-toast/index';
-import MPicker from '../m-picker';
-import { cascadeData, seasons } from './basic/mock';
+import { MToast, MPicker } from '@wya/vc';
 
 export default {
 	name: "vcm-picker-basic",
@@ -53,12 +51,73 @@ export default {
 	data() {
 		return {
 			show: false,
-			dataSource: cloneDeep(cascadeData),
+			dataSource: [{
+				"value": "110000",
+				"label": "北京市",
+				"parent_id": "0",
+				"children": [{
+					"value": "110100",
+					"label": "北京市辖区",
+					"parent_id": "110000",
+					"children": [{
+						"value": "110101",
+						"label": "东城区",
+						"parent_id": "110100",
+						"children": []
+					}, {
+						"value": "110102",
+						"label": "西城区",
+						"parent_id": "110100",
+						"children": []
+					}, {
+						"value": "110116",
+						"label": "其他",
+						"parent_id": "110100",
+						"children": []
+					}]
+				}, {
+					"value": "110200",
+					"label": "北京县区",
+					"parent_id": "110000",
+					"children": [{
+						"value": "110228",
+						"label": "密云县",
+						"parent_id": "110200",
+						"children": []
+					}, {
+						"value": "110229",
+						"label": "延庆县",
+						"parent_id": "110200",
+						"children": []
+					}]
+				}]
+			}],
 			dataAsyncSource: [],
-			value: ["140000", "140100", "140101"],
-			valueAsync: ["140000", "140100", "140101"],
+			value: ["110000", "110100", "110101"],
+			valueAsync: ["110000", "110100", "110101"],
 			valueSeasons: [],
-			dataSeasons: cloneDeep(seasons),
+			dataSeasons: [
+				[
+					{
+						label: '2013',
+						value: '2013',
+					},
+					{
+						label: '2014',
+						value: '2014',
+					}
+				],
+				[
+					{
+						label: '春',
+						value: '春',
+					},
+					{
+						label: '夏',
+						value: '夏',
+					}
+				]
+			]
 		};
 	},
 	computed: {
@@ -71,7 +130,7 @@ export default {
 			MToast.info('异步加载中');
 			return new Promise((resolve, reject) => {
 				setTimeout(() => {
-					this.dataAsyncSource = cloneDeep(cascadeData);
+					this.dataAsyncSource = cloneDeep(this.dataSource);
 					resolve();
 				}, 3000);
 			});
@@ -112,26 +171,71 @@ export default {
 </template>
 <script>
 import { cloneDeep } from 'lodash';
-import MToast from '../../m-toast/index';
-import MPicker from '../m-picker';
-import { cascadeData, seasons } from './basic/mock';
+import { MToast, MPicker } from '@wya/vc';
 
 export default {
 	name: "vcm-picker-basic",
 	components: {
 		'vcm-picker': MPicker
 	},
-	data() {},
+	data() {
+		return {
+			dataSource:[{
+				"value": "110000",
+				"label": "北京市",
+				"parent_id": "0",
+				"children": [{
+					"value": "110100",
+					"label": "北京市辖区",
+					"parent_id": "110000",
+					"children": [{
+						"value": "110101",
+						"label": "东城区",
+						"parent_id": "110100",
+						"children": []
+					}, {
+						"value": "110102",
+						"label": "西城区",
+						"parent_id": "110100",
+						"children": []
+					}, {
+						"value": "110116",
+						"label": "其他",
+						"parent_id": "110100",
+						"children": []
+					}]
+				}, {
+					"value": "110200",
+					"label": "北京县区",
+					"parent_id": "110000",
+					"children": [{
+						"value": "110228",
+						"label": "密云县",
+						"parent_id": "110200",
+						"children": []
+					}, {
+						"value": "110229",
+						"label": "延庆县",
+						"parent_id": "110200",
+						"children": []
+					}]
+				}]
+			}]
+
+		}
+	},
 	methods: {
 		handleClick() {
-			MPicker.popup({
-				dataSource: cloneDeep(cascadeData),
-				value: ["140000", "140100", "140101"],
-				cols: 3
-			}).then((res) => {
-				MToast.info(res.label.join(','));
-			}).catch(() => {
-				MToast.info(res);
+			MPicker.open({
+				dataSource: this.dataSource,
+				value: ["110000", "110100", "110101"],
+				cols: 3,
+				onOk: (value, label) => {
+					MToast.info(label.join(','));
+				},
+				onCancel: () => {
+					MToast.info('value');
+				}
 			});
 		}
 	}
@@ -144,24 +248,45 @@ export default {
 ## vcm-picker-popup
 仅为picker的弹层组件，不提供选择的用途，visible为ture默认开启。
 :::RUNTIME
-```html
+```vue
 <template>
-	<vcm-picker-popup
-		:visible="false"
-		title="标题"
-		cancelText="取消"
-		okText="确定"
-	>
-		<div>内容</div>
-	</vcm-picker-popup>
+	<div>
+		<vc-button @click="handleClick">弹出</vc-button>
+		<vcm-picker-popup
+			:visible="visible"
+			title="标题"
+			cancelText="取消"
+			okText="确定"
+			@cancel="handleCancel"
+			@close="handleClose"
+		>
+			<div>内容</div>
+		</vcm-picker-popup>
+	</div>
 </template>
 <script>
-import MPicker from '../m-picker';
+import { MPicker,Button } from '@wya/vc';
 export default {
 	name: "vcm-picker-basic",
 	components: {
 		'vcm-picker-popup': MPicker.Popup
 	},
+	data() {
+		return {
+			visible: false
+		}
+	},
+	methods: {
+		handleClick() {
+			this.visible = !this.visible
+		},
+		handleClose() {
+			this.visible = !this.visible
+		},
+		handleCancel() {
+			console.log('cancel')
+		}
+	}
 }
 </script>
 ```
@@ -184,9 +309,7 @@ picker的选择组件，没有弹层。
 </template>
 <script>
 import { cloneDeep } from 'lodash';
-import MToast from '../../m-toast/index';
-import MPicker from '../m-picker';
-import { cascadeData, seasons } from './basic/mock';
+import { MToast, MPicker } from '@wya/vc';
 
 export default {
 	name: "vcm-picker-basic",
@@ -195,7 +318,47 @@ export default {
 	},
 	data() {
 		return {
-			dataSource: cloneDeep(cascadeData),
+			dataSource: [{
+				"value": "110000",
+				"label": "北京市",
+				"parent_id": "0",
+				"children": [{
+					"value": "110100",
+					"label": "北京市辖区",
+					"parent_id": "110000",
+					"children": [{
+						"value": "110101",
+						"label": "东城区",
+						"parent_id": "110100",
+						"children": []
+					}, {
+						"value": "110102",
+						"label": "西城区",
+						"parent_id": "110100",
+						"children": []
+					}, {
+						"value": "110116",
+						"label": "其他",
+						"parent_id": "110100",
+						"children": []
+					}]
+				}, {
+					"value": "110200",
+					"label": "北京县区",
+					"parent_id": "110000",
+					"children": [{
+						"value": "110228",
+						"label": "密云县",
+						"parent_id": "110200",
+						"children": []
+					}, {
+						"value": "110229",
+						"label": "延庆县",
+						"parent_id": "110200",
+						"children": []
+					}]
+				}]
+			}],
 			formValidate: {
 				addr: [],
 			},
@@ -227,7 +390,7 @@ value | 返回值(v-model) | `Array` | -
 dataSource | 数据源 | `Array` | -
 cols | 列数 | `Number` | -
 itemStyle | 列的样式 | `Object` | -
-cascade | 是否为联动选中 | `Boolean` | true
+cascade | 是否为联动选中 | `Boolean` | `true`
 
 - `dataSource 数据结构`
 
@@ -244,11 +407,11 @@ children | 子集对象数组 | `Array`
 
 属性 | 说明 | 类型 | 默认值
 ---|---|---|---
-visible | 控制，可以使用v-model | `Boolean` | false
+visible | 控制，可以使用v-model | `Boolean` | `false`
 title | 标题，支持v-html | `String` | -
 cancelText | 取消文本 | `String` | 取消
 okText | 确定文本 | `String` |  确定
-showToolbar | 是否显示toolbar | `Boolean` | true
+showToolbar | 是否显示toolbar | `Boolean` | `true`
 
 #### 事件
 
