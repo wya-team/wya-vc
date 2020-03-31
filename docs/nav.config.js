@@ -238,6 +238,13 @@ module.exports = [
 							'zh-CN': "Textarea",
 							'en-US': "Textarea",
 						}
+					},
+					{
+						"path": "/upload-picker",
+						"name": {
+							'zh-CN': "UploadPicker",
+							'en-US': "UploadPicker",
+						}
 					}
 				]
 			},

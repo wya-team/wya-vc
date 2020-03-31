@@ -1,3 +1,5 @@
+> 请移步使用`UploadPicker`组件
+
 ## 文件选择（files-picker）
 
 通过点击或者拖拽上传文件

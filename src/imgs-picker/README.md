@@ -1,3 +1,5 @@
+> 请移步使用`UploadPicker`组件
+
 ## 图片上传（imgs-picker）
 图片上传，预览
 ##### 备注
