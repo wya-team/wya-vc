@@ -5,7 +5,7 @@
 组件通过cascade属性判断picker是否为层级联动。
 
 :::RUNTIME
-```vue
+```html
 <template>
 	<div class="vcm-picker-basic">
 		<vcm-picker
@@ -25,13 +25,13 @@
 			v-model="valueAsync"
 		>
 			<template #default="it">
-				<h2>
+				<span class="_picker-customer">
 					点击选择：{{ it.label }}
-				</h2>
+				</span>
 			</template>
 		</vcm-picker>
 		<vcm-picker
-			:dataSource="dataSeasons"
+			:data-source="dataSeasons"
 			:cascade="false"
 			:cols="2"
 			v-model="valueSeasons"
@@ -149,13 +149,17 @@ export default {
 
 </script>
 <style>
-.vcm-picker-basic div{
+.vcm-picker-basic .vcm-picker{
 	display: flex;
 	height: 44px;
 	background: white;
 	border-bottom: 1px solid #e7e7e7;
 	justify-content: center;
 	align-items: center;
+}
+.vcm-picker-basic .vcm-picker ._picker-customer {
+	font-size: 20px;
+	color: #000;
 }
 </style>
 ```
@@ -166,17 +170,18 @@ export default {
 ```html
 <template>
 	<div class="vcm-picker-basic">
-		<div @click="handleClick">点击直接调用</div>
+		<vc-button @click="handleClick">方法调用</vc-button>
 	</div>
 </template>
 <script>
 import { cloneDeep } from 'lodash';
-import { MToast, MPicker } from '@wya/vc';
+import { MToast, MPicker, Button } from '@wya/vc';
 
 export default {
 	name: "vcm-picker-basic",
 	components: {
-		'vcm-picker': MPicker
+		'vcm-picker': MPicker,
+		'vc-button': Button
 	},
 	data() {
 		return {
@@ -265,7 +270,7 @@ export default {
 	</div>
 </template>
 <script>
-import { MPicker,Button } from '@wya/vc';
+import { MPicker, Button } from '@wya/vc';
 export default {
 	name: "vcm-picker-basic",
 	components: {
