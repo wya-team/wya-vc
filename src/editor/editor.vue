@@ -7,11 +7,15 @@
 				:uid="uid"
 			>
 				<button class="vc-quill-editor__icon">
+					<!-- 手机端建议用image/*，避免Android端选不了 -->
 					<vc-upload
+						accept="image/gif,image/jpeg,image/jpg,image/png"
 						v-bind="imgUploadOpts"
+						:max="imgMax"
 						@file-success="handleImgSuccess"
 						@file-start="handleUploadStart"
-						@file-error="handleUploadError"
+						@file-error="handleUploadError(arguments[0], 'image')"
+						@error="handleUploadError(arguments[0], 'image')"
 						@complete="handleComplete"
 					>
 						<vc-icon type="image" style="font-size: 15px" @click="handleUploadImg" />
@@ -19,11 +23,14 @@
 				</button>
 				<button class="vc-quill-editor__icon">
 					<vc-upload
+						accept="video/mp4,video/webm,video/ogg"
 						v-bind="videoUploadOpts"
-						:gallery="false"
+						:max="videoMax"
+						:gallery="false" 
 						@file-success="handleVideoSuccess"
 						@file-start="handleUploadStart"
-						@file-error="handleUploadError"
+						@file-error="handleUploadError(arguments[0], 'video')"
+						@error="handleUploadError(arguments[0], 'video')"
 						@complete="handleComplete"
 					>
 						<vc-icon type="video" style="font-size: 16px" />
@@ -98,15 +105,11 @@ export default {
 		},
 		imgUploadOpts: {
 			type: Object,
-			default: () => ({
-				accept: 'image/gif,image/jpeg,image/jpg,image/png', // 手机端建议用image/*，避免Android端选不了
-			})
+			default: () => ({})
 		},
 		videoUploadOpts: {
 			type: Object,
-			default: () => ({
-				accept: 'video/mp4,video/webm,video/ogg', // video标签目前只支持这些类型的视频
-			})
+			default: () => ({})
 		},
 		gallery: {
 			type: [Function, Boolean],
@@ -119,7 +122,9 @@ export default {
 		return {
 			content: '',
 			uid: getUid('editor-toolbar'),
-			loading: false
+			loading: false,
+			videoMax: this.videoUploadOpts.max || Number.MAX_SAFE_INTEGER,
+			imgMax: this.imgUploadOpts.max || Number.MAX_SAFE_INTEGER,
 		};
 	},
 	computed: {
@@ -192,6 +197,8 @@ export default {
 				let html = this.$refs.editor.children[0].innerHTML;
 				const editor = this.editor;
 				const text = this.editor.getText();
+				const isDelete = ((delta.ops || []).pop() || {}).delete;
+				this.updateMax(); 	
 				if (html === '<p><br></p>') html = '';
 				this.content = html;
 				this.$emit('input', this.content);
@@ -271,8 +278,14 @@ export default {
 		handleUploadStart() {
 			this.loading = true;
 		},
-		handleUploadError(e) {
-			Message.error(e.msg);
+		handleUploadError(e, type) {
+			if (type === 'image' && this.imgMax === 0) {
+				Message.error(`图片最多上传${this.imgUploadOpts.max}张`);
+			} else if (type === 'video' && this.videoMax === 0) {
+				Message.error(`视频最多上传${this.videoUploadOpts.max}个`);
+			} else {
+				Message.error(e.msg || '网络错误');
+			}
 		},
 		handleComplete() {
 			this.loading = false;
@@ -329,6 +342,22 @@ export default {
 		},
 		handleRedo() {
 			this.editor.history.redo();
+		},
+		updateMax() {
+			const content = this.editor.getContents().ops || [];
+			let videoNum = 0;
+			let imgNum = 0;
+			content.map((it) => {
+				const insertEl = it.insert || {};
+				if (insertEl.hasOwnProperty('vc-video')) { // eslint-disable-line
+					videoNum++;
+				} else if (insertEl.hasOwnProperty('image')) { // eslint-disable-line
+					imgNum++;
+				}
+				return it;
+			});
+			this.videoMax = (this.videoUploadOpts.max || Number.MAX_SAFE_INTEGER) - videoNum;
+			this.imgMax = (this.videoUploadOpts.max || Number.MAX_SAFE_INTEGER) - imgNum;
 		},
 		// 跟imgs-picker 对外暴露的增加方法保持同名
 		add(imgs = []) {
