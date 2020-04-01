@@ -14,7 +14,7 @@ import MPicker from '../../picker/index.m';
 import { VcError } from '../../vc/index';
 import { getSelectedData } from '../../utils/index';
 import Extends from '../../extends';
-import { value2date, date2value, parseMode } from '../utils';
+import { value2date, date2value, parseMode, getMonthEndDay } from '../utils';
 
 export default {
 	name: "vcm-date-picker-view",
@@ -98,7 +98,7 @@ export default {
 				: 1;
 			let maxDate = this.compareWithBoundary(max, this.currentValue, 2)
 				? Number(max[2])
-				: this.getMonthEndDay(this.currentValue[0], this.currentValue[1]);
+				: getMonthEndDay(this.currentValue[0], this.currentValue[1]);
 			let date = [minDate, maxDate];
 
 			// hour
@@ -171,25 +171,6 @@ export default {
 	methods: {
 		compareWithBoundary(arg1 = [], arg2 = [], len = 0) {
 			return arg1.slice(0, len).join('') == arg2.slice(0, len).join('');
-		},
-
-		getMonthEndDay(year, month) {
-			month = Number(month);
-			if (this.isShortMonth(month)) {
-				return 30;
-			} else if (month === 2) {
-				return this.isLeapYear(year) ? 29 : 28;
-			} else {
-				return 31;
-			}
-		},
-
-		isShortMonth(month) {
-			return [4, 6, 9, 11].indexOf(month) > -1;
-		},
-		
-		isLeapYear(year) {
-			return (year % 400 === 0) || (year % 100 !== 0 && year % 4 === 0);
 		},
 		
 		makeRebuildData() {

@@ -1,5 +1,26 @@
 import { Utils } from '@wya/utils';
 import DateUtil from '../utils/date';
+
+const isShortMonth = (month) => {
+	return [4, 6, 9, 11].indexOf(month) > -1;
+};
+
+const isLeapYear = (year) => {
+	return (year % 400 === 0) || (year % 100 !== 0 && year % 4 === 0);
+
+};
+
+export const getMonthEndDay = (year, month) => {
+	month = Number(month);
+	if (isShortMonth(month)) {
+		return 30;
+	} else if (month === 2) {
+		return isLeapYear(year) ? 29 : 28;
+	} else {
+		return 31;
+	}
+};
+
 /**
  * YMDHm: Month与Minutes冲突 -> M, m
  */
@@ -26,10 +47,18 @@ export const value2date = (v = []) => {
 		result.push(false);
 	}
 	result = [...v, ...result];
+	let Y = result[0] || new Date().getFullYear();
+	let M = result[1] || new Date().getMonth() * 1 + 1;
+
+	let endDate = getMonthEndDay(Y, M);
+	let nowDate = new Date().getDate();
+	
+	let D = result[2] || endDate < nowDate ? endDate : nowDate; 
+
 	const target = {
-		Y: result[0] || new Date().getFullYear(),
-		M: result[1] || new Date().getMonth() * 1 + 1,
-		D: result[2] || new Date().getDate(),
+		Y,
+		M,
+		D,
 		H: result[3] || '00',
 		m: result[4] || '00',
 	};
