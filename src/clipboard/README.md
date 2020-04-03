@@ -1,4 +1,4 @@
-## 复制（clipboard）
+## 复制（Clipboard）
 
 复制内容
 

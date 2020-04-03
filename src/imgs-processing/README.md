@@ -1,4 +1,4 @@
-## 图像处理（imgs-processing）
+## 图像处理（ImgsProcessing）
 图像处理(抠图、置灰、取色等等)
 
 ### 基础用法

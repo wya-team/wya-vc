@@ -1,4 +1,4 @@
-## 画板（artboard）
+## 画板（Artboard）
 
 canvas画板
 

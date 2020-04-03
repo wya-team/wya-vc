@@ -1,6 +1,6 @@
 > 请移步使用`UploadPicker`组件
 
-## 图片上传（imgs-picker）
+## 图片上传（ImgsPicker）
 图片上传，预览
 ##### 备注
 上传错误的文件数据不会传递给外层，切记传递给组件的是 `dataSource` 必须是字符串数组

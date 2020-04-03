@@ -1,4 +1,4 @@
-## 折叠板（collapse）
+## 折叠板（Collapse）
 ### 基础用法
 
 :::RUNTIME

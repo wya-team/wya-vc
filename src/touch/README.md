@@ -1,4 +1,4 @@
-## 触摸（touch）
+## 触摸（Touch）
 
 移动端touch组件
 

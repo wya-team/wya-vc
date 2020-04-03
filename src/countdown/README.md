@@ -1,4 +1,4 @@
-## 倒计时（countdown）
+## 倒计时（Countdown）
 倒计时功能
 
 ### 何时使用

@@ -1,4 +1,4 @@
-## 图片生成（html-img）
+## 图片生成（HtmlImg）
 
 html转图片
 

@@ -1,4 +1,4 @@
-## 图片预览（imgs-preview）
+## 图片预览（ImgsPreview）
 
 ### 何时使用
 

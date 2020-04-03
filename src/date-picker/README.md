@@ -1,4 +1,4 @@
-## 日期选择器（data-picker）
+## 日期选择器（DataPicker）
 日期选择器
 
 ### 选择日
