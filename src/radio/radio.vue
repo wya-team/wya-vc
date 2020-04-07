@@ -7,7 +7,7 @@
 			<input
 				:checked="checked"
 				:name="radioName"
-				:disabled="disabled"
+				:disabled="isDisabled"
 				type="radio"
 				@change="handleChange"
 				@focus="handleFocus"
