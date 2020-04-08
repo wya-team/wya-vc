@@ -202,7 +202,7 @@ export default {
 			pullUpStatus: 0,
 			prePullUpStatus: 0,
 
-			// 页面
+			// 页面, TODO: 开发人员传入current后，重新计算scrollStatus【仅首次计算】【主要是页面间切换，数据缓存时用】
 			currentPage: 0,
 
 			// 内容的高度 是否大于 容器的高度，默认false
