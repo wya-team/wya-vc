@@ -284,40 +284,40 @@ export default {
 
 ### 属性
 
-属性 | 说明 | 类型 | 默认值
+属性 | 说明 | 类型 | 可选值 | 默认值
 ---|---|---|---
-tag | 外层标签`span / div / **` | `String`、 `Object`、`Function` | `span`
-multiple | 多图上传 | `Boolean` | `false`
-max | 一次性最多选择的文件数量 `multiple` 为 `true` 或者 `directory` 为 `true` 时才有效 | `Number` | 1
-disabled | 禁用 | `Boolean` | `false`
-accept | 文件格式 | `String` | -
-mode | 文件归类（images / file）,提前定位文件类型（内置图片压缩） | `String` | `images`
-ajax | 请求函数 | `() => Promise` | -
-url | ajax:url -> 默认通过`RcInstance.init`注册 | `String` | -
-async | 是否使用异步 | `Boolean` | `true`
-name | 上传给后端获取的key | `String` | -
-size | 限制上传文件大小, 默认不限制（单位：mb） | `Number` | `0`
-extra | ajax需要传递的参数 | `Object` | {}
-headers | ajax: headers | `Object` | {}
-show-tips | 展示显示进度弹窗 | `Boolean` | `false`
-directory | 是否选取文件夹 | `Boolean` | `false`
-parallel | 是否并发执行 | `Boolean` | `true`
+tag | 外层标签 | `String`、 `Object`、`() => String` |`span / div / **`| `span`
+multiple | 多图上传 | `Boolean` | - | `false`
+max | 一次性最多选择的文件数量 `multiple` 为 `true` 或者 `directory` 为 `true` 时才有效 | `Number` | - | 1
+disabled | 禁用 | `Boolean` | - | `false`
+accept | 文件格式 | `String` | - | -
+mode | 文件归类（images / file）,提前定位文件类型（内置图片压缩） | `String` | - | `images`
+ajax | 请求函数 | `() => Promise`| - | -
+url | ajax:url -> 默认通过`VcInstance.init`注册 | `String` | - |-
+async | 是否使用异步 | `Boolean` | - | `true`
+name | 上传给后端获取的key | `String` | - | -
+size | 限制上传文件大小, 默认不限制（单位：mb） | `Number` | - | `0`
+extra | ajax需要传递的参数 | `Object` | - | {}
+headers | ajax: headers | `Object` | - | {}
+show-tips | 展示显示进度弹窗 | `Boolean` | - | `false`
+directory | 是否选取文件夹 | `Boolean` | - | `false`
+parallel | 是否并发执行 | `Boolean` | - | `true`
 
 
 ### 事件/方法
 
 属性 | 说明 | 类型 | 参数
 ---|---|---|---
-file-before | 单个文件上传前回调(进度) | `Function` | -
-file-start | 单个文件上传开始回调 | `Function` | -
+file-before | 单个文件上传前回调(进度) | `() => void 0` | -
+file-start | 单个文件上传开始回调 | `() => void 0` | -
 file-progress | 单个文件上传过程回调(e.percent, file.current, file.total等可用参数) | `(e, file) => void` | -
 file-success | 单个文件上传过程成功回调(res, file.current, file.total等可用参数) | `(res, file) => void` | -
 file-error | 单个文件上传过程失败回调(res, file.current, file.total等可用参数) | `(res, file) => void` | -
 begin | 一个周期上传前的回调(info: {}) | `(files) => void` | -
 complete | 一个周期上传后的回调(info: {}) | `(info) => void` | -
 error | 组件内部报错回调 | `(error) => void` | -
-post-before | 文件上传前回调（处理异步） | `Function` | -
-post-after | 文件上传后回调 | `Function` | -
+post-before | 文件上传前回调（处理异步） | `() => void 0` | -
+post-after | 文件上传后回调 | `() => void 0` | -
 
 ### Slot
 

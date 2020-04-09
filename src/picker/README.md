@@ -1,7 +1,7 @@
 ## 选择器（Picker）
 移动端选择器
 
-## 基础用法vcm-picker
+### 基础用法
 组件通过cascade属性判断picker是否为层级联动。
 
 :::RUNTIME
@@ -165,7 +165,8 @@ export default {
 ```
 :::
 
-## 方法调用vcm-picker
+### 方法调用
+
 :::RUNTIME
 ```html
 <template>
@@ -250,7 +251,7 @@ export default {
 ```
 :::
 
-## vcm-picker-popup
+### picker-popup
 仅为picker的弹层组件，不提供选择的用途，visible为ture默认开启。
 :::RUNTIME
 ```vue
@@ -297,7 +298,7 @@ export default {
 ```
 :::
 
-## vcm-picker-view
+### picker-view
 picker的选择组件，没有弹层。
 
 :::RUNTIME
@@ -308,6 +309,8 @@ picker的选择组件，没有弹层。
 		:data-source="dataSource"
 		:cascade="true"
 		:cols="3"
+		@change="handleChange"
+		@picker-change="handlePickerChange"
 	>
 		<div>内容</div>
 	</vcm-picker-popup>
@@ -366,7 +369,15 @@ export default {
 			}],
 			formValidate: {
 				addr: [],
-			},
+			}
+		}
+	},
+	methods: {
+		handleChange() {
+			console.log(arguments)
+		},
+		handlePickerChange() {
+			console.log(arguments)
 		}
 	}
 }
@@ -375,34 +386,34 @@ export default {
 :::
 
 
-## API
+### API
 
-#### 属性
+### 属性
 
 - `picker`
 
-属性 | 说明 | 类型 | 默认值
----|---|---|---
-loadData | 异步加载数据函数 | `Function` | -
-extra | 占位符 | `String` | -
-formatter | 格式化 | `Function` | -
+属性 | 说明 | 类型 | 可选值 | 默认值
+---|---|---|---|---
+loadData | 异步加载数据函数 | `() => Promise` | - | -
+extra | 占位符placeholder | `String` | - | -
+formatter | 格式化占位符 | `(label: Array) => String` | - | -
 
 - `picker-view`
 
-属性 | 说明 | 类型 | 默认值
----|---|---|---
-value | 返回值(v-model) | `Array` | -
-dataSource | 数据源 | `Array` | -
-cols | 列数 | `Number` | -
-itemStyle | 列的样式 | `Object` | -
-cascade | 是否为联动选中 | `Boolean` | `true`
+属性 | 说明 | 类型 | 可选值 | 默认值
+---|---|---|---|---
+value | 返回值(v-model) | `Array` | - | -
+dataSource | 数据源 | `Array` | - | -
+cols | 列数 | `Number` | - | -
+itemStyle | 列的样式 | `Object` | - | -
+cascade | 是否为联动选中 | `Boolean` | `true`、`false` | `true`
 
 - `dataSource 数据结构`
 
 当传入多列数据时且`cascade`为`false`时，`columns`为一个多维数组。当`cascade`为`ture`时，`columns`为一个对象数组
 
 键名 | 说明 | 类型
---- | --- | ---
+---|---|---
 value | 每一项的值 | `String`
 label | 每一项的内容 | `String`
 children | 子集对象数组 | `Array`
@@ -410,40 +421,40 @@ children | 子集对象数组 | `Array`
 
 - `picker-popup`
 
-属性 | 说明 | 类型 | 默认值
----|---|---|---
-visible | 控制，可以使用v-model | `Boolean` | `false`
-title | 标题，支持v-html | `String` | -
-cancelText | 取消文本 | `String` | 取消
-okText | 确定文本 | `String` |  确定
-showToolbar | 是否显示toolbar | `Boolean` | `true`
+属性 | 说明 | 类型 | 可选值 | 默认值
+---|---|---|---|---
+visible | 控制，可以使用v-model | `Boolean` | `true`、`false` | `false`
+title | 标题，支持v-html | `String` | - | -
+cancelText | 取消文本 | `String` | - | 取消
+okText | 确定文本 | `String` | - | 确定
+showToolbar | 是否显示toolbar | `Boolean` | `true`、`false` | `true`
 
-#### 事件
+### 事件/方法
 
 - `picker`
 
 属性 | 说明 | 类型 | 默认值
 ---|---|---|---
-change | 组件关闭时候触发出来的一个事件，返回值为当前选中的值以及每一列的数据 | `function` | -
-ok | - | `function` | -
-cancel | - | `function` | -
+change | 组件关闭时候触发出来的一个事件，返回值为当前选中的值以及每一列的数据 | `() => void 0` | -
+ok | 点击确定按钮触发的事件 | `() => void 0` | -
+cancel | 点击取消按钮触发的事件 | `() => void 0` | -
 
 - `picker-popup`
 
 属性 | 说明 | 类型 | 默认值
 ---|---|---|---
-ok | - | `function` | -
-cancel | - | `function` | -
-close | - | `function` | -
+ok | 点击确定按钮触发的事件 | `() => void 0` | -
+cancel | 点击取消按钮触发的事件 | `() => void 0` | -
+close | 关闭弹窗时触发 | `() => void 0` | -
 
-- `picke-view`
+- `picker-view`
 
 属性 | 说明 | 类型 | 默认值
 ---|---|---|---
-change | - | `function` | -
-picker-change | - | `function` | -
+change | 选择发生改变时触发的事件 | `(values, labels, items) => void 0` | -
+picker-change | 选择发生改变时触发出来的一个事件 | `(row, index) => void 0` | -
 
-#### Slot
+### Slot
 
 - `picker`
 
