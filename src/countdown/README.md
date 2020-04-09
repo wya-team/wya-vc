@@ -15,6 +15,7 @@
 		<vc-countdown 
 			:target-time="targetTime" 
 			:server-time="new Date()"
+			@change="handleGetTime"
 		/> 
 	</div>
 </template>
@@ -36,6 +37,11 @@ export default {
 		now.setDate(now.getDate() + 2);
 		this.targetTime = now;
 	},
+	methods: {
+		handleGetTime(val) {
+			console.log(val);
+		}
+	}
 };
 </script>
 ```
@@ -119,16 +125,16 @@ export default {
 ---|---|---|---|---
 t | 刷新周期，单位秒 | `Number`	| - | 1		
 render-row | 自定义渲染 | `Function` | - | -
-target-time	| 目标时间 | `String`、 `Number`、 `Date` | - | - 
-server-time	| 服务器时间 | `String`、 `Number`、 `Date` | - | 当前时间	
+target-time	| 目标时间 | `String`;  `Number`;  `Date` | - | - 
+server-time	| 服务器时间 | `String`;  `Number`;  `Date` | - | 当前时间	
 format | 格式(DD:HH:MM:SS:mm) | `String` | - | `DD天HH小时mm分ss秒ms`
-tag | 标签 | `String` | `div`、`span`、`***` | `span`
+tag | 标签 | `String` | `div`; `span`; `***` | `span`
 
 
 #### 事件
 
-属性 | 说明 | 类型 | 默认值
+事件名 | 说明 | 类型 | 参数
 ---|---|---|---
-error | 警告回调 | `msg: String` | -
-change | 变化回调 | `{...}` | -
-end	| 结束回调 | - |	 -
+error | 警告回调 | `(msg: String) => void 0` | `msg`: 警告信息
+change | 变化回调 | `(data: Object) => void 0` | `timestamp`: 离目标时间相差的毫秒数; `days`: 相差的天数; `hours`: 相差的小时数; `minutes`: 相差的分钟数; `seconds`: 相差的秒数; `ms`: 相差的毫秒数,
+end	| 结束回调 | `() => void 0` |	 -

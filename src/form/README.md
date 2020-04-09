@@ -134,8 +134,12 @@ export default {
 		};
 	},
 	methods: {
-		handleSubmit() {
-			console.log(res, this.formValidate);
+		handleSubmit(name) {
+			this.$refs[name].validate().then((res) => {
+
+			}).catch((err) => {
+				console.log(err);
+			});
 		},
 		handleReset(name) {
 			this.$refs[name].resetFields();
@@ -146,6 +150,13 @@ export default {
 				value: '',
 				index: this.index,
 				status: 1
+			});
+		},
+		handleOnly(name) {
+			this.$refs[name].validateField('items.0.value', { scroll: true }).then(() => {
+
+			}).catch((error) => {
+				console.log(error);
 			});
 		},
 		handleRemove(index) {
@@ -260,13 +271,13 @@ export default {
 			@submit.native.prevent
 		>
 			<vc-form-item label="input：">
-				<vc-input v-model="formValidate.input" />
+				<vc-input v-model="formValidate.input" style="width: 200px;" />
 			</vc-form-item>
 			<vc-form-item label="input：">
-				<vc-input v-model="formValidate.input" />
+				<vc-input v-model="formValidate.input" style="width: 200px;" />
 			</vc-form-item>
 			<vc-form-item label="input：">
-				<vc-input v-model="formValidate.input" />
+				<vc-input v-model="formValidate.input" style="width: 200px;" />
 			</vc-form-item>
 		</vc-form>
 	</div>
@@ -462,10 +473,10 @@ export default {
 	methods: {
 		handleSubmit(name) {
 
-			this.$refs[name].validate(() => {}).then((res) => {
+			this.$refs[name].validate().then((res) => {
 
-			}).catch((res) => {
-				console.log(res, this.formValidate);
+			}).catch((err) => {
+				console.log(err);
 			});
 		},
 
@@ -632,36 +643,36 @@ export default {
 
 属性 | 说明 | 类型 | 可选值 | 默认值
 ---|---|---|---|---
-model | 表单数据对象 | Object | - | -
-rules | 表单验证规则，具体配置查看 [ async-validator](https://github.com/yiminghe/async-validator) | Object | - | -
-inline | 是否开启行内表单模式 | Boolean | - | false
-label-position | 表单域标签的位置 | String | `left`、`right`、`top` | right
-label-width | 表单域标签的宽度，所有的 FormItem 都会继承 Form 组件的 label-width 的值 | Number | - | -
-show-message | 是否显示校验错误信息 | Boolean | - | true
-autocomplete | 原生的 autocomplete 属性 | String | `off`、`on` | off
+model | 表单数据对象 | `Object` | - | -
+rules | 表单验证规则，具体配置查看 [ async-validator](https://github.com/yiminghe/async-validator) | `Object` | - | -
+inline | 是否开启行内表单模式 | `Boolean` | - | `false`
+label-position | 表单域标签的位置 | `String` | `left`; `right`; `top` | `right`
+label-width | 表单域标签的宽度，所有的 FormItem 都会继承 Form 组件的 label-width 的值 | `Number` | - | -
+show-message | 是否显示校验错误信息 | `Boolean` | - | `true`
+autocomplete | 原生的 autocomplete 属性 | `String` | `off`; `on` | `off`
 
 
 #### 方法
 
-属性 | 说明 | 参数 | 返回值
+方法名 | 说明 | 类型 | 参数
 ---|---|---|---
-validate | 对整个表单进行校验，参数为检验完的回调，会返回一个 Boolean 表示成功与失败，支持 Promise | callback | -
-validateField | 对部分表单字段进行校验的方法，参数1为需校验的 prop，参数2为检验完回调，返回错误信息 | callback | -
-resetFields | 对整个表单进行重置，将所有字段值重置为空并移除校验结果 | - | -
+validate | 对整个表单进行校验，参数为检验完的回调，会返回一个 `Boolean` 表示成功与失败，支持 Promise | `() => Boolean` | -
+validateField | 对部分表单字段进行校验的方法 | `(props: Array | String, callback: Function) => Promise` | `props`: 需校验的 prop; `callback`: 检验完回调，返回错误信息
+resetFields | 对整个表单进行重置，将所有字段值重置为空并移除校验结果 | `() => void 0` | -
 
 
 #### Item 属性
 
 属性 | 说明 | 类型 | 默认值
 ---|---|---|---
-prop | 对应表单域 model 里的字段 | String | - 
-label | 标签文本 | String | - 
-label-width | 表单域标签的的宽度 | Number | - 
-label-for | 指定原生的 label 标签的 for 属性，配合控件的 `element-id` 属性，可以点击 label 时聚焦控件。 | String | - 
-required | 是否必填，如不设置，则会根据校验规则自动生成 | Boolean | - 
-rules | 表单验证规则 | Object  |  Array | - 
-error | 表单域验证错误信息, 设置该值会使表单验证状态变为error，并显示该错误信息 | String | - 
-show-message | 是否显示校验错误信息 | Boolean | true 
+prop | 对应表单域 model 里的字段 | `String` | - 
+label | 标签文本 | `String` | - 
+label-width | 表单域标签的的宽度 | `Number` | - 
+label-for | 指定原生的 label 标签的 for 属性，配合控件的 `element-id` 属性，可以点击 label 时聚焦控件。 | `String` | - 
+required | 是否必填，如不设置，则会根据校验规则自动生成 | `Boolean` | - 
+rules | 表单验证规则 | `Object`  |  `Array` | - 
+error | 表单域验证错误信息, 设置该值会使表单验证状态变为error，并显示该错误信息 | `String` | - 
+show-message | 是否显示校验错误信息 | `Boolean` | `true` 
 
 #### Item Slot
 
