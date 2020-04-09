@@ -4,6 +4,7 @@ const sidebar = require('./nav.config.js');
 const ENV_IS_DEV = process.env.NODE_ENV === 'development';
 
 module.exports = {
+	entry: path.resolve(__dirname, '../src'),
 	version: '1.0.0',
 	/**
 	 * null | './xxx/xxx.vue' | 'default' | json;
