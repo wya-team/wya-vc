@@ -7,7 +7,7 @@ canvas画板
 使用场景和使用方式
 
 ### 基础用法
-通过`width`、`height`控制画板的宽高
+通过`width`、`height`控制画板的宽高，通过`options`设置画笔样式
 
 :::RUNTIME
 ```html
@@ -126,13 +126,13 @@ height | 设置canvas的高度,不传则根据容器的高度来设置 | `Number
 
 #### 事件
 
-属性 | 说明 | 参数 | 返回值
----|---|---|---
-change | canvas内容发生改变时触发 | - | `snapshots`: 所有快照数据, `current`: 当前快照位置, `allowUndo`: 是否能够回退, `allowRedo`: 是否能够撤销
+事件名 | 说明 | 类型 | 参数
+---|---|---|---|---
+change | canvas内容发生改变时触发 | `(snapshots: Array, current: Number, allowUndo: Boolean, allowRedo: Boolean) => void 0` | `snapshots`: 所有快照数据, `current`: 当前快照位置, `allowUndo`: 是否能够回退, `allowRedo`: 是否能够撤销
 
 #### 方法
 
-属性 | 说明 | 参数 | 返回值
+方法名 | 说明 | 参数 | 返回值
 ---|---|---|---
 undo | 回退一画 | - | -
 redo | 取消回退 | - | -

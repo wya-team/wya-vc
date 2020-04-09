@@ -97,9 +97,9 @@ export default {
 :::RUNTIME
 ```html
 <template>
-	<div class="v-cascader">
+	<div>
 		<vc-cascader 
-			style="width: 300px;"
+			style="width: 200px;"
 			v-model="value" 
 			:data-source="dataSource" 
 			:load-data="loadData"/>
@@ -149,14 +149,6 @@ export default {
 	}
 };
 </script>
-<style>
-.v-cascader {
-	margin: 40px; 
-	display: flex;
-	align-items: center;
-	justify-content: center;
-}
-</style>
 ```
 :::
 
@@ -166,9 +158,9 @@ export default {
 :::RUNTIME
 ```html
 <template>
-	<div class="v-cascader">
+	<div>
 		<vc-cascader 
-			style="width: 300px;"
+			style="width: 200px;"
 			v-model="value" 
 			:data-source="dataSource"
 			clearable />
@@ -231,13 +223,6 @@ export default {
 };
 </script>
 <style>
-.v-cascader {
-	margin: 40px; 
-	display: flex;
-	align-items: center;
-	justify-content: center;
-}
-</style>
 ```
 :::
 
@@ -247,9 +232,9 @@ export default {
 :::RUNTIME
 ```html
 <template>
-	<div class="v-cascader">
+	<div>
 		<vc-cascader 
-			style="width: 300px;"
+			style="width: 200px;"
 			v-model="value" 
 			:data-source="dataSource"
 			:formatter="formatter" />
@@ -315,14 +300,6 @@ export default {
 	}
 };
 </script>
-<style>
-.v-cascader {
-	margin: 40px; 
-	display: flex;
-	align-items: center;
-	justify-content: center;
-}
-</style>
 ```
 :::
 
@@ -332,9 +309,9 @@ export default {
 :::RUNTIME
 ```html
 <template>
-	<div class="v-cascader">
+	<div>
 		<vc-cascader 
-			style="width: 300px;"
+			style="width: 200px;"
 			v-model="value" 
 			:data-source="dataSource"
 			changeOnSelect />
@@ -400,14 +377,6 @@ export default {
 	}
 };
 </script>
-<style>
-.v-cascader {
-	margin: 40px; 
-	display: flex;
-	align-items: center;
-	justify-content: center;
-}
-</style>
 ```
 :::
 
