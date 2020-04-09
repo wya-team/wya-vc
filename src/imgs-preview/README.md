@@ -250,13 +250,14 @@ export default {
 
 属性 | 说明 | 类型 | 可选值 | 默认值
 ---|---|---|---|---
-dataSource | 源数据 | `Array<Object>, Array<String>` | - | -
+dataSource | 源数据 | `Array<Object>`; `Array<String>` | - | -
 opts | photoSwipe参数 | `Object` | - | -
 events | photoSwipe事件 | `Object` | - | -
 id | 外层标识 | `String` | - | -
 
 #### 方法
-属性 | 说明 | 类型 | 默认值
+
+方法名 | 说明 | 类型 | 默认值
 ---|---|---|---
 getInstance | 获取photoSwipe实例 | `() => {}` | -
 renderRow | 自定义组件 | `(h, props, parent) => jsx` | -
