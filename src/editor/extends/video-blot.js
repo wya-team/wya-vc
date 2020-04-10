@@ -12,6 +12,7 @@ export const registVideoBlot = (Quill) => {
 			node.setAttribute('webkit-playsinline', true);
 			node.setAttribute('playsinline', true);
 			node.setAttribute('x5-playsinline', true);
+			node.setAttribute('poster', value.poster);
 			return node;
 		}
 
@@ -22,6 +23,7 @@ export const registVideoBlot = (Quill) => {
 				width: node.getAttribute('width'),
 				height: node.getAttribute('height'),
 				style: node.getAttribute('style'),
+				poster: node.getAttribute('poster'),
 			};
 		}
 	}

@@ -116,7 +116,8 @@ export default {
 			default: true
 		},
 		// 注册扩展
-		register: Function
+		register: Function,
+		poster: [Function, Boolean]
 	},
 	data() {
 		return {
@@ -270,6 +271,9 @@ export default {
 				style: "max-width: 100%",
 				width: 'auto',
 				height: 'auto',
+				poster: this.poster && typeof (this.poster) !== 'function' 
+					? `${res.data.url}?x-oss-process=video/snapshot,t_1000,f_jpg,w_0,h_0,m_fast` 
+					: this.poster(res.data.url)
 			});
 			// 光标向后移动一位
 			this.editor.insertText(length + 1, '');
