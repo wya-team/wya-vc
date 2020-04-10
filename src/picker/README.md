@@ -460,10 +460,10 @@ picker-change | 选择发生改变时触发出来的一个事件 | `(row, index)
 
 名称 | 说明
 ---|---
-default ｜ 点击弹出区域
+default | 点击弹出区域
 
 - `picker-popup`
 
 名称 | 说明
 ---|---
-default ｜ 弹出层的内容
+default | 弹出层的内容
