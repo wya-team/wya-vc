@@ -205,9 +205,9 @@ type | 标签的样式类型 | `String` | `default`、`border`、`dot` | `defaul
 color | 标签颜色，你也可以自定义颜色值。 | `String` | `default`、`primary`、`success`、`warning`、`error` | `default`
 name | 当前标签的名称，使用 v-for，并支持关闭时，会比较有用 | `String`、`Number` | - | -
 
-### 事件/方法
+### 事件
 
-属性 | 说明 | 类型 | 参数
+事件名 | 说明 | 类型 | 参数
 ---|---|---|---|---
 close | 关闭时触发 | `event, name` | ---
 change | 切换选中状态时触发 | `checked, name` | ---

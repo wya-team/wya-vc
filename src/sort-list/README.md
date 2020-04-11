@@ -80,7 +80,7 @@ draggable | 是否可拖拽 | `boolean` | `true`
 
 #### 事件
 
-属性 | 说明 | 类型 | 参数
+事件名 | 说明 | 类型 | 参数
 ---|---|---|---
 change | 数据改变 | - | `dataSource`
 

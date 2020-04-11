@@ -144,7 +144,7 @@ wrapper | 父容器 | `object`、`string` | -
 
 #### 事件
 
-属性 | 说明 | 类型 | 参数
+事件名 | 说明 | 类型 | 参数
 ---|---|---|---
 load | 图片加载成功触发 | - | `(e: Event)`、`img`、`this`
 error | 图片加载失败触发 | - | `(e: Error)`、`img`、`this`

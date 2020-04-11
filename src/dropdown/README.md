@@ -311,7 +311,7 @@ divided | 是否需要分割线 | Boolean | - | false
 
 ### 事件
 
-属性 | 说明 | 参数 | 返回值
+事件名 | 说明 | 参数 | 返回值
 ---|---|---|---
 click | 点击菜单项时触发 | name: String | -
 visible-change | visible改变时回调 | - | - 

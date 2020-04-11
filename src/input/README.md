@@ -258,7 +258,7 @@ bytes | 是否2个字节算一个字 | `Boolean` | - | false
 
 ### Input events
 
-属性 | 说明 | 类型 | 参数
+事件名 | 说明 | 类型 | 参数
 ---|---|---|---
 change | 数据改变时触发 | `any` | (event:Event)
 focus | 输入框聚焦是触发 | - | (event:Event)

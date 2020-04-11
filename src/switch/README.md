@@ -184,7 +184,7 @@ name | 内部input标签name值 | `String` | - | -
 
 ### 事件/方法
 
-属性 | 说明 | 类型 | 参数
+事件名 | 说明 | 类型 | 参数
 ---|---|---|---|---
 change | 开关变化时触发，返回当前的状态	 | `(value) => value` | ---
 click | ->Promise可触发loading	 | `(value) => Promise` | ---

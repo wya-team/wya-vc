@@ -795,7 +795,7 @@ select-on-indeterminate | 在多选表格中，当仅有部分行被选中时，
 
 #### 事件
 
-属性 | 说明 | 参数 | 返回值
+事件名 | 说明 | 参数 | 返回值
 ---|---|---|---
 select | 当用户手动勾选数据行的 Checkbox 时触发的事件 | selection, row | -
 select-all | 当用户手动勾选全选 Checkbox 时触发的事件 | selection | -
@@ -815,7 +815,7 @@ expand-change | 当用户对某一行展开或者关闭的时候会触发该事�
 
 #### 方法
 
-属性 | 说明 | 参数 | 返回值
+方法名 | 说明 | 参数 | 返回值
 --- | --- | --- | ---
 clearSelection | 用于多选表格，清空用户的选择 | - | -
 toggleRowSelection | 用于多选表格，切换某一行的选中状态，如果使用了第二个参数，则是设置这一行选中与否（selected 为 true 则选中） | row, selected, emitChange | -

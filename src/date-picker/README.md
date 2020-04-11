@@ -349,7 +349,7 @@ disabledTime | 设置时分秒禁用状态，参数为当前日期，要求返�
 
 ### 事件
 
-属性 | 说明 | 参数 | 返回值
+事件名 | 说明 | 参数 | 返回值
 ---|---|---|---
 ok | `confirm`模式下点击确定按钮的回调 | `date`、`dateArray`|---
 clear | 点击清除按钮的回调 | `date`、`dateArray`|---
@@ -387,7 +387,7 @@ maxDate | 最大日期 | `Date` | - | new Date('2020')
 
 ### 移动端（vcm-date-picker）事件
 
-属性 | 说明 | 类型 | 默认值
+事件名 | 说明 | 类型 | 默认值
 ---|---|---|---
 change | 组件关闭时候触发出来的一个事件，返回值为当前选中的值以及每一列的数据 | `function` | -
 ok | - | `function` | -
@@ -395,7 +395,7 @@ cancel | - | `function` | -
 
 ### 移动端（vcm-date-picker-view）事件
 
-属性 | 说明 | 类型 | 默认值
+事件名 | 说明 | 类型 | 默认值
 ---|---|---|---
 change | - | `function` | -
 picker-change | - | `function` | -

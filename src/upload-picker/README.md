@@ -71,7 +71,7 @@ gallery | 图片上传调用商品橱窗,仅在PC组件内有效 | `Function`、
 
 ### 事件
 
-属性 | 说明 | 类型 | 默认值
+事件名 | 说明 | 类型 | 默认值
 ---|---|---|---
 file-before | 单个文件上传前回调(进度) | `(file, fileList, type) => void 0` | -
 file-start | 单个文件上传开始回调 | `(file, type) => void` | -

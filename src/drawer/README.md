@@ -165,7 +165,7 @@ placement | 抽屉的方向 | `String` | `top` `right` `bottom` `left` | right
 
 ### 事件/方法
 
-属性 | 说明 | 类型 | 参数
+事件名 | 说明 | 类型 | 参数
 ---|---|---|---
 close | 关闭时的回调 | - | -
 visable-change | 关闭时的回调 | - | -

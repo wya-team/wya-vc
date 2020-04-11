@@ -58,7 +58,7 @@ tag | 外层标签 | `String`、`Object`、 `Function` | `span / div / **` | `di
 
 #### 事件
 
-属性 | 说明 | 类型 | 默认值
+事件名 | 说明 | 类型 | 默认值
 ---|---|---|---
-@before | 复制前的操作, 要求返回`Promise` | `(e) => Promise` | -
-@after | 复制后的操作 | `(value) => void` | -
+before | 复制前的操作, 要求返回`Promise` | `(e) => Promise` | -
+after | 复制后的操作 | `(value) => void` | -

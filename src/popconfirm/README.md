@@ -251,7 +251,7 @@ renderContent | `content` 自定义 | `function` | - | `(h, props, parent) => (<
 
 #### 事件
 
-属性 | 说明 | 参数 | 返回值
+事件名 | 说明 | 参数 | 返回值
 ---|---|---|---
 ok | 点击确定的回调, 配合Promise触发loading效果 | `(e, callback) => Promise` | 
 cancel | 点击取消的回调 | `Function` | -

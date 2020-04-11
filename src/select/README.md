@@ -345,7 +345,7 @@ filterable | 是否可过滤 | `Boolean` | - | `true`
 
 #### Select events
 
-属性 | 说明 | 类型 | 参数
+事件名 | 说明 | 类型 | 参数
 ---|---|---|---
 change | 选中的`Option`变化时触发，默认返回 value | `Function` | `(value: String）`
 clear | 点击清空按钮时触发	 | - | -

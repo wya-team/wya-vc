@@ -313,8 +313,8 @@ size | 调节按钮组件的大小 | `String` | `large`、`medium`、`small` | `
 circle | 按钮是否圆角 | `Boolean` | - | `false`
 vertical | 按钮纵向排列 | `Boolean` | - | `false`
 
-### 事件/方法
+### 事件
 
-属性 | 说明 | 类型 | 参数
+事件名 | 说明 | 类型 | 参数
 ---|---|---|---|---
 click | 点击事件 | `() => Promise?` | -

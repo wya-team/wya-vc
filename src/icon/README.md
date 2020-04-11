@@ -102,9 +102,9 @@ inherit | 是否使用svg预设的颜色 | `Boolean` | false
 
 ### 事件
 
-属性 | 说明 | 类型 | 默认值
+事件名 | 说明 | 类型 | 默认值
 ---|---|---|---
-@click | 点击事件 | `Function` | -
+click | 点击事件 | `Function` | -
 
 
 ### TODO

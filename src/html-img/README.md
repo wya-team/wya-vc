@@ -84,7 +84,7 @@ parser | - | `Function` | - | -
 
 ### 事件/方法
 
-属性 | 说明 | 类型 | 参数
+事件名 | 说明 | 类型 | 参数
 ---|---|---|---
 getImage | 生成图片 | ({ filename = 'image', getFile = true }) | -
 download | 生成图片并下载 | ({ filename = 'image', getFile = true }) | -

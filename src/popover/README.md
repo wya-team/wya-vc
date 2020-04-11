@@ -431,11 +431,11 @@ portalStyle | 样式 | `object` | - | -
 
 #### 事件
 
-属性 | 说明 | 参数 | 返回值
+事件名 | 说明 | 参数 | 返回值
 ---|---|---|---
-`visible-change` | 弹层显示隐藏的回调 | `visible` | `true | false`
-`close` | 关闭时回调 | - | -
-`ready` | 弹层节点挂载完成回调 | - | -
+visible-change | 弹层显示隐藏的回调 | `visible` | `true | false`
+close | 关闭时回调 | - | -
+ready | 弹层节点挂载完成回调 | - | -
 
 #### Slot
 

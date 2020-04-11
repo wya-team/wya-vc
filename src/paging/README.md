@@ -718,18 +718,18 @@ footer | 是否显示分页 | `boolean` | - | true
 
 #### 事件
 
-属性 | 说明 | 参数 | 返回值
+事件名 | 说明 | 参数 | 返回值
 ---|---|---|---
-@load-pending | 加载中 | - | -
-@load-success | 加载成功 | - | -
-@load-error | 加载失败 | - | -
-@load-finish | 加载结束（都会触发） | - | -
-@selection-change | 所有页选中的数据 | - | selection(全部选中的数据), curPageSelection(当前页选中的数据)
-@page-size-change | 分页size改变 | - | 改变后的分页size
-@page-change | 页码改变 | - | 改变后的页码
+load-pending | 加载中 | - | -
+load-success | 加载成功 | - | -
+load-error | 加载失败 | - | -
+load-finish | 加载结束（都会触发） | - | -
+selection-change | 所有页选中的数据 | - | selection(全部选中的数据), curPageSelection(当前页选中的数据)
+page-size-change | 分页size改变 | - | 改变后的分页size
+page-change | 页码改变 | - | 改变后的页码
 
 #### 方法
 
-属性 | 说明 | 参数 | 返回值
+方法名 | 说明 | 参数 | 返回值
 ---|---|---|---
 `load-data` | 数据加载请求 | `page, PageSize` | `Promise`

@@ -288,7 +288,7 @@ mode | zoom规则 | `String` | `x`、`y`、`center`、`none` | `x`
 
 #### 事件
 
-属性 | 说明 | 类型 | 参数
+事件名 | 说明 | 类型 | 参数
 ---|---|---|---|---
 before-enter | 进入之前的回调 | - | el
 enter | 进入的回调 | - | el

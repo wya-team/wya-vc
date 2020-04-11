@@ -4,7 +4,7 @@
 
 ## 方法
 
-方法 | 说明 | 类型
+方法名 | 说明 | 类型
 ---|---|---|---
 init | 初始化 | `() => void`
 clear | 删除api式组件 | `Function` | `(cName: String?, focre: Boolean?) => void`
