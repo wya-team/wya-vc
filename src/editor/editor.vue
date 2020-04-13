@@ -117,7 +117,7 @@ export default {
 		},
 		// 注册扩展
 		register: Function,
-		poster: [Function, Boolean]
+		videoPoster: [Function, Boolean]
 	},
 	data() {
 		return {
@@ -265,16 +265,17 @@ export default {
 		},
 		handleVideoSuccess(res) {
 			let length = this.getLength();
-			this.editor.insertEmbed(length, 'vc-video', {
+			const attrs = {
 				url: res.data.url,
 				controls: 'controls',
 				style: "max-width: 100%",
 				width: 'auto',
 				height: 'auto',
-				poster: this.poster && typeof (this.poster) !== 'function' 
-					? `${res.data.url}?x-oss-process=video/snapshot,t_1000,f_jpg,w_0,h_0,m_fast` 
-					: this.poster(res.data.url)
-			});
+			};
+			if (typeof this.videoPoster === 'function') {
+				attrs.poster = this.videoPoster(res.data.url);
+			}
+			this.editor.insertEmbed(length, 'vc-video', attrs);
 			// 光标向后移动一位
 			this.editor.insertText(length + 1, '');
 			this.editor.setSelection(length + 2);
