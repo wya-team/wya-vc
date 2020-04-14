@@ -134,9 +134,9 @@ change | canvas内容发生改变时触发 | `(snapshots: Array, current: Number
 
 方法名 | 说明 | 参数 | 返回值
 ---|---|---|---
-undo | 回退一画 | - | -
-redo | 取消回退 | - | -
-reset | 重置画板 | - | -
+undo | 回退一画 | `() => void 0` | -
+redo | 取消回退 | `() => void 0` | -
+reset | 重置画板 | `() => void 0` | -
 
 ## Feature
 + 有初始值

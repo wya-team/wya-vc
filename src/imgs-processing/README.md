@@ -83,8 +83,8 @@ export default {
 dataSource | 图片的地址 | `String` | - | -
 width | 画布宽度 | `Number` | - | 100
 height | 画布高度 | `Number` | - | 100
-processing | 图片处理方式 | `Sring`;`Function` | `cutout`（扣掉颜色）;`gray`（置灰） | -
-cutoutColor | 要扣掉的颜色rgba格式 | `Array` | - | [0, 0, 0, 1]
+processing | 图片处理方式 | `String`; `Function` | `cutout`（扣掉颜色）; `gray`（置灰） | -
+cutoutColor | 要扣掉的颜色`rgba`格式 | `Array` | - | [0, 0, 0, 1]
 tolerance | 颜色的容差 | `Number` | - | 0
 crossOrigin | 解决图片跨域的问题 | `String` | - | anonymous
 

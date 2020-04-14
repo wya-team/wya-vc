@@ -69,11 +69,11 @@ gallery | true, false, () => {}效果不同 | `Boolean, Function` | - | `true`
 
 ### 事件
 
-事件名 | 说明 | 类型 | 默认值
+事件名 | 说明 | 类型 | 参数
 ---|---|---|---
-change | `dataSource`值改变的回调 | `-` | -
-error | 上传错误的回调的回调 | `-` | -
-complete | 上传完成后的回调 | `-` | -
+change | `dataSource`值改变的回调 | `() => void 0` | -
+error | 上传错误的回调的回调 | `() => void 0` | -
+complete | 上传完成后的回调 | `() => void 0` | -
 
 
 ### 插槽

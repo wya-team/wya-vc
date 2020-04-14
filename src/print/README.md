@@ -54,11 +54,11 @@ export default {
 属性 | 说明 | 类型 | 可选值 | 默认值
 ---|---|---|---|---
 value | 复制的文本内容 | `any` | - | -
-tag | 外层标签 | `String`、`Object`、 `Function` | `span / div / **` | `div`
+tag | 外层标签 | `String`; `Object`;  `Function` | `span / div / **` | `div`
 
 #### 事件
 
 事件名 | 说明 | 类型 | 默认值
 ---|---|---|---
 before | 复制前的操作, 要求返回`Promise` | `(e) => Promise` | -
-after | 复制后的操作 | `(value) => void` | -
+after | 复制后的操作 | `(value) => void 0` | -

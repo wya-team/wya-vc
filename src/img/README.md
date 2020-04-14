@@ -138,7 +138,7 @@ export default {
 src | 图片资源 | `string` | -
 fit | 确定图片如何适应容器框，同原生 object-fit | `string` | -
 lazy | 是否开启懒加载 | `boolean` | `false`
-wrapper | 父容器 | `object`、`string` | -
+wrapper | 父容器 | `object`; `string` | -
 
 
 
@@ -146,8 +146,8 @@ wrapper | 父容器 | `object`、`string` | -
 
 事件名 | 说明 | 类型 | 参数
 ---|---|---|---
-load | 图片加载成功触发 | - | `(e: Event)`、`img`、`this`
-error | 图片加载失败触发 | - | `(e: Error)`、`img`、`this`
+load | 图片加载成功触发 | - | `(e: Event)`; `img`; `this`
+error | 图片加载失败触发 | - | `(e: Error)`; `img`; `this`
 
 #### Slot
 

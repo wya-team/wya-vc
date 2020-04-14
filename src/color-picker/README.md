@@ -174,4 +174,4 @@ size | 尺寸 | String |  `large`、`default`、`small` | `default`
 ---|---|---|---
 change | 当绑定值变化时触发 | `(value: String) => void 0` | `value`: 当前选中的颜色值
 color-change | 面板中当前显示的颜色发生改变时触发 | `(value: String) => void 0` | `value`: 当前选中的颜色值
-visible-change | 下拉框展开或收起时触发 | `(value: Boolean) => void 0` | `value`: 当前visible值
+visible-change | 下拉框展开或收起时触发 | `(value: Boolean) => void 0` | `value`: 当前`visible`值

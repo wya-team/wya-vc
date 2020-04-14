@@ -147,9 +147,9 @@ export default {
 
 属性 | 说明 | 类型| 可选值 | 默认值
 ---|---|---|---|---
-type | 进度条类型 | `String` | `line` `circle` | line
+type | 进度条类型 | `String` | `line`; `circle` | line
 percent | 进度百分比 | `Number`| - | 0 
-status | 状态 | `String` | `normal` `success` `error` `active` |  normal
+status | 状态 | `String` | `normal`; `success`; `error`; `active` |  normal
 size | 环形进度条画布宽度（只有type为`circle`时可用） | `Number` | - | 120
 stroke-width | 进度条宽度 | `Number` | - | 6
 stroke-color | 环形进度条颜色 | `String` | - | #2d8cf0 
