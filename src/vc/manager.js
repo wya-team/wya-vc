@@ -26,6 +26,10 @@ class VcManager extends VcBasic {
 			this.hasInit = true;
 
 			Promise.all(this.config.Icon.urls.map(url => IconManager.load(url)))
+				.then(() => {
+					// 清除
+					IconManager.clear();
+				})
 				.catch((e) => {
 					throw new VcError('instance', e);
 				});

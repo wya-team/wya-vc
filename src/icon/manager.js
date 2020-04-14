@@ -54,12 +54,7 @@ class IconManager extends VcBasic {
 						// 内存溢出，删除老缓存, 延迟3秒清理，重新设置
 						if (response) {
 							setTimeout(() => {
-								let needs = Object.keys(this.sourceStatus); 
-								Object.keys(window.localStorage).forEach((item) => {
-									if (item.includes(prefix) && !needs.includes(key)) {
-										window.localStorage.removeItem(item); // 这里需要使用localStorage
-									}
-								});
+								this.clear();
 								// 如果还存在溢出，项目内自行处理吧
 								Storage.set(key, icons);
 							}, 3000);
@@ -147,7 +142,17 @@ class IconManager extends VcBasic {
 
 		return this;
 	}
-  
+  	
+  	clear() {
+  		let needs = Object.keys(this.sourceStatus); 
+		Object.keys(window.localStorage).forEach((item) => {
+			if (item.includes(prefix)) {
+				const key = item.split(prefix).pop();
+				!needs.includes(key) 
+					&& window.localStorage.removeItem(item); // 这里需要使用localStorage
+			}
+		});
+  	}
 }
 
 export default new IconManager(basicUrl);
