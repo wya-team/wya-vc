@@ -41,12 +41,12 @@
 					<!-- time -->
 					<vc-time-select 
 						v-show="leftCurrentView === 'timerange'"
-						:value="[dates[0]]"
 						:hours="timeSlots.left.hours"
 						:minutes="timeSlots.left.minutes"
 						:seconds="timeSlots.left.seconds"
 						:show-seconds="showSeconds"
 						v-bind="timePickerOptions"
+						:panel-date="leftPanelDate"
 						@pick="handleTimePick(...arguments, 'left')"
 					/>
 				</div>
@@ -86,12 +86,12 @@
 					<!-- time -->
 					<vc-time-select 
 						v-show="rightCurrentView === 'timerange'"
-						:value="[dates[1]]"
 						:hours="timeSlots.right.hours"
 						:minutes="timeSlots.right.minutes"
 						:seconds="timeSlots.right.seconds"
 						:show-seconds="showSeconds"
 						v-bind="timePickerOptions"
+						:panel-date="rightPanelDate"
 						@pick="handleTimePick(...arguments, 'right')"
 					/>
 				</div>
@@ -414,8 +414,13 @@ export default {
 			let date = type === 'left' ? this.dates[0] : this.dates[1];
 			let leftNewDate = this.dates[0]; 
 			let rightNewDate = this.dates[1];
-			type === 'left' && (leftNewDate = getDateOfTime(date, value));
-			type === 'right' && (rightNewDate = getDateOfTime(date, value));
+			if (type === 'left') {
+				leftNewDate = getDateOfTime(date, value);
+				this.leftPanelDate = leftNewDate;
+			} else if (type === 'right') {
+				rightNewDate = getDateOfTime(date, value);
+				this.rightPanelDate = rightNewDate;
+			}
 			if (leftNewDate && rightNewDate) {
 				this.dates = [leftNewDate, rightNewDate];
 				this.$emit('pick', this.dates);

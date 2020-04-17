@@ -1,7 +1,6 @@
 <template>
 	<div class="vc-time-panel">
 		<vc-time-select 
-			:value="date"
 			:hours="timeSlots[0]"
 			:minutes="timeSlots[1]"
 			:seconds="timeSlots[2]"

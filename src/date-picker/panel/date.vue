@@ -44,13 +44,12 @@
 			<!-- time -->
 			<vc-time-select 
 				v-show="currentView === 'time'"
-				:value="dates"
 				:hours="timeSlots[0]"
 				:minutes="timeSlots[1]"
 				:seconds="timeSlots[2]"
 				:show-seconds="showSeconds"
 				v-bind="timePickerOptions"
-				:focused-date="focusedDate"
+				:panel-date="panelDate"
 				@pick="handleTimePick"
 			/>
 			<vc-date-confrim 
@@ -175,6 +174,7 @@ export default {
 		},
 		handleTimePick(value) {
 			let newDate = getDateOfTime(this.dates[0] || this.panelDate, value);
+			this.panelDate = newDate;
 			this.dates = [newDate];
 			this.$emit('pick', this.dates);
 		},

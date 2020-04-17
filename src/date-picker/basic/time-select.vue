@@ -56,7 +56,6 @@ export default {
 
 	},
 	props: {
-		value: Array,
 		hours: {
 			type: [Number, String],
 			default: NaN
@@ -96,7 +95,7 @@ export default {
 			}
 		},
 		disabledTime: Function,
-		focusedDate: Date,
+		panelDate: Date,
 		hideDisabledOptions: {
 			type: Boolean,
 			default: false
@@ -106,9 +105,6 @@ export default {
 		return {
 			spinerSteps: [1, 1, 1].map((one, i) => Math.abs(this.steps[i]) || one),
 			compiled: false,
-			customDisabledHours: [],
-			customdisabledMinutes: [],
-			customdisabledSeconds: [],
 		};
 	},
 	computed: {
@@ -126,8 +122,7 @@ export default {
 				const hour = { ...hourTmpl };
 				hour.text = i;
 				hour.focused = i === focusedHour;
-				if (this.disabledHours.length && this.disabledHours.includes(i) 
-				|| this.customDisabledHours.length && this.customDisabledHours.includes(i)) {
+				if (this.disabledHours.length && this.disabledHours.includes(i) || this.getHoursDisabledStatus(i)) {
 					hour.disabled = true;
 					if (this.hideDisabledOptions) hour.hide = true;
 				}
@@ -150,8 +145,7 @@ export default {
 				const minute = { ...minuteTmpl };
 				minute.text = i;
 				minute.focused = i === focusedMinute;
-				if (this.disabledMinutes.length && this.disabledMinutes.includes(i) 
-				|| this.customdisabledMinutes.length && this.customdisabledMinutes.includes(i)) {
+				if (this.disabledMinutes.length && this.disabledMinutes.includes(i) || this.getMinutesDisabledStatus(i)) {
 					minute.disabled = true;
 					if (this.hideDisabledOptions) minute.hide = true;
 				}
@@ -174,8 +168,7 @@ export default {
 				const second = { ...secondTmpl };
 				second.text = i;
 				second.focused = i === focusedMinute;
-				if (this.disabledSeconds.length && this.disabledSeconds.includes(i)
-				|| this.customdisabledSeconds.length && this.customdisabledSeconds.includes(i)) {
+				if (this.disabledSeconds.length && this.disabledSeconds.includes(i) || this.getSecondsDisabledStatus(i)) {
 					second.disabled = true;
 					if (this.hideDisabledOptions) second.hide = true;
 				}
@@ -189,17 +182,14 @@ export default {
 		hours(val) {
 			if (!this.compiled) return;
 			this.scroll('hours', this.hoursList.findIndex(obj => { return obj.text == val; }));
-			this.setCustomDisabledTime();
 		},
 		minutes(val) {
 			if (!this.compiled) return;
 			this.scroll('minutes', this.minutesList.findIndex(obj => obj.text == val));
-			this.setCustomDisabledTime();
 		},
 		seconds(val) {
 			if (!this.compiled) return;
 			this.scroll('seconds', this.secondsList.findIndex(obj => obj.text == val));
-			this.setCustomDisabledTime();
 		},
 	},
 	mounted() {
@@ -210,67 +200,34 @@ export default {
 	},
 	methods: {
 		preZero: Utils.preZero,
-		setCustomDisabledTime() {
+		getHoursDisabledStatus(hours) {
 			if (typeof this.disabledTime !== 'function') return;
-
-			this.customDisabledHours = [];
-			this.customdisabledMinutes = [];
-			this.customdisabledSeconds = [];
-			let formatDate = null;
-			if (Array.isArray(this.value) && this.value.length) {
-				formatDate = this.value[0];
-			} else if (typeof this.value === 'string') {
-				formatDate = this.value;
-			} else {
-				formatDate = this.focusedDate;
-			}
-			const date = new Date(formatDate);
-			
-			const startDate = clearTime(date);
-			const time = {
-				hours: 0,
-				minutes: 0,
-				seconds: 0
-			};
-			let endTime = {
-				hours: 0,
-				minutes: 59,
-				seconds: 59
-			};
-			let step = this.spinerSteps[0];
-			for (let hour = 0; hour < 24; hour += step) {
-				time.hours = hour;
-				endTime.hours = hour;
-				const computedTime = getDateOfTime(startDate, time);
-				const computedEndTime = getDateOfTime(startDate, endTime);
-				if (this.disabledTime(computedTime) && this.disabledTime(computedEndTime)) {
-					this.customDisabledHours.push(hour);
-				}
-			}
-			step = this.spinerSteps[1];
-			for (let minute = 0; minute < 60; minute += step) {
-				time.hours = date.getHours();
-				time.minutes = minute;
-				endTime.hours = date.getHours();
-				endTime.minutes = minute;
-
-				const computedTime = getDateOfTime(startDate, time);
-				const computedEndTime = getDateOfTime(startDate, endTime);
-				if (this.disabledTime(computedTime) && this.disabledTime(computedEndTime)) {
-					this.customdisabledMinutes.push(minute);
-				}
-			}
-			step = this.spinerSteps[2];
-			for (let second = 0; second < 60; second += step) {
-				time.hours = date.getHours();
-				time.minutes = date.getMinutes();
-				time.seconds = second;
-				const computedTime = getDateOfTime(startDate, time);
-				if (this.disabledTime(computedTime)) {
-					this.customdisabledSeconds.push(second);
-				}
-			}
-		},	
+			const date = new Date(this.panelDate);
+			const panelDate = clearTime(date);
+			const startTime = { hours, minutes: 0, seconds: 0 };
+			const endTime = { hours, minutes: 59, seconds: 59 };
+			const startDate = getDateOfTime(panelDate, startTime);
+			const endDate = getDateOfTime(panelDate, endTime);
+			return this.disabledTime(startDate) && this.disabledTime(endDate); 
+		},
+		getMinutesDisabledStatus(minutes) {
+			if (typeof this.disabledTime !== 'function') return;
+			const date = new Date(this.panelDate);
+			const panelDate = clearTime(date);
+			const startTime = { hours: date.getHours(), minutes, seconds: 0 };
+			const endTime = { hours: date.getHours(), minutes, seconds: 59 };
+			const startDate = getDateOfTime(panelDate, startTime);
+			const endDate = getDateOfTime(panelDate, endTime);
+			return this.disabledTime(startDate) && this.disabledTime(endDate); 
+		},
+		getSecondsDisabledStatus(seconds) {
+			if (typeof this.disabledTime !== 'function') return;
+			const date = new Date(this.panelDate);
+			const panelDate = clearTime(date);
+			const startTime = { hours: date.getHours(), minutes: date.getMinutes(), seconds };
+			const startDate = getDateOfTime(panelDate, startTime);
+			return this.disabledTime(startDate); 
+		},
 		handleClick(type, cell) {
 			if (cell.disabled) return;
 			const data = { [type]: cell.text };
