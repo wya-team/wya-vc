@@ -41,6 +41,7 @@
 					<!-- time -->
 					<vc-time-select 
 						v-show="leftCurrentView === 'timerange'"
+						:value="[dates[0]]"
 						:hours="timeSlots.left.hours"
 						:minutes="timeSlots.left.minutes"
 						:seconds="timeSlots.left.seconds"
@@ -85,6 +86,7 @@
 					<!-- time -->
 					<vc-time-select 
 						v-show="rightCurrentView === 'timerange'"
+						:value="[dates[1]]"
 						:hours="timeSlots.right.hours"
 						:minutes="timeSlots.right.minutes"
 						:seconds="timeSlots.right.seconds"

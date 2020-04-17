@@ -7,6 +7,7 @@
 					title="开始时间"
 				/>
 				<vc-time-select 
+					:value="[dates[0]]"
 					:hours="timeSlots.left.hours"
 					:minutes="timeSlots.left.minutes"
 					:seconds="timeSlots.left.seconds"
@@ -25,6 +26,7 @@
 					title="结束时间"
 				/>
 				<vc-time-select 
+					:value="[dates[1]]"
 					:hours="timeSlots.right.hours"
 					:minutes="timeSlots.right.minutes"
 					:seconds="timeSlots.right.seconds"

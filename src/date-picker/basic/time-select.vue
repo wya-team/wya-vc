@@ -189,79 +189,18 @@ export default {
 		hours(val) {
 			if (!this.compiled) return;
 			this.scroll('hours', this.hoursList.findIndex(obj => { return obj.text == val; }));
+			this.setCustomDisabledTime();
 		},
 		minutes(val) {
 			if (!this.compiled) return;
 			this.scroll('minutes', this.minutesList.findIndex(obj => obj.text == val));
+			this.setCustomDisabledTime();
 		},
 		seconds(val) {
 			if (!this.compiled) return;
 			this.scroll('seconds', this.secondsList.findIndex(obj => obj.text == val));
+			this.setCustomDisabledTime();
 		},
-		value: {
-			immediate: true,
-			handler(val) {
-				if (typeof this.disabledTime !== 'function') return;
-
-				this.customDisabledHours = [];
-				this.customdisabledMinutes = [];
-				this.customdisabledSeconds = [];
-				let formatDate = null;
-				if (Array.isArray(val) && val.length) {
-					formatDate = val[0];
-				} else if (typeof val === 'string') {
-					formatDate = val;
-				} else {
-					formatDate = this.focusedDate;
-				}
-				const date = new Date(formatDate);
-				
-				const startDate = clearTime(date);
-				const time = {
-					hours: 0,
-					minutes: 0,
-					seconds: 0
-				};
-				let endTime = {
-					hours: 0,
-					minutes: 59,
-					seconds: 59
-				};
-				let step = this.spinerSteps[0];
-				for (let hour = 0; hour < 24; hour += step) {
-					time.hours = hour;
-					endTime.hours = hour;
-					const computedTime = getDateOfTime(startDate, time);
-					const computedEndTime = getDateOfTime(startDate, endTime);
-					if (this.disabledTime(computedTime) && this.disabledTime(computedEndTime)) {
-						this.customDisabledHours.push(hour);
-					}
-				}
-				step = this.spinerSteps[1];
-				for (let minute = 0; minute < 60; minute += step) {
-					time.hours = date.getHours();
-					time.minutes = minute;
-					endTime.hours = date.getHours();
-					endTime.minutes = minute;
-
-					const computedTime = getDateOfTime(startDate, time);
-					const computedEndTime = getDateOfTime(startDate, endTime);
-					if (this.disabledTime(computedTime) && this.disabledTime(computedEndTime)) {
-						this.customdisabledMinutes.push(minute);
-					}
-				}
-				step = this.spinerSteps[2];
-				for (let second = 0; second < 60; second += step) {
-					time.hours = date.getHours();
-					time.minutes = date.getMinutes();
-					time.seconds = second;
-					const computedTime = getDateOfTime(startDate, time);
-					if (this.disabledTime(computedTime)) {
-						this.customdisabledSeconds.push(second);
-					}
-				}
-			}
-		}
 	},
 	mounted() {
 		this.$nextTick(() => { 
@@ -271,6 +210,67 @@ export default {
 	},
 	methods: {
 		preZero: Utils.preZero,
+		setCustomDisabledTime() {
+			if (typeof this.disabledTime !== 'function') return;
+
+			this.customDisabledHours = [];
+			this.customdisabledMinutes = [];
+			this.customdisabledSeconds = [];
+			let formatDate = null;
+			if (Array.isArray(this.value) && this.value.length) {
+				formatDate = this.value[0];
+			} else if (typeof this.value === 'string') {
+				formatDate = this.value;
+			} else {
+				formatDate = this.focusedDate;
+			}
+			const date = new Date(formatDate);
+			
+			const startDate = clearTime(date);
+			const time = {
+				hours: 0,
+				minutes: 0,
+				seconds: 0
+			};
+			let endTime = {
+				hours: 0,
+				minutes: 59,
+				seconds: 59
+			};
+			let step = this.spinerSteps[0];
+			for (let hour = 0; hour < 24; hour += step) {
+				time.hours = hour;
+				endTime.hours = hour;
+				const computedTime = getDateOfTime(startDate, time);
+				const computedEndTime = getDateOfTime(startDate, endTime);
+				if (this.disabledTime(computedTime) && this.disabledTime(computedEndTime)) {
+					this.customDisabledHours.push(hour);
+				}
+			}
+			step = this.spinerSteps[1];
+			for (let minute = 0; minute < 60; minute += step) {
+				time.hours = date.getHours();
+				time.minutes = minute;
+				endTime.hours = date.getHours();
+				endTime.minutes = minute;
+
+				const computedTime = getDateOfTime(startDate, time);
+				const computedEndTime = getDateOfTime(startDate, endTime);
+				if (this.disabledTime(computedTime) && this.disabledTime(computedEndTime)) {
+					this.customdisabledMinutes.push(minute);
+				}
+			}
+			step = this.spinerSteps[2];
+			for (let second = 0; second < 60; second += step) {
+				time.hours = date.getHours();
+				time.minutes = date.getMinutes();
+				time.seconds = second;
+				const computedTime = getDateOfTime(startDate, time);
+				if (this.disabledTime(computedTime)) {
+					this.customdisabledSeconds.push(second);
+				}
+			}
+		},	
 		handleClick(type, cell) {
 			if (cell.disabled) return;
 			const data = { [type]: cell.text };
