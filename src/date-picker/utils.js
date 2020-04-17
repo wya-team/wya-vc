@@ -53,7 +53,7 @@ export const value2date = (v = []) => {
 	let endDate = getMonthEndDay(Y, M);
 	let nowDate = new Date().getDate();
 	
-	let D = result[2] || endDate < nowDate ? endDate : nowDate; 
+	let D = result[2] || (endDate < nowDate ? endDate : nowDate); 
 
 	const target = {
 		Y,
