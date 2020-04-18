@@ -40,7 +40,7 @@
 import { 
 	getFirstDayOfMonth, getStartDateOfMonth, getDayCountOfMonth, 
 	getDateTimestamp, nextDate, clearTime 
-} from '../../utils/date-utils';
+} from '../helper/date-utils';
 import { value2Array } from '../utils';
 import { WEEKS } from '../constants';
 

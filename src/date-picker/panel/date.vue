@@ -65,7 +65,7 @@
 </template>
 
 <script>
-import { getDateOfTime, changeYearMonthAndClampDate } from '../../utils/date-utils';
+import { getDateOfTime, changeYearMonthAndClampDate } from '../helper/date-utils';
 import DateMixin from '../mixins/date';
 import YearTable from '../basic/year-table';
 import MonthTable from '../basic/month-table';

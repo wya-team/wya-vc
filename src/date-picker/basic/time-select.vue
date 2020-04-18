@@ -48,7 +48,7 @@
 <script>
 import { $, Utils } from '@wya/utils';
 import _ from 'lodash';
-import { clearTime, getDateOfTime } from '../../utils/date-utils';
+import { clearTime, getDateOfTime } from '../helper/date-utils';
 
 export default {
 	name: 'vc-time-select',

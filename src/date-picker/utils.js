@@ -1,5 +1,5 @@
 import { Utils } from '@wya/utils';
-import DateUtil from '../utils/date';
+import DateUtil from './helper/date';
 
 const isShortMonth = (month) => {
 	return [4, 6, 9, 11].indexOf(month) > -1;
