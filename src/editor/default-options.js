@@ -1,6 +1,8 @@
+import { IS_SERVER } from '../utils/constant';
+
 export default {
 	theme: 'snow',
-	boundary: document.body, 
+	boundary: IS_SERVER ? null : document.body, 
 	modules: {
 		toolbar: [
 			['bold', 'italic', 'underline', 'strike'],

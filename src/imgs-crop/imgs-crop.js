@@ -1,5 +1,6 @@
 import { Utils } from '@wya/utils';
 import { retrieveImageURL, isTouchDevice, isFileAPISupported, isDataURL } from '../utils/utils';
+import { IS_SERVER } from '../utils/constant';
 
 export const draggableEvents = {
 	start: ['touchstart', 'mousedown'],
@@ -59,7 +60,7 @@ export default {
 	name: "vc-imgs-crop",
 	props: {
 		src: {
-			type: [String, Object, File], // File, Blob类型也可以
+			type: [String, Object].concat(IS_SERVER ? [] : [File]), // File, Blob类型也可以
 			required: true
 		},
 

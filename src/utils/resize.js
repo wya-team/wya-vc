@@ -1,4 +1,5 @@
 import ResizeObserver from 'resize-observer-polyfill';
+import { IS_SERVER } from './constant';
 
 class ResizeManager {
 	constructor(options = {}) {
@@ -10,7 +11,7 @@ class ResizeManager {
 	}
 
 	on(element, fn) {
-		if (!element) return;
+		if (IS_SERVER || !element) return;
 		if (!element.__resizeListeners__) {
 			element.__resizeListeners__ = [];
 			element.__ro__ = new ResizeObserver(this.handleResize);
@@ -20,7 +21,7 @@ class ResizeManager {
 	}
 
 	off(element, fn) {
-		if (!element || !element.__resizeListeners__) return;
+		if (IS_SERVER || !element || !element.__resizeListeners__) return;
 		element.__resizeListeners__.splice(element.__resizeListeners__.indexOf(fn), 1);
 		if (!element.__resizeListeners__.length) {
 			element.__ro__.disconnect();

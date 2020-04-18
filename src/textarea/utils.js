@@ -1,4 +1,5 @@
 import { getComputedStyle } from '../utils';
+import { IS_SERVER } from '../utils/constant';
 
 const HIDDEN_TEXTAREA_STYLE = `
 	min-height:0 !important;
@@ -33,6 +34,9 @@ const SIZING_STYLE = [
 let hiddenEl;
 
 export const getComputedHeight = (options = {}) => {
+	// 注: 服务端渲染为0, 在客服端激活前，展示端存在问题【高度不定】
+	if (IS_SERVER) return {};
+	
 	const { el, minRows = null, maxRows = null } = options;
 	if (!hiddenEl) {
 		hiddenEl = document.createElement('textarea');

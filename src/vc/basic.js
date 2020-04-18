@@ -64,11 +64,12 @@ class VcBasic {
 	}
 }
 
+
 /**
  * 处理全局捕获的事件, 用于计算位置
  */
 VcBasic.prototype.globalEvent = {};
-document.addEventListener('click', (e) => {
+typeof window !== 'undefined' && document.addEventListener('click', (e) => {
 	VcBasic.prototype.globalEvent = e;
 	/**
 	 * TODO
