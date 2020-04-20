@@ -60,9 +60,6 @@ import { Clipboard } from 'wya-vc';
 <details>
 <summary>TODO</summary>
 
-- 预编译 + 抽取样式
-- monorepo
-- 接入[Document](https://github.com/wya-team/wya-doc)
 - 完成测试用例，覆盖率90%+
 - 2.0版本发布
 
