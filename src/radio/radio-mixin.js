@@ -64,7 +64,7 @@ export default {
 				: this.currentValue === this.trueValue;
 		},
 		isDisabled() {
-			return this.group ? this.group.disabled : this.disabled;
+			return this.group ? this.group.disabled || this.disabled : this.disabled;
 		}
 	},
 	watch: {
