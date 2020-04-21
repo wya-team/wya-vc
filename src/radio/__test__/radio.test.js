@@ -131,4 +131,31 @@ describe('Radio', () => {
 		destroyVM(vm);
 	});
 
+	
+	it('group child disabled', () => {
+		let vm = createVue({
+			template: `
+				<vc-radio-group
+					v-model="phone"
+				>
+					<vc-radio label="apple"/>
+					<vc-radio label="android"/>
+					<vc-radio label="unix" ref="radio" disabled/>
+				</vc-radio-group>
+			`,
+			components: {
+				'vc-radio': Radio,
+				'vc-radio-group': Radio.Group
+			},
+			data() {
+				return {
+					phone: 'apple'
+				};
+			},
+		});
+		expect(vm.$refs.radio.$el.classList.contains('is-disabled'));
+		destroyVM(vm);
+	});
+
+
 });
