@@ -63,12 +63,18 @@ attr | attr属性说明 | `String` | - | -
 
 #### 事件
 
-事件名 | 说明 | 类型 | 参数
+事件名 | 说明 | 参数 | 返回值
 ---|---|---|---|---
-eventName | 触发时机说明 | `(res) => void 0` | ``
+eventName | 触发时机说明 | param | 返回值说明
 
 #### 方法
 
 方法名 | 说明 | 参数 | 返回值
 ---|---|---|---
-componentMethods | 方法说明 | 方法参数 | 方法的返回值
+componentMethods | 方法说明 | param | 方法的返回值
+
+#### slot
+
+名称 | 说明 
+---|---
+slot名称 | slot说明 
