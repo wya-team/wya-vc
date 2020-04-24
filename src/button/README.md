@@ -1,13 +1,9 @@
 ## 按钮（Button）
 
-各种样式的按钮
-
-### 何时使用
-
-使用场景和使用方式
+各种样式的操作按钮
 
 ### 基础用法
-通过`type`、`circle`控制按钮的样式
+通过`type`、`circle`控制按钮的样式。
 
 :::RUNTIME
 ```html
@@ -27,17 +23,12 @@
 		<vc-button circle type="warning">警告按钮</vc-button>
 	</div>
 </template>
-
 <script>
 import { Button } from '@wya/vc';
 export default {
 	components: {
 		"vc-button": Button
 	},
-	mounted() {
-	},
-	methods: {
-	}
 };
 </script>
 <style>
@@ -49,31 +40,26 @@ export default {
 :::
 
 ### 禁用状态
-按钮不可用状态
+按钮不可用状态，通过添加`disabled`属性可将按钮设置为不可用状态。
 
 :::RUNTIME
 ```html
 <template>
 	<vc-button disabled type="primary">常规按钮</vc-button>
 </template>
-
 <script>
 import { Button } from '@wya/vc';
 export default {
 	components: {
 		"vc-button": Button
 	},
-	mounted() {
-	},
-	methods: {
-	}
 };
 </script>
 ```
 :::
 
 ### 不同尺寸
-通过设置`size`为`large` `small`来设置尺寸为大、小的按钮，不设置或者设置`medium`，则尺寸为中
+通过设置`size`为`large`、`small`来设置尺寸为大、小的按钮，不设置或者设置`medium`，则尺寸为中。
 
 :::RUNTIME
 ```html
@@ -88,17 +74,12 @@ export default {
 		<vc-button circle size="small">小按钮</vc-button>
 	</div>
 </template>
-
 <script>
 import { Button } from '@wya/vc';
 export default {
 	components: {
 		"vc-button": Button
 	},
-	mounted() {
-	},
-	methods: {
-	}
 };
 </script>
 <style>
@@ -120,7 +101,6 @@ export default {
 		<vc-button type="primary">搜索 <vc-icon type="search"/></vc-button>
 	</div>
 </template>
-
 <script>
 import { Button, Icon } from '@wya/vc';
 export default {
@@ -128,10 +108,6 @@ export default {
 		"vc-button": Button,
 		"vc-icon": Icon
 	},
-	mounted() {
-	},
-	methods: {
-	}
 };
 </script>
 <style>
@@ -143,7 +119,7 @@ export default {
 :::
 
 ### 长按钮
-按钮长度跟随父元素长度
+按钮长度跟随父元素长度。
 
 :::RUNTIME
 ```html
@@ -154,14 +130,11 @@ export default {
 		<div style="width: 40%"><vc-button type="warning" long>常规按钮</vc-button></div>
 	</div>
 </template>
-
 <script>
 import { Button } from '@wya/vc';
 export default {
 	components: {
 		"vc-button": Button
-	},
-	mounted() {
 	},
 	methods: {
 		handlePromise1(e, callback) {
@@ -190,14 +163,11 @@ export default {
 <template>
 	<vc-button type="primary" @click="handlePromise1">点击加载</vc-button>
 </template>
-
 <script>
 import { Button } from '@wya/vc';
 export default {
 	components: {
 		"vc-button": Button
-	},
-	mounted() {
 	},
 	methods: {
 		handlePromise1(e, callback) {
@@ -230,7 +200,6 @@ export default {
 		</vc-button-group>
 	</div>
 </template>
-
 <script>
 import { Button } from '@wya/vc';
 export default {
@@ -238,10 +207,6 @@ export default {
 		"vc-button": Button,
 		"vc-button-group": Button.Group,
 	},
-	mounted() {
-	},
-	methods: {
-	}
 };
 </script>
 ```
@@ -273,7 +238,6 @@ export default {
 		</vc-button-group>
 	</div>
 </template>
-
 <script>
 import { Button } from '@wya/vc';
 export default {
@@ -281,10 +245,6 @@ export default {
 		"vc-button": Button,
 		"vc-button-group": Button.Group,
 	},
-	mounted() {
-	},
-	methods: {
-	}
 };
 </script>
 ```
@@ -293,7 +253,6 @@ export default {
 ### API
 
 ### 基础属性
-
 属性 | 说明 | 类型 | 可选值 | 默认值
 ---|---|---|---|---
 type | 按钮的样式选择 |`String` | `default`、`primary`、`text`、`success`、`error`、`warning` | `default`
@@ -305,16 +264,14 @@ long | 长按钮 | `Boolean` | `false`
 wait | 阻止重复点击 | `Number` | 250
 html-type | 按钮的类型 | `String` | `button`、 `submit`、`reset` [描述](https://www.w3school.com.cn/tags/att_button_type.asp)  | `button`
 
-### Group 属性
+### 事件
+事件名 | 说明 | 回调参数 | 参数说明
+---|---|---|---|---
+click | 点击事件 | `() => Promise?` | -
 
+### Group 属性
 属性 | 说明 | 类型 | 可选值 | 默认值
 ---|---|---|---|---
 size | 调节按钮组件的大小 | `String` | `large`、`medium`、`small` | `medium`
 circle | 按钮是否圆角 | `Boolean` | - | `false`
 vertical | 按钮纵向排列 | `Boolean` | - | `false`
-
-### 事件
-
-事件名 | 说明 | 类型 | 参数
----|---|---|---|---
-click | 点击事件 | `() => Promise?` | -

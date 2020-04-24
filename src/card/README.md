@@ -1,9 +1,10 @@
 ## 功能（Card）
+
 各种样式的卡片
 
 ### 基础用法
-
 简单卡片
+
 :::RUNTIME
 ```html
 <template>
@@ -16,28 +17,19 @@
 		</vc-card>
 	</div>
 </template>
-
 <script>
 import { Card } from '@wya/vc';
 export default {
 	components: {
 		"vc-card": Card
 	},
-	mounted() {
-	},
-	methods: {
-	}
 };
 </script>
-<style>
-
-</style>
 ```
 :::
 
 ### 带标题
-
-标题、自定义标题、带图标的标题（通过 `icon`控制卡片标题的图标）
+标题、自定义标题、带图标的标题（通过`icon`控制卡片标题的图标）
 
 :::RUNTIME
 ```html
@@ -66,17 +58,12 @@ export default {
 		</vc-card>
 	</div>
 </template>
-
 <script>
 import { Card } from '@wya/vc';
 export default {
 	components: {
 		"vc-card": Card
 	},
-	mounted() {
-	},
-	methods: {
-	}
 };
 </script>
 <style>
@@ -88,8 +75,8 @@ export default {
 :::
 
 ### 卡片边框及阴影
+通过`border`、`shadow`控制卡片的边框和阴影
 
-通过 `border`、`shadow`控制卡片的边框和阴影
 :::RUNTIME
 ```html
 <template>
@@ -120,16 +107,11 @@ export default {
 		</vc-card>
 	</>
 </template>
-
 <script>
 import { Card } from '@wya/vc';
 export default {
 	components: {
 		"vc-card": Card
-	},
-	mounted() {
-	},
-	methods: {
 	}
 };
 </script>
@@ -142,8 +124,8 @@ export default {
 :::
 
 ### 卡片间距
-
 通过 `padding` 控制卡片内部间距，单位 px （默认：16）
+
 :::RUNTIME
 ```html
 <template>
@@ -162,16 +144,11 @@ export default {
 		</vc-card>
 	</div>
 </template>
-
 <script>
 import { Card } from '@wya/vc';
 export default {
 	components: {
 		"vc-card": Card
-	},
-	mounted() {
-	},
-	methods: {
 	}
 };
 </script>
@@ -184,8 +161,8 @@ export default {
 :::
 
 ### 额外内容
-
 额外显示的内容，默认位置在右上角
+
 :::RUNTIME
 ```html
 <template>
@@ -199,32 +176,22 @@ export default {
 			<div>列表内容三</div>
 			<div>列表内容四</div>
 		</vc-card>
-
 	</div>
 </template>
-
 <script>
 import { Card } from '@wya/vc';
 export default {
 	components: {
 		"vc-card": Card
-	},
-	mounted() {
-	},
-	methods: {
 	}
 };
 </script>
-<style>
-
-</style>
 ```
 :::
 
 ### API
 
 ### 基础属性
-
 属性 | 说明 | 类型 | 可选值 | 默认值
 ---|---|---|---|---
 border | 是否显示边框，建议在灰色背景下使用 | `Boolean` | - | `true`
@@ -234,7 +201,6 @@ title | 标题 | `String` | - | -
 icon | 标题前的图标 | `String` | - | -
 
 #### Slot
-
 属性 | 说明
 ---|---
 title | 自定义卡片标题，如果是简单文字，可以使用<p>标签包裹

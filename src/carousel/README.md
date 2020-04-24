@@ -1,8 +1,10 @@
 ## 走马灯（Carousel）
+
 在有限空间内，循环播放同一类型的图片、文字等内容
 
 ### 基础用法
 默认是自动播放，并且`hover`切换
+
 :::RUNTIME
 ```html
 <template>
@@ -56,6 +58,7 @@ export default {
 :::
 
 ### 指示器
+
 :::RUNTIME
 ```html
 <template>
@@ -84,7 +87,6 @@ export default {
 }
 </script>
 <style>
-/* TODO: 会删掉 */
 .v-carousel-basic li{
 	margin-top: 0 !important; 
 	list-style: none;
@@ -97,7 +99,6 @@ export default {
 	margin: 0;
 	text-align: center;
 }
-
 .v-carousel-basic .vc-carousel-item:nth-child(2n) {
 	background-color: #99a9bf;
 }
@@ -110,6 +111,7 @@ export default {
 :::
 
 ### 切换箭头
+
 :::RUNTIME
 ```html
 <template>
@@ -137,12 +139,11 @@ export default {
 	},
 }
 </script>
-<style>
-</style>
 ```
 :::
 
 ### 垂直方向的走马灯
+
 :::RUNTIME
 ```html
 <template>
@@ -169,6 +170,7 @@ export default {
 :::
 
 ### 卡片化
+
 :::RUNTIME
 ```html
 <template>
@@ -195,6 +197,7 @@ export default {
 :::
 
 ### H5基础用法
+
 :::RUNTIME
 ```html
 <template>
@@ -235,7 +238,9 @@ export default {
 </style>
 ```
 :::
+
 ### H5卡片
+
 :::RUNTIME
 ```html
 <template>
@@ -258,11 +263,11 @@ export default {
 	},
 }
 </script>
-<style>
-</style>
 ```
 :::
+
 ### H5垂直走马灯
+
 :::RUNTIME
 ```html
 <template>
@@ -289,36 +294,34 @@ export default {
 </style>
 ```
 :::
+
 ### API
 
-### Carousel基础属性
-
+### 基础属性
 属性 | 说明 | 类型 | 可选值 |默认值
 ---|---|---|---|---
 t | 幻灯片切换的时间间隔 | `Number` | - | 3
-height | - | `String` `Number` | - | -
+height | - | `String`、`Number` | - | -
 initialIndex | 初始状态激活的幻灯片的索引，从 0 开始 | `Number` | - | 0
-trigger | - | `String` | `hover` `click` | hover
-autoplay | 是否自动切换 | `Boolean` | - | true
-dots | 是否展示指示器、是否在显示在容器外部 | `String` `Boolean` | `outside` `bottom` `false` | true
-arrow | - | `String` `Boolean` | `hover` `always` `false` | hover
-loop | 是否循环显示 | `Boolean` | - | true
-vertical | 是否垂直 | `Boolean` | - | false
-draggable | 是否可以拖拽切换 | `Boolean` | - | true
+trigger | - | `String` | `hover`、`click` | `hover`
+autoplay | 是否自动切换 | `Boolean` | - | `true`
+dots | 是否展示指示器、是否在显示在容器外部 | `String`、`Boolean` | `outside`、`bottom`、`false` | true
+arrow | - | `String`、`Boolean` | `hover`、`always`、`false` | `hover`
+loop | 是否循环显示 | `Boolean` | - | `true`
+vertical | 是否垂直 | `Boolean` | - | `false`
+draggable | 是否可以拖拽切换 | `Boolean` | - | `true`
 
-### Carousel-Item基础属性
-
+### Carousel-Item属性
 属性 | 说明 | 类型 | 可选值 |默认值
 ---|---|---|---|---
 name | 幻灯片的名字 | `String` | - | -
-label | 该幻灯片所对应指示器的文本	 | `String` `Number` | - | -
-width | 卡片形式的大小 | `Number` `String` | - | 70%
+label | 该幻灯片所对应指示器的文本	 | `String`、`Number` | - | -
+width | 卡片形式的大小 | `Number`、`String` | - | 70%
 gutter | 卡片之间的间距 | `Number` | - | 0
 scale | 卡片的缩放 | `Number` | - | 0.83
 
 
-### 事件/方法
-
-事件名 | 说明 | 类型 | 参数
+### 事件
+事件名 | 说明 | 回调参数 | 参数说明
 ---|---|---|---
 change | 幻灯片切换时触发 | `any`| 目前激活的幻灯片索引，原幻灯片索引

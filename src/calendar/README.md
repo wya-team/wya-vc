@@ -1,6 +1,6 @@
 ## 功能（Calendar）
-日历展示
 
+日历展示
 
 ### 基础用法
 包括使用切换前后日期
@@ -16,7 +16,6 @@
 		/>
 	</div>
 </template>
-
 <script>
 import { Calendar,Button } from '@wya/vc';
 export default {
@@ -24,13 +23,6 @@ export default {
 		"vc-calendar": Calendar,
 		"vc-button": Button
 	},
-	data(){
-		return {
-
-		}
-	},
-	methods: {
-	}
 };
 </script>
 <style>
@@ -41,9 +33,8 @@ export default {
 ```
 :::
 
-
 ### 自定义日历
-使用 `render-date`、`render-month`、`render-week` 自定义日历
+使用`render-date`、`render-month`、`render-week`自定义日历
 
 :::RUNTIME
 ```html
@@ -72,10 +63,6 @@ export default {
 	components: {
 		"vc-calendar": Calendar
 	},
-	data() {
-		return {};
-	},
-	computed: {},
 	methods: {
 		renderDate(h, { date, curDateStr }) {
 			return (
@@ -84,7 +71,6 @@ export default {
 				</span>
 			);
 		},
-
 		renderMonth(h, { year, month, monthNames }) {
 			return (
 				<div style="display:flex; justify-content:center">
@@ -92,7 +78,6 @@ export default {
 				</div>
 			);
 		},
-
 		renderWeek(h, { weekNames, lan }) {
 			return (
 				<div style="display:flex; justify-content:space-around">
@@ -111,7 +96,6 @@ export default {
 	}
 };
 </script>
-
 <style lang="scss">
 @import '../../style/vars.scss';
 .v-month-header {
@@ -138,7 +122,8 @@ export default {
 :::
 
 ### 设定语言
-使用 `lang` 设置日历语言（默认：'ch'）
+
+使用`lang`设置日历语言（默认：'ch'）
 
 :::RUNTIME
 ```html
@@ -151,7 +136,6 @@ export default {
 			ref="target"
 			:lang="lang"
 		/>
-
 	</div>
 </template>
 
@@ -185,7 +169,6 @@ export default {
 ### API
 
 ### 基础属性
-
 属性 | 说明 | 类型 | 可选值 | 默认值
 ---|---|---|---|---
 render-date | 渲染每个日期 | `(h, { date, curDateStr })` | - | `renderDefaultDate`
