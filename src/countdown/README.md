@@ -137,4 +137,4 @@ tag | 标签 | `String` | `div`; `span`; `***` | `span`
 ---|---|---|---
 error | 警告回调 | `(msg: String) => void 0` | `msg`: 警告信息
 change | 变化回调 | `(data: Object) => void 0` | `timestamp`: 离目标时间相差的毫秒数; `days`: 相差的天数; `hours`: 相差的小时数; `minutes`: 相差的分钟数; `seconds`: 相差的秒数; `ms`: 相差的毫秒数,
-end	| 结束回调 | `() => void 0` |	 -
+end	| 结束回调 | - |	 -

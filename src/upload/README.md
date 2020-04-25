@@ -308,16 +308,16 @@ parallel | 是否并发执行 | `Boolean` | - | `true`
 
 事件名 | 说明 | 类型 | 参数
 ---|---|---|---
-file-before | 单个文件上传前回调(进度) | `() => void 0` | -
-file-start | 单个文件上传开始回调 | `() => void 0` | -
+file-before | 单个文件上传前回调(进度) | - | -
+file-start | 单个文件上传开始回调 | - | -
 file-progress | 单个文件上传过程回调(e.percent, file.current, file.total等可用参数) | `(e, file) => void` | -
 file-success | 单个文件上传过程成功回调(res, file.current, file.total等可用参数) | `(res, file) => void` | -
 file-error | 单个文件上传过程失败回调(res, file.current, file.total等可用参数) | `(res, file) => void` | -
 begin | 一个周期上传前的回调(info: {}) | `(files) => void` | -
 complete | 一个周期上传后的回调(info: {}) | `(info) => void` | -
 error | 组件内部报错回调 | `(error) => void` | -
-post-before | 文件上传前回调（处理异步） | `() => void 0` | -
-post-after | 文件上传后回调 | `() => void 0` | -
+post-before | 文件上传前回调（处理异步） | - | -
+post-after | 文件上传后回调 | - | -
 
 ### Slot
 

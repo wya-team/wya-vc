@@ -188,7 +188,7 @@ duration | 自动关闭的延时，单位秒，不关闭可以写 0 | `Number` |
 closable | 手动关闭提示 | `Boolean` | - | `true`
 mode | 通知的图标类型 | `String` | `info`,`success`,`error`,`warning` | - |
 beforeClose | 关闭前的回调 | `() => Boolean` | - | - |
-onClose | 关闭后的回调 | `() => void 0` | - | - |
+onClose | 关闭后的回调 | - | - | - |
 
 ### 事件
 - `Notice.open(config)`  没有图标

@@ -99,8 +99,8 @@ disableDrop | 是否支持拖拽图片进来编辑 | `Boolean` | - | `false`
 事件名 | 说明 | 类型 | 参数
 ---|---|---|---
 drop-file | 拖入图片回掉 | `(e: Event) => void 0` | `e`: 事件对象
-load-fail | 图片加载失败 | `() => void 0` | -
+load-fail | 图片加载失败 | - | -
 load-success | 图片加载成功 | `(imageState: Object) => void 0` | `imageState`: 图片对象
-image-ready | 图片加载成功，展示后执行 | `() => void 0` | -
-image-change | 图片信息变化 | `() => void 0` | -
+image-ready | 图片加载成功，展示后执行 | - | -
+image-change | 图片信息变化 | - | -
 position-change | 位置变化 | `(position: Object) => void 0` | `position`: 定位信息

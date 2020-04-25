@@ -1,8 +1,10 @@
 ## 级联选择器（Cascader）
+当一个数据集合有清晰的层级结构时，可通过级联选择器逐级查看并选择。
 
 ### 何时使用
-
-当一个数据集合有清晰的层级结构时，可通过级联选择器逐级查看并选择。
+- 需要从一组相关联的数据集合进行选择，例如省市区，公司层级，事物分类等。
+- 从一个较大的数据集合中进行选择时，用多级分类进行分隔，方便选择。
+- 比起 Select 组件，可以在同一个浮层中完成选择，有较好的体验。
 
 ### 基础用法
 有两种触发子菜单的方式
@@ -83,7 +85,7 @@ export default {
 </script>
 <style>
 .v-cascader {
-	margin: 40px; 
+	margin: 10px; 
 	display: flex;
 	align-items: center;
 	justify-content: center;
@@ -91,6 +93,7 @@ export default {
 </style>
 ```
 :::
+
 ### 动态加载
 当选中某一级时，动态加载该级下的选项。
 
@@ -380,8 +383,9 @@ export default {
 ```
 :::
 
-#### 属性
+## API
 
+### 属性
 属性 | 说明 | 类型 | 可选值 | 默认值
 ---|---|---|---|---
 data-source | 可选项的数据源，格式参照示例说明 | `Array` | - | `[]`
@@ -396,19 +400,17 @@ element-id | 给表单元素设置 id，详见`vc-form`用法 | `String` | - | -
 extra | 占位符 | `String` | - | -
 changeOnSelect | 每次都触发change事件还是最后一次 | `Boolean` | - | `false`
 
-#### 事件
-
-事件名 | 说明 | 类型 | 参数
+### 事件
+事件名 | 说明 | 回调参数 | 参数说明
 ---|---|---|---
 change | 选择完成后的回调 | `(value: Array, label: Array) => void 0` | `value`: 选择的数据; `label`: 当前选择数据的文本值
-clear | 点击清空按钮时触发 | `() => void 0` | -
-visible-change | visible改变时回调 | `() => void 0` | - 
-close | 关闭时回调 | `() => void 0` | - 
-ready | 弹层出来时回调 | `() => void 0` | - 
+clear | 点击清空按钮时触发 | - | -
+visible-change | visible改变时回调 | - | - 
+close | 关闭时回调 | - | - 
+ready | 弹层出来时回调 | - | - 
 
 
-#### TODO
-
+### TODO
 属性 | 说明 | 类型 | 默认值
 ---|---|---|--- 
 size | 输入框大小，可选值为large和small或者不填 | `String` | -
@@ -416,5 +418,4 @@ search | 是否支持搜索 | `Boolean` | `false`
 not-found | 当搜索列表为空时显示的内容 | `String`; `Function` | 无匹配数据
 
 ## TODO
-
 1. 第一次选中，第二次hover, 第三次hover直接修改了value（同步了，未触发sync函数，待排查）

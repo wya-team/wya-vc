@@ -1,6 +1,8 @@
 ## 画板（Artboard）
+canvas画板，同时兼容pc和移动端
 
-canvas画板，可将画过的内容输出为图片
+### 何时使用
+保存用户的笔触签名，可输出为图片
 
 ### 基础用法
 通过`width`、`height`控制画板的宽高，通过`options`设置画笔样式
@@ -106,7 +108,7 @@ export default {
 
 ## API
 
-#### 属性
+### 属性
 属性 | 说明 | 类型 | 可选值 | 默认值
 ---|---|---|---|--- 
 options | canvas配置参数 | `Object` | - | - 
@@ -114,12 +116,12 @@ getInstance | 获取画布实例 | `Function` | - | -
 width | 设置canvas的宽度,不传则根据容器的宽度来设置 | `Number` | - | 0 
 height | 设置canvas的高度,不传则根据容器的高度来设置 | `Number` | - | 0 
 
-#### 事件
+### 事件
 事件名 | 说明 | 回调参数 | 参数说明
 ---|---|---|---|---
 change | canvas内容发生改变时触发 | `(snapshots: Array, current: Number, allowUndo: Boolean, allowRedo: Boolean) => void 0` | `snapshots`：所有快照数据；`current`：当前快照位置； `allowUndo`：是否能够回退；`allowRedo`：是否能够撤销
 
-#### 方法
+### 方法
 方法名 | 说明 | 参数
 ---|---|---|---
 undo | 回退一画 | -

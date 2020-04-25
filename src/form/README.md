@@ -658,7 +658,7 @@ autocomplete | 原生的 autocomplete 属性 | `String` | `off`; `on` | `off`
 ---|---|---|---
 validate | 对整个表单进行校验，参数为检验完的回调，会返回一个 `Boolean` 表示成功与失败，支持 Promise | `() => Boolean` | -
 validateField | 对部分表单字段进行校验的方法 | `(props: Array | String, callback: Function) => Promise` | `props`: 需校验的 prop; `callback`: 检验完回调，返回错误信息
-resetFields | 对整个表单进行重置，将所有字段值重置为空并移除校验结果 | `() => void 0` | -
+resetFields | 对整个表单进行重置，将所有字段值重置为空并移除校验结果 | - | -
 
 
 #### Item 属性
