@@ -7,7 +7,7 @@
 - 比起 Select 组件，可以在同一个浮层中完成选择，有较好的体验。
 
 ### 基础用法
-有两种触发子菜单的方式
+有两种触发子菜单的方式。级联选择对数据有较严格要求，请参照示例的格式使用data，每项数据至少包含 value、label 两项，子集为 children，以此类推。
 
 :::RUNTIME
 ```html
@@ -399,6 +399,10 @@ load-data | 动态获取数据，数据源需标识 loading | `Function` | - | -
 element-id | 给表单元素设置 id，详见`vc-form`用法 | `String` | - | -
 extra | 占位符 | `String` | - | -
 changeOnSelect | 每次都触发change事件还是最后一次 | `Boolean` | - | `false`
+readonly | 设置只读 | `Boolean` | - | `false`
+tag | 组件外层dom元素类型 | `String` | - | `div`
+placement | 浮层预设位置 |  | `String` | `top`、`left`、`right`、`bottom`、`bottom-left`、`bottom-right`、`top-left`、`top-right`、`right-top`、`right-bottom`、`left-top`、`left-bottom` | `bottom-left`
+arrow | 浮层有无箭头 | `Boolean` | - | `false`
 
 ### 事件
 事件名 | 说明 | 回调参数 | 参数说明
