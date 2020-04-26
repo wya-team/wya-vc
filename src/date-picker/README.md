@@ -1,5 +1,5 @@
-## 日期选择器（DataPicker）
-日期选择器
+## 日期选择器（DatePicker）
+选择日期的控件
 
 ### 选择日
 以「日」为基本单位，基础的日期选择控件
@@ -19,9 +19,9 @@
 		/>
 	</div>
 </template>
-
 <script>
 import { DatePicker } from '@wya/vc';
+
 export default {
 	components: {
 		'vc-date-picker': DatePicker,
@@ -31,15 +31,8 @@ export default {
 			value: new Date()
 		}
 	},
-	mounted() {
-	},
-	methods: {
-	}
 };
 </script>
-<style>
-
-</style>
 ```
 :::
 
@@ -88,9 +81,9 @@ export default {
 		/>
 	</div>
 </template>
-
 <script>
 import { DatePicker } from '@wya/vc';
+
 export default {
 	components: {
 		'vc-date-picker': DatePicker,
@@ -104,15 +97,8 @@ export default {
 			values: []
 		}
 	},
-	mounted() {
-	},
-	methods: {
-	}
 };
 </script>
-<style>
-
-</style>
 ```
 :::
 
@@ -160,9 +146,9 @@ export default {
 		/>
 	</div>
 </template>
-
 <script>
 import { DatePicker } from '@wya/vc';
+
 export default {
 	components: {
 		'vc-date-picker': DatePicker,
@@ -175,15 +161,8 @@ export default {
 			monthrange: ""
 		}
 	},
-	mounted() {
-	},
-	methods: {
-	}
 };
 </script>
-<style>
-
-</style>
 ```
 :::
 
@@ -204,9 +183,9 @@ export default {
 		/>
 	</div>
 </template>
-
 <script>
 import { DatePicker } from '@wya/vc';
+
 export default {
 	components: {
 		'vc-date-picker': DatePicker,
@@ -228,15 +207,8 @@ export default {
 			},
 		}
 	},
-	mounted() {
-	},
-	methods: {
-	}
 };
 </script>
-<style>
-
-</style>
 ```
 :::
 
@@ -284,7 +256,6 @@ export default {
 		</vcm-date-picker>
 	</div>
 </template>
-
 <script>
 import { MDatePicker } from '@wya/vc';
 export default {
@@ -298,77 +269,62 @@ export default {
 			time: undefined
 		}
 	},
-	mounted() {
-	},
-	methods: {
-	}
 };
 </script>
-<style>
-
-</style>
 ```
 :::
+
 ### API
 
 ### 基础属性
-
 属性 | 说明 | 类型 | 可选值 | 默认值
 ---|---|---|---|---
-type | 显示类型 | String | `date`、`daterange`、`datetime`、`datetimerange`、`year`、`month`、`quarter`、`quarterrange`、`monthrange` | date
-value | 日期，可以是 JavaScript 的 Date，例如 new Date()，也可以是标准的日期格式，注意：value 使用 v-model 时，值是 Date 类型，可以配合 @change 使用 | Date | - | -
-format | 展示的日期格式 |  Date | date, daterange(YYYY-MM-DD), datetime, datetimerange(YYYY-MM-DD, HH:mm:ss), year(YYYY), month(YYYY-MM) | -
-placement | 日期选择器出现的位置 | String |  `top` `top-start` `top-end` `bottom` `bottom-start` `bottom-end` `left` `left-start` `left-end` `right` `right-start` `right-end`，2.12.0 版本开始支持自动识别 | bottom-start
-placeholder | 占位文本 | String | - | - 
-options | 选择器额外配置，比如不可选日期与快捷选项，具体项详见下表 | Object | - | -
-split-panels | 开启后，左右面板不联动，仅在 daterange 和 datetimerange 下可用。 | Boolean | - | true
-multiple | 开启后，可以选择多个日期，仅在 `date` 下可用。 | Boolean | - | false
-show-week-numbers（TODO） | 开启后，可以显示星期数。 | Boolean | - |false
-start-date | 设置默认显示的起始日期。 | Date | - | -
-confirm | 是否显示底部控制栏，开启后，选择完日期，选择器不会主动关闭，需用户确认后才可关闭 | Boolean | - | false
-open | 手动控制日期选择器的显示状态，true 为显示，false 为收起。使用该属性后，选择器不会主动关闭。建议配合 `slot` 及 `confirm` 和相关事件一起使用 | Boolean | - | -
-disabled | 是否禁用选择器 | Boolean | - | false
-clearable | 是否显示清除按钮 | Boolean | - | true
-portal | 是否将弹层放置于 body 内，在 Tabs、带有 fixed 的 Table 列内使用时，建议添加此属性，它将不受父级样式影响，从而达到更好的效果 | Boolean | - | true
-time-picker-options | 可以在 mode 为 `datetime` 和 `datetimerange` 下，配置 `TimePicker` 的属性，比如时间间隔 `:time-picker-options="{steps: [1, 10, 10]}"` | Object | - |{}
-separator | 两个日期间的分隔符 | String | - |`-`	
-change-on-select | 选中即触发`change`时间 | Boolean | - |`false`
+type | 显示类型 | `String` | `date`、`daterange`、`datetime`、`datetimerange`、`year`、`month`、`quarter`、`quarterrange`、`monthrange` | `date`
+value | 日期，可以是 JavaScript 的 `Date`，例如 new Date()，也可以是标准的日期格式，注意：`value` 使用 v-model 时，值是 `Date` 类型，可以配合 @change 使用 | `Date` | - | -
+format | 展示的日期格式 | `Date` | date, daterange(YYYY-MM-DD), datetime, datetimerange(YYYY-MM-DD, HH:mm:ss), year(YYYY), month(YYYY-MM) | -
+placement | 日期选择器出现的位置 | `String` |  `top` `top-start` `top-end` `bottom` `bottom-start` `bottom-end` `left` `left-start` `left-end` `right` `right-start` `right-end`，2.12.0 版本开始支持自动识别 | bottom-start
+placeholder | 占位文本 | `String` | - | - 
+options | 选择器额外配置，比如不可选日期与快捷选项，具体项详见下表 | `Object` | - | -
+split-panels | 开启后，左右面板不联动，仅在 daterange 和 datetimerange 下可用。 | `Boolean` | - | `true`
+multiple | 开启后，可以选择多个日期，仅在 `date` 下可用。 | `Boolean` | - | `false`
+show-week-numbers（TODO） | 开启后，可以显示星期数。 | `Boolean` | - |`false`
+start-date | 设置默认显示的起始日期。 | `Date` | - | -
+confirm | 是否显示底部控制栏，开启后，选择完日期，选择器不会主动关闭，需用户确认后才可关闭 | `Boolean` | - | `false`
+open | 手动控制日期选择器的显示状态，`true` 为显示，`false` 为收起。使用该属性后，选择器不会主动关闭。建议配合 `slot` 及 `confirm` 和相关事件一起使用 | `Boolean` | - | -
+disabled | 是否禁用选择器 | `Boolean` | - | `false`
+clearable | 是否显示清除按钮 | `Boolean` | - | `true`
+portal | 是否将弹层放置于 body 内，在 Tabs、带有 fixed 的 Table 列内使用时，建议添加此属性，它将不受父级样式影响，从而达到更好的效果 | `Boolean` | - | `true`
+time-picker-options | 可以在 mode 为 `datetime` 和 `datetimerange` 下，配置 `TimePicker` 的属性，比如时间间隔 `:time-picker-options="{steps: [1, 10, 10]}"` | `Object` | - |{}
+separator | 两个日期间的分隔符 | `String` | - |`-`	
+change-on-select | 选中即触发`change`时间 | `Boolean` | - |`false`
 
 ### Options
-
 参数 | 说明 | 类型 | 可选值 | 默认值
 ---|---|---|---|---
-disabledDate | 设置日期禁用状态，参数为当前日期，要求返回`Boolean` | `Function`| ---
+disabledDate | 设置日期禁用状态，参数为当前日期，要求返回`Boolean` | `Function` | - | -
 
 ### timePickerOptions
-
 参数 | 说明 | 类型 | 可选值 | 默认值
 ---|---|---|---|---
-disabledTime | 设置时分秒禁用状态，参数为当前日期，要求返回`Boolean` | `Function`| ---
-
+disabledTime | 设置时分秒禁用状态，参数为当前日期，要求返回`Boolean` | `Function`| - | -
 
 ### 事件
-
-事件名 | 说明 | 参数 | 返回值
+事件名 | 说明 | 回调参数 | 参数说明
 ---|---|---|---
-ok | `confirm`模式下点击确定按钮的回调 | `date`、`dateArray`|---
-clear | 点击清除按钮的回调 | `date`、`dateArray`|---
-change | 点击面板时的回调 | `date`、`dateArray`|---
-visible-change | 面板显示隐藏时的回调 | `visible`|---
+ok | `confirm`模式下点击确定按钮的回调 | `date`、`dateArray` | -
+clear | 点击清除按钮的回调 | `date`、`dateArray` | -
+change | 点击面板时的回调 | `date`、`dateArray` | -
+visible-change | 面板显示隐藏时的回调 | `visible` | -
 
 ### Slot
-
 属性 | 说明
 ---|---
 default | 自定义选择器的显示内容，建议与 open 等参数一起使用
-
-
 
 ### Feature
 + 农历
 + 快捷操作
 + show-week-numbers
-
 
 ### 移动端（vcm-date-picker）属性
 属性 | 说明 | 类型 | 可选值 | 默认值
@@ -386,16 +342,14 @@ minDate | 最小日期 | `Date` | - | new Date('1990')
 maxDate | 最大日期 | `Date` | - | new Date('2020')
 
 ### 移动端（vcm-date-picker）事件
-
-事件名 | 说明 | 类型 | 默认值
+事件名 | 说明 | 回调参数 | 参数说明
 ---|---|---|---
-change | 组件关闭时候触发出来的一个事件，返回值为当前选中的值以及每一列的数据 | `function` | -
-ok | - | `function` | -
-cancel | - | `function` | -
+change | 组件关闭时候触发出来的一个事件，返回值为当前选中的值以及每一列的数据 | - | -
+ok | 点击确定触发 | - | -
+cancel | 点击取消触发 | - | -
 
 ### 移动端（vcm-date-picker-view）事件
-
-事件名 | 说明 | 类型 | 默认值
+事件名 | 说明 | 回调参数 | 参数说明
 ---|---|---|---
-change | - | `function` | -
-picker-change | - | `function` | -
+change | 当前值改变触发 | - | -
+picker-change | 绑定的值改变触发 | - | -

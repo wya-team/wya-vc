@@ -2,8 +2,7 @@
 倒计时功能
 
 ### 何时使用
-
-使用场景和使用方式
+显示倒计时，结束时触发事件，多用于秒杀营销活动中。
 
 ### 基础用法
 通过`targetTime`设置倒计时时间
@@ -119,22 +118,21 @@ export default {
 ```
 :::
 
-#### 属性
+## API
 
+### 属性
 属性 | 说明 | 类型 | 可选值 | 默认值
 ---|---|---|---|---
 t | 刷新周期，单位秒 | `Number`	| - | 1		
 render-row | 自定义渲染 | `Function` | - | -
-target-time	| 目标时间 | `String`;  `Number`;  `Date` | - | - 
-server-time	| 服务器时间 | `String`;  `Number`;  `Date` | - | 当前时间	
+target-time	| 目标时间 | `String`、 `Number`、 `Date` | - | - 
+server-time	| 服务器时间 | `String`、 `Number`、 `Date` | - | 当前时间	
 format | 格式(DD:HH:MM:SS:mm) | `String` | - | `DD天HH小时mm分ss秒ms`
-tag | 标签 | `String` | `div`; `span`; `***` | `span`
+tag | 外层标签 | `String` | - | `span`
 
-
-#### 事件
-
-事件名 | 说明 | 类型 | 参数
+### 事件
+事件名 | 说明 | 回调参数 | 参数说明
 ---|---|---|---
 error | 警告回调 | `(msg: String) => void 0` | `msg`: 警告信息
 change | 变化回调 | `(data: Object) => void 0` | `timestamp`: 离目标时间相差的毫秒数; `days`: 相差的天数; `hours`: 相差的小时数; `minutes`: 相差的分钟数; `seconds`: 相差的秒数; `ms`: 相差的毫秒数,
-end	| 结束回调 | - |	 -
+end	| 结束回调 | - | -

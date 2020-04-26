@@ -1,5 +1,4 @@
 ## 图片生成（HtmlImg）
-
 html转图片
 
 ### 何时使用
@@ -11,7 +10,7 @@ html转图片
 ```html
 <template>
 	<div>
-		<vc-html-img ref="target" :parser="parser" :crossorigin="`anonymous`" >
+		<vc-html-img ref="target" :parser="parser" crossorigin="anonymous" >
 			<!-- 需要crossorigin加在第一个， 才能处理跨域 -->
 			<img 
 				src="https://wyatest.oss-cn-hangzhou.aliyuncs.com/image/1/20190518/102315/227984.jpg" 
@@ -41,9 +40,6 @@ export default {
 		return {
 			src: ''
 		};
-	},
-	computed: {
-		
 	},
 	methods: {
 		async handleClick() {
@@ -76,15 +72,13 @@ export default {
 ## API
 
 ### 基础属性
-
 属性 | 说明 | 类型 | 可选值 | 默认值
 ---|---|---|---|---
 crossorigin | 处理跨域 |`String` | `anonymous`、`use-credentials`| `anonymous`
 parser | - | `Function` | - | -
 
-### 事件/方法
-
-事件名 | 说明 | 类型 | 参数
----|---|---|---
-getImage | 生成图片 | ({ filename = 'image', getFile = true }) | -
-download | 生成图片并下载 | ({ filename = 'image', getFile = true }) | -
+### 方法
+方法名 | 说明 | 参数
+---|---|---
+getImage | 生成图片 | `filename`：生成的图片文件名称；`getFile`：是否输出`file`文件
+download | 生成图片并下载 | `filename`：生成的图片文件名称；`getFile`：是否输出`file`文件

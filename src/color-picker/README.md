@@ -1,8 +1,11 @@
 ## 颜色选择器（ColorPicker）
+用于颜色选择，支持多种格式，支持颜色预设
 
-用于颜色选择，支持多种格式。
+### 何时使用
+用于选择一组颜色值。
 
 ### 基础用法
+可以使用 `v-model` 实现数据的双向绑定。
 
 :::RUNTIME
 ```html
@@ -18,7 +21,6 @@
 		</div>	
 	</div>
 </template>
-
 <script>
 import { ColorPicker } from '@wya/vc';
 
@@ -36,7 +38,6 @@ export default {
 </script>
 <style>
 .v-color-picker {
-	margin: 40px; 
 	display: flex;
 	align-items: center;
 	justify-content: center;
@@ -55,7 +56,6 @@ ColorPicker 支持普通颜色，也支持带 Alpha 通道的颜色，通过`alp
         <vc-color-picker v-model="color" alpha />
 	</div>
 </template>
-
 <script>
 import { ColorPicker } from '@wya/vc';
 
@@ -117,7 +117,6 @@ export default {
 ```
 :::
 
-
 ### 不同尺寸
 ColorPicker 支持不同尺寸的选择器，通过`size`属性控制选择器大小。
 
@@ -130,7 +129,6 @@ ColorPicker 支持不同尺寸的选择器，通过`size`属性控制选择器�
         <vc-color-picker v-model="color" size="large" />
 	</div>
 </template>
-
 <script>
 import { ColorPicker } from '@wya/vc';
 
@@ -153,8 +151,9 @@ export default {
 ```
 :::
 
-#### 属性
+## API
 
+### 属性
 属性 | 说明 | 类型 | 可选值 | 默认值
 ---|---|---|---|---
 value | 绑定的值，可使用 v-model 双向绑定 | `String` | - | -
@@ -167,10 +166,8 @@ colors | 自定义颜色预设 | `Array` | - | []
 format | 颜色的格式 | `String` | `hsl` 、 `hsv` 、 `hex` 、 `rgb` | 开启 `alpha` 时为 `rgb`，其它为 `hex`
 size | 尺寸 | String |  `large`、`default`、`small` | `default`
 
-
-#### 事件
-
-事件名 | 说明 | 类型 | 参数
+### 事件
+事件名 | 说明 | 回调参数 | 参数说明
 ---|---|---|---
 change | 当绑定值变化时触发 | `(value: String) => void 0` | `value`: 当前选中的颜色值
 color-change | 面板中当前显示的颜色发生改变时触发 | `(value: String) => void 0` | `value`: 当前选中的颜色值

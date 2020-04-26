@@ -1,8 +1,12 @@
 ## 功能（Echarts）
 Echarts图表
 
+### 何时使用
+- 展示可视化的图表
+- 参照Echarts官方配置文档(https://www.echartsjs.com/zh/option.html#title)
+
 ### 基础用法
-参照Echarts官方配置文档(https://www.echartsjs.com/zh/option.html#title)，通过options完成图表配置
+通过options完成图表配置。
 
 :::RUNTIME
 ```html
@@ -22,7 +26,6 @@ export default {
 	},
 	data() {
 		return {
-			show: false
 		};
 	},
 	computed: {
@@ -69,21 +72,14 @@ export default {
 			};
 		}
 	},
-	methods: {
-		handleClick() {
-			this.show = true;
-		},
-	}
 };
 
 </script>
 ```
 :::
 
-
 ### 自适应容器大小
-通过autoResize属性设置图表是否在组件根元素尺寸变化时自动进行重绘，默认：`false`
-
+通过autoResize属性设置图表是否在组件根元素尺寸变化时自动进行重绘，默认：`false`。
 
 :::RUNTIME
 ```html
@@ -165,13 +161,9 @@ export default {
 ```
 :::
 
-
-
-
 ### API
 
 ### 基础属性
-
 属性 | 说明 | 类型 | 可选值 | 默认值
 ---|---|---|---|---
 options | 图表配置，参照Echarts官方配置文档(https://www.echartsjs.com/zh/option.html#title) | `object` | - | -

@@ -63,18 +63,20 @@ export default {
 attr | attr属性说明 | `String` | - | -
 attr | 属性多种类型 | `String`、`Number` | - | -
 attr | 带有可选值的属性 | `String` | `default`、`primary` | `default`
+tag | 外层标签 | `String`| - | `div`
+placement |  菜单弹出位置 | `String` | 弹层的位置(`top` `left` `right` `bottom` `bottom-left` `bottom-right` `top-left` `top-right` `right-top` `right-bottom` `left-top` `left-bottom`) | `bottom` 
 
 ### 事件
 事件名 | 说明 | 回调参数 | 参数说明
 ---|---|---|---|---
-eventName | 触发时机说明 | - | -
-eventName | 触发时机说明 | `(param: String) => void 0` | `param`：param中文说明
-eventName | 触发时机说明 | `(param1: String, param2: Boolean) => void 0` | `param1`：param1中文说明；`param2`：param2中文说明
+eventName | 事件说明 | - | -
+eventName | 事件说明 | `(param: String) => void 0` | `param`：param中文说明
+eventName | 事件说明 | `(param1: String, param2: Boolean) => void 0` | `param1`：param1中文说明；`param2`：param2中文说明
 
 ### 方法
 方法名 | 说明 | 参数
 ---|---|---
-methodsName | 方法说明 | 
+methodsName | 方法说明 | `param`：参数说明
 
 ### slot
 名称 | 说明 
