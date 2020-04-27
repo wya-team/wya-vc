@@ -1,11 +1,11 @@
 ## 图片裁剪（ImgsCrop）
+裁剪修改图片
 
 ### 何时使用
-
-使用场景和使用方式
+需要调整图片大小或旋转图片。
 
 ### 基础用法
-
+通过控制`scale`、`rotate`调整图片的缩放和旋转角度。
 
 :::RUNTIME
 ```html
@@ -19,12 +19,12 @@
 			:width="375"
 			:height="230"
 			cross-origin="anonymous"
-			@drop-file="handleFn"
-			@load-failure="handleFn"
-			@load-success="handleFn"
-			@image-ready="handleFn"
-			@image-change="handleFn"
-			@position-change="handleFn"
+			@drop-file="handleDropFile"
+			@load-failure="handleLoadFailure"
+			@load-success="handleLoadSuccess"
+			@image-ready="handleImageReady"
+			@image-change="handleImageChange"
+			@position-change="handlePositionChange"
 		/>
 		<vc-slider v-model="scale" :min="0.3" :max="3" :step="0.01" />
 		<vc-slider v-model="rotate" :min="0" :max="360" />
@@ -53,12 +53,24 @@ export default {
 			result: null
 		};
 	},
-	computed: {
-		
-	},
 	methods: {
-		handleFn() {
-			console.log(arguments);
+		handleDropFile(e) {
+			console.log('DropFile: ', e);
+		},
+		handleLoadFailure(e) {
+			console.log('LoadFailure: ', e);
+		},
+		handleLoadSuccess(imageState) {
+			console.log('LoadSuccess: ', imageState);
+		},
+		handleImageReady() {
+			console.log('ImageReady');
+		},
+		handleImageChange(src) {
+			console.log('ImageChange: ', src);
+		},
+		handlePositionChange(position) {
+			console.log('PositionChange: ', position);
 		},
 		async handleSave() {
 			try {
@@ -72,31 +84,28 @@ export default {
 	}
 };
 </script>
-
 ```
 :::
 
+## API
 
-#### 属性
-
+### 属性
 属性 | 说明 | 类型  | 可选值 | 默认值
 ---|---|---|---|---
-src | 图片地址 | `String`; `Object`; `File` | - | -
+src | 图片地址 | `String`、`Object`、`File` | - | -
 scale | 缩放值 | `Number` | - | `1`
 rotate | 旋转角度 | `Number` | - | `0`
-border | 裁剪的边框 [x, y] | `Number`; `Array` | - | `20`
+border | 裁剪的边框 [x, y] | `Number`、`Array` | - | `20`
 borderRadius | 裁剪的边框圆角 | `Number` | - | `0`
 width | 裁剪区域宽 | `Number` | - | `200`
 height | 裁剪区域高 | `Number` | - | `200`
 position | 裁剪区域定位 | `Object` | - | -
 color | 边框的背景色RGBA | `Array` | - | `[0, 0, 0, 0.5]`
-cross-origin | 跨域来源 | `String` | `anonymous`; `use-credentials` | `anonymous`
+cross-origin | 跨域来源 | `String` | `anonymous`、`use-credentials` | `anonymous`
 disableDrop | 是否支持拖拽图片进来编辑 | `Boolean` | - | `false`
 
-
-#### 事件
-
-事件名 | 说明 | 类型 | 参数
+### 事件
+事件名 | 说明 | 回调参数 | 参数说明
 ---|---|---|---
 drop-file | 拖入图片回掉 | `(e: Event) => void 0` | `e`: 事件对象
 load-fail | 图片加载失败 | - | -

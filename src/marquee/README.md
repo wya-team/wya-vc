@@ -1,16 +1,17 @@
 ## 文字轮播（Marquee）
+文字滚动
+
 ### 何时使用
-使用场景和使用方式
+在一小块内容展示通知类的信息时使用。
 
 ### 基础用法
-支持传值和插槽
+支持传值和插槽，不超出内容区域时默认不轮播。
 
 :::RUNTIME
 ```html
 <template>
 	<div class="v-marquee-basic">
 		<vc-marquee
-			:content="text"
 			class="_normal"
 		>
 			<span>{{ text }}</span>
@@ -37,10 +38,6 @@ export default {
 			text: 'ABCDEFG'
 		}
 	},
-	mounted() {
-	},
-	methods: {
-	}
 };
 </script>
 <style>
@@ -53,9 +50,8 @@ export default {
 ```
 :::
 
-
-### 滚动
-autoplay: 未超出一屏时是否滚动
+### 自动滚动
+设置`autoplay`未超出一屏时自动滚动。
 
 :::RUNTIME
 ```html
@@ -63,22 +59,14 @@ autoplay: 未超出一屏时是否滚动
 	<div class="v-marquee-autoplay">
 		<vc-marquee
 			:content="text"
-			class="_normal"
-		/>
-		<vc-marquee
-			:content="text.repeat(3)"
-			class="_normal"
-		/>
-		<vc-marquee
-			:content="text"
 			autoplay
 			class="_normal"
 		/>
 	</div>
 </template>
-
 <script>
 import { Marquee } from '@wya/vc';
+
 export default {
 	components: {
 		"vc-marquee": Marquee
@@ -87,10 +75,6 @@ export default {
 		return {
 			text: 'ABCDEFG'
 		}
-	},
-	mounted() {
-	},
-	methods: {
 	}
 };
 </script>
@@ -105,7 +89,7 @@ export default {
 :::
 
 ### 动画
-控制滚动暂停
+通过`animated`控制滚动暂停。
 
 :::RUNTIME
 ```html
@@ -114,40 +98,31 @@ export default {
 		<vc-marquee
 			:content="text.repeat(3)"
 			class="_normal"
+			:animated="animated"
 		/>
-		<vc-marquee
-			:content="text.repeat(3)"
-			class="_normal"
-			:animated="false"
-		/>
-		<vc-marquee
-			:content="text"
-			autoplay
-			class="_normal"
-			:animated="false"
-		/>
-		<vc-marquee
-			:content="text"
-			autoplay
-			class="_normal"
-		/>
+		<div>
+			<vc-button @click="handleClick">切换滚动状态</vc-button>
+		</div>
 	</div>
 </template>
-
 <script>
-import { Marquee } from '@wya/vc';
+import { Marquee, Button } from '@wya/vc';
+
 export default {
 	components: {
-		"vc-marquee": Marquee
+		"vc-marquee": Marquee,
+		"vc-button": Button
 	},
 	data() {
 		return {
-			text: 'ABCDEFG'
+			text: 'ABCDEFG',
+			animated: true
 		}
 	},
-	mounted() {
-	},
 	methods: {
+		handleClick() {
+			this.animated = !this.animated;
+		}
 	}
 };
 </script>
@@ -162,7 +137,7 @@ export default {
 :::
 
 ### 速度
-每秒移动多少px
+通过设置`speed`控制每秒移动多少px。
 
 :::RUNTIME
 ```html
@@ -181,9 +156,9 @@ export default {
 		/>
 	</div>
 </template>
-
 <script>
 import { Marquee } from '@wya/vc';
+
 export default {
 	components: {
 		"vc-marquee": Marquee
@@ -192,10 +167,6 @@ export default {
 		return {
 			text: 'ABCDEFG'
 		}
-	},
-	mounted() {
-	},
-	methods: {
 	}
 };
 </script>
@@ -211,17 +182,15 @@ export default {
 
 ## API
 
-#### 属性
+### 属性
+属性 | 说明 | 类型 | 可选值 | 默认值
+---|---|---|---|---
+speed | 速度计算（如：每秒移动50px） | `Number` | - | 50
+content | 内容 | `String`、`Function` | - | -
+animated | 动画 | `Boolean` | - | `true`
+autoplay | 未超出一屏时是否滚动 | `Boolean` | - | `false`
 
-属性 | 说明 | 类型 | 默认值
----|---|---|---
-speed | 速度计算（如：每秒移动50px） | `Number` | 50
-content | 内容 | `String, Function` | -
-animated | 动画 | `Boolean` | true
-autoplay | 未超出一屏时是否滚动 | `Boolean` | false
-
-#### Slot
-
+### Slot
 属性 | 说明
 ---|---
 default | -
