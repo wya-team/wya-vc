@@ -1,6 +1,9 @@
 ## 选择器（Picker）
 移动端选择器
 
+### 何时使用
+需要从一组相关联的数据集合进行选择，例如省市区，公司层级，事物分类等。
+
 ### 基础用法
 组件通过cascade属性判断picker是否为层级联动。
 
@@ -120,11 +123,6 @@ export default {
 			]
 		};
 	},
-	computed: {
-	},
-	mounted() {
-
-	},
 	methods: {
 		loadData() {
 			MToast.info('异步加载中');
@@ -146,7 +144,6 @@ export default {
 		}
 	},
 };
-
 </script>
 <style>
 .vcm-picker-basic .vcm-picker{
@@ -166,6 +163,7 @@ export default {
 :::
 
 ### 方法调用
+通过`open`方法打开弹层。
 
 :::RUNTIME
 ```html
@@ -245,14 +243,14 @@ export default {
 			});
 		}
 	}
-
 }
 </script>
 ```
 :::
 
 ### picker-popup
-仅为picker的弹层组件，不提供选择的用途，visible为ture默认开启。
+仅为picker的弹层组件，不提供选择的用途，`visible`为ture默认开启。
+
 :::RUNTIME
 ```vue
 <template>
@@ -266,7 +264,9 @@ export default {
 			@cancel="handleCancel"
 			@close="handleClose"
 		>
-			<div>内容</div>
+			<div style="height: 100px; line-height: 100px;">
+				内容内容内容内容内容内容内容内容内容内容内容内容内容内容内容内容内容内容内容
+			</div>
 		</vcm-picker-popup>
 	</div>
 </template>
@@ -385,32 +385,41 @@ export default {
 ```
 :::
 
+## API
 
-### API
-
-### 属性
-
-- `picker`
-
+### Picker属性
 属性 | 说明 | 类型 | 可选值 | 默认值
 ---|---|---|---|---
-loadData | 异步加载数据函数 | `() => Promise` | - | -
-extra | 占位符placeholder | `String` | - | -
-formatter | 格式化占位符 | `(label: Array) => String` | - | -
-
-- `picker-view`
-
-属性 | 说明 | 类型 | 可选值 | 默认值
----|---|---|---|---
+loadData | 异步加载数据函数，`() => Promise` | `Function` | - | -
+visible | 控制，可以使用v-model | `Boolean` | - | `true`
 value | 返回值(v-model) | `Array` | - | -
 dataSource | 数据源 | `Array` | - | -
 cols | 列数 | `Number` | - | -
 itemStyle | 列的样式 | `Object` | - | -
-cascade | 是否为联动选中 | `Boolean` | `true`、`false` | `true`
+cascade | 是否为联动选中 | `Boolean` | - | `true`
+label | label 内容 | `String` | - | -
+labelWidth | `item`内`label`的宽度 | `String`、`Number` | - | -
+extra | 占位符placeholder | `String` | - | -
+formatter | 格式化占位符 | `(label: Array) => String` | - | -
+title | 标题，支持v-html | `String` | - | -
+cancelText | 取消文本 | `String` | - | 取消
+okText | 确定文本 | `String` | - | 确定
+showToolbar | 是否显示toolbar | `Boolean` | - | `true`
+onOk | 采用`open`方法时使用，点击确定回调 | `Function` | - | -
+onCancel | 采用`open`方法时使用，点击取消回调 | `Function` | - | -
 
-- `dataSource 数据结构`
+### PickerView属性
+属性 | 说明 | 类型 | 可选值 | 默认值
+---|---|---|---|---
+value | 返回值(v-model) | `Array` | - | -
+dataSource | 数据源 | `Array` | - | -
+cols | 列数 | `Number` | - | 1
+itemStyle | 列的样式 | `Object` | - | -
+cascade | 是否为联动选中 | `Boolean` | - | `true`
+allowDispatch | 触发`vc-form-item`事件 | `Boolean` | - | `true`
 
-当传入多列数据时且`cascade`为`false`时，`columns`为一个多维数组。当`cascade`为`ture`时，`columns`为一个对象数组
+### DataSource数据结构
+> 当传入多列数据时且`cascade`为`false`时，`columns`为一个多维数组。当`cascade`为`ture`时，`columns`为一个对象数组
 
 键名 | 说明 | 类型
 ---|---|---
@@ -418,52 +427,45 @@ value | 每一项的值 | `String`
 label | 每一项的内容 | `String`
 children | 子集对象数组 | `Array`
 
-
-- `picker-popup`
-
+### PickerPopup属性
 属性 | 说明 | 类型 | 可选值 | 默认值
 ---|---|---|---|---
-visible | 控制，可以使用v-model | `Boolean` | `true`、`false` | `false`
+visible | 控制，可以使用v-model | `Boolean` | - | `true`
 title | 标题，支持v-html | `String` | - | -
 cancelText | 取消文本 | `String` | - | 取消
 okText | 确定文本 | `String` | - | 确定
-showToolbar | 是否显示toolbar | `Boolean` | `true`、`false` | `true`
+showToolbar | 是否显示toolbar | `Boolean` | - | `true`
 
-### 事件/方法
-
-- `picker`
-
-事件名 | 说明 | 类型 | 默认值
+### Picker事件
+事件名 | 说明 | 回调参数 | 参数说明
 ---|---|---|---
 change | 组件关闭时候触发出来的一个事件，返回值为当前选中的值以及每一列的数据 | - | -
+picker-change | 选择发生改变时触发出来的一个事件 | `(row, index) => void 0` | `row`：当前选中的数据；`index`：当前数据的索引
 ok | 点击确定按钮触发的事件 | - | -
 cancel | 点击取消按钮触发的事件 | - | -
+close | 弹层关闭触发 | - | -
+visible-change | 显示状态改变 | `(visible: Boolean) => void 0` | `visible`：显示状态
 
-- `picker-popup`
-
-事件名 | 说明 | 类型 | 默认值
+### PickerPopup事件
+事件名 | 说明 | 回调参数 | 参数说明
 ---|---|---|---
 ok | 点击确定按钮触发的事件 | - | -
 cancel | 点击取消按钮触发的事件 | - | -
 close | 关闭弹窗时触发 | - | -
+visible-change | 显示状态改变 | `(visible: Boolean) => void 0` | `visible`：显示状态
 
-- `picker-view`
-
-事件名 | 说明 | 类型 | 默认值
+### PickerView事件
+事件名 | 说明 | 回调参数 | 参数说明
 ---|---|---|---
 change | 选择发生改变时触发的事件 | `(values, labels, items) => void 0` | -
 picker-change | 选择发生改变时触发出来的一个事件 | `(row, index) => void 0` | -
 
-### Slot
-
-- `picker`
-
+### Picker Slot
 名称 | 说明
 ---|---
 default | 点击弹出区域
 
-- `picker-popup`
-
+### PickerPopup Slot
 名称 | 说明
 ---|---
 default | 弹出层的内容

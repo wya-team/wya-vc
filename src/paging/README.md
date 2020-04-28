@@ -1,7 +1,11 @@
 ## 带分页的表格（Paging）
-Paging
+组合了`table`组件和`page`组件
+
+### 何时使用
+常用于构建一个基本的表单页。
 
 ### 基础用法
+
 :::RUNTIME
 ```html
 <template>
@@ -127,23 +131,14 @@ export default {
 				...initPage
 			};
 		},
-		/**
-		 * 当前页刷新
-		 */
-		handleResetCur() {
-			this.listInfo = {
-				...initPage,
-				reset: true,
-			};
-		}
 	}
 };
 </script>
-
 ```
 :::
 
 ### tab内使用
+配合`tabs`组件使用。
 
 :::RUNTIME
 ```html
@@ -248,9 +243,6 @@ export default {
 			]
 		};
 	},
-	computed: {
-		
-	},
 	methods: {
 		loadData(page, pageSize) {
 			const { type } = this;
@@ -298,9 +290,6 @@ export default {
 			}
 			return fakeData;
 		},
-		/**
-		 * 
-		 */
 		setHistory(values) {
 			let { path, query } = URL.parse();
 			window.history.replaceState(null, null, URL.merge({
@@ -317,19 +306,6 @@ export default {
 		handleResetFirst() {
 			this.listInfo = {
 				...initialState
-			};
-		},
-		/**
-		 * 当前页刷新
-		 */
-		handleResetCur() {
-			const { type } = this;
-			this.listInfo = {
-				...initialState,
-				[type]: {
-					...initialState[type],
-					reset: true
-				}
 			};
 		},
 		handleChange(type) {
@@ -351,12 +327,12 @@ export default {
 	}
 };
 </script>
-
 ```
 :::
 
-
 ### piece模式
+设置`mode`属性为`piece`。
+
 :::RUNTIME
 ```html
 <template>
@@ -417,9 +393,6 @@ export default {
 				"style": "margin: 20px"
 			},
 		};
-	},
-	computed: {
-		
 	},
 	methods: {
 		loadData(page, pageSize) {
@@ -485,7 +458,6 @@ export default {
 	}
 };
 </script>
-
 <style lang="scss">
 .v-paging-piece {
 	display: flex;
@@ -500,12 +472,12 @@ export default {
 	}
 }
 </style>
-
 ```
 :::
 
-
 ### 表格展开
+绑定的`table-opts`对象中添加`loadExpand`展开方法，点击展开`icon`触发此方法。
+
 :::RUNTIME
 ```html
 <template>
@@ -594,9 +566,6 @@ export default {
 			},
 		};
 	},
-	computed: {
-		
-	},
 	methods: {
 		loadData(page, pageSize) {
 			return ajax({
@@ -662,7 +631,6 @@ export default {
 				reset: true,
 			};
 		},
-
 		loadExpand(tree, treeNode) {
 			console.log(tree, treeNode, /loadExpand/);
 			return new Promise((resolve, reject) => {
@@ -695,41 +663,38 @@ export default {
 
 ## API
 
-#### 属性
-
+### 属性
 属性 | 说明 | 类型 | 可选值 | 默认值
 ---|---|---|---|---
-show | 展示 | `boolean` | - | true
-history | url表示,是否从url中获取page | `boolean` | - | false
-sync | 同步`vuex/vue-router`（this.$route） | `boolean` | - | false
+dataSource | 数据源，数据格式参照示例`obj:{ str: arr }` | `Object` | - | -
+show | 展示 | `Boolean` | - | true
+history | url表示,是否从url中获取page | `Boolean` | - | false
+sync | 同步`vuex/vue-router`（this.$route） | `Boolean` | - | false
 mode | 表格模式 | `string` | `native`、 `piece`、 `table` | `table` 
 loadData | 数据加载 | `function` | - | -
-dataSource | 数据源 | `obj:{ str: arr }` | - | -
 columns | item, mode为`native`时生效 | `arr` | - | -
 total | 总页数 | `number` | - | 0
 count | 总条数 | `number` | - | 0
-reset | 刷新时候使用，当前页刷新（true）,首页刷新（false） | `boolean` | - | -
+reset | 刷新时候使用，当前页刷新（true）,首页刷新（false） | `Boolean` | - | -
 tableOpts | 表格额外参数, 参考table组件 | `object` | - | -
 pageOpts | 分页额外参数, 参考page组件 | `object` | - | -
 loadingOpts | 加载额外参数,加载暂时不用 | - | - | 
 rowKey | 行数据的 Key，在使用翻页多选时必填 | `string` | - | -
-`current.sync` | 分页参数同步 | `string`、`number` | - | -
-footer | 是否显示分页 | `boolean` | - | true
+auth | 存储分页数据 | `Object` | - | `{ pageSize: true }`  
+footer | 是否显示分页 | `Boolean` | - | true
 
-#### 事件
-
-事件名 | 说明 | 参数 | 返回值
+### 事件
+事件名 | 说明 | 回调参数 | 参数说明
 ---|---|---|---
 load-pending | 加载中 | - | -
-load-success | 加载成功 | - | -
-load-error | 加载失败 | - | -
+load-success | 加载成功 | `(res: Object) => void 0` | `res`：加载成功获取的数据
+load-error | 加载失败 | `(err: Object) => void 0` | `err`：加载失败信息
 load-finish | 加载结束（都会触发） | - | -
-selection-change | 所有页选中的数据 | - | selection(全部选中的数据), curPageSelection(当前页选中的数据)
-page-size-change | 分页size改变 | - | 改变后的分页size
-page-change | 页码改变 | - | 改变后的页码
+selection-change | 所有页选中的数据 | `(selection: Array, curPageSelection: Array) => void 0` | `selection`：全部选中的数据，需要添加`rowKey`属性才返回全部选中数据，否则返回当前页选中数据； `curPageSelection`：当前页选中的数据
+page-size-change | 分页size改变 | `(pageSize: Number) => void 0` | `pageSize`：改变后的分页size
+page-change | 页码改变 | `(page: Number) => void 0` | `page`：改变后的页码
 
-#### 方法
-
+### 方法
 方法名 | 说明 | 参数 | 返回值
 ---|---|---|---
 `load-data` | 数据加载请求 | `page, PageSize` | `Promise`

@@ -6,21 +6,27 @@
 - 可切换页码浏览数据。
 
 ### 基础用法
+基本的分页，页数过多时会自动折叠。默认显示总共多少条数据，可以通过设置属性show-count=false来隐藏它。
 
 :::RUNTIME
 ```html
 <template>
 	<div class="v-page-basic">
+		<div>页数较少时效果</div>	
 		<vc-page
 			class="page"
-			:count="100" 
+			:count="50" 
 		/>
-		<div>基本的分页，页数过多时会自动折叠。默认显示总共多少条数据，可以通过设置属性show-count=false来隐藏它；</div>
+		<div>大于5页时效果</div>	
+		<vc-page
+			class="page"
+			:count="60" 
+		/>
 	</div>
 </template>
-
 <script>
 import { Page } from '@wya/vc';
+
 export default {
 	components: {
 		"vc-page": Page
@@ -28,7 +34,7 @@ export default {
 };
 </script>
 <style>
-.v-page-basic .page {
+.v-page-basic .page, .v-page-basic div {
 	margin-bottom: 10px;
 }
 </style>
@@ -36,6 +42,7 @@ export default {
 :::
 
 ### 每页数量
+可以切换每页显示的数量。
 
 :::RUNTIME
 ```html
@@ -67,6 +74,7 @@ export default {
 :::
 
 ### 电梯
+快速跳转到某一页。
 
 :::RUNTIME
 ```html
@@ -80,9 +88,9 @@ export default {
 		<div>快速跳转到某一页。</div>
 	</div>
 </template>
-
 <script>
 import { Page } from '@wya/vc';
+
 export default {
 	components: {
 		"vc-page": Page
@@ -96,10 +104,57 @@ export default {
 </style>
 ```
 :::
+
+### 调用方法翻页
+调用组件方法实现翻页。
+
+:::RUNTIME
+```html
+<template>
+	<div class="v-page-elevator">
+		<vc-page
+			ref="page"
+			class="page"
+			:count="100"
+			show-elevator
+		/>
+		<vc-button @click="handlePrev">上一页</vc-button>
+		<vc-button @click="handleNext">下一页</vc-button>
+		<vc-button @click="handlePage">跳转到第三页</vc-button>
+	</div>
+</template>
+<script>
+import { Page, Button } from '@wya/vc';
+
+export default {
+	components: {
+		"vc-page": Page,
+		"vc-button": Button
+	},
+	methods: {
+		handlePrev() {
+			this.$refs.page.prev();
+		},
+		handleNext() {
+			this.$refs.page.next();
+		},
+		handlePage() {
+			this.$refs.page.resetPage(3);
+		}
+	}
+};
+</script>
+<style>
+.v-page-elevator .page {
+	margin-bottom: 10px;
+}
+</style>
+```
+:::
+
 ## API
 
-#### Page props
-
+### 属性
 属性 | 说明 | 类型 | 可选值 | 默认值
 ---|---|---|--- | ---
 current | 当前页码，支持 .sync 修饰符 | `Number` | - | 1
@@ -110,17 +165,21 @@ placement | 条数切换弹窗的展开方向 | `String` | `bottom`、`top` | `b
 show-count | 显示总数 | `Boolean` | - | `true`
 show-elevator | 显示电梯，可以快速切换到某一页 | `Boolean` | - | `false`
 show-sizer | 显示分页，用来改变`page-size` | `Boolean` | - | `false`
-portal | 是否将弹层放置于 body 内，在 Tabs、带有 fixed 的 Table 列内使用时，建议添加此属性，它将不受父级样式影响，从而达到更好的效果 | `Boolean` | - | `true`
 
-#### Prop events
+### 事件
+事件名 | 说明 | 回调参数 | 参数说明
+---|---|---|---|--- 
+change | 页码改变的回调 | `(page: Number) => void 0` | `page`：改变后的页码
+page-size-change | 切换每页条数时的回调 | `(pageSiz: Number) => void 0` | `pageSize`：切换后的每页条数
 
-事件名 | 说明 | 类型 | 参数 | 返回值
----|---|---|--- | --- 
-change | 页码改变的回调，参数是改变后的页码 | `Function(page)` | `page: Number`| -
-page-size-change | 切换每页条数时的回调，参数是切换后的每页条数 | `Function(pageSiz)` | `pageSize: String`| -
+### 方法
+方法名 | 说明 | 参数
+---|---|---
+prev | 向上翻一页 | -
+next | 向下翻一页 | -
+resetPage | 跳转到指定页 | `page`：页码
 
-#### Page Slot
-
+### Slot
 属性 | 说明
 ---|---
 无 | 自定义显示总数的内容
