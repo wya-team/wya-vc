@@ -200,7 +200,7 @@ process.on('beforeExit', async () => {
 					replacement: 'vue/dist/vue.esm.js'
 				}]
 			}),
-			nodeResolve(), 
+			nodeResolve({ browser: true }), 
 			commonjs({}), 
 			replace({
 				'__VC_VERSION__': process.env.VERSION || require('./package.json').version,
@@ -228,7 +228,7 @@ process.on('beforeExit', async () => {
 			return new RegExp(`(${regex})`).test(filename);
 		},
 		plugins: [
-			nodeResolve(), 
+			nodeResolve({ browser: true }), 
 			commonjs({}), 
 			replace({
 				'__VC_VERSION__': process.env.VERSION || require('./package.json').version,
@@ -266,7 +266,7 @@ process.on('beforeExit', async () => {
 			return new RegExp(`(${regex})`).test(filename);
 		},
 		plugins: [
-			nodeResolve(), 
+			nodeResolve({ browser: true }), 
 			commonjs({}), 
 			replace({
 				'__VC_VERSION__': process.env.VERSION || require('./package.json').version,
