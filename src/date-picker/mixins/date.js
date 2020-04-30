@@ -7,6 +7,10 @@ export default {
 			type: Function,
 			default: () => false
 		},
+		shortcuts: {
+			type: Array,
+			default: () => ([])
+		},
 		startDate: Date,
 		focusedDate: [Date, Array],
 		showTime: {

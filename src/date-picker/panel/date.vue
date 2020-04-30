@@ -1,17 +1,21 @@
 <template>
 	<div class="vc-date-panel">
-		<div v-if="false" style="width: 100px">
-			<!-- TODO 快捷操作 -->
+		<div v-if="shortcuts && shortcuts.length > 0" style="width: 100px">
+			<vc-shortcuts-select
+				:panel-date="panelDate"
+				:config="shortcuts"
+				@pick="handleShortcutPick"
+			/>
 		</div>
 		<div :class="{'is-with-seconds': showSeconds}" class="vc-date-panel__body">
-			<vc-date-header 
+			<vc-date-header
 				v-if="currentView !== 'time'"
 				v-model="panelDate"
 				:current-view="currentView"
 				@change-current-view="handleChangeCurrentView"
 			/>
 			<!-- 日历 -->
-			<vc-date-table 
+			<vc-date-table
 				v-if="currentView === 'date'"
 				:value="dates"
 				:panel-date="panelDate"
@@ -20,21 +24,21 @@
 				@pick="handlePick"
 			/>
 			<!-- 年 -->
-			<vc-year-table 
+			<vc-year-table
 				v-if="currentView === 'year'"
 				:value="dates"
 				:panel-date="panelDate"
 				@pick="handleYearPick"
 			/>
 			<!-- 月 -->
-			<vc-month-table 
+			<vc-month-table
 				v-if="currentView === 'month'"
 				:value="dates"
 				:panel-date="panelDate"
 				@pick="handleMonthPick"
 			/>
 			<!-- 季度 -->
-			<vc-quarter-table 
+			<vc-quarter-table
 				v-if="currentView === 'quarter'"
 				:value="dates"
 				:panel-date="panelDate"
@@ -42,7 +46,7 @@
 				@pick="handleQuarterPick"
 			/>
 			<!-- time -->
-			<vc-time-select 
+			<vc-time-select
 				v-show="currentView === 'time'"
 				:hours="timeSlots[0]"
 				:minutes="timeSlots[1]"
@@ -52,7 +56,7 @@
 				:panel-date="panelDate"
 				@pick="handleTimePick"
 			/>
-			<vc-date-confrim 
+			<vc-date-confrim
 				v-if="confirm"
 				:show-time="showTime && !multiple"
 				:current-view="currentView"
@@ -74,6 +78,7 @@ import DateTable from '../basic/date-table';
 import DateHeader from '../basic/date-header';
 import Confirm from '../basic/confirm';
 import TimeSelect from '../basic/time-select';
+import ShortcutsSelect from '../basic/shortcuts-select';
 
 export default {
 	name: 'vc-date-panel',
@@ -84,7 +89,8 @@ export default {
 		'vc-quarter-table': QuarterTable,
 		'vc-date-table': DateTable,
 		'vc-date-confrim': Confirm,
-		'vc-time-select': TimeSelect
+		'vc-time-select': TimeSelect,
+		'vc-shortcuts-select': ShortcutsSelect
 	},
 	mixins: [DateMixin],
 	props: {
@@ -127,10 +133,10 @@ export default {
 		},
 	},
 	watch: {
-		
+
 	},
 	created() {
-		
+
 	},
 	methods: {
 		getPanelDate() {
@@ -222,6 +228,19 @@ export default {
 		handleOK() {
 			this.$emit('ok', this.dates);
 		},
+		handleShortcutPick(date) {
+			// 判断时候在禁用
+			let type = this.disabledDate(date) ? 'disabled' : 'normal';
+			if (type === 'disabled') {
+				return;
+			}
+			if (this.currentView === 'quarter') {
+				this.panelDate = date[0];
+				this.handleQuarterPick(date);
+			} else {
+				this.handlePick(date, { type });
+			}
+		}
 	},
 };
 </script>
@@ -239,7 +258,7 @@ $block: vc-date-panel;
 				width: 72px;
 				ul li {
 					padding: 0 0 0 28px;
-				} 
+				}
 			}
 		}
 	}
@@ -248,7 +267,7 @@ $block: vc-date-panel;
 		max-height: 224px;
 		ul li {
 			padding: 0 0 0 46px;
-		} 
+		}
 	}
 }
 </style>

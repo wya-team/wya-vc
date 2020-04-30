@@ -1,19 +1,23 @@
 <template>
 	<div class="vc-quarterrange-panel">
-		<div v-if="false" style="width: 100px">
-			<!-- TODO 快捷操作 -->
+		<div v-if="shortcuts && shortcuts.length > 0" style="width: 100px">
+			<vc-shortcuts-select
+				:panel-date="leftPanelDate"
+				:config="shortcuts"
+				@pick="handleShortcutPick"
+			/>
 		</div>
 		<div class="vc-quarterrange-panel__body">
 			<div class="vc-quarterrange-panel__table">
 				<div class="vc-quarterrange-panel__content is-left">
-					<vc-date-header 
+					<vc-date-header
 						:current-view="currentView"
 						:panel-date="leftPanelDate"
 						:show-next="splitPanels"
 						@change="handlePanelChange(...arguments, 'left')"
 					/>
 					<!-- 季度 -->
-					<vc-quarter-table 
+					<vc-quarter-table
 						:value="dates"
 						:panel-date="leftPanelDate"
 						:disabled-date="disabledDate"
@@ -30,7 +34,7 @@
 						@change="handlePanelChange(...arguments, 'right')"
 					/>
 					<!-- 季度 -->
-					<vc-quarter-table 
+					<vc-quarter-table
 						:value="dates"
 						:panel-date="rightPanelDate"
 						:disabled-date="disabledDate"
@@ -40,7 +44,7 @@
 					/>
 				</div>
 			</div>
-			<vc-date-confrim 
+			<vc-date-confrim
 				v-if="confirm"
 				:show-time="false"
 				:current-view="currentView"
@@ -57,6 +61,7 @@ import DateMixin from '../mixins/date';
 import DateHeader from '../basic/date-header';
 import QuarterTable from '../basic/quarter-table';
 import Confirm from '../basic/confirm';
+import ShortcutsSelect from '../basic/shortcuts-select';
 
 export default {
 	name: 'vc-quarter-range-panel',
@@ -64,6 +69,7 @@ export default {
 		'vc-date-header': DateHeader,
 		'vc-quarter-table': QuarterTable,
 		'vc-date-confrim': Confirm,
+		'vc-shortcuts-select': ShortcutsSelect
 	},
 	mixins: [DateMixin],
 	props: {
@@ -177,6 +183,20 @@ export default {
 		},
 		handleOK() {
 			this.$emit('ok', this.dates);
+		},
+		handleShortcutPick(value) {
+			this.leftPanelDate = value[0];
+			this.rightPanelDate = value[1];
+			this.handlePick(value[0], 'left');
+			this.handlePick(value[1], 'right');
+			this.dates = value;
+			this.rangeState = {
+				from: value[0],
+				marker: value,
+				selecting: true,
+				to: value[1]
+			};
+			this.handleRangeChange(value);
 		}
 	},
 };
