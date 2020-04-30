@@ -5,7 +5,7 @@
 		<vc-date-picker
 			:value="valueRange2"
 			:options="dateRangeOptions"
-			type="daterange"
+			type="datetimerange"
 			clearable
 			placeholder="Select date"
 			style="width: 300px"
@@ -203,13 +203,6 @@ export default {
 						onClick: (picker) => {
 							console.log(picker);
 							Message.info("onClick方法");
-							// const num = Math.random() * 10;
-							// const date = new Date();
-							// if (num > 5) {
-							// 	this.value = new Date(date.setTime(date.getTime() - 3600 * 1000 * 24 * 365));
-							// } else {
-							// 	this.value = new Date(date.setTime(date.getTime() - 3600 * 1000 * 24 * 365 * 2));
-							// }
 						}
 					}
 				],

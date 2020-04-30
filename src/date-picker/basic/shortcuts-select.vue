@@ -15,6 +15,7 @@
 
 <script>
 import { Utils } from '@wya/utils';
+
 import Icon from '../../icon/index';
 
 export default {
