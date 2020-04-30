@@ -196,6 +196,7 @@ export default {
 	},
 	methods: {
 		handleBefore(e, hook) {
+			if (!this.isActive) return;
 			let callback = () => {
 				this.isActive = false;
 			};
