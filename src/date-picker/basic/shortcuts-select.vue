@@ -15,7 +15,7 @@
 
 <script>
 import { Utils } from '@wya/utils';
-import { prevYear, nextYear, prevMonth, nextMonth } from '../../utils/date-utils';
+import { prevYear, nextYear, prevMonth, nextMonth } from '../helper/date-utils';
 import Icon from '../../icon/index';
 
 export default {
