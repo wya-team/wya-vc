@@ -129,6 +129,8 @@ import Tree from './tree/index';
 import MTree from './tree/index.m';
 import Upload from './upload/index';
 import MUpload from './upload/index.m';
+import UploadPicker from './upload-picker/index';
+import MUploadPicker from './upload-picker/index.m';
 
 // 功能
 import Vc, { VcInstance, VcError, VcBasic } from './vc/index';
@@ -304,7 +306,9 @@ const Components = {
 	TreeSelect: Tree.Select,
 	MTreeSelect: MTree.Select,
 	Upload,
-	MUpload
+	MUpload,
+	UploadPicker,
+	MUploadPicker
 };
 
 const install = (Vue, opts = {}) => {
@@ -503,6 +507,8 @@ exports.TreeSelect = Tree.Select;
 exports.MTreeSelect = MTree.Select;
 exports.Upload = Upload;
 exports.MUpload = MUpload;
+exports.UploadPicker = UploadPicker;
+exports.MUploadPicker = MUploadPicker;
 // 弹
 exports.Message = Message;
 exports.MMessage = MMessage;

@@ -89,6 +89,7 @@ import Transition from '../transition';
 import Customer from "../customer/index";
 import { VcInstance } from "../vc/index";
 import { Resize, getUid } from '../utils/index';
+import { IS_SERVER } from '../utils/constant';
 
 
 let zIndexNumber = 1002;
@@ -219,11 +220,13 @@ export default {
 			return {
 				width: `${this.defaultSize.width}px`,
 				minHeight: `${this.defaultSize.height}px`,
-				maxHeight: `${window.innerHeight - 20}px`,
+
+				// 注: 服务端渲染为0, 在客服端激活前，展示端存在问题【高度不定】
+				maxHeight: IS_SERVER ? 0 : `${window.innerHeight - 20}px`,
 			};
 		},	
 		draggableStyle() {
-			if (!this.draggable) return;
+			if (IS_SERVER || !this.draggable) return;
 
 			let left = this.x || window.innerWidth / 2 - this.defaultSize.width / 2;
 			let top = this.y || window.innerHeight / 2 - this.defaultSize.height / 2;

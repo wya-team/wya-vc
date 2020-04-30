@@ -1,6 +1,7 @@
 import Vue from 'vue';
 import { Utils } from '@wya/utils';
 import { parseHeight } from '../utils';
+import { IS_SERVER } from '../../utils/constant';
 import { VcError } from '../../vc';
 
 let scrollBarWidth;
@@ -8,6 +9,8 @@ let scrollBarWidth;
  * TODO: 抽离
  */
 const getScrollBarWidth = () => {
+	// 注: 服务端渲染为0, 在客服端激活前，展示端存在问题【高度不定】
+	if (IS_SERVER) return 0;
 	if (scrollBarWidth !== undefined) return scrollBarWidth;
 
 	const outer = document.createElement('div');

@@ -64,8 +64,6 @@ describe('ImgsCrop', () => {
 				@load-success="handleFn"
 				@image-ready="handleFn"
 				@image-change="handleFn"
-				@mouse-up="handleFn"
-				@mouse-move="handleFn"
 				@position-change="handleFn"
 			/>`,
 			components: {

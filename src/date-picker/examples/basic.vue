@@ -110,6 +110,18 @@
 			placeholder="请选择"
 			@change="handleChangeTime"
 		/>
+		<h2>datetimerange校验选择时间不可以大于当前时间，精确到时分秒</h2>
+		<!-- new Date().getTime() + 24*60*60*1000 -->
+		<vc-date-picker
+			v-model="formValidate.daterange"
+			:start-date="new Date()"
+			:time-picker-options="timeOpts"
+			type="datetimerange"
+			format="YYYY-MM-DD HH:mm"
+			style="width: 300px"
+			placeholder="请选择"
+			@change="handleChangeTime"
+		/>
 		<h2>Form表单校验</h2>
 		<vc-form
 			ref="form"
@@ -232,7 +244,8 @@ export default {
 				disabledHours: [],
 				disabledMinutes: [],
 				disabledTime(date) {
-					return date && (date.valueOf() < Date.now() || date.valueOf() > Date.now() + 864000000);
+					// 大于当前时间
+					return date && (date.valueOf() < Date.now());
 				}
 			},
 			options: {
@@ -443,7 +456,8 @@ export default {
 			rangeStart2: '',
 			rangeEnd2: '',
 			formValidate: {
-				date: ''
+				date: '',
+				daterange: ['2020-04-17 12:00', '2020-04-18 00:00']
 			},
 			ruleValidate: {
 				date: [

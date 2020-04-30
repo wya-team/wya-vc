@@ -24,8 +24,9 @@
 import { DOM, $ } from '@wya/utils';
 import { throttle } from 'lodash';
 import IMGStore from './store';
+import { IS_SERVER } from '../utils/constant';
 
-const isSupportObjectFit = document.documentElement.style.objectFit !== undefined;
+const isSupportObjectFit = !IS_SERVER && document.documentElement.style.objectFit !== undefined;
 
 const ObjectFit = {
 	NONE: 'none',

@@ -1,10 +1,14 @@
-## 表单（form）
-
+## 表单（Form）
 由输入框、选择器、单选框、多选框等控件组成，用以收集、校验、提交数据
+
+### 何时使用
+- 用于创建一个实体或收集信息。
+- 需要对输入的数据类型进行校验时。
+- 注意：当一个 form 元素中只有一个输入框时，在该输入框中按下回车应提交该表单。如果希望阻止这一默认行为，可以在 `<vc-form>` 标签上添加 `@submit.native.prevent`。
 
 ### 典型表单
 包括各种表单项，比如输入框、选择器、开关、单选框、多选框等。
-在 Form 组件中，每一个表单域由一个 Form-Item 组件构成，表单域中可以放置各种类型的表单控件，包括 Input、Select、Checkbox、Radio、Switch、DatePicker、TimePicker
+在 Form 组件中，每一个表单域由一个 Form-Item 组件构成，表单域中可以放置各种类型的表单控件，包括 Input、Select、Checkbox、Radio、Switch、DatePicker、TimePicker。
 
 :::RUNTIME
 ```html
@@ -134,8 +138,12 @@ export default {
 		};
 	},
 	methods: {
-		handleSubmit() {
-			console.log(res, this.formValidate);
+		handleSubmit(name) {
+			this.$refs[name].validate().then((res) => {
+
+			}).catch((err) => {
+				console.log(err);
+			});
 		},
 		handleReset(name) {
 			this.$refs[name].resetFields();
@@ -148,13 +156,19 @@ export default {
 				status: 1
 			});
 		},
+		handleOnly(name) {
+			this.$refs[name].validateField('items.0.value', { scroll: true }).then(() => {
+
+			}).catch((error) => {
+				console.log(error);
+			});
+		},
 		handleRemove(index) {
 			this.formValidate.items[index].status = 0;
 		}
 	}
 };
 </script>
-
 <style>
 .v-form-basic {
 	margin-bottom: 10px;
@@ -165,7 +179,7 @@ export default {
 
 ### 行内表单
 当垂直方向空间受限且表单较简单时，可以在一行内放置表单。
-设置 `inline` 属性可以让表单域变为行内的表单域
+设置 `inline` 属性可以让表单域变为行内的表单域。
 
 :::RUNTIME
 ```html
@@ -230,7 +244,6 @@ export default {
 	}
 };
 </script>
-
 <style>
 .v-form-basic {
 	margin-bottom: 10px;
@@ -241,7 +254,7 @@ export default {
 
 ### 对齐方式
 根据具体目标和制约因素，选择最佳的标签对齐方式。
-通过设置 `label-position` 属性可以改变表单域标签的位置，可选值为 `top`、`left`，当设为 `top` 时标签会置于表单域的顶部
+通过设置 `label-position` 属性可以改变表单域标签的位置，可选值为 `top`、`left`，当设为 `top` 时标签会置于表单域的顶部。
 
 :::RUNTIME
 ```html
@@ -260,13 +273,13 @@ export default {
 			@submit.native.prevent
 		>
 			<vc-form-item label="input：">
-				<vc-input v-model="formValidate.input" />
+				<vc-input v-model="formValidate.input" style="width: 200px;" />
 			</vc-form-item>
 			<vc-form-item label="input：">
-				<vc-input v-model="formValidate.input" />
+				<vc-input v-model="formValidate.input" style="width: 200px;" />
 			</vc-form-item>
 			<vc-form-item label="input：">
-				<vc-input v-model="formValidate.input" />
+				<vc-input v-model="formValidate.input" style="width: 200px;" />
 			</vc-form-item>
 		</vc-form>
 	</div>
@@ -296,7 +309,6 @@ export default {
 	}
 };
 </script>
-
 <style>
 .v-form-basic {
 	margin-bottom: 10px;
@@ -461,26 +473,20 @@ export default {
 	},
 	methods: {
 		handleSubmit(name) {
-
-			this.$refs[name].validate(() => {}).then((res) => {
-
-			}).catch((res) => {
-				console.log(res, this.formValidate);
+			this.$refs[name].validate().then((res) => {
+			}).catch((err) => {
+				console.log(err);
 			});
 		},
-
 		handleOnly(name) {
 			this.$refs[name].validateField('items.0.value', { scroll: true }).then(() => {
-
 			}).catch((error) => {
 				console.log(error);
 			});
 		},
-
 		handleReset(name) {
 			this.$refs[name].resetFields();
 		},
-
 		handleAdd() {
 			this.index++;
 			this.formValidate.items.push({
@@ -489,14 +495,12 @@ export default {
 				status: 1
 			});
 		},
-
 		handleRemove(index) {
 			this.formValidate.items[index].status = 0;
 		}
 	}
 };
 </script>
-
 <style>
 .v-form-basic {
 	margin-bottom: 10px;
@@ -618,7 +622,6 @@ export default {
 	}
 };
 </script>
-
 <style>
 .v-form-basic {
 	margin-bottom: 10px;
@@ -627,53 +630,41 @@ export default {
 ```
 :::
 
+## API
 
-#### 属性
-
+### 属性
 属性 | 说明 | 类型 | 可选值 | 默认值
 ---|---|---|---|---
-model | 表单数据对象 | Object | - | -
-rules | 表单验证规则，具体配置查看 [ async-validator](https://github.com/yiminghe/async-validator) | Object | - | -
-inline | 是否开启行内表单模式 | Boolean | - | false
-label-position | 表单域标签的位置 | String | `left`、`right`、`top` | right
-label-width | 表单域标签的宽度，所有的 FormItem 都会继承 Form 组件的 label-width 的值 | Number | - | -
-show-message | 是否显示校验错误信息 | Boolean | - | true
-autocomplete | 原生的 autocomplete 属性 | String | `off`、`on` | off
+model | 表单数据对象 | `Object` | - | -
+rules | 表单验证规则，具体配置查看 [ async-validator](https://github.com/yiminghe/async-validator) | `Object` | - | -
+inline | 是否开启行内表单模式 | `Boolean` | - | `false`
+label-position | 表单域标签的位置 | `String` | `left`、 `right`、 `top` | `right`
+label-width | 表单域标签的宽度，所有的 FormItem 都会继承 Form 组件的 label-width 的值 | `Number` | - | -
+show-message | 是否显示校验错误信息 | `Boolean` | - | `true`
+autocomplete | 原生的 autocomplete 属性 | `String` | `off`、 `on` | `off`
 
+### 方法
+方法名 | 说明 | 参数
+---|---|---
+validate | 对整个表单进行校验，参数为检验完的回调，会返回一个 `Boolean` 表示成功与失败，支持 Promise | -
+validateField | 对部分表单字段进行校验的方法 | `props`: 需校验的 prop; `callback`: 检验完回调，返回错误信息
+resetFields | 对整个表单进行重置，将所有字段值重置为空并移除校验结果 | -
 
-#### 方法
+### Item 属性
+属性 | 说明 | 类型 | 可选值 | 默认值
+---|---|---|---|---
+prop | 对应表单域 model 里的字段 | `String` | - | - 
+label | 标签文本 | `String` | - | - 
+label-width | 表单域标签的的宽度 | `Number` | - 
+label-for | 指定原生的 label 标签的 for 属性，配合控件的 `element-id` 属性，可以点击 label 时聚焦控件。 | `String` | - | - 
+required | 是否必填，如不设置，则会根据校验规则自动生成 | `Boolean` | - | - 
+rules | 表单验证规则 | `Object`  |  `Array` | - | - 
+error | 表单域验证错误信息, 设置该值会使表单验证状态变为error，并显示该错误信息 | `String` | - | - 
+show-message | 是否显示校验错误信息 | `Boolean` | - | `true` 
 
-属性 | 说明 | 参数 | 返回值
----|---|---|---
-validate | 对整个表单进行校验，参数为检验完的回调，会返回一个 Boolean 表示成功与失败，支持 Promise | callback | -
-validateField | 对部分表单字段进行校验的方法，参数1为需校验的 prop，参数2为检验完回调，返回错误信息 | callback | -
-resetFields | 对整个表单进行重置，将所有字段值重置为空并移除校验结果 | - | -
-
-
-#### Item 属性
-
-属性 | 说明 | 类型 | 默认值
----|---|---|---
-prop | 对应表单域 model 里的字段 | String | - 
-label | 标签文本 | String | - 
-label-width | 表单域标签的的宽度 | Number | - 
-label-for | 指定原生的 label 标签的 for 属性，配合控件的 `element-id` 属性，可以点击 label 时聚焦控件。 | String | - 
-required | 是否必填，如不设置，则会根据校验规则自动生成 | Boolean | - 
-rules | 表单验证规则 | Object  |  Array | - 
-error | 表单域验证错误信息, 设置该值会使表单验证状态变为error，并显示该错误信息 | String | - 
-show-message | 是否显示校验错误信息 | Boolean | true 
-
-#### Item Slot
-
+### Item Slot
 属性 | 说明
 ---|---
 label | label 内容
-
-
-#### 配合form验证的自定义组件
-
-```
-this.dispatch('vc-form-item', 'form-change', ...args);
-```
 
 

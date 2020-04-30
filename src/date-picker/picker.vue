@@ -64,7 +64,7 @@
 
 <script>
 import { pick, cloneDeep, debounce, isEqualWith } from 'lodash';
-import { getpickeredData, getUid, getLabel } from '../utils/index';
+import { getUid, getLabel } from '../utils/index';
 import { DEFAULT_FORMATS } from './constants';
 import { TYPE_VALUE_RESOLVER_MAP, getDayCountOfMonth, isEmpty, value2Array } from './utils';
 import { VcError } from '../vc/index';

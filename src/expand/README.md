@@ -1,13 +1,11 @@
-## 折叠/展开（expand）
-
+## 折叠/展开（Expand）
 折叠/展开面板
 
 ### 何时使用
-
-需要对页面内容进行折叠、展开切换
+需要对页面内容进行折叠、展开切换。
 
 ### 基础用法
-通过`v-model`控制折叠或展开
+通过`v-model`控制折叠或展开。
 
 :::RUNTIME
 ```html
@@ -25,7 +23,6 @@
 		</vc-expand>
 	</div>
 </template>
-
 <script>
 import { Expand, Icon} from '@wya/vc';
 
@@ -46,16 +43,14 @@ export default {
 		}
 	}
 };
-
 </script>
 ```
 :::
 
-### API
+## API
 
 ### 基础属性
-
 属性 | 说明 | 类型 | 可选值 | 默认值
 ---|---|---|---|---
-tag | 要渲染成的html标签 |`String` | - | `div`
+tag | 要渲染成的html标签 | `String` | - | `div`
 visible | 折叠或展开状态 | `Boolean` | `true`、`false` | `false`

@@ -49,7 +49,7 @@
 </template>
 
 <script>
-import { getDateOfTime, clearTime } from '../../utils/date-utils';
+import { getDateOfTime, clearTime } from '../helper/date-utils';
 import TimeMixin from '../mixins/time';
 import Confirm from '../basic/confirm';
 import TimeSelect from '../basic/time-select';

@@ -2,6 +2,7 @@ import { Storage } from '@wya/utils';
 import { ajax } from '@wya/http';
 import VcBasic from '../vc/basic';
 import VcError from '../vc/error';
+import { IS_SERVER } from '../utils/constant';
 
 let svgReg = /.*<svg>(.*)<\/svg>.*/g;
 let basicReg = /.*id="icon-([^"]+).*viewBox="([^"]+)(.*)/g;
@@ -28,7 +29,7 @@ class IconManager extends VcBasic {
 	load(url) {
 		this.sourceStatus[url] = this.sourceStatus[url] || new Promise(async (resolve, reject) => {
 			try {
-				if (/.js$/.test(url)) { // 避免重复加载
+				if (!IS_SERVER && /.js$/.test(url)) { // 避免重复加载
 					let key = `${prefix}${url}`;
 					let icons = Storage.get(key);
 					
@@ -54,12 +55,7 @@ class IconManager extends VcBasic {
 						// 内存溢出，删除老缓存, 延迟3秒清理，重新设置
 						if (response) {
 							setTimeout(() => {
-								let needs = Object.keys(this.sourceStatus); 
-								Object.keys(window.localStorage).forEach((item) => {
-									if (item.includes(prefix) && !needs.includes(key)) {
-										window.localStorage.removeItem(item); // 这里需要使用localStorage
-									}
-								});
+								this.clear();
 								// 如果还存在溢出，项目内自行处理吧
 								Storage.set(key, icons);
 							}, 3000);
@@ -129,7 +125,10 @@ class IconManager extends VcBasic {
 
 		if (this.events[type].length > 100) {
 			this.events[type] = null;
-			throw new VcError('icon', `${type}不存在该图标，不要重复注册`);
+
+			if (!IS_SERVER) {
+				throw new VcError('icon', `${type}不存在该图标，不要重复注册`);
+			}
 		}
 
 		this.events[type].push(fn); 
@@ -147,7 +146,17 @@ class IconManager extends VcBasic {
 
 		return this;
 	}
-  
+	
+	clear() {
+		let needs = Object.keys(this.sourceStatus); 
+		Object.keys(window.localStorage).forEach((item) => {
+			if (item.includes(prefix)) {
+				const key = item.split(prefix).pop();
+				!needs.includes(key) 
+					&& window.localStorage.removeItem(item); // 这里需要使用localStorage
+			}
+		});
+	}
 }
 
 export default new IconManager(basicUrl);

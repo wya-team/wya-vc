@@ -1,5 +1,5 @@
 import { Utils } from '@wya/utils';
-import DateUtil from '../utils/date';
+import DateUtil from './helper/date';
 
 const isShortMonth = (month) => {
 	return [4, 6, 9, 11].indexOf(month) > -1;
@@ -53,7 +53,7 @@ export const value2date = (v = []) => {
 	let endDate = getMonthEndDay(Y, M);
 	let nowDate = new Date().getDate();
 	
-	let D = result[2] || endDate < nowDate ? endDate : nowDate; 
+	let D = result[2] || (endDate < nowDate ? endDate : nowDate); 
 
 	const target = {
 		Y,

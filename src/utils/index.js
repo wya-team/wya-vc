@@ -1,3 +1,4 @@
-export * from './utils.js';
-export * from './resize.js';
-export * from './style.js';
+export * from './utils';
+export * from './resize';
+export * from './style';
+export * from './constant';

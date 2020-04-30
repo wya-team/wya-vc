@@ -55,7 +55,7 @@
 </template>
 
 <script>
-import { clearTime, nextMonth, prevMonth, nextYear, prevYear, getDateOfTime } from '../../utils/date-utils';
+import { clearTime, nextMonth, prevMonth, nextYear, prevYear, getDateOfTime } from '../helper/date-utils';
 import DateMixin from '../mixins/date';
 import DateHeader from '../basic/date-header';
 import MonthTable from '../basic/month-table';

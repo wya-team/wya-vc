@@ -116,14 +116,34 @@ process.on('beforeExit', async () => {
 	delete cssInfo.style;
 
 	let totalCss = [];
+
 	await Promise.all(Object.keys(cssInfo).map((i) => {
 		if (cssInfo[i].length === 0) return;
+
 		totalCss.push(i);
 		return exportCssFile(
 			resolve(__dirname, './lib', `./${i}/index.css`), 
 			// 如table/index.js -> [table.css, index.css]
 			cssInfo[i]
 				.filter(i => i !== 'index.css' && i.indexOf('third.css') === -1)
+				// ⚠️ 要求组件的主入口必须和文件夹同名，否则样式会存在先后问题
+				.reduce((pre, cur, index, source) => {
+					pre[0] = pre[0] || [];
+					pre[1] = pre[1] || [];
+					if (cur.includes('mobile/')) {
+						[`mobile/${i}.css`].some(item => cur === item) 
+							? pre[1].unshift(cur)
+							: pre[1].push(cur);
+					} else {
+						[`${i}.css`].some(item => cur === item) 
+							? pre[0].unshift(cur)
+							: pre[0].push(cur);
+					}
+					if (index === source.length - 1) {
+						pre = pre[0].concat(pre[1]);
+					}
+					return pre;
+				}, [])
 				.map(i => `@import './${i}'`)
 				.filter((i, index, source) => source.indexOf(i) != -1)
 				.join(';\n') || '',
@@ -180,7 +200,7 @@ process.on('beforeExit', async () => {
 					replacement: 'vue/dist/vue.esm.js'
 				}]
 			}),
-			nodeResolve(), 
+			nodeResolve({ browser: true }), 
 			commonjs({}), 
 			replace({
 				'__VC_VERSION__': process.env.VERSION || require('./package.json').version,
@@ -208,7 +228,7 @@ process.on('beforeExit', async () => {
 			return new RegExp(`(${regex})`).test(filename);
 		},
 		plugins: [
-			nodeResolve(), 
+			nodeResolve({ browser: true }), 
 			commonjs({}), 
 			replace({
 				'__VC_VERSION__': process.env.VERSION || require('./package.json').version,
@@ -246,7 +266,7 @@ process.on('beforeExit', async () => {
 			return new RegExp(`(${regex})`).test(filename);
 		},
 		plugins: [
-			nodeResolve(), 
+			nodeResolve({ browser: true }), 
 			commonjs({}), 
 			replace({
 				'__VC_VERSION__': process.env.VERSION || require('./package.json').version,

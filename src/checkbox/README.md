@@ -1,15 +1,12 @@
 ## 多选框（Checkbox）
-
-多选框
+多选框,主要用于一组可选项多项选择，或者单独用于标记切换某种状态。
 
 ### 何时使用
-
 - 在一组可选项中进行多项选择时
-- 单独使用可以表示两种状态之间的切换，和 switch 类似。区别在于切换 switch 会直接触发状态改变，而 checkbox 一般用于状态标记，需要和提交操作配合
+- 单独使用可以表示两种状态之间的切换，和`switch`类似。区别在于切换`switch`会直接触发状态改变，而`checkbox`一般用于状态标记，需要和提交操作配合
 
 ### 基础用法
-
-简单的checkbox
+简单的`checkbox`，单独使用可以表示两种状态之间的切换，写在标签中的内容为`checkbox`按钮后的介绍。
 
 :::RUNTIME
 ```html
@@ -18,7 +15,6 @@
 		Checkbox
 	</vc-checkbox>
 </template>
-
 <script>
 import { Checkbox } from '@wya/vc';
 
@@ -38,8 +34,7 @@ export default {
 :::
 
 ### 禁用
-
-使用`disabled`禁用checkbox
+使用`disabled`禁用checkbox。
 
 :::RUNTIME
 ```html
@@ -55,7 +50,6 @@ export default {
 		</vc-checkbox>
 	</div>
 </template>
-
 <script>
 import { Checkbox } from '@wya/vc';
 
@@ -76,8 +70,7 @@ export default {
 :::
 
 ### Checkbox组
-
-使用checkbox组可方便地从数组生成checkbox
+适用于多个勾选框绑定到同一个数组的情景，通过是否勾选来表示这一组选项中选中的项。。
 
 :::RUNTIME
 ```html
@@ -85,9 +78,9 @@ export default {
 	<div>
 		<vc-checkbox-group v-model="checkedFruits">
 			<vc-checkbox 
-				v-for="friut in fruits"
-				:key="friut"
-				:label="friut" 
+				v-for="fruit in fruits"
+				:key="fruit"
+				:label="fruit" 
 			/>
 		</vc-checkbox-group>
 	</div>
@@ -114,8 +107,7 @@ export default {
 :::
 
 ### indeterminate 状态
-
-`indeterminate` 属性用以表示 checkbox 的不确定状态，一般用于实现全选的效果
+`indeterminate` 属性用以表示 checkbox 的不确定状态，一般用于实现全选的效果。
 
 :::RUNTIME
 ```html
@@ -123,18 +115,18 @@ export default {
 	<div>
 		<div style="border-bottom: 1px solid #e9e9e9;padding-bottom:6px;margin-bottom:6px;">
 			<vc-checkbox
+				v-model="checkAll"
 				:indeterminate="indeterminate"
-				:value="checkAll"
-				@click.native="handleCheckAll"
+				@change="handleCheckAll"
 			>
 				全选
 			</vc-checkbox>
 		</div>
 		<vc-checkbox-group v-model="checkedFruits" @change="handleChange">
 			<vc-checkbox 
-				v-for="friut in fruits"
-				:key="friut"
-				:label="friut" 
+				v-for="fruit in fruits"
+				:key="fruit"
+				:label="fruit" 
 			/>
 		</vc-checkbox-group>
 	</div>
@@ -143,6 +135,7 @@ export default {
 <script>
 import { Checkbox } from '@wya/vc';
 
+const fruitsOptions = ['Apple', 'Bananer', 'mongo'];
 export default {
 	name: 'runtime-group',
 	components: {
@@ -153,36 +146,19 @@ export default {
 		return {
 			indeterminate: true,
 			checkAll: false,
-			fruits: ['Apple', 'Bananer', 'mongo'],
+			fruits: fruitsOptions,
 			checkedFruits: ['Apple']
 		}
 	},
 	methods: {
-		handleCheckAll() {
-			if (this.indeterminate) {
-				this.checkAll = false;
-			} else {
-				this.checkAll = !this.checkAll;
-			}
+		handleCheckAll(val) {
+			this.checkedFruits = val ? fruitsOptions : [];
 			this.indeterminate = false;
-
-			if (this.checkAll) {
-				this.checkedFruits = this.fruits;
-			} else {
-				this.checkAllGroup = [];
-			}
 		},
 		handleChange(data) {
-			if (data.length === 3) {
-				this.indeterminate = false;
-				this.checkAll = true;
-			} else if (data.length > 0) {
-				this.indeterminate = true;
-				this.checkAll = false;
-			} else {
-				this.indeterminate = false;
-				this.checkAll = false;
-			}
+			const checkedCount = data.length;
+			this.checkAll = checkedCount === this.fruits.length;
+        	this.indeterminate = checkedCount > 0 && checkedCount < this.fruits.length;
 		}
 	}
 }
@@ -192,31 +168,36 @@ export default {
 
 ## API
 
-#### Checkbox 属性
-
+### 属性
 属性 | 说明 | 类型 | 可选值 | 默认值
 ---|---|---|---|---
-value | 只在单独使用时有效。可以使用 v-model 双向绑定数据 | Boolean | - | false
-label | 只在组合使用时有效。指定当前选项的 value 值，组合会自动判断是否选中 | String, Number, Boolean | - | -
-disabled | 是否禁用当前项 | Boolean | - | false
-indeterminate | 设置 indeterminate 状态，只负责样式控制 | Boolean | - | false
-true-value | 选中时的值，当使用类似 1 和 0 来判断是否选中时会很有用 | String, Number, Boolean | - | true
-false-value | 没有选中时的值，当使用类似 1 和 0 来判断是否选中时会很有用 | String, Number, Boolean | - | false
+value | 只在单独使用时有效。可以使用 v-model 双向绑定数据 | `Boolean` | - | `false`
+label | 只在组合使用时有效。指定当前选项的 value 值，组合会自动判断是否选中 | `String`、`Number`、`Boolean` | - | -
+disabled | 是否禁用当前项 | `Boolean` | - | `false`
+indeterminate | 设置 `indeterminate` 状态，只负责样式控制 | `Boolean` | - | `false`
+true-value | 选中时的值，当使用类似 1 和 0 来判断是否选中时会很有用，group模式下无效 | `String`、`Number`、`Boolean` | - | `true`
+false-value | 没有选中时的值，当使用类似 1 和 0 来判断是否选中时会很有用，group模式下无效 | `String`、`Number`、`Boolean` | - | `false`
+name | 原生 `name` 属性 | `String` | -
 
-#### Checkbox 事件
-
-属性 | 说明 | 参数 | 返回值
+### 事件
+事件名 | 说明 | 回调参数 | 参数说明
 ---|---|---|---
-change | 只在单独使用时有效。在选项状态发生改变时触发，通过修改外部的数据改变时不会触发 | `value: Boolean` | -
+change | 只在单独使用时有效。在选项状态发生改变时触发，通过修改外部的数据改变时不会触发 | `(value: Boolean) => void 0` | `value`：当前checkbox是否被选中
 
-#### Group 属性
 
-属性 | 说明 | 类型 | 默认值
+### Group 属性
+属性 | 说明 | 类型 | 可选值 | 默认值
+---|---|---|---|---
+value | 指定选中项目的集合，可以使用 v-model 双向绑定数据 | `Array` | - | - | []
+
+### Group 事件
+事件名 | 说明 | 回调参数 | 参数说明
 ---|---|---|---
-value | 指定选中项目的集合，可以使用 v-model 双向绑定数据 | Array | []
+change | 在选项状态发生改变时触发。通过修改外部的数据改变时不会触发 | `(value: Array) => void 0` | `value`：已选中的数组
 
-#### Group 事件
-
-属性 | 说明 | 参数 | 返回值
----|---|---|---
-change | 在选项状态发生改变时触发，返回已选中的数组。通过修改外部的数据改变时不会触发	 | `value: Array` | -
+### Group 属性 TODO
+属性 | 说明 | 类型 | 可选值 | 默认值
+---|---|---|---|---
+min | 可被勾选的 checkbox 的最小数量 | `Number` | - | -
+max | 可被勾选的 checkbox 的最大数量 | `Number` | - | -
+disabled | 是否禁用 | `Boolean` | - | `false`

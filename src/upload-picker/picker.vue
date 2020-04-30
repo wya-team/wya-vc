@@ -21,7 +21,7 @@
 						@delete="handleDel(i, picker.type)"
 					>
 						<template #default="{ it }">
-							<slot :it="it" :name="picker.type" />
+							<slot :it="it" :index="i" :name="picker.type" />
 						</template>
 					</component>
 				</template>
@@ -44,13 +44,13 @@
 							:video-class-name="videoClassName"
 							:file-class-name="fileClassName"
 							:url-key="urlKey"
-							:index="i"
+							:index="index"
 							:data-source="currentValue[picker.type]"
 							class="vc-upload-picker__item"
 							@delete="handleDel(index, picker.type)"
 						>
 							<template #default="{ it }">
-								<slot :it="it" :name="picker.type" />
+								<slot :it="it" :index="index" :name="picker.type" />
 							</template>
 						</component>
 					</template>

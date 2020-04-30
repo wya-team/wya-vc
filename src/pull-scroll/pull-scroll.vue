@@ -118,6 +118,7 @@
  */
 import { pick, throttle } from 'lodash';
 import { Resize } from '../utils/index';
+import { IS_SERVER } from '../utils/constant';
 import Core from './core';
 import ScrollStatus from './scroll-status';
 import PullDownStatus from './pull-down-status';
@@ -134,7 +135,8 @@ export default {
 	props: {
 		height: {
 			type: [String, Number],
-			default: window.innerHeight,
+			// 注: 服务端渲染为0, 在客服端激活前，展示端存在问题【高度不定】
+			default: IS_SERVER ? 0 : window.innerHeight,
 		},
 		pullDown: {
 			type: Boolean,
@@ -202,7 +204,7 @@ export default {
 			pullUpStatus: 0,
 			prePullUpStatus: 0,
 
-			// 页面
+			// 页面, TODO: 开发人员传入current后，重新计算scrollStatus【仅首次计算】【主要是页面间切换，数据缓存时用】
 			currentPage: 0,
 
 			// 内容的高度 是否大于 容器的高度，默认false

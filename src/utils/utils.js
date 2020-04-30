@@ -1,4 +1,5 @@
 import { cloneDeep } from 'lodash';
+import { IS_SERVER } from './constant';
 
 const now = +(new Date());
 let index = 0;
@@ -210,6 +211,8 @@ export const placement2mode = {
 };
 
 export const getComputedStyle = (el, SIZING_STYLE, opts = {}) => {
+	// 注: 服务端渲染为0, 在客服端激活前，展示端存在问题【高度不定】
+	if (IS_SERVER) return {};
 	const style = window.getComputedStyle(el);
 
 	const boxSizing = style.getPropertyValue('box-sizing') 

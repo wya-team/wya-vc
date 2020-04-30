@@ -20,6 +20,12 @@ module.exports = (api) => {
 			"@babel/plugin-transform-runtime",
 			"transform-vue-jsx",
 			[
+				"@babel/plugin-proposal-object-rest-spread",
+				{
+					"loose": true
+				}
+			],
+			[
 				"@babel/plugin-proposal-decorators",
 				{
 					"legacy": true

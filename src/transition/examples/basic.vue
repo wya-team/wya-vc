@@ -86,17 +86,17 @@
 	</div>
 </template>
 <script>
-import Transtion from '..';
+import Transition from '..';
 
 let count = 0;
 export default {
 	name: "vc-transtion-basic",
 	components: {
-		'vc-transition-fade': Transtion.Fade,
-		'vc-transition-scale': Transtion.Scale,
-		'vc-transition-slide': Transtion.Slide,
-		'vc-transition-zoom': Transtion.Zoom,
-		'vc-transition-collapse': Transtion.Collapse
+		'vc-transition-fade': Transition.Fade,
+		'vc-transition-scale': Transition.Scale,
+		'vc-transition-slide': Transition.Slide,
+		'vc-transition-zoom': Transition.Zoom,
+		'vc-transition-collapse': Transition.Collapse
 	},
 	data() {
 		return {
