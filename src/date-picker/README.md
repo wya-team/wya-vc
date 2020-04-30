@@ -8,14 +8,14 @@
 ```html
 <template>
 	<div class="v-data-picker-basic">
-		<vc-date-picker 
+		<vc-date-picker
 			v-model="value"
-			:options="options" 
+			:options="options"
 			:start-date="new Date('2019', '10', '11')"
 			:type="date"
 			clearable
 			format="YYYY-MM-DD"
-			placeholder="Select date" 
+			placeholder="Select date"
 		/>
 	</div>
 </template>
@@ -51,36 +51,36 @@ export default {
 <template>
 	<div class="v-data-picker-basic">
 		<h2>年</h2>
-		<vc-date-picker 
+		<vc-date-picker
 			v-model="year"
-			type="year" 
+			type="year"
 			clearable
 			confirm
 			placeholder="Select date"
 			style="width: 200px"
 		/>
 		<h2>月</h2>
-		<vc-date-picker 
+		<vc-date-picker
 			v-model="month"
-			type="month" 
+			type="month"
 			clearable
 			placeholder="Select date"
 			style="width: 200px"
 		/>
 		<h2>季度</h2>
-		<vc-date-picker 
+		<vc-date-picker
 			v-model="quarter"
-			type="quarter" 
+			type="quarter"
 			clearable
 			confirm
 			placeholder="Select date"
 			style="width: 200px"
 		/>
 		<h2>多个日期</h2>
-		<vc-date-picker 
+		<vc-date-picker
 			v-model="values"
 			type="data"
-			multiple 
+			multiple
 			clearable
 			confirm
 			placeholder="Select date"
@@ -124,36 +124,36 @@ export default {
 <template>
 	<div class="v-data-picker-basic">
 		<h2>日期范围</h2>
-		<vc-date-picker 
+		<vc-date-picker
 			v-model="daterange"
-			type="daterange" 
+			type="daterange"
 			clearable
 			placeholder="Select date"
 			style="width: 250px"
 		/>
 		<h2>日期时间范围</h2>
-		<vc-date-picker 
+		<vc-date-picker
 			v-model="datetimerange"
 			type="datetimerange"
-			multiple 
+			multiple
 			clearable
 			confirm
 			placeholder="Select date"
 			style="width: 200px"
 		/>
 		<h2>月份范围</h2>
-		<vc-date-picker 
+		<vc-date-picker
 			v-model="monthrange"
-			type="monthrange" 
+			type="monthrange"
 			separator="到"
 			clearable
 			placeholder="Select date"
 			style="width: 250px"
 		/>
 		<h2>季度范围</h2>
-		<vc-date-picker 
+		<vc-date-picker
 			v-model="quarterrange"
-			type="quarterrange" 
+			type="quarterrange"
 			clearable
 			placeholder="Select date"
 			style="width: 250px"
@@ -247,7 +247,7 @@ export default {
 <template>
 	<div class="v-data-picker-basic">
 		<h2>日期时间</h2>
-		<vcm-date-picker 
+		<vcm-date-picker
 			v-model="value"
 			:arrow="false"
 			mode="datetime"
@@ -259,7 +259,7 @@ export default {
 			</template>
 		</vcm-date-picker>
 		<h2>年月</h2>
-		<vcm-date-picker 
+		<vcm-date-picker
 			v-model="yearmonth"
 			:arrow="false"
 			mode="yearmonth"
@@ -271,7 +271,7 @@ export default {
 			</template>
 		</vcm-date-picker>
 		<h2>时分</h2>
-		<vcm-date-picker 
+		<vcm-date-picker
 			v-model="time"
 			:arrow="false"
 			mode="time"
@@ -319,7 +319,7 @@ type | 显示类型 | String | `date`、`daterange`、`datetime`、`datetimerang
 value | 日期，可以是 JavaScript 的 Date，例如 new Date()，也可以是标准的日期格式，注意：value 使用 v-model 时，值是 Date 类型，可以配合 @change 使用 | Date | - | -
 format | 展示的日期格式 |  Date | date, daterange(YYYY-MM-DD), datetime, datetimerange(YYYY-MM-DD, HH:mm:ss), year(YYYY), month(YYYY-MM) | -
 placement | 日期选择器出现的位置 | String |  `top` `top-start` `top-end` `bottom` `bottom-start` `bottom-end` `left` `left-start` `left-end` `right` `right-start` `right-end`，2.12.0 版本开始支持自动识别 | bottom-start
-placeholder | 占位文本 | String | - | - 
+placeholder | 占位文本 | String | - | -
 options | 选择器额外配置，比如不可选日期与快捷选项，具体项详见下表 | Object | - | -
 split-panels | 开启后，左右面板不联动，仅在 daterange 和 datetimerange 下可用。 | Boolean | - | true
 multiple | 开启后，可以选择多个日期，仅在 `date` 下可用。 | Boolean | - | false
@@ -331,7 +331,7 @@ disabled | 是否禁用选择器 | Boolean | - | false
 clearable | 是否显示清除按钮 | Boolean | - | true
 portal | 是否将弹层放置于 body 内，在 Tabs、带有 fixed 的 Table 列内使用时，建议添加此属性，它将不受父级样式影响，从而达到更好的效果 | Boolean | - | true
 time-picker-options | 可以在 mode 为 `datetime` 和 `datetimerange` 下，配置 `TimePicker` 的属性，比如时间间隔 `:time-picker-options="{steps: [1, 10, 10]}"` | Object | - |{}
-separator | 两个日期间的分隔符 | String | - |`-`	
+separator | 两个日期间的分隔符 | String | - |`-`
 change-on-select | 选中即触发`change`时间 | Boolean | - |`false`
 
 ### Options
@@ -339,6 +339,7 @@ change-on-select | 选中即触发`change`时间 | Boolean | - |`false`
 参数 | 说明 | 类型 | 可选值 | 默认值
 ---|---|---|---|---
 disabledDate | 设置日期禁用状态，参数为当前日期，要求返回`Boolean` | `Function`| ---
+shortcuts | 设置快捷选项，每项内容`{text: String, value: Function, onClick: Function}`，`text`显示的文案，`value`返回指定的日期，如需自己控制逻辑，可不设置，并使用 `onClick` 回调 | `Array` | ---
 
 ### timePickerOptions
 

@@ -1,12 +1,15 @@
 <template>
 	<div class="vc-daterange-panel">
-		<div v-if="false" style="width: 100px">
-			<!-- TODO 快捷操作 -->
+		<div v-if="shortcuts && shortcuts.length > 0" style="width: 100px">
+			<vc-shortcuts-select
+				:config="shortcuts"
+				@pick="handleShortcutPick"
+			/>
 		</div>
 		<div :class="{'is-with-seconds': showSeconds}" class="vc-daterange-panel__body">
 			<div class="vc-daterange-panel__table">
 				<div class="vc-daterange-panel__content is-left">
-					<vc-date-header 
+					<vc-date-header
 						:current-view="leftCurrentView"
 						:panel-date="leftPanelDate"
 						:show-next="splitPanels"
@@ -14,7 +17,7 @@
 						@change="handlePanelChange(...arguments, 'left')"
 						@change-current-view="handleChangeLeftCurrentView"
 					/>
-					<vc-date-table 
+					<vc-date-table
 						v-if="leftCurrentView === 'daterange'"
 						:value="dates"
 						:panel-date="leftPanelDate"
@@ -25,21 +28,21 @@
 						@range-change="handleRangeChange"
 					/>
 					<!-- 年 -->
-					<vc-year-table 
+					<vc-year-table
 						v-if="leftCurrentView === 'year'"
 						:value="[dates[0]]"
 						:panel-date="leftPanelDate"
 						@pick="handleLeftYearPick"
 					/>
 					<!-- 月 -->
-					<vc-month-table 
+					<vc-month-table
 						v-if="leftCurrentView === 'month'"
 						:value="[dates[0]]"
 						:panel-date="leftPanelDate"
 						@pick="handleLeftMonthPick"
 					/>
 					<!-- time -->
-					<vc-time-select 
+					<vc-time-select
 						v-show="leftCurrentView === 'timerange'"
 						:hours="timeSlots.left.hours"
 						:minutes="timeSlots.left.minutes"
@@ -58,7 +61,7 @@
 						@change="handlePanelChange(...arguments, 'right')"
 						@change-current-view="handleChangeRightCurrentView"
 					/>
-					<vc-date-table 
+					<vc-date-table
 						v-if="rightCurrentView === 'daterange'"
 						:value="dates"
 						:panel-date="rightPanelDate"
@@ -69,21 +72,21 @@
 						@range-change="handleRangeChange"
 					/>
 					<!-- 年 -->
-					<vc-year-table 
+					<vc-year-table
 						v-if="rightCurrentView === 'year'"
 						:value="[dates[1]]"
 						:panel-date="rightPanelDate"
 						@pick="handleRightYearPick"
 					/>
 					<!-- 月 -->
-					<vc-month-table 
+					<vc-month-table
 						v-if="rightCurrentView === 'month'"
 						:value="[dates[1]]"
 						:panel-date="rightPanelDate"
 						@pick="handleRightMonthPick"
 					/>
 					<!-- time -->
-					<vc-time-select 
+					<vc-time-select
 						v-show="rightCurrentView === 'timerange'"
 						:hours="timeSlots.right.hours"
 						:minutes="timeSlots.right.minutes"
@@ -94,7 +97,7 @@
 					/>
 				</div>
 			</div>
-			<vc-date-confrim 
+			<vc-date-confrim
 				v-if="confirm"
 				:show-time="canSelectTime"
 				:current-view="[leftCurrentView, rightCurrentView]"
@@ -115,6 +118,7 @@ import DateTable from '../basic/date-table';
 import DateHeader from '../basic/date-header';
 import Confirm from '../basic/confirm';
 import TimeSelect from '../basic/time-select';
+import ShortcutsSelect from '../basic/shortcuts-select';
 
 export default {
 	name: 'vc-date-range-panel',
@@ -124,7 +128,8 @@ export default {
 		'vc-month-table': MonthTable,
 		'vc-date-table': DateTable,
 		'vc-date-confrim': Confirm,
-		'vc-time-select': TimeSelect
+		'vc-time-select': TimeSelect,
+		'vc-shortcuts-select': ShortcutsSelect
 	},
 	mixins: [DateMixin],
 	props: {
@@ -175,13 +180,13 @@ export default {
 			}
 			return {
 				left: {
-					hours: leftDate.getHours(), 
-					minutes: leftDate.getMinutes(), 
+					hours: leftDate.getHours(),
+					minutes: leftDate.getMinutes(),
 					seconds: leftDate.getSeconds()
 				},
 				right: {
-					hours: rightDate.getHours(), 
-					minutes: rightDate.getMinutes(), 
+					hours: rightDate.getHours(),
+					minutes: rightDate.getMinutes(),
 					seconds: rightDate.getSeconds()
 				},
 			};
@@ -274,7 +279,7 @@ export default {
 			if (type === 'right' && (year > rightYear || month > rightMonth)) {
 				return false;
 			} else if (type === 'left' && (year < leftYear || month < leftMonth)) {
-				return false;	
+				return false;
 			}
 			return true;
 		},
@@ -383,7 +388,7 @@ export default {
 					selecting: cell.type !== 'normal',
 					marker: cell.type !== 'normal' ? marker : null
 				};
-				
+
 			}
 			if (!isInRange) {
 				let changeType = type === 'left' ? 'prev-month' : 'next-month';
@@ -410,7 +415,7 @@ export default {
 		},
 		handleTimePick(value, type) {
 			let date = type === 'left' ? this.dates[0] : this.dates[1];
-			let leftNewDate = this.dates[0]; 
+			let leftNewDate = this.dates[0];
 			let rightNewDate = this.dates[1];
 			type === 'left' && (leftNewDate = getDateOfTime(date, value));
 			type === 'right' && (rightNewDate = getDateOfTime(date, value));
@@ -428,6 +433,20 @@ export default {
 		},
 		handleOK() {
 			this.$emit('ok', this.dates);
+		},
+		handleShortcutPick(value) {
+			// if (type === 'disabled') {
+			// 	return;
+			// }
+			if (this.disabledDate(value[0]) || this.disabledDate(value[1])) {
+				return;
+			}
+			this.handlePick(value[0], { type: this.disabledDate(value[0]) ? 'disabled' : 'normal' }, 'left');
+			this.handlePick(value[1], { type: this.disabledDate(value[1]) ? 'disabled' : 'normal' }, 'right');
+			this.leftPanelDate = value[0];
+			this.rightPanelDate = value[1];
+			this.dates = value;
+			// this.$emit('pick', this.dates);
 		}
 	},
 };
@@ -446,7 +465,7 @@ $block: vc-daterange-panel;
 				width: 72px;
 				ul li {
 					padding: 0 0 0 28px;
-				} 
+				}
 			}
 		}
 	}
@@ -487,7 +506,7 @@ $block: vc-daterange-panel;
 		max-height: 224px;
 		ul li {
 			padding: 0 0 0 46px;
-		} 
+		}
 	}
 }
 </style>
