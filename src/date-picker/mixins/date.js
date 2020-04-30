@@ -22,4 +22,12 @@ export default {
 			default: () => ({})
 		}
 	},
+	methods: {
+		handleShortcutClick({ value, onClick }) {
+			if (onClick) onClick(this);
+			if (!value) return;
+			const date = value();
+			this.handleShortcutPick(date);
+		}
+	}
 };

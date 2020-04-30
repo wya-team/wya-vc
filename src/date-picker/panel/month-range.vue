@@ -4,6 +4,7 @@
 			<vc-shortcuts-select
 				:config="shortcuts"
 				@pick="handleShortcutPick"
+				@click="handleShortcutClick"
 			/>
 		</div>
 		<div class="vc-monthrange-panel__body">

@@ -1,5 +1,5 @@
 <template>
-	<div class="vc-date-shortcuts">
+	<div ref="vc-picker" class="vc-date-shortcuts">
 		<ul class="vc-date-shortcuts__ul">
 			<li
 				v-for="(item, key) in config"
@@ -15,7 +15,6 @@
 
 <script>
 import { Utils } from '@wya/utils';
-import { prevYear, nextYear, prevMonth, nextMonth } from '../../utils/date-utils';
 import Icon from '../../icon/index';
 
 export default {
@@ -39,10 +38,7 @@ export default {
 			if (typeof value != 'function' && !onClick) {
 				throw Error('【vc-date-picker】:options[value]需要是一个方法');
 			}
-			if (value) {
-				this.$emit('pick', value());
-			}
-			onClick && onClick();
+			this.$emit('click', { value, onClick });
 		}
 	},
 };

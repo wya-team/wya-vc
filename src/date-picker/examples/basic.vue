@@ -137,71 +137,6 @@
 					style="width: 300px"
 				/>
 			</vc-form-item>
-			<h2>Date-shortcuts</h2>
-			<vc-date-picker
-				:value="valueRange2"
-				:options="options3"
-				type="datetimerange"
-				clearable
-				placeholder="Select date"
-				style="width: 300px"
-				@change="handleRangeChange2"
-			/>
-			<vc-date-picker
-				v-model="value2"
-				:options="options2"
-				:start-date="new Date('2019', '10', '11')"
-				:type="type"
-				clearable
-				confirm
-				multiple
-				format="YYYY-MM-DD"
-				placeholder="Select date"
-				@change="handleChange"
-				@clear="handleClear"
-			/>
-			<br>
-			<h2>Month-shortcuts</h2>
-			<vc-date-picker
-				v-model="monthrange3"
-				type="monthrange"
-				clearable
-				:options="optionsMonth"
-				confirm
-				placeholder="Select date"
-				style="width: 200px"
-			/>
-			<vc-date-picker
-				v-model="monthrange2"
-				type="month"
-				clearable
-				confirm
-				:options="optionsMonth2"
-				placeholder="Select date"
-				style="width: 200px"
-			/>
-			<h2>Quarter-shortcuts</h2>
-			<vc-date-picker
-				v-model="quarter"
-				type="quarter"
-				clearable
-				confirm
-				placeholder="Select date"
-				:options="optionsQuarter"
-				style="width: 200px"
-				@change="handleQuarterChange"
-			/>
-			<h2>QuarterRange-shortcuts</h2>
-			{{ quarterrange }}
-			<vc-date-picker
-				v-model="quarterrange"
-				type="quarterrange"
-				:options="optionsQuarterRange"
-				clearable
-				placeholder="Select date"
-				style="width: 250px"
-				@change="handleQuarterChange"
-			/>
 			<div @click="handleSubmit">
 				提交
 			</div>
@@ -232,9 +167,6 @@ export default {
 			quarterrange: '',
 			type: 'date',
 			dateOpen: false,
-			monthrange2: '',
-			monthrange3: '',
-			value2: [new Date()],
 			disableDate: {
 				disabledDate(date) {
 					return date && (date.valueOf() < Date.now() - 86400000 || date.valueOf() > Date.now() + 864000000);
@@ -253,208 +185,8 @@ export default {
 					return false;
 				}
 			},
-			optionsMonth: {
-				shortcuts: [
-					{
-						text: '一年前',
-						value() {
-							const startDate = new Date('2019-01-01');
-							const endDate = new Date('2020-01-01');
-							return [startDate, endDate];
-						}
-					},
-					{
-						text: '一年后',
-						value() {
-							const startDate = new Date('2020-01-01');
-							const endDate = new Date('2021-01-01');
-							return [startDate, endDate];
-						}
-					}
-				]
-			},
-			optionsMonth2: {
-				shortcuts: [
-					{
-						text: '一年前',
-						value() {
-							const date = new Date();
-							date.setTime(date.getTime() - 3600 * 1000 * 24 * 365);
-							return date;
-						}
-					},
-					{
-						text: '一年',
-						value() {
-							const date = new Date();
-							date.setTime(date.getTime() + 3600 * 1000 * 24 * 365);
-							return date;
-						}
-					},
-					{
-						text: '二年',
-						value() {
-							const date = new Date();
-							date.setTime(date.getTime() + 3600 * 1000 * 24 * 365 * 2);
-							return date;
-						}
-					},
-					{
-						text: '三年',
-						value() {
-							const date = new Date();
-							date.setTime(date.getTime() + 3600 * 1000 * 24 * 365 * 3);
-							return date;
-						}
-					},
-					{
-						text: '五年',
-						value() {
-							const date = new Date();
-							date.setTime(date.getTime() + 3600 * 1000 * 24 * 365 * 5);
-							return date;
-						}
-					}
-				]
-			},
-			options2: {
-				shortcuts: [
-					{
-						text: '一年',
-						value() {
-							const date = new Date();
-							date.setTime(date.getTime() - 3600 * 1000 * 24 * 365);
-							return date;
-						}
-					},
-					{
-						text: '二年',
-						value() {
-							const date = new Date();
-							date.setTime(date.getTime() - 3600 * 1000 * 24 * 365 * 2);
-							return date;
-						}
-					},
-					{
-						text: '三年',
-						value() {
-							const date = new Date();
-							date.setTime(date.getTime() - 3600 * 1000 * 24 * 365 * 3);
-							return date;
-						}
-					},
-					{
-						text: 'onClick方法',
-						onClick: () => {
-							const num = Math.random() * 10;
-							const date = new Date();
-							if (num > 5) {
-								this.value2 = [new Date(date.setTime(date.getTime() - 3600 * 1000 * 24 * 365))];
-							} else {
-								this.value2 = [new Date(date.setTime(date.getTime() - 3600 * 1000 * 24 * 365 * 2))];
-							}
-						}
-					}
-				],
-				// disabledDate(time) {
-				// 	return time.getTime() > Date.now();
-				// }
-			},
-			options3: {
-				shortcuts: [
-					{
-						text: '一年前',
-						value() {
-							const date = new Date();
-							date.setTime(date.getTime() - 3600 * 1000 * 24 * 365);
-							return [date, new Date()];
-						}
-					},
-					{
-						text: '一年',
-						value() {
-							const date = new Date();
-							date.setTime(date.getTime() + 3600 * 1000 * 24 * 365);
-							return [new Date(), date];
-						}
-					},
-					{
-						text: '二年',
-						value() {
-							const date = new Date();
-							date.setTime(date.getTime() + 3600 * 1000 * 24 * 365 * 2);
-							return [new Date(), date];
-						}
-					},
-					{
-						text: '三年',
-						value() {
-							const date = new Date();
-							date.setTime(date.getTime() + 3600 * 1000 * 24 * 365 * 3);
-							return [new Date(), date];
-						}
-					},
-					{
-						text: '五年',
-						value() {
-							const date = new Date();
-							date.setTime(date.getTime() + 3600 * 1000 * 24 * 365 * 5);
-							return [new Date(), date];
-						}
-					}
-				],
-				// disabledDate(time) {
-				// 	return time.getTime() > Date.now();
-				// }
-			},
-			optionsQuarter: {
-				shortcuts: [
-					{
-						text: '19年3季度',
-						value() {
-							const startDate = new Date('2019-07-01');
-							const endDate = new Date('2019-09-01');
-							return [startDate, endDate];
-						}
-					},
-					{
-						text: '20年1季度',
-						value() {
-							const startDate = new Date('2020-01-01');
-							const endDate = new Date('2020-03-01');
-							return [startDate, endDate];
-						}
-					}
-				],
-				// disabledDate(time) {
-				// 	console.log(time);
-				// 	return time > 2 && time < 4;
-				// }
-			},
-			optionsQuarterRange: {
-				shortcuts: [
-					{
-						text: '19/2季度～21/3季度',
-						value() {
-							const startDate = new Date('2019-04-01');
-							const endDate = new Date('2021-09-30');
-							return [startDate, endDate];
-						}
-					},
-					{
-						text: '21/2季度～24/4季度',
-						value() {
-							const startDate = new Date('2021-04-01');
-							const endDate = new Date('2024-12-30');
-							return [startDate, endDate];
-						}
-					}
-				],
-			},
 			rangeStart: '',
 			rangeEnd: '',
-			rangeStart2: '',
-			rangeEnd2: '',
 			formValidate: {
 				date: '',
 				daterange: ['2020-04-17 12:00', '2020-04-18 00:00']
@@ -469,9 +201,6 @@ export default {
 	computed: {
 		valueRange() {
 			return [this.rangeStart, this.rangeEnd];
-		},
-		valueRange2() {
-			return [this.rangeStart2, this.rangeEnd2];
 		}
 	},
 	methods: {
@@ -489,15 +218,8 @@ export default {
 			console.log('change', v);
 		},
 		handleRangeChange(v) {
-			console.log(v);
 			this.rangeStart = v[0];
 			this.rangeEnd = v[1];
-			console.log('range-change', v);
-		},
-		handleRangeChange2(v) {
-			console.log(v);
-			this.rangeStart2 = v[0];
-			this.rangeEnd2 = v[1];
 			console.log('range-change', v);
 		},
 		handleYearChange(v) {

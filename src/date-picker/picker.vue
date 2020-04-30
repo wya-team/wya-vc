@@ -1,8 +1,8 @@
 <template>
-	<vc-popover 
+	<vc-popover
 		v-model="isActive"
-		v-bind="$attrs" 
-		:arrow="arrow" 
+		v-bind="$attrs"
+		:arrow="arrow"
 		:trigger="trigger"
 		:tag="tag"
 		:placement="placement"
@@ -41,7 +41,7 @@
 		</slot>
 		<template #content>
 			<!-- 要求value 需转成Date类型，panel内流通的都是Date, panel内的数据都是数组 -->
-			<component 
+			<component
 				:is="panel"
 				:value="currentValue"
 				:type="type"
@@ -53,7 +53,7 @@
 				:format="format"
 				:steps="steps"
 				:multiple="multiple"
-				v-bind="panelOptions" 
+				v-bind="panelOptions"
 				@pick="handlePick"
 				@clear="handleClear"
 				@ok="handleOK"
@@ -93,9 +93,9 @@ export default {
 			'portalClassName'
 		]),
 		...pick(InputMixin.props, [
-			'elementId', 
-			'disabled', 
-			'size', 
+			'elementId',
+			'disabled',
+			'size',
 			'placeholder'
 		]),
 		clearable: {
@@ -207,10 +207,10 @@ export default {
 			// 在panel上点击时，同步focusedDate
 			this.focusedDate = value[0] || prevDate || new Date();
 
-			if (!this.isConfirm && !this.isTime || this.changeOnSelect) { 
+			if (!this.isConfirm && !this.isTime || this.changeOnSelect) {
 				setTimeout(() => { this.isActive = false; }, 100); // 添加延迟，可以让使用者看到选中效果后再关闭弹层
 			}
-			
+
 			this.currentValue = value;
 			(!this.isConfirm || this.changeOnSelect) && this.sync('change', value);
 		},

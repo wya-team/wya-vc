@@ -5,6 +5,7 @@
 				:panel-date="panelDate"
 				:config="shortcuts"
 				@pick="handleShortcutPick"
+				@click="handleShortcutClick"
 			/>
 		</div>
 		<div :class="{'is-with-seconds': showSeconds}" class="vc-date-panel__body">
@@ -228,18 +229,19 @@ export default {
 		handleOK() {
 			this.$emit('ok', this.dates);
 		},
-		handleShortcutPick(date) {
+		handleShortcutPick(value) {
 			// 判断时候在禁用
-			let type = this.disabledDate(date) ? 'disabled' : 'normal';
+			let type = this.disabledDate(value) ? 'disabled' : 'normal';
 			if (type === 'disabled') {
 				return;
 			}
 			if (this.currentView === 'quarter') {
-				this.panelDate = date[0];
-				this.handleQuarterPick(date);
+				this.panelDate = value[0];
+				this.handleQuarterPick(value);
 			} else {
-				this.handlePick(date, { type });
+				this.handlePick(value, { type });
 			}
+			this.handleShortcutClick(this.shortcuts);
 		}
 	},
 };
