@@ -1,6 +1,11 @@
 ## 标签页（Tabs）
+选项卡切换组件
+
+### 何时使用
+提供平级的区域将大块内容进行收纳和展现，保持界面整洁。
 
 ### 基础用法
+基础的、简洁的标签页。
 
 :::RUNTIME
 ```html
@@ -49,19 +54,14 @@ export default {
 			value: 0,
 			list: Array.from({ length: 2 }, (_, i) => i)
 		}
-	},
-	mounted() {
-	},
-	methods: {
 	}
 };
 </script>
-<style>
-</style>
 ```
 :::
 
 ### 卡片化
+设置 `type` 属性为 `card` 就可以使选项卡改变为卡片风格。
 
 :::RUNTIME
 ```html
@@ -111,15 +111,9 @@ export default {
 			value: 0,
 			list: Array.from({ length: 2 }, (_, i) => i)
 		}
-	},
-	mounted() {
-	},
-	methods: {
 	}
 };
 </script>
-<style>
-</style>
 ```
 :::
 
@@ -164,18 +158,11 @@ export default {
 			value: 0,
 			list: Array.from({ length: 2 }, (_, i) => i)
 		}
-	},
-	mounted() {
-	},
-	methods: {
 	}
 };
 </script>
-<style>
-</style>
 ```
 :::
-
 
 ### 自定义标签页
 
@@ -186,7 +173,6 @@ export default {
 		<vc-tabs
 			v-model="value"
 			type="card"
-			closable
 		>
 			<vc-tabs-pane :label="renderLabel">
 				<div v-for="item in list" :key="item">
@@ -218,8 +204,6 @@ export default {
 			list: Array.from({ length: 2 }, (_, i) => i)
 		}
 	},
-	mounted() {
-	},
 	methods: {
 		renderLabel() {
 			return (
@@ -235,7 +219,7 @@ export default {
 							}
 						}
 					/>
-					<span>标签一</span>
+					<span>我是自定义的标签</span>
 				</div>
 			)
 		}
@@ -252,46 +236,36 @@ export default {
 
 ## API
 
-#### 属性
+### 属性
+属性 | 说明 | 类型 | 可选值 | 默认值
+---|---|---|---|---
+value | 当前激活 tab 面板的 name，可以使用 v-model 双向绑定数据 | `String`、`Number` | - | 默认为第一项的 `name`
+type | 页签的基本样式 | `String` | `line`、 `card` | `line`
+size | 尺寸，仅在 `type="line"` 时有效 | `String` | `default`、`small` | `default`
+closable | 是否可以关闭页签，仅在 `type="card"` 时有效 | `Boolean` | - | `false`
+animated | 是否使用 CSS3 动画 | `Boolean` | - | `true`
+name | 当嵌套使用 Tabs，指定 name 区分层级 | `String` | - | -
+average | navbar 是否均分 | `Boolean` | - | `true`
+showAfloat | 是否显示下划线 | `Boolean` | - | `true`
 
-属性 | 说明 | 类型 | 默认值
+### 事件
+事件名 | 说明 | 回调参数 | 参数说明
 ---|---|---|---
-value | 当前激活 tab 面板的 name，可以使用 v-model 双向绑定数据 | `string` | 默认为第一项的 name
-type | 页签的基本样式，可选值为 `line` 和 `card` | `string` | line
-size | 尺寸，可选值为 `default` 和 `small`，仅在 `type="line"` 时有效 | `string` | default
-closable | 是否可以关闭页签，仅在 `type="card"` 时有效 | `boolean` | false
-animated | 是否使用 CSS3 动画 | `boolean` | true
-name | 当嵌套使用 Tabs，指定 name 区分层级 | `string` | -
-average | navbar 是否均分 | `boolean` | true
-showAfloat | 是否显示下划线 | `boolean` | true
+click | tab 被点击时触发 | `(name: String) => void 0`| `name`：点击的选项卡绑定的`name`值
+change | tab 被点击时触发 | `(name: String) => void 0`| `name`：点击的选项卡绑定的`name`值
 
-
-#### 事件
-
-事件名 | 说明 | 参数 | 返回值
----|---|---|---
-click | tab 被点击时触发	 | `name`|---
-
-#### Slot
-
+### Slot
 属性 | 说明
 ---|---
 extra | 附加内容
 
-#### Pane 属性
-
-属性 | 说明 | 类型 | 默认值
----|---|---|---
-name | 用于标识当前面板，对应 value，默认为其索引值 | `string` | -
-label | 选项卡头显示文字，支持 Render 函数。 | `string`、`function` | 空
-icon | 选项卡图标 | `string` | -
-disabled | 是否禁用该选项卡 | `boolean` | false
-closable | 是否可以关闭页签，仅在 `type="card"` 时有效 | `boolean` | null
-tab | 当嵌套使用 Tabs，设置该属性指向对应 Tabs 的 name 字段 | `string` | -
-index | 在 TabPane 使用 v-if 时，并不会按照预先的顺序渲染，这时可设置 index，并从小到大排序(需大于 0) | `number` | -
-
+### Pane 属性
+属性 | 说明 | 类型 | 可选值 | 默认值
+---|---|---|---|---
+name | 用于标识当前面板，对应 value，默认为其索引值 | `String` | - | -
+label | 选项卡头显示文字，支持 Render 函数。 | `String`、`Function` | - | -
+lazy | 标签是否延迟渲染 | `Boolean` | - | `false`
 
 ## TODO
-
 1. 移动端使用touch处理滚动
 2. 初始话带动画时，第一次不设置动画

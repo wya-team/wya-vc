@@ -1,5 +1,9 @@
 ## 功能（Tags）
-各种样式的标签
+进行标记和分类的小标签
+
+### 何时使用
+- 用于标记事物的属性和维度。
+- 进行分类。
 
 ### 基础用法
 使用 `type`、`color` 控制标签的样式
@@ -30,52 +34,39 @@ export default {
 	},
 };
 </script>
-<style>
-
-</style>
 ```
 :::
 
-
 ### 是否可以关闭
-使用 `closable`控制标签是否可以关闭
+使用 `closable`控制标签是否可以关闭，需要配合`close`事件实现关闭效果。
 
 :::RUNTIME
 ```html
 <template>
 	<div class="v-tag-basic">
-		<vc-tag type="border" closable>
-			标签
-		</vc-tag>
-		<vc-tag type="border" closable color="primary">
-			标签一
-		</vc-tag>
-		<vc-tag type="border" closable color="success">
-			标签二
-		</vc-tag>
-		<vc-tag type="border" closable color="error">
-			标签三
-		</vc-tag>
-		<vc-tag type="border" closable color="warning">
-			标签四
-		</vc-tag>
+		<template v-for="tag in borderTags">
+			<vc-tag
+				v-if="tag.show"
+				:key="tag.name"
+				:color="tag.color"
+				closable
+				type="border"
+				@close="handleClose(tag)">
+				{{tag.name}}
+			</vc-tag>
+		</template>
 		<br><br>
-		<vc-tag type="dot" closable>
-			标签
-		</vc-tag>
-		<vc-tag type="dot" closable color="primary">
-			标签一
-		</vc-tag>
-		<vc-tag type="dot" closable color="success">
-			标签二
-		</vc-tag>
-		<vc-tag type="dot" closable color="error">
-			标签三
-		</vc-tag>
-		<vc-tag type="dot" closable color="warning">
-			标签四
-		</vc-tag>
-
+		<template v-for="tag in dotTags">
+			<vc-tag
+				v-if="tag.show"
+				:key="tag.name"
+				:color="tag.color"
+				closable
+				type="dot"
+				@close="handleClose(tag)">
+				{{tag.name}}
+			</vc-tag>
+		</template>
 	</div>
 </template>
 
@@ -85,16 +76,57 @@ export default {
 	components: {
 		"vc-tag": Tag
 	},
+	data() {
+		return {
+			borderTags: [{
+				show: true,
+				name:'标签'
+			}, {
+				show: true,
+				name: '标签一',
+				color: 'primary'
+			}, {
+				show: true,
+				name: '标签二',
+				color: 'success'
+			}, {
+				show: true,
+				name: '标签三',
+				color: 'error'
+			}, {
+				show: true,
+				name: '标签四',
+				color: 'warning'
+			}],
+			dotTags: [{
+				show: true,
+				name:'点类型标签'
+			}, {
+				show: true,
+				name: '点类型标签一',
+				color: 'primary'
+			}, {
+				show: true,
+				name: '点类型标签二',
+				color: 'success'
+			}, {
+				show: true,
+				name: '点类型标签三',
+				color: 'error'
+			}, {
+				show: true,
+				name: '点类型标签四',
+				color: 'warning'
+			}],
+		}
+	},
 	methods:{
-		hanleClose(){
-
+		handleClose(tag){
+			tag.show = false;
 		}
 	}
 };
 </script>
-<style>
-
-</style>
 ```
 :::
 
@@ -105,19 +137,19 @@ export default {
 ```html
 <template>
 	<div class="v-tag-basic">
-		<vc-tag checkable>
+		<vc-tag checkable name="标签" @change="handleChange">
 			标签
 		</vc-tag>
-		<vc-tag checkable color="primary">
+		<vc-tag checkable color="primary" name="标签一" @change="handleChange">
 			标签一
 		</vc-tag>
-		<vc-tag checkable :checked="false" color="success">
+		<vc-tag checkable :checked="false" color="success" name="标签二" @change="handleChange">
 			标签二
 		</vc-tag>
-		<vc-tag checkable checked color="error">
+		<vc-tag checkable checked color="error" name="标签三" @change="handleChange">
 			标签三
 		</vc-tag>
-		<vc-tag checkable :checked="false" color="warning">
+		<vc-tag checkable :checked="false" color="warning" name="标签四" @change="handleChange">
 			标签四
 		</vc-tag>
 	</div>
@@ -129,11 +161,14 @@ export default {
 	components: {
 		"vc-tag": Tag
 	},
+	methods: {
+		handleChange(isChecked, name) {
+			console.log(isChecked);
+			console.log(name);
+		}
+	}
 };
 </script>
-<style>
-
-</style>
 ```
 :::
 
@@ -184,18 +219,12 @@ export default {
 	}
 };
 </script>
-<style>
-
-</style>
 ```
 :::
 
-
-
-### API
+## API
 
 ### 基础属性
-
 属性 | 说明 | 类型 | 可选值 | 默认值
 ---|---|---|---|---
 closable | 标签是否可以关闭 | `Boolean` | - | `false`
@@ -206,8 +235,7 @@ color | 标签颜色，你也可以自定义颜色值。 | `String` | `default`�
 name | 当前标签的名称，使用 v-for，并支持关闭时，会比较有用 | `String`、`Number` | - | -
 
 ### 事件
-
-事件名 | 说明 | 类型 | 参数
+事件名 | 说明 | 回调参数 | 参数说明
 ---|---|---|---|---
-close | 关闭时触发 | `event, name` | ---
-change | 切换选中状态时触发 | `checked, name` | ---
+close | 关闭时触发 | `(event: Event, name: String | Number)` | `event`：事件对象；`name`：当前`tag`的`name`标识
+change | 切换选中状态时触发 | `(checked: Boolean, name: String | Number)` | `checked`：当前选择状态；`name`：当前`tag`的`name`标识

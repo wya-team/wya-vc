@@ -1,7 +1,12 @@
 ## h5弹出层（Toast）
 弹出层适用于h5
 
+### 何时使用
+移动端轻量的提示，自动消失。
+
 ### 基础用法
+通过方法直接调用弹层。
+
 :::RUNTIME
 ```html
 <template>
@@ -31,7 +36,8 @@ export default {
 :::
 
 ### 有loading的弹出层
-弹出窗5秒后消失，可以点击遮罩层提前关闭
+弹出窗5秒后消失，可以点击遮罩层提前关闭。
+
 :::RUNTIME
 ```html
 <template>
@@ -63,13 +69,13 @@ export default {
 </style>
 ```
 :::
-### API
+
+## API
 
 ### 基础属性
-
 属性 | 说明 | 类型 | 可选值 | 默认值
 ---|---|---|---|---
-content | 弹出层内容 | `Function` `String` | - |-
-maskClosable | 点击遮罩层关闭 | `Boolean` | - | true
-duration | 弹出层显示时间 | `Number` | - | 3
-mode | 弹出层类型 | `String` | `info` `loading` | info
+content | 弹出层内容 | `Function`、`String` | - | -
+maskClosable | 点击遮罩层关闭 | `Boolean` | - | `true`
+duration | 弹出层显示时间，单位`s` | `Number` | - | 3
+mode | 弹出层类型 | `String` | `info`、`loading` | `info`

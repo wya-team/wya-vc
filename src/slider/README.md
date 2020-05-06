@@ -1,14 +1,11 @@
 ## 滑块（Slider)
-
-滑动输入器，用于在数值区间/自定义区间内进行选择，支持连续或离散值。
+滑动型输入器，展示当前值和可选范围
 
 ### 何时使用
-
 当用户需要在数值区间/自定义区间内进行选择时，可为连续或离散值。
 
 ### 基本用法
 基本滑动条。可以使用 `v-model` 双向绑定数据。当 `range` 为 `true` 时，渲染为双滑块。当 `disabled` 为 `true` 时，滑块处于不可用状态。
-
 **注意，** 单滑块时，`value` 格式为数字，当开启双滑块时，`value` 为长度是2的数组，且每项为数字。
 
 :::RUNTIME
@@ -36,13 +33,8 @@ export default {
 	},
 }
 </script>
-<style>
-
-</style>
-
 ```
 :::
-
 
 ### 离散值
 
@@ -71,16 +63,10 @@ export default {
 	},
 }
 </script>
-<style>
-
-</style>
-
 ```
 :::
 
-
 ### 显示间断点
-
 通过设置属性 `show-stops` 可以显示间断点，建议在 `step` 间隔不密集时使用。
 
 :::RUNTIME
@@ -106,16 +92,10 @@ export default {
 	},
 }
 </script>
-<style>
-
-</style>
-
 ```
 :::
 
-
 ### 带输入框的滑块
-
 和 `数字输入框` 组件保持同步。
 
 :::RUNTIME
@@ -139,16 +119,10 @@ export default {
 	},
 }
 </script>
-<style>
-
-</style>
-
 ```
 :::
 
-
 ### 自定义提示
-
 `Slider` 会把当前值传给 `formatter`，并在 `popover` 中显示 `formatter` 的返回值，若为 `null`，则隐藏 `popover`。
 
 :::RUNTIME
@@ -182,21 +156,15 @@ export default {
 	}
 }
 </script>
-<style>
-
-</style>
-
 ```
 :::
 
-
 ## API
 
-### Slider props
-
+### 属性
 属性 | 说明 | 类型 | 可选值 | 默认值
 --- | --- | --- | --- | ---
-value | 滑块选定的值，可以使用 v-model 双向绑定数据。普通模式下，数据格式为数字，在双滑块模式下，数据格式为长度是2的数组，且每项都为数字 | `Number`、 `Array` | - | -
+value | 滑块选定的值，可以使用 v-model 双向绑定数据。普通模式下，数据格式为数字，在双滑块模式下，数据格式为长度是2的数组，且每项都为数字 | `Number`、 `Array` | - | 0
 min | 最小值 | `Number` | - | 0
 max | 最大值 | `Number` | - | 100
 step | 步长，取值建议能被（max - min）整除 | `Number` | - | 1
@@ -208,10 +176,8 @@ show-stops | 是否显示间断点，建议在 step 不密集时使用 | `Boolea
 show-tip | 提示的显示控制，可选值为 `hover`（悬停，默认）、`always`（总是可见）、`never`（不可见） | `String` | `hover`、`always`、`never` | `hover`
 formatter | `Slider` 会把当前值传给 `formatter`，并在 `popover` 中显示 `formatter` 的返回值，若为 `null`，则隐藏 `popover` | `Function` | - | -
 
-
-### Slider events
-
-事件名 | 说明 | 参数 | 返回值
+### 事件
+事件名 | 说明 | 回调参数 | 参数说明
 ---|---|---|---
-after-change | 在松开滑动时触发，返回当前的选值，在滑动过程中不会触发，会对外暴露`reset`方法 | value | -
-change | 滑动条数据变化时触发，返回当前的选值，在滑动过程中实时触发，会对外暴露`reset`方法 | value | -
+after-change | 在松开滑动时触发，返回当前的选值，在滑动过程中不会触发，会对外暴露`reset`方法 | `(value: Number | Array, reset: Function) => void 0` | `value`：滑块选定的值；`reset`：重置滑块的方法
+change | 滑动条数据变化时触发，返回当前的选值，在滑动过程中实时触发，会对外暴露`reset`方法 | `(value: Number | Array, reset: Function) => void 0` | `value`：滑块选定的值；`reset`：重置滑块的方法

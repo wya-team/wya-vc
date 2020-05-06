@@ -1,10 +1,11 @@
 ## 加载更多（pull-scroll）
-
 手机端上拉刷新下拉加载
 
-### 基础用法
+### 何时使用
+需要展示数据量很大的列表数据时使用。
 
-以整个window作为容器，滚动条到达屏幕底部触发上拉事件，使用loadData属性进行异步请求
+### 基础用法
+以整个window作为容器，滚动条到达屏幕底部触发上拉事件，使用loadData属性进行异步请求。
 
 :::RUNTIME
 ```vue
@@ -113,13 +114,11 @@ export default {
 	overflow-y: scroll;
 }
 </style>
-
 ```
 :::
 
 ### 容器中的滚动
-
-加入`wrapper`，使scorll可以在元素容器中实现上拉加载下拉刷新
+加入`wrapper`，使scorll可以在元素容器中实现上拉加载下拉刷新。
 
 :::RUNTIME
 ```vue
@@ -132,7 +131,7 @@ export default {
 				:total="total"
 				:height="640"
 				key="1"
-				@pull-start='handlePullStar'
+				@pull-start='handlePullStart'
 				:pull-up='true'
 				:pull-down='true'
 				wrapper
@@ -190,7 +189,7 @@ export default {
 		}
 	},
 	methods: {
-		handlePullStar() {
+		handlePullStart() {
 			console.log('start')
 		},
 		loadData(page, isRefresh) {
@@ -237,13 +236,11 @@ export default {
 	overflow-y: scroll;
 }
 </style>
-
 ```
 :::
 
 ### 下拉加载更多
-
-加入`inverted`，使scorll可以在元素容器中实现下拉加载更多
+加入`inverted`，使scorll可以在元素容器中实现下拉加载更多。
 
 :::RUNTIME
 ```vue
@@ -350,14 +347,11 @@ export default {
 	overflow-y: scroll;
 }
 </style>
-
 ```
 :::
 
-
 ### 瀑布流
-
-用于参差不齐的多列布局
+用于参差不齐的多列布局，通过`cols`控制展示的列数。
 
 :::RUNTIME
 ```vue
@@ -480,48 +474,42 @@ export default {
 	width: 1px
 }
 </style>
-
 ```
 :::
 
+## API
 
-### API
-
-#### 属性
-
+### 属性
 属性 | 说明 | 类型 | 可选值 | 默认值
 ---|---|---|---|---
-pull-down | 是否允许向下拉动操作 | `Boolean` | - | `true`
-pull-up | 是否允许向上拉动操作，为`true`时总是允许，不受`total`限制 | `Boolean` | -| `false`
-scroll | 是否允许进行上拉和下拉操作 | `Boolean` | -| `true`
-height | 滚动区域的高度 | `String`,`Number` | - | `window.innerHeight`
+load-data | 数据加载 | `Function` | - | -
+data-source | 数据源 | `Array` | - | `[]`
 wrapper | 当有`wrapper`为`true`，滚动区域高度为`height`的值，否则高度为`auto` | `Boolean` | - | `false`
+height | 滚动区域的高度 | `String`、`Number` | - | 服务端为0，客户端为`window.innerHeight`
+pull-down | 是否允许向下拉动操作 | `Boolean` | - | `true`
+pull-up | 是否允许向上拉动操作，为`true`时总是允许，不受`total`限制 | `Boolean` | - | `false`
+scroll | 是否允许进行上拉和下拉操作 | `Boolean` | - | `true`
 waterfall | 是否使用瀑布流布局 | `Boolean` | - | `false`
-cols | 瀑布流的列数 | `Number` | -| 2
-gutter | 瀑布流间距[水平间距, 垂直间距] | `Array` | -| `[10, 10]`
-pull-down-text | 下拉到底部的文字信息 | `Object`,`Function` | - | `{ 0: '~', 1: '↓ 下拉刷新', 2: '↑ 释放更新', 3: '加载中...' }`
-pull-up-text | 上拉到顶部的文字信息 | `Object`,`Function` | - | `{ 0: '~', 1: '↑ 上拉加载, 2: '↓ 释放加载更多', 3: '加载中...' }`
-scroll-text | 滚动条中的状态信息 | `Object`,`Function` | - | `{ 0: '上拉加载', 1: '加载中 2: '已全部加载', 3: '网络不稳定，请稍后重试', 4: '没有内容可供显示' }`
-empty-text | 数据为空时显示的文字 | `String`,`Function` | - | `没有内容可供显示`
+cols | 瀑布流的列数 | `Number` | - | 2
+gutter | 瀑布流间距[水平间距, 垂直间距] | `Array` | - | `[10, 10]`
+pull-down-text | 下拉到底部的文字信息 | `Object`、`Function` | - | `{ 0: '~', 1: '↓ 下拉刷新', 2: '↑ 释放更新', 3: '加载中...' }`
+pull-up-text | 上拉到顶部的文字信息 | `Object`、`Function` | - | `{ 0: '~', 1: '↑ 上拉加载, 2: '↓ 释放加载更多', 3: '加载中...' }`
+scroll-text | 滚动条中的状态信息 | `Object`、`Function` | - | `{ 0: '上拉加载', 1: '加载中 2: '已全部加载', 3: '网络不稳定，请稍后重试', 4: '没有内容可供显示' }`
+empty-text | 数据为空时显示的文字 | `String`、`Function` | - | `没有内容可供显示`
 scale-y | 使用`scaleY`对拉动的距离进行缩放 | `Number` | - | `0.4`
 pause-y | 拉动的值超过`pauseY`，即提示释放刷新 | `Number` | - | `75`
 inverted | 是否使用向下拉动加载更多 | `Boolean` | - | `false`
-data-source | 数据源 | `Array` | - | -
 show | 为`false`阻止滚动事件产生数据请求 | `Boolean` | - | `true`
-load-data | 数据加载 | `Function` | - | -
 total | 总页数 | `String`, `Number` | - | -
 
-### 事件/方法
-
-事件名 | 说明 | 参数 | 返回值
+### 事件
+事件名 | 说明 | 回调参数 | 参数说明
 ---|---|---|---
-load-pending | 请求正在加载中的状态 | - | -
-load-success | 请求成功后触发 | - | -
-load-finish | 请求结束，无论请求结果成功还是失败都会触发 | - |
-
+load-pending | 请求正在加载中的状态 | `({ type: String }) => void 0` | `type`：触发请求的类型，可选值为`pull-up`、`scroll`、`pull-down`
+load-success | 请求成功后触发 | `({ data: Object ,type: String }) => void 0` | `data`：加载成功返回的数据；`type`：触发请求的类型，可选值为`pull-up`、`scroll`、`pull-down`
+load-finish | 请求结束，无论请求结果成功还是失败都会触发 | `({ type: String }) => void 0` | `type`：触发请求的类型，可选值为`pull-up`、`scroll`、`pull-down`
 
 ### Slot
-
 属性 | 说明
 ---|---
 header | scroll头部
@@ -531,13 +519,5 @@ scroll-status | 滚动条状态
 pull-down-status | 向下拖动展示的内容
 pull-up-status | 向上拖动展示的内容
 
-
-
-## 基础用法
-
-```jsx
-
-```
 ## TODO
-
 - `SSR`时请求, 服务端会触发一次请求【无意义】， 客服端也会触发请求; 【无意义 -> 初始化直接渲染这些数据，且客服端无需再请求】

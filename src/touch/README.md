@@ -1,5 +1,4 @@
 ## 触摸（Touch）
-
 移动端touch组件
 
 ### 何时使用
@@ -134,39 +133,34 @@ export default {
 	}
 };
 </script>
-
 ```
 :::
 
-### API
+## API
 
 ### 属性
-
 属性 | 说明 | 类型 | 可选值 | 默认值
 ---|---|---|---
 tag | 外层标签 | `String`| `div`、`span`、`p`、`***` | `div`
-flickThreshold | 每毫秒的运动轨迹 | `Number`| - | 0.6
+flickThreshold | 每毫秒的运动轨迹，单位`px` | `Number`| - | 0.6
 prevent | 是否阻止冒泡事件 | `Boolean` | - | `true`
 
-
-### 事件/方法
-
+### 事件
 事件名 | 说明 | 参数 | 返回值
 ---|---|---|---
-tap | 点击事件 | event | -
-long-tap | 长按事件 | event | -
-double-tap | 双击事件 | event | -
-pinch | 缩放事件 | `{scale}`缩放的比例 | -
-rotate | 旋转事件 | `{angle}`旋转角度 | -
-move | 滑动事件 | `{ deltaX, deltaY }`滑动的X轴和Y轴距离位置 | -
-swipe | 滑动事件，无论哪一种类型 | `{ deltaX, deltaY, isFlick }`滑动的X轴和Y轴距离位置，当事件执行的实际每毫秒的运动轨迹超过`flickThreshold`时触发 | -
-swipe-left | 向左滑动 | `{ deltaX, isFlick }`，`deltaX`向左滑动的距离 | -
-swipe-right | 向右滑动 | `{ deltaX, isFlick }`，`deltaX`向右滑动的距离| -
-swipe-up | 向上滑动 | `{ deltaY, isFlick }`，`deltaY`向上滑动的距离 | -
-swipe-down | 向下滑动 | `{ deltaY, isFlick }`，`deltaY`向下滑动的距离 | -
+tap | 点击事件 | `(e: Event) => void 0` | `e`：事件对象
+long-tap | 长按事件 | `(e: Event) => void 0` | `e`：事件对象
+double-tap | 双击事件 | `(e: Event) => void 0` | `e`：事件对象
+pinch | 缩放事件 | `({ scale: Number }) => void 0` | `scale`：缩放的比例
+rotate | 旋转事件 | `({ angle: Number }) => void 0` | `angle`：旋转角度
+move | 滑动事件 | `({ deltaX: Number, deltaY }) => void 0` | `deltaX`：滑动的X轴距离位置；`deltaY`：滑动的Y轴距离位置
+swipe | 滑动事件，无论哪一种类型 | `({ deltaX: Number, deltaY, isFlick: Number }) => void 0` | `deltaX`,`deltaY`：滑动的X轴和Y轴距离位置；`isFlick`：事件执行的实际每毫秒的运动轨迹是否超过`flickThreshold`
+swipe-left | 向左滑动 | `({ deltaX: Number, isFlick: Number }) => void 0` | `deltaX`：向左滑动的距离；`isFlick`：事件执行的实际每毫秒的运动轨迹是否超过`flickThreshold`
+swipe-right | 向右滑动 | `({ deltaX: Number, isFlick: Number }) => void 0` | `deltaX`：向右滑动的距离；`isFlick`：事件执行的实际每毫秒的运动轨迹是否超过`flickThreshold`
+swipe-up | 向上滑动 | `({ deltaY: Number, isFlick: Number }) => void 0` | `deltaY`：向上滑动的距离；`isFlick`：事件执行的实际每毫秒的运动轨迹是否超过`flickThreshold`
+swipe-down | 向下滑动 | `({ deltaY: Number, isFlick: Number }) => void 0` | `deltaY`：向下滑动的距离；`isFlick`：事件执行的实际每毫秒的运动轨迹是否超过`flickThreshold`
 
-#### Slot
-
+### Slot
 属性 | 说明
 ---|---
 `default` | -

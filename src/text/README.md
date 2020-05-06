@@ -1,7 +1,12 @@
 ## 文本（Text）
-文字行数限制（必要时父元素给固定宽度最好）
+文字容器 
+
+### 何时使用
+需要对文本内容机型行数限制（必要时父元素给固定宽度最好）。
 
 ### 基础用法
+通过`value`绑定要显示的文本内容，`line`控制要显示的文本行数。
+
 :::RUNTIME
 ```html
 <template>
@@ -21,9 +26,9 @@
 		</div>
 	</div>
 </template>
-
 <script>
 import { Text, Button } from '@wya/vc';
+
 export default {
 	components: {
 		"vc-text": Text,
@@ -63,12 +68,12 @@ export default {
 	}
 };
 </script>
-<style>
-</style>
 ```
 :::
 
 ### 自定义结尾
+通过`suffix`自定义结尾内容。
+
 :::RUNTIME
 ```html
 <template>
@@ -80,9 +85,9 @@ export default {
 			suffix="我是自定义结尾" />
 	</div>
 </template>
-
 <script>
 import { Text } from '@wya/vc';
+
 export default {
 	components: {
 		"vc-text": Text,
@@ -97,22 +102,18 @@ export default {
 	},
 };
 </script>
-<style>
-</style>
 ```
 :::
 
-
 ## API
 
-#### 属性
-
+### 属性
 属性 | 说明 | 类型 | 可选值 | 默认值
 ---|---|---|---|---
 tag | 渲染的节点类型 | `String` | - | div
 value | 渲染的文本 | `String` | - | -
 line | 行数,为0时默认显示全部 | `Number` | - | 0
 indent | 缩进 | `Number` | - | 0
-suffix | 后缀 | `String` | - | '...'
-renderRow | 自定义渲染 | `Function` | - | '...'
+suffix | 后缀，只有在存在显示不完内容时才会出现 | `String` | - | '...'
+renderRow | 自定义渲染 | `Function` | - | -
 

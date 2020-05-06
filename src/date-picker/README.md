@@ -312,10 +312,10 @@ disabledTime | 设置时分秒禁用状态，参数为当前日期，要求返�
 ### 事件
 事件名 | 说明 | 回调参数 | 参数说明
 ---|---|---|---
-ok | `confirm`模式下点击确定按钮的回调 | `date`、`dateArray` | -
-clear | 点击清除按钮的回调 | `date`、`dateArray` | -
-change | 点击面板时的回调 | `date`、`dateArray` | -
-visible-change | 面板显示隐藏时的回调 | `visible` | -
+ok | `confirm`模式下点击确定按钮的回调 | `(date: Date | Array) => void 0` | `date`: 选中的日期值
+clear | 点击清除按钮的回调 | `(date: Date | Array) => void 0` | `date`: 当前日期值
+change | 点击面板时的回调 | `(date: Date | Array) => void 0` | `date`: 当前日期值
+visible-change | 面板显示隐藏时的回调 | `(visible: Boolean) => void 0` | `visible`：当前面板显示状态
 
 ### Slot
 属性 | 说明

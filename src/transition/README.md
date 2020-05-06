@@ -1,14 +1,13 @@
 ## 过渡动画（Transition）
-
 基于Vue内置Transition组件封装
 
 ### 何时使用
-
-- 使用过渡动画来优化体验
+- 使用过渡动画来优化用户体验。
 
 ### 基础用法
 
 #### fade
+淡入淡出效果。
 
 :::RUNTIME
 ```html
@@ -23,7 +22,6 @@
 		</vc-transition-fade>
 	</div>
 </template>
-
 <script>
 import { Transition, Switch } from '@wya/vc';
 
@@ -44,6 +42,7 @@ export default {
 :::
 
 #### scale
+放大缩小效果。
 
 :::RUNTIME
 ```html
@@ -58,7 +57,6 @@ export default {
 		</vc-transition-scale>
 	</div>
 </template>
-
 <script>
 import { Transition, Switch } from '@wya/vc';
 
@@ -79,6 +77,7 @@ export default {
 :::
 
 #### slide
+上下滑动效果
 
 :::RUNTIME
 ```html
@@ -114,6 +113,7 @@ export default {
 :::
 
 #### zoom
+急速扩大后缩小效果。
 
 :::RUNTIME
 ```html
@@ -149,6 +149,7 @@ export default {
 :::
 
 #### collapse
+折叠隐藏效果。
 
 :::RUNTIME
 ```html
@@ -163,7 +164,6 @@ export default {
 		</vc-transition-collapse>
 	</div>
 </template>
-
 <script>
 import { Transition, Switch } from '@wya/vc';
 
@@ -184,6 +184,7 @@ export default {
 :::
 
 #### 列表过渡
+列表内使用。
 
 :::RUNTIME
 ```html
@@ -255,44 +256,38 @@ export default {
 
 ## API
 
-#### 属性
-
+### 属性
 属性 | 说明 | 类型 | 可选值 | 默认值
 ---|---|---|---|---
-group | 是否使用`transition-group` | `Boolean` | - | false
-duration | 进入/离开持续时间 | `Number|Object` | - | `{enter: 0.3, leave: 0.3}`
-delay | 进入/离开延迟时间 | `Number|Object` | - | `{enter: 0.3, leave: 0.3}`
+group | 是否使用`transition-group` | `Boolean` | - | `false`
+duration | 进入/离开持续时间 | `Number`、`Object` | - | `{enter: 0.3, leave: 0.3}`
+delay | 进入/离开延迟时间 | `Number`、`Object` | - | `{enter: 0.3, leave: 0.3}`
 tag | 同`transition-group` tag | `String` | - | `span`
 origin | 变换的初始位置, 可以用style代替, 更短~~ | `String` | - | -
 styles | 转换期间应用的元素样式 | `Object` | - | `{}`
 appear | 是否在初始渲染时使用过渡（Vue内置Transition组件的属性） | `Boolean` | - | `false`
 
-
-#### vc-transition-slide 属性
-
+### vc-transition-slide 属性
 属性 | 说明 | 类型 | 可选值 | 默认值
 ---|---|---|---|---
 mode | slide方向 | `String` | `left`、`right`、`down`、`up` | `left`
 
-#### vc-transition-scale 属性
-
+### vc-transition-scale 属性
 属性 | 说明 | 类型 | 可选值 | 默认值
 ---|---|---|---|---
 mode | scale规则 | `String` | `both`、`part`、`x`、`y`、`none` | `both`
 
-#### vc-transition-zoom 属性
-
+### vc-transition-zoom 属性
 属性 | 说明 | 类型 | 可选值 | 默认值
 ---|---|---|---|---
 mode | zoom规则 | `String` | `x`、`y`、`center`、`none` | `x`
 
-#### 事件
-
-事件名 | 说明 | 类型 | 参数
+### 事件
+事件名 | 说明 | 回调参数 | 参数说明
 ---|---|---|---|---
-before-enter | 进入之前的回调 | - | el
-enter | 进入的回调 | - | el
-after-enter | 进入之后的回调 | - | el
-before-leave | 离开之前的回调 | - | el
-leave | 离开的回调 | - | el
-after-leave | 离开之后的回调 | - | el
+before-enter | 进入之前的回调 | `(el: Object) => void 0` | `el`：当前触发事件节点元素
+enter | 进入的回调 | `(el: Object) => void 0` | `el`：当前触发事件节点元素
+after-enter | 进入之后的回调 | `(el: Object) => void 0` | `el`：当前触发事件节点元素
+before-leave | 离开之前的回调 | `(el: Object) => void 0` | `el`：当前触发事件节点元素
+leave | 离开的回调 | `(el: Object) => void 0` | `el`：当前触发事件节点元素
+after-leave | 离开之后的回调 | `(el: Object) => void 0` | `el`：当前触发事件节点元素

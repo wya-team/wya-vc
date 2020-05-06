@@ -20,10 +20,6 @@ import { Spin } from '@wya/vc';
 export default {
 	components: {
 		"vc-spin": Spin
-	},
-	mounted() {
-	},
-	methods: {
 	}
 }
 </script>
@@ -35,7 +31,7 @@ export default {
 ```
 
 ### 各种大小
-通过`size`属性控制加载中样式的大小
+通过`size`属性控制加载中样式的大小，单位`px`。
 
 :::RUNTIME
 ```html
@@ -52,10 +48,6 @@ import { Spin } from '@wya/vc';
 export default {
 	components: {
 		"vc-spin": Spin
-	},
-	mounted() {
-	},
-	methods: {
 	}
 }
 </script>
@@ -105,10 +97,6 @@ export default {
 		return {
 			showSpin: true
 		}
-	},
-	mounted() {
-	},
-	methods: {
 	}
 }
 </script>
@@ -132,6 +120,7 @@ export default {
 ::: 
 
 ### 添加加载中的文案
+
 :::RUNTIME
 ```html
 <template>
@@ -157,10 +146,6 @@ export default {
 		return {
 			showSpin: true
 		}
-	},
-	mounted() {
-	},
-	methods: {
 	}
 }
 </script>
@@ -176,17 +161,15 @@ export default {
 
 ## API
 
-### Spin props
-
+### 属性
 属性 | 说明 | 类型 | 可选值 | 默认值
 ---|---|---|--- | ---
 size | Spin尺寸 | `Number` | - | `28`
 background | 背景色 | `String` | - | `#108ee9`
 foreground | loading指示颜色 | `Strinng` | - | `#ccc`
 
-### Spin slot
-
+### slot
 名称 | 说明
 --- | ---
 loading | 自定义 Spin 的内容，设置slot后，默认的样式不生效
-- | 自定义加载中的文案
+default | 自定义加载中的文案
