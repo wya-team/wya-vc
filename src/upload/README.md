@@ -1,10 +1,10 @@
 ## 上传（Upload）
-
 上传功能
 
 ### 何时使用
-
-选择图片或选择文件上传时。
+上传是将信息（网页、文字、图片、视频等）通过网页或者上传工具发布到远程服务器上的过程。
+- 当需要上传一个或一些文件时。
+- 当需要使用拖拽交互时。
 
 ### 基础用法
 
@@ -83,13 +83,12 @@ export default {
 			file_name: ''
 		};
 	},
-	computed: {
-
-	},
 	methods: {
-		handleFileSuccess(res, file) {
+		handleFileSuccess(res, file, opt) {
 			console.log(`Success：${file.current}, 总数：${file.total}`);
 			console.log(res);
+			console.log('file',file)
+			console.log('opt',opt);
 			Message.destroy();
 			Message.success({
 				content: `上传成功`
@@ -207,9 +206,6 @@ export default {
 			list: []
 		};
 	},
-	computed: {
-
-	},
 	methods: {
 		handleError(error) {
 			console.error(error.msg);
@@ -218,6 +214,7 @@ export default {
 		 * 总线
 		 */
 		handleBegin(files) {
+			console.log(`上传中`);
 			console.log(files);
 			Message.loading({
 				content: `上传中`
@@ -233,16 +230,18 @@ export default {
 		 */
 		handleFileBefore(file, fileList) {
 			console.log(`上传之前`);
+			console.log(file, fileList)
 			return new Promise((resolve, reject) => {
 				resolve(file);
 			});
 		},
 		handleFileStart(file) {
 			console.log(`开始上传`);
+			console.log(file)
 		},
 		handleFileSuccess(res, file) {
-			console.log(`Success：${file.current}, 总数：${file.total}`);
-			console.log(res);
+			console.log(`上传成功`);
+			console.log(res, file);
 			Message.destroy();
 			Message.success({
 				content: `上传成功`
@@ -251,12 +250,12 @@ export default {
 			this.list.push(res.data.url);
 		},
 		handleFileProgress(e, file) {
-			console.log(`Progress: 当前：${file.current}, 总数：${file.total}`);
-			console.log(e.percent);
+			console.log(`file-progress`);
+			console.log(e, file);
 		},
 		handleFileError(res, file) {
 			console.log(`Error: 当前：${file.current}, 总数：${file.total}`);
-			console.log(res);
+			console.log(res, file);
 			Message.destroy();
 			Message.error({
 				content: res.msg || 'test'
@@ -280,47 +279,43 @@ export default {
 ```
 :::
 
-### API
+## API
 
 ### 属性
-
 属性 | 说明 | 类型 | 可选值 | 默认值
----|---|---|---
-tag | 外层标签 | `String`、 `Object`、`() => String` |`span / div / **`| `span`
-multiple | 多图上传 | `Boolean` | - | `false`
+---|---|---|---|---
+tag | 外层标签 | `String`、`Object`、`Function` | - | `span`
+multiple | 多文件上传 | `Boolean` | - | `false`
 max | 一次性最多选择的文件数量 `multiple` 为 `true` 或者 `directory` 为 `true` 时才有效 | `Number` | - | 1
 disabled | 禁用 | `Boolean` | - | `false`
 accept | 文件格式 | `String` | - | -
 mode | 文件归类（images / file）,提前定位文件类型（内置图片压缩） | `String` | - | `images`
 ajax | 请求函数 | `() => Promise`| - | -
-url | ajax:url -> 默认通过`VcInstance.init`注册 | `String` | - |-
+url | ajax:url -> 默认通过`VcInstance.init`注册 | `String` | - | -
 async | 是否使用异步 | `Boolean` | - | `true`
 name | 上传给后端获取的key | `String` | - | -
-size | 限制上传文件大小, 默认不限制（单位：mb） | `Number` | - | `0`
+size | 限制上传文件大小, 默认不限制（单位：mb） | `Number` | - | 0
 extra | ajax需要传递的参数 | `Object` | - | {}
 headers | ajax: headers | `Object` | - | {}
 show-tips | 展示显示进度弹窗 | `Boolean` | - | `false`
 directory | 是否选取文件夹 | `Boolean` | - | `false`
 parallel | 是否并发执行 | `Boolean` | - | `true`
 
-
-### 事件/方法
-
-事件名 | 说明 | 类型 | 参数
+### 事件
+事件名 | 说明 | 回调参数 | 参数说明
 ---|---|---|---
-file-before | 单个文件上传前回调(进度) | - | -
-file-start | 单个文件上传开始回调 | - | -
-file-progress | 单个文件上传过程回调(e.percent, file.current, file.total等可用参数) | `(e, file) => void` | -
-file-success | 单个文件上传过程成功回调(res, file.current, file.total等可用参数) | `(res, file) => void` | -
-file-error | 单个文件上传过程失败回调(res, file.current, file.total等可用参数) | `(res, file) => void` | -
-begin | 一个周期上传前的回调(info: {}) | `(files) => void` | -
-complete | 一个周期上传后的回调(info: {}) | `(info) => void` | -
-error | 组件内部报错回调 | `(error) => void` | -
+file-before | 单个文件上传前回调(进度) | `(file: File, fileList: Array) => void 0` | `file`：当前上传的文件；`fileList`：上传的文件数组
+file-start | 单个文件上传开始回调 | `(file: File) => void 0` | `file`：当前上传的文件
+file-progress | 单个文件上传过程回调 | `(e: Event, file: File) => void 0` | `e`：上传事件对象；`file`：上传的文件
+file-success | 单个文件上传过程成功回调 | `(res: Object, file: File, info: Object) => void 0` | `res`：上传结果；`file`：上传的文件；`info`：上传信息对象
+file-error | 单个文件上传过程失败回调 | `(res: Object, file: File, info: Object) => void 0` | `res`：上传结果；`file`：上传的文件；`info`：上传信息对象
+begin | 一个周期上传前的回调 | `(fileList: Array) => void 0` | `fileList`：上传的文件数组
+complete | 一个周期上传后的回调 | `(info: Object) => void 0` | `info`：上传信息对象
+error | 组件内部报错回调 | `(error: Object) => void 0` | `error`：错误信息
 post-before | 文件上传前回调（处理异步） | - | -
 post-after | 文件上传后回调 | - | -
 
 ### Slot
-
 属性 | 说明
 ---|---
-default | 触发器
+default | 上传文件触发器
