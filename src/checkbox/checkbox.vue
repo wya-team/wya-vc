@@ -7,7 +7,7 @@
 			<input
 				:checked="checked"
 				:name="name"
-				:disabled="disabled"
+				:disabled="isDisabled"
 				type="checkbox"
 				@change="handleChange"
 				@focus="handleFocus"

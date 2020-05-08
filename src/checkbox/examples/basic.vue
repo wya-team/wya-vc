@@ -17,12 +17,18 @@
 				<span>Snapchat</span>
 			</vc-checkbox>
 		</vc-checkbox-group>
-		<vc-checkbox-group v-model="fruit">
+		<vc-checkbox-group v-model="fruit" :min="1" :max="3">
 			<vc-checkbox label="香蕉" />
 			<vc-checkbox label="苹果" />
 			<vc-checkbox label="西瓜" />
+			<vc-checkbox label="凤梨" />
 		</vc-checkbox-group>
-
+		<vc-checkbox-group v-model="fruit" disabled>
+			<vc-checkbox label="香蕉" />
+			<vc-checkbox label="苹果" />
+			<vc-checkbox label="西瓜" />
+			<vc-checkbox label="凤梨" />
+		</vc-checkbox-group>
 		<!-- indeterminate -->
 		<div style="border-bottom: 1px solid #e9e9e9;padding-bottom:6px;margin-bottom:6px;">
 			<vc-checkbox
@@ -53,7 +59,7 @@ export default {
 		return {
 			single: true,
 			social: ['facebook', 'github'],
-			fruit: ['苹果'],
+			fruit: ['香蕉', '西瓜', '苹果', '凤梨'],
 
 			indeterminate: true,
 			checkAll: false,
