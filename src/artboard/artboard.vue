@@ -46,7 +46,7 @@ export default {
 		}, 0);
 	},
 	beforeDestroy() {
-		this.removeEvent();
+		this.operateDOMEvents('remove');
 	},
 	methods: {
 		init() {
@@ -67,7 +67,7 @@ export default {
 				});
 			} : this.handleMove;
 			this.initCanvas();
-			this.addEvent();
+			this.operateDOMEvents('add');
 			// 对外暴露canvas对象
 			this.getInstance && this.getInstance(this);
 		},
@@ -95,28 +95,19 @@ export default {
 			context.lineJoin = 'round';
 			Object.assign(context, this.options);
 		},
-		addEvent() {
+		operateDOMEvents(type) {
+			// 直接使用 this.canvas.addEventListener 赋值的fn执行的时候函数指向window
+			let fn = type === 'add' ? document.addEventListener.bind(this.canvas) : document.removeEventListener.bind(this.canvas);
+			
 			if (Device.touch) {
-				this.canvas.addEventListener('touchstart', this.handleStatrt);
-				this.canvas.addEventListener('touchmove', this.optimizedMove);
-				this.canvas.addEventListener('touchend', this.handleEnd);
+				fn('touchstart', this.handleStatrt);
+				fn('touchmove', this.optimizedMove);
+				fn('touchend', this.handleEnd);
 			} else {
-				this.canvas.addEventListener('mousedown', this.handleStatrt);
-				this.canvas.addEventListener('mousemove', this.optimizedMove);
-				this.canvas.addEventListener('mouseup', this.handleDrawEnd);
-				this.canvas.addEventListener('mouseleave', this.handleDrawEnd);
-			}
-		},
-		removeEvent() {
-			if (Device.touch) {
-				this.canvas.removeEventListener('touchstart', this.handleStatrt);
-				this.canvas.removeEventListener('touchmove', this.optimizedMove);
-				this.canvas.removeEventListener('touchend', this.handleEnd);
-			} else {
-				this.canvas.removeEventListener('mousedown', this.handleStatrt);
-				this.canvas.removeEventListener('mousemove', this.optimizedMove);
-				this.canvas.removeEventListener('mouseup', this.handleDrawEnd);
-				this.canvas.removeEventListener('mouseleave', this.handleDrawEnd);
+				fn('mousedown', this.handleStatrt);
+				fn('mousemove', this.optimizedMove);
+				fn('mouseup', this.handleDrawEnd);
+				fn('mouseleave', this.handleDrawEnd);
 			}
 		},
 		// 步骤发生变化，向外暴露change事件
@@ -144,7 +135,8 @@ export default {
 		},
 		handleMove(e) {
 			e.preventDefault();
-			if (this.pressed) {
+			
+			if (this.pressed && this.canvas.contains(e.target)) {
 				this.getPoint(e);
 				this.context.lineTo(this.point.x, this.point.y);
 				this.context.stroke();
