@@ -106,6 +106,43 @@ export default {
 ```
 :::
 
+### Checkbox组
+通过`max`、`min`限制可勾选的最大最小数量。
+
+:::RUNTIME
+```html
+<template>
+	<div>
+		<vc-checkbox-group v-model="checkedFruits" :max="2" :min="1" >
+			<vc-checkbox 
+				v-for="fruit in fruits"
+				:key="fruit"
+				:label="fruit" 
+			/>
+		</vc-checkbox-group>
+	</div>
+</template>
+
+<script>
+import { Checkbox } from '@wya/vc';
+
+export default {
+	name: 'runtime-group',
+	components: {
+		'vc-checkbox': Checkbox,
+		'vc-checkbox-group': Checkbox.Group,
+	},
+	data() {
+		return {
+			fruits: ['Apple', 'Bananer', 'mongo'],
+			checkedFruits: ['Apple']
+		}
+	}
+}
+</script>
+```
+:::
+
 ### indeterminate 状态
 `indeterminate` 属性用以表示 checkbox 的不确定状态，一般用于实现全选的效果。
 
@@ -189,15 +226,12 @@ change | 只在单独使用时有效。在选项状态发生改变时触发，�
 属性 | 说明 | 类型 | 可选值 | 默认值
 ---|---|---|---|---
 value | 指定选中项目的集合，可以使用 v-model 双向绑定数据 | `Array` | - | - | []
+min | 可被勾选的 checkbox 的最小数量 | `Number` | - | -
+max | 可被勾选的 checkbox 的最大数量 | `Number` | - | -
+disabled | 是否禁用 | `Boolean` | - | `false`
 
 ### Group 事件
 事件名 | 说明 | 回调参数 | 参数说明
 ---|---|---|---
 change | 在选项状态发生改变时触发。通过修改外部的数据改变时不会触发 | `(value: Array) => void 0` | `value`：已选中的数组
 
-### Group 属性 TODO
-属性 | 说明 | 类型 | 可选值 | 默认值
----|---|---|---|---
-min | 可被勾选的 checkbox 的最小数量 | `Number` | - | -
-max | 可被勾选的 checkbox 的最大数量 | `Number` | - | -
-disabled | 是否禁用 | `Boolean` | - | `false`

@@ -45,8 +45,10 @@
 			<vcm-form-item prop="start" label="开始时间">
 				<vcm-date-picker
 					v-model="formValidate.start"
-					:max-date="formValidate.end"
-					mode="datetime"
+					:min-date="new Date('1900')"
+					:max-date="new Date()"
+					mode="yearmonth"
+					format="YYYY-MM"
 				/>
 			</vcm-form-item>
 			<vcm-form-item prop="start" label="结束时间">
