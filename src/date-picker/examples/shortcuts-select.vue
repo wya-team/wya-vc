@@ -5,7 +5,7 @@
 		<vc-date-picker
 			:value="valueRange2"
 			:options="dateRangeOptions"
-			type="datetimerange"
+			type="daterange"
 			clearable
 			placeholder="Select date"
 			style="width: 300px"
@@ -55,7 +55,6 @@
 			@change="handleQuarterChange"
 		/>
 		<h2>QuarterRange-shortcuts</h2>
-		{{ quarterrange }}
 		<vc-date-picker
 			v-model="quarterrange"
 			type="quarterrange"
@@ -125,6 +124,12 @@ export default {
 							const endDate = new Date('2021-01-01');
 							return [startDate, endDate];
 						}
+					},
+					{
+						text: 'onClick方法',
+						onClick: (picker) => {
+							console.log(picker);
+						}
 					}
 				]
 			},
@@ -169,6 +174,12 @@ export default {
 							date.setTime(date.getTime() + 3600 * 1000 * 24 * 365 * 5);
 							return date;
 						}
+					},
+					{
+						text: 'onClick方法',
+						onClick: (picker) => {
+							console.log(picker);
+						}
 					}
 				]
 			},
@@ -200,14 +211,8 @@ export default {
 					},
 					{
 						text: 'onClick方法',
-						onClick: () => {
-							const num = Math.random() * 10;
-							const date = new Date();
-							if (num > 5) {
-								this.value = new Date(date.setTime(date.getTime() - 3600 * 1000 * 24 * 365));
-							} else {
-								this.value = new Date(date.setTime(date.getTime() - 3600 * 1000 * 24 * 365 * 2));
-							}
+						onClick: (picker) => {
+							console.log(picker);
 						}
 					}
 				],
@@ -228,7 +233,7 @@ export default {
 					{
 						text: '一年',
 						value() {
-							const date = new Date();
+							let date = new Date();
 							date.setTime(date.getTime() + 3600 * 1000 * 24 * 365);
 							return [new Date(), date];
 						}
@@ -236,7 +241,7 @@ export default {
 					{
 						text: '二年',
 						value() {
-							const date = new Date();
+							let date = new Date();
 							date.setTime(date.getTime() + 3600 * 1000 * 24 * 365 * 2);
 							return [new Date(), date];
 						}
@@ -244,7 +249,7 @@ export default {
 					{
 						text: '三年',
 						value() {
-							const date = new Date();
+							let date = new Date();
 							date.setTime(date.getTime() + 3600 * 1000 * 24 * 365 * 3);
 							return [new Date(), date];
 						}
@@ -252,9 +257,15 @@ export default {
 					{
 						text: '五年',
 						value() {
-							const date = new Date();
+							let date = new Date();
 							date.setTime(date.getTime() + 3600 * 1000 * 24 * 365 * 5);
 							return [new Date(), date];
+						}
+					},
+					{
+						text: 'onClick方法',
+						onClick: (picker) => {
+							console.log(picker);
 						}
 					}
 				],
@@ -279,6 +290,12 @@ export default {
 							const endDate = new Date('2020-03-01');
 							return [startDate, endDate];
 						}
+					},
+					{
+						text: 'onClick方法',
+						onClick: (picker) => {
+							console.log(picker);
+						}
 					}
 				],
 				// disabledDate(time) {
@@ -302,6 +319,12 @@ export default {
 							const startDate = new Date('2021-04-01');
 							const endDate = new Date('2024-12-30');
 							return [startDate, endDate];
+						}
+					},
+					{
+						text: 'onClick方法',
+						onClick: (picker) => {
+							console.log(picker);
 						}
 					}
 				],

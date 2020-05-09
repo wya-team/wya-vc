@@ -442,9 +442,6 @@ export default {
 			this.$emit('ok', this.dates);
 		},
 		handleShortcutPick(value) {
-			// if (type === 'disabled') {
-			// 	return;
-			// }
 			if (this.disabledDate(value[0]) || this.disabledDate(value[1])) {
 				return;
 			}
@@ -453,7 +450,8 @@ export default {
 			this.leftPanelDate = value[0];
 			this.rightPanelDate = value[1];
 			this.dates = value;
-			// this.$emit('pick', this.dates);
+			this.$emit('pick', this.dates);
+
 		}
 	},
 };

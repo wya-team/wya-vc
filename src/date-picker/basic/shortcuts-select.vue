@@ -15,7 +15,6 @@
 
 <script>
 import { Utils } from '@wya/utils';
-import { prevYear, nextYear, prevMonth, nextMonth } from '../helper/date-utils';
 import Icon from '../../icon/index';
 
 export default {
@@ -42,7 +41,7 @@ export default {
 			if (value) {
 				this.$emit('pick', value());
 			}
-			onClick && onClick();
+			onClick && onClick(this.$parent);
 		}
 	},
 };

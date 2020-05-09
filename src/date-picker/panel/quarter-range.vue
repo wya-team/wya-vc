@@ -187,8 +187,6 @@ export default {
 		handleShortcutPick(value) {
 			this.leftPanelDate = value[0];
 			this.rightPanelDate = value[1];
-			this.handlePick(value[0], 'left');
-			this.handlePick(value[1], 'right');
 			this.dates = value;
 			this.rangeState = {
 				from: value[0],
@@ -196,6 +194,7 @@ export default {
 				selecting: true,
 				to: value[1]
 			};
+			this.handlePick(value, 'left');
 			this.handleRangeChange(value);
 		}
 	},
