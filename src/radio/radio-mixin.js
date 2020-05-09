@@ -80,7 +80,7 @@ export default {
 	},
 	methods: {
 		handleChange(e) {
-			if (this.disabled) {
+			if (this.isDisabled) {
 				return false;
 			}
 			let checked = e.target.checked;
