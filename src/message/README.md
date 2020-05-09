@@ -211,6 +211,7 @@ duration | 自动关闭的延时，单位秒，不关闭可以写 0 | `Number` |
 closable | 手动关闭提示 | `Boolean` | - | `false`
 render | 自定义描述内容，使用 Vue 的 Render 函数 | `Function` | - | -
 mode | 提示主题 | `String` | `info`、`loading`、`success`、`error`、`warning` | `info`
+top | `Message` 距离窗口顶部的偏移量，单位`px` | `Number` | - | 30
 
 ### 事件
 事件名 | 说明 | 回调参数 | 参数说明

@@ -60,7 +60,7 @@ export default {
 			Message.info('可关闭的提示', 3, {
 				closable: true,
 				duration: 0,
-				top: 200
+				top: 100
 			});
 		},
 		handleClickrender() {

@@ -76,7 +76,7 @@ export default {
 		},
 		top: {
 			type: Number,
-			default: 0,
+			default: 30,
 		},
 		closable: {
 			type: Boolean,
