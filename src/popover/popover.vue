@@ -5,6 +5,8 @@
 		style="position: relative;"
 		@focus="isFocus && handleChange($event, { visible: true })"
 		@blur="isFocus && handleChange($event, { visible: false })"
+		@mousedown="isFocus && handleChange($event, { visible: true })"
+		@mouseup="isFocus && handleChange($event, { visible: false })"
 		@mouseenter="isHover && handleChange($event, { visible: true })"
 		@mouseleave="isHover && handleChange($event, { visible: false })"
 		@click="isClick && handleChange($event, { visible: !isActive })"
