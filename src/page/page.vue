@@ -121,7 +121,6 @@
 				<vc-select
 					v-model="currentPageSize"
 					:placement="placement" 
-					:portal="portal" 
 					:extra="`${currentPageSize} 条/页`"
 					style="width: 90px; margin-right: 10px;"
 					@change="handleChangePageSize"
@@ -188,10 +187,6 @@ export default {
 		placement: {
 			type: String,
 			default: 'bottom'
-		},
-		portal: {
-			type: Boolean,
-			default: true
 		},
 		showCount: {
 			type: Boolean,
