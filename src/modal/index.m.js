@@ -1,4 +1,4 @@
-import MModalManager from './mobile/manager';
+import MModalManager from './mobile/modal-manager';
 import MModal from './mobile/modal';
 
 MModalManager.allowMethod.forEach(m => {
@@ -6,5 +6,6 @@ MModalManager.allowMethod.forEach(m => {
 		return MModalManager[m](userOptions);
 	};
 });
+MModal.destroy = MModalManager.destroy;
 
 export default MModal;

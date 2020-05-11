@@ -2,12 +2,12 @@
 	<label :class="classes" class="vc-checkbox">
 		<span class="vc-checkbox__wrapper">
 			<span class="vc-checkbox__border">
-				<span class="vc-checkbox__inner"/>
+				<span class="vc-checkbox__inner" />
 			</span>
 			<input
 				:checked="checked"
 				:name="name"
-				:disabled="disabled"
+				:disabled="isDisabled"
 				type="checkbox"
 				@change="handleChange"
 				@focus="handleFocus"
@@ -28,7 +28,7 @@ export default {
 };
 </script>
 <style lang="scss">
-@import '../style/index.scss';
+@import '../style/vars.scss';
 
 @include block(vc-checkbox) {
 	cursor: pointer;

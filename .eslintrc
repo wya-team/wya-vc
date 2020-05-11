@@ -46,6 +46,20 @@
 		}],
 		"vue/require-default-prop": 0, // 可以不传递props
 		"vue/name-property-casing": ["warn", "kebab-case"],
+
+		// -- start TODO: Fix, 临时处理
+		"vue/no-v-html": 0,
+		"vue/no-unused-vars": 0,
+		"vue/no-unused-components": 0,
+		"vue/no-use-v-if-with-v-for": 0,
+		"vue/no-template-shadow": 0,
+		"vue/require-prop-type-constructor": 0,
+		"no-mixed-operators": 0,
+		"no-async-promise-executor": 0,
+		"no-self-assign": 0,
+		"operator-assignment": 0,
+		// -- end
+	
 		// airbnb 
 		"comma-dangle": ["warn", {
 			"arrays": "never",
@@ -73,6 +87,7 @@
 		"import/newline-after-import": ["warn"],
 		"import/first": 0,
 		"import/no-unresolved": 0,
+		"import/extensions": 0,
 		"no-multiple-empty-lines": 0,
 		"no-restricted-globals": 0,
 		"no-param-reassign": 0,

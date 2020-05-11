@@ -58,7 +58,7 @@ export default {
 	async mounted() {
 		// auto init if `options` is already provided
 		if (this.options) {
-			let echarts = await import('node_modules/echarts');
+			let echarts = window.echarts || await import('echarts');
 			// 兼容webpack 3.0/4.0 写法
 			this.echartsInstance = echarts.default ? echarts.default : echarts;
 
@@ -160,6 +160,7 @@ export default {
 			if (this.chart || !this.echartsInstance) {
 				return;
 			}
+
 			// this.echartsInstance = await import("echarts");
 			// console.log(this.echartsInstance);
 			let chart = this.echartsInstance.init(this.$el, this.theme, this.initOptions);

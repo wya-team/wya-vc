@@ -49,7 +49,7 @@ export default {
 		classes() {
 			return { 
 				'is-checked': this.checked, 
-				'is-disabled': this.disabled,
+				'is-disabled': this.isDisabled,
 				'is-focus': this.isFocus,
 			};
 		},
@@ -62,6 +62,9 @@ export default {
 			return this.group 
 				? this.group.currentValue === this.label
 				: this.currentValue === this.trueValue;
+		},
+		isDisabled() {
+			return this.group ? this.group.disabled || this.disabled : this.disabled;
 		}
 	},
 	watch: {
@@ -77,7 +80,7 @@ export default {
 	},
 	methods: {
 		handleChange(e) {
-			if (this.disabled) {
+			if (this.isDisabled) {
 				return false;
 			}
 			let checked = e.target.checked;

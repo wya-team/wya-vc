@@ -42,8 +42,9 @@
 							<div 
 								v-if="closable && !mode" 
 								class="vc-modal__close" 
-								@click="handleClose($event, true)">
-								<vc-icon type="close"/>
+								@click="handleClose($event, true)"
+							>
+								<vc-icon type="close" />
 							</div>
 						</slot>
 					</div>
@@ -62,18 +63,21 @@
 								v-if="cancelText"
 								style="margin-right: 8px;"
 								@click="handleBefore($event, handleCancel)"
-							>{{ cancelText }}</vc-button>
+							>
+								{{ cancelText }}
+							</vc-button>
 							<vc-button 
 								v-if="okText"
 								type="primary"
 								@click="handleBefore($event, handleOk)"
-							>{{ okText }}</vc-button>
+							>
+								{{ okText }}
+							</vc-button>
 						</slot>
 					</div>
 				</div>
 			</vc-transition-scale>
 		</div>
-		
 	</div>
 </template>
 <script>
@@ -85,6 +89,7 @@ import Transition from '../transition';
 import Customer from "../customer/index";
 import { VcInstance } from "../vc/index";
 import { Resize, getUid } from '../utils/index';
+import { IS_SERVER } from '../utils/constant';
 
 
 let zIndexNumber = 1002;
@@ -215,11 +220,13 @@ export default {
 			return {
 				width: `${this.defaultSize.width}px`,
 				minHeight: `${this.defaultSize.height}px`,
-				maxHeight: `${window.innerHeight - 20}px`,
+
+				// 注: 服务端渲染为0, 在客服端激活前，展示端存在问题【高度不定】
+				maxHeight: IS_SERVER ? 0 : `${window.innerHeight - 20}px`,
 			};
 		},	
 		draggableStyle() {
-			if (!this.draggable) return;
+			if (IS_SERVER || !this.draggable) return;
 
 			let left = this.x || window.innerWidth / 2 - this.defaultSize.width / 2;
 			let top = this.y || window.innerHeight / 2 - this.defaultSize.height / 2;
@@ -335,6 +342,7 @@ export default {
 		},
 
 		handleBefore(e, hook) {
+			if (!this.isActive) return;
 			let callback = () => {
 				this.isActive = false;
 			};
@@ -427,7 +435,7 @@ export default {
 };
 </script>
 <style lang="scss">
-@import '../style/index.scss';
+@import '../style/vars.scss';
 
 @include block(vc-modal) {
 	@include element(mask) {

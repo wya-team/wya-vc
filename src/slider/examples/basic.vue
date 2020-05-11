@@ -7,21 +7,21 @@
 			show-tip="always"
 			@after-change="handleChange"
 		/>
-		<vc-slider v-model="value11" show-tip="never"/>
+		<vc-slider v-model="value11" show-tip="never" />
 		<vc-slider v-model="value12" />
-		<vc-slider v-model="value2" range/>
-		<vc-slider v-model="value3" range disabled/>
+		<vc-slider v-model="value2" range />
+		<vc-slider v-model="value3" range disabled />
 		<p>离散值</p>
-		<vc-slider v-model="value4" :step="0.01"/>
-		<vc-slider v-model="value5" :step="10" range/>
+		<vc-slider v-model="value4" :step="0.01" />
+		<vc-slider v-model="value5" :step="10" range />
 		<p>显示中间断点</p>
-		<vc-slider v-model="value6" :step="10" show-stops/>
-		<vc-slider v-model="value7" :step="10" show-stops range/>
+		<vc-slider v-model="value6" :step="10" show-stops />
+		<vc-slider v-model="value7" :step="10" show-stops range />
 		<p>带有输入框</p>
-		<vc-slider v-model="value8" show-input/>
+		<vc-slider v-model="value8" show-input />
 		<p>自定义提示</p>
-		<vc-slider v-model="value9" :tip-format="format"/>
-		<vc-slider v-model="value10" :tip-format="hideFormat"/>
+		<vc-slider v-model="value9" :tip-format="format" />
+		<vc-slider v-model="value10" :tip-format="hideFormat" />
 		<vc-form
 			ref="form"
 			:model="formValidate" 
@@ -29,10 +29,12 @@
 			style="padding: 20px"
 		>
 			<vc-form-item prop="value" @on-form-change="handleFormChange">
-				<vc-slider v-model="formValidate.value" :clickable="false"/>
+				<vc-slider v-model="formValidate.value" :clickable="false" />
 			</vc-form-item>
-			<div @click="handleSubmit">提交</div>
-		</vc-form >
+			<div @click="handleSubmit">
+				提交
+			</div>
+		</vc-form>
 	</div>
 </template>
 <script>

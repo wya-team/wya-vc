@@ -10,14 +10,20 @@
 			@cancel="handleCancel"
 			@ok="handleOk"
 		>
-			<vc-button type="primary">点我</vc-button>
+			<vc-button type="primary">
+				点我
+			</vc-button>
 			<template #content>
 				<div>222</div>
 			</template>
 		</vc-popconfirm>
 
-		<vc-button @click="handleVisible">外部点击</vc-button>
-		<vc-button @click="handleTrigger">{{ trigger }}</vc-button>
+		<vc-button @click="handleVisible">
+			外部点击
+		</vc-button>
+		<vc-button @click="handleTrigger">
+			{{ trigger }}
+		</vc-button>
 	</div>
 </template>
 <script>

@@ -49,13 +49,18 @@
 			:auto="auto"
 			v-on="hooks"
 		>
-			<div v-if="$slots.header || $scopedSlots.header" ref="header"><slot name="header" /></div>
-			<div v-if="$slots.content || $scopedSlots.content" ref="content"><slot name="content" /></div>
+			<div v-if="$slots.header || $scopedSlots.header" ref="header">
+				<slot name="header" />
+			</div>
+			<div v-if="$slots.content || $scopedSlots.content" ref="content">
+				<slot name="content" />
+			</div>
 			<div 
 				v-if="waterfall" 
 				ref="waterfall" 
 				:style="{ height: waterfallHeight + 'px' }"
-				class="vc-pull-scroll__waterfall">
+				class="vc-pull-scroll__waterfall"
+			>
 				<!-- 项目中统一使用it, key由slot决定 -->
 				<template v-for="(item, index) in dataSource">
 					<slot 
@@ -72,7 +77,9 @@
 					<slot :it="item" :index="index" />
 				</template>
 			</template>
-			<div v-if="$slots.footer || $scopedSlots.footer" ref="footer"><slot name="footer" /></div>
+			<div v-if="$slots.footer || $scopedSlots.footer" ref="footer">
+				<slot name="footer" />
+			</div>
 		</vc-core>
 		<slot 
 			v-if="!inverted && scroll"
@@ -111,10 +118,11 @@
  */
 import { pick, throttle } from 'lodash';
 import { Resize } from '../utils/index';
-import Core from './core.vue';
-import ScrollStatus from './scroll-status.vue';
-import PullDownStatus from './pull-down-status.vue';
-import PullUpStatus from './pull-up-status.vue';
+import { IS_SERVER } from '../utils/constant';
+import Core from './core';
+import ScrollStatus from './scroll-status';
+import PullDownStatus from './pull-down-status';
+import PullUpStatus from './pull-up-status';
 
 export default {
 	name: "vc-pull-scroll",
@@ -127,7 +135,8 @@ export default {
 	props: {
 		height: {
 			type: [String, Number],
-			default: window.innerHeight,
+			// 注: 服务端渲染为0, 在客服端激活前，展示端存在问题【高度不定】
+			default: IS_SERVER ? 0 : window.innerHeight,
 		},
 		pullDown: {
 			type: Boolean,
@@ -195,7 +204,7 @@ export default {
 			pullUpStatus: 0,
 			prePullUpStatus: 0,
 
-			// 页面
+			// 页面, TODO: 开发人员传入current后，重新计算scrollStatus【仅首次计算】【主要是页面间切换，数据缓存时用】
 			currentPage: 0,
 
 			// 内容的高度 是否大于 容器的高度，默认false

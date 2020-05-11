@@ -1,6 +1,6 @@
-import Item from './dropdown-item.vue';
-import Menu from './dropdown-menu.vue';
-import Dropdown from './dropdown.vue';
+import Item from './dropdown-item';
+import Menu from './dropdown-menu';
+import Dropdown from './dropdown';
 
 Dropdown.Item = Item;
 Dropdown.Menu = Menu;

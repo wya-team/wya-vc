@@ -1,6 +1,6 @@
 <template>
 	<div>
-		<vcm-switch v-model="single" open="开" close="关" @change="handleChange"/>
+		<vcm-switch v-model="single" open="开" close="关" @change="handleChange" />
 
 		<vcm-switch :value="true" />
 		<vcm-switch :value="false" />

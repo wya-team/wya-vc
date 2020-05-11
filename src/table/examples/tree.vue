@@ -1,8 +1,12 @@
 <template>
 	<div style="padding: 20px">
 		<h1>Tree</h1>
-		<vc-button @click="expandSelectable = !expandSelectable, key++">expandSelectable: {{ expandSelectable }}</vc-button>
-		<vc-button @click="handleUpdate">update</vc-button>
+		<vc-button @click="expandSelectable = !expandSelectable, key++">
+			expandSelectable: {{ expandSelectable }}
+		</vc-button>
+		<vc-button @click="handleUpdate">
+			update
+		</vc-button>
 		<br>
 		<br>
 		<vc-table

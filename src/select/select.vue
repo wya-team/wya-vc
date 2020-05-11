@@ -1,7 +1,7 @@
 <template>
 	<vc-popover 
-		v-bind="$attrs"
-		v-model="isActive" 
+		v-model="isActive"
+		v-bind="$attrs" 
 		:arrow="arrow" 
 		:trigger="trigger"
 		:tag="tag"
@@ -339,7 +339,7 @@ export default {
 </script>
 
 <style lang='scss'>
-@import '../style/index.scss';
+@import '../style/vars.scss';
 
 $block: vc-select;
 

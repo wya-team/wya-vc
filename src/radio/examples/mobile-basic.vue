@@ -11,16 +11,16 @@
 		>
 			<vcm-form-item prop="animal" label="动物：">
 				<vcm-radio-group v-model="formValidate.animal" vertical>
-					<vcm-radio label="金斑蝶"/>
-					<vcm-radio label="爪哇犀牛"/>
-					<vcm-radio label="印度黑羚"/>
+					<vcm-radio label="金斑蝶" />
+					<vcm-radio label="爪哇犀牛" />
+					<vcm-radio label="印度黑羚" />
 				</vcm-radio-group>
 			</vcm-form-item>
 			<vcm-form-item prop="animal" label="动物：">
 				<vcm-radio-group v-model="formValidate.animal">
-					<vcm-radio label="金斑蝶"/>
-					<vcm-radio label="爪哇犀牛"/>
-					<vcm-radio label="印度黑羚"/>
+					<vcm-radio label="金斑蝶" />
+					<vcm-radio label="爪哇犀牛" />
+					<vcm-radio label="印度黑羚" />
 				</vcm-radio-group>
 			</vcm-form-item>
 		</vcm-form>
@@ -29,12 +29,12 @@
 			<vcm-list :border="false">
 				<vcm-list-item :arrow="false">
 					<template #label>
-						<vcm-radio label="金斑蝶"/>
+						<vcm-radio label="金斑蝶" />
 					</template>
 				</vcm-list-item>
 				<vcm-list-item :arrow="false">
 					<template #label>
-						<vcm-radio label="爪哇犀牛"/>
+						<vcm-radio label="爪哇犀牛" />
 					</template>
 				</vcm-list-item>
 			</vcm-list>

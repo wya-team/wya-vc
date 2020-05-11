@@ -1,10 +1,18 @@
 <template>
 	<div style="padding: 100px">
-		<vc-button @click="handleModal">点击出现对话框</vc-button>
-		<vc-button @click="handleModal2">点击出现对话框,点击遮罩不能关闭</vc-button>
-		<vc-button @click="handleModal3">create-portal</vc-button>
-		<vc-button type="primary" @click="handleModal4">Modal.methods</vc-button>
-		<div style="width: 100%; height: 2000px"/>
+		<vc-button @click="handleModal">
+			点击出现对话框
+		</vc-button>
+		<vc-button @click="handleModal2">
+			点击出现对话框,点击遮罩不能关闭
+		</vc-button>
+		<vc-button @click="handleModal3">
+			create-portal
+		</vc-button>
+		<vc-button type="primary" @click="handleModal4">
+			Modal.methods
+		</vc-button>
+		<div style="width: 100%; height: 2000px" />
 		<vc-modal 
 			v-model="visible1"
 			:mask-closable="true"
@@ -13,8 +21,12 @@
 			@cancel="handleCancel"
 			@ok="handleOk"
 		>
-			<vc-button type="primary" @click="handleModal4">Modal.methods</vc-button>
-			<template #footer>222</template>
+			<vc-button type="primary" @click="handleModal4">
+				Modal.methods
+			</vc-button>
+			<template #footer>
+				222
+			</template>
 		</vc-modal>
 		<vc-modal 
 			v-model="visible2"

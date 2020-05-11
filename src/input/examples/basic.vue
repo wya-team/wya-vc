@@ -41,7 +41,9 @@
 					@blur="handleBlur"
 					@enter="handleEnter"
 				>
-					<p slot="append" style="background: red">icon</p>
+					<p slot="append" style="background: red">
+						icon
+					</p>
 				</vc-input>
 			</div>
 			<vc-input 
@@ -77,7 +79,9 @@
 					/>
 				</vc-form-item>
 				<vc-form-item>
-					<div @click="handleSubmit">Submit</div>
+					<div @click="handleSubmit">
+						Submit
+					</div>
 				</vc-form-item>
 			</vc-form>
 
@@ -120,7 +124,9 @@
 		<br>
 		<br>
 		<br>
-		<vc-button @click="disabled = !disabled">切换disabled: {{ disabled }}</vc-button>
+		<vc-button @click="disabled = !disabled">
+			切换disabled: {{ disabled }}
+		</vc-button>
 	</div>
 </template>
 <script>

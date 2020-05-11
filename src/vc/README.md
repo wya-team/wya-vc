@@ -4,10 +4,11 @@
 
 ## 方法
 
-方法 | 说明 | 类型 | 默认值
----|---|---|---
-init | 初始化 | `any` | -
-clear | 删除api式组件 | `func` | `(cName, focre){}`
+方法名 | 说明 | 参数
+---|---|---
+init | 初始化 | -
+clear | 清理Portals类型组件 | `Function` | `cName`：清理的组件名；`force`：是否强制清理
+clearAll | 清理全部组件 | -
 
 > clear() 清理需要自动销毁的组件，clear(null, true), 强制清除所有组件；clear('xxx'), 清理单个
 

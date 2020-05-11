@@ -1,7 +1,7 @@
 <template>
 	<vc-popover
-		v-bind="$attrs"
 		v-model="isActive"
+		v-bind="$attrs"
 		:portal-class-name="['is-padding-none', portalClassName]"
 		:trigger="trigger"
 		:arrow="arrow"
@@ -260,7 +260,7 @@ export default {
 };
 </script>
 <style lang="scss">
-@import '../style/index.scss';
+@import '../style/vars.scss';
 $block: vc-color-picker;
 
 @include block($block) {

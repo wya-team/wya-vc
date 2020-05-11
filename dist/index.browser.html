@@ -1,0 +1,25 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<meta charset="UTF-8">
+	<title>Document</title>
+	<link rel="stylesheet" href="../lib/vc.min.css"></link>
+</head>
+<body>
+	<h1>包含所有资源，包括vue</h1>
+	<div id="app"></div>
+	<div id="app1"></div>
+	<script src="../lib/vc.browser.js"></script>
+	<script>
+		WYA_VC.install(); // 含Vue
+
+		let vm = new Vue({
+			el: '#app',
+			data: {
+				val: '222'
+			},
+			template: '<vc-editor style="width: 100%"/>'
+		});
+	</script>
+</body>
+</html>

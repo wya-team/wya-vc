@@ -1,13 +1,21 @@
 <template>
 	<div style="padding: 100px">
-		<h3 v-if="!isGroup" @click="handleClick"> 点击触发: {{ visible }} </h3>
+		<h3 v-if="!isGroup" @click="handleClick">
+			点击触发: {{ visible }}
+		</h3>
 		<template v-else-if="isGroup">
-			<h3 @click="handleAdd"> 添加: {{ colors.length }} </h3>
-			<h3 @click="handleDel"> 删除: {{ colors.length }} </h3>
+			<h3 @click="handleAdd">
+				添加: {{ colors.length }}
+			</h3>
+			<h3 @click="handleDel">
+				删除: {{ colors.length }}
+			</h3>
 		</template>
 		
 
-		<h3 @click="handleGroup"> 切换为组合: {{ isGroup }} </h3>
+		<h3 @click="handleGroup">
+			切换为组合: {{ isGroup }}
+		</h3>
 		<div style="display: flex; align-items: center">
 			<select v-model="transitionName">
 				<option 
@@ -78,17 +86,17 @@
 	</div>
 </template>
 <script>
-import Transtion from '..';
+import Transition from '..';
 
 let count = 0;
 export default {
 	name: "vc-transtion-basic",
 	components: {
-		'vc-transition-fade': Transtion.Fade,
-		'vc-transition-scale': Transtion.Scale,
-		'vc-transition-slide': Transtion.Slide,
-		'vc-transition-zoom': Transtion.Zoom,
-		'vc-transition-collapse': Transtion.Collapse
+		'vc-transition-fade': Transition.Fade,
+		'vc-transition-scale': Transition.Scale,
+		'vc-transition-slide': Transition.Slide,
+		'vc-transition-zoom': Transition.Zoom,
+		'vc-transition-collapse': Transition.Collapse
 	},
 	data() {
 		return {

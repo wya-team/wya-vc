@@ -13,8 +13,10 @@
 				@error="handleError"
 			/>
 		</vcm-form-item>
-		<div @click="handleSubmit">提交</div>
-	</vcm-form >
+		<div @click="handleSubmit">
+			提交
+		</div>
+	</vcm-form>
 </template>
 <script>
 import { ajax } from '@wya/http';

@@ -1,5 +1,5 @@
-import Tabs from './tabs.vue';
-import TabsPane from './tabs-pane.vue';
+import Tabs from './tabs';
+import TabsPane from './tabs-pane';
 
 Tabs.Pane = TabsPane;
 export default Tabs;

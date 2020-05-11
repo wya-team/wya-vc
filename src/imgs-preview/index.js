@@ -1,5 +1,5 @@
+import './third.scss';
 import { Func } from './core';
-
 import ImgsPreview from './imgs-preview';
 
 ImgsPreview.open = Func.popup;

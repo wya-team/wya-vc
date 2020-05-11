@@ -12,10 +12,10 @@
 						{{ extra }}
 					</slot>
 				</div>
-				<vc-icon 
-					v-if="arrow" 
-					:type="icon" 
-					class="vcm-list-item__icon" 
+				<vc-icon
+					v-if="arrow"
+					:type="icon"
+					class="vcm-list-item__icon"
 				/>
 			</div>
 		</div>
@@ -61,7 +61,7 @@ export default {
 			type: Boolean,
 			default: false
 		},
-		to: String | Object,
+		to: [String, Object],
 		method: {
 			type: String,
 			default: 'push',
@@ -100,11 +100,11 @@ export default {
 			};
 		},
 		icon() {
-			return typeof arrow === 'string' ? arrow : 'right';
+			return typeof this.arrow === 'string' ? this.arrow : 'right';
 		}
 	},
 	watch: {
-		
+
 	},
 	created() {
 	},
@@ -125,7 +125,7 @@ export default {
 </script>
 
 <style lang="scss">
-@import '../../style/index.scss';
+@import '../../style/vars.scss';
 
 @include block(vcm-list-item) {
 	@include element(wrapper) {

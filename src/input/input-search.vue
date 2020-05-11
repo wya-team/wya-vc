@@ -17,10 +17,12 @@
 			<slot name="append">
 				<div :class="{ 'is-disabled': binds.disabled }" class="vc-input-search__content">
 					<vc-icon 
-						v-if="enterTxt === true" 
+						v-if="enterText === true" 
 						:type="append || 'search'"
 					/>
-					<template v-else>{{ enterTxt }}</template>
+					<template v-else>
+						{{ enterText }}
+					</template>
 				</div>
 			</slot>
 		</template>
@@ -45,7 +47,7 @@ export default {
 </script>
 
 <style lang="scss">
-@import '../style/index.scss';
+@import '../style/vars.scss';
 
 $block: vc-input-search;
 

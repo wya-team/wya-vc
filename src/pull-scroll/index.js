@@ -1,1 +1,1 @@
-export { default } from './pull-scroll.vue';
+export { default } from './pull-scroll';

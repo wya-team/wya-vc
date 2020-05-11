@@ -4,9 +4,9 @@
 		<!-- 组件展示 -->
 		<vc-table 
 			ref="table" 
+			:key="attrs.lazy" 
 			:data-source="dataSource" 
 			v-bind="attrs" 
-			:key="attrs.lazy" 
 			v-on="hooks"
 		>
 			<vc-table-item>
@@ -77,18 +77,38 @@
 		<br>
 		<!-- 控制区域 -->
 		<div>
-			<vc-button @click="handleTableAttr('border')">border: {{ attrs.border }}</vc-button>
-			<vc-button @click="handleTableAttr('stripe')">stripe: {{ attrs.stripe }}</vc-button>
-			<vc-button @click="handleTableAttr('maxHeight')">maxHeight: {{ attrs.maxHeight }}</vc-button>
-			<vc-button @click="handleTableAttr('rowClassName')">rowClassName: {{ typeof attrs.rowClassName }}</vc-button>
-			<vc-button @click="handleTableAttr('showSummary')">showSummary: {{ attrs.showSummary }}</vc-button>
-			<vc-button @click="handleTableAttr('lazy')">lazy: {{ attrs.lazy }}</vc-button>
+			<vc-button @click="handleTableAttr('border')">
+				border: {{ attrs.border }}
+			</vc-button>
+			<vc-button @click="handleTableAttr('stripe')">
+				stripe: {{ attrs.stripe }}
+			</vc-button>
+			<vc-button @click="handleTableAttr('maxHeight')">
+				maxHeight: {{ attrs.maxHeight }}
+			</vc-button>
+			<vc-button @click="handleTableAttr('rowClassName')">
+				rowClassName: {{ typeof attrs.rowClassName }}
+			</vc-button>
+			<vc-button @click="handleTableAttr('showSummary')">
+				showSummary: {{ attrs.showSummary }}
+			</vc-button>
+			<vc-button @click="handleTableAttr('lazy')">
+				lazy: {{ attrs.lazy }}
+			</vc-button>
 			<br>	
 			<br>
-			<vc-button @click="handleCloumn('add')">Add Columns</vc-button>
-			<vc-button @click="handleCloumn('remove')">Remove Columns</vc-button>
-			<vc-button @click="handleCloumn('update')">Update Columns</vc-button>
-			<vc-button @click="handleCloumnAttr('fixed')">fixed: {{ columnAttrs.fixed }}(需要多个columns)</vc-button>
+			<vc-button @click="handleCloumn('add')">
+				Add Columns
+			</vc-button>
+			<vc-button @click="handleCloumn('remove')">
+				Remove Columns
+			</vc-button>
+			<vc-button @click="handleCloumn('update')">
+				Update Columns
+			</vc-button>
+			<vc-button @click="handleCloumnAttr('fixed')">
+				fixed: {{ columnAttrs.fixed }}(需要多个columns)
+			</vc-button>
 			<vc-button 
 				@click="handleCloumnAttr('showPopover')"
 			>
@@ -97,16 +117,28 @@
 			<br>
 			<br>
 			<br>
-			<vc-button @click="handleRow('add')">Add Row</vc-button>
-			<vc-button @click="handleRow('remove')">Remove Row</vc-button>
-			<vc-button @click="handleRow('update')">Update Row</vc-button>
+			<vc-button @click="handleRow('add')">
+				Add Row
+			</vc-button>
+			<vc-button @click="handleRow('remove')">
+				Remove Row
+			</vc-button>
+			<vc-button @click="handleRow('update')">
+				Update Row
+			</vc-button>
 			<br>
 
 			<br>
 			<br>
-			<vc-button @click="selection = !selection">selection: {{ selection }}</vc-button>
-			<vc-button @click="$refs.table.toggleAllSelection()">Select All</vc-button>
-			<vc-button @click="$refs.table.toggleRowSelection(dataSource[1])">Select One</vc-button>
+			<vc-button @click="selection = !selection">
+				selection: {{ selection }}
+			</vc-button>
+			<vc-button @click="$refs.table.toggleAllSelection()">
+				Select All
+			</vc-button>
+			<vc-button @click="$refs.table.toggleRowSelection(dataSource[1])">
+				Select One
+			</vc-button>
 		</div>
 	</div>
 </template>

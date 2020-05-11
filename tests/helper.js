@@ -2,13 +2,17 @@ import Vue from 'vue';
 
 const Global = window || global || this || {};
 
-const createEl = () => {
+export const createEl = () => {
 	const el = document.createElement('div');
 
 	el.id = `app__${Math.random()}`;
 	document.body.appendChild(el);
 
 	return el;
+};
+
+export const destroyEl = (el) => {
+	el.parentNode && el.parentNode.removeChild(el);
 };
 
 export const requestAnimationFrame = Global.requestAnimationFrame || function (cb) {
@@ -47,6 +51,7 @@ export const createComponent = (wrapper, propsData, options = {}) => {
  */
 
 export const destroyVM = (vm) => {
+	if (!vm) return;
 	vm.$destroy && vm.$destroy();
 	vm.$el 
 		&& vm.$el.parentNode 
@@ -104,6 +109,19 @@ export const triggerClick = (el, ...opts) => {
 export const triggerKeyDown = (el, keyCode) => {
 	const evt = document.createEvent('Events');
 	evt.initEvent('keydown', true, true);
+	evt.keyCode = keyCode;
+	el.dispatchEvent(evt);
+};
+
+/**
+ * 触发 keyup 事件
+ * @param {Element} el
+ * @param {keyCode} int
+ */
+
+export const triggerKeyUp = (el, keyCode) => {
+	const evt = document.createEvent('Events');
+	evt.initEvent('keyup', true, true);
 	evt.keyCode = keyCode;
 	el.dispatchEvent(evt);
 };

@@ -5,7 +5,9 @@
 		class="vc-popup-basic-tip"
 		@visible-change="handleChange"
 	>
-		<div @click="handleClose">点击关闭</div>
+		<div @click="handleClose">
+			点击关闭
+		</div>
 		tip <br>
 		tip <br>
 		tip <br>

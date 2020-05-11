@@ -4,9 +4,8 @@
 			<slot name="extra" />
 		</div>
 		<div ref="wrapper" :style="{ padding: scrollable && '0 24px' }" class="vc-tabs__bar">
-
-			<vc-icon v-if="scrollable" class="vc-tabs__icon is-left" type="left" @click="handlePrev"/>
-			<vc-icon v-if="scrollable" class="vc-tabs__icon is-right" type="right" @click="handleNext"/>
+			<vc-icon v-if="scrollable" class="vc-tabs__icon is-left" type="left" @click="handlePrev" />
+			<vc-icon v-if="scrollable" class="vc-tabs__icon is-right" type="right" @click="handleNext" />
 
 			<div ref="scroll" class="vc-tabs__scroll">
 				<div ref="nav" :style="scrollStyle" class="vc-tabs__nav">
@@ -21,8 +20,7 @@
 						:class="[{ 'is-active': item.name == currentName }]"
 						class="vc-tabs__item"
 						@click="handleChange(index)"
-					>	
-
+					>
 						<slot :it="item" :index="index" name="label">
 							<span v-if="typeof item.label === 'string'" v-html="item.label" />
 							<vc-customer 
@@ -37,7 +35,6 @@
 					</div>
 				</div>
 			</div>
-			
 		</div>
 		<div :style="contentStyle" class="vc-tabs__content">
 			<slot />
@@ -191,7 +188,7 @@ export default {
 </script>
 
 <style lang="scss">
-@import '../style/index.scss';
+@import '../style/vars.scss';
 
 @include block(vc-tabs) {
 	@include element(bar) {

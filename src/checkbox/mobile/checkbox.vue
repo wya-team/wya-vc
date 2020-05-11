@@ -2,7 +2,7 @@
 	<label :class="classes" class="vcm-checkbox">
 		<span class="vcm-checkbox__wrapper">
 			<span class="vcm-checkbox__border">
-				<span class="vcm-checkbox__inner"/>
+				<span class="vcm-checkbox__inner" />
 			</span>
 			<input
 				:checked="checked"
@@ -28,7 +28,7 @@ export default {
 };
 </script>
 <style lang="scss">
-@import '../../style/index.scss';
+@import '../../style/vars.scss';
 
 @include block(vcm-checkbox) {
 	cursor: pointer;

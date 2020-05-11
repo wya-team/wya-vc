@@ -42,7 +42,7 @@
 					<vc-icon type="right" />
 				</button>
 			</vc-transition-slide>
-			<slot/>
+			<slot />
 		</div>
 		<ul
 			v-if="dots"
@@ -144,7 +144,7 @@ export default {
 </script>
 
 <style lang="scss">
-@import '../style/index.scss';
+@import '../style/vars.scss';
 
 @include block(vc-carousel) {
 	position: relative;

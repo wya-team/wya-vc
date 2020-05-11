@@ -11,7 +11,13 @@ export default {
 		value: {
 			type: Array,
 			default: () => ([])
-		}
+		},
+		disabled: {
+			type: Boolean,
+			default: false
+		},
+		min: Number,
+		max: Number,
 	},
 	provide() {
 		return { checkboxGroup: this };

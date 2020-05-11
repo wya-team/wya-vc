@@ -9,10 +9,18 @@
 			@change="handleChange" 
 		/>	
 		<div style="margin-top: 20px;">
-			<vc-button @click="handleReset">重置画布</vc-button>
-			<vc-button @click="handleGetImg">生成图片</vc-button>
-			<vc-button @click="handleUndo">回退一步</vc-button>
-			<vc-button @click="handleRedo">取消回退</vc-button>
+			<vc-button @click="handleReset">
+				重置画布
+			</vc-button>
+			<vc-button @click="handleGetImg">
+				生成图片
+			</vc-button>
+			<vc-button @click="handleUndo">
+				回退一步
+			</vc-button>
+			<vc-button @click="handleRedo">
+				取消回退
+			</vc-button>
 		</div>
 		<img :src="src" alt="">
 	</div>
@@ -20,14 +28,14 @@
 
 <script>
 import Message from '../../message';
-import button from '../../button';
-import artboard from '../artboard.vue';
+import Button from '../../button';
+import Artboard from '../artboard';
 
 export default {
 	name: 'v-artboard',
 	components: {
-		'vc-artboard': artboard,
-		'vc-button': button,
+		'vc-artboard': Artboard,
+		'vc-button': Button,
 	},
 	props: {
 	},

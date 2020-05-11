@@ -1,1 +1,1 @@
-export { default } from './mobile/toast';
+export { default } from './mobile/toast-manager';

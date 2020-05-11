@@ -16,6 +16,8 @@
 			:data-source="dataSource"
 			:load-data="loadData"
 			:allow-dispatch="false"
+			:alphabetical="alphabetical"
+			:alphabet-key="alphabetKey"
 		/>
 	</vcm-picker-popup>
 </template>
@@ -48,7 +50,9 @@ const wrapperComponent = {
 		...pick(MCascaderView.props, [
 			'value',
 			'dataSource',
-			'loadData'
+			'loadData',
+			'alphabetical',
+			'alphabetKey'
 		]),
 		visible: { // sync
 			type: Boolean,
@@ -136,11 +140,14 @@ export const Func = new Portal(wrapperComponent, {
 </script>
 
 <style lang="scss">
-@import '../../style/index.scss';
+@import '../../style/vars.scss';
 
 @include block(vcm-cascader-picker-popup) {
 	.vcm-popup__wrapper {
 		max-height: 80vh;
+		height: 80vh;
+		display: flex;
+		flex-direction: column;
 	}
 }
 </style>

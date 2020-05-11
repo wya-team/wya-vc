@@ -15,7 +15,7 @@
 				{{ closeText }}
 			</slot>	
 		</span>
-		<span class="vc-switch__inner"/>
+		<span class="vc-switch__inner" />
 		<vc-spin 
 			v-if="loading" 
 			:size="14"
@@ -37,7 +37,7 @@ export default {
 };
 </script>
 <style lang="scss">
-@import '../style/index.scss';
+@import '../style/vars.scss';
 
 @include block(vc-switch) {
 	display: inline-block;

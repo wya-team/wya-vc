@@ -16,7 +16,7 @@
 			v-show="!isActive"
 			class="vcm-carousel-item__mask"
 		/>
-		<slot/>
+		<slot />
 	</div>
 </template>
 
@@ -30,7 +30,7 @@ export default {
 </script>
 
 <style lang="scss">
-@import '../../style/index.scss';
+@import '../../style/vars.scss';
 
 @include block(vcm-carousel-item) {
 	position: absolute;

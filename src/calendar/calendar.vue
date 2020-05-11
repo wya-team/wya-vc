@@ -28,8 +28,8 @@
 					<div v-for="i in 6" :key="i" class="vc-calendar-row">
 						<span
 							v-for="(item, index) in dateArr.data.slice((i - 1) * 7, (i - 1) * 7 + 7)"
-							:class="`vc-calendar-row__item is-${item.type}`"
 							:key="index"
+							:class="`vc-calendar-row__item is-${item.type}`"
 						>
 							<slot
 								:date="item" 
@@ -223,7 +223,7 @@ export default {
 };
 </script>
 <style lang="scss">
-@import '../style/index.scss';
+@import '../style/vars.scss';
 $block: vc-calendar;
 
 @include block($block) {

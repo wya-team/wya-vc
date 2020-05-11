@@ -331,7 +331,7 @@ export default class Node {
 
 	doCreateChildren(array, defaultProps = {}) {
 		array.forEach((item) => {
-			this.insertChild(Object.assign({ data: item }, defaultProps), undefined, true);
+			this.insertChild({ data: item, ...defaultProps }, undefined, true);
 		});
 	}
 

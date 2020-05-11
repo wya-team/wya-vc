@@ -11,11 +11,16 @@
 				ref="editor"
 				v-model="formValidate.value"
 				:disabled="disabled"
+				:options="editorOption"
+				style="width: 100%;height: 500px"
+				@change="handleInput"
 			/>
 		</vc-form-item>
 		<vc-editor-view :content="formValidate.value" />
-		<vc-button @click="handleSubmit">提交</vc-button>
-	</vc-form >
+		<vc-button @click="handleSubmit">
+			提交
+		</vc-button>
+	</vc-form>
 </template>
 <script>
 import Form from '../../form';
@@ -27,9 +32,44 @@ import { VcInstance } from '../../vc/index';
 
 VcInstance.init({
 	Upload: {
-		URL_UPLOAD_IMG_POST: 'https://wyaoa-new.ruishan666.com/uploadfile/upimg.json?action=uploadimage&encode=utf-8&code=oa',
-		URL_UPLOAD_FILE_POST: 'https://wyaoa-new.ruishan666.com/uploadfile/upimg.json?action=uploadimage&encode=utf-8&code=oa',
-		FORM_NAME: 'Filedata'
+		URL_UPLOAD_IMG_POST: 'https://api.github.com/users/wya-team',
+		URL_UPLOAD_FILE_POST: 'https://api.github.com/users/wya-team',
+		onPostBefore: ({ options }) => {
+			return new Promise((resolve, reject) => {
+				// if (random(0, 10) > 10) {
+				// 	throw new Error('异常处理');
+				// }
+				resolve({
+					...options,
+					param: {
+						...options.param,
+						timestamp: new Date()
+					},
+					type: 'GET',
+					credentials: 'omit', //  cors下关闭
+					headers: {
+					}
+				});
+			});
+		},
+		onPostAfter: ({ response, options }) => { // eslint-disable-line
+			const { file } = options.param;
+			return new Promise((resolve) => {
+				
+				// 模拟强制返回
+				resolve({
+					status: 1,
+					data: {
+						url: 'https://avatars2.githubusercontent.com/u/34465004?v=4',
+						type: `.${file.name.split('.').pop()}`,
+						uid: file.uid,
+						title: file.name,
+						size: file.size
+					},
+					...response
+				});
+			});
+		}
 	}
 });
 
@@ -57,6 +97,19 @@ export default {
 							[{ 'align': [] }]
 						],
 					},
+				}
+			},
+			editorOption: {
+				modules: {
+					ImageExtend: {
+						upload: {
+							showTips: false,
+							size: 88888,
+							max: 2,
+							multiple: false
+						}
+					},
+					toolbar: "#toolbar",
 				}
 			},
 			disabled: false,
@@ -89,6 +142,8 @@ export default {
 				}
 			});
 		},
+		handleInput() {
+		}
 	}
 };
 </script>

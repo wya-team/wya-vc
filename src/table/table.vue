@@ -5,11 +5,13 @@
 		@mouseleave="handleMouseLeave" 
 	>
 		<!-- 依赖收集 -->
-		<div ref="hiddenColumns" class="vc-table__hidden"><slot /></div>
+		<div ref="hiddenColumns" class="vc-table__hidden">
+			<slot />
+		</div>
 		<div
-			v-event:mousewheel="handleHeaderFooterMousewheel"
 			v-if="showHeader"
 			ref="headerWrapper"
+			v-event:mousewheel="handleHeaderFooterMousewheel"
 			class="vc-table__header-wrapper"
 		>
 			<vc-table-header
@@ -26,7 +28,6 @@
 			:class="[layout.scrollX ? `is-scrolling-${scrollPosition}` : 'is-scrolling-none']"
 			:style="[bodyHeight]"
 			class="vc-table__body-wrapper"
-			
 		>
 			<vc-table-body
 				:context="context"
@@ -57,10 +58,10 @@
 			</div>
 		</div>
 		<div
-			v-event:mousewheel="handleHeaderFooterMousewheel"
 			v-if="showSummary"
 			v-show="dataSource && dataSource.length > 0"
 			ref="footerWrapper"
+			v-event:mousewheel="handleHeaderFooterMousewheel"
 			class="vc-table__footer-wrapper"
 		>
 			<vc-table-footer
@@ -72,9 +73,9 @@
 			/>
 		</div>
 		<div
-			v-event:mousewheel="handleFixedMousewheel"
 			v-if="fixedColumns.length > 0"
 			ref="fixedWrapper"
+			v-event:mousewheel="handleFixedMousewheel"
 			:style="[{ width: layout.fixedWidth ? layout.fixedWidth + 'px' : ''}, fixedHeight]"
 			class="vc-table__fixed"
 		>
@@ -128,9 +129,9 @@
 			</div>
 		</div>
 		<div
-			v-event:mousewheel="handleFixedMousewheel"
 			v-if="rightFixedColumns.length > 0"
 			ref="rightFixedWrapper"
+			v-event:mousewheel="handleFixedMousewheel"
 			:style="[
 				{
 					width: layout.rightFixedWidth ? layout.rightFixedWidth + 'px' : '',
@@ -139,14 +140,12 @@
 				fixedHeight
 			]"
 			class="vc-table__fixed-right"
-
 		>
 			<div 
 				v-if="showHeader"
 				ref="rightFixedHeaderWrapper"
 				class="vc-table__fixed-header-wrapper"
 			>
-				
 				<vc-table-header
 					ref="rightFixedTableHeader"
 					:border="border"
@@ -313,7 +312,11 @@ export default {
 			default: true
 		},
 		loadExpand: Function,
-		getSpan: Function
+		getSpan: Function,
+		placeholder: {
+			type: [String, Function],
+			default: '--'
+		}
 	},
 
 	data() {

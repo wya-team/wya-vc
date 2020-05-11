@@ -25,6 +25,9 @@
 			:value="colValue"
 			:data-source="colData"
 			:index="currentIndex"
+			:alphabetical="alphabetical"
+			:alphabet="colAlphabet"
+			:alphabet-key="alphabetKey"
 			@change="handleChange"
 		/>
 	</div>
@@ -45,6 +48,10 @@ export default {
 		event: 'change'
 	},
 	props: {
+		...pick(Col.props, [
+			'alphabetical',
+			'alphabetKey'
+		]),
 		value: {
 			type: Array,
 			default: () => []
@@ -64,6 +71,7 @@ export default {
 			currentIndex: 0,
 			currentValue: [],
 			rebuildData: [],
+			alphabetData: [],
 			hasChildren: true
 		};
 	},
@@ -73,6 +81,9 @@ export default {
 		},
 		colData() {
 			return this.rebuildData[this.currentIndex];
+		},
+		colAlphabet() {
+			return this.alphabetData[this.currentIndex];
 		},
 		/**
 		 * TODO: 初始化时，存在查找耗时
@@ -134,13 +145,26 @@ export default {
 		 * @param  {Array} source 数据源
 		 */
 		makeData(source) {
-			let data = source && source.map(i => ({
-				value: i.value,
-				label: i.label,
-				hasChildren: !!(i.children && (i.children.length > 0 || this.loadData)),
-				loading: false
-			}));
-			return data;
+			const alphabet = [];
+			let data = source && source.map(it => {
+				const item = {
+					value: it.value,
+					label: it.label,
+					hasChildren: !!(it.children && (it.children.length > 0 || this.loadData)),
+					loading: false,
+				};
+				if (this.alphabetical) {
+					const letter = it[this.alphabetKey];
+					item[this.alphabetKey] = letter;
+					item.isFirst = !alphabet.includes(letter);
+					item.isFirst && alphabet.push(letter);
+				}
+				return item;
+			});
+			return {
+				data,
+				alphabet
+			};
 		},
 
 		/**
@@ -151,13 +175,18 @@ export default {
 			if (!this.dataSource.length) return [];
 			let temp = this.dataSource;
 			let data = this.currentValue.slice(0).reduce((pre, cur, index) => {
-				pre[index] = this.makeData(temp);
+				const { data, alphabet } = this.makeData(temp);
+				pre[index] = data;
+				this.alphabetData[index] = alphabet;
 				temp = ((temp && temp.find(i => i.value == cur)) || {}).children;
 				return pre; 
 			}, []);
 
-			temp && data.push(this.makeData(temp));
-
+			if (temp) {
+				const result = this.makeData(temp);
+				data.push(result.data);
+				this.alphabetData.push(result.alphabet);
+			}
 			return data;
 		},
 
@@ -194,7 +223,11 @@ export default {
 					children.splice(0, 0, ...res);
 				}
 				
-				children && this.rebuildData.splice(colIndex + 1, len, this.makeData(children));
+				if (children) {
+					const { data, alphabet } = this.makeData(children);
+					this.rebuildData.splice(colIndex + 1, len, data);
+					this.alphabetData.splice(colIndex + 1, len, alphabet);
+				}
 				
 				if ((!children || children.length === 0) && colIndex < this.rebuildData.length) {
 					this.currentValue.splice(colIndex + 1, len);
@@ -241,13 +274,13 @@ export default {
 </script>
 
 <style lang="scss">
-@import '../../style/index.scss';
+@import '../../style/vars.scss';
 
 @include block(vcm-cascader-view) {
 	overflow: hidden;
 	display: flex;
 	flex-direction: column;
-	height: 65vh;
+	flex: 1;
 	font-size: 14px;
 	color: #000;
 	@include element(wrapper) {

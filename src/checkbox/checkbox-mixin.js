@@ -54,7 +54,7 @@ export default {
 			return { 
 				'is-indeterminate': this.indeterminate, 
 				'is-checked': this.checked, 
-				'is-disabled': this.disabled,
+				'is-disabled': this.isDisabled,
 				'is-focus': this.isFocus,
 			};
 		},
@@ -65,6 +65,16 @@ export default {
 			return this.group 
 				? this.group.currentValue.includes(this.label)
 				: this.currentValue === this.trueValue;
+		},
+		isDisabled() {
+			return this.group ? this.group.disabled || this.disabled || this.isLimitDisabled : this.disabled;
+		},
+		isLimitDisabled() {
+			if (!this.group) return false;
+
+			const { max, min } = this.group;
+			return !!(max || min) 
+				&& (this.group.currentValue.length >= max && !this.checked || this.group.currentValue.length <= min && this.checked);
 		}
 	},
 	watch: {
@@ -80,7 +90,7 @@ export default {
 	},
 	methods: {
 		handleChange(e) {
-			if (this.disabled) {
+			if (this.isDisabled) {
 				return false;
 			}
 			let checked = e.target.checked;

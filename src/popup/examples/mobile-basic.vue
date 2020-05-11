@@ -2,9 +2,9 @@
 	<div>
 		<vcm-popup 
 			v-for="(item, index) in placements" 
-			v-model="visibles[index]" 
+			:key="`popup__${item}`" 
+			v-model="visibles[index]"
 			:placement="item"
-			:key="`popup__${item}`"
 		>
 			<vcm-form>
 				<vcm-form-item>
@@ -25,8 +25,8 @@
 		
 		<vcm-button 
 			v-for="(item, index) in placements" 
-			:placement="item"
 			:key="`button__${item}`"
+			:placement="item"
 			@click="handleNormal(item, index)"
 		>
 			normal: {{ item }} {{ visibles[index] }}
@@ -34,8 +34,8 @@
 		
 		<vcm-button 	
 			v-for="(item, index) in placements" 
-			:placement="item"
 			:key="`portal__${item}`"
+			:placement="item"
 			@click="handlePortal(item, index)"
 		>
 			portal: {{ item }}
@@ -90,7 +90,7 @@
 </template>
 <script>
 import { Device } from '@wya/utils';
-import { Tip } from './tip/tip.vue';
+import { Tip } from './tip/tip';
 import MPopup from '../index.m';
 import MButton from '../../button/index.m';
 import MInput from '../../input/index.m';

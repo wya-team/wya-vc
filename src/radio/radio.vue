@@ -2,12 +2,12 @@
 	<label :class="classes" class="vc-radio">
 		<span class="vc-radio__wrapper">
 			<span class="vc-radio__border">
-				<span class="vc-radio__inner"/>
+				<span class="vc-radio__inner" />
 			</span>
 			<input
 				:checked="checked"
 				:name="radioName"
-				:disabled="disabled"
+				:disabled="isDisabled"
 				type="radio"
 				@change="handleChange"
 				@focus="handleFocus"
@@ -29,7 +29,7 @@ export default {
 
 </script>
 <style lang="scss">
-@import '../style/index.scss';
+@import '../style/vars.scss';
 
 @include block(vc-radio) {
 	font-size: 12px;

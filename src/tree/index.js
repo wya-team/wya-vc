@@ -1,4 +1,4 @@
-import './tree.scss';
+import './combine.scss';
 
 import Tree from './tree';
 import TreeSelect from './tree-select';

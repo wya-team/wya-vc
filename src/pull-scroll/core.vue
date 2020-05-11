@@ -1,6 +1,6 @@
 <template>
 	<div ref="target" class="vc-pull-scroll-content">
-		<slot/>
+		<slot />
 	</div>
 </template>
 
@@ -113,6 +113,7 @@ export default {
 	},
 	methods: {
 		getParams() {
+			if (this.$isServer) return {};
 			let isWindow = (this.container === window);
 
 			let el = (isWindow) ? document : this.container;
@@ -408,6 +409,8 @@ export default {
 		},
 
 		scrollTo(v) {
+			if (this.$isServer) return {};
+			
 			let isWindow = (this.container === window);
 			let el = (isWindow) ? document.scrollingElement : this.container;
 			// https://stackoverflow.com/questions/12788487/document-scrolltop-always-returns-0

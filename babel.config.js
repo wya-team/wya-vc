@@ -3,7 +3,7 @@ const path = require('path');
 
 module.exports = (api) => {
 	// 编译缓存
-	api.cache.forever();
+	api && api.cache.forever();
 
 	return {
 		compact: false,
@@ -15,9 +15,16 @@ module.exports = (api) => {
 			"@babel/plugin-proposal-export-default-from",
 			"@babel/plugin-proposal-function-bind",
 			"@babel/plugin-syntax-dynamic-import",
+			"@babel/plugin-transform-modules-commonjs",
 			"@babel/plugin-syntax-jsx",
 			"@babel/plugin-transform-runtime",
 			"transform-vue-jsx",
+			[
+				"@babel/plugin-proposal-object-rest-spread",
+				{
+					"loose": true
+				}
+			],
 			[
 				"@babel/plugin-proposal-decorators",
 				{

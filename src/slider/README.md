@@ -1,92 +1,183 @@
-## [Demo Basic](https://wya-team.github.io/wya-vc/dist/slider/basic.html)
-## 功能
-滑动
+## 滑块（Slider)
+滑动型输入器，展示当前值和可选范围
 
-## API
+### 何时使用
+当用户需要在数值区间/自定义区间内进行选择时，可为连续或离散值。
 
-#### 属性
+### 基本用法
+基本滑动条。可以使用 `v-model` 双向绑定数据。当 `range` 为 `true` 时，渲染为双滑块。当 `disabled` 为 `true` 时，滑块处于不可用状态。
+**注意，** 单滑块时，`value` 格式为数字，当开启双滑块时，`value` 为长度是2的数组，且每项为数字。
 
-属性 | 说明 | 类型 | 默认值
----|---|---|---
-value | 滑块选定的值，可以使用 v-model 双向绑定数据。普通模式下，数据格式为数字，在双滑块模式下，数据格式为长度是2的数组，且每项都为数字 | Number, Array | 0
-min | 最小值 | Number | 0
-max | 最大值 | Number | 100
-step | 步长，取值建议能被（max - min）整除 | Number | 1
-disabled | 是否禁用滑块 | Boolean | false
-clickable | 是否可以通过点击bar来移动滑块 | Boolean | true
-range | 是否开启双滑块模式 | Boolean | false
-show-input | 是否显示数字输入框，仅在单滑块模式下有效 | Boolean | false
-show-stops | 是否显示间断点，建议在 step 不密集时使用 | Boolean | false
-show-tip | 提示的显示控制，可选值为 `hover`（悬停，默认）、`always`（总是可见）、`never`（不可见） | String | hover
-tip-format | Slider 会把当前值传给 `tip-format`，并在 Tooltip 中显示 tip-format 的返回值，若为 null，则隐藏 Tooltip | Function | value
-
-
-#### 事件
-
-属性 | 说明 | 参数 | 返回值
----|---|---|---
-after-change | 在松开滑动时触发，返回当前的选值，在滑动过程中不会触发，会对外暴露`reset`方法 | value | ---
-change | 滑动条数据变化时触发，返回当前的选值，在滑动过程中实时触发，会对外暴露`reset`方法 | value | ---
-
-
-## 基础用法
-
-```vue
+:::RUNTIME
+```html
 <template>
-	<div style="padding: 20px">
-		<p>基础用法</p>
-		<vc-slider v-model="value1" show-tip="always"/>
-		<vc-slider v-model="value1" show-tip="never"/>
+	<div class="v-silder-basic">
 		<vc-slider v-model="value1" />
-		<vc-slider v-model="value2" range/>
-		<vc-slider v-model="value3" range disabled/>
-		<p>离散值</p>
-		<vc-slider v-model="value4" :step="10"/>
-		<vc-slider v-model="value5" :step="10" range/>
-		<p>显示中间断点</p>
-		<vc-slider v-model="value6" :step="10" show-stops/>
-		<vc-slider v-model="value7" :step="10" show-stops range/>
-		<p>自定义提示</p>
-		<vc-slider v-model="value9" :tip-format="format"/>
-		<vc-slider v-model="value10" :tip-format="hideFormat"/>
+		<vc-slider v-model="value2" range />
+		<vc-slider v-model="value3" range disabled />
 	</div>
 </template>
 <script>
-import Slider from '..';
+import { Slider} from '@wya/vc';
 
 export default {
-	name: "vc-slider-basic",
 	components: {
 		'vc-slider': Slider
 	},
 	data() {
 		return {
-			value1: 25,
-			value2: [20, 50],
-			value3: [20, 50],
-			value4: 30,
-			value5: [20, 50],
-			value6: 30,
-			value7: [20, 50],
-			value8: 25,
-			value9: 25,
-			value10: 25
-		};
-	},
-	computed: {
-		
-	},
-	methods: {
-		handleChange() {
-			console.log(arguments[0]);
-		},
-		format(val) {
-			return 'Progress: ' + val + '%';
-		},
-		hideFormat() {
-			return null;
+			value1: 20,
+			value2: [20, 60],
+			value3: [20, 60],
 		}
-	}
-};
+	},
+}
 </script>
 ```
+:::
+
+### 离散值
+
+通过设置属性 `step` 可以控制每次滑动的间隔。
+
+:::RUNTIME
+```html
+<template>
+	<div class="v-silder-step">
+		<vc-slider v-model="value4" :step="10" />
+		<vc-slider v-model="value5" :step="10" range/>
+	</div>
+</template>
+<script>
+import { Slider} from '@wya/vc';
+
+export default {
+	components: {
+		'vc-slider': Slider
+	},
+	data() {
+		return {
+			value4: 20,
+			value5: [20, 80]
+		}
+	},
+}
+</script>
+```
+:::
+
+### 显示间断点
+通过设置属性 `show-stops` 可以显示间断点，建议在 `step` 间隔不密集时使用。
+
+:::RUNTIME
+```html
+<template>
+	<div class="v-silder-show-stops">
+		<vc-slider v-model="value6" :step="10" show-stops />
+		<vc-slider v-model="value7" :step="10" range show-stops />
+	</div>
+</template>
+<script>
+import { Slider} from '@wya/vc';
+
+export default {
+	components: {
+		'vc-slider': Slider
+	},
+	data() {
+		return {
+			value6: 20,
+			value7: [20, 60]
+		}
+	},
+}
+</script>
+```
+:::
+
+### 带输入框的滑块
+和 `数字输入框` 组件保持同步。
+
+:::RUNTIME
+```html
+<template>
+	<div class="v-silder-input">
+		<vc-slider v-model="value6" show-input />
+	</div>
+</template>
+<script>
+import { Slider} from '@wya/vc';
+
+export default {
+	components: {
+		'vc-slider': Slider
+	},
+	data() {
+		return {
+			value6: 20,
+		}
+	},
+}
+</script>
+```
+:::
+
+### 自定义提示
+`Slider` 会把当前值传给 `formatter`，并在 `popover` 中显示 `formatter` 的返回值，若为 `null`，则隐藏 `popover`。
+
+:::RUNTIME
+```html
+<template>
+	<div class="v-silder-tip">
+		<vc-slider v-model="value6" :formatter="tipFormat" />
+		<vc-slider v-model="value7" :formatter="hideFormat" />
+	</div>
+</template>
+<script>
+import { Slider} from '@wya/vc';
+
+export default {
+	components: {
+		'vc-slider': Slider
+	},
+	data() {
+		return {
+			value6: 20,
+			value7: 20
+		}
+	},
+	methods: {
+		tipFormat(val) {
+			 return `Progress: ${val} %`;
+		},
+		hideFormat(val) {
+			return null
+		}
+	}
+}
+</script>
+```
+:::
+
+## API
+
+### 属性
+属性 | 说明 | 类型 | 可选值 | 默认值
+--- | --- | --- | --- | ---
+value | 滑块选定的值，可以使用 v-model 双向绑定数据。普通模式下，数据格式为数字，在双滑块模式下，数据格式为长度是2的数组，且每项都为数字 | `Number`、 `Array` | - | 0
+min | 最小值 | `Number` | - | 0
+max | 最大值 | `Number` | - | 100
+step | 步长，取值建议能被（max - min）整除 | `Number` | - | 1
+disabled | 是否禁用滑块 | `Boolean` | - | `false`
+clickable | 是否可以通过点击bar来移动滑块 | `Boolean` | - | `true`
+range | 是否开启双滑块模式 | `Boolean`| - | `false`
+show-input | 是否显示数字输入框，仅在单滑块模式下有效 | `Boolean` | - | `false`
+show-stops | 是否显示间断点，建议在 step 不密集时使用 | `Boolean` | - |`false`
+show-tip | 提示的显示控制，可选值为 `hover`（悬停，默认）、`always`（总是可见）、`never`（不可见） | `String` | `hover`、`always`、`never` | `hover`
+formatter | `Slider` 会把当前值传给 `formatter`，并在 `popover` 中显示 `formatter` 的返回值，若为 `null`，则隐藏 `popover` | `Function` | - | -
+
+### 事件
+事件名 | 说明 | 回调参数 | 参数说明
+---|---|---|---
+after-change | 在松开滑动时触发，返回当前的选值，在滑动过程中不会触发，会对外暴露`reset`方法 | `(value: Number | Array, reset: Function) => void 0` | `value`：滑块选定的值；`reset`：重置滑块的方法
+change | 滑动条数据变化时触发，返回当前的选值，在滑动过程中实时触发，会对外暴露`reset`方法 | `(value: Number | Array, reset: Function) => void 0` | `value`：滑块选定的值；`reset`：重置滑块的方法

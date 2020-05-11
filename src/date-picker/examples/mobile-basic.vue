@@ -28,7 +28,9 @@
 		<br>
 		<br>
 		<br>
-		<h3 @click="handleClick">点击直接调用</h3>
+		<h3 @click="handleClick">
+			点击直接调用
+		</h3>
 		<br>
 		<br>
 		<!-- 表单 -->
@@ -43,8 +45,10 @@
 			<vcm-form-item prop="start" label="开始时间">
 				<vcm-date-picker
 					v-model="formValidate.start"
-					:max-date="formValidate.end"
-					mode="datetime"
+					:min-date="new Date('1900')"
+					:max-date="new Date()"
+					mode="yearmonth"
+					format="YYYY-MM"
 				/>
 			</vcm-form-item>
 			<vcm-form-item prop="start" label="结束时间">
@@ -59,8 +63,8 @@
 					提交表单
 				</vcm-button>
 			</vcm-form-item>
-		</vcm-form >
-		<vcm-date-picker-view v-model="valueView" @change="handleChange"/>
+		</vcm-form>
+		<vcm-date-picker-view v-model="valueView" @change="handleChange" />
 	</div>
 </template>
 <script>

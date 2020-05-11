@@ -4,7 +4,7 @@
 			v-model="visible1"
 			:mask-closable="true"
 			title="标题1"
-			content="啦啦啦啦"
+			content="账号密码不一致，请重试"
 			@close="handleClose"
 			@cancel="handleCancel"
 			@ok="handleOk"
@@ -18,8 +18,10 @@
 			@cancel="handleCancel"
 			@ok="handleOk"
 		>
-			<div @click="handleClick4">portal: 确定，取消</div>
-			<vcm-input v-model="value"/>
+			<div @click="handleClick4">
+				portal: 确定，取消
+			</div>
+			<vcm-input v-model="value" />
 		</vcm-modal>
 		<vcm-modal 
 			v-model="visible3"
@@ -32,12 +34,35 @@
 			@cancel="handleCancel"
 			@ok="handleOk"
 		/>
-		<div @click="handleClick1">normal: 基本</div>		
-		<div @click="handleClick2">normal: 自定义slot content</div>
-		<div @click="handleClick3">normal: 1个按钮</div>
-		<div @click="handleClick4">portal: 确定，取消</div>
-		<div @click="handleClick5">portal: 多个按钮</div>
-		<div @click="handleClick6">portal: operation</div>
+		<vcm-modal 
+			v-model="visible4"
+			:mask-closable="true"
+			content="账号密码不一致，请重试"
+			@close="handleClose"
+			@cancel="handleCancel"
+			@ok="handleOk"
+		/>
+		<div @click="handleClick1">
+			normal: 基本
+		</div>		
+		<div @click="handleClick2">
+			normal: 自定义slot content
+		</div>
+		<div @click="handleClick3">
+			normal: 1个按钮
+		</div>
+		<div @click="handleClick4">
+			portal: 确定，取消
+		</div>
+		<div @click="handleClick5">
+			portal: 多个按钮
+		</div>
+		<div @click="handleClick6">
+			portal: operation
+		</div>	
+		<div @click="handleClick7">
+			normal: 无标题
+		</div>
 	</div>
 </template>
 <script>
@@ -59,6 +84,7 @@ export default {
 			visible1: false,			
 			visible2: false,
 			visible3: false,
+			visible4: false
 		};
 	},
 	computed: {
@@ -144,6 +170,9 @@ export default {
 					}
 				]
 			});
+		},
+		handleClick7() {
+			this.visible4 = !this.visible4;
 		}
 	}
 };

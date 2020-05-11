@@ -1,6 +1,6 @@
 <template>
 	<vc-transition-collapse :duration="{ enter: 0.2, leave: 0.2 }">
-		<component v-show="isActive" :is="tag">
+		<component :is="tag" v-show="isActive">
 			<slot />
 		</component>
 	</vc-transition-collapse>

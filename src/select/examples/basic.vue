@@ -1,8 +1,14 @@
 <template>
 	<div style="margin: 40px;">
-		<vc-button @click="handleTestingStart">内存测试</vc-button>
-		<vc-button @click="handleTestingEnd">取消测试</vc-button>
-		<vc-button @click="disabled = !disabled">disabled: {{ disabled }}</vc-button>
+		<vc-button @click="handleTestingStart">
+			内存测试
+		</vc-button>
+		<vc-button @click="handleTestingEnd">
+			取消测试
+		</vc-button>
+		<vc-button @click="disabled = !disabled">
+			disabled: {{ disabled }}
+		</vc-button>
 
 		<!-- 基本 -->
 		<div style="margin: 40px 0 ">
@@ -19,10 +25,12 @@
 			>
 				<vc-option 
 					v-for="(item, index) in cityList" 
-					:value="item.value" 
-					:key="item.value"
+					:key="item.value" 
+					:value="item.value"
 					:disabled="index == 1"
-				>{{ item.label }}</vc-option>
+				>
+					{{ item.label }}
+				</vc-option>
 			</vc-select>
 		</div>
 
@@ -30,10 +38,14 @@
 		<div style="margin: 40px 0 ">
 			<vc-select v-model="value1" style="width: 200px" search>
 				<vc-option-group label="Hot Cities">
-					<vc-option v-for="item in cityList1" :value="item.value" :key="item.value">{{ item.label }}</vc-option>
+					<vc-option v-for="item in cityList1" :key="item.value" :value="item.value">
+						{{ item.label }}
+					</vc-option>
 				</vc-option-group>
 				<vc-option-group label="Other Cities">
-					<vc-option v-for="item in cityList2" :value="item.value" :key="item.value">{{ item.label }}</vc-option>
+					<vc-option v-for="item in cityList2" :key="item.value" :value="item.value">
+						{{ item.label }}
+					</vc-option>
 				</vc-option-group>
 			</vc-select>
 		</div>
@@ -48,10 +60,14 @@
 				search
 			>
 				<vc-option-group label="Hot Cities">
-					<vc-option v-for="item in cityList1" :value="item.value" :key="item.value">{{ item.label }}</vc-option>
+					<vc-option v-for="item in cityList1" :key="item.value" :value="item.value">
+						{{ item.label }}
+					</vc-option>
 				</vc-option-group>
 				<vc-option-group label="Other Cities">
-					<vc-option v-for="item in cityList2" :value="item.value" :key="item.value">{{ item.label }}</vc-option>
+					<vc-option v-for="item in cityList2" :key="item.value" :value="item.value">
+						{{ item.label }}
+					</vc-option>
 				</vc-option-group>
 			</vc-select>
 		</div>
@@ -66,9 +82,11 @@
 			>
 				<vc-option 
 					v-for="(item, index) in searchData" 
-					:value="item.value" 
-					:key="index"
-				>{{ item.label }}</vc-option>
+					:key="index" 
+					:value="item.value"
+				>
+					{{ item.label }}
+				</vc-option>
 			</vc-select>
 		</div>
 
@@ -84,9 +102,11 @@
 				<vc-option-group v-if="searchData1.length" label="Hot Cities">
 					<vc-option 
 						v-for="(item, index) in searchData1" 
-						:value="item.value" 
-						:key="index"
-					>{{ item.label }}</vc-option>
+						:key="index" 
+						:value="item.value"
+					>
+						{{ item.label }}
+					</vc-option>
 					<vc-option
 						:filterable="false"
 						value="不会被过滤"
@@ -96,9 +116,11 @@
 				<vc-option-group v-if="searchData1.length" label="Other Cities">
 					<vc-option 
 						v-for="(item, index) in searchData2" 
-						:value="item.value" 
-						:key="index"
-					>{{ item.label }}</vc-option>
+						:key="index" 
+						:value="item.value"
+					>
+						{{ item.label }}
+					</vc-option>
 				</vc-option-group>
 			</vc-select>
 		</div>
@@ -114,10 +136,12 @@
 			>
 				<vc-option 
 					v-for="(item, index) in cityListAsync" 
-					:value="item.value" 
-					:key="item.value"
+					:key="item.value" 
+					:value="item.value"
 					:disabled="index == 1"
-				>{{ item.label }}</vc-option>
+				>
+					{{ item.label }}
+				</vc-option>
 			</vc-select>
 		</div>
 
@@ -131,10 +155,12 @@
 			>
 				<vc-option 
 					v-for="(item, index) in cityList" 
-					:value="item.value" 
-					:key="item.value"
+					:key="item.value" 
+					:value="item.value"
 					:disabled="index == 1"
-				>{{ item.label }}</vc-option>
+				>
+					{{ item.label }}
+				</vc-option>
 			</vc-select>
 		</div>
 
@@ -156,9 +182,11 @@
 				>
 					<vc-option
 						v-for="(item, index) in cityList"
-						:value="item.value"
 						:key="index"
-					>{{ item.label }}</vc-option>
+						:value="item.value"
+					>
+						{{ item.label }}
+					</vc-option>
 				</vc-select>
 			</vc-form-item>
 			<vc-form-item label="设置多选：" prop="value1">
@@ -170,9 +198,11 @@
 				>
 					<vc-option
 						v-for="(item, index) in cityList"
-						:value="item.value"
 						:key="index"
-					>{{ item.label }}</vc-option>
+						:value="item.value"
+					>
+						{{ item.label }}
+					</vc-option>
 				</vc-select>
 			</vc-form-item>
 
@@ -185,12 +215,13 @@
 				>
 					<vc-option 
 						v-for="(item, index) in searchData" 
-						:value="item.value" 
-						:key="index"
-					>{{ item.label }}</vc-option>
+						:key="index" 
+						:value="item.value"
+					>
+						{{ item.label }}
+					</vc-option>
 				</vc-select>
 			</vc-form-item>
-
 		</vc-form>
 	</div>
 </template>

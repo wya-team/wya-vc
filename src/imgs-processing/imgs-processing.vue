@@ -1,5 +1,5 @@
 <template>
-	<canvas :width="width" :height="height"/>
+	<canvas :width="width" :height="height" />
 </template>
 <script>
 import Processing from './core';
@@ -39,6 +39,10 @@ export default {
 		tolerance: {
 			type: Number,
 			default: 0
+		},
+		crossOrigin: {
+			type: String,
+			default: 'anonymous'
 		}
 	},
 	data() {
@@ -64,7 +68,8 @@ export default {
 				context, 
 				dataSource,
 				width: this.width,
-				height: this.height
+				height: this.height,
+				crossOrigin: this.crossOrigin
 			});
 
 			if (typeof this.processing === 'string') {

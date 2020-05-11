@@ -1,9 +1,9 @@
 <template>
 	<vc-transtion-fade tag="div" class="vc-sort-list" group>
 		<component 
-			v-for="(item, index) in currentValue" 
+			:is="tag" 
+			v-for="(item, index) in currentValue"
 			:key="typeof item === 'object' ? item[valueKey] : item"
-			:is="tag"
 			:draggable="getDraggable(item)"
 			class="vc-sort-list__item"
 			@dragstart="handleDragStart($event, item)"
@@ -40,7 +40,7 @@ export default {
 };
 </script>
 <style lang="scss">
-@import '../style/index.scss';
+@import '../style/vars.scss';
 
 @include block(vc-sort-list) {
 	@include commonFlex();

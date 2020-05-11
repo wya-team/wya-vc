@@ -1,20 +1,22 @@
 <template>
-	<div >
+	<div>
 		<div style="display:flex;justify-content:space-around">
-			<div @click="$refs.calendar.prev()">prev</div>
+			<div @click="$refs.calendar.prev()">
+				prev
+			</div>
 			<vc-calendar
 				ref="calendar"
 			>
 				<div 
-					slot-scope="month"
 					slot="month"
+					slot-scope="month"
 					class="v-month-header"
 				>
 					{{ month.data.month }}{{ month.data.year }}
 				</div>
 				<div 
-					slot-scope="week"
 					slot="week"
+					slot-scope="week"
 					class="v-week-header"
 				>
 					<span 
@@ -28,11 +30,15 @@
 					{{ it.data.day }}
 				</div> -->
 			</vc-calendar>
-			<div @click="$refs.calendar.next()">next</div>
+			<div @click="$refs.calendar.next()">
+				next
+			</div>
 		</div>
 
 		<div style="display:flex;justify-content:space-around ">
-			<div @click="$refs.calendar2.prev()">上月</div>
+			<div @click="$refs.calendar2.prev()">
+				上月
+			</div>
 			<!-- 可以自定义渲染函数，不传会使用默认的渲染函数 -->
 			<vc-calendar
 				ref="calendar2"
@@ -41,7 +47,9 @@
 				:render-week="renderWeek"
 				lang="en"
 			/>
-			<div @click="$refs.calendar2.next()">下月</div>
+			<div @click="$refs.calendar2.next()">
+				下月
+			</div>
 		</div>
 	</div>
 </template>
@@ -94,7 +102,7 @@ export default {
 </script>
 
 <style lang="scss">
-@import '../../style/index.scss';
+@import '../../style/vars.scss';
 .v-month-header {
 	@include commonFlexCc();
 	line-height: 60px;

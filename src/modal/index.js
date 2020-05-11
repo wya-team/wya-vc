@@ -1,4 +1,4 @@
-import ModalManager, { allowMethod } from './manager';
+import ModalManager, { allowMethod } from './modal-manager';
 import Modal from './modal';
 
 ModalManager.allowMethod.forEach(m => {
@@ -6,5 +6,6 @@ ModalManager.allowMethod.forEach(m => {
 		return ModalManager[m](userOptions);
 	};
 });
+Modal.destroy = ModalManager.destroy;
 
 export default Modal;

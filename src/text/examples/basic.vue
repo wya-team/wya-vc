@@ -2,7 +2,9 @@
 <template>
 	<div style="overflow: auto; width: 100%; padding: 20px">
 		<vc-slider v-model="width" :max="maxWidth" :min="0" style="width: 100px;" />
-		<vc-button @click="handleClick">切换行数</vc-button>
+		<vc-button @click="handleClick">
+			切换行数
+		</vc-button>
 		<div :style="{ width: width + 'px' }">
 			<h3>line: {{ line0 }} </h3>
 			<vc-text :value="text14" :line="line0" />
@@ -34,7 +36,7 @@
 			<tbody>
 				<tr> 
 					<td><vc-text :value="text10" :line="line0" :indent="20" /></td>
-					<td><vc-text :value="text12" :line="line1" :indent="20" style="padding: 9px 15px"/></td>
+					<td><vc-text :value="text12" :line="line1" :indent="20" style="padding: 9px 15px" /></td>
 					<td><vc-text :value="text14" :line="line2" :indent="20" /></td>
 					<td><vc-text :value="text30" :line="line3" :indent="20" /></td>
 				</tr>

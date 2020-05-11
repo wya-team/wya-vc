@@ -114,7 +114,7 @@ export default {
 	},
 	methods: {
 		handleFileBefore(file, fileList) {
-			return new Promise((resolve) => {
+			return new Promise((resolve, reject) => {
 				const { "file-before": fileBefore } = this.$listeners;
 
 				if (!fileBefore) return resolve(file);

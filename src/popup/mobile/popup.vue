@@ -171,7 +171,7 @@ export default {
 
 </script>
 <style lang="scss">
-@import '../../style/index.scss';
+@import '../../style/vars.scss';
 
 @include block(vcm-popup) {
 	@include element(mask) {

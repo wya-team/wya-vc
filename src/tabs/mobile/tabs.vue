@@ -9,7 +9,11 @@
 		>
 			<div ref="scroll" class="vcm-tabs__scroll">
 				<div ref="nav" class="vcm-tabs__nav">
-					<div :style="afloatStyle" class="vcm-tabs__afloat" />
+					<div 
+						v-if="showAfloat" 
+						:style="afloatStyle" 
+						class="vcm-tabs__afloat"
+					/>
 					<div
 						v-for="(item, index) in list"
 						:key="index"
@@ -30,7 +34,7 @@
 				</div>
 			</div>
 		</div>
-		<div v-if="isFixed" :style="{ height: `${placeholderH}px` }" class="vcm-tabs__placeholder"/>
+		<div v-if="isFixed" :style="{ height: `${placeholderH}px` }" class="vcm-tabs__placeholder" />
 		<div ref="content" :style="contentStyle" class="vcm-tabs__content">
 			<slot />
 		</div>
@@ -188,7 +192,7 @@ export default {
 </script>
 
 <style lang="scss">
-@import '../../style/index.scss';
+@import '../../style/vars.scss';
 
 @include block(vcm-tabs) {
 	width: 100%;

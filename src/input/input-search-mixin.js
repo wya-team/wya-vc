@@ -3,7 +3,7 @@ import inputMixin from './input-mixin';
 export default {
 	props: {
 		...inputMixin.props,
-		enterTxt: {
+		enterText: {
 			type: Boolean | String,
 			default: true
 		}

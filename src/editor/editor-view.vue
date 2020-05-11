@@ -1,38 +1,80 @@
 <template>
 	<div class="vc-quilleditor-view ql-snow">
-		<div class="ql-editor" v-html="content"/>
+		<div class="ql-editor" v-html="content" />
 	</div>
 </template>
 
 <script>
+import { Load } from '@wya/utils';
+import { getUid } from '../utils/utils';
 import ImgsPreview from '../imgs-preview/index';
+import { insertFontStyle } from './utils'; 
 	
 export default {
 	name: 'vc-editor-view',
 	props: {
-		content: String
+		content: {
+			type: String,
+			default: ""
+		},
+		fontSize: {
+			type: Array,
+			default: () => ['12px', '14px', '16px', '18px', '20px', '22px', '24px', '50px']
+		}
 	},
 	data() {
 		return {
 		};
 	},
+	watch: {
+		content: {
+			immediate: true,
+			handler(v) {
+				v ? this.getImgUrls(v) : (this.imgSource = []);
+			}
+		}
+	},
+	created() {
+		this.styleId = getUid('editor-view-style');
+		insertFontStyle(this.fontSize, this.styleId);
+	},
 	mounted() {
 		this.initListener();
+	},
+	destroyed() {
+		Load.removeCSSCode(this.styleId);
 	},
 	methods: {
 		initListener() {
 			let dom = document.getElementsByClassName('ql-editor');
 			Array.from(dom).forEach(it => {
 				if (it.parentNode.className.indexOf('vc-quilleditor-view ql-snow') !== -1) {
-					it.addEventListener('click', (ev) => {
-						if (ev.target.nodeName === 'IMG') {
-							this.handlePreview(ev, 0);
+					it.addEventListener('click', (e) => {
+						if (e.target.nodeName === 'IMG') {
+							let index = (this.imgSource || []).indexOf(e.target.currentSrc);
+							this.handlePreview(e, index);
 						}
 					});
 				}
 			});
 		},
+		getImgUrls(content) {
+			/* eslint-disable */
+			const IMG_REGX = /<img.*?(?:>|\/>)/gi;
+			const SRC_REGX = /src=[\'\"]?([^\'\"]*)[\'\"]?/i;
+			/* eslint-enable */
 
+			let imgs = content.match(IMG_REGX);
+			if (imgs) {
+				let imgUrls = [];
+				for (let i = 0; i < imgs.length; i++) {
+					let src = imgs[i].match(SRC_REGX);
+					// 获取图片地址
+					src[1] && imgUrls.push(src[1]);
+				}
+				this.imgSource = imgUrls;
+			}
+		},
 		handlePreview(e, idx) {
 			let pos = {};
 			try {
@@ -46,7 +88,7 @@ export default {
 
 			ImgsPreview.open({
 				visible: true,
-				dataSource: [e.target.currentSrc],
+				dataSource: this.imgSource,
 				opts: {
 					index: idx,
 					history: false,

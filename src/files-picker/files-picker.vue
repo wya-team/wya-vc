@@ -21,7 +21,9 @@
 				class="vc-files-picker__item"
 			>
 				<vc-icon type="link" class="vc-files-picker__download" />
-				<div :title="item.title" class="vc-files-picker__title">{{ item.title }}</div>
+				<div :title="item.title" class="vc-files-picker__title">
+					{{ item.title }}
+				</div>
 				<template>
 					<div style="flex: 1; display: flex; align-items: center">
 						<div class="vc-files-picker__pcontainer">
@@ -202,7 +204,7 @@ export default {
 </script>
 
 <style lang="scss">
-@import '../style/index.scss';
+@import '../style/vars.scss';
 
 @include block(vc-files-picker) {
 	box-sizing: border-box;

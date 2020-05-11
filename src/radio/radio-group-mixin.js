@@ -23,6 +23,10 @@ export default {
 		name: {
 			type: String,
 			default: () => getUid('radio')
+		},
+		disabled: {
+			type: Boolean,
+			default: false
 		}
 	},
 	provide() {

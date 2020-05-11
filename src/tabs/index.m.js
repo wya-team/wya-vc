@@ -1,5 +1,5 @@
-import MTabs from './mobile/tabs.vue';
-import MTabsPane from './mobile/tabs-pane.vue';
+import MTabs from './mobile/tabs';
+import MTabsPane from './mobile/tabs-pane';
 
 MTabs.Pane = MTabsPane;
 export default MTabs;

@@ -9,9 +9,15 @@
 				{{ it.id }}
 			</div>
 		</vcm-sort-list>
-		<button @click="handleAdd">添加</button>
-		<button @click="handleDel">删除第一个</button>
-		<button @click="handleShuffle">乱序</button>
+		<button @click="handleAdd">
+			添加
+		</button>
+		<button @click="handleDel">
+			删除第一个
+		</button>
+		<button @click="handleShuffle">
+			乱序
+		</button>
 	</div>
 </template>
 <script>

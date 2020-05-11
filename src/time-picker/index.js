@@ -1,1 +1,3 @@
-export { default } from './time-picker';
+import TimePicker from '../date-picker/picker/time-picker';
+
+export default TimePicker;
