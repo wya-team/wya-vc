@@ -76,13 +76,13 @@
 					</vc-popover>
 					<vc-popover 
 						:portal="false"
-						:trigger="trigger" 
+						trigger="focus" 
 						placement="top" 
 						content="Top"
 						class=" g-m-lr-10"
 					>
 						<vc-button class="g-btn">
-							Top
+							Top(focus)
 						</vc-button>
 						<template #content>
 							<div style="height: 100px; width: 200px">
@@ -91,13 +91,13 @@
 						</template>
 					</vc-popover>
 					<vc-popover 
-						:trigger="trigger" 
+						trigger="hover" 
 						placement="top-right" 
 						content="TopRight"
 						class=" g-m-lr-10"
 					>
 						<vc-button class="g-btn">
-							TR
+							TR(hover)
 						</vc-button>
 						<template #content>
 							<div style="height: 100px; width: 200px">
@@ -214,13 +214,13 @@ export default {
 	name: "vc-popover-basic",
 	components: {
 		"vc-popover": Popover,
-		"vc-button": Button
+		"vc-button": Button,
 	},
 	data() {
 		return {
 			content: 1,
 			visible: false,
-			isHover: false
+			isHover: false,
 		};
 	},
 	computed: {

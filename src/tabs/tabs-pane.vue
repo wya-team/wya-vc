@@ -9,7 +9,13 @@ import TabsPaneMixin from './tabs-pane-mixin';
 
 export default {
 	name: 'vc-tabs-pane',
-	mixins: [TabsPaneMixin]
+	mixins: [TabsPaneMixin],
+	props: {
+		closable: {
+			type: Boolean,
+			default: null
+		},
+	}
 };
 </script>
 
