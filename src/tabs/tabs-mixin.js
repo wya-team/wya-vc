@@ -116,7 +116,7 @@ export default {
 				const data = {
 					label: item.label,
 					icon: item.icon || '',
-					name: item.name || index,
+					name: item.currentName || index,
 					disabled: item.disabled,
 					closable: item.closable
 				};

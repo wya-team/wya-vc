@@ -31,7 +31,12 @@
 							/>
 						</slot>
 						<!-- TODO -->
-						<vc-icon v-if="closable && item.closable" type="close" />
+						<vc-icon 
+							v-if="showCloseIcon(item)" 
+							type="close"
+							class="vc-tabs__close"
+							@click.native.stop="handleRemove(index)"
+						/>
 					</div>
 				</div>
 			</div>
@@ -63,6 +68,7 @@ export default {
 			type: Boolean,
 			default: false
 		},
+		beforeRemove: Function,
 	},
 	data() {
 		return {
@@ -82,6 +88,53 @@ export default {
 	},
 
 	methods: {
+		showCloseIcon(item) {
+			if (this.isCard) {
+				return item.closable !== null ? item.closable : this.closable;
+			}
+			return false;
+		},
+		handleRemove(index) {
+			if (!this.beforeRemove) {
+				return this.handleRemoveTab(index);
+			}
+
+			const before = this.beforeRemove(index);
+			if (before && before.then) {
+				before.then((res) => {
+					this.handleRemoveTab(index);
+				});
+			} else {
+				this.handleRemoveTab(index);
+			}
+		},
+		handleRemoveTab(index) {
+			const tabs = this.getTabs();
+			const tab = tabs[index];
+			tab.$destroy();
+
+			if (tab.currentName === this.currentName) {
+				const newTabs = this.getTabs();
+				let currentName = '';
+
+				if (newTabs.length) {
+					const rightUsableTabs = tabs.filter((item, tabsIndex) => !item.disbaled && tabsIndex > index);
+					const leftUsableTabs = tabs.filter((item, tabsIndex) => !item.disbaled && tabsIndex < index);
+
+					if (rightUsableTabs.length) {
+						currentName = rightUsableTabs[0].currentName;
+					} else if (leftUsableTabs.length) {
+						currentName = leftUsableTabs[leftUsableTabs.length - 1].currentName;
+					} else {
+						currentName = newTabs[0].currentName;
+					}
+				}
+				this.currentName = currentName;
+			}
+			this.$emit('tab-remove', tab.currentName);
+			this.refresh();
+			// this.handleChange()
+		},
 		/**
 		 * 刷新当前标签底下的滑块位置
 		 */
@@ -298,7 +351,27 @@ export default {
 			&:hover {
 				color: #5495f6;
 			}
+			&.is-active, &:hover {
+				@include element(close) {
+					width: 10px;
+					transform: translateZ(0);
+					margin-left: 10px;
+					margin-right: -6px;
+				}
+			}
 		}
+	}
+	@include element(close) {
+		width: 0;
+        font-size: 10px;
+        margin-right: 0;
+        text-align: right;
+        vertical-align: middle;
+        overflow: hidden;
+        position: relative;
+        top: -1px;
+        transform-origin: 100% 50%;
+        transition: all 0.3s ease-in-out;
 	}
 }
 </style>
