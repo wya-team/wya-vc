@@ -16,7 +16,11 @@ export default {
 		lazy: {
 			type: Boolean,
 			default: true
-		}
+		},
+		disabled: {
+			type: Boolean,
+			default: false
+		},
 	},
 	data() {
 		return {
@@ -55,6 +59,9 @@ export default {
 			}
 		},
 		label() {
+			this.refresh();
+		},
+		disabled() {
 			this.refresh();
 		}
 	},

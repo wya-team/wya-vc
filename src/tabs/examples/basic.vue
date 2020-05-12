@@ -21,7 +21,7 @@
 			<template #extra>
 				<div>extra</div>
 			</template>
-			<vc-tabs-pane v-if="tab0" :label="renderLabel">
+			<vc-tabs-pane v-if="tab0" disabled :label="renderLabel">
 				<div v-for="item in list" :key="item">
 					<div>标签一的内容</div>
 					<div>标签一的内容</div>
@@ -114,7 +114,7 @@ export default {
 				if (name > 5) {
 					resolve('resolve');
 				} else {
-					reject('reject');
+					reject(new Error('reject'));
 				}
 			});
 		},

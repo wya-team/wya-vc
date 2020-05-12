@@ -17,7 +17,10 @@
 					<div 
 						v-for="(item, index) in list"
 						:key="index"
-						:class="[{ 'is-active': item.name == currentName }]"
+						:class="[{ 
+							'is-active': item.name == currentName,
+							'is-disabled': item.disabled
+						}]"
 						class="vc-tabs__item"
 						@click="handleChange(index)"
 					>
@@ -133,7 +136,6 @@ export default {
 			}
 			this.$emit('tab-remove', tab.currentName);
 			this.refresh();
-			// this.handleChange()
 		},
 		/**
 		 * 刷新当前标签底下的滑块位置
@@ -300,7 +302,6 @@ export default {
 			right: 0;
 		}
 	}
-
 	@include when(line) {
 		@include element(bar){
 			@include commonBorder1PX(bottom);
@@ -316,6 +317,11 @@ export default {
 			transition: color .3s ease-in-out;
 			@include when(active) {
 				color: #5495f6;
+			}
+			@include when(disabled) {
+				pointer-events: none;
+				cursor: default;
+				color: #ccc;
 			}
 			&:hover {
 				color: #5495f6;
@@ -347,6 +353,11 @@ export default {
 				color: #5495f6;
 				border: 1px solid #5495f6;
 				z-index: 2;
+			}
+			@include when(disabled) {
+				pointer-events: none;
+				cursor: default;
+				color: #ccc;
 			}
 			&:hover {
 				color: #5495f6;
