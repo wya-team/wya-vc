@@ -349,9 +349,9 @@ filterable | 是否需要被过滤 | `Boolean` | - | `true`
 ### Select events
 事件名 | 说明 | 回调参数 | 参数说明
 ---|---|---|---
-change | 选中的`Option`变化时触发，默认返回 value | `Function` | `(value: String）`
+change | 选中的`Option`变化时触发，默认返回 value | `(value: String | Array, label: String | Array) => void 0` | `value`：当前选中的值value,如果是多选类型为数组；`label`：当前选中的值的label，多选时类型为数组
 clear | 点击清空按钮时触发	 | - | -
-visible-change | visible改变时回调 | - | `(visible:Boolean)` 
+visible-change | visible改变时回调 | `(visible:Boolean) => void 0` | `visible`：当前弹层显示状态
 close | 关闭时回调 | - | - 
 ready | 弹层出来时回调 | - | -
 
