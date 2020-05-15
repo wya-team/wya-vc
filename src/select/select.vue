@@ -350,11 +350,15 @@ $block: vc-select;
 	line-height: 1;
 	@include element(input) {
 		cursor: pointer;
+		background-color: #fff;
 		input {
 			cursor: pointer;
 		}
 		.vc-input__append {
 			z-index: 0;
+		}
+		.vc-input__content {
+			overflow: hidden;
 		}
 	}
 	@include element(append) {
@@ -374,7 +378,16 @@ $block: vc-select;
 	@include element(tags) {
 		padding-left: 4px;
 		.vc-tag {
+			max-width: 100%;
 			margin: 3px 4px 3px 0;
+			.vc-tag__wrapper span {
+				overflow: hidden;
+				text-overflow: ellipsis;
+				white-space: nowrap;
+			}
+			.vc-tag__close {
+				margin-left: 5px;
+			}
 		}
 	}
 
