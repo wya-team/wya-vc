@@ -27,7 +27,9 @@ export const cityList = [
 export const cityList1 = [
 	{
 		value: '1',
-		label: 'New York New YorkNew YorkNew YorkNew YorkNew YorkNew YorkNew YorkNew YorkNew YorkNew YorkNew YorkNew YorkNew YorkNew YorkNew YorkNew YorkNew YorkNew YorkNew YorkNew YorkNew YorkNew YorkNew YorkNew YorkNew YorkNew YorkNew York'
+		label: `New York New YorkNew YorkNew YorkNew YorkNew YorkNew YorkNew YorkNew YorkNew 
+			YorkNew YorkNew YorkNew YorkNew YorkNew YorkNew YorkNew YorkNew YorkNew YorkNew 
+			YorkNew YorkNew YorkNew YorkNew YorkNew YorkNew YorkNew YorkNew York`
 	},
 	{
 		value: '2',
