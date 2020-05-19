@@ -185,6 +185,13 @@ change | `dataSource`值改变的回调 | `(dataSource: Array) => void 0` | `dat
 error | 上传错误的回调的回调 | `(err: Object) => void 0` | `err`：错误回调
 complete | 上传完成后的回调 | `(res: Object) => void 0` | `res`：上传数据
 
+### 方法
+方法名 | 说明 | 参数
+---|---|---
+delete | 删除图片 | `index`：要删除的图片对应的索引
+add | 增加图片 | `imgs`：要增加的图片数组
+reset | 重置显示的图片 | `imgs`：要重置的图片数组
+
 ### 插槽
 属性 | 说明 
 ---|---
