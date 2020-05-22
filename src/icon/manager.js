@@ -20,10 +20,13 @@ class IconManager extends VcBasic {
 		this.icons = {};
 		this.events = {};
 		this.sourceStatus = {};
+
 		/**
-		 * 初始化加载
+		 * 初始化加载, Storage.version设置问题需要使用异步
 		 */
-		this.basicStatus = this.load(basicUrl);
+		setTimeout(() => {
+			this.basicStatus = this.load(basicUrl);
+		}, 0);
 	}
 
 	load(url) {
