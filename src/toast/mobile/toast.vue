@@ -53,6 +53,10 @@ export default {
 			visible: false
 		};
 	},
+	created() {
+		['destroy', 'remove', 'close', 'hide']
+			.forEach(key => this[key] = this.handleRemove);
+	},
 	mounted() {
 		this.visible = true;
 		if (this.duration !== 0) {
@@ -73,9 +77,6 @@ export default {
 			if (this.maskClosable) {
 				this.visible = false;
 			}
-		},
-		handleMove(e) {
-
 		}
 	}
 };
