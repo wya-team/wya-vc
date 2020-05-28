@@ -395,14 +395,14 @@ export default {
 				}
 				if (this.reqs[uid]) {
 					this.reqs[uid].cancel();
-					this.handleFinally(file);
+					this.done(file);
 					delete this.reqs[uid];
 				}
 			} else {
 				Object.keys(reqs).forEach((uid) => {
 					if (this.reqs[uid]) {
 						this.reqs[uid].cancel();
-						this.handleFinally(file);
+						this.done(file);
 					}
 					delete reqs[uid];
 				});
