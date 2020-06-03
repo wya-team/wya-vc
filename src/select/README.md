@@ -329,7 +329,6 @@ placement | 弹窗的展开方向 | `String` | `bottom`、`bottom-left`、`botto
 portal | 是否将弹层放置于 body 内，在 Tabs、带有 fixed 的 Table 列内使用时，建议添加此属性，它将不受父级样式影响，从而达到更好的效果 | `Boolean` | - | `true`
 element-id | 给表单元素设置 `id`，详见 Form 用法。 | `String` | - | -
 portalClassName | 外层类名 | `Object`、`String`、`Array` | - | -
-readonly | 输入框只读 | `Boolean` | - | `false`
 disabled | 是否禁用 | `Boolean` | - | `false` 
 trigger | 触发的行为 | `String` | `hover`、`click`、`focus` | `click`
 tag | 外层标签 | `String`| - | `div`
