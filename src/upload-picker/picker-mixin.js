@@ -200,7 +200,7 @@ export default {
 		},
 		handleFileBefore(file, fileList, type) {
 			return new Promise((resolve) => {
-				const { "file-before": fileBefore } = this.$listeners;
+				const { "file-before": fileBefore } = this.$listeners; 
 
 				if (!fileBefore) return resolve(file);
 				const before = fileBefore(file, fileList, type);
@@ -278,6 +278,19 @@ export default {
 			this.$emit('complete', res, type);
 		},
 		handleDel(index, type) {
+			const { 'del-before': delBefore } = this.$listeners; // 传入promise
+			const fn = delBefore && delBefore();
+			if (fn && fn.then) {
+				fn.then(() => {
+					this.delData(index, type);
+				}).catch((err) => {
+					return;
+				});
+			} else {
+				this.delData(index, type);
+			}
+		},
+		delData(index, type) {
 			const target = this.currentValue[type];
 			const item = target[index];
 			if (item.errorFlag) {
