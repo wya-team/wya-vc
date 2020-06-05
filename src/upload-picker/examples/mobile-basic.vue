@@ -4,6 +4,7 @@
 			v-model="dataSource"
 			:max="5"
 			:picker="['video', 'image', 'file']"
+			@remove-before="handleDel"
 			@success="handleSuccess"
 		>
 			<!-- 限制大小上传以及api -->

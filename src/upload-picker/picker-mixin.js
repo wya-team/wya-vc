@@ -278,8 +278,8 @@ export default {
 			this.$emit('complete', res, type);
 		},
 		handleDel(index, type) {
-			const { 'del-before': delBefore } = this.$listeners; // 传入promise
-			const fn = delBefore && delBefore();
+			const { 'remove-before': removeBefore } = this.$listeners; // 传入promise
+			const fn = removeBefore && removeBefore();
 			if (fn && fn.then) {
 				fn.then(() => {
 					this.delData(index, type);
