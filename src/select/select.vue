@@ -234,7 +234,7 @@ export default {
 
 		handleSearch(v) {
 			this.searchValue = v;
-			this.searchRegex = new RegExp(v, 'i');
+			this.searchRegex = new RegExp(v.trim(), 'i');
 			this.loadData && this._loadData();
 		},
 
