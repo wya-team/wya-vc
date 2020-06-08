@@ -49,7 +49,7 @@
 						:seconds="timeSlots.left.seconds"
 						:show-seconds="showSeconds"
 						v-bind="timePickerOptions"
-						:panel-date="leftPanelDate"
+						:panel-date="dates[0]"
 						@pick="handleTimePick(...arguments, 'left')"
 					/>
 				</div>
@@ -94,7 +94,7 @@
 						:seconds="timeSlots.right.seconds"
 						:show-seconds="showSeconds"
 						v-bind="timePickerOptions"
-						:panel-date="rightPanelDate"
+						:panel-date="dates[1]"
 						@pick="handleTimePick(...arguments, 'right')"
 					/>
 				</div>
