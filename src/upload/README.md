@@ -279,6 +279,95 @@ export default {
 ```
 :::
 
+
+### 获取文件但不上传到服务器
+
+通过`file-before`事件返回`false`可以阻止文件上传
+
+:::RUNTIME
+```vue
+<template>
+	<div>
+		<vc-upload
+			@file-before="handleFileBefore"
+		>
+			<vc-button
+				style="margin-bottom: 21px"
+			>上传</vc-button>
+		</vc-upload>
+		{{file_name}}
+	</div>
+</template>
+
+<script>
+import { Upload, Message, Button, VcInstance } from '@wya/vc';
+// 只需要注册一次(项目中已注册无视)
+VcInstance.hasInit = false;
+VcInstance.init({
+	Upload: {
+		URL_UPLOAD_IMG_POST: 'https://api.github.com/users/wya-team',
+		URL_UPLOAD_FILE_POST: 'https://api.github.com/users/wya-team',
+		onPostBefore: ({ options }) => {
+			return new Promise((resolve, reject) => {
+				if (Math.random(0, 10) > 10) {
+					throw new Error('上传失败');
+				}
+				resolve({
+					...options,
+					param: {
+						...options.param,
+						timestamp: new Date()
+					},
+					type: 'GET',
+					credentials: 'omit', //  cors下关闭
+					headers: {
+
+					}
+				});
+			});
+		},
+		onPostAfter: ({ response, options }) => { // eslint-disable-line
+			const { file } = options.param;
+			return new Promise((resolve) => {
+				// 模拟强制返回
+				resolve({
+					status: 1,
+					data: {
+						url: 'https://avatars2.githubusercontent.com/u/34465004?v=4',
+						type: `.${file.name.split('.').pop()}`,
+						uid: file.uid,
+						title: file.name,
+						size: file.size
+					},
+					...response
+				});
+			});
+		}
+	}
+});
+export default {
+	name: "vc-upload-basic",
+	components: {
+		'vc-upload': Upload,
+		'vc-button': Button
+	},
+	data() {
+		return {
+			file_name: '',
+			file: null
+		};
+	},
+	methods: {
+		handleFileBefore(file) {
+			this.file = file;
+			return false;
+		}
+	}
+};
+</script>
+```
+:::
+
 ## API
 
 ### 属性

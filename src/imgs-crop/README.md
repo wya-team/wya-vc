@@ -113,3 +113,10 @@ load-success | 图片加载成功 | `(imageState: Object) => void 0` | `imageSta
 image-ready | 图片加载成功，展示后执行 | - | -
 image-change | 图片信息变化 | - | -
 position-change | 位置变化 | `(position: Object) => void 0` | `position`: 定位信息
+
+### 方法
+方法名 | 说明 | 参数
+---|---|---
+getImageToCanvas | 基于原图绘制，返回一个HTMLCanvasElement，在另一个画布上绘制，或添加到DOM | -
+getImageScaledToCanvas | 基于当前画布大小绘制，返回一个HTMLCanvasElement | -
+getImage | 获取当前裁剪的图片对象 | `opts`：配置对象；默认为：`{ isNormal = true, filename = 'image', getFile = false }`; `isNormal`: 为`true`时采用`getImageToCanvas`方法否则采用`getImageScaledToCanvas`方法获取`canvas`; `filename`：文件名；`getFile`：是否获取图片文件对象
