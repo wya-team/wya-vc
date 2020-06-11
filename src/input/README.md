@@ -263,7 +263,7 @@ indicator | `vc-input` 特有，类型为对象是`{inline: false, inverted: fal
 indicateClassName | 计数文字的样式 | `String` | - | -
 name | 原生属性 | `String` | - | -
 elementId | input的id属性 | `String` | - | -
-autocomplete | 原生属性，输入字段是否应该启用自动完成功能 | `String` | `on`、`off` | `off`
+autocomplete | 原生属性，输入字段是否应该启用自动完成功能，`new-password`在`input`的`type`为`password`时可以阻止密码的默认填充 | `String` | `on`、`off`、`new-password` | `off`
 spellcheck | 原生属性，是否对元素内容进行拼写检查 | `Boolean` | - | `false`
 focusEnd | 聚焦时光标是否在文字后面 | `Boolean` | - | `false`
 bytes | 是否2个字节算一个字 | `Boolean` | - | `false`

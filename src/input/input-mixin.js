@@ -41,7 +41,7 @@ export default {
 			default: false
 		},
 		autocomplete: {
-			validator: v => /^(on|off)$/.test(v),
+			validator: v => /^(on|off|new-password)$/.test(v),
 			default: 'off'
 		},
 		clearable: {
