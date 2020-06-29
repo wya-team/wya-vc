@@ -52,6 +52,10 @@ export default {
 		disabled: {
 			type: Boolean,
 			default: false
+		},
+		outsideClickable: {
+			type: Boolean,
+			default: true
 		}
 	},
 	data() {
@@ -146,7 +150,7 @@ export default {
 
 			// document click
 			if (visible === undefined) {
-				if (!isPopArea && !this.$el.contains(e.target)) {
+				if (!isPopArea && !this.$el.contains(e.target) && this.outsideClickable) {
 					visible = false;
 				} else {
 					return;

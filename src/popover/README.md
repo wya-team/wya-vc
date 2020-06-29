@@ -436,6 +436,7 @@ portalStyle | 样式 | `Object` | - | -
 triggerEl | 触发元素，使用`open`方法调用时必填 | `Object`、`HTMLElement` | - | -
 alone | 直接传送门标记调用时，使用`open`方法调用时必填 | `Boolean` | - | `false`
 hover | 直接传送门标记调用时，hover需要绑定事件 | `Boolean` | - | `false`
+outsideClickable | 点击弹层外面的区域是否关闭弹层，用于其他组件如`date-picker`内部控制弹层 | `Boolean` | - | `true`
 
 ### 事件
 事件名 | 说明 | 回调参数 | 参数说明
