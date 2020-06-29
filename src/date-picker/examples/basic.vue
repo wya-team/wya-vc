@@ -122,6 +122,21 @@
 			placeholder="请选择"
 			@change="handleChangeTime"
 		/>
+		<h2>beforeOk,拦截小于当前日期的值 beforeClear,并且只能通过确认、清空按钮关闭弹层</h2>
+		<vc-date-picker
+			v-model="datePromise"
+			:options="options"
+			:outside-clickable="false"
+			type="date"
+			clearable
+			confirm
+			format="YYYY-MM-DD"
+			placeholder="Select date"
+			@change="handleChange"
+			@before-ok="handeleOnBeforeOk"
+			@before-clear="handeleOnBeforeClear"
+			@error="handleError"
+		/>
 		<h2>Form表单校验</h2>
 		<vc-form
 			ref="form"
@@ -165,6 +180,7 @@ export default {
 			monthrange: '',
 			quarter: '',
 			quarterrange: '',
+			datePromise: new Date(),
 			type: 'date',
 			dateOpen: false,
 			disableDate: {
@@ -204,6 +220,34 @@ export default {
 		}
 	},
 	methods: {
+		handleError(err) {
+			console.log('err :>> ', err);
+		},
+		handeleOnBeforeOk(val) {
+			console.log('val :>> ', val);
+			return new Promise((resolve, reject) => {
+				const num = Math.random();
+				const date = new Date();
+				if (date < val[0]) {
+					resolve(true);
+				} else {
+					reject(new Error());
+				}
+			});
+		},
+		handeleOnBeforeClear() {
+			return new Promise((resolve, reject) => {
+				const num = Math.random();
+				console.log('num :>> ', num > 0.5);
+				setTimeout(() => {
+					if (num > 0.5) {
+						resolve(true);
+					} else {
+						reject(new Error(false));
+					}
+				}, 200);
+			});
+		},
 		handleChangeTime(val) {
 			console.log('val :', val);
 		},

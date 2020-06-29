@@ -316,6 +316,8 @@ ok | `confirm`模式下点击确定按钮的回调 | `(date: Date | Array) => vo
 clear | 点击清除按钮的回调 | `(date: Date | Array) => void 0` | `date`: 当前日期值
 change | 点击面板时的回调 | `(date: Date | Array) => void 0` | `date`: 当前日期值
 visible-change | 面板显示隐藏时的回调 | `(visible: Boolean) => void 0` | `visible`：当前面板显示状态
+before-ok | 点击确定前回调函数，函数返回一个`Promise`, `reject`会中断函数执行 | `(date: Date | Array) => Promise` | - | -
+before-clear | 点击取消前回调函数，函数返回一个`Promise`, `reject`会中断函数执行 | `(date: Date | Array) => Promise` | - | -
 
 ### Slot
 属性 | 说明

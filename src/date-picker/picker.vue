@@ -220,15 +220,39 @@ export default {
 			this.handleClear();
 		},
 		handleClear() {
-			const date = this.isRange ? [] : '';
-			this.isActive = false;
-			this.currentValue = date;
-			this.sync('change', date);
-			this.$emit('clear', date);
+			const clear = () => {
+				const date = this.isRange ? [] : '';
+				this.isActive = false;
+				this.currentValue = date;
+				this.sync('change', date);
+				this.$emit('clear', date);
+			};
+			const { 'before-clear': beforeClear } = this.$listeners; 
+			this.executePromise(beforeClear, clear);
 		},
 		handleOK(value) {
-			this.isActive = false;
-			this.sync(['change', 'ok'], value);
+			const ok = () => {
+				this.isActive = false;
+				this.sync(['change', 'ok'], value);
+			};
+			const { 'before-ok': beforeOk } = this.$listeners; 
+			this.executePromise(beforeOk, ok, value);
+		},
+		executePromise(promiseFn, cb, param) {
+			try {
+				const promise = promiseFn && promiseFn(param);
+				if (promise && promise.then()) {
+					promise.then(() => {
+						cb();
+					}).catch(() => {
+						return;
+					});
+				} else {
+					cb();
+				}
+			} catch (error) {
+				this.$emit('error', error);
+			}
 		},
 		handleClose() {
 			let val = this.parseValue(this.value);
