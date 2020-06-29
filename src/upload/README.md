@@ -401,8 +401,9 @@ file-error | 单个文件上传过程失败回调 | `(res: Object, file: File, i
 begin | 一个周期上传前的回调 | `(fileList: Array) => void 0` | `fileList`：上传的文件数组
 complete | 一个周期上传后的回调 | `(info: Object) => void 0` | `info`：上传信息对象
 error | 组件内部报错回调 | `(error: Object) => void 0` | `error`：错误信息
-post-before | 文件上传前回调（处理异步） | - | -
-post-after | 文件上传后回调 | - | -
+post-before | 文件上传前回调（处理异步） | `() => {}` | -
+post-after | 文件上传后回调 | `() => {}` | -
+remove-before | 文件移除前回调 | `() => Promise` | - | -
 
 ### Slot
 属性 | 说明
