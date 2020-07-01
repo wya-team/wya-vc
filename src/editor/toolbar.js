@@ -1,6 +1,6 @@
 import { Load } from '@wya/utils';
 import { getUid } from '../utils/utils';
-import { insertFontStyle, insertLineHeightStyle } from './utils';
+import { insertFontStyle, insertLineHeightStyle, insertLetterSpacingStyle } from './utils';
 import defaultOptions from './default-options';
 
 const toolMap = {
@@ -59,10 +59,12 @@ export default {
 		this.fontSize = [];
 		this.styleId = getUid('editor-toolbar-style');
 		this.lineHeightStyleId = getUid('editor-toolbar-style');
+		this.letterSpacingStyleId = getUid('editor-toolbar-style');
 	},
 	destroyed() {
 		Load.removeCSSCode(this.styleId);
 		Load.removeCSSCode(this.lineHeightStyleId);
+		Load.removeCSSCode(this.letterSpacingStyleId);
 	},
 	render(h) {
 		const { buttons } = this;
@@ -106,6 +108,8 @@ export default {
 							insertFontStyle(value, this.styleId);
 						} else if (key === 'lineHeight') {
 							insertLineHeightStyle(value, this.lineHeightStyleId);
+						} else if (key === 'letterSpacing') {
+							insertLetterSpacingStyle(value, this.letterSpacingStyleId);
 						}
 						
 						return (

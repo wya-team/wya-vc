@@ -68,6 +68,7 @@ import defaultOptions from './default-options';
 import { VcInstance } from '../vc/index';
 import { registVideoBlot } from './extends/video-blot';
 import { registerLineHeight } from './extends/line-height';
+import { registerLetterSpacing } from './extends/letter-spacing';
 import ImageExtend from './extends/image-extend';
 import Spin from '../spin';
 import Message from '../message';
@@ -376,6 +377,7 @@ export default {
 			Quill.register('modules/ImageExtend', ImageExtend);
 			registVideoBlot(Quill);
 			registerLineHeight(Quill);
+			registerLetterSpacing(Quill);
 			register && register(Quill);
 		}
 	}
