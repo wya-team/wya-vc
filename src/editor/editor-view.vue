@@ -48,7 +48,7 @@ export default {
 		this.lineHeightStyleId = getUid('editor-toolbar-style');
 		this.letterSpacingStyleId = getUid('editor-toolbar-style');
 		insertFontStyle(this.fontSize, this.styleId);
-		insertLineHeightStyle(this.lineHeight, this.lineHeightStyleId);
+		insertLineHeightStyle(this.lineHeight.map((it) => String(it * 10)), this.lineHeightStyleId); // 设置的样式1.2为class不起由于有.不生效, 默认扩大十倍，样式再除以10
 		insertLetterSpacingStyle(this.letterSpacing, this.letterSpacingStyleId);
 	},
 	mounted() {

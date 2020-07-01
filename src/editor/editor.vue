@@ -384,7 +384,6 @@ export default {
 			Quill.register('modules/ImageExtend', ImageExtend);
 			registVideoBlot(Quill);
 			registerLineHeight(Quill, lineHeight);
-			console.log('letterSpacing :>> ', letterSpacing);
 			registerLetterSpacing(Quill, letterSpacing);
 			register && register(Quill);
 		}
