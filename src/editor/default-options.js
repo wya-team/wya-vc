@@ -16,6 +16,7 @@ export default {
 			[{ 'header': [1, 2, 3, 4, 5, 6, false] }],
 			[{ 'color': [] }, { 'background': [] }],
 			[{ 'font': [] }],
+			[{ 'lineHeight': ['10', '12', '14', '16', '18', '20', '22', '24', '26', '28', '30'] }], // 设置的样式1.2为class不起由于有.不生效,
 			[{ 'align': [] }],
 			// ['clean'],
 			['link', 'vc-image', 'vc-undo', 'vc-redo']

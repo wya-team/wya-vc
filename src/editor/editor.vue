@@ -67,6 +67,7 @@ import ImgsPreview from '../imgs-preview/index';
 import defaultOptions from './default-options';
 import { VcInstance } from '../vc/index';
 import { registVideoBlot } from './extends/video-blot';
+import { registerLineHeight } from './extends/line-height';
 import ImageExtend from './extends/image-extend';
 import Spin from '../spin';
 import Message from '../message';
@@ -374,6 +375,7 @@ export default {
 			const { Quill, register } = this;
 			Quill.register('modules/ImageExtend', ImageExtend);
 			registVideoBlot(Quill);
+			registerLineHeight(Quill);
 			register && register(Quill);
 		}
 	}

@@ -37,7 +37,18 @@
 .ql-snow .ql-picker.ql-header .ql-picker-item[data-value="6"]::before {
 	content: '标题6';
 }
-
+.ql-snow .ql-lineHeight::before {
+	content: "行高：";
+	position: relative;
+	top: -2px;
+	left: 8px;
+}
+.ql-snow .ql-picker.ql-lineHeight {
+	width: 100px;
+}
+.ql-snow .ql-picker.ql-lineHeight .ql-picker-label {
+	width: 50%;
+}
 // .ql-snow .ql-picker.ql-font .ql-picker-label::before,
 // .ql-snow .ql-picker.ql-font .ql-picker-item::before {
 // 	content: '标准字体';

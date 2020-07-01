@@ -1,6 +1,6 @@
 import { Load } from '@wya/utils';
 import { getUid } from '../utils/utils';
-import { insertFontStyle } from './utils';
+import { insertFontStyle, insertLineHeightStyle } from './utils';
 import defaultOptions from './default-options';
 
 const toolMap = {
@@ -24,7 +24,7 @@ const toolMap = {
 		"#663d00", "#666600", "#003700", "#002966", "#3d1466"
 	],
 	font: ['selected', 'serif', 'monospace'],
-	align: ['selected', 'center', 'right', 'justify']
+	align: ['selected', 'center', 'right', 'justify'],
 };
 
 export default {
@@ -58,9 +58,11 @@ export default {
 	created() {
 		this.fontSize = [];
 		this.styleId = getUid('editor-toolbar-style');
+		this.lineHeightStyleId = getUid('editor-toolbar-style');
 	},
 	destroyed() {
 		Load.removeCSSCode(this.styleId);
+		Load.removeCSSCode(this.lineHeightStyleId);
 	},
 	render(h) {
 		const { buttons } = this;
@@ -70,6 +72,7 @@ export default {
 					if (item.includes('vc')) {
 						switch (item) {
 							case 'vc-image':
+								console.log('this.$slots.default :>> ', this.$slots.default);
 								return this.$slots.default[0];
 							case 'vc-video':
 								return this.$slots.default[2];
@@ -101,6 +104,8 @@ export default {
 						if (key === 'size') {
 							this.fontSize = value;
 							insertFontStyle(value, this.styleId);
+						} else if (key === 'lineHeight') {
+							insertLineHeightStyle(value, this.lineHeightStyleId);
 						}
 						
 						return (

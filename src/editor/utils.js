@@ -14,3 +14,18 @@ export const insertFontStyle = (value, id) => {
 	}, '');
 	Load.cssCode(code, { id });
 };
+
+export const insertLineHeightStyle = (value, id) => {
+	// 动态生成line-height的css，插入head
+	let code = value.reduce((pre, lineHeight) => {
+		pre += `.ql-snow .ql-lineHeight.ql-picker .ql-picker-item[data-value="${lineHeight}"]:before,
+				.ql-snow .ql-lineHeight.ql-picker .ql-picker-label[data-value="${lineHeight}"]:before {
+					content: "${lineHeight / 10}"
+				}`;
+		pre += `.ql-editor .ql-lineHeight-${lineHeight} {
+					line-height: ${lineHeight / 10};
+				}`;
+		return pre;
+	}, '');
+	Load.cssCode(code, { id });
+};
