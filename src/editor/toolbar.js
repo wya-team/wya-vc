@@ -79,7 +79,6 @@ export default {
 					if (item.includes('vc')) {
 						switch (item) {
 							case 'vc-image':
-								console.log('this.$slots.default :>> ', this.$slots.default);
 								return this.$slots.default[0];
 							case 'vc-video':
 								return this.$slots.default[2];
@@ -111,6 +110,7 @@ export default {
 							this.fontSize = options;
 							insertFontStyle(options, this.styleId);
 						} else if (key === 'lineHeight') {
+							options = options.map((it) => String(it * 10)); // 设置的样式1.2为class不起由于有.不生效, 默认扩大十倍，样式再除以10
 							this.lineHeight = options;
 							insertLineHeightStyle(options, this.lineHeightStyleId);
 						} else if (key === 'letterSpacing') {
