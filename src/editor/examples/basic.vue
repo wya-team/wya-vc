@@ -91,10 +91,13 @@ export default {
 					toolbar: {
 						container: [
 							['bold', 'italic', 'underline', 'strike'],
-							[{ 'header': [1, 2, 3, 4, 5, 6, false] }],
+							[{ 'header': [1, 2, 3, 4, 5, 6, 7, false] }],
 							['link'],
 							[{ 'color': [] }, { 'background': [] }],
-							[{ 'align': [] }]
+							[{ 'align': [] }],
+							[{ 'lineHeight': ['1', '2.2', '3', '5'] }],
+							[{ 'letterSpacing': ['1px', '2px', '3px', '12px'] }],
+							[{ 'size': ['18px', '20px', '22px', '49px'] }]
 						],
 					},
 				}
@@ -120,7 +123,7 @@ export default {
 				value: [
 					{ required: true, message: '请输入内容' }
 				],
-			}
+			},
 		};
 	},
 	computed: {

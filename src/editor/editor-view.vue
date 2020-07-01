@@ -7,8 +7,9 @@
 <script>
 import { Load } from '@wya/utils';
 import { getUid } from '../utils/utils';
+import { lineHeight, letterSpacing } from './constant';
 import ImgsPreview from '../imgs-preview/index';
-import { insertFontStyle } from './utils'; 
+import { insertFontStyle, insertLineHeightStyle, insertLetterSpacingStyle } from './utils';
 	
 export default {
 	name: 'vc-editor-view',
@@ -20,7 +21,15 @@ export default {
 		fontSize: {
 			type: Array,
 			default: () => ['12px', '14px', '16px', '18px', '20px', '22px', '24px', '50px']
-		}
+		},
+		lineHeight: {
+			type: Array,
+			default: () => lineHeight
+		},
+		letterSpacing: {
+			type: Array,
+			default: () => letterSpacing
+		},
 	},
 	data() {
 		return {
@@ -36,13 +45,19 @@ export default {
 	},
 	created() {
 		this.styleId = getUid('editor-view-style');
+		this.lineHeightStyleId = getUid('editor-toolbar-style');
+		this.letterSpacingStyleId = getUid('editor-toolbar-style');
 		insertFontStyle(this.fontSize, this.styleId);
+		insertLineHeightStyle(this.lineHeight, this.lineHeightStyleId);
+		insertLetterSpacingStyle(this.letterSpacing, this.letterSpacingStyleId);
 	},
 	mounted() {
 		this.initListener();
 	},
 	destroyed() {
 		Load.removeCSSCode(this.styleId);
+		Load.removeCSSCode(this.lineHeightStyleId);
+		Load.removeCSSCode(this.letterSpacingStyleId);
 	},
 	methods: {
 		initListener() {
