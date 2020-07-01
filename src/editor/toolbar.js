@@ -1,6 +1,7 @@
 import { Load } from '@wya/utils';
 import { getUid } from '../utils/utils';
 import { insertFontStyle, insertLineHeightStyle, insertLetterSpacingStyle } from './utils';
+import { lineHeight, letterSpacing } from './constant';
 import defaultOptions from './default-options';
 
 const toolMap = {
@@ -25,6 +26,8 @@ const toolMap = {
 	],
 	font: ['selected', 'serif', 'monospace'],
 	align: ['selected', 'center', 'right', 'justify'],
+	lineHeight,
+	letterSpacing
 };
 
 export default {
@@ -57,6 +60,8 @@ export default {
 	},
 	created() {
 		this.fontSize = [];
+		this.lineHeight = [];
+		this.letterSpacing = [];
 		this.styleId = getUid('editor-toolbar-style');
 		this.lineHeightStyleId = getUid('editor-toolbar-style');
 		this.letterSpacingStyleId = getUid('editor-toolbar-style');
@@ -101,15 +106,16 @@ export default {
 						return <button class={`ql-${key}`} value={value} />;
 					} 
 					if (value instanceof Array) {
-						let options = value || toolMap[key];
-
+						let options = (value.length && value) || toolMap[key];
 						if (key === 'size') {
-							this.fontSize = value;
-							insertFontStyle(value, this.styleId);
+							this.fontSize = options;
+							insertFontStyle(options, this.styleId);
 						} else if (key === 'lineHeight') {
-							insertLineHeightStyle(value, this.lineHeightStyleId);
+							this.lineHeight = options;
+							insertLineHeightStyle(options, this.lineHeightStyleId);
 						} else if (key === 'letterSpacing') {
-							insertLetterSpacingStyle(value, this.letterSpacingStyleId);
+							this.letterSpacing = options;
+							insertLetterSpacingStyle(options, this.letterSpacingStyleId);
 						}
 						
 						return (

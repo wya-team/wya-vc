@@ -41,7 +41,7 @@
 .ql-snow .ql-lineHeight::before {
 	content: "行高：";
 	position: relative;
-	top: 0;
+	top: -2px;
 }
 .ql-snow .ql-picker.ql-lineHeight {
 	width: 100px;
@@ -54,7 +54,7 @@
 .ql-snow .ql-letterSpacing::before {
 	content: "字间距：";
 	position: relative;
-	top: 0;
+	top: -2px;
 }
 .ql-snow .ql-picker.ql-letterSpacing {
 	width: 120px;

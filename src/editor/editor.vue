@@ -373,11 +373,19 @@ export default {
 			});
 		},
 		_register() {
+			let lineHeight;
+			let letterSpacing;
+
+			if (this.$refs.toolbar) {
+				lineHeight = this.$refs.toolbar.lineHeight;
+				letterSpacing = this.$refs.toolbar.letterSpacing;
+			}
 			const { Quill, register } = this;
 			Quill.register('modules/ImageExtend', ImageExtend);
 			registVideoBlot(Quill);
-			registerLineHeight(Quill);
-			registerLetterSpacing(Quill);
+			registerLineHeight(Quill, lineHeight);
+			console.log('letterSpacing :>> ', letterSpacing);
+			registerLetterSpacing(Quill, letterSpacing);
 			register && register(Quill);
 		}
 	}
