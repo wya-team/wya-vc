@@ -5,6 +5,14 @@
 			:data-source="dataSource"
 			:load-data="loadData"
 		/>
+		<vcm-cascader
+			v-model="value2"
+			extra="带有头部"
+			header
+			:data-source="region"
+			:load-data="loadData"
+			@change="handelChange"
+		/>
 		<br>
 		<br>
 		<div @click="handleClick">
@@ -77,6 +85,8 @@ export default {
 			],
 			value: [],
 			value1: [],
+			region: [],
+			value2: []
 		};
 	},
 	mounted() {
@@ -85,8 +95,31 @@ export default {
 		setTimeout(() => {
 			this.value1 = ['jiangsu', 'nanjing'];
 		}, 5000);
+
+		this.region = [];
+		let chinaData = {
+			label: '中国',
+			value: 'china',
+			children: []
+		};
+		let overseaData = {
+			label: '海外地区',
+			value: 'oversea',
+			children: []
+		};
+		this.dataSource.forEach(item => {
+			if (item.value === 1) {
+				chinaData.children.push(...item.children);
+			} else {
+				overseaData.children.push(item);
+			}
+		});
+		this.region = [chinaData, overseaData];
 	},
 	methods: {
+		handelChange(val) {
+			console.log(val);
+		},
 		loadData() {
 			return new Promise((resolve) => {
 				setTimeout(() => {
