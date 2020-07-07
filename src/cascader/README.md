@@ -403,6 +403,7 @@ readonly | 设置只读 | `Boolean` | - | `false`
 tag | 组件外层dom元素类型 | `String` | - | `div`
 placement | 浮层预设位置 |  | `String` | `top`、`left`、`right`、`bottom`、`bottom-left`、`bottom-right`、`top-left`、`top-right`、`right-top`、`right-bottom`、`left-top`、`left-bottom` | `bottom-left`
 arrow | 浮层有无箭头 | `Boolean` | - | `false`
+header | 显示头部分类 | `Boolean` | - | `false`
 
 ### 事件
 事件名 | 说明 | 回调参数 | 参数说明
