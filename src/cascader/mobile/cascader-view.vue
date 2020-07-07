@@ -1,16 +1,31 @@
 <template>
 	<div class="vcm-cascader-view">
+		<div v-if="header">
+			<div class="vcm-cascader-view__tab">
+				<div 
+					v-for="(item, index) in dataSource" 
+					:key="item.value" 
+					:class="{ 'is-active': headerIndex === index }"
+					class="vcm-cascader-view__label"
+					@click="handleChangeTab(index)"
+				>
+					{{ item.label }}
+				</div>
+			</div>
+		</div>
 		<slot :label="label" :current="currentIndex" name="header">
 			<div class="vcm-cascader-view__wrapper">
-				<div
-					v-for="(item, index) in currentValue"
-					:key="item"
-					:class="{ 'is-active': currentIndex === index }"
-					class="vcm-cascader-view__label"
-					@click="currentIndex = index"
-				>
-					{{ label[index] }}
-				</div>
+				<template v-for="(item, index) in currentValue">
+					<div
+						v-if="(header && index > 0) || !header"
+						:key="item"
+						:class="{ 'is-active': currentIndex === index }"
+						class="vcm-cascader-view__label"
+						@click="currentIndex = index"
+					>
+						{{ label[index] }}
+					</div>
+				</template>
 				<div 
 					v-if="hasChildren" 
 					:class="{ 'is-active': currentIndex === currentValue.length }"
@@ -64,6 +79,10 @@ export default {
 		changeOnSelect: {
 			type: Boolean,
 			default: false
+		},
+		header: {
+			type: Boolean,
+			default: false
 		}
 	},
 	data() {
@@ -72,14 +91,15 @@ export default {
 			currentValue: [],
 			rebuildData: [],
 			alphabetData: [],
-			hasChildren: true
+			hasChildren: true,
+			headerIndex: 0,
 		};
 	},
 	computed: {
 		colValue() {
 			return this.currentValue[this.currentIndex];
 		},
-		colData() {
+		colData() { 
 			return this.rebuildData[this.currentIndex];
 		},
 		colAlphabet() {
@@ -109,16 +129,34 @@ export default {
 				if ((v && v.length !== 0) && isEqualWith(v, this.currentValue)) {
 					return;
 				}
-				
-				this.currentValue = v;
-				this.rebuildData = this.makeRebuildData();
 
+				this.currentValue = v;
+
+				if (this.header) {
+					if (this.currentValue.length === 0) { // 没传值，默认给第一个
+						this.currentValue.push(this.dataSource[0].value);
+					} else { // 传了值，判断该值在dataSource的索引修改headerIndex
+						this.headerIndex = this.dataSource.findIndex(it => it.value === this.currentValue[0]);
+					}
+				}
+
+				this.rebuildData = this.makeRebuildData();
+				
 				this.resetIndex();
 			}
 		}
 	},
 
 	methods: {
+		handleChangeTab(index) {
+			this.headerIndex = index;
+			this.handleChange({ 
+				value: this.dataSource[index].value,
+				rowIndex: index,
+				colIndex: 0,
+				sync: false
+			});
+		},
 		/**
 		 * 重置index
 		 */
@@ -174,6 +212,7 @@ export default {
 		makeRebuildData() {
 			if (!this.dataSource.length) return [];
 			let temp = this.dataSource;
+			this.alphabetData = [];
 			let data = this.currentValue.slice(0).reduce((pre, cur, index) => {
 				const { data, alphabet } = this.makeData(temp);
 				pre[index] = data;
@@ -283,8 +322,17 @@ export default {
 	flex: 1;
 	font-size: 14px;
 	color: #000;
+	padding-top: 30px;
+	@include element(tab) {
+		display: flex;
+		justify-content: center;
+		margin-bottom: 20px;
+		.vcm-cascader-view__label {
+			font-size: 18px;
+			padding-bottom: 5px;
+		}
+	}
 	@include element(wrapper) {
-		margin-top: 30px;
 		padding: 0 12px;
 		border-bottom: 1px solid #eee;
 	}

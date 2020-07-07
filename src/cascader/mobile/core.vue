@@ -18,6 +18,8 @@
 			:allow-dispatch="false"
 			:alphabetical="alphabetical"
 			:alphabet-key="alphabetKey"
+			:change-on-select="changeOnSelect"
+			:header="header"
 		/>
 	</vcm-picker-popup>
 </template>
@@ -52,7 +54,9 @@ const wrapperComponent = {
 			'dataSource',
 			'loadData',
 			'alphabetical',
-			'alphabetKey'
+			'alphabetKey',
+			'changeOnSelect',
+			'header'
 		]),
 		visible: { // sync
 			type: Boolean,
