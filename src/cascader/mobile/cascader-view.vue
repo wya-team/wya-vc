@@ -117,8 +117,10 @@ export default {
 		dataSource: {
 			immediate: false,
 			handler() {
-				this.rebuildData = this.makeRebuildData();
 
+				
+				this.rebuildData = this.makeRebuildData();
+				this.resetCurrentVal();
 				this.resetIndex();
 			}
 		},
@@ -132,22 +134,24 @@ export default {
 
 				this.currentValue = v;
 
-				if (this.header) {
-					if (this.currentValue.length === 0) { // 没传值，默认给第一个
-						this.currentValue.push(this.dataSource[0].value);
-					} else { // 传了值，判断该值在dataSource的索引修改headerIndex
-						this.headerIndex = this.dataSource.findIndex(it => it.value === this.currentValue[0]);
-					}
-				}
-
 				this.rebuildData = this.makeRebuildData();
 				
+				this.resetCurrentVal();
 				this.resetIndex();
 			}
 		}
 	},
 
 	methods: {
+		resetCurrentVal() {
+			if (this.header && this.dataSource.length) {
+				if (this.currentValue.length === 0) { // 没传值，默认给第一个
+					this.currentValue.push(this.dataSource[0].value);
+				} else { // 传了值，判断该值在dataSource的索引修改headerIndex
+					this.headerIndex = this.dataSource.findIndex(it => it.value === this.currentValue[0]);
+				}
+			}
+		},
 		handleChangeTab(index) {
 			this.headerIndex = index;
 			this.handleChange({ 
