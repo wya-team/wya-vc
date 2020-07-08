@@ -185,7 +185,7 @@ export default {
 		handleInput(e) {
 			if (this.isOnComposition) return;
 			let value = e.target.value;
-			if (!this.checkInput(value)) {
+			if (!this.checkInput(value) && e.inputType !== 'deleteContentBackward') {
 				e.preventDefault();
 				this.$forceUpdate(); // hack
 				return;
