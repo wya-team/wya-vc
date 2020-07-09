@@ -390,7 +390,7 @@ export default {
 ---|---|---|---|---
 data-source | 可选项的数据源，格式参照示例说明 | `Array` | - | `[]`
 value | 当前已选项的数据，格式参照示例说明 | `Array` | - | `[]`
-formatter | 选择后展示的函数，用于自定义显示格式 | `Function` | - | `(label: String) => label.join(' / ')`
+formatter | 选择后展示的函数，用于自定义显示格式 | `Function` | - | `(label: String) => label.join(',')`
 disabled | 是否禁用选择器 | `Boolean` | - | `false`
 clearable | 是否支持清除 | `Boolean` | - | `true`
 placeholder | 输入框占位符 | `String` | - | 请选择
@@ -403,7 +403,6 @@ readonly | 设置只读 | `Boolean` | - | `false`
 tag | 组件外层dom元素类型 | `String` | - | `div`
 placement | 浮层预设位置 |  | `String` | `top`、`left`、`right`、`bottom`、`bottom-left`、`bottom-right`、`top-left`、`top-right`、`right-top`、`right-bottom`、`left-top`、`left-bottom` | `bottom-left`
 arrow | 浮层有无箭头 | `Boolean` | - | `false`
-header | 显示头部分类 | `Boolean` | - | `false`
 
 ### 事件
 事件名 | 说明 | 回调参数 | 参数说明
@@ -414,6 +413,12 @@ visible-change | visible改变时回调 | - | -
 close | 关闭时回调 | - | - 
 ready | 弹层出来时回调 | - | - 
 
+## 移动端
+
+### 属性
+属性 | 说明 | 类型 | 可选值 | 默认值
+---|---|---|---|---
+header | 显示头部分类 | `Boolean` | - | `false`
 
 ### TODO
 属性 | 说明 | 类型 | 默认值
