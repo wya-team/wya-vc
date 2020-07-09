@@ -54,7 +54,10 @@ export default {
 	},
 	computed: {
 		formatterValue() {
-			const { label = [] } = getSelectedData(this.currentValue, this.dataSource);
+			let { label = [] } = getSelectedData(this.currentValue, this.dataSource);
+			if (this.header && label.length) {
+				label = label.slice(1);
+			}
 			return this.formatter(label) || this.extra;
 		}
 	},

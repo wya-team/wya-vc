@@ -50,6 +50,7 @@
 
 <script>
 import { pick, cloneDeep, isEqualWith } from 'lodash';
+import { VcError } from '../../vc';
 import Col from './col';
 import { getSelectedData } from '../../utils/index';
 
@@ -277,7 +278,13 @@ export default {
 					this.rebuildData.splice(colIndex + 1, len);
 
 					this.hasChildren = false;
-					this.currentIndex = this.currentValue.length - 1;
+					const currentIndex = this.currentValue.length - 1;
+					
+					if (this.header && currentIndex < 1) { 
+						this.currentIndex = 1;
+					} else {
+						this.currentIndex = currentIndex;
+					}
 				} else {
 					this.hasChildren = true;
 					this.currentIndex = this.currentValue.length;
