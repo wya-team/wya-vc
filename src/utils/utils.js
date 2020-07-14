@@ -236,3 +236,17 @@ export const getComputedStyle = (el, SIZING_STYLE, opts = {}) => {
 		boxSizing,
 	};
 };
+
+// 正则内的特殊符号
+const specialChar = ['?', '*', '$', '+', '^', '.', '\\'];
+/**
+ * 如果字符串内存在正则的符号，RegEx会报错，所以转义下
+ * @param {*} str 
+ */
+export const escapeString = (str) => {
+	let val = '';
+	for (let char of str) {
+		val += specialChar.includes(char) ? "\\" + char : char;
+	}
+	return val;
+};

@@ -76,7 +76,7 @@
 
 <script>
 import { pick, cloneDeep, debounce, isEqualWith } from 'lodash';
-import { getSelectedData, getUid, getLabel } from '../utils/index';
+import { getSelectedData, getUid, getLabel, escapeString } from '../utils/index';
 import { VcError } from '../vc/index';
 import Extends from '../extends';
 import Input from '../input/index';
@@ -234,7 +234,8 @@ export default {
 
 		handleSearch(v) {
 			this.searchValue = v;
-			this.searchRegex = new RegExp(v.trim(), 'i');
+			
+			this.searchRegex = new RegExp(escapeString(v.trim()), 'i');
 			this.loadData && this._loadData();
 		},
 
