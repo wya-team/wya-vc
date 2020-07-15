@@ -1,6 +1,6 @@
 {
     "name": "@wya/vc",
-    "version": "2.0.0-alpha.51",
+    "version": "2.0.0-alpha.64",
     "description": "wya for vue components",
     "main": "lib/index.js",
     "files": [
@@ -39,7 +39,7 @@
         "url": "https://github.com/wya-team/wya-vc/issues"
     },
     "dependencies": {
-        "async-validator": "~1.10.0",
+        "async-validator": "~3.3.0",
         "echarts": "^4.2.0-rc.2",
         "html2canvas": "^1.0.0-alpha.12",
         "lodash": "^4.17.11",
