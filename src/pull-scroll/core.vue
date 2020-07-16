@@ -62,7 +62,7 @@ export default {
 		total: {
 			immediate: true,
 			handler(v, old) {
-				if (v == 0) {
+				if (this._isMounted && v == 0) {
 					this.loadFirstData();
 				}
 			}
@@ -88,6 +88,8 @@ export default {
 		this.endY = undefined; // 记录pull当前位置
 	},
 	mounted() {
+		// 适配ssr, 需要把请求放入到mounted
+		this.total == 0 && this.loadFirstData();
 		this.container = (this.auto) 
 			? window
 			: this.$refs.target.parentNode;

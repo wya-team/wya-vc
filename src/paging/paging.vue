@@ -246,16 +246,17 @@ export default {
 	},
 	created() {
 		this.reSelecting = false;
-
+	},
+	mounted() {
 		let { query: { page = 1 } } = URL.parse();
 		/**
 		 * 首次加载的时候特殊处理
 		 * this.show的情况下才去加载
 		 * 页数history -> true 且未点击过tabs时为当前的page
+		 * 其他：适配ssr, 需要把请求放入到mounted
 		 */
 		this.show && this._loadData(this.history && !this.hasTabsClick ? page : 1);
-	},
-	mounted() {
+
 		if (this.mode === 'table') {
 			// 方法映射
 			this.clearSelection = this.$refs.table.clearSelection;
