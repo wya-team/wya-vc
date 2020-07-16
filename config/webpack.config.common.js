@@ -3,7 +3,7 @@ const APP_ROOT = process.cwd();
 const ENV_IS_DEV = process.env.NODE_ENV === 'development';
 
 const path = require('path');
-const webpackMerge = require('webpack-merge');
+const { merge } = require('webpack-merge');
 const VueLoaderPlugin = require('vue-loader/lib/plugin');
 const userConfig = require('./user.config.js');
 
@@ -192,7 +192,7 @@ module.exports = {
 	APP_ROOT,
 	localIp,
 	localPort,
-	commonConfig: webpackMerge(
+	commonConfig: merge(
 		webpackConfig,
 		defaultConfig
 	)

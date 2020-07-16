@@ -2,8 +2,7 @@ process.env.NODE_ENV = 'production';
 // 初始化配置文件
 const path = require('path');
 const webpack = require('webpack');
-const webpackMerge = require('webpack-merge');
-const CopyWebpackPlugin = require('copy-webpack-plugin');
+const { merge } = require('webpack-merge');
 const { APP_ROOT, commonConfig, localIp, localPort } = require('./webpack.config.common');
 
 
@@ -22,7 +21,7 @@ let webpackConfig = {
 	],
 };
 
-module.exports = webpackMerge(
+module.exports = merge(
 	commonConfig,
 	webpackConfig
 );

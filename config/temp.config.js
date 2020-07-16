@@ -7,7 +7,6 @@ const glob = require('glob');
 
 const APP_ROOT = process.cwd();
 
-const CopyWebpackPlugin = require('copy-webpack-plugin');
 const HtmlWebpackPlugin = require('html-webpack-plugin');
 
 let { component } = require('./user.config.js') || {};
