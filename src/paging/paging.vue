@@ -233,6 +233,17 @@ export default {
 		},
 		/**
 		 * 先有count，才可以设置 currentPage，否则无效
+		 *
+		 * 
+		 * 特别声明(项目中)：必要时候进行转换（错误情况等）
+		 * {
+		 * 	status: 1,
+		 * 	msg: 'error msg',
+		 * 	data: {
+		 * 		list: [],
+		 * 		page: { count: 0, current: 1, total: 1 }
+		 * 	}
+		 * }
 		 */
 		dataSource(v) {
 			let page = this.reset === true 

@@ -59,6 +59,19 @@ export default {
 
 	},
 	watch: {
+		/**
+		 * 特别声明(项目中)：连续两次total: 0, 就无法触发loadData
+		 * 1. 与后端约定分页的接口数据为空时，要求后端total也要确保为1（总页数）;
+		 * 
+		 * 必要时候进行转换（1的情况，错误情况等）
+		 * {
+		 * 	status: 1,
+		 * 	data: {
+		 * 		list: [],
+		 * 		page: { count: 0, current: 1, total: 1 }
+		 * 	}
+		 * }
+		 */
 		total: {
 			immediate: true,
 			handler(v, old) {
@@ -74,7 +87,7 @@ export default {
 		}
 	},
 	beforeCreate() {
-		this.preScrollTop = 0;// 当前列表上次滚动到的位置
+		this.preScrollTop = 0; // 当前列表上次滚动到的位置
 		this.preTotalHeight = 0;
 		this.timer = null;
 
