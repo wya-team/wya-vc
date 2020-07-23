@@ -45,9 +45,6 @@ export default {
 			this.init();
 		}, 0);
 	},
-	beforeDestroy() {
-		this.operateDOMEvents('remove');
-	},
 	methods: {
 		init() {
 			const canvas = this.$refs.canvas;
@@ -68,6 +65,9 @@ export default {
 			} : this.handleMove;
 			this.initCanvas();
 			this.operateDOMEvents('add');
+			this.$once('hook:beforeDestory', () => {
+				this.operateDOMEvents('remove');
+			});
 			// 对外暴露canvas对象
 			this.getInstance && this.getInstance(this);
 		},
