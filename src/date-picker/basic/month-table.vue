@@ -33,7 +33,7 @@
 
 <script>
 import { getDayCountOfMonth, getDateTimestamp } from '../helper/date-utils';
-import { value2Array, isEmpty } from '../utils';
+import { value2Array, isEmpty, getMonthEndDay } from '../utils';
 
 export default {
 	name: 'vc-month-table',
@@ -69,11 +69,10 @@ export default {
 					cell.month = i * 3 + j;
 					cell.date = new Date(year, cell.month, 1);
 					const time = getDateTimestamp(cell.date);
-
 					cell.inRange = time > getDateTimestamp(this.rangeState.from) && time < getDateTimestamp(this.rangeState.to);
 					cell.start = this.rangeState.from && time === getDateTimestamp(this.rangeState.from);
 					cell.end = this.rangeState.to && time === getDateTimestamp(this.rangeState.to);
-					cell.disabled = typeof this.disabledDate === 'function' && this.disabledDate(cell.month);
+					cell.disabled = typeof this.disabledDate === 'function' && this.getDisabledMonth(year, cell.month);
 					cell.customClass = typeof cellClassName === 'function' && cellClassName(cell.month);
 					cell.selected = selectedMonth.some(month => {
 						return month && (year === month.getFullYear()) && (cell.month === month.getMonth());
@@ -91,6 +90,19 @@ export default {
 		
 	},
 	methods: {
+		getDisabledMonth(year, month) {
+			const monthDay = getMonthEndDay(year, month);
+			const endDate = new Date(year, month, monthDay);
+
+			for (let i = 1; i <= monthDay; i++) { // 只要某一天被禁用了,就禁用该月份
+				const startDate = new Date(year, month, i, 0, 0, 0);
+				const endDate = new Date(year, month, i, 23, 59, 59);
+				if (this.disabledDate(startDate) && this.disabledDate(endDate)) {
+					return true;
+				}
+			}
+			return false;
+		},
 		getCellClasses(cell) {
 			let classes = [];
 			if (cell.selected || cell.start || cell.end) { classes.push('is-selected'); }

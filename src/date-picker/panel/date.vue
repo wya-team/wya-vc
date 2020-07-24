@@ -35,6 +35,7 @@
 				v-if="currentView === 'month'"
 				:value="dates"
 				:panel-date="panelDate"
+				:disabled-date="disabledDate"
 				@pick="handleMonthPick"
 			/>
 			<!-- 季度 -->

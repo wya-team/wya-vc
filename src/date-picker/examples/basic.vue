@@ -122,6 +122,23 @@
 			placeholder="请选择"
 			@change="handleChangeTime"
 		/>
+		<h2>月份禁用</h2>
+		<vc-date-picker
+			v-model="formValidate.month"
+			:options="disableMonthDate"
+			type="month"
+			format="YYYY-MM"
+			style="width: 300px"
+			placeholder="请选择"
+		/>
+		<vc-date-picker
+			v-model="formValidate.monthrange"
+			:options="disableMonthDate"
+			type="monthrange"
+			format="YYYY-MM"
+			style="width: 300px"
+			placeholder="请选择"
+		/>
 		<h2>beforeOk,拦截小于当前日期的值 beforeClear,并且只能通过确认、清空按钮关闭弹层</h2>
 		<vc-date-picker
 			v-model="datePromise"
@@ -188,6 +205,11 @@ export default {
 					return date && (date.valueOf() < Date.now() - 86400000 || date.valueOf() > Date.now() + 864000000);
 				},
 			},
+			disableMonthDate: {
+				disabledDate(date) {
+					return date && date.valueOf() < new Date('2020-07-01 00:00');
+				},
+			},
 			timeOpts: {
 				disabledHours: [],
 				disabledMinutes: [],
@@ -205,7 +227,9 @@ export default {
 			rangeEnd: '',
 			formValidate: {
 				date: '',
-				daterange: ['2020-04-17 12:00', '2020-04-18 00:00']
+				daterange: ['2020-04-17 12:00', '2020-04-18 00:00'],
+				month: '',
+				monthrange: []
 			},
 			ruleValidate: {
 				date: [
