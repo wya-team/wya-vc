@@ -92,12 +92,11 @@ export default {
 	methods: {
 		getDisabledMonth(year, month) {
 			const monthDay = getMonthEndDay(year, month);
-			const endDate = new Date(year, month, monthDay);
 
 			for (let i = 1; i <= monthDay; i++) { // 只要某一天被禁用了,就禁用该月份
 				const startDate = new Date(year, month, i, 0, 0, 0);
 				const endDate = new Date(year, month, i, 23, 59, 59);
-				if (this.disabledDate(startDate) && this.disabledDate(endDate)) {
+				if (this.disabledDate(startDate) || this.disabledDate(endDate)) {
 					return true;
 				}
 			}
