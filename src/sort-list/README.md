@@ -143,6 +143,11 @@ draggableKey | 拖拽的目标key | `String` | - | -
 ---|---|---|---
 change | 数据改变 | `(value: Array) => void 0` | `value`：排序后的新数组值
 
+### 方法
+方法名 | 说明 | 参数
+---|---|---|---
+getSortList | 获取左移、右移、拖拽、删除后的列表 | `current = { item, index, type }, item: 移动对象; index: 目标对象索引; type: 类型 (left: 左移、right: 右移、drag: 拖拽,其余为删除); `
+
 ### Slot
 属性 | 说明
 ---|---
