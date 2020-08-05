@@ -274,7 +274,7 @@ export default {
 			display: inline-block;
 			cursor: pointer;
 			height: 32px;
-			line-height: 32px;
+			line-height: 30px;
 			padding: 0 16px;
 			border-bottom: 0;
 			transition: all .3s ease-in-out;
