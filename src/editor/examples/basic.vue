@@ -12,6 +12,7 @@
 				v-model="formValidate.value"
 				:disabled="disabled"
 				:options="editorOption"
+				:preview="false"
 				style="width: 100%;height: 500px"
 				@change="handleInput"
 			/>
@@ -117,7 +118,8 @@ export default {
 			},
 			disabled: false,
 			formValidate: {
-				value: ''
+				// value: '<p><video src="https://wyatest.oss-cn-hangzhou.aliyuncs.com/image/172/20200109/1404367119/17秒视屏.mp4?x-oss-process=video/snapshot,t_0,f_png,w_0,h_0,m_fast" style="width: auto; max-width: 100%;" contenteditable="true"></video></p>'
+				value: '<p><img src="https://wyatest.oss-cn-hangzhou.aliyuncs.com/image/172/20200106/1508941171/timg.jpeg!4-4" contenteditable="true" ></p>'
 			},
 			ruleValidate: {
 				value: [

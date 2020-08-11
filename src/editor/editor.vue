@@ -119,7 +119,12 @@ export default {
 		},
 		// 注册扩展
 		register: Function,
-		videoPoster: [Function, Boolean]
+		videoPoster: [Function, Boolean],
+		// 点击img元素是否可以进行预览，为false的时候会将光标聚焦到该元素后面
+		preview: {
+			type: Boolean,
+			default: true
+		}
 	},
 	data() {
 		return {
@@ -299,37 +304,49 @@ export default {
 		},
 
 		handlePreview(e) {
-			let { ImageBlot, Parchment } = this;
-			let image = Parchment.find(e.target);
-			if (image instanceof ImageBlot) {
-				let index;
-				let imgs = Array.from(document.querySelectorAll('.ql-container img'));
-				let imgSource = imgs.map((it, idx) => {
-					it === e.target && (index = idx);
-					return it.src;
-				});
+			if (this.preview) {
+				let { ImageBlot, Parchment } = this;
+				let image = Parchment.find(e.target);
+				if (image instanceof ImageBlot) {
+					let index;
+					let imgs = Array.from(document.querySelectorAll('.ql-container img'));
+					let imgSource = imgs.map((it, idx) => {
+						it === e.target && (index = idx);
+						return it.src;
+					});
 
-				let pos = {};
-				try {
-					const target = e.target; // 先得到pos, 否则getThumbBoundsFn再计划，target已变化（比如弹窗transition的影响）
-					const pageYScroll = window.pageYOffset || document.documentElement.scrollTop;
-					const rect = target.getBoundingClientRect();
+					let pos = {};
+					try {
+						const target = e.target; // 先得到pos, 否则getThumbBoundsFn再计划，target已变化（比如弹窗transition的影响）
+						const pageYScroll = window.pageYOffset || document.documentElement.scrollTop;
+						const rect = target.getBoundingClientRect();
 
-					pos = { x: rect.left, y: rect.top + pageYScroll, w: rect.width };
+						pos = { x: rect.left, y: rect.top + pageYScroll, w: rect.width };
 
-				} catch (e) {
-				// console.log(e);
-				}
-
-				ImgsPreview.open({
-					visible: true,
-					dataSource: imgSource,
-					opts: {
-						index,
-						history: false,
-						getThumbBoundsFn: (index) => pos
+					} catch (e) {
+						// console.log(e);
 					}
-				});
+
+					ImgsPreview.open({
+						visible: true,
+						dataSource: imgSource,
+						opts: {
+							index,
+							history: false,
+							getThumbBoundsFn: (index) => pos
+						}
+					});
+				}
+			} else if (e.target.tagName === 'IMG' || e.target.tagName === 'VIDEO') {
+				// 图片和视频被点击时，将光标聚焦到该元素后面
+				const sele = window.getSelection();
+				const range = document.createRange();
+				const parent = e.target.parentNode;
+				const offset = Array.prototype.indexOf.call(parent.childNodes, e.target) + 1;
+				range.setStart(parent, offset);
+				range.setEnd(parent, offset);
+				sele.removeAllRanges();
+				sele.addRange(range);
 			}
 		},
 		handleUploadImg(e) {
