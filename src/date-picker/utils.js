@@ -92,6 +92,9 @@ export const parseMode = (value) => {
 		case 'month':
 			mode = 'M';
 			break;
+		case 'quarter':
+			mode = 'YQ';
+			break;
 		default:
 			mode = value;
 			break;
@@ -225,7 +228,7 @@ export const TYPE_VALUE_RESOLVER_MAP = {
 		}
 	},
 	quarter: {
-		formatterText: (value, format) => {
+		formatterText: (value) => {
 			let [startDate, endDate] = value;
 			if (startDate && endDate) {
 				let year = startDate.getFullYear();

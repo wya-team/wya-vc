@@ -20,7 +20,8 @@ import List from '../../list/index.m';
 import { VcError } from '../../vc/index';
 import { getSelectedData } from '../../utils/index';
 import Extends from '../../extends';
-import { value2date, date2value, parseMode } from '../utils';
+import { value2date, date2value, parseMode, TYPE_VALUE_RESOLVER_MAP } from '../utils';
+import { getDayCountOfMonth } from '../helper/date-utils';
 
 export default {
 	name: "vcm-date-picker",
@@ -85,15 +86,19 @@ export default {
 	},
 	computed: {
 		formatterValue() {
-			return this.formatter(this.currentValue, this.format) || this.extra;
+			if (this.mode === 'quarter') {
+				const { formatterText } = (TYPE_VALUE_RESOLVER_MAP[this.mode] || TYPE_VALUE_RESOLVER_MAP.default);
+				return formatterText(this.currentValue);
+			} else {
+				return this.formatter(this.currentValue, this.format) || this.extra;
+			}
 		}
 	},
 	watch: {
 		value: {
 			immediate: true,
 			handler(v, old) {
-
-				if (v && new Date(v) == 'Invalid Date') {
+				if ((v && new Date(v) == 'Invalid Date' && this.mode !== 'quarter') || (!Array.isArray(v) && this.mode === 'quarter')) {
 					throw new VcError('m-data-picker', 'Invalid Date');
 				}
 
@@ -103,7 +108,7 @@ export default {
 				 * NaN !== NaN true -> this.currentValue = undefined;
 				 */
 				if (+new Date(v) !== +this.currentValue) {
-					this.currentValue = v;
+					this.currentValue = this.getCurrentValue(v);
 				}
 
 			}
@@ -130,7 +135,7 @@ export default {
 				show,
 				okText,
 				onOk: res => {
-					this.currentValue = res;
+					this.currentValue = this.getCurrentValue(res);
 					this.$emit('ok', this.currentValue);
 
 					this.sync();
@@ -148,7 +153,26 @@ export default {
 			this.$emit('change', this.currentValue);
 			// form表单
 			this.dispatch('vc-form-item', 'form-change', this.currentValue);
-		}
+		},
+		/**
+		 * 格式化季度数据，季度数据在picker-view是['2020', '2'] -> [‘2020-03-31’， ‘2020-06-29’]
+		 * val是date数据则不进行转换
+		 */
+		getCurrentValue(val) {
+			if (this.mode !== 'quarter' || !val.length || (val[0] instanceof Date && val[1] instanceof Date)) return val;
+			return this.getMonthRange(val[0], val[1] - 1);
+		},
+		/**
+		 * 获取季度对应的月份范围
+		 */
+		getMonthRange(year, quarter) {
+			let [startMonth, endMonth] = [quarter * 3, quarter * 3 + 2];
+			let endDay = getDayCountOfMonth(year, endMonth);
+			return [
+				new Date(year, startMonth),
+				new Date(year, endMonth, endDay)
+			];
+		},
 	}
 };
 

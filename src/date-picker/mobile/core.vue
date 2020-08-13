@@ -71,7 +71,8 @@ const wrapperComponent = {
 	},
 	data() {
 		return {
-			isActive: false
+			isActive: false,
+			currentValue: ''
 		};
 	},
 	computed: {

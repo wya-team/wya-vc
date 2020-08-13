@@ -8,6 +8,12 @@
 				title="test"
 			/>
 			<vcm-date-picker 
+				v-model="quarterValue"
+				label="季度选择"
+				mode="quarter"
+				title="test"
+			/>
+			<!-- <vcm-date-picker 
 				v-model="valueEmpty"
 				mode="datetime"
 				extra="空值测试"
@@ -23,7 +29,7 @@
 						{{ it.label }}
 					</h2>
 				</template>
-			</vcm-date-picker>
+			</vcm-date-picker> -->
 		</div>
 		<br>
 		<br>
@@ -35,7 +41,7 @@
 		<br>
 		<!-- 表单 -->
 		<h2>表单</h2>
-		<vcm-form
+		<!-- <vcm-form
 			ref="form"
 			:show-message="true"
 			:model="formValidate" 
@@ -62,7 +68,7 @@
 				</vcm-button>
 			</vcm-form-item>
 		</vcm-form>
-		<vcm-date-picker-view v-model="valueView" @change="handleChange" />
+		<vcm-date-picker-view v-model="valueView" @change="handleChange" /> -->
 	</div>
 </template>
 <script>
@@ -87,6 +93,7 @@ export default {
 		return {
 			show: false,
 			value: new Date(),
+			quarterValue: [],
 			valueEmpty: undefined,
 			valueView: new Date(),
 			formValidate: {

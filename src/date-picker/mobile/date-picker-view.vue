@@ -15,6 +15,7 @@ import { VcError } from '../../vc/index';
 import { getSelectedData } from '../../utils/index';
 import Extends from '../../extends';
 import { value2date, date2value, parseMode, getMonthEndDay } from '../utils';
+import { QUARTER_CN } from '../constants';
 
 export default {
 	name: "vcm-date-picker-view",
@@ -28,7 +29,7 @@ export default {
 	},
 	props: {
 		value: {
-			type: Date,
+			type: Date | Array,
 			// default: () => new Date()
 		},
 		mode: {
@@ -59,6 +60,7 @@ export default {
 	},
 	data() {
 		return {
+			QUARTER_CN,
 			currentValue: [],
 			rebuildData: []
 		};
@@ -133,6 +135,11 @@ export default {
 						hour: [this.startHour, this.endHour],
 						min: [0, 59]
 					};
+				case 'quarter':
+					return {
+						year,
+						quarter: [1, 4]
+					};
 				default:
 					return {
 						year,
@@ -152,7 +159,7 @@ export default {
 		value: {
 			immediate: true,
 			handler(v) {
-				if (v && new Date(v) == 'Invalid Date') {
+				if ((v && new Date(v) == 'Invalid Date' && this.mode !== 'quarter') || (!Array.isArray(v) && this.mode === 'quarter')) {
 					throw new VcError('m-data-picker', 'Invalid Date');
 				}
 
@@ -161,14 +168,47 @@ export default {
 				 * 如果v为undefined，this.currentValue也undefined
 				 * NaN !== NaN true -> this.currentValue = undefined;
 				 */
-				if (this.currentValue.length === 0 || +new Date(v) !== +value2date(this.currentValue)) {
-					this.currentValue = date2value(v || this.defaultValue, this.modeArr);
+				if (this.currentValue.length === 0 
+					|| (+new Date(v) !== +value2date(this.currentValue) && this.mode !== 'quarter') 
+					|| (this.mode === 'quarter' && this.currentValue !== v)) {
+					this.currentValue = this.mode === 'quarter' ? this.getQuarterValue(v) : date2value(v || this.defaultValue, this.modeArr);
 					this.rebuildData = this.makeRebuildData();
 				}
 			}
 		}
 	},
 	methods: {
+		/**
+		 * 设置默认值，格式化值 -> ['2020-01', '2020-03'] -> ['2020', '1']
+		 */
+		getQuarterValue(val) {
+			let year = new Date().getFullYear();
+			let quarter = '1';
+			if (val.length) {
+				year = new Date(val[0]).getFullYear();
+				quarter = this.getQuarterMonth(val[0]);
+			}
+			return [year + '', quarter];
+		},
+		getQuarterMonth(value) {
+			let month = value.getMonth();
+			switch (month) {
+				case 0:
+				case 2:
+					return '1';
+				case 3:
+				case 5:
+					return '2';
+				case 6:
+				case 8:
+					return '3';
+				case 9:
+				case 11:
+					return '4';
+				default:
+					return false;
+			}
+		},
 		compareWithBoundary(arg1 = [], arg2 = [], len = 0) {
 			return arg1.slice(0, len).join('') == arg2.slice(0, len).join('');
 		},
@@ -180,7 +220,8 @@ export default {
 				M: this.ranges.month,
 				D: this.ranges.date,
 				H: this.ranges.hour,
-				m: this.ranges.min
+				m: this.ranges.min,
+				Q: this.ranges.quarter
 			};
 			this.modeArr.forEach(type => {
 				if (INTERVAL_MAP[type]) {
@@ -198,12 +239,14 @@ export default {
 				D: '日',
 				H: '时',
 				m: '分',
+				Q: '季度'
 			};
 			let arr = Array.from({ length: end - start + 1 }, (no, x) => {
 				let afterNum = x + start;
-				let finallyStr = String(Utils.preZero(afterNum));
+				let finallyStr = type === 'Q' ? `第${QUARTER_CN[afterNum]}` : String(Utils.preZero(afterNum));
+
 				return {
-					value: finallyStr,
+					value: type === 'Q' ? String(afterNum) : finallyStr,
 					label: finallyStr + INTERVAL_MAP[type]
 				};
 			});
@@ -240,10 +283,10 @@ export default {
 		 */
 		sync() {
 			let v = this.currentValue;
-			let formaterValue = value2date(v);
+			let formaterValue = this.mode === 'quarter' ? v : value2date(v);
 			this.allowDispatch && this.dispatch('vc-form-item', 'form-change', formaterValue);
 			this.$emit('change', formaterValue);
-		}
+		},
 	}
 };
 </script>
