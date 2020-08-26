@@ -20,7 +20,7 @@ formatter | 格式化 | `Function` | -
 属性 | 说明 | 类型 | 默认值
 ---|---|---|---
 value | 返回值(v-model) | `Date` | -
-mode | 日期选择器类型['datetime', 'date', 'time'] | `String` | -
+mode | 日期选择器类型['datetime', 'date', 'time', 'quarter'] | `String` | -
 minDate | 最小日期 | `Date` | new Date('1990')
 maxDate | 最大日期 | `Date` | new Date('2020')
 
