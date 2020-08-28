@@ -21,14 +21,12 @@ export default {
 		},
 		parser: {
 			type: Function
+		},
+		// 传递给html2canvas的配置项
+		options: {
+			type: Object,
+			default: () => ({})
 		}
-	},
-	data() {
-		return {
-		};
-	},
-	computed: {
-		
 	},
 	methods: {
 		async getImage(opts = {}) {
@@ -41,7 +39,11 @@ export default {
 				// 处理跨域兼容
 				this.crossOrigin && await this.loadImageURL();
 
-				const canvas = await html2canvas(this.$refs.target, { allowTaint: false, useCORS: true });
+				const canvas = await html2canvas(this.$refs.target, { 
+					allowTaint: false, 
+					useCORS: true,
+					...this.options
+				});
 
 				const { file, base64Image } = await Utils.canvas2file(canvas, { filename, getFile });
 
