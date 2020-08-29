@@ -192,12 +192,12 @@ process.on('beforeExit', async () => {
 
 	// 含Vue
 	let browserJS = await rollup({
-		input: 'lib/index.js',
+		input: 'lib/index.copy.js',
 		plugins: [
 			alias({
 				entries: [{
 					find: /^vue$/, 
-					replacement: 'vue/dist/vue.esm.js'
+					replacement: 'vue/dist/vue.min.js'
 				}]
 			}),
 			nodeResolve({ browser: true }), 
@@ -221,7 +221,7 @@ process.on('beforeExit', async () => {
 
 	// 不含Vue
 	let minJS = await rollup({
-		input: 'lib/index.js',
+		input: 'lib/index.copy.js',
 		external: filename => {
 			let regex = ['^vue$'].join('|');
 
@@ -252,7 +252,7 @@ process.on('beforeExit', async () => {
 
 	// 不含第三方
 	let commonJS = await rollup({
-		input: 'lib/index.js',
+		input: 'lib/index.copy.js',
 		external: filename => {
 			let regex = [
 				'^vue$', 
@@ -305,6 +305,10 @@ process.on('beforeExit', async () => {
 	process.exit();
 });
 
+// 拷贝文件，用于退出时的打包
+fs.copySync(resolve(__dirname, './src/index.js'), resolve(__dirname, './lib/index.copy.js'));
+
+// 预编译文件
 files.forEach((filepath) => {
 	let type = filepath.split('.').pop();
 	const FILE_PATH = resolve(__dirname, filepath);

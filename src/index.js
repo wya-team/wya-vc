@@ -1,4 +1,5 @@
-import { kebabCase } from 'lodash';
+import Vue from 'vue';
+import { kebabCase, merge } from 'lodash';
 
 // basic
 import Artboard from './artboard/index';
@@ -137,7 +138,7 @@ import Vc, { VcInstance, VcError, VcBasic } from './vc/index';
 
 import * as Utils from './utils/index';
 
-export { default as Extends } from './extends/index';
+import Extends from './extends/index';
 
 const Components = {
 	// components
@@ -311,20 +312,19 @@ const Components = {
 	MUploadPicker
 };
 
-const install = (Vue, opts = {}) => {
+const install = ($Vue, opts = {}) => {
 
 	// 给vc.browser.js打包使用
 	if (typeof window !== 'undefined') {
-		Vue = Vue || window.Vue || require('vue');
-		window.Vue = Vue;
+		$Vue = $Vue || window.Vue || Vue;
+		window.Vue = $Vue;
 	}
 
-	Vue.use(Vc, opts);
+	$Vue.use(Vc, opts);
 	Object.keys(Components).forEach(key => {
 		let comp = kebabCase(key);
 		comp = comp.includes('m-') ? `vc${comp}` : `vc-${comp}`;
-		// TODO: 如Input.Number -> vc-input-number, 需要额外处理
-		Vue.component(comp, Components[key]);
+		$Vue.component(comp, Components[key]);
 	});
 };
 
@@ -333,15 +333,14 @@ if (typeof window !== 'undefined' && window.Vue) {
 	install(window.Vue, window.VcOptions);
 }
 
-/**
- * @babel/plugin-proposal-export-namespace-from
- * export { xxx }; 编译存在问题
- */
+// extra
 exports.Vc = Vc;
 exports.VcInstance = VcInstance;
 exports.VcBasic = VcBasic;
 exports.VcError = VcError;
 exports.Utils = Utils;
+exports.Extends = Extends;
+
 // component
 exports.Artboard = Artboard;
 exports.MArtboard = MArtboard;
@@ -522,9 +521,30 @@ exports.MToast = MToast;
 // 用于打包映射
 exports.version = '__VC_VERSION__';
 exports.install = install;
-export default {
-	// 由babel注入
-	version: '__VC_VERSION__',
-	install
-};
+
+export default merge(
+	{ 
+		version: '__VC_VERSION__', 
+		install
+	},
+	{
+		Vc,
+		VcInstance,
+		VcBasic,
+		VcError,
+		Utils,
+		Extends
+	},
+	{
+		Message,
+		MMessage,
+		Modal,
+		MModal,
+		Portal,
+		MPortal,
+		Toast,
+		MToast,
+	},
+	Components
+);
 
