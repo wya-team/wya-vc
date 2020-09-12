@@ -177,6 +177,7 @@ boxClassName | 盒子的className | `String` | - | -
 imgClassName | 图片item的className | `String` | - | -
 uploadClassName | 上传盒子的className | `String` | - | -
 imgsPreviewOpts | 图片预览选项参数 | `Object` | - | -
+compressOpts | 图片压缩选项参数 | `Object` | - | { compress: false, // 是否开启图片压缩 ... }
 
 ### 事件
 事件名 | 说明 | 类型 | 参数

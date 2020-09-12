@@ -5,12 +5,22 @@
 		:rules="ruleValidate" 
 		style="padding: 20px"
 	>
-		<vc-form-item prop="imgs" @on-form-change="handleChange">
+		<vc-form-item label="未开启图片压缩：" prop="imgs" @on-form-change="handleChange">
 			<vc-imgs-picker 
 				ref="target"
 				v-model="formValidate.imgs" 
 				:max="1"
 				:upload-opts="{multiple: true}"
+				sortable
+				@error="handleError"
+			/>
+		</vc-form-item>
+		<vc-form-item label="开启图片压缩：">
+			<vc-imgs-picker 
+				ref="target"
+				v-model="formValidate.imgsCompress" 
+				:max="1"
+				:compress-opts="{compress: true}"
 				sortable
 				@error="handleError"
 			/>
@@ -80,6 +90,7 @@ export default {
 		return {
 			formValidate: {
 				imgs: [],
+				imgsCompress: []
 			},
 			ruleValidate: {
 				imgs: [

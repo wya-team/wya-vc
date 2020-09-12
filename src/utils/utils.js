@@ -250,3 +250,75 @@ export const escapeString = (str) => {
 	}
 	return val;
 };
+
+/**
+ * dataURL转file
+ * @param {*} dataUrl 
+ * @param {String} filename 文件名
+ * @param {String} filetype 文件类型
+ */
+export const dataURLtoFile = (dataUrl, filename, filetype = 'image/jpeg') => {
+	// 获取到base64编码
+	const arr = dataUrl.split(',');
+	// 将base64编码转为字符串
+	const bstr = window.atob(arr[1]);
+	let n = bstr.length;
+	const u8arr = new Uint8Array(n); // 创建初始化为0的，包含length个元素的无符号整型数组
+	while (n--) {
+		u8arr[n] = bstr.charCodeAt(n);
+	}
+	return new File([u8arr], filename, {
+		type: filetype,
+	});
+};
+
+/**
+ * dataURL转file
+ * @param {File} file 文件
+ * @param {Number} width 图片缩放最大宽度，不传默认源图片宽度
+ * @param {Number} height 图片缩放最大高度，不传默认源图片高度
+ * @param {String} filetype 文件类型
+ * @param {Number} encoderOptions 在指定图片格式为 image/jpeg 或 image/webp的情况下，可以从 0 到 1 的区间内选择图片的质量。如果超出取值范围，使用默认值 0.92
+ */
+export const compressImg = ({ file, width, height, filetype = 'image/jpeg', encoderOptions }) => {
+	return new Promise((resolve) => {
+		// 压缩图片需要的元素和对象
+		const img = new Image();
+		const reader = new FileReader();
+		reader.readAsDataURL(file); 
+		// 文件base64化，以便获知图片原始尺寸
+		reader.onload = function (e) {
+			img.src = e.target.result;
+		};
+		// 缩放图片需要的canvas
+		const canvas = document.createElement('canvas');
+		let context = canvas.getContext('2d');
+		// base64地址图片加载完毕后
+		img.onload = function () {
+			const originWidth = this.width;
+			const originHeight = this.height;
+			const maxWidth = width || originWidth;
+			const maxHeight = height || originHeight;
+			let targetWidth = originWidth;
+			let targetHeight = originHeight;
+			if (originWidth > maxWidth || originHeight > maxHeight) {
+				if (originWidth / originHeight > maxWidth / maxHeight) { // 更宽
+					targetWidth = maxWidth;
+					targetHeight = Math.round(maxWidth * (originHeight / originWidth));
+				} else {
+					targetHeight = maxHeight;
+					targetWidth = Math.round(height * (originWidth / originHeight));
+				}
+			}
+
+			// canvas对图片缩放
+			canvas.width = targetWidth;
+			canvas.height = targetHeight;
+			context.clearRect(0, 0, targetWidth, targetHeight);
+			context.drawImage(img, 0, 0, targetWidth, targetHeight);
+			const dataURL = canvas.toDataURL(filetype, encoderOptions); // 压缩图片
+			const compressFile = dataURLtoFile(dataURL, file.name);
+			resolve(compressFile);
+		};
+	});
+};

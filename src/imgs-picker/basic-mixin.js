@@ -7,6 +7,7 @@ import Toast from '../toast/index';
 import Extends from '../extends';
 import ImgsPreview from '../imgs-preview/index';
 import { VcInstance } from '../vc/index';
+import { compressImg } from '../utils';
 
 export default {
 	mixins: [...Extends.mixins(['emitter'])],
@@ -77,6 +78,18 @@ export default {
 		imgsPreviewOpts: {
 			type: Object,
 			default: () => ({})
+		},
+		compressOpts: {
+			type: Object,
+			default: () => {
+				return {
+					compress: false, // 是否开启图片压缩
+					width: 0, // 图片缩放最大宽度，为0默认源图片宽度
+					height: 0, // 图片缩放最大高度，为0默认源图片高度
+					filetype: 'image/jpeg', // 文件类型
+					encoderOptions: 0.92 // 在指定图片格式为 image/jpeg 或 image/webp的情况下，可以从 0 到 1 的区间内选择图片的质量。如果超出取值范围，使用默认值 0.92
+				};
+			}
 		}
 	},
 	data() {
@@ -113,7 +126,10 @@ export default {
 		}
 	},
 	methods: {
-		handleFileBefore(file, fileList) {
+		async handleFileBefore(file, fileList) {
+			if (this.compressOpts.compress) {
+				file = await compressImg({ file, width: 200, height: 200 });
+			}
 			return new Promise((resolve, reject) => {
 				const { "file-before": fileBefore } = this.$listeners;
 
