@@ -1,3 +1,4 @@
+import { Utils } from '@wya/utils';
 import { cloneDeep } from 'lodash';
 import { IS_SERVER } from './constant';
 
@@ -317,7 +318,7 @@ export const compressImg = ({ file, width, height, filetype = 'image/jpeg', enco
 			context.clearRect(0, 0, targetWidth, targetHeight);
 			context.drawImage(img, 0, 0, targetWidth, targetHeight);
 			const dataURL = canvas.toDataURL(filetype, encoderOptions); // 压缩图片
-			const compressFile = dataURLtoFile(dataURL, file.name);
+			const compressFile = Utils.base642Blob(dataURL, file.name);
 			resolve(compressFile);
 		};
 	});

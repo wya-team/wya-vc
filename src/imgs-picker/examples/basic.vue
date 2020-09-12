@@ -20,7 +20,7 @@
 				ref="target"
 				v-model="formValidate.imgsCompress" 
 				:max="1"
-				:compress-opts="{compress: true}"
+				:compress-opts="{compress: true, width: 100, height: 100}"
 				sortable
 				@error="handleError"
 			/>
