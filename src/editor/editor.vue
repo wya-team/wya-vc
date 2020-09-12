@@ -133,6 +133,7 @@ export default {
 			loading: false,
 			videoMax: this.videoUploadOpts.max || Number.MAX_SAFE_INTEGER,
 			imgMax: this.imgUploadOpts.max || Number.MAX_SAFE_INTEGER,
+			selectionIndex: 0, // 保存点击图片失焦时光标位置
 		};
 	},
 	computed: {
@@ -261,7 +262,7 @@ export default {
 		},
 		getLength() {
 			let selection = this.editor.getSelection();
-			return selection ? selection.index : this.editor.getLength();
+			return selection ? selection.index : (selectionIndex || this.editor.getLength());
 		},
 		handleImgSuccess(res) {
 			// 获取光标所在位置
@@ -360,6 +361,7 @@ export default {
 					
 				fn(this);
 			} 
+			this.selectionIndex = this.getLength(); // 存储失焦时光标位置
 		},
 		handleUndo() {
 			this.editor.history.undo();
