@@ -68,6 +68,7 @@ videoClassName | 视频item的样式 | `String` | - | - |
 fileClassName | 文件item的样式 | `String` | - | - |
 urlKey | 上传成功后那远程地址的key | `String` | - |`url` |
 gallery | 图片上传调用商品橱窗,仅在PC组件内有效 | `Function`、`Boolean` | - | `true`
+compressOpts | 图片压缩选项参数 | `Object` | - | { compress: false, // 是否开启图片压缩 ... }
 
 ### 事件
 事件名 | 说明 | 回调参数 | 参数说明

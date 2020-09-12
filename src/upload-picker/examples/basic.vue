@@ -6,6 +6,14 @@
 		>
 			<!-- 限制大小上传以及api -->
 		</vc-upload-picker>
+		<div>图片压缩</div>
+		<vc-upload-picker
+			v-model="dataSource"
+			:picker="['image']"
+			:compress-opts="{compress: true}"
+		>
+			<!-- 限制大小上传以及api -->
+		</vc-upload-picker>
 	</div>
 </template>
 <script>
