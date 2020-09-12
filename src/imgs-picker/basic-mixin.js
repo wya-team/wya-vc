@@ -128,7 +128,7 @@ export default {
 	methods: {
 		async handleFileBefore(file, fileList) {
 			if (this.compressOpts.compress) {
-				file = await compressImg({ file, width: 200, height: 200 });
+				file = await compressImg({ file, ...this.compressOpts });
 			}
 			return new Promise((resolve, reject) => {
 				const { "file-before": fileBefore } = this.$listeners;
