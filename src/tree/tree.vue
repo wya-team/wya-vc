@@ -370,11 +370,11 @@ export default {
 		},
 
 		getNodeKey(node) {
-			return getNodeKey(this.nodeKey, node.data);
+			return getNodeKey(this.treeProps.value, node.data);
 		},
 
 		getNodePath(data) {
-			if (!this.nodeKey) throw new Error('[Tree] nodeKey is required in getNodePath');
+			if (!this.treeProps.value) throw new Error('[Tree] treeProps.value is required in getNodePath');
 			const node = this.store.getNode(data);
 			if (!node) return [];
 			const path = [node.data];
@@ -400,18 +400,18 @@ export default {
 		},
 
 		getCurrentKey() {
-			if (!this.nodeKey) throw new Error('[Tree] nodeKey is required in getCurrentKey');
+			if (!this.treeProps.value) throw new Error('[Tree] treeProps.value is required in getCurrentKey');
 			const currentNode = this.getCurrentNode();
-			return currentNode ? currentNode[this.nodeKey] : null;
+			return currentNode ? currentNode[this.treeProps.value] : null;
 		},
 
 		setCheckedNodes(nodes, leafOnly) {
-			if (!this.nodeKey) throw new Error('[Tree] nodeKey is required in setCheckedNodes');
+			if (!this.treeProps.value) throw new Error('[Tree] treeProps.value is required in setCheckedNodes');
 			this.store.setCheckedNodes(nodes, leafOnly);
 		},
 
 		setCheckedKeys(keys, leafOnly) {
-			if (!this.nodeKey) throw new Error('[Tree] nodeKey is required in setCheckedKeys');
+			if (!this.treeProps.value) throw new Error('[Tree] treeProps.value is required in setCheckedKeys');
 			this.store.setCheckedKeys(keys, leafOnly);
 		},
 
@@ -428,12 +428,12 @@ export default {
 		},
 
 		setCurrentNode(node) {
-			if (!this.nodeKey) throw new Error('[Tree] nodeKey is required in setCurrentNode');
+			if (!this.treeProps.value) throw new Error('[Tree] treeProps.value is required in setCurrentNode');
 			this.store.setUserCurrentNode(node);
 		},
 
 		setCurrentKey(key) {
-			if (!this.nodeKey) throw new Error('[Tree] nodeKey is required in setCurrentKey');
+			if (!this.treeProps.value) throw new Error('[Tree] treeProps.value is required in setCurrentKey');
 			this.store.setCurrentNodeKey(key);
 		},
 
@@ -463,7 +463,7 @@ export default {
 		},
 
 		updateKeyChildren(key, data) {
-			if (!this.nodeKey) throw new Error('[Tree] nodeKey is required in updateKeyChild');
+			if (!this.treeProps.value) throw new Error('[Tree] treeProps.value is required in updateKeyChild');
 			this.store.updateChildren(key, data);
 		},
 
