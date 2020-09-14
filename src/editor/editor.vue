@@ -262,7 +262,7 @@ export default {
 		},
 		getLength() {
 			let selection = this.editor.getSelection();
-			return selection ? selection.index : (selectionIndex || this.editor.getLength());
+			return selection ? selection.index : (this.selectionIndex || this.editor.getLength());
 		},
 		handleImgSuccess(res) {
 			// 获取光标所在位置
