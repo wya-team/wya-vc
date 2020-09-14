@@ -186,7 +186,7 @@ export default {
 
 	methods: {
 		getNodeKey(node) {
-			return getNodeKey(this.tree.nodeKey, node.data);
+			return getNodeKey(this.tree.treeProps.value, node.data);
 		},
 
 		handleSelectChange(checked, indeterminate) {

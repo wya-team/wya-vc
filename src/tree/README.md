@@ -318,7 +318,6 @@ export default {
             :render-content="renderContent"
             show-checkbox
             default-expand-all
-            nodeKey="id"
             highlight-current />
         <div class="buttons">
             <vc-button @click="getCheckedNodes">通过 node 获取</vc-button>
