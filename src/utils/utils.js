@@ -274,7 +274,7 @@ export const dataURLtoFile = (dataUrl, filename, filetype = 'image/jpeg') => {
 };
 
 /**
- * dataURL转file
+ * dataURL转file，注意xls引用了该方法，请勿随意修改方法名compressImg
  * @param {File} file 文件
  * @param {Number} width 图片缩放最大宽度，不传默认源图片宽度
  * @param {Number} height 图片缩放最大高度，不传默认源图片高度
