@@ -30,6 +30,8 @@ import DatePicker from './date-picker/index';
 import MDatePicker from './date-picker/index.m';
 import DebounceClick from './debounce-click/index';
 import MDebounceClick from './debounce-click/index.m';
+import Divider from './divider/index';
+import MDivider from './divider/index.m';
 import Drawer from './drawer/index';
 import MDrawer from './drawer/index.m';
 import Dropdown from './dropdown/index';
@@ -180,6 +182,8 @@ const Components = {
 	MDatePickerView: MDatePicker.View,
 	DebounceClick,
 	MDebounceClick,
+	Divider,
+	MDivider,
 	Drawer,
 	MDrawer,
 	Dropdown,
@@ -380,6 +384,8 @@ exports.MDatePicker = MDatePicker;
 exports.MDatePickerView = MDatePicker.View;
 exports.DebounceClick = DebounceClick;
 exports.MDebounceClick = MDebounceClick;
+exports.Divider = Divider;
+exports.MDivider = MDivider;
 exports.Drawer = Drawer;
 exports.MDrawer = MDrawer;
 exports.Dropdown = Dropdown;

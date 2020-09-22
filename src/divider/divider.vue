@@ -1,12 +1,8 @@
-<template functional>
-	<div
-		v-bind="data.attrs"
-		:class="[data.staticClass, 'vc-divider', `is-${props.vertical ? 'vertical' : 'horizontal'}`]"
-		v-on="listeners"
-	>
+<template>
+	<div :class="['vc-divider', `is-${vertical ? 'vertical' : 'horizontal'}`]">
 		<div
-			v-if="slots().default && !props.vertical"
-			:class="['vc-divider__text', `is-${props.placement}`]"
+			v-if="$slots.default && !vertical"
+			:class="['vc-divider__text', `is-${placement}`]"
 		>
 			<slot />
 		</div>
@@ -16,6 +12,7 @@
 <script>
 export default {
 	name: 'vc-divider',
+	inheritAttrs: false,
 	props: {
 		vertical: {
 			type: Boolean,
