@@ -11,7 +11,7 @@ let pathReg = /<path.*?<\/path>/gi;
 let dReg = /.*d="([^"]+).*/g;
 let fillReg = /.*fill="([^"]+).*/g;
 
-let basicUrl = '//at.alicdn.com/t/font_1119857_32er16x3ulq.js';
+let basicUrl = '//at.alicdn.com/t/font_1119857_krcfj78b3hg.js';
 let prefix = '@wya/vc-icon:';
 
 class IconManager extends VcBasic {
