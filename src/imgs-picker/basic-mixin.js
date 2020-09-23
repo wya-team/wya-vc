@@ -128,7 +128,7 @@ export default {
 	},
 	mounted() {
 		if (Vue.config.devtools) {
-			console.error('[@wya/vc]: imgs-picker -> upload-picker，api需要变更');
+			console.warn('[@wya/vc]: imgs-picker -> upload-picker，api需要变更');
 		}
 	},
 	methods: {
