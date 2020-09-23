@@ -44,6 +44,7 @@
 </template>
 
 <script>
+import Vue from 'vue';
 import { Device } from '@wya/utils';
 import Extends from '../extends';
 import Message from '../message/index';
@@ -123,6 +124,11 @@ export default {
 					}
 				}
 			}
+		}
+	},
+	mounted() {
+		if (Vue.config.devtools) {
+			console.warn('[@wya/vc]: files-picker -> upload-picker，api需要变更');
 		}
 	},
 	methods: {

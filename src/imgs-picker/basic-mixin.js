@@ -1,6 +1,7 @@
 /**
  * imgs-picker的核心js
  */
+import Vue from 'vue';
 import { Device } from '@wya/utils';
 import Message from '../message/index';
 import Toast from '../toast/index';
@@ -123,6 +124,11 @@ export default {
 					}
 				}
 			}
+		}
+	},
+	mounted() {
+		if (Vue.config.devtools) {
+			console.error('[@wya/vc]: imgs-picker -> upload-picker，api需要变更');
 		}
 	},
 	methods: {
