@@ -108,6 +108,8 @@ import SortList from './sort-list/index';
 import MSortList from './sort-list/index.m';
 import Spin from './spin/index';
 import MSpin from './spin/index.m';
+import Steps from './steps/index';
+import MSteps from './steps/index.m';
 import Switch from './switch/index';
 import MSwitch from './switch/index.m';
 import Table from './table/index';
@@ -120,6 +122,8 @@ import Text from './text/index';
 import MText from './text/index.m';
 import Textarea from './textarea/index';
 import MTextarea from './textarea/index.m';
+import Timeline from './timeline/index';
+import MTimeline from './timeline/index.m';
 import TimePicker from './time-picker/index';
 import MTimePicker from './time-picker/index.m';
 import Toast from './toast/index';
@@ -276,6 +280,12 @@ const Components = {
 	MSortList,
 	Spin,
 	MSpin,
+	Steps,
+	MSteps,
+	StepsItem: Steps.Item,
+	MStepsItem: Steps.Item,
+	StepsBar: Steps.Bar,
+	MStepsBar: Steps.Bar,
 	Switch,
 	MSwitch,
 	Table,
@@ -290,6 +300,10 @@ const Components = {
 	MText,
 	Textarea,
 	MTextarea,
+	Timeline,
+	MTimeline,
+	TimelineItem: Timeline.Item,
+	MTimelineItem: Timeline.Item,
 	TimePicker,
 	MTimePicker,
 	Touch,
@@ -476,6 +490,12 @@ exports.SortList = SortList;
 exports.MSortList = MSortList;
 exports.Spin = Spin;
 exports.MSpin = MSpin;
+exports.Steps = Steps;
+exports.MSteps = MSteps;
+exports.StepsItem = Steps.Item;
+exports.MStepsItem = MSteps.Item;
+exports.StepsBar = Steps.Bar;
+exports.MStepsBar = MSteps.Bar;
 exports.Switch = Switch;
 exports.MSwitch = MSwitch;
 exports.Table = Table;
@@ -490,6 +510,10 @@ exports.Text = Text;
 exports.MText = MText;
 exports.Textarea = Textarea;
 exports.MTextarea = MTextarea;
+exports.Timeline = Timeline;
+exports.MTimeline = MTimeline;
+exports.TimelineItem = Timeline.Item;
+exports.MTimelineItem = MTimeline.Item;
 exports.TimePicker = TimePicker;
 exports.MTimePicker = MTimePicker;
 exports.Touch = Touch;
