@@ -21,15 +21,15 @@ export default {
 			current: "1",
 			dataSource: [
 				{ 
-					step: "1",
+					value: "1",
 					label: '第1步'
 				},
 				{ 
-					step: "2",
+					value: "2",
 					label: '第2步'
 				},
 				{ 
-					step: "3",
+					value: "3",
 					label: '第3步'
 				}
 			]

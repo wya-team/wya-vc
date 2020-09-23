@@ -32,7 +32,7 @@ export default {
 		dataSourceKey: {
 			type: Object,
 			default: () => ({
-				step: 'step',
+				value: 'value',
 				label: 'label'
 			})
 		},
@@ -44,7 +44,7 @@ export default {
 	},
 	computed: {
 		step() {
-			return this.dataSourceKey.step;
+			return this.dataSourceKey.value;
 		},
 		label() {
 			return this.dataSourceKey.label;
