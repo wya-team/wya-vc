@@ -143,16 +143,15 @@ export default {
 	},
 	methods: {
 		handleClick(e, type) {
-			if (type === 'image') return;
-			const { ImgsPicker = {} } = VcInstance.config;
-			if (typeof this.gallery === 'function' || (this.gallery && ImgsPicker.gallery)) {
-				e.stopPropagation();
+			const { UploadPicker = {} } = VcInstance.config;
+			if (typeof this.gallery === 'function' || (this.gallery && UploadPicker.gallery)) {
 
 				let fn = typeof this.gallery === 'function' 
 					? this.gallery
-					: ImgsPicker.gallery;
-					
-				fn(this);
+					: UploadPicker.gallery;
+				
+				// 阻止原生事件，如video, file不走gallery, 可以跳过;
+				fn(this, type) && e.stopPropagation();
 			} 
 		},
 	}
