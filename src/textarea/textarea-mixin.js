@@ -35,13 +35,16 @@ export default {
 			type: [Boolean, Object],
 			default: false
 		},
+		textareaStyle: {
+			type: [Object, Array]
+		}
 	},
 	data() {
 		return {
 			currentValue: null,
 			isOnComposition: false,
 			isFocus: false,
-			textareaStyle: {},
+			calcTextareaStyle: {},
 			contentStyle: {}
 		};
 	},
@@ -158,7 +161,7 @@ export default {
 			const { minRows, maxRows } = this.autosize;
 
 			this.$nextTick(() => {
-				this.textareaStyle = getComputedHeight({
+				this.calcTextareaStyle = getComputedHeight({
 					el: this.$refs.textarea,
 					minRows, 
 					maxRows

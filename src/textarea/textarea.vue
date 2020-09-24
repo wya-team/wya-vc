@@ -7,7 +7,7 @@
 					v-bind="binds"
 					:value="currentValue"
 					:maxlength="curMaxlength"
-					:style="textareaStyle"
+					:style="[textareaStyle, calcTextareaStyle]"
 					v-on="hooks"
 				/>
 			</div>
