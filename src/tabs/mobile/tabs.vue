@@ -7,6 +7,7 @@
 			:class="{ 'is-fixed': isFixed }"
 			class="vcm-tabs__bar"
 		>
+			<slot name="prepend" />
 			<div ref="scroll" class="vcm-tabs__scroll">
 				<div ref="nav" class="vcm-tabs__nav">
 					<div 
@@ -33,6 +34,7 @@
 					</div>
 				</div>
 			</div>
+			<slot name="append" />
 		</div>
 		<div v-if="isFixed" :style="{ height: `${placeholderH}px` }" class="vcm-tabs__placeholder" />
 		<div ref="content" :style="contentStyle" class="vcm-tabs__content">
