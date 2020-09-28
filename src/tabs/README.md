@@ -286,6 +286,8 @@ tab-remove | tab 被移除时触发 | `(name: String) => void 0`| `name`：移�
 属性 | 说明
 ---|---
 extra | 附加内容
+prepend | tab-bar前缀
+append | tab-bar后缀
 
 ### Pane 属性
 属性 | 说明 | 类型 | 可选值 | 默认值
