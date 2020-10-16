@@ -209,3 +209,8 @@ name | 原生 `name` 属性 | `String` | - | -
 事件名 | 说明 | 回调参数 | 参数说明
 ---|---|---|---
 change | 在选项状态发生改变时触发，返回当前状态。通过修改外部的数据改变时不会触发 | `(value: String | Number | Boolean, e: Event ) => void 0`| `value`：当前绑定的值；`e`：事件对象
+
+
+## TODO 
+
+- label作为了选项的判断，是否改为value
