@@ -138,6 +138,7 @@ export default {
 accordion | 是否开启手风琴模式，开启后每次至多展开一个面板 | `Boolean` | - | `false`
 value | 当前激活的面板(如果是手风琴模式，绑定值类型需要为`String`，否则为`Array`) | `Array`、`String` | - | -
 tag | 外层标签 | `String`| - | `div`
+remove | 收起后是否移除DOM节点 | `Boolean` | - | `false`
 
 ### collapse-item属性
 属性 | 说明 | 类型 | 可选值 | 默认值

@@ -4,7 +4,7 @@
 			<slot />
 			<slot :is-expend="isActive" name="icon" />
 		</div>
-		<vc-expand v-model="isActive">
+		<vc-expand v-model="isActive" :remove="$parent.remove">
 			<div>
 				<slot name="content" />
 			</div>

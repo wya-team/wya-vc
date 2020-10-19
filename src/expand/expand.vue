@@ -1,8 +1,17 @@
 <template>
 	<vc-transition-collapse :duration="{ enter: 0.2, leave: 0.2 }">
-		<component :is="tag" v-if="isActive">
-			<slot />
-		</component>
+		<!-- 收起后 设置display: none -->
+		<template v-if="!remove">
+			<component :is="tag" v-show="isActive">
+				<slot />
+			</component>
+		</template>
+		<!-- 收起后将DOM移除 -->
+		<template v-else>
+			<component :is="tag" v-if="isActive">
+				<slot />
+			</component>
+		</template>
 	</vc-transition-collapse>
 </template>
 
@@ -27,7 +36,11 @@ export default {
 		visible: {
 			type: Boolean,
 			default: false
-		}
+		},
+		remove: {
+			type: Boolean,
+			default: false
+		},
 	},
 	data() {
 		return {

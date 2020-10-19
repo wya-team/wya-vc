@@ -22,7 +22,11 @@ export default {
 		},
 		value: {
 			type: [Array, String]
-		}
+		},
+		remove: {
+			type: Boolean,
+			default: false
+		},
 	},
 	data() {
 		return {

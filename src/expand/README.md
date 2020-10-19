@@ -54,3 +54,4 @@ export default {
 ---|---|---|---|---
 tag | 要渲染成的html标签 | `String` | - | `div`
 visible | 折叠或展开状态 | `Boolean` | `true`、`false` | `false`
+remove | 收起后是否移除DOM节点 | `Boolean` | - | `false`
