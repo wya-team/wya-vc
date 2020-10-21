@@ -84,7 +84,7 @@ export default {
 		},
 		offsetTop: {
 			type: Number,
-			default: 39
+			default: 0
 		}
 	},
 	data() {
@@ -136,7 +136,7 @@ export default {
 
 		handleScroll: throttle(function () {
 			this.isFixed = document.scrollingElement.scrollTop + this.offsetTop > this.top;
-		}, 50),
+		}, 100),
 
 		/**
 		 * 使用Resize时, 切换页面失效，换种方案
