@@ -3,7 +3,7 @@
 		<div
 			v-if="showWrapper"
 			ref="wrapper"
-			:style="barStyle"
+			:style="[barStyle, fixedStyle]"
 			:class="{ 'is-fixed': isFixed }"
 			class="vcm-tabs__bar"
 		>
@@ -43,6 +43,7 @@
 	</div>
 </template>
 <script>
+import { throttle, debounce } from 'lodash';
 import TabsMixin from '../tabs-mixin';
 import { Resize } from '../../utils/index';
 import MIcon from '../../icon/index.m';
@@ -80,6 +81,10 @@ export default {
 		sticky: {
 			type: Boolean,
 			default: false
+		},
+		offsetTop: {
+			type: Number,
+			default: 39
 		}
 	},
 	data() {
@@ -92,6 +97,11 @@ export default {
 		isDark() {
 			return this.theme === 'dark';
 		},
+		fixedStyle() {
+			return this.isFixed 
+				? { top: `${this.offsetTop}px` }
+				: {};
+		}
 	},
 	watch: {
 		theme() {
@@ -124,19 +134,19 @@ export default {
 			fn('scroll', this.handleScroll);
 		},
 
-		handleScroll() {
-			this.isFixed = document.scrollingElement.scrollTop > this.top;
-		},
+		handleScroll: throttle(function () {
+			this.isFixed = document.scrollingElement.scrollTop + this.offsetTop > this.top;
+		}, 50),
 
 		/**
 		 * 使用Resize时, 切换页面失效，换种方案
 		 */
-		refreshTop() {
+		refreshTop: debounce(function () {
 			if (this.sticky) {
 				this.top = this.$refs.content.offsetTop - this.placeholderH;
-				this.isFixed = document.scrollingElement.scrollTop > this.top;
+				this.isFixed = document.scrollingElement.scrollTop + this.offsetTop > this.top;
 			}
-		},
+		}, 250, { leading: true, trailing: true }),
 
 		/**
 		 * 刷新当前标签底下的滑块位置
@@ -207,9 +217,8 @@ export default {
 		@include when(fixed) {
 			position: fixed;
 			width: 100%;
-			top: 0;
 			z-index: 999;
-			box-shadow: 0px -5px 5px 5px #999;
+			// box-shadow: 0px -5px 5px 5px #999;
 		}
 	}
 	/**
