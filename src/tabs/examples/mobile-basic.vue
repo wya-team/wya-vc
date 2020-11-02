@@ -7,6 +7,9 @@
 		<vcm-button @click="theme = theme === 'light' ? 'dark' : 'light'">
 			theme: {{ theme }}
 		</vcm-button>
+		<vcm-button @click="showStep = !showStep">
+			showStep: {{ showStep }}
+		</vcm-button>
 		<vcm-button @click="handleClear">
 			清除定时器
 		</vcm-button>
@@ -17,7 +20,9 @@
 			:theme="theme"
 			:average="false"
 			:sticky="true"
+			:show-step="showStep"
 			closable 
+			style="margin-top: 20px;"
 			@click="handleClick"
 			@tab-remove="handleRemove"
 		>
@@ -83,6 +88,27 @@
 					<div>标签九的内容</div>
 				</div>
 			</vcm-tabs-pane>
+			<vcm-tabs-pane label="标签十">
+				<div v-for="item in list" :key="item">
+					<div>标签十的内容</div>
+					<div>标签十的内容</div>
+					<div>标签十的内容</div>
+				</div>
+			</vcm-tabs-pane>
+			<vcm-tabs-pane label="标签十一">
+				<div v-for="item in list" :key="item">
+					<div>标签十一的内容</div>
+					<div>标签十一的内容</div>
+					<div>标签十一的内容</div>
+				</div>
+			</vcm-tabs-pane>
+			<vcm-tabs-pane label="标签十二">
+				<div v-for="item in list" :key="item">
+					<div>标签十二的内容</div>
+					<div>标签十二的内容</div>
+					<div>标签十二的内容</div>
+				</div>
+			</vcm-tabs-pane>
 		</vcm-tabs>
 	</div>
 </template>
@@ -100,9 +126,10 @@ export default {
 	data() {
 		return {
 			height: 0,
-			value: 0,
+			value: 6,
 			animated: false,
 			theme: 'light',
+			showStep: true,
 			list: Array.from({ length: 200 }, (_, i) => i)
 		};
 	},
@@ -110,9 +137,9 @@ export default {
 		
 	},
 	mounted() {
-		this.timer = setInterval(() => {
-			this.height += 100;
-		}, 2000);
+		// this.timer = setInterval(() => {
+		// 	this.height += 100;
+		// }, 2000);
 	},
 	methods: {
 		handleClick() {
