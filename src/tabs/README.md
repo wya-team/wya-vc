@@ -275,6 +275,7 @@ average | navbar 是否均分 | `Boolean` | - | `true`
 showAfloat | 是否显示下划线 | `Boolean` | - | `true`
 beforeRemove | 关闭前的函数，返回 `Promise` 可阻止标签关闭, 回调参数为当前`index` | `Function` | - | -
 offsetTop | top的偏移值 | `Number` | - | 0
+showStep | 是否在需要滚动时展示左右切换按钮，仅支持移动端 | `Boolean` | - | false
 
 ### 事件
 事件名 | 说明 | 回调参数 | 参数说明
