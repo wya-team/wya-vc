@@ -8,8 +8,14 @@
 			class="vcm-tabs__bar"
 		>
 			<slot name="prepend" />
-			<div ref="scroll" class="vcm-tabs__scroll">
-				<div ref="nav" class="vcm-tabs__nav">
+			<div v-if="showStep && scrollable" class="vcm-tabs__step is-left" @click="handleStep(1)">
+				<vcm-icon type="left" />
+			</div>
+			<div 
+				ref="scroll"
+				class="vcm-tabs__scroll"
+			>
+				<div ref="nav" :style="scrollStyle" class="vcm-tabs__nav">
 					<div 
 						v-if="showAfloat" 
 						:style="afloatStyle" 
@@ -18,6 +24,7 @@
 					<div
 						v-for="(item, index) in list"
 						:key="index"
+						:data-id="item.name"
 						:class="[{ 'is-active': item.name == currentName, 'is-average': average }]"
 						class="vcm-tabs__item"
 						@click="handleChange(index)"
@@ -33,6 +40,9 @@
 						</slot>
 					</div>
 				</div>
+			</div>
+			<div v-if="showStep && scrollable" class="vcm-tabs__step is-right" @click="handleStep(-1)">
+				<vcm-icon type="right" />
 			</div>
 			<slot name="append" />
 		</div>
@@ -85,12 +95,21 @@ export default {
 		offsetTop: {
 			type: Number,
 			default: 0
+		},
+		showStep: {
+			type: Boolean,
+			default: false
 		}
 	},
 	data() {
 		return {
 			isFixed: false,
-			placeholderH: 53
+			placeholderH: 53,
+
+			isTouching: false,
+			scrollViewW: 0, // 滚动容器宽度
+			scrollContentW: 0, // 滚动内容宽度
+			baseX: 0
 		};
 	},
 	computed: {
@@ -101,6 +120,12 @@ export default {
 			return this.isFixed 
 				? { top: `${this.offsetTop}px` }
 				: {};
+		},
+		scrollStyle() {
+			return {
+				transition: this.isTouching ? '' : 'transform 300ms ease-in-out',
+				transform: `translate3d(${this.scrollOffset}px, 0, 0)`
+			};
 		}
 	},
 	watch: {
@@ -109,6 +134,9 @@ export default {
 		},
 		average() {
 			this.refreshAfloat();
+		},
+		showStep() {
+			this.$nextTick(this.refreshScroll);
 		}
 	},
 	created() {
@@ -117,6 +145,7 @@ export default {
 	mounted() {
 		this.refreshTop();
 		this.operateDOMEvents('add');
+		this.$nextTick(this.refreshScroll);
 	},
 	updated() {
 		this.refreshTop();
@@ -186,18 +215,95 @@ export default {
 		},
 
 		/**
-		 * 刷新是否需要滚动条
-		 * TODO
+		 * 处理是否需要滚动
 		 */
 		refreshScroll() {
+			const viewEl = this.$refs.scroll;
+			this.scrollViewW = viewEl.offsetWidth;
+			this.scrollContentW = this.$refs.nav.offsetWidth;
+			if (this.scrollContentW > this.scrollViewW) {
+				viewEl.addEventListener('touchstart', this.handleTouchstart, false);
+				viewEl.addEventListener('touchmove', this.handleTouchmove, false);
+				viewEl.addEventListener('touchend', this.handleTouchend, false);
+				this.scrollable = true;
+			} else if (this.scrollable) {
+				viewEl.removeEventListener('touchstart', this.handleTouchstart, false);
+				viewEl.removeEventListener('touchmove', this.handleTouchmove, false);
+				viewEl.removeEventListener('touchend', this.handleTouchend, false);
+				this.scrollable = false;
+			}
+			// 当一开始showSetp为true时，右边滚到顶，此时切换showStep为false，需要更新位置
+			const maxOffsetX = this.scrollContentW - this.scrollViewW;
+			if (this.scrollOffset < -maxOffsetX) {
+				this.scrollOffset = -maxOffsetX;
+			}
+		},
 
+		handleTouchstart(event) {
+			this.isTouching = true;
+			this.startX = event.touches[0].pageX;
+			this.baseX = this.scrollOffset;
+		},
+		handleTouchmove: throttle(function (event) {
+			const touchPageX = event.touches[0].pageX;
+			// 与touchstart时触点位置的距离偏移值，大于0时为触点向右移，反之向左
+			const changedX = touchPageX - this.startX;
+			if (changedX > 0) {
+				if (this.scrollOffset >= 0) {
+					this.scrollOffset = 0;
+					return;
+				}
+			} else if (Math.abs(this.scrollOffset) + this.scrollViewW >= this.scrollContentW) {
+				this.scrollOffset = -(this.scrollContentW - this.scrollViewW);
+				return;
+			}
+			this.scrollOffset = this.baseX + touchPageX - this.startX;
+		}, 17),
+		handleTouchend() {
+			this.isTouching = false;
+			// TODO: 惯性滚动、回弹 （体验优化）
+		},
+		handleStep(flag) {
+			if (!this.scrollable) return;
+			const moveX = flag * this.scrollViewW;
+			let offsetX = this.scrollOffset + moveX;
+			if (offsetX < -(this.scrollContentW - this.scrollViewW) || offsetX > 0) {
+				offsetX = flag === -1 ? -(this.scrollContentW - this.scrollViewW) : 0;
+			}
+			this.scrollOffset = offsetX;
 		},
 
 		/**
-		 * TODO
+		 * 将选中的item滚动至可视区（尽量往中间靠）
 		 */
 		scrollToActive() {
+			if (!this.scrollable) return;
+			const activeEl = this.$el.querySelector(`.vcm-tabs__item[data-id="${this.currentName}"]`);
 
+			if (!activeEl) return;
+			const contentEl = this.$refs.nav;
+
+			const activeRect = activeEl.getBoundingClientRect();
+			const viewRect = this.$refs.scroll.getBoundingClientRect();
+			const contentRect = contentEl.getBoundingClientRect();
+			
+			let offset = 0;
+
+			if (activeRect.width < viewRect.width) {
+				// targetOffset为最理想的情况下，可以滚动到正中间，此时activeEl距scrollView的左右边距
+				const targetOffset = (viewRect.width - activeRect.width) / 2;
+				// offsetLeft其实等价于activeEl.offsetLeft，
+				// 但是调试时发现这两个值在小数位会有差距，offsetLeft一直是整数，所以还是决定用下面这种方式计算offsetLeft
+				const offsetLeft = activeRect.left - contentRect.left;
+				if (offsetLeft - viewRect.left <= targetOffset) { // 左边距离不足以到正中间的情况
+					offset = 0;
+				} else if (contentRect.right - activeRect.right <= targetOffset) { // 右边距离不足以到正中间的情况
+					offset = viewRect.width - contentRect.width; // 负值
+				} else {
+					offset = targetOffset - offsetLeft; // 可以滚动到正中间的理想情况
+				}
+			}
+			this.scrollOffset = offset;
 		},
 	},
 };
@@ -209,10 +315,23 @@ export default {
 @include block(vcm-tabs) {
 	width: 100%;
 	overflow: hidden;
+	@include element(step) {
+		width: 40px;
+		display: flex;
+		justify-content: center;
+		align-items: center;
+		@include when(left) {
+			box-shadow: 1px 0 5px 1px #eee;
+		}
+		@include when(right) {
+			box-shadow: -1px 0 5px 1px #eee;
+		}
+	}
 	@include element(bar) {
+		overflow: hidden;
 		margin-bottom: 8px;
 		display: flex;
-		align-items: center;
+		align-items: stretch;
 		position: relative;
 		@include when(fixed) {
 			position: fixed;
@@ -227,14 +346,14 @@ export default {
 	 */
 	@include element(scroll) {
 		white-space: nowrap;
-		overflow: auto;
+		overflow: hidden;
 		// -webkit-overflow-scrolling: touch;
 		width: 100%;
 	}
 	@include element(nav) {
 		position: relative;
-		transition: transform .5s ease-in-out;
 		display: flex;
+		width: fit-content;
 	}
 	@include element(item) {
 		position: relative;
@@ -301,6 +420,15 @@ export default {
 			background-color: #E7C083;
 			bottom: 6px;
 			border-radius: 2px;
+		}
+		@include element(step) {
+			color: #E7C083;
+			@include when(left) {
+				box-shadow: 1px 0 5px 1px #242421;
+			}
+			@include when(right) {
+				box-shadow: -1px 0 5px 1px #242421;
+			}
 		}
 	}
 }

@@ -87,7 +87,7 @@ export default {
 	},
 	mounted() {
 		Resize.on(this.$refs.wrapper, this.handleResize);
-		this.scrollToActive && this.scrollToActive();
+		this.scrollToActive && this.$nextTick(this.scrollToActive);
 	},
 	destroyed() {
 		Resize.off(this.$refs.wrapper, this.handleResize);
