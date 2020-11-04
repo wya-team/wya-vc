@@ -2,6 +2,8 @@ import Vue from 'vue';
 import { kebabCase, merge } from 'lodash';
 
 // basic
+import Alert from './alert/index';
+import MAlert from './alert/index.m';
 import Artboard from './artboard/index';
 import MArtboard from './artboard/index.m';
 import Button from './button/index';
@@ -148,6 +150,8 @@ import Extends from './extends/index';
 
 const Components = {
 	// components
+	Alert,
+	MAlert,
 	Artboard,
 	MArtboard,
 	Button,
@@ -360,7 +364,9 @@ exports.Utils = Utils;
 exports.Extends = Extends;
 
 // component
-exports.Artboard = Artboard;
+exports.Alert = Artboard;
+exports.MAlert = Artboard;
+exports.Artboard = MArtboard;
 exports.MArtboard = MArtboard;
 exports.Button = Button;
 exports.MButton = MButton;

@@ -15,8 +15,8 @@
 	<div class="v-component-name">
 		<vc-component 
 			ref="component" 
-            :attr="attr"
-            @eventName="handleTrigger"
+			:attr="attr"
+			@eventName="handleTrigger"
 		/>	
 		<div style="margin-top: 20px;">
 			<vc-button @click="handleClick">
@@ -35,16 +35,16 @@ export default {
 	},
 	data() {
 		return {
-            attr: ''
+			attr: ''
 		};
 	},
 	methods: {
 		handleTrigger(res) {
-            this.attr = res;
-        }，
-        handleClick() {
-            this.$refs.component.componentMethods();
-        }
+			this.attr = res;
+		}，
+		handleClick() {
+			this.$refs.component.componentMethods();
+		}
 	},
 };
 </script>
