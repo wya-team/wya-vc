@@ -232,11 +232,7 @@ export default {
 				viewEl.removeEventListener('touchend', this.handleTouchend, false);
 				this.scrollable = false;
 			}
-			// 当一开始showSetp为true时，右边滚到顶，此时切换showStep为false，需要更新位置
-			const maxOffsetX = this.scrollContentW - this.scrollViewW;
-			if (this.scrollOffset < -maxOffsetX) {
-				this.scrollOffset = -maxOffsetX;
-			}
+			this.scrollable && this.scrollToActive();
 		},
 
 		handleTouchstart(event) {
@@ -354,6 +350,7 @@ export default {
 		position: relative;
 		display: flex;
 		width: fit-content;
+		min-width: 100%;
 	}
 	@include element(item) {
 		position: relative;
