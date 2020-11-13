@@ -30,6 +30,16 @@ export default {
 		formatter: {
 			type: Function,
 			default: (v, precision) => (/^(-|)$/.test(v) ? '' : Number(v).toFixed(precision))
+		},
+
+		/**
+		 * 失焦的情况下，会强制把value, 转化为number类型
+		 * input事件实时输入只能是string
+		 * 等价于@blur="value = arguments[1]"
+		 */
+		outputNumber: {
+			type: Boolean,
+			default: false
 		}
 	},
 	data() {
@@ -138,7 +148,7 @@ export default {
 			try {
 				let state = await this.afterHook(value);
 				state && this.$emit('input', value);
-				this.$emit('blur', e);
+				this.$emit('blur', e, Number(e.target.value));
 			} catch (e) {
 				throw new VcError('vc-input-number', e);
 			}
@@ -218,7 +228,9 @@ export default {
 			value = this.required && !value
 				? this.min
 				: value;
-			return value;
+
+
+			return this.outputNumber ? Number(value) : value;
 		},
 
 		/**
