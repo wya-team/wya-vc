@@ -36,10 +36,12 @@ export default {
 		 * 失焦的情况下，会强制把value, 转化为number类型
 		 * input事件实时输入只能是string
 		 * 等价于@blur="value = arguments[1]"
+		 * :output="Number" -> output="number"功能相同
 		 */
-		outputNumber: {
-			type: Boolean,
-			default: false
+		output: {
+			type: [Function, String], // Number, String, (v) => v, 'number', 'string'
+			// default: v => v 
+			default: ''
 		}
 	},
 	data() {
@@ -229,9 +231,12 @@ export default {
 				? this.min
 				: value;
 
-
-			return this.outputNumber ? Number(value) : value;
-		},
+			return typeof this.output === 'function' 
+				? this.output(value) 
+				: this.output === 'number'
+					? Number(value)
+					: value;
+		},	
 
 		/**
 		 * @param  {String}  options.value

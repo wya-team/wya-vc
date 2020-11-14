@@ -281,6 +281,7 @@ max | 最大值 | `Number` | - | Infinity
 step | 计数器步长 | `Number`、`Boolean` | - | 1
 required | - | `Boolean` | - | `false`
 precision | 数值精度 | `Number` | - | 0
+output | blur时强制转换结果 | `Function`、`String` | - | ''
 formatter | 格式化值 | `Function` | - | `(v, precision) => (/^(-|)$/.test(v) ? '' : Number(v).toFixed(precision))`
 
 ### search属性
