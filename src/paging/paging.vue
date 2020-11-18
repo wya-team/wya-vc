@@ -274,6 +274,7 @@ export default {
 			this.toggleRowSelection = this.$refs.table.toggleRowSelection;
 			this.toggleAllSelection = this.$refs.table.toggleAllSelection;
 			this.toggleRowExpansion = this.$refs.table.toggleRowExpansion;
+			this.toggleRowStatus = this.$refs.table.toggleRowStatus;
 			this.setCurrentRow = this.$refs.table.setCurrentRow;
 			this.refreshLayout = this.$refs.table.refreshLayout;
 		}
