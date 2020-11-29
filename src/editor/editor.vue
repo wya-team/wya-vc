@@ -350,14 +350,21 @@ export default {
 				sele.addRange(range);
 			}
 		},
+
+		/**
+		 * ImgsPicker已废除，3.x清理
+		 */
 		handleUploadImg(e) {
-			const { ImgsPicker = {} } = VcInstance.config;
-			if (typeof this.gallery === 'function' || (this.gallery && ImgsPicker.gallery)) {
+			const { ImgsPicker = {}, UploadPicker = {} } = VcInstance.config;
+			if (
+				typeof this.gallery === 'function' 
+				|| (this.gallery && (ImgsPicker.gallery || UploadPicker.gallery))
+			) {
 				e.stopPropagation();
 
 				let fn = typeof this.gallery === 'function' 
 					? this.gallery
-					: ImgsPicker.gallery;
+					: (ImgsPicker.gallery || UploadPicker.gallery);
 					
 				fn(this);
 			} 
