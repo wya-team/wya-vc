@@ -97,6 +97,15 @@ export default {
 				return {
 					modules: {
 						toolbar: "#toolbar",
+						// 必须要配置，否则该扩展不生效
+						ImageExtend: {
+							upload: {
+								showTips: false,
+								size: 10, // 单位：M
+								max: 1,
+								multiple: false
+							}
+						},
 					}
 				};
 			}
@@ -138,9 +147,12 @@ export default {
 	},
 	computed: {
 		curOptions() {
+			const { Editor = {} } = VcInstance.config || {};
 			return {
+				...(Editor.options || {}),
 				...this.options,
 				modules: {
+					...((Editor.options || {}).modules || {}),
 					...this.options.modules,
 					toolbar: `#${this.uid}`
 				}
