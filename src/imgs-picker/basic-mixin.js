@@ -298,7 +298,7 @@ export default {
 			this.sync(this.currentValue);
 		},
 		/**
-		 * 充值value
+		 * 重置value
 		 */
 		reset(imgs = []) {
 			if (!(imgs instanceof Array)) {
