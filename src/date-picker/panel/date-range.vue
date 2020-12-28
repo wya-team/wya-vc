@@ -278,9 +278,13 @@ export default {
 			let leftYear = this.leftPanelDate.getFullYear();
 			let rightMonth = this.rightPanelDate.getMonth();
 			let rightYear = this.rightPanelDate.getFullYear();
-			if (type === 'right' && (year > rightYear || month > rightMonth)) {
+			if (type === 'right' && (year > rightYear || (year === rightYear && month > rightMonth))) {
 				return false;
-			} else if (type === 'left' && (year < leftYear || month < leftMonth)) {
+			} else if (type === 'right' && (year < leftYear || (year === leftYear && month < leftMonth))) {
+				return false;
+			} else if (type === 'left' && (year < leftYear || (year === leftYear && month < leftMonth))) {
+				return false;
+			} else if (type === 'left' && (year > rightYear || (year === rightYear && month > rightMonth))) {
 				return false;
 			}
 			return true;
@@ -390,7 +394,6 @@ export default {
 					selecting: cell.type !== 'normal',
 					marker: cell.type !== 'normal' ? marker : null
 				};
-
 			}
 			if (!isInRange) {
 				let changeType = type === 'left' ? 'prev-month' : 'next-month';
