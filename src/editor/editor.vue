@@ -378,7 +378,7 @@ export default {
 					? this.gallery
 					: (ImgsPicker.gallery || UploadPicker.gallery);
 					
-				fn(this);
+				fn(this, 'image');
 			} 
 			this.selectionIndex = this.getLength(); // 存储失焦时光标位置
 		},
