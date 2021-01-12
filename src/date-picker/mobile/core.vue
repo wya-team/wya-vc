@@ -28,6 +28,7 @@ import { pick } from 'lodash';
 import MPicker from '../../picker/index.m';	
 import MDatePickerView from './date-picker-view';	
 import Portal from '../../portal/index';
+import { isBefore } from '../utils';
 
 const wrapperComponent = {
 	name: 'vcm-picker-core',
@@ -76,13 +77,19 @@ const wrapperComponent = {
 		};
 	},
 	computed: {
-
+		/**
+		 * TODO: 季度模式默认值处理
+		 */
+		defaultValue() {
+			const now = new Date();
+			return isBefore(now, this.minDate) ? this.minDate : now;
+		}
 	},
 	watch: {
 		value: {
 			immediate: true,
 			handler(v) {
-				this.currentValue = v;
+				this.currentValue = this.correct(v, true);
 			}
 		},
 		isActive(v) {
@@ -113,14 +120,23 @@ const wrapperComponent = {
 			this.cancel();
 		},
 		/**
+		 * 对值进行校正，如超出边界值时更正为边界值
+		 * force 是否在没有初始值时强制赋予默认值
+		 */
+		correct(target, force = false) {
+			// TODO: 季度模式数据校正处理
+			if (this.mode === 'quarter') return target;
+			if (!target) return force ? this.defaultValue : target;
+			if (isBefore(target, this.minDate)) return this.minDate;
+			if (isBefore(this.maxDate, target)) return this.minDate;
+			return target;
+		},
+		/**
 		 * ok兼容
 		 */
 		ok(it) {
-			// 强制设置默认时间为当前时间
-			if (!it) {
-				it = new Date();
-				this.currentValue = it;
-			}
+			it = it ? this.correct(it) : this.minDate;
+			this.currentValue = it;
 			const { onOk } = this;
 			onOk ? onOk(it) : this.$emit('ok', it);
 		},

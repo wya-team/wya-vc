@@ -9,9 +9,17 @@
 			/>
 			<vcm-date-picker 
 				v-model="quarterValue"
+				:min-date="new Date('2022')"
 				label="季度选择"
 				mode="quarter"
 				title="test"
+			/>
+			<vcm-date-picker 
+				v-model="defaultEmptyValue"
+				mode="datetime"
+				:min-date="new Date('2022/10/01')"
+				extra="无初始值"
+				title="无初始值"
 			/>
 			<!-- <vcm-date-picker 
 				v-model="valueEmpty"
@@ -95,6 +103,7 @@ export default {
 			value: new Date(),
 			quarterValue: [],
 			valueEmpty: undefined,
+			defaultEmptyValue: '',
 			valueView: new Date(),
 			formValidate: {
 				start: undefined,

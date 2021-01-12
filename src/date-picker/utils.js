@@ -346,3 +346,31 @@ export const setNewYear = (currentDate, sourceDate) => {
 	let year = currentDate.getFullYear();
 	return new Date(sourceDate.setYear(year));
 };
+
+/**
+ * 获取时间戳
+ * 兼容Date对象和date字符串
+ * @param {*} date Date对象或date字符串（'2020/01/12')
+ */
+export const getTimeStamp = date => (date.getTime ? date.getTime() : new Date(date).getTime());
+
+/**
+ * 判断前者（dateA）是否在后者（dateB）之前
+ * @param {*} dateA 
+ * @param {*} dateB 
+ */
+export const isBefore = (dateA, dateB) => {
+	return getTimeStamp(dateA) < getTimeStamp(dateB);
+};
+
+/**
+ * 获取当前时间所属季度
+ * @param {*} date 
+ */
+export const getQuarter = date => {
+	const month = date.getMonth() + 1;
+	if (month <= 3) return '1';
+	if (month <= 6) return '2';
+	if (month <= 9) return '3';
+	if (month <= 12) return '4';
+};

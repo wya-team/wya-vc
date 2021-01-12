@@ -149,10 +149,6 @@ export default {
 						min: minute
 					};
 			}
-		},
-		defaultValue() {
-			let now = new Date();
-			return this.minDate > now ? this.minDate : now;
 		}
 	},
 	watch: {
@@ -171,7 +167,7 @@ export default {
 				if (this.currentValue.length === 0 
 					|| (+new Date(v) !== +value2date(this.currentValue) && this.mode !== 'quarter') 
 					|| (this.mode === 'quarter' && this.currentValue !== v)) {
-					this.currentValue = this.mode === 'quarter' ? this.getQuarterValue(v) : date2value(v || this.defaultValue, this.modeArr);
+					this.currentValue = this.mode === 'quarter' ? this.getQuarterValue(v) : date2value(v, this.modeArr);
 					this.rebuildData = this.makeRebuildData();
 				}
 			}
