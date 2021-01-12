@@ -2,6 +2,7 @@ import Vue from 'vue';
 import Message from './message';
 import { getOption } from '../utils/index';
 import Portal from '../portal/index';
+import { IS_SERVER } from '../utils/constant';
 
 const registerOptions = {
 	multiple: true,
@@ -15,6 +16,8 @@ class MessageManager extends Portal {
 	}
 
 	run(params, opts) {
+		if (IS_SERVER) return;
+		
 		let query = ['content', 'duration', 'onClose'];
 		let number = Object.keys(this.APIS)
 			.filter(item => item.includes(this.globalOptions.cName)).length;

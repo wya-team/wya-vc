@@ -4,6 +4,7 @@ import { DOM } from '@wya/utils';
 import { getUid, eleInRegExp } from '../utils/index';
 import { VcBasic, VcError } from '../vc/index';
 import defaultOptions from './default-options';
+import { IS_SERVER } from '../utils/constant';
 
 class PortalCore extends VcBasic {
 	constructor(wrapper, registerOptions = {}) {
@@ -43,6 +44,7 @@ class PortalCore extends VcBasic {
 
 	/**
 	 * 弹出项目，验证数据结构是否合法
+	 * 弹层目前不支持server
 	 * userOptions {
 	 * 	store,
 	 * 	router,
@@ -52,6 +54,7 @@ class PortalCore extends VcBasic {
 	 * }
 	 */
 	popup(userOptions = {}) {
+		if (IS_SERVER) return;
 		if (typeof userOptions !== 'object') {
 			userOptions = {};
 		}

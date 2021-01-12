@@ -115,7 +115,8 @@ export default {
 			list: [],
 			dataSource: [
 				'https://wyatest.oss-cn-hangzhou.aliyuncs.com/image/172/20191226/2007790743/test_video.mp4', 
-				'https://wyatest.oss-cn-hangzhou.aliyuncs.com/image/172/20200306/0936814587/O1CN01STX58I1HIDIUHqYwP_!!2885750734.jpg!4-4'
+				'https://wyatest.oss-cn-hangzhou.aliyuncs.com/image/172/20200306/0936814587/O1CN01STX58I1HIDIUHqYwP_!!2885750734.jpg!4-4',
+				'https://thirdwx.qlogo.cn/mmopen/vi_32/IUeRRqTWdyoMOkveehFRrbogiaFuk9U9kBgRMvP4A8U6GjYhiaboDsBf5WEEhV7Cfjr8a0Tz91Hal0oUaDsOslvg/132'
 			]
 		};
 	},
