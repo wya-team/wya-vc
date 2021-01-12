@@ -62,10 +62,10 @@ export default {
 			};
 		},
 		plusDisabled() {
-			return this.currentValue >= this.max;
+			return this.disabled || this.currentValue >= this.max;
 		},
 		minusDisabled() {
-			return this.currentValue <= this.min;
+			return this.disabled || this.currentValue <= this.min;
 		},
 		/**
 		 * 确保初始和失焦都是格式化的值

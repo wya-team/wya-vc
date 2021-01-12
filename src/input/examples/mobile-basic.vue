@@ -54,6 +54,8 @@
 				clearable
 				@cancel="handleCancel"
 			/>
+
+			<vcm-input-number v-model="value2" :max="10" disabled />
 		</div>
 	</div>
 </template>
