@@ -43,7 +43,7 @@ export default {
 		},
 		maxDate: {
 			type: Date,
-			default: () => new Date('2030/12/31 23:59')
+			default: () => new Date('2050/12/31 23:59')
 		},
 		startHour: {
 			type: Number,
