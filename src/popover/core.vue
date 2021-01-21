@@ -325,7 +325,7 @@ export const Func = new Portal(wrapperComponent, {
 		}
 	}
 	@include when(padding-none) {
-		@include element(container) {
+		& > .vc-popover-core__container {
 			padding: 0;
 		}
 	}
