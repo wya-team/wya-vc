@@ -57,7 +57,13 @@ export default {
 		},
 		// 毫秒被除数
 		msDividend() {
-			return this.t < 0.01 ? 1000 : 100;
+			if (this.t < 0.01) {
+				return 1000;
+			} else if (this.t < 0.1) {
+				return 100;
+			} else {
+				return 10;
+			}
 		},
 		// 偏移值
 		serverOffset() {
@@ -162,7 +168,7 @@ export default {
 			this.hours = Utils.preZero(Math.floor((timestamp % _day) / _hour));
 			this.minutes = Utils.preZero(Math.floor((timestamp % _hour) / _minute));
 			this.seconds = Utils.preZero(Math.floor((timestamp % _minute) / _second));
-			this.ms = Utils.preZero(Math.floor(timestamp % this.msDividend));
+			this.ms = Math.floor(timestamp % 1000 / (1000 / this.msDividend)); // msDividend越小，取的毫秒级的位数应该越大
 
 			if (timestamp <= 0) {
 				this.stop();
