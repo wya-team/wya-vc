@@ -4,7 +4,7 @@
 			:is="tag" 
 			v-for="(item, index) in currentValue"
 			:key="typeof item === 'object' ? item[valueKey] : item"
-			:draggable="getDraggable(item) && draggable"
+			:draggable="draggable && getDraggable(item)"
 			class="vc-sort-list__item"
 			@dragstart="handleDragStart($event, item)"
 			@dragenter="handleDragEnter($event, index, item)"
