@@ -1,6 +1,6 @@
 {
     "name": "@wya/vc",
-    "version": "2.0.0-alpha.100",
+    "version": "2.0.0-alpha.104",
     "description": "wya for vue components",
     "main": "lib/index.js",
     "files": [
@@ -100,7 +100,7 @@
         "glob": "^7.1.6",
         "html-loader": "^1.1.0",
         "html-webpack-plugin": "^4.3.0",
-        "husky": "^4.2.3",
+        "husky": "^4.3.8",
         "inquirer": "^7.0.1",
         "inquirer-autocomplete-prompt": "^1.0.1",
         "karma": "^5.1.0",

@@ -204,7 +204,8 @@ process.on('beforeExit', async () => {
 			commonjs({}), 
 			replace({
 				'__VC_VERSION__': process.env.VERSION || require('./package.json').version,
-				'process.env.NODE_ENV': JSON.stringify(process.env.NODE_ENV || 'development')
+				'process.env.NODE_ENV': JSON.stringify(process.env.NODE_ENV || 'development'),
+				preventAssignment: false
 			}),
 			buble(),
 			uglify()
@@ -232,7 +233,8 @@ process.on('beforeExit', async () => {
 			commonjs({}), 
 			replace({
 				'__VC_VERSION__': process.env.VERSION || require('./package.json').version,
-				'process.env.NODE_ENV': JSON.stringify(process.env.NODE_ENV || 'development')
+				'process.env.NODE_ENV': JSON.stringify(process.env.NODE_ENV || 'development'),
+				preventAssignment: false
 			}),
 			buble(),
 			uglify()
@@ -270,7 +272,8 @@ process.on('beforeExit', async () => {
 			commonjs({}), 
 			replace({
 				'__VC_VERSION__': process.env.VERSION || require('./package.json').version,
-				'process.env.NODE_ENV': JSON.stringify(process.env.NODE_ENV || 'development')
+				'process.env.NODE_ENV': JSON.stringify(process.env.NODE_ENV || 'development'),
+				preventAssignment: false
 			}),
 			buble(),
 			uglify()
