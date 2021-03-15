@@ -223,6 +223,40 @@
 				</vc-select>
 			</vc-form-item>
 		</vc-form>
+
+		<!-- 清空数据和options时，currentLable 不会消失 -->
+		<div style="margin: 40px 0 ">
+			<p>清空数据和options时，currentLable 不会消失</p><br>
+			<vc-select 
+				v-model="formValidate.value3"
+				clearable 
+				search
+				style="width: 200px"
+				@change="handleClear"
+			>
+				<vc-option 
+					v-for="(item, index) in cityList" 
+					:key="item.value" 
+					:value="item.value"
+				>
+					{{ item.label }}
+				</vc-option>
+			</vc-select>
+			<vc-select 
+				v-model="formValidate.value4"
+				clearable 
+				search
+				style="width: 200px"
+			>
+				<vc-option 
+					v-for="(item, index) in cityList" 
+					:key="item.value" 
+					:value="item.value"
+				>
+					{{ item.label }}
+				</vc-option>
+			</vc-select>
+		</div>
 	</div>
 </template>
 <script>
@@ -279,7 +313,9 @@ export default {
 			formValidate: {
 				value: '',
 				value1: [],
-				value2: ''
+				value2: '',
+				value3: '',
+				value4: ''
 			},
 			ruleValidate: {
 				value: [
@@ -307,6 +343,12 @@ export default {
 		}, 2000);
 	},
 	methods: {
+		handleClear(id) {
+			if (!id) {
+				this.formValidate.value4 = '';
+				this.cityList = [];
+			}
+		},
 		handleTestingStart() {
 			clearInterval(this.timer);
 			this.timer = setInterval(() => {

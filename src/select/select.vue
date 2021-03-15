@@ -267,7 +267,10 @@ export default {
 
 		update(force = false) {
 			if (force === false && (this.hasInit || this.extra)) return;
-			if (!this.$slots.default) return;
+			if (!this.$slots.default) {
+				this.currentLabel = this.max > 1 ? [] : '';
+				return;
+			}
 			/**
 			 * 可能存在耗时操作
 			 */
