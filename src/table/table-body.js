@@ -5,6 +5,7 @@ import { getCell, getColumnByCell, getRowIdentity } from './utils';
 
 import { mapStates } from './store';
 import Layout from './layout/index';
+import { VcError } from '../vc/index';
 
 export default {
 	name: 'vc-table-body',
