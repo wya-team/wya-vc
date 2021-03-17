@@ -3,7 +3,7 @@
 		<li 
 			v-for="(item, index) in dataSource"
 			:key="index"
-			:class="{'is-not-last': index < count - 1, 'is-disabled': disabled, 'is-half': item.isHalf, 'is-full': item.isFull }"
+			:class="{'is-not-last': index < count - 1, 'is-disabled': disabled, 'is-half': item.isHalf, 'is-select': item.isSelect }"
 			:style="{...iconStyle, 'color': item.color }" 
 			class="vc-rate__star"
 			@click="handleClick($event, item)"
@@ -112,12 +112,14 @@ export default {
 				this.dataSource = array.map((v, index) => {
 					// 0 < xx < 1 0.8也算一半
 					let isHalf = this.half && v > value && (v - 1) < value;
-					let isFull = v <= value;
+					let isFull = v === value;
+					let isSelect = v <= value;
 					return {
 						value: v,
+						isSelect,
 						isFull,
 						isHalf,
-						color: isFull || isHalf ? this.color : ''
+						color: isSelect || isHalf ? this.color : ''
 					};
 				});
 			}
@@ -146,13 +148,14 @@ export default {
 			} else if (clearable) {
 				if (clickSide === 'left') {
 					let offset = 0.5;
-					if (isHalf) offset = 1;
+					if (isHalf) return 0;
 					else if (isFull) offset = 0.5;
 					return value - offset;
 				} else if (clickSide === 'right') {
-					return value - (isFull ? 1 : 0);
+					if (isFull) return 0;
+					return value;
 				} else { // half为false
-					return currentValue == value ? value - 1 : value;
+					return currentValue == value ? 0 : value;
 				}
 			}
 		},
@@ -169,13 +172,11 @@ export default {
 		},
 		handleClick(e, item) {
 			if (this.disabled) return;
-			// hover状态下item是hover生成的item,里面的isFull和isHalf全部设为false，点击才会保持住
-			if (this.isHover) {
-				item.isHalf = false;
-				item.isFull = false;
-				this.isHover = false;
-			}
-			
+
+			this.isHover = false;
+			item.isHalf = this.half && item.value > this.currentValue && (item.value - 1) < this.currentValue;
+			item.isFull = this.currentValue == item.value;
+
 			this.currentValue = this.getValue(e, this.currentValue, item, this.clearable);
 			this.$emit('change', this.currentValue);
 			this.dispatch('vc-form-item', 'form-change', this.currentValue);
@@ -203,7 +204,7 @@ export default {
 				opacity: 1;
 			}
 		}
-		@include when(full) {
+		@include when(select) {
 			.vc-rate__star--icon {
 				color: inherit;
 			}
