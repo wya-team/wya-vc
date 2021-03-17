@@ -20,7 +20,7 @@ export default {
 	},
 	methods: {
 		handleClick() {
-			MActionSheet.open({
+			MActionSheet.popup({
 				title: '我是标题',
 				description: '我是描述我是描述我是描述我是描述',
 				cancelText: '取消',
