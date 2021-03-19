@@ -189,6 +189,7 @@ export default {
 @import '../style/vars.scss';
 
 @include block(vc-rate) {
+	display: inline-block;
 	font-size: 16px;
     line-height: unset;
     list-style: none;
