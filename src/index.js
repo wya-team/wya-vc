@@ -100,6 +100,8 @@ import PullScroll from './pull-scroll/index';
 import MPullScroll from './pull-scroll/index.m';
 import Radio from './radio/index';
 import MRadio from './radio/index.m';
+import Rate from './rate/index';
+import MRate from './rate/index.m';
 import RecycleList from './recycle-list/index';
 import MRecycleList from './recycle-list/index.m';
 import Select from './select/index';
@@ -274,6 +276,8 @@ const Components = {
 	MRadio,
 	RadioGroup: Radio.Group,
 	MRadioGroup: MRadio.Group,
+	Rate,
+	MRate,
 	RecycleList,
 	MRecycleList,
 	Select,
@@ -486,6 +490,8 @@ exports.Radio = Radio;
 exports.MRadio = MRadio;
 exports.RadioGroup = Radio.Group;
 exports.MRadioGroup = MRadio.Group;
+exports.Rate = Rate;
+exports.MRate = MRate;
 exports.RecycleList = RecycleList;
 exports.MRecycleList = MRecycleList;
 exports.Select = Select;
