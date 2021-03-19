@@ -2,6 +2,8 @@ import Vue from 'vue';
 import { kebabCase, merge } from 'lodash';
 
 // basic
+import ActionSheet from './action-sheet/index';
+import MActionSheet from './action-sheet/index.m';
 import Alert from './alert/index';
 import MAlert from './alert/index.m';
 import Artboard from './artboard/index';
@@ -152,6 +154,8 @@ import Extends from './extends/index';
 
 const Components = {
 	// components
+	ActionSheet,
+	MActionSheet,
 	Alert,
 	MAlert,
 	Artboard,
@@ -368,8 +372,10 @@ exports.Utils = Utils;
 exports.Extends = Extends;
 
 // component
-exports.Alert = Artboard;
-exports.MAlert = Artboard;
+exports.ActionSheet = ActionSheet;
+exports.MActionSheet = ActionSheet;
+exports.Alert = Alert;
+exports.MAlert = Alert;
 exports.Artboard = MArtboard;
 exports.MArtboard = MArtboard;
 exports.Button = Button;
