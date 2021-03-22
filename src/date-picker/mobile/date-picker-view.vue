@@ -43,7 +43,11 @@ export default {
 		},
 		maxDate: {
 			type: Date,
-			default: () => new Date('2050/12/31 23:59')
+			default: () => {
+				// 默认 50 年后
+				const now = new Date();
+				return new Date(now.setFullYear(now.getFullYear() + 50));
+			}
 		},
 		startHour: {
 			type: Number,
