@@ -1,6 +1,7 @@
 <!-- 仅展示最基本的用法 -->
 <template>
 	<div class="v-carousel-slide" style="padding: 10px;">
+		<h1>宽度要>50%，否则会失效</h1>
 		<div style="background-color: white; padding: 10px 0">
 			<vcm-carousel 
 				:height="150" 

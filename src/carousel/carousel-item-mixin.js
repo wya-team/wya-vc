@@ -59,7 +59,7 @@ export default {
 					width: this.width
 				};
 			} else {
-				// 只有当设置了gutter, width才能生效
+				// 只有当设置了gutter, width才能生效, 且宽度要>50%，否则会失效
 				return {
 					[TRANSFORM]: `${translateType}(${this.translate}px) scale(${this.currentScale})`,
 					width: this.itemGutter ? this.width : '100%'
