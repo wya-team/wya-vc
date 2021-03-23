@@ -8,6 +8,10 @@ export default {
 			default: 3
 		},
 		card: Boolean,
+		gutter: {
+			type: Number,
+			default: 0
+		},
 		height: [String, Number],
 		initialIndex: {
 			type: Number,
@@ -47,7 +51,7 @@ export default {
 			items: [],
 			activeIndex: -1,
 			timer: null,
-			offset: 0
+			offset: 0,
 		};
 	},
 	computed: {
@@ -92,7 +96,10 @@ export default {
 			this.startTimer();
 		}
 	},
-	
+	created() {
+		// 主要给slide滑动时1和-1添加转场动画
+		this.allowTransition = false;
+	},
 	mounted() {
 		this.updateItems();
 		this.$nextTick(() => {
@@ -122,6 +129,7 @@ export default {
 		},
 
 		playSlides() {
+			this.allowTransition = true;
 			if (this.activeIndex < this.items.length - 1) {
 				this.activeIndex++;
 			} else if (this.loop) {
@@ -179,6 +187,8 @@ export default {
 		},
 
 		handleStart(e) {
+			this.allowTransition = true;
+
 			if (!this.draggable) return;
 			this.pauseTimer();
 

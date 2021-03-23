@@ -43,7 +43,6 @@ export default {
 	z-index: 0;
 
 	@include when(active) {
-
 		z-index: 2;
 	}
 
