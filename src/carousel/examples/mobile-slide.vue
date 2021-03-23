@@ -7,6 +7,7 @@
 				:autoplay="false" 
 				:indicator="true" 
 				:loop="false" 
+				:initial-index="2"
 				dots="outside" 
 			>
 				<vcm-carousel-item 

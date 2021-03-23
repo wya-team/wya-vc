@@ -167,12 +167,14 @@ export default {
 
 		reset(index, activeIndex, oldIndex) {
 			const { length } = this.$parent.items;
-			if (!this.isCard && oldIndex !== undefined) {
+			if (
+				this.$parent.allowTransition 
+				&& !this.isCard 
+				&& oldIndex !== undefined
+			) {
 				this.isAnimating = index === activeIndex || index === oldIndex;
 				// 如果有边距且没有设置动画，前后需要添加动画
-				if (
-					this.$parent.allowTransition
-					&& !this.isVertical
+				if (!this.isVertical
 					&& !this.isAnimating 
 					&& this.itemGutter
 					&& (index - activeIndex === 1 || index - activeIndex === -1)
