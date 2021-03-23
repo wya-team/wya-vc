@@ -3,7 +3,7 @@
 		<div
 			v-for="(item, index) in dataSource"
 			:key="item[step]"
-			:class="{ 'is-active': value >= item[step] }"
+			:class="{ 'is-active': value >= item[step], 'is-disabled': readonly }"
 			:style="{ 'zIndex': dataSource.length - index }"
 			class="vc-steps-bar__item"
 			@click="handleClick(item)"
@@ -77,6 +77,7 @@ export default {
 		background-color: #f9f9f9;
 		flex: 1;
 		text-align: center;
+		cursor: pointer;
 
 		&:not(:first-child) {
 			margin-left: 10px;
@@ -117,6 +118,9 @@ export default {
 			&::after {
 				border-left-color: #5495f6;
 			}
+		}
+		@include when(disabled) {
+			cursor: none;
 		}
 	}
 }
