@@ -124,8 +124,14 @@ export default {
 			const gutter = this.itemGutter; 
 
 			if (!gutter || this.isVertical) return 0;
-			
+				
 			let slideOffset = 0;
+
+			// 居中
+			if (length === 1) {
+				return offset / 2;
+			}
+
 			// 头
 			if (activeIndex == 0) {
 				if (index - activeIndex === 0) {
