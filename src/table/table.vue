@@ -18,6 +18,7 @@
 				ref="tableHeader"
 				:store="store"
 				:border="border"
+				:default-sort="defaultSort"
 				:style="{
 					width: layout.bodyWidth ? layout.bodyWidth + 'px' : ''
 				}"
@@ -88,6 +89,7 @@
 					ref="fixedTableHeader"
 					:border="border"
 					:store="store"
+					:default-sort="defaultSort"
 					:style="{ width: bodyWidth }" 
 					fixed="left"
 				/>
@@ -149,6 +151,7 @@
 				<vc-table-header
 					ref="rightFixedTableHeader"
 					:border="border"
+					:default-sort="defaultSort"
 					:store="store"
 					:style="{width: bodyWidth}"
 					fixed="right"
@@ -316,6 +319,11 @@ export default {
 		placeholder: {
 			type: [String, Function],
 			default: '--'
+		},
+		// 排序全部交给外部处理，内部不处理数据，只做交互
+		defaultSort: {
+			type: Object,
+			default: () => ({})
 		}
 	},
 

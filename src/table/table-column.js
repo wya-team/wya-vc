@@ -30,6 +30,8 @@ export default {
 		selectable: Function,
 		reserveSelection: Boolean,
 		index: [Number, Function],
+		// 头部是否展示排序
+		sortable: Boolean
 	},
 	data() {
 		return {
@@ -93,7 +95,7 @@ export default {
 			index: this.index
 		};
 
-		const basicProps = ['columnKey', 'label', 'className', 'labelClassName', 'type', 'renderHeader', 'resizable', 'formatter', 'fixed', 'resizable']; // eslint-disable-line
+		const basicProps = ['columnKey', 'label', 'className', 'labelClassName', 'type', 'renderHeader', 'resizable', 'formatter', 'fixed', 'resizable', 'sortable']; // eslint-disable-line
 		const selectProps = ['selectable', 'reserveSelection'];
 
 		let column = this.getPropsData(basicProps, selectProps);

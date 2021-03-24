@@ -530,32 +530,35 @@ export default {
 ```
 :::
 
-<!-- ### 排序
+### 排序
 
-选择多行数据时使用 `Checkbox`。非常简单: 手动添加一个  `vc-table-column` ，设 `type` 属性为 `selection` 即可；
+对表格进行排序，可快速查找或对比数据。
 
 :::RUNTIME
 ```html
 <template>
-	<vc-table :data-source="tableData" border stripe :default-sort = "{prop: 'date', order: 'descending'}" >
+	<vc-table 
+		:data-source="dataSource"
+		:default-sort="defaultSort"
+		@sort-change="handleSort"
+	>
 		<vc-table-item>
-			<vc-table-column
-				type="selection"
-				width="65"
-			/>
 			<vc-table-column
 				prop="date"
 				label="日期"
-				width="180"
 				sortable
+				min-width="180"
 			/>
 			<vc-table-column
 				prop="name"
 				label="姓名"
+				width="180"
+				sortable
 			/>
 			<vc-table-column
 				prop="address"
 				label="地址"
+				width="880"
 			/>
 		</vc-table-item>
 	</vc-table>
@@ -571,6 +574,7 @@ export default {
 	},
 	data() {
 		return {
+			defaultSort: { prop: 'date', order: 'descending' },
 			tableData: [
 				{
 					date: '2011-11-02',
@@ -595,10 +599,15 @@ export default {
 				]
 		}
 	},
+	methods: {
+		handleSort(sortInfo) {
+			this.defaultSort = sortInfo;
+		}
+	}
 }
 </script>
 ```
-::: -->
+:::
 
 ### 树形数据与懒加载
 支持树类型的数据的显示。当 `row` 中包含 `children` 字段时，被视为树形数据。渲染树形数据时，必须要指定 `row-key`。支持子节点数据异步加载。设置 `Table` 的 `lazy` 属性为 `true` 与加载函数 `load-expand` 。通过指定 `row` 中的 `hasChildren` 字段来指定哪些行是包含子节点。`children` 与 `hasChildren` 都可以通过 `tree-props` 配置。
@@ -767,6 +776,7 @@ sum-text | 合计行第一列的文本 | `String` | - | 合计
 get-summary | 自定义的合计计算方法 | `Function({ columns, data })` | - | -
 get-span | 合并行或列的计算方法 | `Function({ row, column, rowIndex, columnIndex })` | - | -
 select-on-indeterminate | 在多选表格中，当仅有部分行被选中时，点击表头的多选框时的行为。若为 `true`，则选中所有行；若为 `false`，则取消选择所有行 | `Boolean` | - | `true` 
+default-sort | 默认的排序列的 `prop` 和顺序。它的`prop`属性指定默认的排序的列，`order`指定默认排序的顺序 | `Object` | `order`: ascending, descending | 
 
 ### 事件
 事件名 | 说明 | 回调参数 | 参数说明
@@ -786,6 +796,7 @@ header-contextmenu | 当某一列的表头被鼠标右键点击时触发该事�
 current-change | 当表格的当前行发生变化的时候会触发该事件，如果要高亮当前行，请打开表格的 highlight-current-row 属性 | `(currentRow: Object, oldCurrentRow: Object) => void 0` | `currentRow`：改变后的行数据；`oldCurrentRow`：改变前的行数据
 header-dragend | 当拖动表头改变了列的宽度的时候会触发该事件 | `(newWidth: Number, oldWidth: Number, column: Object, event: Object) => void 0` | `newWidth`: 拖拽后宽度；`oldWidth`：拖拽前宽度；`column`：当前列数据；`event`：事件对象
 expand-change | 当用户对某一行展开或者关闭的时候会触发该事件 | `(row: Object, expandedRows: Object, maxLevel: Number) => void 0` | `row`：当前行数据；`expandedRows`：展开的行数据；`maxLevel`：当前展开最大的level
+sort-change | 当表格的排序条件发生变化的时候会触发该事件 | { prop, order } | 
 
 ### 方法
 方法名 | 说明 | 参数

@@ -1,17 +1,23 @@
 <template>
 	<div style="padding: 30px">
 		<h1>Basic</h1>
-		<vc-table :data-source="dataSource">
+		<vc-table 
+			:data-source="dataSource"
+			:default-sort="defaultSort"
+			@sort-change="handleSort"
+		>
 			<vc-table-item>
 				<vc-table-column
 					prop="date"
 					label="日期"
+					sortable
 					min-width="180"
 				/>
 				<vc-table-column
 					prop="name"
 					label="姓名"
 					width="180"
+					sortable
 				/>
 				<vc-table-column
 					prop="address"
@@ -35,6 +41,7 @@ export default {
 	},
 	data() {
 		return {
+			defaultSort: { prop: 'date', order: 'descending' },
 			dataSource: [
 				{
 					id: 1,
@@ -63,6 +70,10 @@ export default {
 			]
 		};
 	},
-	methods: {}
+	methods: {
+		handleSort(sortInfo) {
+			this.defaultSort = sortInfo;
+		}
+	}
 };
 </script>

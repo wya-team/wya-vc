@@ -3,6 +3,7 @@ import { Utils, $ } from '@wya/utils';
 import Checkbox from '../checkbox';
 import Layout from './layout/index';
 import { mapStates } from './store';
+import TableSort from './table-sort';
 
 const getAllColumns = (columns) => {
 	const result = [];
@@ -70,7 +71,12 @@ export default {
 		store: {
 			required: true
 		},
-		border: Boolean
+		border: Boolean,
+		// 排序全部交给外部处理，内部不处理数据，只做交互
+		defaultSort: {
+			type: Object,
+			default: () => ({})
+		}
 	},
 	data() {
 		return {
@@ -306,6 +312,9 @@ export default {
 			if (this.$isServer) return;
 			document.body.style.cursor = '';
 		},
+		handleSort(prop, order) {
+			this.$parent.$emit('sort-change', { prop, order });
+		}
 	},
 	render(h) {
 		const { originColumns } = this.store.states;
@@ -373,6 +382,14 @@ export default {
 															}
 														)
 														: column.label
+												}
+												{
+													column.sortable
+														? <TableSort 
+															order={column.prop === this.defaultSort.prop ? this.defaultSort.order : '111'}
+															onClick={this.handleSort.bind(this, column.prop)}
+														/>
+														: null
 												}
 											</div>
 										</th>
