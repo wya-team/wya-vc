@@ -118,6 +118,10 @@ export default {
 			return value;
 		},
 
+		/**
+		 * 暂不考虑宽度 < 50% 的情况
+		 * 如果考虑，需要判断-2的情况，更小则还要判断-3的情况
+		 */
 		calcSlideOffset(index, activeIndex, wrapperWidth) {
 			const { length } = this.$parent.items;
 			const offset = wrapperWidth - this.$el.offsetWidth;
@@ -146,9 +150,9 @@ export default {
 				if (index - activeIndex === 0) {
 					slideOffset = offset / 2;
 				} else if (index - activeIndex === 1) {
-					slideOffset = -(offset / 2 - gutter);
+					slideOffset = -offset / 2 + gutter;
 				} else if (index - activeIndex === -1) {
-					slideOffset = offset + (offset / 2) - gutter;
+					slideOffset = offset * 3 / 2 - gutter;
 				}
 			}
 
