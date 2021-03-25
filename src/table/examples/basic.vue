@@ -11,6 +11,10 @@
 					prop="date"
 					label="日期"
 					sortable
+					:filters="filters"
+					:filtered-value="filteredValue"
+					:filter-multiple="true"
+					:filter="handleFilter"
 					min-width="180"
 				/>
 				<vc-table-column
@@ -42,6 +46,11 @@ export default {
 	data() {
 		return {
 			defaultSort: { prop: 'date', order: 'descending' },
+			filters: [
+				{ label: '代理升级', value: 1 },
+				{ label: '代理加入', value: 2, disabled: true }
+			],
+			filteredValue: [],
 			dataSource: [
 				{
 					id: 1,
@@ -73,6 +82,9 @@ export default {
 	methods: {
 		handleSort(sortInfo) {
 			this.defaultSort = sortInfo;
+		},
+		handleFilter(value) {
+			this.filteredValue = value;
 		}
 	}
 };

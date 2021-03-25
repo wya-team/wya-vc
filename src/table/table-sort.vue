@@ -14,19 +14,10 @@
 </template>
 
 <script>
-import Icon from '../icon/index';
-
 export default {
 	name: 'vc-table-sort',
-	components: {
-		'vc-icon': Icon
-	},
 	props: {
 		order: String
-	},
-	data() {
-		return {
-		};
 	},
 	methods: {
 		handleClick(order) {
@@ -65,10 +56,10 @@ $block: vc-table-sort;
 			bottom: 7px;
 		}
 		@include when(ascending) {
-			border-bottom-color: #409EFF;
+			border-bottom-color: #5495f6;
 		}
 		@include when(descending) {
-			border-top-color: #409EFF;
+			border-top-color: #5495f6;
 		}
 	}
 }

@@ -31,7 +31,21 @@ export default {
 		reserveSelection: Boolean,
 		index: [Number, Function],
 		// 头部是否展示排序
-		sortable: Boolean
+		sortable: Boolean,
+		// 数据过滤的选项
+		filters: Array,
+		// 是否支持多选
+		filterMultiple: {
+			type: Boolean,
+			default: true
+		},
+		filterIcon: String,
+		// 选中的数据过滤项
+		filteredValue: Array,
+		// 筛选弹层的样式
+		filterPopupClassName: String,
+		// 筛选的方法
+		filter: Function
 	},
 	data() {
 		return {
@@ -95,10 +109,12 @@ export default {
 			index: this.index
 		};
 
-		const basicProps = ['columnKey', 'label', 'className', 'labelClassName', 'type', 'renderHeader', 'resizable', 'formatter', 'fixed', 'resizable', 'sortable']; // eslint-disable-line
+		const basicProps = ['columnKey', 'label', 'className', 'labelClassName', 'type', 'renderHeader', 'resizable', 'formatter', 'fixed', 'resizable']; // eslint-disable-line
 		const selectProps = ['selectable', 'reserveSelection'];
+		const sortProps = ['sortable'];
+		const filterProps = ['filters', 'filteredValue', 'filterMultiple', 'filter', 'filterIcon', 'filterPopupClassName'];
 
-		let column = this.getPropsData(basicProps, selectProps);
+		let column = this.getPropsData(basicProps, selectProps, sortProps, filterProps);
 
 		column = merge(defaults, column);
 
@@ -281,7 +297,7 @@ export default {
 		},
 
 		registerNormalWatchers() {
-			const props = ['label', 'index', 'formatter', 'className', 'labelClassName'];
+			const props = ['label', 'index', 'formatter', 'className', 'labelClassName', 'filteredValue', 'filters'];
 			// 一些属性具有别名
 			const aliases = {
 				prop: 'prop',

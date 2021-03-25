@@ -609,6 +609,87 @@ export default {
 ```
 :::
 
+### 筛选
+
+对表格进行筛选，可快速查找或对比数据。
+
+:::RUNTIME
+```html
+<template>
+	<vc-table :data-source="dataSource">
+		<vc-table-item>
+			<vc-table-column
+				prop="date"
+				label="日期"
+				:filters="filters"
+				:filtered-value="filteredValue"
+				:filter-multiple="true"
+				:filter="handleFilter"
+				min-width="180"
+			/>
+			<vc-table-column
+				prop="name"
+				label="姓名"
+				width="180"
+			/>
+			<vc-table-column
+				prop="address"
+				label="地址"
+				width="880"
+			/>
+		</vc-table-item>
+	</vc-table>
+</template>
+<script>
+import { Table } from '@wya/vc';
+
+export default {
+	components: {
+		"vc-table": Table,
+		'vc-table-column': Table.Column,
+		'vc-table-item': Table.Item
+	},
+	data() {
+		return {
+			filters: [
+				{ label: '代理升级', value: 1 },
+				{ label: '代理加入', value: 2, disabled: true }
+			],
+			filteredValue: [],
+			tableData: [
+				{
+					date: '2011-11-02',
+					name: '微一案',
+					address: '浙江省杭州市拱墅区祥园路38号浙报印务大厦15号入口4楼/11号入口5楼'
+				},
+				{
+					date: '2011-11-04',
+					name: '微一案',
+					address: '浙江省杭州市拱墅区祥园路38号浙报印务大厦15号入口4楼/11号入口5楼'
+				}, 
+				{
+					date: '2011-11-01',
+					name: '微一案',
+					address: '浙江省杭州市拱墅区祥园路38号浙报印务大厦11号入口5楼'
+				}, 
+				{
+					date: '2011-11-03',
+					name: '微一案',
+					address: '浙江省杭州市拱墅区祥园路38号浙报印务大厦11号入口5楼'
+				}
+				]
+		}
+	},
+	methods: {
+		handleFilter(value) {
+			this.filteredValue = value;
+		}
+	}
+}
+</script>
+```
+:::
+
 ### 树形数据与懒加载
 支持树类型的数据的显示。当 `row` 中包含 `children` 字段时，被视为树形数据。渲染树形数据时，必须要指定 `row-key`。支持子节点数据异步加载。设置 `Table` 的 `lazy` 属性为 `true` 与加载函数 `load-expand` 。通过指定 `row` 中的 `hasChildren` 字段来指定哪些行是包含子节点。`children` 与 `hasChildren` 都可以通过 `tree-props` 配置。
 
@@ -834,6 +915,12 @@ class-name | 列的 `className` | `String` | -
 labvc-class-name | 当前列标题的自定义类名 | `String` | - | - 
 selectable | 仅对 t`ype=selection` 的列有效，类型为 `Function`，`Function` 的返回值用来决定这一行的 `CheckBox` 是否可以勾选 | `Function(row, index)` | - | -
 reserve-selection | 仅对 `type=selection` 的列有效，类型为 `Boolean`，为 `true` 则会在数据更新之后保留之前选中的数据（需指定 `row-key`） | `Boolean` | - |`false`
+filters | 数据过滤的选项，数组格式，数组中的元素需要有 label 和 value 属性。 | `Array[{ label, value }]` | | 
+filter-multiple | 数据过滤的选项是否多选 | `Boolean` | - | `true`
+filter-icon | 筛选的icon | `String` | - | -
+filter-popup-class-name | 筛选弹框的自定义样式名 | `String` | - | -
+filtered-value | 选中的数据过滤项 | `Array` | - | -
+filter | 筛选数据调用的方法 | `Function` | - | -
 
 ### Column Slot
 属性 | 说明

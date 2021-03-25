@@ -4,6 +4,7 @@ import Checkbox from '../checkbox';
 import Layout from './layout/index';
 import { mapStates } from './store';
 import TableSort from './table-sort';
+import TableFilter from './table-filter';
 
 const getAllColumns = (columns) => {
 	const result = [];
@@ -314,6 +315,10 @@ export default {
 		},
 		handleSort(prop, order) {
 			this.$parent.$emit('sort-change', { prop, order });
+		},
+		handleFilter(column, value) {
+			let { filter } = column;
+			filter && filter(value);
 		}
 	},
 	render(h) {
@@ -362,9 +367,9 @@ export default {
 											<div 
 												class={[
 													'vc-table__cell', 
-													{
-														"highlight": column.filteredValue && column.filteredValue.length > 0 
-													},
+													// {
+													// 	"highlight": column.filteredValue && column.filteredValue.length > 0 
+													// },
 													column.labelClassName
 												]}
 											>
@@ -386,8 +391,20 @@ export default {
 												{
 													column.sortable
 														? <TableSort 
-															order={column.prop === this.defaultSort.prop ? this.defaultSort.order : '111'}
+															order={column.prop === this.defaultSort.prop ? this.defaultSort.order : ''}
 															onClick={this.handleSort.bind(this, column.prop)}
+														/>
+														: null
+												}
+												{
+													column.filters
+														? <TableFilter 
+															dataSource={column.filters}
+															value={column.filteredValue}
+															icon={column.filterIcon}
+															portalClassName={column.filterPopupClassName}
+															multiple={column.filterMultiple}
+															onChange={this.handleFilter.bind(this, column)}
 														/>
 														: null
 												}
