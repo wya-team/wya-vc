@@ -19,7 +19,7 @@
 import draggable from './draggable';
 
 export default {
-	name: 'vc-color-picker-panel',
+	name: 'vc-color-picker-hue-slider',
 	props: {
 		color: {
 			required: true,
