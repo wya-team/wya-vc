@@ -1,3 +1,5 @@
+> 基于`Vue@3.x`的组件库移步[\@wya/vc.next](https://github.com/wya-team/wya-vc.next)
+
 # [\@wya/vc](https://wya-team.github.io/wya-vc/dist/index.html)
 
 [![npm][npm-image]][npm-url] [![changelog][changelog-image]][changelog-url]
@@ -98,9 +100,9 @@ import { Clipboard } from 'wya-vc';
 [ColorPicker][ColorPicker] | 颜色选择 | 1 | -
 [DatePicker][DatePicker] | 日期选择框 | 1 | -
 [Editor][Editor] | 富文本编辑 | 1 | -
-[FilesPicker][FilesPicker] | 文件上传 | 1 | -
+[FilesPicker][FilesPicker] | 文件上传 | 1 | `UploadPicker`代替
 [Form][Form] | 表单管理 | 1 | -
-[ImgsPicker][ImgsPicker] | 图片上传 | 1 | -
+[ImgsPicker][ImgsPicker] | 图片上传 | 1 | `UploadPicker`代替
 [Input][Input] | 输入框 | 1 | -
 [Picker][Picker] | 联动选择弹框 | 1 | -
 [Radio][Radio] | 单选框 | 1 | -
@@ -111,17 +113,20 @@ import { Clipboard } from 'wya-vc';
 [TimePicker][TimePicker] | 时间选择器 | 1 | -
 [TreeSelect][TreeSelect] | 树选择 | 1 | -
 [Textarea][Textarea] | 多行文本 | 1 | -
+[UploadPicker][UploadPicker] } | 文件/图片上传 | 1 | -
 
 - 数据展示
 
 名称 | 说明 | 开发 | 计划
 ---|---|---|---
+[Alert][Alert] | 警告提示 | 1 | -
 [Calendar][Calendar] | 日历 | 1 | -
 [Card][Card] | 卡片 | 1 | -
 [Carousel][Carousel] | 轮播 | 1 | -
 [Collapse][Collapse] | 折叠面板 | 1 | -
 [Countdown][Countdown] | 倒计时 | 1 | -
 [Dropdown][Dropdown] | 下拉菜单 | 1 | -
+[Divider][Divider] | 分割线 | 1 | -
 [Echarts][Echarts] | 图表 | 1 | -
 [Expand][Expand] | 展开 | 1 | -
 [HtmlImg][HtmlImg] | html2canvas | 1 | -
@@ -132,11 +137,14 @@ import { Clipboard } from 'wya-vc';
 [List][List] | 列表 | 1 | -
 [Page][Page] | 分页 | 1 | -
 [Popover][Popover] | 气泡卡片 | 1 | -
+[Rate][Rate] | 评级 | 1 | -
+[Steps][Steps] | 步进条 | 1 | -
 [Table][Table] | 表格 | 1 | -
 [Tabs][Tabs] | 选项卡 | 1 | -
 [Tag][Tag] | 标签 | 1 | -
 [Text][Text] | 文本自定义行数 | 1 | -
 [Tree][Tree] | 树形 | 1 | -
+[Timeline][Timeline] | 时间轴展示 | 1 | -
 
 - 组合
 
@@ -258,3 +266,11 @@ import { Clipboard } from 'wya-vc';
 [Notice]: https://github.com/wya-team/wya-vc/tree/master/src/notice/
 [RecycleList]: https://github.com/wya-team/wya-vc/tree/master/src/recycle-list/
 [Text]: https://github.com/wya-team/wya-vc/tree/master/src/text/
+
+[ActionSheet]: https://github.com/wya-team/wya-vc/tree/master/src/action-sheet/
+[Alert]: https://github.com/wya-team/wya-vc/tree/master/src/alert/
+[Divider]: https://github.com/wya-team/wya-vc/tree/master/src/divider/
+[Rate]: https://github.com/wya-team/wya-vc/tree/master/src/rate/
+[Steps]: https://github.com/wya-team/wya-vc/tree/master/src/steps/
+[Timeline]: https://github.com/wya-team/wya-vc/tree/master/src/timeline/
+[UploadPicker]: https://github.com/wya-team/wya-vc/tree/master/src/upload-picker/
