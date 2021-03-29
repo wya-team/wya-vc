@@ -30,6 +30,16 @@ export default {
 		'vc-debounce-click': DebounceClick,
 		'vc-spin': Spin,
 	},
+	inject: {
+		group: {
+			from: 'buttonGroup',
+			default: () => ({
+				size: 'medium',
+				vertical: false,
+				circle: false
+			})
+		}
+	},
 	props: {
 		tag: {
 			type: String,
@@ -59,16 +69,6 @@ export default {
 			default: 'button',
 			validator: v => /(button|submit|reset)/.test(v),
 		},
-	},
-	inject: {
-		group: {
-			from: 'buttonGroup',
-			default: () => ({
-				size: 'medium',
-				vertical: false,
-				circle: false
-			})
-		}
 	},
 	data() {
 		return {

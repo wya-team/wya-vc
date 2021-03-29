@@ -30,7 +30,7 @@
 								class="vcm-modal__html" 
 							>	
 								<p v-if="typeof content === 'string'" v-html="content" />
-								<slot #default />
+								<slot />
 							</div>
 							
 							<vcm-customer 

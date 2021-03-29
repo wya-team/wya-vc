@@ -22,6 +22,12 @@ export default {
 	components: {
 		'vc-icon': Icon
 	},
+	inject: {
+		select: {
+			from: 'select',
+			default: undefined
+		}
+	},
 	props: {
 		value: {
 			type: [String, Number],
@@ -40,12 +46,6 @@ export default {
 		filterable: {
 			type: Boolean,
 			default: true
-		}
-	},
-	inject: {
-		select: {
-			from: 'select',
-			default: undefined
 		}
 	},
 	data() {

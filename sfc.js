@@ -20,7 +20,7 @@ const buble = require('@rollup/plugin-buble');
 const commonjs = require('@rollup/plugin-commonjs');
 const { nodeResolve } = require('@rollup/plugin-node-resolve');
 const alias = require('@rollup/plugin-alias');
-const { uglify } = require('rollup-plugin-uglify');
+const { terser } = require('rollup-plugin-terser');
 
 const postcssOpts = require('./config/postcss.config.js');
 
@@ -208,7 +208,7 @@ process.on('beforeExit', async () => {
 				preventAssignment: false
 			}),
 			buble(),
-			uglify()
+			terser()
 		]
 	});
 	await browserJS.write({
@@ -237,7 +237,7 @@ process.on('beforeExit', async () => {
 				preventAssignment: false
 			}),
 			buble(),
-			uglify()
+			terser()
 		]
 	});
 	await minJS.write({
@@ -276,7 +276,7 @@ process.on('beforeExit', async () => {
 				preventAssignment: false
 			}),
 			buble(),
-			uglify()
+			terser()
 		]
 	});
 	await commonJS.write({

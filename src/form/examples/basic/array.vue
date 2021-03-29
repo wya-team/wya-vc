@@ -33,6 +33,7 @@ export default {
 		};
 	},
 	methods: {
+		/* eslint-disable */
 		handleClick(e, item) {
 			let result = [];
 			if (!this.value.includes(item)) {
@@ -47,6 +48,7 @@ export default {
 			// form表单
 			this.dispatch('vc-form-item', 'form-change', result);
 		}
+		/* eslint-enable */
 	},
 };
 </script>

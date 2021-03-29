@@ -24,13 +24,11 @@
 				<div :title="item.title" class="vc-files-picker__title">
 					{{ item.title }}
 				</div>
-				<template>
-					<div style="flex: 1; display: flex; align-items: center">
-						<div class="vc-files-picker__pcontainer">
-							<div :style="{width: item.percent + '%'}" class="vc-files-picker__progress" />
-						</div>
+				<div style="flex: 1; display: flex; align-items: center">
+					<div class="vc-files-picker__pcontainer">
+						<div :style="{width: item.percent + '%'}" class="vc-files-picker__progress" />
 					</div>
-				</template>
+				</div>
 				<span 
 					v-if="item[urlKey] || (item.retcode == 0 && item.percent == 100) || item.errorFlag" 
 					class="vc-files-picker__close" 

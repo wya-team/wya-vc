@@ -6,6 +6,9 @@
 <script>
 export default {
 	name: "vc-list",
+	provide() {
+		return { list: this };
+	},
 	props: {
 		labelWidth: {
 			type: [String, Number],
@@ -15,21 +18,6 @@ export default {
 			type: Boolean,
 			default: true
 		}
-	},
-	provide() {
-		return { list: this };
-	},
-	data() {
-		return {
-		};
-	},
-	computed: {
-		
-	},
-	mounted() {
-		
-	},
-	methods: {
 	}
 };
 </script>

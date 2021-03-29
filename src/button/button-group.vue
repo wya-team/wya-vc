@@ -6,6 +6,9 @@
 <script>
 export default {
 	name: "vc-button-group",
+	provide() {
+		return { buttonGroup: this };
+	},
 	props: {
 		vertical: {
 			type: Boolean,
@@ -19,9 +22,6 @@ export default {
 			type: String,
 			default: 'medium'
 		}
-	},
-	provide() {
-		return { buttonGroup: this };
 	},
 	data() {
 		return {

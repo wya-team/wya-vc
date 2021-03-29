@@ -117,10 +117,12 @@ export default {
 				}
 			},
 			disabled: false,
+			/* eslint-disable */
 			formValidate: {
 				// value: '<p><video src="https://wyatest.oss-cn-hangzhou.aliyuncs.com/image/172/20200109/1404367119/17秒视屏.mp4?x-oss-process=video/snapshot,t_0,f_png,w_0,h_0,m_fast" style="width: auto; max-width: 100%;" contenteditable="true"></video></p>'
 				value: '<p><img src="https://wyatest.oss-cn-hangzhou.aliyuncs.com/image/172/20200106/1508941171/timg.jpeg!4-4" contenteditable="true" ></p>'
 			},
+			/* eslint-enable */
 			ruleValidate: {
 				value: [
 					{ required: true, message: '请输入内容' }

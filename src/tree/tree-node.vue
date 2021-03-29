@@ -36,6 +36,7 @@
 			>
 				<vc-icon type="triangle-up" />
 			</span>
+			<!-- eslint-disable -->
 			<vc-checkbox
 				v-if="showCheckbox"
 				v-model="node.checked"
@@ -44,6 +45,7 @@
 				@click.native.stop
 				@change="handleCheckChange"
 			/>
+			<!-- eslint-enable -->
 			<vc-spin 
 				v-if="node.loading" 
 				:size="12"
