@@ -17,6 +17,7 @@
 				prop="date"
 				label="日期"
 				width="180"
+				sortable
 			/>
 			<vc-table-column
 				prop="name"
@@ -53,7 +54,12 @@ export default {
 				...initPage
 			},
 			page: undefined,
-			table: undefined,
+			table: {
+				defaultSort: {
+					prop: 'date',
+					order: 'descending'
+				},
+			},
 		};
 	},
 	computed: {
