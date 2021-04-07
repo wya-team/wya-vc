@@ -12,6 +12,7 @@
 
 <script>
 import { Load, RegEx } from '@wya/utils';
+import { kebabCase } from 'lodash';
 import { getUid, isDataURL } from '../utils';
 import { VcInstance } from '../vc/index';
 import { COLORS } from './constant';
@@ -43,12 +44,16 @@ export default {
 			type: String
 		},
 
-		// 目前只考虑作用background, 仅创建伪类，可以自行创建取代
-		before: {
-			type: [String, Object],
-		},
-		after: {
-			type: [String, Object],
+		/**
+		 * 伪类、伪元素
+		 * {
+		 * 	':hover div': {
+		 * 		color: 'main'
+		 * 	}
+		 * }
+		 */
+		pseudo: {
+			type: [String, Object]
 		}
 	},
 	computed: {
@@ -109,18 +114,32 @@ export default {
 	},
 	methods: {
 		resetPseudo() {
-			const { before, after } = this;
+			const { pseudo } = this;
+
+			if (!pseudo) return;
+
 			let content = '';
-
-			if (before) {
-				content += `.${this.themeId}:before { background-color: ${this.setVar(before)} }`;
-			}
-
-			if (after) {
-				content += `.${this.themeId}:after { background-color: ${this.setVar(after)} }`;
+			if (typeof pseudo === 'string') {
+				content = pseudo;
+			} else {
+				Object.entries(pseudo).forEach(([key, val]) => {
+					content += `.${this.themeId}${/^:/.test(key) ? '' : ':'}${key} { ${this.setCss(val)} }`;
+				});
 			}
 
 			content && Load.cssCode(content, { id: this.themeId });
+		},
+
+		setCss(attrs) {
+			if (!attrs || typeof attrs === 'string') return attrs;
+
+			// 伪类、元素需要添加!important;
+			let content = '';
+			Object.entries(attrs).forEach(([key, val]) => {
+				content += `${kebabCase(key)}: ${this.setVar(val)} !important;`;
+			});
+
+			return content;
 		},
 
 		setVar(name) {

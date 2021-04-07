@@ -20,12 +20,19 @@
 		</vc-theme-view>
 
 		<vc-theme-view 
-			background-color="background" 
-			border-color="border"
-			before="before"
+			:pseudo="{
+				before: {
+					background: 'color-before',
+				},
+				':hover > span': {
+					color: 'color-hover',
+				}
+			}"
+			background-color="color-background" 
+			border-color="color-border"
 			class="v-theme__block"
 		>
-			<vc-theme-text color="color">
+			<vc-theme-text color="color-primary">
 				文字颜色：跟随主题
 			</vc-theme-text>
 		</vc-theme-view>
@@ -64,17 +71,19 @@ export default {
 
 <style lang="scss">
 :root {
-    --color: #000;
-    --border: red;
-    --background: white;
-    --before: green;
+	--color-primary: #000;
+	--color-border: red;
+	--color-background: white;
+	--color-before: green;
+	--color-hover: pink;
 }
 
 [data-theme="dark"] {
-    --color: #fff;
-    --border: blue;
-    --background: #000;
-    --before: yellow;
+	--color-primary: #fff;
+	--color-border: blue;
+	--color-background: #000;
+	--color-before: yellow;
+	--color-hover: orange;
 }
 
 .v-theme__block {
