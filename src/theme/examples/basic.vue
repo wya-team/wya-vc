@@ -6,7 +6,7 @@
 		>
 			当前主题：{{ current }}
 		</vc-button>
-
+		<vc-theme-image src="image-festival-primary" />
 		<vc-theme>
 			<vc-theme>
 				文字颜色：不设置
@@ -48,6 +48,7 @@ export default {
 		'vc-theme': Theme,
 		'vc-theme-view': Theme.View,
 		'vc-theme-text': Theme.Text,
+		'vc-theme-image': Theme.Image,
 		'vc-button': Button,
 	},
 
