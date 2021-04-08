@@ -1,5 +1,11 @@
 <template>
-	<component :is="tag" class="vc-text">
+	<component 
+		:is="tag"
+		class="vc-text"
+		:style="styles"
+		@mouseover="handleMouseOver"
+		@mouseout="handleMouseOut"
+	>
 		<vc-customer 
 			v-if="isVisible"
 			:value="endIndex > 0 ? `${value.slice(0, endIndex)}${suffix}` : value"
@@ -12,6 +18,7 @@
 import { Resize } from '../utils/resize';
 import Customer from '../customer';
 import { getFitIndex } from './utils';
+import Popover from '../popover/index';
 
 export default {
 	name: 'vc-text',
@@ -40,6 +47,12 @@ export default {
 			type: String,
 			default: '...'
 		},
+		placement: {
+			type: String,
+			default: 'top'
+		},
+		portalClassName: [Object, String, Array],
+		portalStyle: Object,
 		renderRow: {
 			type: Function,
 			// 函数式可以用于高亮显示
@@ -54,6 +67,11 @@ export default {
 			isVisible: false,
 			endIndex: 0,
 		};
+	},
+	computed: {
+		styles() {
+			return { cursor: this.endIndex === 0 ? 'unset' : 'pointer' };
+		}
 	},
 	watch: {
 		'value': 'calcPosition',
@@ -96,6 +114,26 @@ export default {
 			}
 
 			this.$emit('clip', this.endIndex);
+		},
+		handleMouseOver(event) {
+			if (this.endIndex > 0) {
+				this.popperInstance = null;
+				this.popperInstance = Popover.open({
+					el: document.body,
+					cName: 'vc-text-popover', // 确保不重复创建
+					triggerEl: event.target,
+					hover: true,
+					theme: 'dark',
+					placement: this.placement,
+					portalClassName: this.portalClassName,
+					portalStyle: this.portalStyle,
+					content: this.value,
+					alone: true
+				});
+			}
+		},
+		handleMouseOut() {
+			this.popperInstance = null;
 		}
 	}
 };
