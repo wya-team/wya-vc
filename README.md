@@ -1,6 +1,6 @@
 > 基于`Vue@3.x`的组件库移步[\@wya/vc.next](https://github.com/wya-team/wya-vc.next)
 
-# [\@wya/vc](https://wya-team.github.io/wya-vc/dist/index.html)
+# [\@wya/vc](https://wya-team.github.io/wya-vc/dist/index.html) 👈👈文档地址
 
 [![npm][npm-image]][npm-url] [![changelog][changelog-image]][changelog-url]
 
