@@ -23,6 +23,7 @@ export default {
 			type: [String, Number],
 			default: 'id'
 		},
+		// 是否可拖拽 如 [ { id: 1， draggable: false } ]
 		draggableKey: String,
 		mask: {
 			type: Boolean,
@@ -55,7 +56,7 @@ export default {
 	},
 	methods: {
 		getDraggable(item) {
-			let value = item[this.draggableKey];
+			let value = item ? item[this.draggableKey] : undefined;
 			return !!(typeof value === 'undefined' || value);
 		},
 		/**
@@ -106,8 +107,12 @@ export default {
 			e.dataTransfer.effectAllowed = "move";
 			e.target.style.opacity = 0;
 
+			// 嵌套时，作用于目标元素上，避免被覆盖
 			this.eleDrag = e.target;
-			this.eleDrag.item = item;
+			this.eleDrag.item = e.target.item 
+				? e.target.item 
+				: item;
+
 			this.dragging = true;
 		},
 
@@ -119,12 +124,20 @@ export default {
 			e.preventDefault();
 
 			const { item } = this.eleDrag || {};
-			if (_item === item) {
+
+			/**
+			 * 嵌套：拖动A.a -> B.a（此时item为空）
+			 * 自己忽略
+			 */
+			if (!item || _item === item) {
 				return;
 			}
 
+			// 嵌套下，父子，托动子元素，会触发父层的drag-enter（包在内部）;
+			if (typeof item === 'object' && !item[this.valueKey]) return;
+			
+			// 频率控制			
 			if (this.timer) return;
-
 			clearTimeout(this.timer);
 			this.timer = setTimeout(() => {
 				this.timer = null;
