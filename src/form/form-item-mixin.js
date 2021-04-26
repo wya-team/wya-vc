@@ -126,7 +126,7 @@ export default {
 		setRules() {
 			let rules = this.getRules();
 			if (rules.length && this.required) {
-				return;
+				// return;
 			} else if (rules.length) {
 				this.isRequired = rules.some(rule => {
 					return typeof rule.required === 'function' 
