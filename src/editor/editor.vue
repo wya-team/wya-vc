@@ -33,7 +33,7 @@
 						@error="handleUploadError(arguments[0], 'video')"
 						@complete="handleComplete"
 					>
-						<vc-icon type="video" style="font-size: 16px" />
+						<vc-icon type="video" style="font-size: 16px" @click="handleUploadVideo" />
 					</vc-upload>
 				</button>
 				<button class="vc-quill-editor__icon" @click="handleUndo">
@@ -125,6 +125,11 @@ export default {
 		gallery: {
 			type: [Function, Boolean],
 			default: true
+		},
+		// 3.x 废除
+		videoGallery: {
+			type: [Function, Boolean],
+			default: false
 		},
 		// 注册扩展
 		register: Function,
@@ -362,7 +367,6 @@ export default {
 				sele.addRange(range);
 			}
 		},
-
 		/**
 		 * ImgsPicker已废除，3.x清理
 		 */
@@ -379,6 +383,20 @@ export default {
 					: (ImgsPicker.gallery || UploadPicker.gallery);
 					
 				fn(this, 'image');
+			} 
+			this.selectionIndex = this.getLength(); // 存储失焦时光标位置
+		},
+		// 考虑之前版本的兼容问题，3.x清理，统一采用UploadPicker.gallery 和 gallery
+		handleUploadVideo(e) {
+			const { UploadPicker = {} } = VcInstance.config;
+			if (typeof this.videoGallery === 'function' || (this.videoGallery && (UploadPicker.videoGallery || UploadPicker.gallery))) {
+				e.stopPropagation();
+
+				let fn = typeof this.videoGallery === 'function' 
+					? this.videoGallery
+					: (UploadPicker.videoGallery || UploadPicker.gallery);
+					
+				fn(this, 'video');
 			} 
 			this.selectionIndex = this.getLength(); // 存储失焦时光标位置
 		},
