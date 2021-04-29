@@ -126,11 +126,6 @@ export default {
 			type: [Function, Boolean],
 			default: true
 		},
-		// 3.x 废除
-		videoGallery: {
-			type: [Function, Boolean],
-			default: false
-		},
 		// 注册扩展
 		register: Function,
 		videoPoster: [Function, Boolean],
@@ -376,27 +371,20 @@ export default {
 				typeof this.gallery === 'function' 
 				|| (this.gallery && (ImgsPicker.gallery || UploadPicker.gallery))
 			) {
-				e.stopPropagation();
-
 				let fn = typeof this.gallery === 'function' 
 					? this.gallery
 					: (ImgsPicker.gallery || UploadPicker.gallery);
 					
-				fn(this, 'image');
+				fn(this, 'image') && e.stopPropagation();
 			} 
 			this.selectionIndex = this.getLength(); // 存储失焦时光标位置
 		},
-		// 考虑之前版本的兼容问题，3.x清理，统一采用UploadPicker.gallery 和 gallery
 		handleUploadVideo(e) {
 			const { UploadPicker = {} } = VcInstance.config;
-			if (typeof this.videoGallery === 'function' || (this.videoGallery && (UploadPicker.videoGallery || UploadPicker.gallery))) {
-				e.stopPropagation();
-
-				let fn = typeof this.videoGallery === 'function' 
-					? this.videoGallery
-					: (UploadPicker.videoGallery || UploadPicker.gallery);
+			if (typeof this.gallery === 'function' || (this.gallery && UploadPicker.gallery)) {
+				let fn = typeof this.gallery === 'function' ? this.gallery : UploadPicker.gallery;
 					
-				fn(this, 'video');
+				fn(this, 'video') && e.stopPropagation();
 			} 
 			this.selectionIndex = this.getLength(); // 存储失焦时光标位置
 		},
