@@ -408,7 +408,7 @@ export default {
 				return it;
 			});
 			this.videoMax = (this.videoUploadOpts.max || Number.MAX_SAFE_INTEGER) - videoNum;
-			this.imgMax = (this.videoUploadOpts.max || Number.MAX_SAFE_INTEGER) - imgNum;
+			this.imgMax = (this.imgUploadOpts.max || Number.MAX_SAFE_INTEGER) - imgNum;
 		},
 		// 跟imgs-picker 对外暴露的增加方法保持同名
 		add(imgs = []) {
