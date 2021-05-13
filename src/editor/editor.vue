@@ -411,9 +411,10 @@ export default {
 			this.imgMax = (this.imgUploadOpts.max || Number.MAX_SAFE_INTEGER) - imgNum;
 		},
 		// 跟imgs-picker 对外暴露的增加方法保持同名
-		add(imgs = []) {
-			imgs.forEach(image => {
-				this.handleImgSuccess({ data: { url: image } });
+		add(source = [], type = 'image') {
+			const fn = type === 'video' ? this.handleVideoSuccess : this.handleImgSuccess;
+			source.forEach(item => {
+				fn({ data: { url: item } });
 			});
 		},
 		_register() {
