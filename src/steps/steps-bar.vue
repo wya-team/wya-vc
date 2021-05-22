@@ -120,7 +120,7 @@ export default {
 			}
 		}
 		@include when(disabled) {
-			cursor: none;
+			cursor: default;
 		}
 	}
 }
