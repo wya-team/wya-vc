@@ -105,7 +105,7 @@ export default {
 					...(this.uploadOpts.video || {})
 				},
 				file: {
-					...(this.uploadOpts.video || {})
+					...(this.uploadOpts.file || {})
 				}
 			}
 		};
@@ -309,6 +309,10 @@ export default {
 		delData(index, type) {
 			const target = this.currentValue[type];
 			const item = target[index];
+			if (!item) {
+				console.error('【vc-upload-picker】: 没有找到要删除的元素');
+				return;
+			}
 			if (item.errorFlag) {
 				this.currentValue[type] = target.filter(it => it.uid != item.uid);
 				return;
@@ -346,7 +350,6 @@ export default {
 				source = [source];
 			}
 			source = source.filter(it => !!it);
-			
 			if (source.length) {
 				this.currentValue[type].push(...source);
 				let dataSource = this.currentValue[type].filter(it => !it.errorFlag);
@@ -359,7 +362,8 @@ export default {
 		 */
 		reset(source = []) {
 			if (!(source instanceof Array)) {
-				throw Error('【vc-upload-picker】: reset参数要为字符串数组');
+				console.error('【vc-upload-picker】: reset参数要为字符串数组');
+				return;
 			}
 			this.currentValue = this.parseDataSource(source);
 			// form表单
