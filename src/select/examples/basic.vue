@@ -358,6 +358,7 @@ export default {
 		},
 		handleTestingEnd() {
 			clearInterval(this.timer);
+			this.timer = null;
 		},
 		handleSearch() {
 			return new Promise((resolve) => {
@@ -371,16 +372,16 @@ export default {
 			});
 		},
 		handleChange(v) {
-			console.log(v);
+			!this.timer && console.log(v);
 		},
 		handleReady() {
-			console.log('ready');
+			!this.timer && console.log('ready');
 		},
 		handleClose() {
-			console.log('close');
+			!this.timer && console.log('close');
 		},
 		handleVisibleChange(v) {
-			console.log('visible-change', v);
+			!this.timer && console.log('visible-change', v);
 		}
 	}
 };
