@@ -363,6 +363,10 @@ export default {
 		this.checkboxItems = this.$el.querySelectorAll('input[type=checkbox]');
 	},
 
+	destroyed() {
+		this.$el.removeEventListener('keydown', this.handleKeydown);
+	},
+
 	methods: {
 		filter(value) {
 			if (!this.filterNode) throw new Error('[Tree] filterNode is required when filter');
