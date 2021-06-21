@@ -1,3 +1,4 @@
+import './third.scss';
 import { Func } from './core';
 
 import ImgsPreview from './mobile/imgs-preview';
