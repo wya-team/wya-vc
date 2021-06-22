@@ -85,8 +85,12 @@ export default {
 					history: false,
 					getThumbBoundsFn: (index) => pos,
 				},
-				onSure: () => this.$emit('close'),
-				onClose: () => this.$emit('close'),
+				onSure: (payload) => {
+					this.$emit('close', payload);
+				},
+				onClose: (payload) => {
+					this.$emit('close', payload);
+				},
 			});
 		}
 	}

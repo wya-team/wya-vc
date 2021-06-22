@@ -101,6 +101,9 @@ export default {
 					index: 2,
 					history: false,
 					getThumbBoundsFn: (index) => pos
+				},
+				onClose: (payload) => {
+					console.log(payload);
 				}
 			});
 		}

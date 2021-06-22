@@ -254,7 +254,8 @@ const wrapperComponent = {
 							callback(...args);
 						}
 						if (event === 'destroy') {
-							this.$emit('close');
+							// 关闭时，将当前的index给外部
+							this.$emit('close', { current: this.photoSwipe.getCurrentIndex() });
 						}
 					});
 				}
