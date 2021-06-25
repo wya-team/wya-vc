@@ -65,7 +65,12 @@ class Store extends BaseWatcher {
 		insertColumn(states, column, index, parent) {
 			let array = states._columns;
 			if (parent) {
-				array = parent.children || [];
+				array = parent.children;
+				// 修改引用，column.children赋值
+				if (!array) {
+					array = [];
+					parent.children = array;
+				}
 			}
 
 			if (typeof index !== 'undefined') {
