@@ -273,10 +273,9 @@ export default {
 					promise.then(data => fn(data)).catch(e => {
 						throw new VcError('table', e);
 					});
-				} else if (Array.isArray(data)) {
-					fn(data);
+				} else if (Array.isArray(promise)) {
+					fn(promise);
 				}
-				
 			}
 		},
 	}
