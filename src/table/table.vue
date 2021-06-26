@@ -116,7 +116,7 @@
 			</div>
 			<div
 				v-if="showSummary"
-				v-show="data && data.length > 0"
+				v-show="dataSource && dataSource.length > 0"
 				ref="fixedFooterWrapper"
 				class="vc-table__fixed-footer-wrapper"
 			>
