@@ -54,7 +54,7 @@ export default {
 
 			switch (direction[0]) {
 				case 'left':
-					if (popupRect.x - el.offsetWidth < 0) {
+					if (popupRect.x - el.offsetWidth < 0 && leftSurplus < rightSurplus) {
 						placement = placement.replace('left', 'right');
 					}
 					placement = this.getYAssistFitPos({
@@ -63,7 +63,7 @@ export default {
 					break;
 				case 'right':
 					remanentW = window.innerWidth - popupRect.x - popupRect.width - el.offsetWidth;
-					if (remanentW < 0) {
+					if (remanentW < 0 && rightSurplus < leftSurplus) {
 						placement = placement.replace('right', 'left');
 					}
 					placement = this.getYAssistFitPos({
@@ -72,7 +72,7 @@ export default {
 					break;
 				case 'top':
 					// 主轴方向的自适应
-					if (popupRect.y - el.offsetHeight < 0) {
+					if (popupRect.y - el.offsetHeight < 0 && topSurplus < bottomSurplus) {
 						placement = placement.replace('top', 'bottom');
 					}
 					placement = this.getXAssistFitPos({
@@ -82,7 +82,7 @@ export default {
 				case 'bottom':
 					remanentH = window.innerHeight - popupRect.y - popupRect.height - el.offsetHeight;
 					// 主轴方向的自适应
-					if (remanentH < 0) {
+					if (remanentH < 0 && bottomSurplus < topSurplus) {
 						placement = placement.replace('bottom', 'top');
 					}
 					placement = this.getXAssistFitPos({
