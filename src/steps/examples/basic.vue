@@ -11,7 +11,7 @@
 			<vc-step title="这是标题" subtitle="我是子标题" description="我是描述我是描述我是描述我是描述我是描述我是描述我是描述我是描述" />
 			<vc-step title="这是标题" subtitle="我是子标题" description="我是描述我是描述我是描述我是描述我是描述我是描述我是描述我是描述" />
 		</vc-steps>
-		<vc-steps :current="2" style="margin-top: 20px" direction="vertical">
+		<vc-steps :current="2" style="margin-top: 20px" vertical>
 			<vc-step title="这是标题" subtitle="我是子标题" description="我是描述我是描述我是描述我是描述我是描述我是描述我是描述我是描述" />
 			<vc-step title="这是标题" subtitle="我是子标题" description="我是描述我是描述我是描述我是描述我是描述我是描述我是描述我是描述" />
 			<vc-step title="这是标题" subtitle="我是子标题" description="我是描述我是描述我是描述我是描述我是描述我是描述我是描述我是描述" />

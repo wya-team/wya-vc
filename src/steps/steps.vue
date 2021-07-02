@@ -10,12 +10,17 @@ export default {
 	name: "vc-steps",
 	props: {
 		current: Number, // 当前位置
+		// TODO: 废弃，换成vertical
 		direction: {
 			type: String,
 			defualt: 'horizontal',
 			validator(value) {
 				return ['horizontal', 'vertical'].includes(value);
 			}
+		},
+		vertical: {
+			type: Boolean,
+			defualt: false,
 		},
 		size: {
 			type: String,
@@ -39,7 +44,7 @@ export default {
 	computed: {
 		stepsClasses() {
 			return { 
-				'is-vertical': this.direction === 'vertical',
+				'is-vertical': this.direction === 'vertical' || this.vertical,
 				'is-small': this.size === 'small'
 			};
 		}
