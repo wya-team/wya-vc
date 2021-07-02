@@ -186,7 +186,7 @@ export default {
 	},
 	methods: {
 		isEmpty(dataSource) {
-			const [image, video, audio, file] = Object.values(dataSource);
+			const { image, video, audio, file } = dataSource;
 			if (image.length || video.length || audio.length || file.length) return false;
 			return true;
 		},
