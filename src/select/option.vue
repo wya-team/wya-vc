@@ -5,9 +5,7 @@
 		:class="{ 'is-select': isSelect, 'is-last': isLast }"
 		class="vc-select-option"
 		@click.stop="handleSelect"
-		@touchend.stop="handleSelect"
 		@mousedown.prevent
-		@touchstart.prevent
 	>
 		<slot>{{ formatterLabel }}</slot>
 		<vc-icon v-if="isSelect" type="correct" />
