@@ -180,6 +180,9 @@ export default {
 		parseDataSource(dataSource) {
 			const initialData = { image: [], video: [], file: [] };
 			return dataSource.reduce((pre, cur) => {
+				if (cur && typeof cur === 'object') {
+					cur = cur[this.urlKey];
+				}
 				switch (this.recognizer(cur)) {
 					case 'image':
 						pre.image.push(cur);
