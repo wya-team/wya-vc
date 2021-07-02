@@ -44,7 +44,7 @@
 <script>
 import Icon from '../../icon/index';
 import Progress from '../../progress/index';
-import { VideoPreview } from '../video-preview';
+import { VideoPreview } from '../preview/video';
 
 export default {
 	name: 'vc-upload-picker-video-item',
@@ -81,6 +81,7 @@ export default {
 	box-sizing: border-box;
 	flex-wrap: wrap;
 	color: #515a6e;
+	background-color: #fafafa;
 	@include when(error) {
 		position: relative;
 		color: #f42626;

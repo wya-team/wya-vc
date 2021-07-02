@@ -13,6 +13,7 @@
 						:imgs-preview-opts="imgsPreviewOpts"
 						:img-class-name="imgClassName"
 						:video-class-name="videoClassName"
+						:audio-class-name="audioClassName"
 						:file-class-name="fileClassName"
 						:url-key="urlKey"
 						:index="i"
@@ -42,6 +43,7 @@
 							:imgs-preview-opts="imgsPreviewOpts"
 							:img-class-name="imgClassName"
 							:video-class-name="videoClassName"
+							:audio-class-name="audioClassName"
 							:file-class-name="fileClassName"
 							:url-key="urlKey"
 							:index="index"
@@ -93,6 +95,7 @@ import Icon from '../../icon/index';
 import SortList from '../../sort-list/index.m';
 import ImgItem from './item/img-item';
 import VideoItem from './item/video-item';
+import AudioItem from './item/audio-item';
 import FileItem from './item/file-item';
 
 export default {
@@ -118,6 +121,12 @@ export default {
 						pre.push({
 							type: cur,
 							item: VideoItem
+						});
+						return pre;
+					case 'audio':
+						pre.push({
+							type: cur,
+							item: AudioItem
 						});
 						return pre;
 					case 'file':
@@ -146,7 +155,6 @@ export default {
 		width: 78px;
 		height: 78px;
 		border-radius: 2px;
-		background-color: #fafafa;
 		cursor: pointer;
 	}
 	@include element(item) {

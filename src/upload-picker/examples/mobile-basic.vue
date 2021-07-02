@@ -3,7 +3,7 @@
 		<vc-upload-picker
 			v-model="dataSource"
 			:max="5"
-			:picker="['video', 'image', 'file']"
+			:picker="['video', 'image', 'audio', 'file']"
 			@remove-before="handleDel"
 			@success="handleSuccess"
 		>
@@ -75,7 +75,7 @@ VcInstance.init({
 					status: 1,
 					data: {
 						url: `https://wyatest.oss-cn-hangzhou.aliyuncs.com/${options.param.key}`,
-						...parseFile(file)
+						// ...parseFile(file)
 					}
 				}
 				: {

@@ -2,7 +2,7 @@
 	<div style="margin: 100px;">
 		<vc-upload-picker
 			v-model="dataSource"
-			:picker="['image', 'video', 'file']"
+			:picker="['image', 'video', 'audio', 'file']"
 		>
 			<!-- 限制大小上传以及api -->
 		</vc-upload-picker>
@@ -80,7 +80,7 @@ VcInstance.init({
 					status: 1,
 					data: {
 						url: `https://wyatest.oss-cn-hangzhou.aliyuncs.com/${options.param.key}`,
-						...parseFile(file)
+						// ...parseFile(file)
 					}
 				}
 				: {

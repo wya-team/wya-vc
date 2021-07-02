@@ -64,6 +64,7 @@ export default {
 
 @include block(vcm-upload-picker-file-item) {
 	position: relative;
+	background-color: #fafafa;
 	@include when(error) {
 		position: relative;
 		color: #f42626;

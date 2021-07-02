@@ -26,9 +26,9 @@
 
 <script>
 import { Device } from '@wya/utils';
-import Portal from '../portal';
-import Popup from '../popup/index';
-import Icon from '../icon';
+import Portal from '../../portal';
+import Popup from '../../popup/index';
+import Icon from '../../icon';
 
 const wrapperComponent = {
 	name: 'vc-video-preview',
@@ -78,7 +78,7 @@ export const VideoPreview = new Portal(wrapperComponent, {
 </script>
 
 <style lang="scss">
-@import '../style/vars.scss';
+@import '../../style/vars.scss';
 
 @include block(vc-video-preview) {
 	position: relative;

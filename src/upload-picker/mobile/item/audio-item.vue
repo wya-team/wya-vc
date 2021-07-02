@@ -1,21 +1,21 @@
 <template>
 	<div 
 		:class="{ 'is-error': it.status == 0 }"
-		class="vcm-upload-picker-video-item"
+		class="vcm-upload-picker-audio-item"
 	>
 		<slot :it="it">
 			<div v-if="typeof it !== 'object'">
-				<video 
+				<audio 
 					:src="it" 
 					:controls="false"
-					class="vcm-upload-picker-video-item__content" 
+					class="vcm-upload-picker-audio-item__content" 
 					style="background-color: #000"
 				/>
-				<div class="vcm-upload-picker-video-item__play" @click="handlePreview">
-					<vc-icon type="toplay" class="vcm-upload-picker-video-item__play-icon" />
+				<div class="vcm-upload-picker-audio-item__play" @click="handlePreview">
+					<vc-icon type="toplay" class="vcm-upload-picker-audio-item__play-icon" />
 				</div>
 			</div>
-			<div v-else class="vcm-upload-picker-video-item__content">
+			<div v-else class="vcm-upload-picker-audio-item__content">
 				<vc-spin v-if="typeof it.status === 'undefined'" />
 				<div v-else-if="it.status == 0" style="padding: 5px">
 					上传失败
@@ -35,10 +35,10 @@
 <script>
 import Icon from '../../../icon/index';
 import Spin from '../../../spin';
-import { VideoPreview } from '../../preview/video';
+import { AudioPreview } from '../../preview/audio';
 
 export default {
-	name: 'vcm-upload-picker-video-item',
+	name: 'vcm-upload-picker-audio-item',
 	components: {
 		'vc-icon': Icon,
 		'vc-spin': Spin
@@ -52,7 +52,7 @@ export default {
 	},
 	methods: {
 		handlePreview(e) {
-			VideoPreview.popup({
+			AudioPreview.popup({
 				dataSource: [this.it]
 			});
 		},
@@ -66,13 +66,13 @@ export default {
 <style lang="scss">
 @import '../../../style/vars.scss';
 
-@include block(vcm-upload-picker-video-item) {
+@include block(vcm-upload-picker-audio-item) {
 	position: relative;
 	display: flex;
 	box-sizing: border-box;
 	flex-wrap: wrap;
 	color: #515a6e;
-	background-color: #fafafa;
+	background-color: #000000;
 	@include when(error) {
 		position: relative;
 		color: #f42626;

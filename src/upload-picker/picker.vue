@@ -95,6 +95,7 @@ import Icon from '../icon/index';
 import SortList from '../sort-list/index';
 import ImgItem from './item/img-item';
 import VideoItem from './item/video-item';
+import AudioItem from './item/audio-item';
 import FileItem from './item/file-item';
 
 export default {
@@ -127,6 +128,12 @@ export default {
 						pre.push({
 							type: cur,
 							item: VideoItem
+						});
+						return pre;
+					case 'audio':
+						pre.push({
+							type: cur,
+							item: AudioItem
 						});
 						return pre;
 					case 'file':
@@ -170,7 +177,6 @@ export default {
 		width: 64px;
 		height: 64px;
 		border-radius: 4px;
-		background-color: #fafafa;
 		cursor: pointer;
 	}
 	@include element(item) {

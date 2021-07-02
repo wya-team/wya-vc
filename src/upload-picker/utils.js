@@ -9,3 +9,12 @@ export const recognizer = (url) => {
 		? /.(jpe?g|png|gif|bmp|webp)/ig.test(result[result.length - 1]) ? 'image' : 'video'
 		: 'file';
 };
+
+export const FILE_ACCEPT_MAP = {
+	DOC_ACCEPTS: '.doc,.docx,application/msword,application/vnd.openxmlformats-officedocument.wordprocessingml.document',
+	EXCEL_ACCEPTS: '.csv,.xls,.xlsx,application/vnd.ms-excel,application/vnd.openxmlformats-officedocument.spreadsheetml.sheet',
+	PPT_ACCEPTS: '.ppt,.pptx,application/vnd.ms-powerpoint,application/vnd.openxmlformats-officedocument.presentationml.presentation',
+	PDF_ACCEPTS: '.pdf,application/pdf',
+	TXT_ACCEPTS: 'text/plain',
+	HTML_ACCEPTS: 'text/html',
+};

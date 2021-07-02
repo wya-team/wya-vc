@@ -6,7 +6,7 @@ import Message from '../message/index';
 import Toast from '../toast/index';
 import Extends from '../extends';
 import { VcInstance } from '../vc/index';
-import { recognizer } from './utils';
+import { recognizer, FILE_ACCEPT_MAP } from './utils';
 import { compressImg } from '../utils';
 
 export default {
@@ -70,6 +70,7 @@ export default {
 		},
 		imgClassName: String,
 		videoClassName: String,
+		audioClassName: String,
 		fileClassName: String,
 		urlKey: {
 			type: String,
@@ -89,10 +90,12 @@ export default {
 		}
 	},
 	data() {
+		const { DOC_ACCEPTS, EXCEL_ACCEPTS, PPT_ACCEPTS, PDF_ACCEPTS, TXT_ACCEPTS, HTML_ACCEPTS } = FILE_ACCEPT_MAP;
 		return {
 			currentValue: {
 				image: [],
 				video: [],
+				audio: [],
 				file: []
 			},
 			currentUploadOpts: { 
@@ -104,8 +107,13 @@ export default {
 					accept: 'video/*',
 					...(this.uploadOpts.video || {})
 				},
+				audio: {
+					accept: 'audio/*',
+					...(this.uploadOpts.audio || {})
+				},
 				file: {
-					...(this.uploadOpts.file || {})
+					accept: `${DOC_ACCEPTS},${EXCEL_ACCEPTS},${PPT_ACCEPTS},${PDF_ACCEPTS},${TXT_ACCEPTS},${HTML_ACCEPTS}`,
+					...(this.uploadOpts.file || {}),
 				}
 			}
 		};
@@ -114,36 +122,41 @@ export default {
 		dynamicMax() {
 			const image = this.currentValue.image || [];
 			const video = this.currentValue.video || [];
+			const audio = this.currentValue.audio || [];
 			const file = this.currentValue.file || [];
 
 			// 如果过滤出上传成功的文件，在上传中时，currentValue占位，达到max，upload控件仍不会隐藏，用户可以再次上传，导致会超出max
 			let imageCount = image.length || 0;
 			let videoCount = video.length || 0;
+			let audioCount = audio.length || 0;
 			let fileCount = file.length || 0;
 			
 			if (typeof this.max === 'number') {
-				let curNum = imageCount + videoCount + fileCount;
+				let curNum = imageCount + videoCount + audioCount + fileCount;
 				const leftNum = this.max - curNum;
 				return {
 					image: leftNum,
 					video: leftNum,
+					audio: leftNum,
 					file: leftNum,
 				};
 			} else if (typeof this.max === 'object') {
-				const { image, video, file } = this.max;
+				const { image, video, audio, file } = this.max;
 				const max = {};
 				image && (max.image = image - imageCount);
 				video && (max.video = video - videoCount);
+				audio && (max.audio = audio - audioCount);
 				file && (max.file = file - fileCount);
 				return max;
 			}
 			return {};
 		},
 		multiple() {
-			const { image, video, file } = this.dynamicMax;
+			const { image, video, audio, file } = this.dynamicMax;
 			return {
 				image: image >= 1,
 				video: video >= 1,
+				audio: audio >= 1,
 				file: file >= 1,
 			};
 		},
@@ -173,12 +186,12 @@ export default {
 	},
 	methods: {
 		isEmpty(dataSource) {
-			const [image, video, file] = Object.values(dataSource);
-			if (image.length || video.length || file.length) return false;
+			const [image, video, audio, file] = Object.values(dataSource);
+			if (image.length || video.length || audio.length || file.length) return false;
 			return true;
 		},
 		parseDataSource(dataSource) {
-			const initialData = { image: [], video: [], file: [] };
+			const initialData = { image: [], video: [], audio: [], file: [] };
 			return dataSource.reduce((pre, cur) => {
 				if (cur && typeof cur === 'object') {
 					cur = cur[this.urlKey];
@@ -189,6 +202,9 @@ export default {
 						return pre;
 					case 'video':
 						pre.video.push(cur);
+						return pre;
+					case 'audio':
+						pre.audio.push(cur);
 						return pre;
 					case 'file':
 						pre.file.push(cur);
@@ -257,7 +273,7 @@ export default {
 			this.currentValue[type] = this.currentValue[type].map((item) => {
 				if (item.uid === file.uid) {
 					// 图片、视频
-					if (['image', 'video'].includes(type)) {
+					if (['image', 'video', 'audio'].includes(type)) {
 						return this.getUrl(res);
 					} else { // 其他文件
 						let result = { ...item, ...res.data };

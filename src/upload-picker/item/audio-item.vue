@@ -1,22 +1,31 @@
 <template>
 	<div 
 		:class="{ 'is-error': it.status == 0 }"
-		class="vcm-upload-picker-video-item"
+		class="vc-upload-picker-audio-item"
 	>
 		<slot :it="it">
 			<div v-if="typeof it !== 'object'">
-				<video 
+				<audio 
 					:src="it" 
 					:controls="false"
-					class="vcm-upload-picker-video-item__content" 
-					style="background-color: #000"
+					class="vc-upload-picker-audio-item__content" 
+					style="background-color: #000;"
 				/>
-				<div class="vcm-upload-picker-video-item__play" @click="handlePreview">
-					<vc-icon type="toplay" class="vcm-upload-picker-video-item__play-icon" />
+				<div class="vc-upload-picker-audio-item__play" @click="handlePreview">
+					<vc-icon type="toplay" class="vc-upload-picker-audio-item__play-icon" />
 				</div>
 			</div>
-			<div v-else class="vcm-upload-picker-video-item__content">
-				<vc-spin v-if="typeof it.status === 'undefined'" />
+			<div v-else class="vc-upload-picker-audio-item__content">
+				<vc-progress
+					v-if="it.percent && it.percent != 100" 
+					:percent="it.percent"
+					:show-info="false"
+					status="normal"
+					style="width: 100%;padding: 0 5px"
+				/>
+				<p v-else-if="!it.url && it.percent == 100 && !it.errorFlag" style="line-height: 1; padding: 5px">
+					服务器正在接收...
+				</p>
 				<div v-else-if="it.status == 0" style="padding: 5px">
 					上传失败
 				</div>
@@ -24,8 +33,8 @@
 			<!-- 上传失败或者成功后显示 -->
 			<vc-icon 
 				v-if="!disabled && (typeof it !== 'object' || it.status == 0)" 
-				type="close" 
-				class="vcm-upload-picker__delete"
+				type="close-small" 
+				class="vc-upload-picker__delete"
 				@click="handleDel" 
 			/>
 		</slot>
@@ -33,15 +42,15 @@
 </template>
 
 <script>
-import Icon from '../../../icon/index';
-import Spin from '../../../spin';
-import { VideoPreview } from '../../preview/video';
+import Icon from '../../icon/index';
+import Progress from '../../progress/index';
+import { AudioPreview } from "../preview/audio";
 
 export default {
-	name: 'vcm-upload-picker-video-item',
+	name: 'vc-upload-picker-audio-item',
 	components: {
 		'vc-icon': Icon,
-		'vc-spin': Spin
+		'vc-progress': Progress
 	},
 	props: {
 		disabled: Boolean,
@@ -52,7 +61,7 @@ export default {
 	},
 	methods: {
 		handlePreview(e) {
-			VideoPreview.popup({
+			AudioPreview.popup({
 				dataSource: [this.it]
 			});
 		},
@@ -64,28 +73,31 @@ export default {
 </script>
 
 <style lang="scss">
-@import '../../../style/vars.scss';
+@import '../../style/vars.scss';
 
-@include block(vcm-upload-picker-video-item) {
+@include block(vc-upload-picker-audio-item) {
 	position: relative;
 	display: flex;
 	box-sizing: border-box;
 	flex-wrap: wrap;
 	color: #515a6e;
-	background-color: #fafafa;
+	background-color: #000;
 	@include when(error) {
 		position: relative;
 		color: #f42626;
 		border: 1px solid #f42626;
+		@include when(mobile) {
+			color: #515a6e;
+			border: none;
+		}
 	}
 	@include element(content) {
 		@include commonFlexCc();
-		width: 78px;
-		height: 78px;
-		border-radius: 2px;
+		width: 64px;
+		height: 64px;
+		border-radius: 4px;
 		background-size: cover;
 		overflow: hidden;
-		
 	}
 	@include element(play) {
 		position: absolute;

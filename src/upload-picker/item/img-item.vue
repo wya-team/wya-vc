@@ -127,6 +127,7 @@ export default {
 	display: flex;
 	box-sizing: border-box;
 	flex-wrap: wrap;
+	background-color: #fafafa;
 	@include when(error) {
 		position: relative;
 		color: #f42626;
