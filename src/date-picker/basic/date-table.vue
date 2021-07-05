@@ -147,7 +147,7 @@ export default {
 
 					let cellDate = new Date(time);
 					cell.disabled = typeof this.disabledDate === 'function' && this.disabledDate(cellDate);
-					cell.customClass = typeof cellClassName === 'function' && cellClassName(cellDate);
+					cell.customClass = typeof this.cellClassName === 'function' && this.cellClassName(cellDate);
 					// 选中的date在进行比较时需要清除 时分秒
 					cell.selected = selectedDate.some(date => {
 						if (cell.type === 'normal') {

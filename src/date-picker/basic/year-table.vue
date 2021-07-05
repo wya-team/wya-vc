@@ -62,7 +62,7 @@ export default {
 					}
 					cell.date = new Date(cell.year, 0, 1);
 					cell.disabled = typeof this.disabledDate === 'function' && this.disabledDate(cell.year);
-					cell.customClass = typeof cellClassName === 'function' && cellClassName(cell.year);
+					cell.customClass = typeof this.cellClassName === 'function' && this.cellClassName(cell.year);
 					cell.selected = selectedYear.some(year => {
 						return year && cell.year === year.getFullYear();
 					});

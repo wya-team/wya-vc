@@ -73,7 +73,7 @@ export default {
 					cell.start = this.rangeState.from && time === getDateTimestamp(this.rangeState.from);
 					cell.end = this.rangeState.to && time === getDateTimestamp(this.rangeState.to);
 					cell.disabled = typeof this.disabledDate === 'function' && this.getDisabledMonth(year, cell.month);
-					cell.customClass = typeof cellClassName === 'function' && cellClassName(cell.month);
+					cell.customClass = typeof this.cellClassName === 'function' && this.cellClassName(cell.month);
 					cell.selected = selectedMonth.some(month => {
 						return month && (year === month.getFullYear()) && (cell.month === month.getMonth());
 					});

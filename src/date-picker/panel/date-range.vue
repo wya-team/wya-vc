@@ -257,11 +257,7 @@ export default {
 				this.leftPanelDate = leftDate;
 			}
 		},
-		setRightHeaderDate() {
-			if (!this.splitPanels) {
-				this.rightPanelDate = newDate;
-			}
-		},
+
 		isEqualYearAndMonth() {
 			if (!this.value[0] || !this.value[1]) { return false; }
 			let startYear = this.value[0].getFullYear();

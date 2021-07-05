@@ -78,7 +78,7 @@ export default {
 					cell.start = this.rangeState.from && time[0] === rangeFromTime;
 					cell.end = this.rangeState.to && time[1] === rangeToTime;
 					cell.disabled = typeof this.disabledDate === 'function' && this.disabledDate(cell.quarter);
-					cell.customClass = typeof cellClassName === 'function' && cellClassName(cell.quarter);
+					cell.customClass = typeof this.cellClassName === 'function' && this.cellClassName(cell.quarter);
 					cell.selected = !isEmpty(selectedQuarter) && selectedQuarter.some(quarter => {
 						return (year === quarter.getFullYear()) && this.getQuarterRangeByMonth(quarter) === cell.quarter;
 					});
