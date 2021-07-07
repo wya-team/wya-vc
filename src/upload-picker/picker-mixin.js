@@ -193,9 +193,6 @@ export default {
 		parseDataSource(dataSource) {
 			const initialData = { image: [], video: [], audio: [], file: [] };
 			return dataSource.reduce((pre, cur) => {
-				if (cur && typeof cur === 'object') {
-					cur = cur[this.urlKey];
-				}
 				switch (this.recognizer(cur)) {
 					case 'image':
 						pre.image.push(cur);
@@ -225,7 +222,8 @@ export default {
 		},
 		recognizer(url) {
 			const fn = (VcInstance.config.UploadPicker || {}).recognizer || recognizer;
-			return fn(url, recognizer);
+			if (url && typeof url === 'object') url = url[this.urlKey];
+			return fn(url);
 		},
 		getUrl(res) {
 			return this.formatter ? this.formatter(res) : res.data[this.urlKey];
