@@ -106,6 +106,8 @@ import Rate from './rate/index';
 import MRate from './rate/index.m';
 import RecycleList from './recycle-list/index';
 import MRecycleList from './recycle-list/index.m';
+import Scroller from './scroller/index';
+import MScroller from './scroller/index.m';
 import Select from './select/index';
 import MSelect from './select/index.m';
 import Slider from './slider/index';
@@ -284,6 +286,8 @@ const Components = {
 	MRate,
 	RecycleList,
 	MRecycleList,
+	Scroller,
+	MScroller,
 	Select,
 	MSelect,
 	Slider,
@@ -500,6 +504,8 @@ exports.Rate = Rate;
 exports.MRate = MRate;
 exports.RecycleList = RecycleList;
 exports.MRecycleList = MRecycleList;
+exports.Scroller = Scroller;
+exports.MScroller = MScroller;
 exports.Select = Select;
 exports.MSelect = MSelect;
 exports.Slider = Slider;
