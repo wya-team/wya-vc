@@ -164,7 +164,7 @@ import { Clipboard } from 'wya-vc';
 [Fragment][Fragment] | 空节点 | 1 | Vue 3.x废除
 [Portal][Portal] | 传送门组件 | 1 | -
 [Print][Print] | 打印 | 1 | -
-[Scroller][Scroller] | 滚动条自定义 | 0 | -
+[Scroller][Scroller] | 滚动条自定义 | 1 | -
 [Touch][Touch] | 手势 | 1 | -
 [Transition][Transition] | 动画 | 1 | 同animate.css优化api
 [Upload][Upload] | 上传 | 1 | -
@@ -257,7 +257,7 @@ import { Clipboard } from 'wya-vc';
 [List]: https://github.com/wya-team/wya-vc/tree/master/src/list/
 [Skeleton]: https://github.com/wya-team/wya-vc/tree/master/src/
 [Affix]: https://github.com/wya-team/wya-vc/tree/master/src/
-[Scroller]: https://github.com/wya-team/wya-vc/tree/master/src/
+[Scroller]: https://github.com/wya-team/wya-vc/tree/master/src/scroller/
 [BackTop]: https://github.com/wya-team/wya-vc/tree/master/src/
 [Marquee]: https://github.com/wya-team/wya-vc/tree/master/src/marquee/
 [Artboard]: https://github.com/wya-team/wya-vc/tree/master/src/artboard/
