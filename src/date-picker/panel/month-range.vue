@@ -141,8 +141,6 @@ export default {
 		 * 重新选择日期范围后需要重新选择时间范围
 		 */
 		handlePick(value, type) {
-			console.log(value);
-
 			let { selecting, from, to, marker } = this.rangeState;
 			if (!selecting) {
 				this.dates = [];
@@ -192,8 +190,8 @@ export default {
 			}
 			this.leftPanelDate = value[0];
 			this.rightPanelDate = value[1];
-			this.handlePick(value[0], { type: this.disabledDate(value[0]) ? 'disabled' : 'normal' }, 'left');
-			this.handlePick(value[1], { type: this.disabledDate(value[1]) ? 'disabled' : 'normal' }, 'right');
+			this.handlePick(value[0], 'left');
+			this.handlePick(value[1], 'right');
 			this.dates = value;
 		}
 	},

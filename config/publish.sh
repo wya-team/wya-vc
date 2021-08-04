@@ -23,7 +23,7 @@ if [[ $REPLY =~ ^[Yy]$ ]]; then
 	# git commit -m "[build] v$VERSION"
 
 	# publish
-	npm publish --access public
+	npm publish --tag latest --access public
 
 	# push
 	# git push origin refs/tags/v$VERSION
