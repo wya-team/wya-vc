@@ -106,7 +106,7 @@ class IconManager extends VcBasic {
 								viewBox: $2,
 								path: $3.match(pathReg).map(j => ({
 									d: j.replace(dReg, '$1'),
-									fill: fillReg.test($3) ? j.replace(fillReg, '$1') : ''
+									fill: $3.includes('fill="') ? j.replace(fillReg, '$1') : ''
 								}))
 							};
 						})
