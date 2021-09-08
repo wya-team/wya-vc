@@ -1,6 +1,6 @@
 {
     "name": "@wya/vc",
-    "version": "2.0.26",
+    "version": "2.0.27",
     "description": "wya for vue components",
     "main": "lib/index.js",
     "files": [
@@ -41,7 +41,7 @@
     "dependencies": {
         "async-validator": "~3.3.0",
         "echarts": "^4.8.0",
-        "html2canvas": "1.0.0-rc.4",
+        "html2canvas": "^1.0.0-rc.4",
         "lodash": "^4.17.11",
         "mobile-drag-drop": "^2.3.0-rc.1",
         "normalize-wheel": "^1.0.1",
