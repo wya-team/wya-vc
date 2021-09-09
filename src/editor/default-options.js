@@ -15,7 +15,7 @@ export default {
 			[{ 'direction': 'rtl' }],
 			[{ 'size': ['12px', '14px', '16px', '18px', '20px', '22px', '24px', '50px'] }],
 			[{ 'header': [1, 2, 3, 4, 5, 6, false] }],
-			[{ 'color': [] }, { 'background': [] }],
+			[{ 'color': [] }, 'vc-color', { 'background': [] }],
 			[{ 'font': [] }],
 			[{ lineHeight }], 
 			[{ letterSpacing }], 

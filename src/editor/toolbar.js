@@ -86,6 +86,8 @@ export default {
 								return this.$slots.default[4];
 							case 'vc-redo':
 								return this.$slots.default[6];
+							case 'vc-color':
+								return this.$slots.default[8];
 							default:
 								return null;
 						}

@@ -42,6 +42,9 @@
 				<button class="vc-quill-editor__icon" @click="handleRedo">
 					<vc-icon type="redo" style="font-size: 15px" />
 				</button>
+				<button class="vc-quill-editor__icon vc-quill-editor__color">
+					<vc-color-picker :value="color" @change="handleColor" />
+				</button>
 				<template #extend>
 					<slot name="extend" />
 				</template>
@@ -63,6 +66,7 @@ import Extends from '../extends';
 import EditorToolbar from './toolbar';
 import Upload from '../upload/index';
 import Icon from '../icon/index';
+import ColorPicker from "../color-picker";
 import ImgsPreview from '../imgs-preview/index';
 import defaultOptions from './default-options';
 import { VcInstance } from '../vc/index';
@@ -79,7 +83,8 @@ export default {
 		'vc-editor-toolbar': EditorToolbar,
 		'vc-upload': Upload,
 		'vc-icon': Icon,
-		'vc-spin': Spin
+		'vc-spin': Spin,
+		'vc-color-picker': ColorPicker
 	},
 	mixins: [...Extends.mixins(['emitter'])],
 	model: {
@@ -140,6 +145,7 @@ export default {
 			content: '',
 			uid: getUid('editor-toolbar'),
 			loading: false,
+			color: '',
 			videoMax: this.videoUploadOpts.max || Number.MAX_SAFE_INTEGER,
 			imgMax: this.imgUploadOpts.max || Number.MAX_SAFE_INTEGER,
 			selectionIndex: 0, // 保存点击图片失焦时光标位置
@@ -431,6 +437,14 @@ export default {
 			registerLineHeight(Quill, lineHeight);
 			registerLetterSpacing(Quill, letterSpacing);
 			register && register(Quill);
+		},
+		// 增加vc-color-picker
+		handleColor(v) {
+			let lastRange = this.editor.selection.lastRange;
+			let start = lastRange.index;
+			let end = lastRange.index + lastRange.length;
+			this.color = v;
+			this.editor.formatText(start, end, 'color', v);
 		}
 	}
 };
@@ -449,6 +463,15 @@ $block: vc-quill-editor;
 	@include element(icon) {
 		outline: none; 
 		line-height: 1;
+	}
+	@include element(color) {
+		width: 45px !important;
+		margin-right: 10px;
+		.vc-color-picker__input {
+			padding: 1px;
+			height: 20px;
+		}
+		
 	}
 	@include element(spin) {
 		position: absolute;
