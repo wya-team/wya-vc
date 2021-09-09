@@ -438,13 +438,13 @@ export default {
 			registerLetterSpacing(Quill, letterSpacing);
 			register && register(Quill);
 		},
-		// 增加vc-color-picker
+		// 增加vc-color-picker satrt起始位置 length选中长度
 		handleColor(v) {
 			let lastRange = this.editor.selection.lastRange;
 			let start = lastRange.index;
-			let end = lastRange.index + lastRange.length;
+			let length = lastRange.length;
 			this.color = v;
-			this.editor.formatText(start, end, 'color', v);
+			this.editor.formatText(start, length, 'color', v);
 		}
 	}
 };
@@ -466,10 +466,14 @@ $block: vc-quill-editor;
 	}
 	@include element(color) {
 		width: 45px !important;
+		padding: 0!important;
 		margin-right: 10px;
 		.vc-color-picker__input {
-			padding: 1px;
+			padding: 1px 3px;
 			height: 20px;
+		}
+		.vc-color-picker__append {
+			padding-right: 3px;
 		}
 		
 	}
