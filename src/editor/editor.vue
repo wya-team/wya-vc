@@ -43,7 +43,7 @@
 					<vc-icon type="redo" style="font-size: 15px" />
 				</button>
 				<button class="vc-quill-editor__icon vc-quill-editor__color">
-					<vc-color-picker :value="color" @change="handleColor" />
+					<vc-color-picker :value="color" @visible-change="handelSaveIndex" @change="handleColor" />
 				</button>
 				<template #extend>
 					<slot name="extend" />
@@ -438,13 +438,22 @@ export default {
 			registerLetterSpacing(Quill, letterSpacing);
 			register && register(Quill);
 		},
-		// 增加vc-color-picker satrt起始位置 length选中长度
+		// 增加vc-color-picker
 		handleColor(v) {
-			let lastRange = this.editor.selection.lastRange;
-			let start = lastRange.index;
-			let length = lastRange.length;
 			this.color = v;
-			this.editor.formatText(start, length, 'color', v);
+			this.editor.formatText(this.start, this.length, 'color', v);
+		},
+		// 记录光标起始位置和长度  satrt起始位置 length选中长度
+		handelSaveIndex(v) {
+			if (v) {
+				let lastRange = this.editor.selection.lastRange;
+				this.start = lastRange.index;
+				this.length = lastRange.length;
+			} else {
+				this.start = 0;
+				this.length = 0;
+			}
+			
 		}
 	}
 };
