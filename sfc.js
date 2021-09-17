@@ -16,13 +16,42 @@ const postcss = require('postcss');
 const sass = require('node-sass');
 const { rollup } = require('rollup');
 const replace = require('@rollup/plugin-replace');
-const buble = require('@rollup/plugin-buble');
 const commonjs = require('@rollup/plugin-commonjs');
 const { nodeResolve } = require('@rollup/plugin-node-resolve');
 const alias = require('@rollup/plugin-alias');
 const { terser } = require('rollup-plugin-terser');
-
 const postcssOpts = require('./config/postcss.config.js');
+
+// 项目中按需加载不要编译import('*')
+const babelConfig = {
+	babelrc: true,
+	caller: {
+		name: 'sfc-custom-tool',
+		// 禁止将import('*') 转化为require('*'); 按需加载webpack只识别import('*')
+		supportsDynamicImport: true
+	}
+};
+
+/**
+ * 不需要再使用babel配置项, 已经转换了，只需要再把import转require
+ * @rollup/plugin-bable由于内置的一些验证(不过可以设置skipPreflightCheck)，这里我们自己写插件转换
+ */
+const import2require = () => {
+	const HELPERS = '\0rollupPluginBabelHelpers.js';
+	return {
+		name: 'import2require',
+		options: () => {},
+		resolveId: id => (id !== HELPERS ? null : id),
+		load: id => (id !== HELPERS ? null : babel.buildExternalHelpers(null, 'module')),
+		transform(code, filename) {
+			if (filename === HELPERS) return null;
+			// TODO: 优化匹配规则
+			if (code.includes(` import(`)) {
+				return babel.transformSync(code, { presets: ["@babel/preset-env"] });
+			}
+		}
+	};
+};
 
 let cssInfo = glob
 	.sync(`src/*`, {
@@ -112,7 +141,6 @@ const exportCssFile = (filepath, data, record = true, promise) => {
 };
 
 process.on('beforeExit', async () => {
-
 	delete cssInfo.style;
 
 	let totalCss = [];
@@ -194,6 +222,7 @@ process.on('beforeExit', async () => {
 	let browserJS = await rollup({
 		input: 'lib/index.copy.js',
 		plugins: [
+			import2require(),
 			alias({
 				entries: [{
 					find: /^vue$/, 
@@ -207,7 +236,6 @@ process.on('beforeExit', async () => {
 				'process.env.NODE_ENV': JSON.stringify(process.env.NODE_ENV || 'development'),
 				preventAssignment: false
 			}),
-			buble(),
 			terser()
 		]
 	});
@@ -216,7 +244,7 @@ process.on('beforeExit', async () => {
 			file: `lib/vc.browser.js`,
 			format: 'umd',
 			name: 'WYA_VC',
-			exports: 'named'
+			exports: 'named',
 		}
 	});
 
@@ -229,6 +257,7 @@ process.on('beforeExit', async () => {
 			return new RegExp(`(${regex})`).test(filename);
 		},
 		plugins: [
+			import2require(),
 			nodeResolve({ browser: true }), 
 			commonjs({}), 
 			replace({
@@ -236,7 +265,6 @@ process.on('beforeExit', async () => {
 				'process.env.NODE_ENV': JSON.stringify(process.env.NODE_ENV || 'development'),
 				preventAssignment: false
 			}),
-			buble(),
 			terser()
 		]
 	});
@@ -268,6 +296,7 @@ process.on('beforeExit', async () => {
 			return new RegExp(`(${regex})`).test(filename);
 		},
 		plugins: [
+			import2require(),
 			nodeResolve({ browser: true }), 
 			commonjs({}), 
 			replace({
@@ -275,7 +304,6 @@ process.on('beforeExit', async () => {
 				'process.env.NODE_ENV': JSON.stringify(process.env.NODE_ENV || 'development'),
 				preventAssignment: false
 			}),
-			buble(),
 			terser()
 		]
 	});
@@ -323,7 +351,7 @@ files.forEach((filepath) => {
 			babel.transform(
 				FILE_CONTENT,
 				{
-					babelrc: true,
+					...babelConfig,
 					plugins: [
 						{
 							visitor: {
@@ -409,7 +437,7 @@ files.forEach((filepath) => {
 			result = babel.transform(
 				script && script.content || 'export default {};',
 				{
-					babelrc: true,
+					...babelConfig,
 					plugins: [
 						{
 							visitor: {
