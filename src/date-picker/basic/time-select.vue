@@ -1,5 +1,5 @@
 <template>
-	<div class="vc-time-select">
+	<div class="vc-time-select" :class="{'is-touch': isTouch}">
 		<div ref="hours" class="vc-time-select__list">
 			<ul class="vc-time-select__ul">
 				<li 
@@ -46,7 +46,7 @@
 </template>
 
 <script>
-import { $, Utils } from '@wya/utils';
+import { $, Utils, Device } from '@wya/utils';
 import _ from 'lodash';
 import { clearTime, getDateOfTime } from '../helper/date-utils';
 
@@ -176,6 +176,9 @@ export default {
 				seconds.push(second);
 			}
 			return seconds;
+		},
+		isTouch() {
+			return Device.touch;
 		}
 	},
 	watch: {
@@ -275,6 +278,11 @@ $block: vc-time-select;
 @include block($block) {
 	display: flex;
 	font-size: 14px;
+	@include when(touch) {
+		@include element(list) {
+			overflow-y: auto;
+		}
+	}
 	@include element(list) {
 		width: 56px; // time-picker
 		max-height: 144px;
