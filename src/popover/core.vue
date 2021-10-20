@@ -10,6 +10,7 @@
 			:style="[wrapperStyle, wrapperW, portalStyle]"
 			:class="[wrapperClasses, portalClassName]"
 			class="vc-popover-core" 
+			@mousedown="!hover && handleMouseDown($event)"
 			@mouseenter="hover && handleChange($event, { visible: true })"
 			@mouseleave="hover && handleChange($event, { visible: false })"
 		>
@@ -222,14 +223,34 @@ const wrapperComponent = {
 				width: `${triggerEl.getBoundingClientRect().width}px`
 			};
 		},
+
+		handleMouseDown(e) {
+			this.isPressMouse = true;
+		},
+
+		/**
+		 * 不会销毁的两种情况
+		 * 1. 在容器内的点击
+		 * 2. 内部按下，外部释放
+		 */
 		handleClick(e) {
+			const isIn = this.$el.contains(e.target);
+			const isPress = this.isPressMouse;
+
+			this.isPressMouse = false;
+			if (isIn || isPress) {
+				return;
+			}
+
 			this.alone && (this.isActive = false);
 			this.onChange(e, { context: this });
 		},
+
 		handleChange(e, { visible }) {
 			this.alone && this.handleTriggerChange(e);
 			!this.alone && this.onChange(e, { visible, context: this });
 		},
+
 		/**
 		 * 弹层【宽度】变化后的自适应，主要服务于Cascader等内容会变化的下拉框
 		 */
