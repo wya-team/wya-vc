@@ -11,6 +11,7 @@
 			ref="wrapper"
 			:style="[styles, draggable && { top: 0 }]"
 			class="vc-modal__wrapper"
+			@click="handleClose($event, false)"
 		>
 			<vc-transition-scale 
 				mode="part" 
