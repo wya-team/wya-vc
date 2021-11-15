@@ -260,31 +260,18 @@ export default {
 				return;
 			}
 			// onFileStart, onFileProgress, onFileSuccess, onFileError, onComplete 
-			let response = {};
-			try {
-				response = await onBefore(file);
-				if (typeof response !== 'object') {
-					console.error('[wya-vc/upload]: onBefore必须返回对象');
-					return;
-				}
-			} catch (error) {
-				this.handleReject(error, file);
-				this.handleFinally(file);
-				return;
-			}
-			
 			this.$emit('file-start', file);
 			
 			ajax({
 				url: url || defaultUrl,
 				type: "FORM",
 				param: {
-					name: name || FORM_NAME || 'file',
-					file,
-					data: { ...extra, ...response }
+					...extra, 
+					[name || FORM_NAME || 'file']: file, // oss特殊场景, 需要file作为最后一个字段
 				},
 				headers,
 				localData,
+				onBefore,
 				onAfter,
 				onProgress: e => {
 					this.$emit('file-progress', e, file);
