@@ -260,9 +260,7 @@ export default {
 				return;
 			}
 			// onFileStart, onFileProgress, onFileSuccess, onFileError, onComplete 
-			this.$emit('file-start', file);
-			
-			ajax({
+			let options = {
 				url: url || defaultUrl,
 				type: "FORM",
 				param: {
@@ -271,7 +269,6 @@ export default {
 				},
 				headers,
 				localData,
-				onBefore,
 				onAfter,
 				onProgress: e => {
 					this.$emit('file-progress', e, file);
@@ -279,7 +276,22 @@ export default {
 				},
 				// todo 可优化
 				getInstance: (xhr, cancel) => (this.reqs[uid] = { cancel })
-			}).then((res) => {
+			};
+			try {
+				options = await onBefore(options);
+				if (typeof options !== 'object') {
+					console.error('[wya-vc/upload]: onBefore必须返回对象');
+					return;
+				}
+			} catch (error) {
+				this.handleReject(error, file);
+				this.handleFinally(file);
+				return;
+			}
+
+			this.$emit('file-start', file);
+			
+			ajax(options).then((res) => {
 				delete this.reqs[uid];
 				this.cycle.success++;
 				this.cycle.imgs = [...this.cycle.imgs, res];
