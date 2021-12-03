@@ -260,12 +260,14 @@ export default {
 				return;
 			}
 			// onFileStart, onFileProgress, onFileSuccess, onFileError, onComplete 
+			const key = name || FORM_NAME || 'file';
 			let options = {
 				url: url || defaultUrl,
 				type: "FORM",
 				param: {
 					...extra, 
-					[name || FORM_NAME || 'file']: file, // oss特殊场景, 需要file作为最后一个字段
+					name: key,
+					[key]: file, // oss特殊场景, 需要file作为最后一个字段
 				},
 				headers,
 				localData,
