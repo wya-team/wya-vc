@@ -105,7 +105,8 @@ export default {
 					alphabetical, 
 					alphabetKey, 
 					changeOnSelect,
-					header 
+					header,
+					onBeforeOk
 				} = this;
 				Func.popup({
 					dataSource,
@@ -120,6 +121,7 @@ export default {
 					alphabetKey,
 					changeOnSelect,
 					header,
+					onBeforeOk,
 					onOk: (v, label, data) => {
 						this.currentValue = v;
 						this.$emit('ok', v, label, data);

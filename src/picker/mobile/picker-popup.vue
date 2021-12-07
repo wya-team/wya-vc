@@ -90,7 +90,7 @@ export default {
 	},
 	methods: {
 		handleClick(event) {
-			this.isActive = false;
+			// this.isActive = false;
 			this.$emit(event);
 		},
 	}

@@ -70,6 +70,9 @@ const wrapperComponent = {
 		},
 		onCancel: {
 			type: Function
+		},
+		onBeforeOk: {
+			type: Function
 		}
 	},
 	data() {
@@ -106,12 +109,18 @@ const wrapperComponent = {
 			// 普通组件
 			this.$emit('update:visible', false);
 		},
-		handleOk() {
+		async handleOk() {
+			const { onBeforeOk } = this;
 
 			let { label, data } = getSelectedData(this.currentValue, this.dataSource);
-
-			this.isActive = false;
-
+			const visible = onBeforeOk && onBeforeOk(this.currentValue, label, data);
+			if (visible && visible.then) {
+				this.isActive = !!(await visible);
+			} else {
+				this.isActive = !!visible;
+			}
+			
+			if (this.isActive) return;
 			this.ok(this.currentValue, label, data);
 			// 普通组件
 			this.$emit('change', this.currentValue, label, data);

@@ -4,6 +4,7 @@
 			v-model="value"
 			:data-source="dataSource"
 			:load-data="loadData"
+			:on-before-ok="handleBeforeOk"
 		/>
 		<vcm-cascader
 			v-model="value2"
@@ -148,6 +149,13 @@ export default {
 		},
 		handleComplete() {
 			console.log(arguments);
+		},
+		handleBeforeOk(currentValue, label, data) {
+			return new Promise((r, j) => {
+				console.log(currentValue, label, data);
+				const vis = !(data.length > 2);
+				r(vis);
+			});
 		}
 	}
 
