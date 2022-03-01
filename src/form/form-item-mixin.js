@@ -142,12 +142,25 @@ export default {
 			this.$on('form-change', this.handleFieldChange);
 		},
 		getRules() {
-			let formRules = this.form.rules;
-			const selfRules = this.rules;
-			
-			// getPropByPath(formRules, this.prop.replace(/\.[0-9]+\./g, '.'));
-			formRules = formRules ? formRules[this.prop] : [];
-			return cloneDeep([].concat(selfRules || formRules || []));
+			const formRules = this.form.rules;
+			const formItemBindRules = this.rules instanceof Array 
+				? this.rules 
+				: this.rules 
+					? [this.rules]
+					: undefined;
+
+			let formItemRules = formItemBindRules || [];
+			if (!formItemRules.length) {
+				try {
+					// 如果是数组的话 xxx.1.xxx -> xxx.xxx
+					let { value } = getPropByPath(formRules, this.prop.replace(/\.[0-9]+\./g, '.')) || {};
+					formItemRules = value || [];
+				} catch {
+					formItemRules = formRules ? formRules[this.prop] : [];
+				}
+			}
+
+			return cloneDeep(formItemRules);
 		},
 		getFilteredRule(trigger) {
 			const rules = this.getRules();
