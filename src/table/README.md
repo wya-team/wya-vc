@@ -5,6 +5,30 @@
 - 当有大量结构化的数据需要展现时。
 - 当需要对数据进行排序、筛选、分页、自定义操作等复杂行为时。
 
+### 避坑
+> flex布局 + vc-tabs时要额外注意，否则宽度会被无限撑开
+```
+<template>
+	<div style="display: flex;">
+		<div>Flex布局时，要增加`flex: 1; overflow-x: auto;`</div>
+		<div style="flex: 1; overflow-x: auto;">
+			<vc-tabs>
+				<vc-tabs-pane 
+					v-for="item in 10" 
+					:key="item" 
+					:label="`标签${item}`"
+					:name="item"
+				>
+					<vc-table>
+						<!-- any -->
+					</vc-table>
+				</vc-tabs-pane>
+			</vc-tabs>
+		</div>
+	</div>
+</template>
+```
+
 ### 基本使用
 基础的表格展示用法。
 当 `vc-table` 元素中注入 `dataSource` 对象数组后，在 `vc-table-column` 中用 `prop` 属性来对应对象中的键名即可填入数据，用 `label` 属性来定义表格的列名。可以使用 `width`属性来定义列宽 `min-width` 来设置对应列的最小宽度。

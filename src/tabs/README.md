@@ -4,6 +4,28 @@
 ### 何时使用
 提供平级的区域将大块内容进行收纳和展现，保持界面整洁。
 
+### 避坑
+> flex布局时要额外注意，否则宽度会被撑开
+```
+<template>
+	<div style="display: flex;">
+		<div>Flex布局时，要增加`flex: 1; overflow-x: auto;`</div>
+		<div style="flex: 1; overflow-x: auto;">
+			<vc-tabs>
+				<vc-tabs-pane 
+					v-for="item in 10" 
+					:key="item" 
+					:label="`标签${item}`"
+					:name="item"
+				>
+					<!-- any -->
+				</vc-tabs-pane>
+			</vc-tabs>
+		</div>
+	</div>
+</template>
+```
+
 ### 基础用法
 基础的、简洁的标签页。
 
