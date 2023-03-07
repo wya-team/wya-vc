@@ -1,5 +1,8 @@
 最常见的应用场景是列表滚动，我们来看一下它的`html`结构
 
+> 此组件以不再修改，后续只对Vue@3.x做处理
+> `Vue@3.x`完整版[\@wya/vc.next](https://github.com/wya-team/wya-vc.next/tree/main/src/scroller)
+
 ```
 <div class="wrapper">
 	<ul class="content"> 

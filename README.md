@@ -1,4 +1,5 @@
 > 基于`Vue@3.x`的组件库移步[\@wya/vc.next](https://github.com/wya-team/wya-vc.next)
+> 此仓库以不再新增功能，只修复存在的bug，目前已全面拥抱Vue@3.x
 
 # [\@wya/vc](https://wya-team.github.io/wya-vc/dist/index.html) 👈👈文档地址
 
@@ -152,7 +153,7 @@ import { Clipboard } from 'wya-vc';
 ---|---|---|---
 [Paging][Paging] | 表格分页 | 1 | -
 [PullScroll][PullScroll] | 列表分页 | 1 | -
-[RecycleList][RecycleList] | 列表分页（性能） | 0 | -
+[RecycleList][RecycleList] | 列表分页（性能） | 0 | [Vue 3.x完善完整版](https://github.com/wya-team/wya-vc.next/tree/main/src/recycle-list)
 
 
 - 辅助
@@ -164,7 +165,7 @@ import { Clipboard } from 'wya-vc';
 [Fragment][Fragment] | 空节点 | 1 | Vue 3.x废除
 [Portal][Portal] | 传送门组件 | 1 | -
 [Print][Print] | 打印 | 1 | -
-[Scroller][Scroller] | 滚动条自定义 | 1 | -
+[Scroller][Scroller] | 滚动条自定义 | 1 | [Vue 3.x完善完整版](https://github.com/wya-team/wya-vc.next/tree/main/src/scroller)
 [Touch][Touch] | 手势 | 1 | -
 [Transition][Transition] | 动画 | 1 | 同animate.css优化api
 [Upload][Upload] | 上传 | 1 | -
